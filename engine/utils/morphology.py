@@ -1,13 +1,15 @@
 """
-Türki Diller Morfolojik Analizör ve Kök Ayrıştırıcı (Turkic Stemmer & Morphological Analyzer)
-Karmaşık türemiş ve çekim ekli kelimeleri köklerine ayrıştırır.
+Türki Diller Morfolojik Analizör ve Akıllı Kök Ayrıştırıcı (Turkic Stemmer & Morphological Analyzer)
+Karmaşık türemiş ve çekim ekli kelimeleri köklerine ayrıştırır. Alıntı kelimelerde yapay ek kesimini engeller.
 """
 import re
 from typing import List, Tuple
 
+# Öz Türkçede söz başında KESİNLİKLE bulunmayan (veya aşırı nadir olan) ünsüzler
+NON_TURKIC_INITIAL_CONSONANTS = ['f', 'h', 'p', 'v', 'j', 'z']
+
 # Türkçe ve Türki diller yapım ve çekim ekleri
 TURKIC_SUFFIXES = [
-    # İsimden İsim ve Fiilden İsim Yapım Ekleri
     "cılık", "cilik", "çılık", "çilik", "culuk", "cülük",
     "daş", "deş", "taş", "teş",
     "lik", "lık", "luk", "lük", "ci", "cı", "cu", "cü", "çi", "çı",
@@ -22,11 +24,17 @@ TURKIC_SUFFIXES = [
 
 def analyze_morphology(word: str) -> Tuple[str, List[str]]:
     w = word.strip().lower()
+
+    # 1. Alıntı Kelime Koruması: f-, h-, p-, v-, j-, z- ile başlayan kelimelerde mekanik ek kesimi yapma!
+    if w and w[0] in NON_TURKIC_INITIAL_CONSONANTS:
+        return w, []
+
     detected_suffixes = []
     stem = w
 
+    # 2. Mekanik ek kesimi (sadece geçerli Öz Türkçe kök adayları için)
     for suf in TURKIC_SUFFIXES:
-        if stem.endswith(suf) and len(stem) - len(suf) >= 2:
+        if stem.endswith(suf) and len(stem) - len(suf) >= 3:
             detected_suffixes.append("-" + suf)
             stem = stem[:-len(suf)]
 

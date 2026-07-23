@@ -1,12 +1,11 @@
+import os
+import json
 import re
-import datetime
-import threading
 import concurrent.futures
 from typing import Dict, Any, List, Optional
 
 from engine.fetchers.base import BaseFetcher, TURKIC_LANGUAGES_MAP
 from engine.fetchers.academic_turkology import AcademicTurkologyFetcher
-from engine.fetchers.tietze_altaica import TietzeAltaicaFetcher
 from engine.fetchers.historical_modern import HistoricalModernLexiconFetcher
 from engine.fetchers.isam_ansiklopedi import IsamAnsiklopediFetcher
 from engine.fetchers.archive_org import ArchiveOrgFetcher
@@ -17,31 +16,30 @@ from engine.fetchers.glosbe import GlosbeFetcher
 from engine.fetchers.turkic_national_dictionaries import TurkicNationalDictionariesFetcher
 from engine.fetchers.loanword_donor_etymology import LoanwordDonorEtymologyFetcher
 from engine.fetchers.local_pdf_books import LocalPdfBooksFetcher
+from engine.fetchers.tietze_altaica import TietzeAltaicaFetcher
 from engine.fetchers.etimoloji_turkce import EtimolojiTurkceFetcher
-from engine.fetchers.wiktionary import WiktionaryFetcher
 from engine.fetchers.starling import StarlingFetcher
-from engine.fetchers.tdk_nisanyan import TdkFetcher, NisanyanFetcher
+from engine.fetchers.tdk_nisanyan import NisanyanFetcher, TdkFetcher
 from engine.fetchers.tdk_historical import TdkTaramaFetcher, TdkDerlemeFetcher
+from engine.fetchers.wiktionary import WiktionaryFetcher
 from engine.fetchers.multilang_wiktionary import MultiLangWiktionaryFetcher
 
 from engine.utils.morphology import analyze_morphology
 from engine.utils.transliteration import transliterate_to_latin
-from engine.utils.cognates import get_related_cognates
 from engine.utils.phonetic_rules import analyze_phonetic_shifts
-from engine.utils.variant_expander import generate_dynamic_phonetic_variants
 from engine.utils.geo_tagger import tag_geographical_region
+from engine.utils.cognates import get_related_cognates
+from engine.utils.variant_expander import generate_dynamic_phonetic_variants
+from engine.utils.reference_resolver import extract_cross_references
 from engine.db.database import DatabaseManager
 from engine.llm.qwen_agent import QwenEtymologyAgent
 
 MEANING_TRANSLATIONS = {
-    "beautiful": "güzel, alımlı, hoş",
-    "water": "su, sıvı, akarsu",
-    "water / liquid": "su, sıvı",
+    "water": "su, sıvı",
     "sea": "deniz, büyük göl",
-    "sea / ocean": "deniz, okyanus",
+    "lake": "göl",
     "eye": "göz, görme organı",
-    "eye / sight": "göz, görüş, bakış",
-    "hand": "el, tutma organı",
+    "foot": "ayak, bacak",
     "hand / forearm": "el, kol",
     "head": "baş, kafa, lider",
     "blood": "kan",
@@ -109,14 +107,6 @@ class SearchEngine:
         except Exception:
             return fetcher, None
 
-    def _warm_up_cognates_background(self, cognates: List[str]) -> None:
-        for cog in cognates:
-            try:
-                if not self.db.get_finding(cog):
-                    self.search(cog, save_to_db=True, trigger_bg_warmup=False)
-            except Exception:
-                pass
-
     def search(self, word: str, save_to_db: bool = True, trigger_bg_warmup: bool = True, use_qwen_agent: bool = False) -> Dict[str, Any]:
         word_clean = word.strip().lower()
         if not word_clean:
@@ -137,14 +127,22 @@ class SearchEngine:
         if stem != word_clean and stem not in target_words:
             target_words.append(stem)
 
-        # 3. Tüm 20 veri toplayıcıyı PARALEL çalıştır (tüm varyantlar için)
+        # 3. Tüm 20 veri toplayıcıyı PARALEL çalıştır (tüm varyantlar ve referans takibi için)
         proto_root = ""
         root_meaning = ""
         reconstruction_notes = ""
         sources = []
-        turkic_entries_map = {} # lang_code -> entry dict
+        turkic_entries_map = {}
+        processed_targets = set()
 
-        for target in target_words:
+        idx = 0
+        while idx < len(target_words):
+            target = target_words[idx]
+            idx += 1
+            if target in processed_targets:
+                continue
+            processed_targets.add(target)
+
             with concurrent.futures.ThreadPoolExecutor(max_workers=len(self.fetchers)) as executor:
                 futures = [executor.submit(self._execute_fetcher, fetcher, target) for fetcher in self.fetchers]
                 for future in concurrent.futures.as_completed(futures):
@@ -164,24 +162,28 @@ class SearchEngine:
                         code = entry.get("lang_code")
                         entry_word = entry.get('word', '')
                         
-                        # Latin Transkripsiyon Ekle (Kiril veya Arap Alfabesindeyse)
+                        # Latin Transkripsiyon Ekle
                         latin_trans = transliterate_to_latin(entry_word)
                         if latin_trans != entry_word and not "(" in entry_word:
                             entry["word"] = f"{entry_word} ({latin_trans})"
 
-                        # Fonetik ses kayması analizini ekle
+                        # Fonetik ses kayması analizi
                         shift_analysis = analyze_phonetic_shifts(word_clean, entry_word, entry.get("lang_name", ""))
                         entry["phonetic_shift"] = shift_analysis
 
-                        # Coğrafi Ağız Haritalama Etiketi
+                        # Coğrafi Ağız Haritalama
                         geo_info = tag_geographical_region(entry.get("lang_name", "") + " " + entry.get("meaning", ""))
                         if geo_info.get("geo_coordinates"):
                             entry["geo_tag"] = geo_info
 
-                        key = f"{code}_{entry.get('word')}"
-                        
-                        # Anlamı Türkçe semantik çeviriden geçir
+                        # ÇAPRAZ REFERANS ÇÖZÜMLEME ([-> herkil])
                         raw_m = entry.get("meaning", "")
+                        cross_refs = extract_cross_references(raw_m)
+                        for ref_word in cross_refs:
+                            if ref_word not in target_words and ref_word not in processed_targets:
+                                target_words.append(ref_word)
+
+                        key = f"{code}_{entry.get('word')}"
                         entry["meaning"] = translate_meaning(raw_m)
 
                         if key not in turkic_entries_map:
@@ -202,7 +204,7 @@ class SearchEngine:
             key=lambda x: (0 if x["lang_code"] == "otk" else (0.3 if x["lang_code"] == "ai" else (0.5 if x["lang_code"] == "donor" else 1)), x["lang_name"])
         )
 
-        # 5. Tarihsel Kronoloji Çizelgesi Oluştur
+        # 5. Tarihsel Kronoloji Çizelgesi
         timeline = []
         for entry in sorted_entries:
             lname = entry.get("lang_name", "")
@@ -220,30 +222,23 @@ class SearchEngine:
             "query_word": word_clean,
             "morphology": morphology_info,
             "root": {
-                "proto_turkic": proto_root or f"*{stem}",
+                "proto_turkic": proto_root or word_clean,
                 "meaning": root_meaning or word_clean,
-                "reconstruction_notes": f"[{morphology_info}] {reconstruction_notes or ('Proto-Turkic reconstruction for ' + word_clean)}"
+                "reconstruction_notes": reconstruction_notes
             },
-            "timeline": timeline,
+            "timeline": list(dict.fromkeys(timeline)),
             "related_cognates": related_cognates,
             "turkic_languages": sorted_entries,
             "sources": sorted(list(set(sources))),
-            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
             "from_cache": False
         }
 
-        # 6. Qwen2.5:14b Otonom Ajan Derinleştirmesi (İstenmişse)
+        # 6. Qwen2.5:14b Bilimsel Otonom Ajan Zenginleştirmesi
         if use_qwen_agent:
             finding = self.qwen_agent.research_and_enrich(word_clean, finding)
 
         # 7. Veritabanına kaydet
-        if save_to_db and (sorted_entries or proto_root):
+        if save_to_db:
             self.db.save_finding(finding)
-
-        # 8. Asenkron Arka Plan Önbellek Isıtıcıyı Tetikle
-        if trigger_bg_warmup and related_cognates:
-            t = threading.Thread(target=self._warm_up_cognates_background, args=(related_cognates,))
-            t.daemon = True
-            t.start()
 
         return finding
