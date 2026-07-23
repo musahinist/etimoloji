@@ -14,6 +14,7 @@ from engine.fetchers.osmanlica_lugat import OsmanlicaLugatFetcher
 from engine.fetchers.tdk_all_portals import TdkAllPortalsFetcher
 from engine.fetchers.glosbe import GlosbeFetcher
 from engine.fetchers.turkic_national_dictionaries import TurkicNationalDictionariesFetcher
+from engine.fetchers.loanword_donor_etymology import LoanwordDonorEtymologyFetcher
 from engine.fetchers.etimoloji_turkce import EtimolojiTurkceFetcher
 from engine.fetchers.wiktionary import WiktionaryFetcher
 from engine.fetchers.starling import StarlingFetcher
@@ -81,6 +82,7 @@ class SearchEngine:
             TdkAllPortalsFetcher(),
             GlosbeFetcher(),
             TurkicNationalDictionariesFetcher(),
+            LoanwordDonorEtymologyFetcher(),
             TietzeAltaicaFetcher(),
             EtimolojiTurkceFetcher(),
             StarlingFetcher(),
@@ -113,7 +115,7 @@ class SearchEngine:
             existing_finding["from_cache"] = True
             return existing_finding
 
-        # 2. Tüm 18 veri toplayıcıyı PARALEL çalıştır (hem kelime hem de kökü için)
+        # 2. Tüm 19 veri toplayıcıyı PARALEL çalıştır (hem kelime hem de kökü için)
         proto_root = ""
         root_meaning = ""
         reconstruction_notes = ""
@@ -175,7 +177,7 @@ class SearchEngine:
         # Türki diller listesini dili Türkçe isimlerine göre sıralayalım
         sorted_entries = sorted(
             list(turkic_entries_map.values()),
-            key=lambda x: (0 if x["lang_code"] == "otk" else 1, x["lang_name"])
+            key=lambda x: (0 if x["lang_code"] == "otk" else (0.5 if x["lang_code"] == "donor" else 1), x["lang_name"])
         )
 
         # 4. Tarihsel Kronoloji Çizelgesi Oluştur
