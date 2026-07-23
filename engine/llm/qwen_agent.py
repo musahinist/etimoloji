@@ -42,7 +42,7 @@ class QwenEtymologyAgent:
             return False
 
     def research_and_enrich(self, word: str, initial_finding: Dict[str, Any]) -> Dict[str, Any]:
-        """Qwen2.5:14b ajanı İleri Düzey Araçları ve Kanıtlanmış Hipotez Hiyerarşisini çalıştırır."""
+        """Qwen2.5:14b ajanı İleri Düzey Araçları ve Soyut Dilbilimsel Eleştirel Yargılama Protokolünü çalıştırır."""
         if not self.is_available():
             initial_finding["ai_agent_enrichment"] = "Ollama veya qwen2.5:14b modeli aktif değil."
             return initial_finding
@@ -63,13 +63,13 @@ class QwenEtymologyAgent:
         proto_r = initial_finding.get('root', {}).get('proto_turkic', word)
         sound_matrix_res = tool_sound_change_matrix(word, proto_r)
 
-        # 2. Qwen2.5:14b İçin Doğrulanmış Gerçek Hiyerarşisi Prompt'u Hazırla
+        # 2. Qwen2.5:14b İçin Soyut Eleştirel Yargılama Prompt'u Hazırla
         prompt = f"""
 {QWEN_AGENT_SYSTEM_GUIDELINE}
 
 [ARAŞTIRILACAK KELİME]: {word}
 
-[KANITLANMIŞ ETİMOLOJİK HİPOTEZ VE KÖKEN (GROUND TRUTH)]:
+[BİLİMSEL KANITLANMIŞ HİPOTEZ VE KÖKEN]:
 - Hipotez Tipi: {proven_hypo.get('hypothesis_type')}
 - Kaynak Dil / Rekonstrüksiyon: {proven_hypo.get('donor_language')} -> {proven_hypo.get('origin_form')}
 - Kanıt Özeti: {proven_hypo.get('proof_summary')}
@@ -80,10 +80,11 @@ class QwenEtymologyAgent:
 2. Kaynak Dil Vezin/Yapı: {json.dumps(donor_pattern_res.get('detected_donor_patterns'), ensure_ascii=False)}
 3. Tarihsel Külliyat Taraması: {json.dumps(corpus_res.get('corpus_hits'), ensure_ascii=False)}
 4. Morfolojik Ek/Kök Tespiti: {suffixes_analysis}
-5. Canlı Akademik Web Arama: {json.dumps(web_results[:2], ensure_ascii=False)}
+5. Canlı Web Taraması Bulguları: {json.dumps(web_results[:3], ensure_ascii=False)}
 
-KRİTİK UYARI: Yukarıda verilen [KANITLANMIŞ ETİMOLOJİK HİPOTEZ VE KÖKEN] bilgisini BİRİNCİ ONCELİKLİ GERÇEK kabul et! Web arama çıktısındaki amatör/uydurma iddialara (Latince vestire, Portekizce vb.) KANMA ve KESİNLİKLE PARAGRAFA YAZMA!
-Sentezini kanıtlanmış donör bilgisiyle akademik, net ve tutarlı bir paragraf olarak yaz.
+YÖNERGE PROTOKOLÜ:
+Tüm verileri Soyut Eleştirel Kanıt Protokolüne (Ses kayması mantığı, tarihsel kültür/ticaret uyumu, halk etimolojisi eleştirisi) göre değerlendir.
+Yüzeysel harf benzerliği taşıyan uydurma iddiaları elerken, tarihsel ve fonetik açıdan en güçlü bilimsel kanıtı seçerek raporunu yaz.
 """
 
         req_data = {
