@@ -6,6 +6,13 @@ Farsça, Arapça, Soğdca, Moğolca, İtalyanca/Latince etimolojik kökenlerini 
 from typing import Dict, Any, Optional
 
 DEEP_DONOR_LEXICON = {
+    "harman": {
+        "donor_lang": "Farsça (Persian)",
+        "origin_form": "xırman / xarman (خرمن < xar + -man)",
+        "reconstructed_etymology": "Farsça xar- (biçilmiş ekin, tahıl demeti) + -man / -mān (yer, yıkan yer) soneki. Özgün anlamı: biçilmiş ekinlerin sürüldüğü ve tanelerin ayrıldığı yer.",
+        "dialect_variant": "harman / harım",
+        "historical_meaning": "Tarlada biçilen tahıl demetlerinin yığılıp dövüldüğü yer, ekin karışımı"
+    },
     "herkil": {
         "donor_lang": "Ermenice (Armenian)",
         "origin_form": "harkil / herkil (յարդկիլ / հերկիլ)",

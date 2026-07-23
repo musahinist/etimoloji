@@ -17,6 +17,7 @@ from engine.llm.research_tools import (
     tool_extract_suffixes,
     tool_web_search
 )
+from engine.nlp.full_web_scraper import scrape_full_web_pages_for_results
 
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
 MODEL_NAME = "qwen2.5:14b"
@@ -42,17 +43,21 @@ class QwenEtymologyAgent:
             return False
 
     def research_and_enrich(self, word: str, initial_finding: Dict[str, Any]) -> Dict[str, Any]:
-        """Qwen2.5:14b ajanı temiz ve doğrudan etimolojik sentez üretir."""
+        """Qwen2.5:14b ajanı canlı web sayfalarının tam metinlerini okuyarak çok adımlı etimolojik sentez üretir."""
         if not self.is_available():
             initial_finding["ai_agent_enrichment"] = "Ollama veya qwen2.5:14b modeli aktif değil."
             return initial_finding
 
+        # --- 1. İLERİ DÜZEY ARAÇLAR VE CANLI WEB TAM SAYFA KAZIMA ---
         wiktionary_res = tool_wiktionary_multilingual_api(word)
         ipa_res = tool_ipa_phonetic_analyzer(word)
         donor_pattern_res = tool_donor_pattern_analyzer(word)
         corpus_res = tool_historical_corpus_search(word)
         suffixes_analysis = tool_extract_suffixes(word)
-        web_results = tool_web_search(word)
+        
+        # Web arama sonuçlarının SAYFA İÇİNE GİRİP TAM METNİ KAZI
+        raw_web_results = tool_web_search(word)
+        full_page_web_results = scrape_full_web_pages_for_results(raw_web_results, max_pages=2)
 
         nlp_analysis = initial_finding.get("nlp_analysis", {})
         proven_hypo = nlp_analysis.get("proven_hypothesis", {})
@@ -60,6 +65,7 @@ class QwenEtymologyAgent:
         proto_r = initial_finding.get('root', {}).get('proto_turkic', word)
         sound_matrix_res = tool_sound_change_matrix(word, proto_r)
 
+        # 2. Qwen2.5:14b İçin Tam Metin Okumalı İteratif Prompt Hazırla
         prompt = f"""
 {QWEN_AGENT_SYSTEM_GUIDELINE}
 
@@ -70,15 +76,18 @@ class QwenEtymologyAgent:
 - Detay: {proven_hypo.get('proof_summary')}
 - Anlam: {proven_hypo.get('historical_meaning')}
 
-[İLERİ DÜZEY NLP VE TARİHSEL VERİLER]:
+[BİLİMSEL VE NLP ARAÇ ÇIKTILARI]:
 1. IPA Fonetik Yapı: IPA={ipa_res.get('ipa')}, Ünlü Uyumu={ipa_res.get('vowel_harmony_status')}
 2. Kaynak Dil Vezin/Yapı: {json.dumps(donor_pattern_res.get('detected_donor_patterns'), ensure_ascii=False)}
 3. Tarihsel Külliyat Bulguları: {json.dumps(corpus_res.get('corpus_hits'), ensure_ascii=False)}
 4. Morfolojik Ek/Kök Yapısı: {suffixes_analysis}
 
+[CANLI WEB SAYFALARI TAM METİN İÇERİKLERİ (FULL WEBPAGE CONTENT)]:
+{json.dumps(full_page_web_results, ensure_ascii=False, indent=2)}
+
 TALİMAT:
 Giriş/Gelişme/Sonuç veya Markdown başlıkları (#, ##, ###) KULLANMA. İstem talimatlarını ("halk etimolojisini reddeder" vb.) TEKRARLAMA.
-Doğrudan kelimenin etimolojik kökenini, kaynak dildeki bileşenlerini ve Türkçe/diyalektlerdeki tarihsel gelişimini net ve akıcı paragraflar halinde anlat.
+Yukarıda sayfalarından TAM METNİ çekilen akademik makale ve donör verilerine dayanarak kelimenin etimolojik kökenini, kaynak dildeki parçalarını ve tarihsel evrimini net paragraflar halinde anlat.
 """
 
         req_data = {
@@ -103,7 +112,7 @@ Doğrudan kelimenin etimolojik kökenini, kaynak dildeki bileşenlerini ve Türk
                 analysis = res.get("response", "").strip()
 
                 initial_finding["ai_agent_enrichment"] = analysis
-                initial_finding["discovered_web_sources"] = web_results
+                initial_finding["discovered_web_sources"] = raw_web_results
                 
                 if analysis:
                     initial_finding["sources"].append(f"Qwen2.5:14b İleri Düzey Bilimsel Ajanı ({self.model_name})")
