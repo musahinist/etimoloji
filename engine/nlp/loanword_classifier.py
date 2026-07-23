@@ -32,21 +32,21 @@ class LoanwordClassifier:
         score_western = 0.0
         violations = []
 
-        # 1. Söz Başı İhlali Kontrolü
+        # 1. Söz Başı İhlali Kontrolü (Söz başı f, h, p, v, j, z, r, l ise Öz Türkçe olasılığı düşer)
         if w[0] in NON_TURKIC_INITIALS:
-            score_native -= 4.0
+            score_native -= 8.5
             violations.append(f"Söz başı '{w[0]}' harfi Öz Türkçede bulunmaz")
             if w[0] in ['f', 'h', 'p', 'v']:
-                score_arabic_persian += 2.0
-                score_greek_latin += 2.0
-            elif w[0] in ['j', 'z']:
-                score_western += 2.0
+                score_arabic_persian += 4.0
+                score_greek_latin += 4.0
+            elif w[0] in ['j', 'z', 'r', 'l']:
+                score_western += 5.0
 
         # 2. Çift Ünsüz Başlangıcı (Consonant Clusters)
         for cluster in INITIAL_CONSONANT_CLUSTERS:
             if w.startswith(cluster):
-                score_native -= 5.0
-                score_western += 4.0
+                score_native -= 9.0
+                score_western += 6.0
                 violations.append(f"Söz başı çift ünsüz '{cluster}' (Batı Alıntısı)")
                 break
 
@@ -55,41 +55,42 @@ class LoanwordClassifier:
         back = [c for c in vowels if c in 'aıou']
         front = [c for c in vowels if c in 'eiöü']
         if back and front:
-            score_native -= 3.5
+            score_native -= 4.5
             violations.append("Büyük ünlü uyumsuzluğu")
 
         # 4. Arapça Vezin Kontrolü
         for pat, desc in ARABIC_PATTERNS:
             if re.search(pat, w):
-                score_arabic_persian += 5.0
+                score_arabic_persian += 6.0
                 violations.append(f"Arapça {desc} tespit edildi")
 
         # 5. Farsça Sonek Kontrolü
         for suf in PERSIAN_SUFFIXES:
             if w.endswith(suf):
-                score_arabic_persian += 4.0
+                score_arabic_persian += 5.0
                 violations.append(f"Farsça -{suf} eki tespit edildi")
 
         # 6. Batı Sonek Kontrolü
         for suf in WESTERN_SUFFIXES:
             if w.endswith(suf):
-                score_western += 5.0
+                score_western += 6.0
                 violations.append(f"Batı dili -{suf} soneki tespit edildi")
 
-        # Olasılık Dağılımını Normalize Et (Softmax / Ratio Normalization)
-        total_score = max(score_native, 0) + score_arabic_persian + score_greek_latin + score_western + 0.001
-        
-        p_native = round(max(score_native, 0) / total_score, 3)
+        # Olasılık Dağılımını Normalize Et
+        native_valid_score = max(score_native, 0.5)
+        total_score = native_valid_score + score_arabic_persian + score_greek_latin + score_western
+
+        p_native = round(native_valid_score / total_score, 3)
         p_arabic_persian = round(score_arabic_persian / total_score, 3)
         p_greek_latin = round(score_greek_latin / total_score, 3)
         p_western = round(score_western / total_score, 3)
 
         if p_native >= 0.65:
             classification = "Asli Öz Türkçe (Native Turkic)"
-        elif p_arabic_persian > max(p_greek_latin, p_western):
+        elif p_arabic_persian >= max(p_greek_latin, p_western):
             classification = "Arapça / Farsça Alıntısı (Doğu Alıntısı)"
-        elif p_greek_latin > p_western:
-            classification = "Grekçe / Bizans / Latince Alıntısı (Akdeniz Alıntısı)"
+        elif p_greek_latin >= p_western:
+            classification = "Grekçe / Bizans / Latince / Ermenice Alıntısı"
         else:
             classification = "Batı Dilleri Alıntısı (Fransızca / İngilizce)"
 

@@ -39,7 +39,11 @@ def print_finding_formatted(finding: Dict[str, Any]) -> None:
         print("─" * 80)
         print(f"  • Sınıflandırma              : {loan_eval.get('classification')}")
         probs = loan_eval.get('probabilities', {})
-        print(f"  • Olasılık Dağılımı         : Öz Türkçe: %{probs.get('p_native_turkic', 0)*100:.1f} | Doğu (Arap/Fars): %{probs.get('p_arabic_persian', 0)*100:.1f} | Batı: %{probs.get('p_western', 0)*100:.1f}")
+        p_native = probs.get('p_native_turkic', 0) * 100
+        p_east = probs.get('p_arabic_persian', 0) * 100
+        p_med = probs.get('p_greek_latin', 0) * 100
+        p_west = probs.get('p_western', 0) * 100
+        print(f"  • Olasılık Dağılımı         : Öz Türkçe: %{p_native:.1f} | Doğu (Arap/Fars): %{p_east:.1f} | Akdeniz (Grek/Erm): %{p_med:.1f} | Batı: %{p_west:.1f}")
         print(f"  • 25 Lehçe Yayılımı Skorlama : %{cog_eval.get('spreading_ratio', 0)*100:.0f} ({cog_eval.get('assessment')})")
         print(f"  • Rekonstrüksiyon Değerlend: {recon_eval.get('reconstruction_notes')}")
 
