@@ -92,7 +92,8 @@ Yönerge protokollerine göre kelimenin etimolojisini doğrula veya otonom keşf
                 data=json.dumps(req_data).encode('utf-8'),
                 headers={'Content-Type': 'application/json'}
             )
-            with urllib.request.urlopen(req, timeout=35) as resp:
+            # Timeout 90 saniyeye çıkarıldı (Zengin içerikli çıkarımlar için)
+            with urllib.request.urlopen(req, timeout=90) as resp:
                 res = json.loads(resp.read().decode('utf-8'))
                 analysis = res.get("response", "").strip()
 
