@@ -10,6 +10,10 @@ from engine.fetchers.historical_modern import HistoricalModernLexiconFetcher
 from engine.fetchers.isam_ansiklopedi import IsamAnsiklopediFetcher
 from engine.fetchers.archive_org import ArchiveOrgFetcher
 from engine.fetchers.dergipark import DergiParkFetcher
+from engine.fetchers.osmanlica_lugat import OsmanlicaLugatFetcher
+from engine.fetchers.tdk_all_portals import TdkAllPortalsFetcher
+from engine.fetchers.glosbe import GlosbeFetcher
+from engine.fetchers.turkic_national_dictionaries import TurkicNationalDictionariesFetcher
 from engine.fetchers.etimoloji_turkce import EtimolojiTurkceFetcher
 from engine.fetchers.wiktionary import WiktionaryFetcher
 from engine.fetchers.starling import StarlingFetcher
@@ -73,6 +77,10 @@ class SearchEngine:
             IsamAnsiklopediFetcher(),
             ArchiveOrgFetcher(),
             DergiParkFetcher(),
+            OsmanlicaLugatFetcher(),
+            TdkAllPortalsFetcher(),
+            GlosbeFetcher(),
+            TurkicNationalDictionariesFetcher(),
             TietzeAltaicaFetcher(),
             EtimolojiTurkceFetcher(),
             StarlingFetcher(),
@@ -105,7 +113,7 @@ class SearchEngine:
             existing_finding["from_cache"] = True
             return existing_finding
 
-        # 2. Tüm 14 veri toplayıcıyı PARALEL çalıştır (hem kelime hem de kökü için)
+        # 2. Tüm 18 veri toplayıcıyı PARALEL çalıştır (hem kelime hem de kökü için)
         proto_root = ""
         root_meaning = ""
         reconstruction_notes = ""
@@ -178,8 +186,8 @@ class SearchEngine:
                 timeline.append(f"M.Ö. III. YY - 11. YY (Hun / Orhun / DLT / İSAM): {entry.get('word')} - {entry.get('meaning')[:60]}")
             elif "1303" in lname or "Codex Cumanicus" in lname:
                 timeline.append(f"14. YY (Kıpçakça / Codex Cumanicus): {entry.get('word')}")
-            elif "1901" in lname or "Kamus-ı Türkî" in lname or "13.-19." in lname:
-                timeline.append(f"19. YY (Osmanlıca / Kamus-ı Türkî): {entry.get('word')}")
+            elif "1901" in lname or "Kamus-ı Türkî" in lname or "13.-19." in lname or "Osmanlıca Lügat" in lname:
+                timeline.append(f"19. YY (Osmanlıca / Lehçe-i Osmanî / Kamus-ı Türkî): {entry.get('word')}")
 
         morphology_info = f"Kök: {stem} + Ekler: {', '.join(suffixes)}" if suffixes else "Yalın Kök"
         related_cognates = get_related_cognates(stem) or get_related_cognates(word_clean)
