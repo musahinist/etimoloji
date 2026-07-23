@@ -13,6 +13,8 @@ from engine.fetchers.starling import StarlingFetcher
 from engine.fetchers.tdk_nisanyan import TdkFetcher, NisanyanFetcher
 from engine.fetchers.tdk_historical import TdkTaramaFetcher, TdkDerlemeFetcher
 from engine.fetchers.multilang_wiktionary import MultiLangWiktionaryFetcher
+from engine.utils.morphology import analyze_morphology
+from engine.utils.transliteration import transliterate_to_latin
 from engine.db.database import DatabaseManager
 
 # İngilizce terimler için otomatik Türkçe semantik çeviri dizini
@@ -49,7 +51,6 @@ def translate_meaning(meaning: str) -> str:
     if not m or m.startswith("Online"):
         return m
     
-    # Temizleme
     m_clean = re.sub(r'\{\{.*?\}\}', '', m).strip()
     m_clean = re.sub(r'\[\[(.*?)\]\]', r'\1', m_clean).strip()
     
@@ -88,50 +89,65 @@ class SearchEngine:
         if not word_clean:
             raise ValueError("Arama için geçerli bir kelime giriniz.")
 
+        # Morfolojik kök ve ek analizi yap
+        stem, suffixes = analyze_morphology(word_clean)
+
         # 1. Önce veritabanında arat
         existing_finding = self.db.get_finding(word_clean)
         if existing_finding:
             existing_finding["from_cache"] = True
             return existing_finding
 
-        # 2. Tüm veri toplayıcıları PARALEL çalıştır (ThreadPoolExecutor)
+        # 2. Tüm veri toplayıcıları PARALEL çalıştır (hem kelime hem de kökü için)
         proto_root = ""
         root_meaning = ""
         reconstruction_notes = ""
         sources = []
         turkic_entries_map = {} # lang_code -> entry dict
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=len(self.fetchers)) as executor:
-            futures = [executor.submit(self._execute_fetcher, fetcher, word_clean) for fetcher in self.fetchers]
-            for future in concurrent.futures.as_completed(futures):
-                fetcher, res = future.result()
-                if not res:
-                    continue
+        target_words = [word_clean]
+        if stem != word_clean:
+            target_words.append(stem)
 
-                root_info = res.get("root", {})
-                if not proto_root and root_info.get("proto_turkic"):
-                    proto_root = root_info.get("proto_turkic")
-                if not root_meaning and root_info.get("meaning"):
-                    root_meaning = root_info.get("meaning")
-                if not reconstruction_notes and root_info.get("reconstruction_notes"):
-                    reconstruction_notes = root_info.get("reconstruction_notes")
+        for target in target_words:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=len(self.fetchers)) as executor:
+                futures = [executor.submit(self._execute_fetcher, fetcher, target) for fetcher in self.fetchers]
+                for future in concurrent.futures.as_completed(futures):
+                    fetcher, res = future.result()
+                    if not res:
+                        continue
 
-                for entry in res.get("turkic_languages", []):
-                    code = entry.get("lang_code")
-                    key = f"{code}_{entry.get('word')}"
-                    
-                    # Anlamı Türkçe semantik çeviriden geçir
-                    raw_m = entry.get("meaning", "")
-                    entry["meaning"] = translate_meaning(raw_m)
+                    root_info = res.get("root", {})
+                    if not proto_root and root_info.get("proto_turkic"):
+                        proto_root = root_info.get("proto_turkic")
+                    if not root_meaning and root_info.get("meaning"):
+                        root_meaning = root_info.get("meaning")
+                    if not reconstruction_notes and root_info.get("reconstruction_notes"):
+                        reconstruction_notes = root_info.get("reconstruction_notes")
 
-                    if key not in turkic_entries_map:
-                        turkic_entries_map[key] = entry
-                    elif turkic_entries_map[key].get("meaning") in ["", f"Online {TURKIC_LANGUAGES_MAP.get(code, '')} Sözlük kaydı"]:
-                        if entry.get("meaning") and not entry.get("meaning").startswith("Online"):
+                    for entry in res.get("turkic_languages", []):
+                        code = entry.get("lang_code")
+                        entry_word = entry.get('word', '')
+                        
+                        # Latin Transkripsiyon Ekle (Kiril veya Arap Alfabesindeyse)
+                        latin_trans = transliterate_to_latin(entry_word)
+                        if latin_trans != entry_word and not "(" in entry_word:
+                            entry["word"] = f"{entry_word} ({latin_trans})"
+
+                        key = f"{code}_{entry.get('word')}"
+                        
+                        # Anlamı Türkçe semantik çeviriden geçir
+                        raw_m = entry.get("meaning", "")
+                        entry["meaning"] = translate_meaning(raw_m)
+
+                        if key not in turkic_entries_map:
                             turkic_entries_map[key] = entry
+                        elif turkic_entries_map[key].get("meaning") in ["", f"Online {TURKIC_LANGUAGES_MAP.get(code, '')} Sözlük kaydı"]:
+                            if entry.get("meaning") and not entry.get("meaning").startswith("Online"):
+                                turkic_entries_map[key] = entry
 
-                if res.get("turkic_languages") or root_info.get("proto_turkic"):
-                    sources.append(fetcher.source_name)
+                    if res.get("turkic_languages") or root_info.get("proto_turkic"):
+                        sources.append(fetcher.source_name)
 
         # 3. Kök Anlamını Çevir
         if root_meaning:
@@ -143,12 +159,15 @@ class SearchEngine:
             key=lambda x: (0 if x["lang_code"] == "otk" else 1, x["lang_name"])
         )
 
+        morphology_info = f"Kök: {stem} + Ekler: {', '.join(suffixes)}" if suffixes else "Yalın Kök"
+
         finding = {
             "query_word": word_clean,
+            "morphology": morphology_info,
             "root": {
-                "proto_turkic": proto_root or f"*{word_clean}",
+                "proto_turkic": proto_root or f"*{stem}",
                 "meaning": root_meaning or word_clean,
-                "reconstruction_notes": reconstruction_notes or f"Proto-Turkic reconstruction for {word_clean}"
+                "reconstruction_notes": f"[{morphology_info}] {reconstruction_notes or ('Proto-Turkic reconstruction for ' + word_clean)}"
             },
             "turkic_languages": sorted_entries,
             "sources": sorted(list(set(sources))),
