@@ -15,9 +15,10 @@ from engine.fetchers.tdk_historical import TdkTaramaFetcher, TdkDerlemeFetcher
 from engine.fetchers.multilang_wiktionary import MultiLangWiktionaryFetcher
 from engine.utils.morphology import analyze_morphology
 from engine.utils.transliteration import transliterate_to_latin
+from engine.utils.cognates import get_related_cognates
+from engine.utils.phonetic_rules import analyze_phonetic_shifts
 from engine.db.database import DatabaseManager
 
-# İngilizce terimler için otomatik Türkçe semantik çeviri dizini
 MEANING_TRANSLATIONS = {
     "beautiful": "güzel, alımlı, hoş",
     "water": "su, sıvı, akarsu",
@@ -134,6 +135,10 @@ class SearchEngine:
                         if latin_trans != entry_word and not "(" in entry_word:
                             entry["word"] = f"{entry_word} ({latin_trans})"
 
+                        # Fonetik ses kayması analizini ekle
+                        shift_analysis = analyze_phonetic_shifts(word_clean, entry_word, entry.get("lang_name", ""))
+                        entry["phonetic_shift"] = shift_analysis
+
                         key = f"{code}_{entry.get('word')}"
                         
                         # Anlamı Türkçe semantik çeviriden geçir
@@ -159,7 +164,19 @@ class SearchEngine:
             key=lambda x: (0 if x["lang_code"] == "otk" else 1, x["lang_name"])
         )
 
+        # 4. Tarihsel Kronoloji Çizelgesi Oluştur
+        timeline = []
+        for entry in sorted_entries:
+            lname = entry.get("lang_name", "")
+            if "Divanü Lugati't-Türk" in lname or "1074" in lname or "Orhun" in lname or "Eski Türkçe" in lname:
+                timeline.append(f"8.-11. YY (Eski Türkçe / DLT): {entry.get('word')} - {entry.get('meaning')[:60]}")
+            elif "1303" in lname or "Codex Cumanicus" in lname:
+                timeline.append(f"14. YY (Kıpçakça / Codex Cumanicus): {entry.get('word')}")
+            elif "1901" in lname or "Kamus-ı Türkî" in lname or "13.-19." in lname:
+                timeline.append(f"19. YY (Osmanlıca / Kamus-ı Türkî): {entry.get('word')}")
+
         morphology_info = f"Kök: {stem} + Ekler: {', '.join(suffixes)}" if suffixes else "Yalın Kök"
+        related_cognates = get_related_cognates(stem) or get_related_cognates(word_clean)
 
         finding = {
             "query_word": word_clean,
@@ -169,13 +186,15 @@ class SearchEngine:
                 "meaning": root_meaning or word_clean,
                 "reconstruction_notes": f"[{morphology_info}] {reconstruction_notes or ('Proto-Turkic reconstruction for ' + word_clean)}"
             },
+            "timeline": timeline,
+            "related_cognates": related_cognates,
             "turkic_languages": sorted_entries,
             "sources": sorted(list(set(sources))),
             "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
             "from_cache": False
         }
 
-        # 4. Veritabanına kaydet
+        # 5. Veritabanına kaydet
         if save_to_db and (sorted_entries or proto_root):
             self.db.save_finding(finding)
 
