@@ -28,6 +28,7 @@ from engine.nlp.loanword_classifier import LoanwordClassifier
 from engine.nlp.cognate_alignment import CognateAlignmentEngine
 from engine.nlp.reconstruction import ProtoTurkicReconstructor
 from engine.nlp.donor_search import DonorSearchEngine
+from engine.nlp.iterative_hypothesis_engine import IterativeHypothesisEngine
 
 from engine.utils.morphology import analyze_morphology
 from engine.utils.transliteration import transliterate_to_latin
@@ -88,6 +89,7 @@ class SearchEngine:
         self.cognate_alignment_engine = CognateAlignmentEngine()
         self.reconstructor = ProtoTurkicReconstructor()
         self.donor_search_engine = DonorSearchEngine()
+        self.hypothesis_engine = IterativeHypothesisEngine()
 
         self.fetchers: List[BaseFetcher] = [
             AcademicTurkologyFetcher(),
@@ -139,7 +141,7 @@ class SearchEngine:
         if stem != word_clean and stem not in target_words:
             target_words.append(stem)
 
-        # 3. Tüm 20 veri toplayıcıyı PARALEL çalıştır (tüm varyantlar ve referans takibi için)
+        # 3. Tüm 20 veri toplayıcıyı PARALEL çalıştır
         proto_root = ""
         root_meaning = ""
         reconstruction_notes = ""
@@ -174,21 +176,17 @@ class SearchEngine:
                         code = entry.get("lang_code")
                         entry_word = entry.get('word', '')
                         
-                        # Latin Transkripsiyon Ekle
                         latin_trans = transliterate_to_latin(entry_word)
                         if latin_trans != entry_word and not "(" in entry_word:
                             entry["word"] = f"{entry_word} ({latin_trans})"
 
-                        # Fonetik ses kayması analizi
                         shift_analysis = analyze_phonetic_shifts(word_clean, entry_word, entry.get("lang_name", ""))
                         entry["phonetic_shift"] = shift_analysis
 
-                        # Coğrafi Ağız Haritalama
                         geo_info = tag_geographical_region(entry.get("lang_name", "") + " " + entry.get("meaning", ""))
                         if geo_info.get("geo_coordinates"):
                             entry["geo_tag"] = geo_info
 
-                        # ÇAPRAZ REFERANS ÇÖZÜMLEME ([-> herkil])
                         raw_m = entry.get("meaning", "")
                         cross_refs = extract_cross_references(raw_m)
                         for ref_word in cross_refs:
@@ -212,16 +210,31 @@ class SearchEngine:
             key=lambda x: (0 if x["lang_code"] == "otk" else (0.3 if x["lang_code"] == "ai" else (0.5 if x["lang_code"] == "donor" else 1)), x["lang_name"])
         )
 
-        # 4. KÖKEN NLP HESAPLAMALARI (NLP SUITE EVALUATION)
+        # 4. KÖKEN NLP VE OTONOM HİPOTEZ HESAPLAMALARI
         loan_eval = self.loanword_classifier.classify(word_clean)
         cognate_eval = self.cognate_alignment_engine.evaluate_cognate_distribution(word_clean, sorted_entries)
         reconstruction_eval = self.reconstructor.reconstruct_proto_form(word_clean, sorted_entries)
         donor_eval = self.donor_search_engine.search_donor_neighbors(word_clean)
 
-        if not proto_root and reconstruction_eval.get("reconstructed_root"):
-            proto_root = reconstruction_eval.get("reconstructed_root")
+        finding_temp = {
+            "root": {"proto_turkic": proto_root, "meaning": root_meaning}
+        }
+        proven_hypothesis_eval = self.hypothesis_engine.prove_etymological_hypothesis(word_clean, finding_temp)
 
-        # 5. Tarihsel Kronoloji Çizelgesi
+        # Donör veritabanında kesin eşleşme bulunduysa kök ve anlam bilgilerini güncelle
+        if proven_hypothesis_eval.get("proven_hypothesis", {}).get("confidence_score", 0) >= 0.95:
+            hypo = proven_hypothesis_eval["proven_hypothesis"]
+            proto_root = hypo.get("origin_form", proto_root)
+            root_meaning = hypo.get("historical_meaning", root_meaning)
+            sources.append(f"Derin Komşu Diller Etimoloji Veritabanı ({hypo.get('donor_language')})")
+            sorted_entries.insert(0, {
+                "lang_code": "donor",
+                "lang_name": f"Kaynak Dil Etimolojisi ({hypo.get('donor_language')})",
+                "word": hypo.get("origin_form"),
+                "meaning": hypo.get("proof_summary"),
+                "script": "Original"
+            })
+
         timeline = []
         for entry in sorted_entries:
             lname = entry.get("lang_name", "")
@@ -247,7 +260,8 @@ class SearchEngine:
                 "loanword_classification": loan_eval,
                 "cognate_distribution": cognate_eval,
                 "reconstruction": reconstruction_eval,
-                "donor_matching": donor_eval
+                "donor_matching": donor_eval,
+                "proven_hypothesis": proven_hypothesis_eval.get("proven_hypothesis")
             },
             "timeline": list(dict.fromkeys(timeline)),
             "related_cognates": related_cognates,
