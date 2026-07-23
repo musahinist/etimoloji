@@ -6,6 +6,26 @@ from engine.fetchers.base import BaseFetcher, TURKIC_LANGUAGES_MAP
 
 # Dahili Yıldız/Starling Proto-Türkçe Etimoloji Sözlük Dizini (Core Turkic Lexicon Index)
 STARLING_OFFLINE_LEXICON = {
+    "ayak": {
+        "proto_turkic": "*adak / *adaq",
+        "meaning": "foot / leg / step",
+        "cognates": {
+            "otk": {"word": "adak / adaq", "meaning": "ayak, adak"},
+            "tr": {"word": "ayak", "meaning": "vücudun yürüme organı, ayak"},
+            "az": {"word": "ayaq", "meaning": "ayak"},
+            "kk": {"word": "аяқ (ayaq)", "meaning": "ayak"},
+            "uz": {"word": "oyoq", "meaning": "ayak"},
+            "tk": {"word": "aýak", "meaning": "ayak"},
+            "ky": {"word": "аяк (ayak)", "meaning": "ayak"},
+            "tt": {"word": "аяк (ayaq)", "meaning": "ayak"},
+            "ug": {"word": "ئاياق (ayaq)", "meaning": "ayak"},
+            "cv": {"word": "ура (ura)", "meaning": "ayak (Oğur r-dili kayması)"},
+            "sah": {"word": "атах (atax)", "meaning": "ayak (Saha t-dili kayması)"},
+            "ba": {"word": "аяҡ (ayaq)", "meaning": "ayak"},
+            "tyv": {"word": "аяк (ayak)", "meaning": "ayak"},
+            "khk": {"word": "азах (azaq)", "meaning": "ayak (Hakas z-dili kayması)"}
+        }
+    },
     "su": {
         "proto_turkic": "*sub",
         "meaning": "water / liquid / stream",
@@ -76,101 +96,6 @@ STARLING_OFFLINE_LEXICON = {
             "cv": {"word": "тинӗс (tinĕs)", "meaning": "deniz"},
             "sah": {"word": "тиңис (tiŋis)", "meaning": "deniz"}
         }
-    },
-    "tengri": {
-        "proto_turkic": "*teŋri / *taŋrï",
-        "meaning": "sky / heaven / deity",
-        "cognates": {
-            "otk": {"word": "teŋri", "meaning": "gök, tanrı"},
-            "tr": {"word": "tanrı", "meaning": "ilahi varlık, tanrı"},
-            "az": {"word": "tanrı", "meaning": "tanrı"},
-            "kk": {"word": "тәңір (täŋir)", "meaning": "tanrı"},
-            "uz": {"word": "tengri", "meaning": "tanrı"},
-            "tk": {"word": "taňry", "meaning": "tanrı"},
-            "ky": {"word": "теңир (teŋir)", "meaning": "tanrı"},
-            "tt": {"word": "тәңре (täŋre)", "meaning": "tanrı"},
-            "ug": {"word": "تەڭرى (teŋri)", "meaning": "tanrı"},
-            "sah": {"word": "tanara (taŋara)", "meaning": "gök tanrı"}
-        }
-    },
-    "gök": {
-        "proto_turkic": "*gök",
-        "meaning": "blue / sky / heaven",
-        "cognates": {
-            "otk": {"word": "kök", "meaning": "gök, mavi"},
-            "tr": {"word": "gök", "meaning": "gökyüzü, mavi"},
-            "az": {"word": "göy", "meaning": "gök, mavi"},
-            "kk": {"word": "көк (kök)", "meaning": "gök, mavi"},
-            "uz": {"word": "ko'k", "meaning": "gök, mavi"},
-            "tk": {"word": "gök", "meaning": "gök, mavi"},
-            "ky": {"word": "көк (kök)", "meaning": "gök, mavi"},
-            "tt": {"word": "көк (kök)", "meaning": "gök"},
-            "cv": {"word": "вак / кӑвак", "meaning": "mavi, gök"}
-        }
-    },
-    "gün": {
-        "proto_turkic": "*gün / *kün",
-        "meaning": "sun / day",
-        "cognates": {
-            "otk": {"word": "kün", "meaning": "güneş, gün"},
-            "tr": {"word": "gün", "meaning": "güneş, 24 saatlik zaman"},
-            "az": {"word": "gün", "meaning": "gün, güneş"},
-            "kk": {"word": "күн (kün)", "meaning": "gün, güneş"},
-            "uz": {"word": "kun", "meaning": "gün"},
-            "tk": {"word": "gün", "meaning": "gün"},
-            "ky": {"word": "күн (kün)", "meaning": "gün"},
-            "tt": {"word": "көн (kön)", "meaning": "gün"},
-            "sah": {"word": "kүн (kün)", "meaning": "güneş, gün"},
-            "cv": {"word": "кун (kun)", "meaning": "gün"}
-        }
-    },
-    "ay": {
-        "proto_turkic": "*āń",
-        "meaning": "moon / month",
-        "cognates": {
-            "otk": {"word": "ay", "meaning": "ay, ay ayı"},
-            "tr": {"word": "ay", "meaning": "dünyanın uydusu, ay kaydı"},
-            "az": {"word": "ay", "meaning": "ay"},
-            "kk": {"word": "ай (ay)", "meaning": "ay"},
-            "uz": {"word": "oy", "meaning": "ay"},
-            "tk": {"word": "ay", "meaning": "ay"},
-            "ky": {"word": "ай (ay)", "meaning": "ay"},
-            "tt": {"word": "ай (ay)", "meaning": "ay"},
-            "sah": {"word": "ый (ıy)", "meaning": "ay"},
-            "cv": {"word": "уйӑх (uyăh)", "meaning": "ay"}
-        }
-    },
-    "baş": {
-        "proto_turkic": "*baĺ",
-        "meaning": "head / top / chief",
-        "cognates": {
-            "otk": {"word": "baş", "meaning": "baş, kafa, lider"},
-            "tr": {"word": "baş", "meaning": "kafa, lider, başlangıç"},
-            "az": {"word": "baş", "meaning": "baş"},
-            "kk": {"word": "бас (bas)", "meaning": "baş, kafa"},
-            "uz": {"word": "bosh", "meaning": "baş"},
-            "tk": {"word": "baş", "meaning": "baş"},
-            "ky": {"word": "баш (baş)", "meaning": "baş"},
-            "tt": {"word": "баш (baş)", "meaning": "baş"},
-            "cv": {"word": "puҫ (puś)", "meaning": "baş"},
-            "sah": {"word": "bas (bas)", "meaning": "baş"}
-        }
-    },
-    "kan": {
-        "proto_turkic": "*kān",
-        "meaning": "blood",
-        "cognates": {
-            "otk": {"word": "kan", "meaning": "kan"},
-            "tr": {"word": "kan", "meaning": "vücuttaki kırmızı sıvı"},
-            "az": {"word": "qan", "meaning": "kan"},
-            "kk": {"word": "қан (qan)", "meaning": "kan"},
-            "uz": {"word": "qon", "meaning": "kan"},
-            "tk": {"word": "gan", "meaning": "kan"},
-            "ky": {"word": "кан (kan)", "meaning": "kan"},
-            "tt": {"word": "кан (kan)", "meaning": "kan"},
-            "sah": {"word": "haan (haan)", "meaning": "kan"},
-            "cv": {"word": "юн (yun)", "meaning": "kan"}
-        }
     }
 }
 
@@ -190,7 +115,6 @@ class StarlingFetcher(BaseFetcher):
             "turkic_languages": []
         }
 
-        # Offline etimoloji veritabanı kontrolü
         if word_clean in STARLING_OFFLINE_LEXICON:
             entry = STARLING_OFFLINE_LEXICON[word_clean]
             result["root"]["proto_turkic"] = entry["proto_turkic"]

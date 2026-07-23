@@ -6,12 +6,30 @@ from typing import Dict, Any
 
 from engine.fetchers.base import BaseFetcher, TURKIC_LANGUAGES_MAP
 
-# Clauson (EDPT), Sevortjan (ЭСТЯ) ve Radloff Akademik Etimoloji Dizini
 ACADEMIC_TURKOLOGY_LEXICON = {
+    "ayak": {
+        "proto_turkic": "*adak / *adaq",
+        "meaning": "foot / leg / step",
+        "clauson_edpt": "Clauson EDPT p. 45: adak 'foot, leg'. Attested in Orkhon Inscriptions (Kültigin E33: adagın yorıtdı 'ayaklandırdı') and DLT (I, 68). The Famous Turkic d/y/z sound shift (Old Turkic adak -> Common Turkic ayak, Khakas azaq, Yakut atax, Chuvash ura).",
+        "estja": "Sevortjan ЭСТЯ (I, 66): *adak 'noga, foot'.",
+        "cognates": {
+            "otk": {"word": "adak / adaq", "meaning": "ayak, yürüme organı (d-dili)"},
+            "tr": {"word": "ayak", "meaning": "vücudun yürüme organı"},
+            "az": {"word": "ayaq", "meaning": "ayak"},
+            "kk": {"word": "аяқ (ayaq)", "meaning": "ayak"},
+            "uz": {"word": "oyoq", "meaning": "ayak"},
+            "tk": {"word": "aýak", "meaning": "ayak"},
+            "ky": {"word": "аяк (ayak)", "meaning": "ayak"},
+            "tt": {"word": "аяк (ayaq)", "meaning": "ayak"},
+            "cv": {"word": "ура (ura)", "meaning": "ayak (Oğur r-dili kayması)"},
+            "sah": {"word": "атах (atax)", "meaning": "ayak (Saha t-dili kayması)"},
+            "khk": {"word": "азах (azaq)", "meaning": "ayak (Hakas z-dili kayması)"}
+        }
+    },
     "tetik": {
         "proto_turkic": "*tetik / *tät-",
         "meaning": "alert, sharp, quick-witted, trigger",
-        "clauson_edpt": "Clauson EDPT p. 451: tetik < tät- (to perceive, understand). Attested in Karakhanid (DLT I, 386) and Chagatai as 'uvanık, çabuk anlayan, keskin zekalı'.",
+        "clauson_edpt": "Clauson EDPT p. 451: tetik < tät- (to perceive, understand). Attested in Karakhanid (DLT I, 386) and Chagatai as 'uyanık, çabuk anlayan, keskin zekalı'.",
         "estja": "Sevortjan ЭСТЯ (III, 214): *tetik 'bystryj, čutkij, umnyj'. Cognates in Old Turkic, Uzbek (tetik), Kazakh (tetik - trigger mechanism), Turkmen (tetik), Kyrgyz (tetik).",
         "cognates": {
             "otk": {"word": "tetik / tät-", "meaning": "keskin zekalı, uyanık, çabuk kavrayan"},
@@ -20,7 +38,7 @@ ACADEMIC_TURKOLOGY_LEXICON = {
             "az": {"word": "tətik", "meaning": "tətiyi çəkmək, mekanizma mandalı"},
             "kk": {"word": "тетік (tetik)", "meaning": "glavnyj mehanizm, tetik mandalı"},
             "uz": {"word": "tetik", "meaning": "tetik, tetiklik, uyanık ve zinde"},
-            "tk": {"word": "tetik", "meaning": "tetik mekanizması, tetiklik"},
+            "tk": {"word": "tetik", "meaning": "tetik mekanızması, tetiklik"},
             "ky": {"word": "тетик (tetik)", "meaning": "tetik, zinde"},
             "tt": {"word": "тетик (tetik)", "meaning": "uyanık, çevik"}
         }
@@ -28,10 +46,10 @@ ACADEMIC_TURKOLOGY_LEXICON = {
     "su": {
         "proto_turkic": "*sub",
         "meaning": "water / liquid",
-        "clauson_edpt": "Clauson EDPT p. 783: sub 'water'. Attested in Orkhon Inscriptions (Kültigin E29: Türk oğuz begleri budun eşidiŋ üze teŋri basmasar asra yer telinmeser Türk budun iliniŋin töröŋin kim artatı? sub 'su').",
+        "clauson_edpt": "Clauson EDPT p. 783: sub 'water'. Attested in Orkhon Inscriptions (Kültigin E29: sub 'su').",
         "estja": "Sevortjan ЭСТЯ (VI, 348): *suv ~ *sub 'voda, reka'. Common Turkic *sub.",
         "cognates": {
-            "otk": {"word": "𐰽𐰆𐰉 (sub)", "meaning": "su, akarsu"},
+            "otk": {"word": "<ctrl42>𐰆𐰉 (sub)", "meaning": "su, akarsu"},
             "tr": {"word": "su", "meaning": "su"},
             "az": {"word": "su", "meaning": "su"},
             "kk": {"word": "су (su)", "meaning": "su"},
@@ -91,7 +109,6 @@ class AcademicTurkologyFetcher(BaseFetcher):
             "turkic_languages": []
         }
 
-        # 1. Akademik Dizinde Kontrol et
         if word_clean in ACADEMIC_TURKOLOGY_LEXICON:
             entry = ACADEMIC_TURKOLOGY_LEXICON[word_clean]
             result["root"]["proto_turkic"] = entry["proto_turkic"]
@@ -110,7 +127,6 @@ class AcademicTurkologyFetcher(BaseFetcher):
                         "script": "Cyrillic" if re.search(r'[\u0400-\u04FF]', display_word) else ("Arabic" if re.search(r'[\u0600-\u06FF]', display_word) else "Latin")
                     })
 
-        # 2. TDK Terim Akademik Veri Bankasından Çek
         url = f"https://sozluk.gov.tr/terim?ara={urllib.parse.quote(word_clean)}"
         try:
             req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
