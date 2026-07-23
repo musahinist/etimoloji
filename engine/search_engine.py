@@ -24,6 +24,11 @@ from engine.fetchers.tdk_historical import TdkTaramaFetcher, TdkDerlemeFetcher
 from engine.fetchers.wiktionary import WiktionaryFetcher
 from engine.fetchers.multilang_wiktionary import MultiLangWiktionaryFetcher
 
+from engine.nlp.loanword_classifier import LoanwordClassifier
+from engine.nlp.cognate_alignment import CognateAlignmentEngine
+from engine.nlp.reconstruction import ProtoTurkicReconstructor
+from engine.nlp.donor_search import DonorSearchEngine
+
 from engine.utils.morphology import analyze_morphology
 from engine.utils.transliteration import transliterate_to_latin
 from engine.utils.phonetic_rules import analyze_phonetic_shifts
@@ -77,6 +82,13 @@ class SearchEngine:
     def __init__(self, db_manager: Optional[DatabaseManager] = None):
         self.db = db_manager or DatabaseManager()
         self.qwen_agent = QwenEtymologyAgent()
+
+        # NLP Suite Modülleri
+        self.loanword_classifier = LoanwordClassifier()
+        self.cognate_alignment_engine = CognateAlignmentEngine()
+        self.reconstructor = ProtoTurkicReconstructor()
+        self.donor_search_engine = DonorSearchEngine()
+
         self.fetchers: List[BaseFetcher] = [
             AcademicTurkologyFetcher(),
             HistoricalModernLexiconFetcher(),
@@ -195,14 +207,19 @@ class SearchEngine:
                     if res.get("turkic_languages") or root_info.get("proto_turkic"):
                         sources.append(fetcher.source_name)
 
-        # 4. Kök Anlamını Çevir
-        if root_meaning:
-            root_meaning = translate_meaning(root_meaning)
-
         sorted_entries = sorted(
             list(turkic_entries_map.values()),
             key=lambda x: (0 if x["lang_code"] == "otk" else (0.3 if x["lang_code"] == "ai" else (0.5 if x["lang_code"] == "donor" else 1)), x["lang_name"])
         )
+
+        # 4. KÖKEN NLP HESAPLAMALARI (NLP SUITE EVALUATION)
+        loan_eval = self.loanword_classifier.classify(word_clean)
+        cognate_eval = self.cognate_alignment_engine.evaluate_cognate_distribution(word_clean, sorted_entries)
+        reconstruction_eval = self.reconstructor.reconstruct_proto_form(word_clean, sorted_entries)
+        donor_eval = self.donor_search_engine.search_donor_neighbors(word_clean)
+
+        if not proto_root and reconstruction_eval.get("reconstructed_root"):
+            proto_root = reconstruction_eval.get("reconstructed_root")
 
         # 5. Tarihsel Kronoloji Çizelgesi
         timeline = []
@@ -224,7 +241,13 @@ class SearchEngine:
             "root": {
                 "proto_turkic": proto_root or word_clean,
                 "meaning": root_meaning or word_clean,
-                "reconstruction_notes": reconstruction_notes
+                "reconstruction_notes": reconstruction_eval.get("reconstruction_notes", "")
+            },
+            "nlp_analysis": {
+                "loanword_classification": loan_eval,
+                "cognate_distribution": cognate_eval,
+                "reconstruction": reconstruction_eval,
+                "donor_matching": donor_eval
             },
             "timeline": list(dict.fromkeys(timeline)),
             "related_cognates": related_cognates,

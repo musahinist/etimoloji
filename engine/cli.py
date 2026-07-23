@@ -18,6 +18,7 @@ def print_finding_formatted(finding: Dict[str, Any]) -> None:
     from_cache = finding.get("from_cache", False)
     ai_enrichment = finding.get("ai_agent_enrichment", "")
     web_sources = finding.get("discovered_web_sources", [])
+    nlp_analysis = finding.get("nlp_analysis", {})
 
     print("\n" + "═" * 80)
     print(f" 🔍 ETIMOLOJI BULGUSU VE KÖKEN RAPORU: {query_word.upper()} {'(Veritabanı Önbelleği)' if from_cache else ''}")
@@ -27,6 +28,21 @@ def print_finding_formatted(finding: Dict[str, Any]) -> None:
     print(f" 📖 Anlam                     : {root.get('meaning', 'Bilinmiyor')}")
     print(f" 📚 Kaynak Portföyü           : {', '.join(sources)}")
 
+    # NLP Katmanı Analiz Sonuçları
+    if nlp_analysis:
+        loan_eval = nlp_analysis.get("loanword_classification", {})
+        cog_eval = nlp_analysis.get("cognate_distribution", {})
+        recon_eval = nlp_analysis.get("reconstruction", {})
+
+        print("\n" + "─" * 80)
+        print(" 🧬 HESAPLAMALI NLP ALINTI & REKONSTRÜKSİYON ANALİZİ")
+        print("─" * 80)
+        print(f"  • Sınıflandırma              : {loan_eval.get('classification')}")
+        probs = loan_eval.get('probabilities', {})
+        print(f"  • Olasılık Dağılımı         : Öz Türkçe: %{probs.get('p_native_turkic', 0)*100:.1f} | Doğu (Arap/Fars): %{probs.get('p_arabic_persian', 0)*100:.1f} | Batı: %{probs.get('p_western', 0)*100:.1f}")
+        print(f"  • 25 Lehçe Yayılımı Skorlama : %{cog_eval.get('spreading_ratio', 0)*100:.0f} ({cog_eval.get('assessment')})")
+        print(f"  • Rekonstrüksiyon Değerlend: {recon_eval.get('reconstruction_notes')}")
+
     # Qwen2.5:14b Otonom Yapay Zeka Ajanı Analizi
     if ai_enrichment:
         print("\n" + "┌" + "─" * 78 + "┐")
@@ -35,7 +51,6 @@ def print_finding_formatted(finding: Dict[str, Any]) -> None:
         lines = ai_enrichment.split("\n")
         for line in lines:
             if line.strip():
-                # Uzun satırları güzelce hizala
                 wrapped_words = line.strip().split()
                 current_line = "│ "
                 for w in wrapped_words:
@@ -93,7 +108,6 @@ def print_finding_formatted(finding: Dict[str, Any]) -> None:
             meaning = entry.get("meaning", "")
             shift = entry.get("phonetic_shift", "")
             
-            # AI sentezini çift basmamak için atla
             if entry.get("lang_code") == "ai":
                 continue
 
