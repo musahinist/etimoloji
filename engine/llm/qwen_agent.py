@@ -4,17 +4,18 @@ import urllib.request
 from typing import Dict, Any, List
 
 from engine.llm.agent_guideline import QWEN_AGENT_SYSTEM_GUIDELINE
+from engine.llm.advanced_tools import (
+    tool_wiktionary_multilingual_api,
+    tool_ipa_phonetic_analyzer,
+    tool_donor_pattern_analyzer,
+    tool_sound_change_matrix,
+    tool_historical_corpus_search
+)
 from engine.llm.research_tools import (
     tool_verify_attestation,
-    tool_verify_sound_law,
-    tool_verify_donor_language,
     tool_analyze_phonotactics,
     tool_extract_suffixes,
-    tool_align_cognates,
-    tool_donor_nearest_neighbor,
-    tool_web_search,
-    tool_web_scrape_url,
-    tool_search_academic
+    tool_web_search
 )
 
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
@@ -41,55 +42,39 @@ class QwenEtymologyAgent:
             return False
 
     def research_and_enrich(self, word: str, initial_finding: Dict[str, Any]) -> Dict[str, Any]:
-        """Qwen2.5:14b ajanı Yönergeye (System Guideline) uyarak Doğrulama ve Keşif Protokollerini çalıştırır."""
+        """Qwen2.5:14b ajanı İleri Düzey Araçları (Agentic Toolset) ve ReAct Döngüsünü çalıştırır."""
         if not self.is_available():
             initial_finding["ai_agent_enrichment"] = "Ollama veya qwen2.5:14b modeli aktif değil."
             return initial_finding
 
-        # 1. Bilimsel ve NLP Araçlarını Çalıştır (Tool Execution Phase)
+        # --- 1. İLERİ DÜZEY ARAÇLARI ÇALIŞTIR (ADVANCED TOOL EXECUTION PHASE) ---
+        wiktionary_res = tool_wiktionary_multilingual_api(word)
+        ipa_res = tool_ipa_phonetic_analyzer(word)
+        donor_pattern_res = tool_donor_pattern_analyzer(word)
+        corpus_res = tool_historical_corpus_search(word)
         attestation_verify = tool_verify_attestation(word)
-        donor_verify = tool_verify_donor_language(word)
         phonotactics_analysis = tool_analyze_phonotactics(word)
         suffixes_analysis = tool_extract_suffixes(word)
-        cognates_alignment = tool_align_cognates(word)
-        donor_neighbor = tool_donor_nearest_neighbor(word)
         web_results = tool_web_search(word)
-        academic_results = tool_search_academic(word)
 
-        scraped_content = ""
-        if web_results:
-            first_url = web_results[0].get("url", "")
-            if first_url and first_url.startswith("http"):
-                scraped_content = tool_web_scrape_url(first_url)
+        proto_r = initial_finding.get('root', {}).get('proto_turkic', word)
+        sound_matrix_res = tool_sound_change_matrix(word, proto_r)
 
-        # Temiz Dil Karşılıkları Özeti (HTML etiketlerinden temizlenmiş)
-        turkic_summary = []
-        for entry in initial_finding.get('turkic_languages', [])[:8]:
-            lang_n = clean_html(entry.get('lang_name', ''))
-            w_val = clean_html(entry.get('word', ''))
-            m_val = clean_html(entry.get('meaning', ''))
-            turkic_summary.append(f"{lang_n}: {w_val} ({m_val})")
-
-        # 2. Qwen2.5:14b İçin Yönerge Destekli Derinleştirme Prompt'u Hazırla
+        # 2. Qwen2.5:14b İçin Derin ReAct Sentez Prompt'u Hazırla
         prompt = f"""
 {QWEN_AGENT_SYSTEM_GUIDELINE}
 
 [ARAŞTIRILACAK KELİME]: {word}
 
-[İLK STATİK BULGULAR]:
-- Kök / Rekonstrüksiyon: {initial_finding.get('root', {}).get('proto_turkic')}
-- Anlam: {initial_finding.get('root', {}).get('meaning')}
-- Morfoloji: {initial_finding.get('morphology')}
-- Türki Dil Katmanları Özeti: {"; ".join(turkic_summary[:5])}
-
-[BİLİMSEL VE NLP ARAÇLARI ÇIKTILARI (TOOL RESULTS)]:
-1. Tarihsel Tanıklama [tool_verify_attestation]: {attestation_verify}
-2. Alıntı & Kaynak Dil Doğrulama [tool_verify_donor_language]: {donor_verify}
-3. Fonotaktik İhlal Analizi [tool_analyze_phonotactics]: {phonotactics_analysis}
-4. Ek & Kök Ayrıştırma [tool_extract_suffixes]: {suffixes_analysis}
-5. Çapraz Hizalama Skoru [tool_align_cognates]: {cognates_alignment}
-6. Komşu Dil Eşleşmesi [tool_donor_nearest_neighbor]: {donor_neighbor}
-7. Canlı Web & Akademik Keşif [tool_web_search]: {json.dumps(web_results[:2], ensure_ascii=False)} | {academic_results}
+[İLERİ DÜZEY ARAÇ ÇIKTILARI (ADVANCED RE-ACT TOOLSETS)]:
+1. Canlı Çok Dilli Wiktionary REST API [tool_wiktionary_multilingual_api]: {json.dumps(wiktionary_res.get('api_summary'), ensure_ascii=False)}
+2. IPA Uluslararası Fonetik Analiz [tool_ipa_phonetic_analyzer]: IPA={ipa_res.get('ipa')}, Ünlü Uyumu={ipa_res.get('vowel_harmony_status')}
+3. Kaynak Dil Vezin/Yapı Analizi [tool_donor_pattern_analyzer]: {json.dumps(donor_pattern_res.get('detected_donor_patterns'), ensure_ascii=False)}
+4. Tarihsel Külliyat Taraması [tool_historical_corpus_search]: {json.dumps(corpus_res.get('corpus_hits'), ensure_ascii=False)}
+5. Fonetik Ses Değişim Matrisi [tool_sound_change_matrix]: Levenshtein Mesafe={sound_matrix_res.get('levenshtein_distance')}, Kurallar={json.dumps(sound_matrix_res.get('identified_sound_laws'), ensure_ascii=False)}
+6. Fonotaktik İhlal Kontrolü [tool_analyze_phonotactics]: {phonotactics_analysis}
+7. Morfolojik Ek/Kök Tespiti [tool_extract_suffixes]: {suffixes_analysis}
+8. Canlı Web & Akademik Keşif [tool_web_search]: {json.dumps(web_results[:2], ensure_ascii=False)}
 
 Yönerge protokollerine göre kelimenin etimolojisini doğrula veya otonom keşfet. Sonucunu akademik, tutarlı ve akıcı bir Türkçe sentez paragrafı olarak yaz.
 """
@@ -111,7 +96,6 @@ Yönerge protokollerine göre kelimenin etimolojisini doğrula veya otonom keşf
                 data=json.dumps(req_data).encode('utf-8'),
                 headers={'Content-Type': 'application/json'}
             )
-            # Timeout 180 saniyeye çıkarıldı ve prompt token boyutu %70 optimize edildi
             with urllib.request.urlopen(req, timeout=180) as resp:
                 res = json.loads(resp.read().decode('utf-8'))
                 analysis = res.get("response", "").strip()
@@ -120,10 +104,10 @@ Yönerge protokollerine göre kelimenin etimolojisini doğrula veya otonom keşf
                 initial_finding["discovered_web_sources"] = web_results
                 
                 if analysis:
-                    initial_finding["sources"].append(f"Qwen2.5:14b Yönergeli Otonom Araştırma Ajanı ({self.model_name})")
+                    initial_finding["sources"].append(f"Qwen2.5:14b İleri Düzey Bilimsel Ajanı ({self.model_name})")
                     initial_finding["turkic_languages"].append({
                         "lang_code": "ai",
-                        "lang_name": "Qwen2.5:14b Bilimsel Ajan Yönergesi Sentezi",
+                        "lang_name": "Qwen2.5:14b İleri Düzey Bilimsel Ajan Sentezi",
                         "word": word,
                         "meaning": analysis,
                         "script": "Latin"
