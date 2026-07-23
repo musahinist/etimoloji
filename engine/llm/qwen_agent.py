@@ -42,18 +42,15 @@ class QwenEtymologyAgent:
             return False
 
     def research_and_enrich(self, word: str, initial_finding: Dict[str, Any]) -> Dict[str, Any]:
-        """Qwen2.5:14b ajanı İleri Düzey Araçları ve Soyut Dilbilimsel Eleştirel Yargılama Protokolünü çalıştırır."""
+        """Qwen2.5:14b ajanı temiz ve doğrudan etimolojik sentez üretir."""
         if not self.is_available():
             initial_finding["ai_agent_enrichment"] = "Ollama veya qwen2.5:14b modeli aktif değil."
             return initial_finding
 
-        # --- 1. İLERİ DÜZEY ARAÇLARI ÇALIŞTIR ---
         wiktionary_res = tool_wiktionary_multilingual_api(word)
         ipa_res = tool_ipa_phonetic_analyzer(word)
         donor_pattern_res = tool_donor_pattern_analyzer(word)
         corpus_res = tool_historical_corpus_search(word)
-        attestation_verify = tool_verify_attestation(word)
-        phonotactics_analysis = tool_analyze_phonotactics(word)
         suffixes_analysis = tool_extract_suffixes(word)
         web_results = tool_web_search(word)
 
@@ -63,28 +60,25 @@ class QwenEtymologyAgent:
         proto_r = initial_finding.get('root', {}).get('proto_turkic', word)
         sound_matrix_res = tool_sound_change_matrix(word, proto_r)
 
-        # 2. Qwen2.5:14b İçin Soyut Eleştirel Yargılama Prompt'u Hazırla
         prompt = f"""
 {QWEN_AGENT_SYSTEM_GUIDELINE}
 
 [ARAŞTIRILACAK KELİME]: {word}
 
-[BİLİMSEL KANITLANMIŞ HİPOTEZ VE KÖKEN]:
-- Hipotez Tipi: {proven_hypo.get('hypothesis_type')}
+[KANITLANMIŞ ETİMOLOJİK VERİLER]:
 - Kaynak Dil / Rekonstrüksiyon: {proven_hypo.get('donor_language')} -> {proven_hypo.get('origin_form')}
-- Kanıt Özeti: {proven_hypo.get('proof_summary')}
-- Anlamı: {proven_hypo.get('historical_meaning')}
+- Detay: {proven_hypo.get('proof_summary')}
+- Anlam: {proven_hypo.get('historical_meaning')}
 
-[BİLİMSEL VE NLP ARAÇ ÇIKTILARI]:
-1. IPA Fonetik Analiz: IPA={ipa_res.get('ipa')}, Ünlü Uyumu={ipa_res.get('vowel_harmony_status')}
+[İLERİ DÜZEY NLP VE TARİHSEL VERİLER]:
+1. IPA Fonetik Yapı: IPA={ipa_res.get('ipa')}, Ünlü Uyumu={ipa_res.get('vowel_harmony_status')}
 2. Kaynak Dil Vezin/Yapı: {json.dumps(donor_pattern_res.get('detected_donor_patterns'), ensure_ascii=False)}
-3. Tarihsel Külliyat Taraması: {json.dumps(corpus_res.get('corpus_hits'), ensure_ascii=False)}
-4. Morfolojik Ek/Kök Tespiti: {suffixes_analysis}
-5. Canlı Web Taraması Bulguları: {json.dumps(web_results[:3], ensure_ascii=False)}
+3. Tarihsel Külliyat Bulguları: {json.dumps(corpus_res.get('corpus_hits'), ensure_ascii=False)}
+4. Morfolojik Ek/Kök Yapısı: {suffixes_analysis}
 
-YÖNERGE PROTOKOLÜ:
-Tüm verileri Soyut Eleştirel Kanıt Protokolüne (Ses kayması mantığı, tarihsel kültür/ticaret uyumu, halk etimolojisi eleştirisi) göre değerlendir.
-Yüzeysel harf benzerliği taşıyan uydurma iddiaları elerken, tarihsel ve fonetik açıdan en güçlü bilimsel kanıtı seçerek raporunu yaz.
+TALİMAT:
+Giriş/Gelişme/Sonuç veya Markdown başlıkları (#, ##, ###) KULLANMA. İstem talimatlarını ("halk etimolojisini reddeder" vb.) TEKRARLAMA.
+Doğrudan kelimenin etimolojik kökenini, kaynak dildeki bileşenlerini ve Türkçe/diyalektlerdeki tarihsel gelişimini net ve akıcı paragraflar halinde anlat.
 """
 
         req_data = {
