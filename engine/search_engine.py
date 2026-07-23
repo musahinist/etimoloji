@@ -1,5 +1,6 @@
 import re
 import datetime
+import threading
 import concurrent.futures
 from typing import Dict, Any, List, Optional
 
@@ -15,16 +16,20 @@ from engine.fetchers.tdk_all_portals import TdkAllPortalsFetcher
 from engine.fetchers.glosbe import GlosbeFetcher
 from engine.fetchers.turkic_national_dictionaries import TurkicNationalDictionariesFetcher
 from engine.fetchers.loanword_donor_etymology import LoanwordDonorEtymologyFetcher
+from engine.fetchers.local_pdf_books import LocalPdfBooksFetcher
 from engine.fetchers.etimoloji_turkce import EtimolojiTurkceFetcher
 from engine.fetchers.wiktionary import WiktionaryFetcher
 from engine.fetchers.starling import StarlingFetcher
 from engine.fetchers.tdk_nisanyan import TdkFetcher, NisanyanFetcher
 from engine.fetchers.tdk_historical import TdkTaramaFetcher, TdkDerlemeFetcher
 from engine.fetchers.multilang_wiktionary import MultiLangWiktionaryFetcher
+
 from engine.utils.morphology import analyze_morphology
 from engine.utils.transliteration import transliterate_to_latin
 from engine.utils.cognates import get_related_cognates
 from engine.utils.phonetic_rules import analyze_phonetic_shifts
+from engine.utils.variant_expander import generate_dynamic_phonetic_variants
+from engine.utils.geo_tagger import tag_geographical_region
 from engine.db.database import DatabaseManager
 
 MEANING_TRANSLATIONS = {
@@ -83,6 +88,7 @@ class SearchEngine:
             GlosbeFetcher(),
             TurkicNationalDictionariesFetcher(),
             LoanwordDonorEtymologyFetcher(),
+            LocalPdfBooksFetcher(),
             TietzeAltaicaFetcher(),
             EtimolojiTurkceFetcher(),
             StarlingFetcher(),
@@ -101,7 +107,16 @@ class SearchEngine:
         except Exception:
             return fetcher, None
 
-    def search(self, word: str, save_to_db: bool = True) -> Dict[str, Any]:
+    def _warm_up_cognates_background(self, cognates: List[str]) -> None:
+        """Arka planda akraba kelimeleri sessizce indirip yerel veritabanını ısıtan kuyruk."""
+        for cog in cognates:
+            try:
+                if not self.db.get_finding(cog):
+                    self.search(cog, save_to_db=True, trigger_bg_warmup=False)
+            except Exception:
+                pass
+
+    def search(self, word: str, save_to_db: bool = True, trigger_bg_warmup: bool = True) -> Dict[str, Any]:
         word_clean = word.strip().lower()
         if not word_clean:
             raise ValueError("Arama için geçerli bir kelime giriniz.")
@@ -115,16 +130,17 @@ class SearchEngine:
             existing_finding["from_cache"] = True
             return existing_finding
 
-        # 2. Tüm 19 veri toplayıcıyı PARALEL çalıştır (hem kelime hem de kökü için)
+        # 2. Dinamik Zeki Diyalekt Varyantlarını Üret
+        target_words = generate_dynamic_phonetic_variants(word_clean)
+        if stem != word_clean and stem not in target_words:
+            target_words.append(stem)
+
+        # 3. Tüm 20 veri toplayıcıyı PARALEL çalıştır (tüm varyantlar için)
         proto_root = ""
         root_meaning = ""
         reconstruction_notes = ""
         sources = []
         turkic_entries_map = {} # lang_code -> entry dict
-
-        target_words = [word_clean]
-        if stem != word_clean:
-            target_words.append(stem)
 
         for target in target_words:
             with concurrent.futures.ThreadPoolExecutor(max_workers=len(self.fetchers)) as executor:
@@ -155,6 +171,11 @@ class SearchEngine:
                         shift_analysis = analyze_phonetic_shifts(word_clean, entry_word, entry.get("lang_name", ""))
                         entry["phonetic_shift"] = shift_analysis
 
+                        # Coğrafi Ağız Haritalama Etiketi
+                        geo_info = tag_geographical_region(entry.get("lang_name", "") + " " + entry.get("meaning", ""))
+                        if geo_info.get("geo_coordinates"):
+                            entry["geo_tag"] = geo_info
+
                         key = f"{code}_{entry.get('word')}"
                         
                         # Anlamı Türkçe semantik çeviriden geçir
@@ -170,17 +191,16 @@ class SearchEngine:
                     if res.get("turkic_languages") or root_info.get("proto_turkic"):
                         sources.append(fetcher.source_name)
 
-        # 3. Kök Anlamını Çevir
+        # 4. Kök Anlamını Çevir
         if root_meaning:
             root_meaning = translate_meaning(root_meaning)
 
-        # Türki diller listesini dili Türkçe isimlerine göre sıralayalım
         sorted_entries = sorted(
             list(turkic_entries_map.values()),
             key=lambda x: (0 if x["lang_code"] == "otk" else (0.5 if x["lang_code"] == "donor" else 1), x["lang_name"])
         )
 
-        # 4. Tarihsel Kronoloji Çizelgesi Oluştur
+        # 5. Tarihsel Kronoloji Çizelgesi Oluştur
         timeline = []
         for entry in sorted_entries:
             lname = entry.get("lang_name", "")
@@ -210,8 +230,14 @@ class SearchEngine:
             "from_cache": False
         }
 
-        # 5. Veritabanına kaydet
+        # 6. Veritabanına kaydet
         if save_to_db and (sorted_entries or proto_root):
             self.db.save_finding(finding)
+
+        # 7. Asenkron Arka Plan Önbellek Isıtıcıyı Tetikle
+        if trigger_bg_warmup and related_cognates:
+            t = threading.Thread(target=self._warm_up_cognates_background, args=(related_cognates,))
+            t.daemon = True
+            t.start()
 
         return finding
