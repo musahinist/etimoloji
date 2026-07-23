@@ -16,31 +16,73 @@ def print_finding_formatted(finding: Dict[str, Any]) -> None:
     turkic_languages = finding.get("turkic_languages", [])
     sources = finding.get("sources", [])
     from_cache = finding.get("from_cache", False)
+    ai_enrichment = finding.get("ai_agent_enrichment", "")
+    web_sources = finding.get("discovered_web_sources", [])
 
-    print("\n" + "=" * 75)
-    print(f" 🔍 ETIMOLOJI BULGUSU: {query_word.upper()} {'(Veritabanı Önbelleği)' if from_cache else ''}")
-    print("=" * 75)
+    print("\n" + "═" * 80)
+    print(f" 🔍 ETIMOLOJI BULGUSU VE KÖKEN RAPORU: {query_word.upper()} {'(Veritabanı Önbelleği)' if from_cache else ''}")
+    print("═" * 80)
     print(f" 🧩 Morfoloji & Yapı         : {morphology}")
     print(f" 📌 Ana Kök / Rekonstrüksiyon: {root.get('proto_turkic', 'Bilinmiyor')}")
     print(f" 📖 Anlam                     : {root.get('meaning', 'Bilinmiyor')}")
     print(f" 📚 Kaynak Portföyü           : {', '.join(sources)}")
 
+    # Qwen2.5:14b Otonom Yapay Zeka Ajanı Analizi
+    if ai_enrichment:
+        print("\n" + "┌" + "─" * 78 + "┐")
+        print("│ 🤖 QWEN2.5:14b OTONOM BİLİMSEL AJAN AKIL YÜRÜTME & BİLİMSEL SENTEZ PARAGRAFI │")
+        print("├" + "─" * 78 + "┤")
+        lines = ai_enrichment.split("\n")
+        for line in lines:
+            if line.strip():
+                # Uzun satırları güzelce hizala
+                wrapped_words = line.strip().split()
+                current_line = "│ "
+                for w in wrapped_words:
+                    if len(current_line) + len(w) + 1 > 77:
+                        print(f"{current_line:<79}│")
+                        current_line = "│ " + w + " "
+                    else:
+                        current_line += w + " "
+                if current_line.strip() != "│":
+                    print(f"{current_line:<79}│")
+            else:
+                print("│" + " " * 78 + "│")
+        print("└" + "─" * 78 + "┘")
+
+    # Canlı Keşfedilen Web Kaynakları
+    if web_sources:
+        print("\n" + "─" * 80)
+        print(" 🌐 CANLI KEŞFEDİLEN WEB KAYNAKLARI VE MAKALE BAĞLANTILARI")
+        print("─" * 80)
+        for s in web_sources:
+            url = s.get("url", "")
+            title = s.get("title", "")
+            snip = s.get("snippet", "")
+            print(f"  🔗 [{title}]")
+            print(f"     URL  : {url}")
+            if snip:
+                print(f"     Özet : {snip[:120]}...")
+
+    # Tarihsel Zaman Çizelgesi
     if timeline:
-        print("-" * 75)
-        print(" ⏳ TARİHSEL ZAMAN ÇİZELGESİ (EVRİM)")
-        print("-" * 75)
+        print("\n" + "─" * 80)
+        print(" ⏳ TARİHSEL ZAMAN ÇİZELGESİ (EVRİM KRONOLOJİSİ)")
+        print("─" * 80)
         for step in timeline:
             print(f"  • {step}")
 
+    # Kök Akraba Sözcük Ağı
     if related_cognates:
-        print("-" * 75)
+        print("\n" + "─" * 80)
         print(" 🔗 KÖK AKRABA SÖZCÜK AĞI")
-        print("-" * 75)
+        print("─" * 80)
         print(f"  • Aynı kökten türeyen akraba kelimeler: {', '.join(related_cognates)}")
 
-    print("-" * 75)
+    # Türki Dillerdeki Anlamları
+    print("\n" + "─" * 80)
     print(f" 🌍 TÜRKİ DİLLERDEKİ ANLAMLARI VE KARŞILIKLARI ({len(turkic_languages)} Dil/Katman)")
-    print("-" * 75)
+    print("─" * 80)
 
     if not turkic_languages:
         print("  ⚠️  Herhangi bir Türki dilde karşılık bulunamadı.")
@@ -51,10 +93,14 @@ def print_finding_formatted(finding: Dict[str, Any]) -> None:
             meaning = entry.get("meaning", "")
             shift = entry.get("phonetic_shift", "")
             
-            shift_info = f" [Ses Değişimi: {shift}]" if shift and shift != "Standart Lehçe Ses Uyumu" else ""
-            print(f"  • {lang_name:<28} : {word:<22} [{'Anlam: ' + meaning if meaning else 'N/A'}]{shift_info}")
+            # AI sentezini çift basmamak için atla
+            if entry.get("lang_code") == "ai":
+                continue
 
-    print("=" * 75 + "\n")
+            shift_info = f" [Ses Değişimi: {shift}]" if shift and shift != "Standart Lehçe Ses Uyumu" else ""
+            print(f"  • {lang_name:<30} : {word:<24} [{'Anlam: ' + meaning if meaning else 'N/A'}]{shift_info}")
+
+    print("═" * 80 + "\n")
 
 def main():
     parser = argparse.ArgumentParser(description="Türki Diller Etimoloji Araştırma Motoru CLI")
@@ -62,7 +108,7 @@ def main():
 
     # Search komutu
     search_parser = subparsers.add_parser("search", help="Bir kelimenin etimolojisini ve Türki dillerdeki anlamlarını arar")
-    search_parser.add_argument("word", type=str, help="Aranacak kelime (örn: su, deniz, göz, tetik, güzellik)")
+    search_parser.add_argument("word", type=str, help="Aranacak kelime (örn: su, deniz, göz, us, tetik, güzellik)")
     search_parser.add_argument("--json", action="store_true", help="Çıktıyı ham JSON formatında basar")
     search_parser.add_argument("--ai", action="store_true", help="Qwen2.5:14b otonom web araştırma ajanı ile derinleştirilmiş arama yap")
     search_parser.add_argument("--no-save", action="store_false", dest="save", help="Sonucu veritabanına kaydetme")
