@@ -7,6 +7,9 @@ from engine.fetchers.base import BaseFetcher, TURKIC_LANGUAGES_MAP
 from engine.fetchers.academic_turkology import AcademicTurkologyFetcher
 from engine.fetchers.tietze_altaica import TietzeAltaicaFetcher
 from engine.fetchers.historical_modern import HistoricalModernLexiconFetcher
+from engine.fetchers.isam_ansiklopedi import IsamAnsiklopediFetcher
+from engine.fetchers.archive_org import ArchiveOrgFetcher
+from engine.fetchers.dergipark import DergiParkFetcher
 from engine.fetchers.etimoloji_turkce import EtimolojiTurkceFetcher
 from engine.fetchers.wiktionary import WiktionaryFetcher
 from engine.fetchers.starling import StarlingFetcher
@@ -67,6 +70,9 @@ class SearchEngine:
         self.fetchers: List[BaseFetcher] = [
             AcademicTurkologyFetcher(),
             HistoricalModernLexiconFetcher(),
+            IsamAnsiklopediFetcher(),
+            ArchiveOrgFetcher(),
+            DergiParkFetcher(),
             TietzeAltaicaFetcher(),
             EtimolojiTurkceFetcher(),
             StarlingFetcher(),
@@ -99,7 +105,7 @@ class SearchEngine:
             existing_finding["from_cache"] = True
             return existing_finding
 
-        # 2. Tüm veri toplayıcıları PARALEL çalıştır (hem kelime hem de kökü için)
+        # 2. Tüm 14 veri toplayıcıyı PARALEL çalıştır (hem kelime hem de kökü için)
         proto_root = ""
         root_meaning = ""
         reconstruction_notes = ""
@@ -168,8 +174,8 @@ class SearchEngine:
         timeline = []
         for entry in sorted_entries:
             lname = entry.get("lang_name", "")
-            if "Divanü Lugati't-Türk" in lname or "1074" in lname or "Orhun" in lname or "Eski Türkçe" in lname:
-                timeline.append(f"8.-11. YY (Eski Türkçe / DLT): {entry.get('word')} - {entry.get('meaning')[:60]}")
+            if "Divanü Lugati't-Türk" in lname or "1074" in lname or "Orhun" in lname or "Eski Türkçe" in lname or "İSAM" in lname:
+                timeline.append(f"M.Ö. III. YY - 11. YY (Hun / Orhun / DLT / İSAM): {entry.get('word')} - {entry.get('meaning')[:60]}")
             elif "1303" in lname or "Codex Cumanicus" in lname:
                 timeline.append(f"14. YY (Kıpçakça / Codex Cumanicus): {entry.get('word')}")
             elif "1901" in lname or "Kamus-ı Türkî" in lname or "13.-19." in lname:

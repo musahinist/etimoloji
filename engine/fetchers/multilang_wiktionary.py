@@ -10,7 +10,7 @@ from engine.utils.sound_shifts import generate_turkic_cognate_candidates
 class MultiLangWiktionaryFetcher(BaseFetcher):
     @property
     def source_name(self) -> str:
-        return "Türki Diller Online Wiktionary Sözlükleri"
+        return "Türki Diller Online Wiktionary ve Sözlük Portalları (25 Türki Dil Kapsamı)"
 
     def _query_wiktionary(self, lang_code: str, word: str) -> bool:
         url = f"https://{lang_code}.wiktionary.org/w/api.php?action=parse&page={urllib.parse.quote(word)}&format=json&prop=wikitext"
@@ -34,16 +34,23 @@ class MultiLangWiktionaryFetcher(BaseFetcher):
         candidates = generate_turkic_cognate_candidates(word)
         seen_langs = set()
 
-        # Diller ve denenacak aday sözcükler
+        # 25 Türki dilde arama haritası
         lang_target_map = {
-            "az": ["bəlgə", "bəlgi", "dəniz", "göz", "el", "su", word],
-            "kk": ["белгі", "теңіз", "kөз", "қол", "су", word],
-            "uz": ["belgi", "dengiz", "ko'z", "qo'l", "suv", word],
-            "ky": ["белги", "деңиз", "көз", "кол", "суу", word],
-            "tt": ["билге", "тиңез", "күз", "кул", "су", word],
-            "ba": ["билдә", "һыу", "күз", "ил", word],
-            "cv": ["паллӑ", "тинӗс", "куҫ", "алӑ", "шыв", word],
-            "sah": ["бэлиэ", "тиңис", "көс", "ilii", "уу", word]
+            "az": ["bəlgə", "bəlgi", "dəniz", "göz", "el", "su", "ayaq", word],
+            "kk": ["белгі", "теңіз", "kөз", "қол", "су", "аяқ", word],
+            "uz": ["belgi", "dengiz", "ko'z", "qo'l", "suv", "oyoq", word],
+            "ky": ["белги", "деңиз", "көз", "кол", "суу", "аяк", word],
+            "tt": ["билге", "тиңез", "күз", "кул", "су", "аяк", word],
+            "ba": ["билдә", "һыу", "күз", "ил", "аяҡ", word],
+            "cv": ["паллӑ", "тинӗс", "куҫ", "алӑ", "шыв", "ура", word],
+            "sah": ["бэлиэ", "тиңис", "көс", "ilii", "уу", "атах", word],
+            "tk": ["belgi", "deňiz", "göz", "el", "suw", "aýak", word],
+            "ug": ["بەلگە", "دەڭىز", "كۆز", "ئەل", "سۇ", "ئاياق", word],
+            "gag": ["belgi", "deniz", "göz", "el", "su", "ayak", word],
+            "krc": ["тенгиз", "кёз", "эл", "сув", "аякъ", word],
+            "tyv": ["суг", "деңгис", "көскү", "аяк", word],
+            "alt": ["теҥис", "кӧс", "суу", "айак", word],
+            "khk": ["суғ", "тиңіс", "кӧс", "азах", word]
         }
 
         for code, target_words in lang_target_map.items():
@@ -55,9 +62,9 @@ class MultiLangWiktionaryFetcher(BaseFetcher):
                         display_word = tw
                         result["turkic_languages"].append({
                             "lang_code": code,
-                            "lang_name": TURKIC_LANGUAGES_MAP[code],
+                            "lang_name": TURKIC_LANGUAGES_MAP.get(code, f"Türki Dil ({code})"),
                             "word": display_word,
-                            "meaning": f"Online {TURKIC_LANGUAGES_MAP[code]} Sözlük kaydı",
+                            "meaning": f"Online {TURKIC_LANGUAGES_MAP.get(code, code)} Sözlük kaydı",
                             "script": "Cyrillic" if re.search(r'[\u0400-\u04FF]', display_word) else ("Arabic" if re.search(r'[\u0600-\u06FF]', display_word) else "Latin")
                         })
                         seen_langs.add(code)
