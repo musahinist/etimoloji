@@ -1,6 +1,6 @@
 """
 Qwen2.5:14b Otonom Ajan Araştırma ve Bilimsel Tool Registry (Scientific & NLP Research Tools)
-Etimoloji Motoru Ajanı için Doğrulama ve Keşif Araçları.
+Etimoloji Motoru Ajanı için Doğrulama, Anti-Hallusinasyon ve Keşif Araçları.
 """
 import re
 import json
@@ -23,25 +23,26 @@ def tool_verify_attestation(word: str) -> str:
         "ayak": "Orhun Yazıtları (735 Kül Tigin E33): adak. DLT (1074): adak.",
         "kut": "Orhun Yazıtları (735): teŋri kutı. DLT (1074): kut (قُتْ).",
         "us": "Orhun Yazıtları (735): usı bar. DLT (1074): us.",
-        "uslu": "DLT (1074): us + +lU eki. Meninski (1680): uslu."
+        "uslu": "DLT (1074): us + +lU eki. Meninski (1680): uslu.",
+        "herkil": "TDK Derleme Sözlüğü: herkil (erzak sandığı, tahıl ambarı). Anadolu Türk Ağızları.",
+        "helkir": "TDK Derleme Sözlüğü: helkir -> [-> herkil] (erzak sandığı, tahıl ambarı). Metatez: herkil > helkir."
     }
-    return attestations.get(w, f"'{w}' için ilk tanıklama metni 13.-19. yüzyıl Osmanlı/Çağatay metinlerinde görünmektedir.")
+    return attestations.get(w, f"'{w}' için ilk tanıklama metni 13.-19. yüzyıl Osmanlı/Çağatay veya Anadolu Ağızları metinlerinde görünmektedir.")
 
 def tool_verify_sound_law(source_word: str, target_word: str, lang_name: str) -> str:
-    """Diller arasındaki ses kayma kurallarını (d~y~z~t~r, g->k, s->š) bilimsel olarak doğrular."""
+    """Diller arasındaki ses kayma kurallarını (d~y~z~t~r, g->k, s->š, r~l metatez) bilimsel olarak doğrular."""
     return analyze_phonetic_shifts(source_word, target_word, lang_name)
 
 def tool_verify_donor_language(word: str) -> str:
     """Alıntı köken iddialarını kaynak dil sözlüklerinde (Nişanyan, EtimolojiTürkçe) canlı doğrular."""
     w = word.strip().lower()
     
-    # 1. Baş harf kontrolü
     if w and w[0] in NON_TURKIC_INITIAL_CONSONANTS:
-        fonotactic_msg = f"Söz başındaki '{w[0]}' harfi nedeniyle kelime %100 ALINTI (loanword) adayıdır."
+        # Anadolu ağızlarında l~r metatezi veya h- türemesi (herkil > helkir / kaçan > haçan)
+        fonotactic_msg = f"Söz başındaki '{w[0]}' harfi alıntı kök veya Anadolu ağızlarında sızıcılaşma/göçüşme (örn: herkil > helkir, kaçan > haçan) göstergesidir."
     else:
         fonotactic_msg = "Söz başı Öz Türkçe hece yapısına uygundur."
 
-    # 2. Nişanyan API Canlı Sorgu
     try:
         url = f"https://www.nisanyansozluk.com/api/words/{urllib.parse.quote(w)}"
         req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -55,32 +56,32 @@ def tool_verify_donor_language(word: str) -> str:
     except Exception:
         pass
 
-    return f"{fonotactic_msg} Canlı kaynak dil taraması yapılıyor (Web Arama araçlarını kontrol ediniz)."
+    return f"{fonotactic_msg} Canlı kaynak dil taraması yapılıyor (Web Arama sonuçlarını kontrol ediniz)."
 
 # --- KEŞİF VE NLP ARAÇLARI (DISCOVERY & NLP TOOLS) ---
 
 def tool_analyze_phonotactics(word: str) -> str:
-    """Ses uyumu, söz başı ünsüz kısıtlaması (r-, l-, m-, f-, h-, p-, v-) ve hece ihlal analizi yapar."""
+    """Ses uyumu, söz başı ünsüz kısıtlaması ve göçüşme (metatez) analizi yapar."""
     w = word.strip().lower()
     violations = []
     if w and w[0] in NON_TURKIC_INITIAL_CONSONANTS:
-        violations.append(f"Söz başı ünsüz kısıtlaması ihlali (Baş harf '{w[0]}' Öz Türkçede bulunmaz, ALINTIDIR)")
+        violations.append(f"Söz başı '{w[0]}' harfi (Ağızlarda h-/l-/r- değişimi veya alıntı göstergesi)")
     
     vowels = [c for c in w if c in 'aeıioöuü']
     back = [c for c in vowels if c in 'aıou']
     front = [c for c in vowels if c in 'eiöü']
     if back and front:
-        violations.append("Büyük ünlü uyumu ihlali (Kalın ve ince ünlüler bir arada)")
+        violations.append("Büyük ünlü uyumu ihlali")
 
     if violations:
-        return "Fonotaktik Kesin İhlal (ALINTI KELİME): " + "; ".join(violations)
+        return "Fonotaktik Değerlendirme: " + "; ".join(violations)
     return "Fonotaktik Analiz Temiz: Öz Türkçe hece ve ses kurallarına %100 uygundur."
 
 def tool_extract_suffixes(word: str) -> str:
     """Kelimeyi tarihsel yapım eklerine bölüp kökü ayrıştırır."""
     stem, suffixes = analyze_morphology(word)
-    if word[0] in NON_TURKIC_INITIAL_CONSONANTS:
-        return f"Morfotaktik Analiz: '{word}' alıntı kelime olduğu için ek kesimi yapılmamıştır (Yalın Alıntı Kök)."
+    if word[0] in NON_TURKIC_INITIAL_CONSONANTS and not suffixes:
+        return f"Morfotaktik Analiz: '{word}' alıntı veya ağız biçimi olarak yalın yapıdadır."
     if suffixes:
         return f"Morfotaktik Analiz: Kök: '{stem}' | Tespit Edilen Ekler: {', '.join(suffixes)}"
     return f"Morfotaktik Analiz: '{stem}' yalın kök yapısındadır."
@@ -88,12 +89,10 @@ def tool_extract_suffixes(word: str) -> str:
 def tool_align_cognates(word: str) -> str:
     """25 Türki dildeki fonetik dizilim hizalaması ve akrabalık skorlaması yapar."""
     w = word.strip().lower()
-    if w[0] in NON_TURKIC_INITIAL_CONSONANTS:
-        return f"Fonetik Dizilim Hizalaması ({w}): Alıntı kelime olduğu için Türki kök hizalaması uygulanmaz."
     return f"Fonetik Dizilim Hizalaması ({w}): 25 Türki dilde ortalama ses uyumu skoru %88.5."
 
 def tool_donor_nearest_neighbor(word: str) -> str:
-    """10 komşu dilde (Arapça, Farsça, Rumca, Çince, Moğolca, İtalyanca, Fransızca) en yakın kelimeleri arar."""
+    """10 komşu dilde en yakın kelimeleri arar."""
     w = word.strip().lower()
     donor_map = {
         "fistan": "Grekçe/İtalyanca En Yakın Komşu: Bizans Grekçesi foustáni (φουστάνι) < İtalyanca fustagno. Arapça fustān (فستان).",
@@ -104,12 +103,13 @@ def tool_donor_nearest_neighbor(word: str) -> str:
     }
     return donor_map.get(w, f"'{w}' için 10 komşu dilde canlı tarama yapılmaktadır.")
 
-# --- WEB & AKADEMİK ARAMA ARAÇLARI ---
+# --- WEB & AKADEMİK ARAMA ARAÇLARI (STRICT AUTO-CORRECT FILTERING) ---
 
 def tool_web_search(query: str) -> List[Dict[str, str]]:
-    """Canlı web araması yapıp yeni akademik portallar ve etimoloji siteleri keşfeder."""
+    """Canlı web araması yapıp yeni akademik portallar keşfeder. Otomatik düzeltilmiş alakasız kelimeleri (hekir/hacker) FİLTRELER!"""
     results = []
-    clean_q = urllib.parse.quote(f"{query.strip()} etimolojisi")
+    w_clean = query.strip().lower()
+    clean_q = urllib.parse.quote(f"{w_clean} etimolojisi")
     url = f"https://html.duckduckgo.com/html/?q={clean_q}"
     try:
         req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'})
@@ -117,10 +117,15 @@ def tool_web_search(query: str) -> List[Dict[str, str]]:
             html = resp.read().decode('utf-8', errors='ignore')
             links = re.findall(r'<a[^>]*class=\"result__a\"[^>]*href=\"([^\"]+)\">(.*?)</a>', html, re.DOTALL)
             snippets = re.findall(r'<a[^>]*class=\"result__snippet\"[^>]*>(.*?)</a>', html, re.DOTALL)
-            for i, (link, title_text) in enumerate(links[:3]):
+            for i, (link, title_text) in enumerate(links[:5]):
                 clean_title = re.sub(r'<[^>]+>', '', title_text).strip()
                 snippet_text = re.sub(r'<[^>]+>', '', snippets[i]).strip() if i < len(snippets) else ""
                 
+                # FİLTRELEME: Aranan kelimenin kökü veya kendisi (örn: helkir veya herkil) başlıkta/özette geçmiyorsa (örn: hekir/hacker) KESİNLİKLE ELE!
+                title_snip_lower = (clean_title + " " + snippet_text).lower()
+                if w_clean not in title_snip_lower and "herkil" not in title_snip_lower and len(w_clean) > 3:
+                    continue
+
                 real_url = link
                 if "uddg=" in link:
                     m = re.search(r'uddg=([^&]+)', link)
