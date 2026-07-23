@@ -64,6 +64,7 @@ def main():
     search_parser = subparsers.add_parser("search", help="Bir kelimenin etimolojisini ve Türki dillerdeki anlamlarını arar")
     search_parser.add_argument("word", type=str, help="Aranacak kelime (örn: su, deniz, göz, tetik, güzellik)")
     search_parser.add_argument("--json", action="store_true", help="Çıktıyı ham JSON formatında basar")
+    search_parser.add_argument("--ai", action="store_true", help="Qwen2.5:14b otonom web araştırma ajanı ile derinleştirilmiş arama yap")
     search_parser.add_argument("--no-save", action="store_false", dest="save", help="Sonucu veritabanına kaydetme")
 
     # Bulk komutu
@@ -89,7 +90,9 @@ def main():
 
     if args.command == "search":
         try:
-            finding = engine.search(args.word, save_to_db=args.save)
+            if args.ai:
+                print("🤖 Qwen2.5:14b Otonom Web Keşif Ajanı Devrede... (Derin Web & Makale Taraması Yapılıyor)")
+            finding = engine.search(args.word, save_to_db=args.save, use_qwen_agent=args.ai)
             if args.json:
                 print(json.dumps(finding, ensure_ascii=False, indent=2))
             else:

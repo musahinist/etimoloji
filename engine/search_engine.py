@@ -31,6 +31,7 @@ from engine.utils.phonetic_rules import analyze_phonetic_shifts
 from engine.utils.variant_expander import generate_dynamic_phonetic_variants
 from engine.utils.geo_tagger import tag_geographical_region
 from engine.db.database import DatabaseManager
+from engine.llm.qwen_agent import QwenEtymologyAgent
 
 MEANING_TRANSLATIONS = {
     "beautiful": "güzel, alımlı, hoş",
@@ -77,6 +78,7 @@ def translate_meaning(meaning: str) -> str:
 class SearchEngine:
     def __init__(self, db_manager: Optional[DatabaseManager] = None):
         self.db = db_manager or DatabaseManager()
+        self.qwen_agent = QwenEtymologyAgent()
         self.fetchers: List[BaseFetcher] = [
             AcademicTurkologyFetcher(),
             HistoricalModernLexiconFetcher(),
@@ -108,7 +110,6 @@ class SearchEngine:
             return fetcher, None
 
     def _warm_up_cognates_background(self, cognates: List[str]) -> None:
-        """Arka planda akraba kelimeleri sessizce indirip yerel veritabanını ısıtan kuyruk."""
         for cog in cognates:
             try:
                 if not self.db.get_finding(cog):
@@ -116,7 +117,7 @@ class SearchEngine:
             except Exception:
                 pass
 
-    def search(self, word: str, save_to_db: bool = True, trigger_bg_warmup: bool = True) -> Dict[str, Any]:
+    def search(self, word: str, save_to_db: bool = True, trigger_bg_warmup: bool = True, use_qwen_agent: bool = False) -> Dict[str, Any]:
         word_clean = word.strip().lower()
         if not word_clean:
             raise ValueError("Arama için geçerli bir kelime giriniz.")
@@ -124,11 +125,12 @@ class SearchEngine:
         # Morfolojik kök ve ek analizi yap
         stem, suffixes = analyze_morphology(word_clean)
 
-        # 1. Önce veritabanında arat
-        existing_finding = self.db.get_finding(word_clean)
-        if existing_finding:
-            existing_finding["from_cache"] = True
-            return existing_finding
+        # 1. Önce veritabanında arat (use_qwen_agent zorlanmadıkça)
+        if not use_qwen_agent:
+            existing_finding = self.db.get_finding(word_clean)
+            if existing_finding:
+                existing_finding["from_cache"] = True
+                return existing_finding
 
         # 2. Dinamik Zeki Diyalekt Varyantlarını Üret
         target_words = generate_dynamic_phonetic_variants(word_clean)
@@ -197,7 +199,7 @@ class SearchEngine:
 
         sorted_entries = sorted(
             list(turkic_entries_map.values()),
-            key=lambda x: (0 if x["lang_code"] == "otk" else (0.5 if x["lang_code"] == "donor" else 1), x["lang_name"])
+            key=lambda x: (0 if x["lang_code"] == "otk" else (0.3 if x["lang_code"] == "ai" else (0.5 if x["lang_code"] == "donor" else 1)), x["lang_name"])
         )
 
         # 5. Tarihsel Kronoloji Çizelgesi Oluştur
@@ -230,11 +232,15 @@ class SearchEngine:
             "from_cache": False
         }
 
-        # 6. Veritabanına kaydet
+        # 6. Qwen2.5:14b Otonom Ajan Derinleştirmesi (İstenmişse)
+        if use_qwen_agent:
+            finding = self.qwen_agent.research_and_enrich(word_clean, finding)
+
+        # 7. Veritabanına kaydet
         if save_to_db and (sorted_entries or proto_root):
             self.db.save_finding(finding)
 
-        # 7. Asenkron Arka Plan Önbellek Isıtıcıyı Tetikle
+        # 8. Asenkron Arka Plan Önbellek Isıtıcıyı Tetikle
         if trigger_bg_warmup and related_cognates:
             t = threading.Thread(target=self._warm_up_cognates_background, args=(related_cognates,))
             t.daemon = True
