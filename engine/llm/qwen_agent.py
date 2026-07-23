@@ -42,12 +42,12 @@ class QwenEtymologyAgent:
             return False
 
     def research_and_enrich(self, word: str, initial_finding: Dict[str, Any]) -> Dict[str, Any]:
-        """Qwen2.5:14b ajanı İleri Düzey Araçları (Agentic Toolset) ve ReAct Döngüsünü çalıştırır."""
+        """Qwen2.5:14b ajanı İleri Düzey Araçları ve Kanıtlanmış Hipotez Hiyerarşisini çalıştırır."""
         if not self.is_available():
             initial_finding["ai_agent_enrichment"] = "Ollama veya qwen2.5:14b modeli aktif değil."
             return initial_finding
 
-        # --- 1. İLERİ DÜZEY ARAÇLARI ÇALIŞTIR (ADVANCED TOOL EXECUTION PHASE) ---
+        # --- 1. İLERİ DÜZEY ARAÇLARI ÇALIŞTIR ---
         wiktionary_res = tool_wiktionary_multilingual_api(word)
         ipa_res = tool_ipa_phonetic_analyzer(word)
         donor_pattern_res = tool_donor_pattern_analyzer(word)
@@ -57,26 +57,33 @@ class QwenEtymologyAgent:
         suffixes_analysis = tool_extract_suffixes(word)
         web_results = tool_web_search(word)
 
+        nlp_analysis = initial_finding.get("nlp_analysis", {})
+        proven_hypo = nlp_analysis.get("proven_hypothesis", {})
+
         proto_r = initial_finding.get('root', {}).get('proto_turkic', word)
         sound_matrix_res = tool_sound_change_matrix(word, proto_r)
 
-        # 2. Qwen2.5:14b İçin Derin ReAct Sentez Prompt'u Hazırla
+        # 2. Qwen2.5:14b İçin Doğrulanmış Gerçek Hiyerarşisi Prompt'u Hazırla
         prompt = f"""
 {QWEN_AGENT_SYSTEM_GUIDELINE}
 
 [ARAŞTIRILACAK KELİME]: {word}
 
-[İLERİ DÜZEY ARAÇ ÇIKTILARI (ADVANCED RE-ACT TOOLSETS)]:
-1. Canlı Çok Dilli Wiktionary REST API [tool_wiktionary_multilingual_api]: {json.dumps(wiktionary_res.get('api_summary'), ensure_ascii=False)}
-2. IPA Uluslararası Fonetik Analiz [tool_ipa_phonetic_analyzer]: IPA={ipa_res.get('ipa')}, Ünlü Uyumu={ipa_res.get('vowel_harmony_status')}
-3. Kaynak Dil Vezin/Yapı Analizi [tool_donor_pattern_analyzer]: {json.dumps(donor_pattern_res.get('detected_donor_patterns'), ensure_ascii=False)}
-4. Tarihsel Külliyat Taraması [tool_historical_corpus_search]: {json.dumps(corpus_res.get('corpus_hits'), ensure_ascii=False)}
-5. Fonetik Ses Değişim Matrisi [tool_sound_change_matrix]: Levenshtein Mesafe={sound_matrix_res.get('levenshtein_distance')}, Kurallar={json.dumps(sound_matrix_res.get('identified_sound_laws'), ensure_ascii=False)}
-6. Fonotaktik İhlal Kontrolü [tool_analyze_phonotactics]: {phonotactics_analysis}
-7. Morfolojik Ek/Kök Tespiti [tool_extract_suffixes]: {suffixes_analysis}
-8. Canlı Web & Akademik Keşif [tool_web_search]: {json.dumps(web_results[:2], ensure_ascii=False)}
+[KANITLANMIŞ ETİMOLOJİK HİPOTEZ VE KÖKEN (GROUND TRUTH)]:
+- Hipotez Tipi: {proven_hypo.get('hypothesis_type')}
+- Kaynak Dil / Rekonstrüksiyon: {proven_hypo.get('donor_language')} -> {proven_hypo.get('origin_form')}
+- Kanıt Özeti: {proven_hypo.get('proof_summary')}
+- Anlamı: {proven_hypo.get('historical_meaning')}
 
-Yönerge protokollerine göre kelimenin etimolojisini doğrula veya otonom keşfet. Sonucunu akademik, tutarlı ve akıcı bir Türkçe sentez paragrafı olarak yaz.
+[BİLİMSEL VE NLP ARAÇ ÇIKTILARI]:
+1. IPA Fonetik Analiz: IPA={ipa_res.get('ipa')}, Ünlü Uyumu={ipa_res.get('vowel_harmony_status')}
+2. Kaynak Dil Vezin/Yapı: {json.dumps(donor_pattern_res.get('detected_donor_patterns'), ensure_ascii=False)}
+3. Tarihsel Külliyat Taraması: {json.dumps(corpus_res.get('corpus_hits'), ensure_ascii=False)}
+4. Morfolojik Ek/Kök Tespiti: {suffixes_analysis}
+5. Canlı Akademik Web Arama: {json.dumps(web_results[:2], ensure_ascii=False)}
+
+KRİTİK UYARI: Yukarıda verilen [KANITLANMIŞ ETİMOLOJİK HİPOTEZ VE KÖKEN] bilgisini BİRİNCİ ONCELİKLİ GERÇEK kabul et! Web arama çıktısındaki amatör/uydurma iddialara (Latince vestire, Portekizce vb.) KANMA ve KESİNLİKLE PARAGRAFA YAZMA!
+Sentezini kanıtlanmış donör bilgisiyle akademik, net ve tutarlı bir paragraf olarak yaz.
 """
 
         req_data = {
@@ -86,7 +93,7 @@ Yönerge protokollerine göre kelimenin etimolojisini doğrula veya otonom keşf
             "options": {
                 "num_ctx": 4096,
                 "num_predict": 512,
-                "temperature": 0.3
+                "temperature": 0.2
             }
         }
 
