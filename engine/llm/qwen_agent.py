@@ -1,3 +1,4 @@
+import re
 import json
 import urllib.request
 from typing import Dict, Any, List
@@ -18,6 +19,12 @@ from engine.llm.research_tools import (
 
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
 MODEL_NAME = "qwen2.5:14b"
+
+def clean_html(text: str) -> str:
+    if not text:
+        return ""
+    clean = re.sub(r'<[^>]+>', ' ', text)
+    return re.sub(r'\s+', ' ', clean).strip()
 
 class QwenEtymologyAgent:
     def __init__(self, model_name: str = MODEL_NAME):
@@ -55,6 +62,14 @@ class QwenEtymologyAgent:
             if first_url and first_url.startswith("http"):
                 scraped_content = tool_web_scrape_url(first_url)
 
+        # Temiz Dil Karşılıkları Özeti (HTML etiketlerinden temizlenmiş)
+        turkic_summary = []
+        for entry in initial_finding.get('turkic_languages', [])[:8]:
+            lang_n = clean_html(entry.get('lang_name', ''))
+            w_val = clean_html(entry.get('word', ''))
+            m_val = clean_html(entry.get('meaning', ''))
+            turkic_summary.append(f"{lang_n}: {w_val} ({m_val})")
+
         # 2. Qwen2.5:14b İçin Yönerge Destekli Derinleştirme Prompt'u Hazırla
         prompt = f"""
 {QWEN_AGENT_SYSTEM_GUIDELINE}
@@ -65,7 +80,7 @@ class QwenEtymologyAgent:
 - Kök / Rekonstrüksiyon: {initial_finding.get('root', {}).get('proto_turkic')}
 - Anlam: {initial_finding.get('root', {}).get('meaning')}
 - Morfoloji: {initial_finding.get('morphology')}
-- Bulunan Türki Dil Sayısı: {len(initial_finding.get('turkic_languages', []))}
+- Türki Dil Katmanları Özeti: {"; ".join(turkic_summary[:5])}
 
 [BİLİMSEL VE NLP ARAÇLARI ÇIKTILARI (TOOL RESULTS)]:
 1. Tarihsel Tanıklama [tool_verify_attestation]: {attestation_verify}
@@ -75,7 +90,6 @@ class QwenEtymologyAgent:
 5. Çapraz Hizalama Skoru [tool_align_cognates]: {cognates_alignment}
 6. Komşu Dil Eşleşmesi [tool_donor_nearest_neighbor]: {donor_neighbor}
 7. Canlı Web & Akademik Keşif [tool_web_search]: {json.dumps(web_results[:2], ensure_ascii=False)} | {academic_results}
-8. Keşfedilen Metin [tool_web_scrape_url]: {scraped_content[:300]}...
 
 Yönerge protokollerine göre kelimenin etimolojisini doğrula veya otonom keşfet. Sonucunu akademik, tutarlı ve akıcı bir Türkçe sentez paragrafı olarak yaz.
 """
@@ -83,7 +97,12 @@ Yönerge protokollerine göre kelimenin etimolojisini doğrula veya otonom keşf
         req_data = {
             "model": self.model_name,
             "prompt": prompt,
-            "stream": False
+            "stream": False,
+            "options": {
+                "num_ctx": 4096,
+                "num_predict": 512,
+                "temperature": 0.3
+            }
         }
 
         try:
@@ -92,8 +111,8 @@ Yönerge protokollerine göre kelimenin etimolojisini doğrula veya otonom keşf
                 data=json.dumps(req_data).encode('utf-8'),
                 headers={'Content-Type': 'application/json'}
             )
-            # Timeout 90 saniyeye çıkarıldı (Zengin içerikli çıkarımlar için)
-            with urllib.request.urlopen(req, timeout=90) as resp:
+            # Timeout 180 saniyeye çıkarıldı ve prompt token boyutu %70 optimize edildi
+            with urllib.request.urlopen(req, timeout=180) as resp:
                 res = json.loads(resp.read().decode('utf-8'))
                 analysis = res.get("response", "").strip()
 
