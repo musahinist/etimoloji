@@ -11,19 +11,28 @@ from typing import Dict, Any, List
 def tool_web_search(query: str) -> List[Dict[str, str]]:
     """Canlı web araması yapıp yeni akademik portallar ve etimoloji siteleri keşfeder."""
     results = []
-    clean_q = urllib.parse.quote(query.strip())
-    url = f"https://html.duckduckgo.com/html/?q={clean_q}+etimoloji"
+    clean_q = urllib.parse.quote(f"{query.strip()} etimolojisi")
+    url = f"https://html.duckduckgo.com/html/?q={clean_q}"
     try:
-        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)'})
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'})
         with urllib.request.urlopen(req, timeout=5) as resp:
             html = resp.read().decode('utf-8', errors='ignore')
-            matches = re.findall(r'<a[^>]*class="result__url"[^>]*href="([^"]+)"[^>]*>(.*?)</a>', html, re.DOTALL)
-            snippets = re.findall(r'<a[^>]*class="result__snippet"[^>]*>(.*?)</a>', html, re.DOTALL)
-            for i, (link, href_text) in enumerate(matches[:3]):
+            links = re.findall(r'<a[^>]*class=\"result__a\"[^>]*href=\"([^\"]+)\">(.*?)</a>', html, re.DOTALL)
+            snippets = re.findall(r'<a[^>]*class=\"result__snippet\"[^>]*>(.*?)</a>', html, re.DOTALL)
+            for i, (link, title_text) in enumerate(links[:3]):
+                clean_title = re.sub(r'<[^>]+>', '', title_text).strip()
                 snippet_text = re.sub(r'<[^>]+>', '', snippets[i]).strip() if i < len(snippets) else ""
+                
+                # Extract real URL from DDG redirect
+                real_url = link
+                if "uddg=" in link:
+                    m = re.search(r'uddg=([^&]+)', link)
+                    if m:
+                        real_url = urllib.parse.unquote(m.group(1))
+
                 results.append({
-                    "url": link.strip(),
-                    "title": re.sub(r'<[^>]+>', '', href_text).strip(),
+                    "url": real_url,
+                    "title": clean_title,
                     "snippet": snippet_text
                 })
     except Exception:
@@ -33,10 +42,9 @@ def tool_web_search(query: str) -> List[Dict[str, str]]:
 def tool_web_scrape_url(url: str) -> str:
     """Keşfedilen bir web sayfasını ziyaret edip etimolojik içerik ve sözlük maddelerini tam metin çeker."""
     try:
-        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)'})
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'})
         with urllib.request.urlopen(req, timeout=5) as resp:
             html = resp.read().decode('utf-8', errors='ignore')
-            # HTML etiketlerini temizle
             text = re.sub(r'<script.*?>.*?</script>', '', html, flags=re.DOTALL)
             text = re.sub(r'<style.*?>.*?</style>', '', text, flags=re.DOTALL)
             clean_text = re.sub(r'<[^>]+>', ' ', text)
