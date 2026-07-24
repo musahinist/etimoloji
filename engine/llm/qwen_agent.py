@@ -47,19 +47,18 @@ class QwenEtymologyAgent:
             return False
 
     def research_and_enrich(self, word: str, initial_finding: Dict[str, Any]) -> Dict[str, Any]:
-        """Qwen2.5:14b ajanı neologizm, gerçek kronoloji ve tam metin kazımayla sentez üretir."""
+        """Qwen2.5:14b ajanı süzülmüş metin ve optimize Ollama parametreleriyle zaman aşımsız sentez üretir."""
         if not self.is_available():
             initial_finding["ai_agent_enrichment"] = "Ollama veya qwen2.5:14b modeli aktif değil."
             return initial_finding
 
-        wiktionary_res = tool_wiktionary_multilingual_api(word)
         ipa_res = tool_ipa_phonetic_analyzer(word)
         donor_pattern_res = tool_donor_pattern_analyzer(word)
         corpus_res = tool_historical_corpus_search(word)
         suffixes_analysis = tool_extract_suffixes(word)
         
         neologism_res = self.neologism_detector.detect(word)
-        attestation_res = self.attestation_verifier.verify_attestation(word)
+        attestation_res = self.attestation_verifier.verify_attestation(word, initial_finding.get("turkic_languages"))
 
         raw_web_results = tool_web_search(word)
         full_page_web_results = scrape_full_web_pages_for_results(raw_web_results, max_pages=2)
@@ -75,26 +74,24 @@ class QwenEtymologyAgent:
 
 [ARAŞTIRILACAK KELİME]: {word}
 
-[DOĞRULANMIŞ HİPOTEZ VE KRONOLOJİ (GROUND TRUTH)]:
+[DOĞRULANMIŞ HİPOTEZ VE KRONOLOJİ]:
 - Hipotez Türü: {proven_hypo.get('hypothesis_type')}
 - Kaynak Dil / Rekonstrüksiyon: {proven_hypo.get('donor_language')} -> {proven_hypo.get('origin_form')}
-- Detay: {proven_hypo.get('proof_summary')}
-- GERÇEK İLK YAZILI TANIKLAMA TARİHİ: {attestation_res.get('first_attestation_record')}
-- NEOLOGİZM / DİL DEVRİMİ KONTROLÜ: {json.dumps(neologism_res, ensure_ascii=False) if neologism_res else 'Geleneksel Kelime'}
+- GERÇEK İLK TANIKLAMA TARİHİ: {attestation_res.get('first_attestation_record')}
+- NEOLOGİZM KONTROLÜ: {json.dumps(neologism_res, ensure_ascii=False) if neologism_res else 'Geleneksel Kelime'}
 
-[BİLİMSEL VE NLP ARAÇ ÇIKTILARI]:
-1. IPA Fonetik Yapı: IPA={ipa_res.get('ipa')}, Ünlü Uyumu={ipa_res.get('vowel_harmony_status')}
-2. Kaynak Dil Vezin/Yapı: {json.dumps(donor_pattern_res.get('detected_donor_patterns'), ensure_ascii=False)}
-3. Tarihsel Külliyat Bulguları: {json.dumps(corpus_res.get('corpus_hits'), ensure_ascii=False)}
-4. Morfolojik Ek/Kök Yapısı: {suffixes_analysis}
+[NLP VE TARİHSEL VERİLER]:
+- IPA: {ipa_res.get('ipa')} | Ünlü Uyumu: {ipa_res.get('vowel_harmony_status')}
+- Külliyat: {json.dumps(corpus_res.get('corpus_hits'), ensure_ascii=False)}
+- Morfoloji: {suffixes_analysis}
 
-[CANLI WEB SAYFALARI TAM METİN İÇERİKLERİ]:
-{json.dumps(full_page_web_results, ensure_ascii=False, indent=2)}
+[SÜZÜLMÜŞ CANLI WEB SAYFA İÇERİKLERİ]:
+{json.dumps(full_page_web_results, ensure_ascii=False)}
 
-KRİTİK UYARI:
-1. GERÇEK İLK YAZILI TANIKLAMA TARİHİ bilgisini esas al! Eğer kelime Cumhuriyet dönemi / Dil Devrimi türetmesiyse (okul, öğretmen, uçak vb.) KESİNLİKLE "13. yüzyıl Osmanlı/Çağatay el yazması" gibi uydurma tarihler YAZMA!
+KRİTİK TALİMAT:
+1. GERÇEK İLK YAZILI TANIKLAMA TARİHİ bilgisini esas al! Kelime Cumhuriyet dönemi/TDK türetmesiyse eski yüzyıl tarihi uydurma.
 2. Giriş/Gelişme/Sonuç veya Markdown başlıkları (#, ##, ###) KULLANMA. İstem talimatlarını TEKRARLAMA.
-3. Kelimenin kökenini, yapısını ve tarihsel gelişimini net ve akıcı paragraflar halinde anlat.
+3. Kelimenin etimolojik kökenini, yapısını ve tarihsel gelişimini net 2 kısa paragrafta anlat.
 """
 
         req_data = {
@@ -102,8 +99,8 @@ KRİTİK UYARI:
             "prompt": prompt,
             "stream": False,
             "options": {
-                "num_ctx": 4096,
-                "num_predict": 512,
+                "num_ctx": 2048,
+                "num_predict": 350,
                 "temperature": 0.15
             }
         }
@@ -114,7 +111,7 @@ KRİTİK UYARI:
                 data=json.dumps(req_data).encode('utf-8'),
                 headers={'Content-Type': 'application/json'}
             )
-            with urllib.request.urlopen(req, timeout=180) as resp:
+            with urllib.request.urlopen(req, timeout=120) as resp:
                 res = json.loads(resp.read().decode('utf-8'))
                 analysis = res.get("response", "").strip()
 

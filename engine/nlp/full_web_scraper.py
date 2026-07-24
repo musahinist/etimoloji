@@ -1,7 +1,7 @@
 """
 Canlı Tam Sayfa Web Kazıyıcı ve Metin Çıkarıcı (Live Full Web Content Scraper)
 Web arama sonuçlarında bulunan URL'lerin içine doğrudan girerek sayfadaki tüm makale,
-paragraf ve sözlük içeriklerini tam metin olarak okur.
+paragraf ve sözlük içeriklerini süzülmüş metin olarak okur.
 """
 import re
 import urllib.request
@@ -12,8 +12,8 @@ HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, Gecko) Chrome/120.0.0.0 Safari/537.36'
 }
 
-def fetch_full_web_page_content(url: str, max_chars: int = 1200) -> str:
-    """Verilen URL'nin tam HTML içeriğini indirir, HTML etiketlerini temizler ve metni döndürür."""
+def fetch_full_web_page_content(url: str, max_chars: int = 400) -> str:
+    """Verilen URL'nin tam HTML içeriğini indirir, HTML etiketlerini temizler ve metni süzerek döndürür."""
     if not url or not url.startswith("http"):
         return ""
 
@@ -27,7 +27,7 @@ def fetch_full_web_page_content(url: str, max_chars: int = 1200) -> str:
             
             paragraphs = re.findall(r'<p[^>]*>(.*?)</p>', clean, flags=re.DOTALL | re.IGNORECASE)
             if paragraphs:
-                text_content = " ".join([re.sub(r'<[^>]+>', ' ', p) for p in paragraphs[:3]])
+                text_content = " ".join([re.sub(r'<[^>]+>', ' ', p) for p in paragraphs[:2]])
             else:
                 text_content = re.sub(r'<[^>]+>', ' ', clean)
 
@@ -37,7 +37,7 @@ def fetch_full_web_page_content(url: str, max_chars: int = 1200) -> str:
         return ""
 
 def scrape_full_web_pages_for_results(search_results: List[Dict[str, str]], max_pages: int = 2) -> List[Dict[str, str]]:
-    """Arama sonuçlarındaki ilk N sayfanın içine girerek tam metin içeriklerini çeker."""
+    """Arama sonuçlarındaki ilk N sayfanın içine girerek süzülmüş tam metin içeriklerini çeker."""
     enriched_results = []
     
     for item in search_results[:max_pages]:
@@ -49,8 +49,8 @@ def scrape_full_web_pages_for_results(search_results: List[Dict[str, str]], max_
         enriched_results.append({
             "title": title,
             "url": url,
-            "snippet": snippet,
-            "full_page_content": full_text if full_text else snippet
+            "snippet": snippet[:150],
+            "content_summary": full_text if full_text else snippet[:150]
         })
         
     return enriched_results
