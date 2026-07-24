@@ -64,6 +64,22 @@ RECOGNIZED_SOUND_LAWS = [
         "description": "Kazakça/Kırgızca/Altayca söz başı 'y-' ~ 'j-' ~ 'c-' diyalekt kayması"
     },
     {
+        "id": "FINAL_B_V_W_DROP",
+        "name": "Söz Sonu Konsonant Düşmesi (b/v/w → ∅)",
+        "source_pattern": r"[bvw]$",
+        "target_pattern": r"[aeiouıöüuаеіоөуүы]$",
+        "valid": True,
+        "description": "Söz sonundaki b/v/w ünsüzünün Türki dil kollarında düşmesi (sub > suv > su, suğ; teŋiz gibi)"
+    },
+    {
+        "id": "FINAL_B_V_W_TO_U",
+        "name": "Söz Sonu v/w/ğ → u/ü Ünlüleşmesi",
+        "source_pattern": r"[vwğ]$",
+        "target_pattern": r"[uü]$",
+        "valid": True,
+        "description": "Söz sonundaki v/w/ğ'nın ünlüleşmesi (suv > suu, suğ > su)"
+    },
+    {
         "id": "FRENCH_LOAN_ADAPTATION",
         "name": "Fransızca/Batı Dilleri Fonotaktik Uyarlaması (c-/qu-/ch-/ph-/küp -> k-/f-/s-)",
         "source_pattern": r"^(c|qu|ch|ph|ps|st|sp|tr|pr|kl|gr|fl)",
@@ -109,9 +125,17 @@ def verify_phonetic_chain(source_form: str, target_form: str) -> Dict[str, Any]:
         if re.search(rule["source_pattern"], s) and re.search(rule["target_pattern"], t):
             matched_rules.append(rule["name"])
 
-    # Ünlü ve ünsüz iskelet benzerliği (Levenshtein / Char overlap)
-    s_clean = re.sub(r'[^a-zçğıöşüа-я]', '', s)
-    t_clean = re.sub(r'[^a-zçğıöşüа-я]', '', t)
+    # Özel fonetik karakterleri Latin eşdeğerlerine normalize et (ŕ→r, ŋ→n, ə→e, ä→a, ş→s vb.)
+    def _normalize(text: str) -> str:
+        nmap = {'ŕ': 'r', 'ŗ': 'r', 'ŋ': 'n', 'ñ': 'n', 'ə': 'e', 'ä': 'a', 'ā': 'a', 'ī': 'i',
+                'ū': 'u', 'ō': 'o', 'ś': 's', 'č': 'c', 'ž': 'z', 'ǰ': 'j', 'q': 'k', 'х': 'h'}
+        return ''.join(nmap.get(ch, ch) for ch in text)
+
+    # Ünlü ve ünsüz iskelet benzerliği (karakter kümesi kesişimi)
+    s_clean = re.sub(r'[^a-zçğıöşüа-яŕŗŋñəäāīūōśčžǰq]', '', _normalize(s))
+    t_clean = re.sub(r'[^a-zçğıöşüа-яŕŗŋñəäāīūōśčžǰq]', '', _normalize(t))
+    s_clean = re.sub(r'[^a-zçğıöşü]', '', s_clean)
+    t_clean = re.sub(r'[^a-zçğıöşü]', '', t_clean)
 
     # Temel karakter kesişim oranı
     common_chars = set(s_clean).intersection(set(t_clean))
@@ -122,7 +146,14 @@ def verify_phonetic_chain(source_form: str, target_form: str) -> Dict[str, Any]:
         violations.append(f"'{s}' ile '{t}' arasında tanımlı hiç bir fonetik evrim kuralı veya iskelet benzerliği bulunamadı (Broken Phonetic Chain).")
 
     is_valid = len(violations) == 0
-    score = 0.95 if (matched_rules and is_valid) else (0.75 if is_valid else 0.20)
+    if matched_rules and is_valid:
+        score = 0.95
+    elif is_valid and char_similarity >= 0.60:
+        score = 0.85  # İyi iskelet benzerliği, kural henüz tanımlanmamış
+    elif is_valid and char_similarity >= 0.30:
+        score = 0.75  # Kabul edilebilir iskelet benzerliği
+    else:
+        score = 0.20  # Fonetik halka kırık
 
     return {
         "is_valid": is_valid,

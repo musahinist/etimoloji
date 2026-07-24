@@ -83,6 +83,17 @@ class NisanyanFetcher(BaseFetcher):
                     result["root"]["proto_turkic"] = f"*{etü_word}"
                     result["root"]["meaning"] = etü_meaning
 
+                # Alıntı köken tespiti (Ermenice, Grekçe, Farsça, Arapça, Fransızca, İtalyanca vb.)
+                donor_match = re.search(r'(Ermenice|Grekçe|Farsça|Arapça|Fransızca|İtalyanca|Rumca|Latince|Eski Farsça|Süryanice)\s+([a-zçğıöşüA-ZÇĞİÖŞÜ\*\'\`\-]+)\s+“([^”]+)”', text_full)
+                if donor_match:
+                    d_lang = donor_match.group(1).strip()
+                    d_word = donor_match.group(2).strip()
+                    d_meaning = donor_match.group(3).strip()
+                    result["root"]["proto_turkic"] = f"[{d_lang}] {d_word}"
+                    if not result["root"]["meaning"]:
+                        result["root"]["meaning"] = d_meaning
+                    result["root"]["reconstruction_notes"] = f"Nişanyan Alıntı Kaynağı: {d_lang} '{d_word}' ({d_meaning})"
+
                 # Ana Türkçe / Proto-Turkic kök tespiti
                 root_match = re.search(r'\*([a-zçğıöşüA-ZÇĞİÖŞÜ\-]+)\s+“([^”]+)”', text_full)
                 if root_match:
@@ -92,7 +103,9 @@ class NisanyanFetcher(BaseFetcher):
                     if not result["root"]["meaning"]:
                         result["root"]["meaning"] = proto_m
 
-                result["root"]["reconstruction_notes"] = f"Nişanyan Etimoloji: {text_full[:300]}..."
+                if not result["root"]["reconstruction_notes"]:
+                    result["root"]["reconstruction_notes"] = f"Nişanyan Etimoloji: {text_full[:300]}..."
+
         except Exception:
             pass
 

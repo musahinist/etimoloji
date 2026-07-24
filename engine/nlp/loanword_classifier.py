@@ -87,12 +87,17 @@ class LoanwordClassifier:
 
         if p_native >= 0.65:
             classification = "Asli Öz Türkçe (Native Turkic)"
+        elif p_greek_latin > p_arabic_persian and p_greek_latin >= p_western:
+            classification = "Grekçe / Bizans / Latince / Ermenice Alıntısı"
+        elif p_greek_latin == p_arabic_persian and w.startswith(('h', 'k', 'p', 'f')):
+            classification = "Akdeniz / Ermenice / Grekçe / Doğu Alıntısı"
         elif p_arabic_persian >= max(p_greek_latin, p_western):
             classification = "Arapça / Farsça Alıntısı (Doğu Alıntısı)"
         elif p_greek_latin >= p_western:
             classification = "Grekçe / Bizans / Latince / Ermenice Alıntısı"
         else:
             classification = "Batı Dilleri Alıntısı (Fransızca / İngilizce)"
+
 
         return {
             "word": w,

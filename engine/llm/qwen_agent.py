@@ -68,12 +68,26 @@ class QwenEtymologyAgent:
         val_report = proven_hypo.get("validation_report", {}) or {}
 
         proto_r = initial_finding.get('root', {}).get('proto_turkic', word)
-        sound_matrix_res = tool_sound_change_matrix(word, proto_r)
+        root_meaning = initial_finding.get('root', {}).get('meaning', '')
+        turkic_entries = initial_finding.get('turkic_languages', [])
+
+        # Sözlük maddelerini özetle
+        entries_summary = []
+        for e in turkic_entries[:6]:
+            lname = e.get("lang_name", "")
+            w_form = e.get("word", "")
+            m_text = e.get("meaning", "")
+            if m_text and not m_text.startswith("Online"):
+                entries_summary.append(f"{lname} ({w_form}): {m_text}")
 
         prompt = f"""
 {QWEN_AGENT_SYSTEM_GUIDELINE}
 
 [ARAŞTIRILACAK KELİME]: {word}
+
+[SÖZLÜK VE AKADEMİK VERİ KATMANI (KESİN ANLAM KANITLARI)]:
+- Tespit Edilen Ana Anlam: {root_meaning if root_meaning else 'Yerel/Ağız Anlamı'}
+- Gerçek Sözlük Maddeleri ve Anlamları: {json.dumps(entries_summary, ensure_ascii=False) if entries_summary else 'Sözlük kaydı'}
 
 [A-HVP AKADEMİK HAKEM PROTOKOLÜ ROZETİ VE DOĞRULAMA ÇIKTISI]:
 - Hakem Kararı & Rozet: {val_report.get('badge', 'Bilinmiyor')}
@@ -94,11 +108,14 @@ class QwenEtymologyAgent:
 - Canlı Web Keşifleri: {json.dumps(full_page_web_results, ensure_ascii=False)}
 
 TALİMAT:
-1. GERÇEK İLK YAZILI TANIKLAMA TARİHİ ve A-HVP HAKEM PROTOKOLÜ kararlarını kesin esas al.
-2. Hakem kararı REJECTED ise bunun gerekçesini açıkla. Hakem kararı VALIDATED ise köken bağını bilimsel doğrula.
-3. Giriş/Gelişme/Sonuç veya Markdown başlıkları (#, ##, ###) KULLANMA. İstem talimatlarını TEKRARLAMA.
-4. Kelimenin etimolojik kökenini, yapısını ve tarihsel gelişimini net 2 kısa paragrafta anlat.
+1. [SÖZLÜK VE AKADEMİK VERİ KATMANI] bölümünde sunulan doğrulanmış sözlük maddelerini ve tanım anlamlarını KESİNLİKLE esas al. Sözlük kayıtlarında bulunmayan temelsiz anlamlar veya varsayımsal türetimler üretme!
+2. GERÇEK İLK YAZILI TANIKLAMA TARİHİ ve A-HVP HAKEM PROTOKOLÜ kararlarını esas al.
+3. Hakem kararı REJECTED ise bunun gerekçesini açıkla. Hakem kararı VALIDATED ise köken bağını bilimsel doğrula.
+4. Giriş/Gelişme/Sonuç veya Markdown başlıkları (#, ##, ###) KULLANMA. İstem talimatlarını TEKRARLAMA.
+5. Kelimenin etimolojik kökenini, veri katmanındaki gerçek anlamını ve tarihsel gelişimini net 2 kısa paragrafta anlat.
 """
+
+
 
         req_data = {
             "model": self.model_name,

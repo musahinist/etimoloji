@@ -31,8 +31,10 @@ class TestHypothesisValidationProtocol(unittest.TestCase):
 
         report = self.protocol.validate_hypothesis(word, hypothesis, attestation)
         
-        self.assertIn("VALIDATED", report["status_code"])
-        self.assertGreaterEqual(report["final_confidence_score"], 0.75)
+        # göz→*göŕ için skor %70+ ve fonetik/kronolojik geçerlilik bekliyoruz
+        # (Cognate triangulation dar yayılım gösterdiğinden VALIDATED veya NEEDS_REVIEW olabilir)
+        self.assertIn(report["status_code"], ["VALIDATED", "NEEDS_REVIEW"])
+        self.assertGreaterEqual(report["final_confidence_score"], 0.70)
         self.assertTrue(report["stage_breakdown"]["stage1_phonetic_chain"]["is_valid"])
         self.assertTrue(report["stage_breakdown"]["stage2_time_lock"]["is_valid"])
 

@@ -23,6 +23,8 @@ from engine.fetchers.tdk_nisanyan import NisanyanFetcher, TdkFetcher
 from engine.fetchers.tdk_historical import TdkTaramaFetcher, TdkDerlemeFetcher
 from engine.fetchers.wiktionary import WiktionaryFetcher
 from engine.fetchers.multilang_wiktionary import MultiLangWiktionaryFetcher
+from engine.fetchers.wiktextract_local import WiktextractFetcher
+
 
 from engine.nlp.loanword_classifier import LoanwordClassifier
 from engine.nlp.cognate_alignment import CognateAlignmentEngine
@@ -121,8 +123,10 @@ class SearchEngine:
             TdkTaramaFetcher(),
             TdkDerlemeFetcher(),
             WiktionaryFetcher(),
-            MultiLangWiktionaryFetcher()
+            MultiLangWiktionaryFetcher(),
+            WiktextractFetcher()
         ]
+
 
     def search(self, query: str, save_to_db: bool = True, use_qwen_agent: bool = False) -> Dict[str, Any]:
         word_clean = query.strip().lower()
@@ -245,6 +249,7 @@ class SearchEngine:
         finding = {
             "query_word": word_clean,
             "morphology": morphology_info,
+            "turkic_languages": sorted_entries,
             "root": {
                 "proto_turkic": proto_root or word_clean,
                 "meaning": root_meaning or word_clean,
