@@ -1,12 +1,13 @@
 """
 Otonom Hipotez Kurucu ve Doğrulayıcı Döngüsü (Iterative Hypothesis Prover Engine)
-Kelimeyi inceleyip neologizm, donör alıntısı veya Öz Türkçe kök hipotezlerini otonom test ederek kanıtlar.
+Kelimeyi inceleyip neologizm, donör alıntısı veya Öz Türkçe kök hipotezlerini otonom test eder ve A-HVP protokolü ile doğrular.
 """
 from typing import Dict, Any, List
 from engine.nlp.donor_etymology_database import DeepDonorEtymologyDatabase
 from engine.nlp.neologism_detector import NeologismDetector
 from engine.nlp.historical_attestation_verifier import HistoricalAttestationVerifier
 from engine.nlp.trusted_whitelisted_scraper import scrape_whitelisted_academic_sources
+from engine.nlp.hypothesis_validation_protocol import HypothesisValidationProtocol
 from engine.utils.morphology import NON_TURKIC_INITIAL_CONSONANTS
 
 class IterativeHypothesisEngine:
@@ -14,6 +15,7 @@ class IterativeHypothesisEngine:
         self.donor_db = DeepDonorEtymologyDatabase()
         self.neologism_detector = NeologismDetector()
         self.attestation_verifier = HistoricalAttestationVerifier()
+        self.validator_protocol = HypothesisValidationProtocol()
 
     def prove_etymological_hypothesis(self, word: str, initial_finding: Dict[str, Any]) -> Dict[str, Any]:
         w = word.strip().lower()
@@ -24,7 +26,12 @@ class IterativeHypothesisEngine:
         donor_match = self.donor_db.lookup(w)
         academic_scrapes = scrape_whitelisted_academic_sources(w)
 
-        # 2. ADIM: Hipotez Sıralaması ve Testi
+        raw_proto = initial_finding.get("root", {}).get("proto_turkic", w)
+        clean_proto = (raw_proto or w).strip().lstrip("*")
+        if not clean_proto:
+            clean_proto = w
+
+        # 2. ADIM: Hipotez Oluşturma
         if neologism_match:
             best_hypothesis = {
                 "hypothesis_type": "Cumhuriyet Dönemi Dil Devrimi Özleştirme Türetmesi (Neologism Hypothesis)",
@@ -57,14 +64,20 @@ class IterativeHypothesisEngine:
                 "hypothesis_type": "Asli Öz Türkçe Köken Hipotezi (Native Proto-Turkic Hypothesis)",
                 "confidence_score": 0.90,
                 "donor_language": "Proto-Türkçe",
-                "origin_form": f"*{initial_finding.get('root', {}).get('proto_turkic', w)}",
+                "origin_form": f"*{clean_proto}",
                 "proof_summary": f"Söz başı harfi, hece yapısı ve ses uyumu Öz Türkçe kurallarına uygundur. {attestation_record['first_attestation_record']}",
                 "historical_meaning": initial_finding.get("root", {}).get("meaning", w)
             }
+
+        # 3. ADIM: A-HVP (AI Hypothesis Validation Protocol) İle Otomatik Doğrulama ve Hakemlik
+        validation_report = self.validator_protocol.validate_hypothesis(w, best_hypothesis, attestation_record)
+        best_hypothesis["validation_report"] = validation_report
+        best_hypothesis["confidence_score"] = validation_report["final_confidence_score"]
 
         return {
             "word": w,
             "proven_hypothesis": best_hypothesis,
             "attestation": attestation_record,
-            "academic_whitelisted_sources": academic_scrapes
+            "academic_whitelisted_sources": academic_scrapes,
+            "validation_report": validation_report
         }

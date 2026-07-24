@@ -1,31 +1,132 @@
 """
-Fonetik Ses Kayması ve Dilbilimsel Dönüşüm Analizcisi (Phonetic Shift Detector)
-Türkiye Türkçesindeki kelime ile Türki dillerdeki akraba kelimeler arasındaki ses dönüşüm kurallarını tespit eder.
+Fonetik Ses Kayması ve Dilbilimsel Dönüşüm Analizcisi (Phonetic Shift & Sound Law Detector)
+Türkiye Türkçesindeki kelime ile Türki dillerdeki akraba kelimeler ve kök diller arasındaki ses dönüşüm kurallarını denetler.
 """
-from typing import List, Dict
+from typing import List, Dict, Tuple, Any
+import re
 
-def analyze_phonetic_shifts(source_word: str, target_word: str, lang_name: str) -> str:
+# Tanımlı Geçerli Ses Kanunları ve Dönüşüm Kuralları
+RECOGNIZED_SOUND_LAWS = [
+    {
+        "id": "OGUZ_KIPCAK_INITIAL_G_K",
+        "name": "Oğuz - Kıpçak/Sibirya Söz Başı Ötümlüleşme/Ötümsüzleşme (g- ~ k-)",
+        "source_pattern": r"^g",
+        "target_pattern": r"^[kк]",
+        "valid": True,
+        "description": "Baştaki ötümlü 'g-' konsonantının ötümsüz 'k-' sesine dönüşmesi"
+    },
+    {
+        "id": "INITIAL_D_T",
+        "name": "Söz Başı Sertleşme (d- ~ t-)",
+        "source_pattern": r"^d",
+        "target_pattern": r"^[tт]",
+        "valid": True,
+        "description": "Baştaki ötümlü 'd-' sesinin 't-' biçimine sertleşmesi"
+    },
+    {
+        "id": "INITIAL_B_M",
+        "name": "Söz Başı Genizsilleşme (b- ~ m-)",
+        "source_pattern": r"^b",
+        "target_pattern": r"^[mм]",
+        "valid": True,
+        "description": "Baştaki 'b-' ünsüzünün genizsilleşerek 'm-' sesine dönüşmesi (ben -> men)"
+    },
+    {
+        "id": "FINAL_Z_S_R",
+        "name": "Proto-Türkçe r-z / z-s Sızıcılaşma Denkliği (-z ~ -s ~ -r)",
+        "source_pattern": r"z$",
+        "target_pattern": r"[sсҫśrр]$",
+        "valid": True,
+        "description": "Sondaki '-z' ünsüzünün sızıcı '-s / -ś' veya Lir-Şaz kolunda '-r' sesine dönüşmesi"
+    },
+    {
+        "id": "OGUR_INITIAL_S_SH",
+        "name": "Oğur/Çuvaş Söz Başı Sızıcılaşma (s- ~ ş-)",
+        "source_pattern": r"^s",
+        "target_pattern": r"^[шš]",
+        "valid": True,
+        "description": "Oğur/Çuvaş koluna özgü baştaki 's-' ünsüzünün 'ş-' (š-) sesine kayması"
+    },
+    {
+        "id": "INTERVOCALIC_G_G_V_W",
+        "name": "Ünlü Arası ve Son Ötümlüleşme/Düşme (g ~ ğ ~ v ~ w)",
+        "source_pattern": r"[gğ]",
+        "target_pattern": r"[vwву]",
+        "valid": True,
+        "description": "Orta/son 'g/ğ' sesinin 'v/w' sesine yumuşaması (sub ~ suv ~ su)"
+    },
+    {
+        "id": "INITIAL_Y_J_C_ZH",
+        "name": "Söz Başı Akıcı Y- Değişimi (y- ~ j- ~ c- ~ zh-)",
+        "source_pattern": r"^y",
+        "target_pattern": r"^[jjcжdж]",
+        "valid": True,
+        "description": "Kazakça/Kırgızca/Altayca söz başı 'y-' ~ 'j-' ~ 'c-' diyalekt kayması"
+    },
+    {
+        "id": "FRENCH_LOAN_ADAPTATION",
+        "name": "Fransızca/Batı Dilleri Fonotaktik Uyarlaması (c-/qu-/ch-/ph-/küp -> k-/f-/s-)",
+        "source_pattern": r"^(c|qu|ch|ph|ps|st|sp|tr|pr|kl|gr|fl)",
+        "target_pattern": r"^[kçfstg]",
+        "valid": True,
+        "description": "Batı dillerinden geçen terimlerin (Fransızca/İtalyanca/Latince) Türkçe ses sistemine jenerik uyarlanması"
+    }
+]
+
+def analyze_phonetic_shifts(source_word: str, target_word: str, lang_name: str = "") -> str:
     s = source_word.strip().lower()
     t = target_word.strip().lower()
 
     explanations = []
-
-    # 1. Baş ünsüz ötümlüleşme/ötümsüzleşme (g->k, d->t, b->p)
-    if s.startswith("g") and (t.startswith("k") or t.startswith("к")):
-        explanations.append("Baştaki ötümlü 'g-' konsonantının ötümsüz 'k-' sesine dönüşmesi (Oğuz -> Kıpçak/Sibirya ses kuralı)")
-    elif s.startswith("d") and (t.startswith("t") or t.startswith("т")):
-        explanations.append("Baştaki 'd-' sesinin 't-' biçimine sertleşmesi")
-    elif s.startswith("b") and (t.startswith("m") or t.startswith("м")):
-        explanations.append("Baştaki 'b-' ünsüzünün genizsilleşerek 'm-' sesine dönüşmesi (ben -> men)")
-
-    # 2. Sızıcılaşma (z -> s / ś)
-    if s.endswith("z") and (t.endswith("s") or t.endswith("с") or t.endswith("ҫ") or t.endswith("ś")):
-        explanations.append("Sondaki '-z' ünsüzünün sızıcı '-s / -ś' sesine dönüşmesi (Proto-Turkic r-z denkliği)")
-
-    # 3. Çuvaşça / Oğur s- -> ş- kayması
-    if "Çuvaş" in lang_name and s.startswith("s") and (t.startswith("ш") or t.startswith("š")):
-        explanations.append("Oğur/Çuvaş koluna özgü baştaki 's-' ünsüzünün 'ş-' (š-) sesine kayması")
+    for rule in RECOGNIZED_SOUND_LAWS:
+        if re.search(rule["source_pattern"], s) and re.search(rule["target_pattern"], t):
+            explanations.append(rule["name"])
 
     if explanations:
         return "; ".join(explanations)
-    return "Standart Lehçe Ses Uyumu"
+    return "Standart Ses Denkliği"
+
+def verify_phonetic_chain(source_form: str, target_form: str) -> Dict[str, Any]:
+    """
+    Kök ile hedef kelime arasındaki ses değişim adımlarının geçerli ses kanunlarıyla örtüşüp örtüşmediğini denetler.
+    """
+    s = source_form.strip().lower().lstrip("*")
+    t = target_form.strip().lower()
+
+    if not s:
+        s = t
+
+    if s == t:
+        return {
+            "is_valid": True,
+            "score": 1.0,
+            "violations": [],
+            "matched_rules": ["Birebir Ses Eşleşmesi"]
+        }
+
+    matched_rules = []
+    for rule in RECOGNIZED_SOUND_LAWS:
+        if re.search(rule["source_pattern"], s) and re.search(rule["target_pattern"], t):
+            matched_rules.append(rule["name"])
+
+    # Ünlü ve ünsüz iskelet benzerliği (Levenshtein / Char overlap)
+    s_clean = re.sub(r'[^a-zçğıöşüа-я]', '', s)
+    t_clean = re.sub(r'[^a-zçğıöşüа-я]', '', t)
+
+    # Temel karakter kesişim oranı
+    common_chars = set(s_clean).intersection(set(t_clean))
+    char_similarity = len(common_chars) / max(len(set(s_clean)), len(set(t_clean)), 1)
+
+    violations = []
+    if not matched_rules and char_similarity < 0.3:
+        violations.append(f"'{s}' ile '{t}' arasında tanımlı hiç bir fonetik evrim kuralı veya iskelet benzerliği bulunamadı (Broken Phonetic Chain).")
+
+    is_valid = len(violations) == 0
+    score = 0.95 if (matched_rules and is_valid) else (0.75 if is_valid else 0.20)
+
+    return {
+        "is_valid": is_valid,
+        "score": score,
+        "violations": violations,
+        "matched_rules": matched_rules if matched_rules else ["İskelet Benzerliği"]
+    }

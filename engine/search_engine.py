@@ -29,6 +29,10 @@ from engine.nlp.cognate_alignment import CognateAlignmentEngine
 from engine.nlp.reconstruction import ProtoTurkicReconstructor
 from engine.nlp.donor_search import DonorSearchEngine
 from engine.nlp.iterative_hypothesis_engine import IterativeHypothesisEngine
+from engine.nlp.iterative_hypothesis_prover import IterativeHypothesisProver
+from engine.nlp.cldf_lingpy_aligner import CldfLingPyAligner
+from engine.nlp.diachronic_semantic_engine import DiachronicSemanticEngine
+from engine.nlp.sound_law_induction import SoundLawInductionEngine
 
 from engine.utils.morphology import analyze_morphology
 from engine.utils.transliteration import transliterate_to_latin
@@ -38,6 +42,7 @@ from engine.utils.cognates import get_related_cognates
 from engine.utils.variant_expander import generate_dynamic_phonetic_variants
 from engine.utils.reference_resolver import extract_cross_references
 from engine.db.database import DatabaseManager
+from engine.db.graph_database import GraphDatabaseManager
 from engine.llm.qwen_agent import QwenEtymologyAgent
 
 MEANING_TRANSLATIONS = {
@@ -82,14 +87,19 @@ def translate_meaning(meaning: str) -> str:
 class SearchEngine:
     def __init__(self, db_manager: Optional[DatabaseManager] = None):
         self.db = db_manager or DatabaseManager()
+        self.graph_db = GraphDatabaseManager()
         self.qwen_agent = QwenEtymologyAgent()
 
-        # NLP Suite Modülleri
+        # NLP & İleri Hesaplamalı Modüller
         self.loanword_classifier = LoanwordClassifier()
         self.cognate_alignment_engine = CognateAlignmentEngine()
         self.reconstructor = ProtoTurkicReconstructor()
         self.donor_search_engine = DonorSearchEngine()
         self.hypothesis_engine = IterativeHypothesisEngine()
+        self.hypothesis_prover = IterativeHypothesisProver()
+        self.lingpy_aligner = CldfLingPyAligner()
+        self.semantic_engine = DiachronicSemanticEngine()
+        self.sound_law_induction = SoundLawInductionEngine()
 
         self.fetchers: List[BaseFetcher] = [
             AcademicTurkologyFetcher(),
@@ -114,103 +124,66 @@ class SearchEngine:
             MultiLangWiktionaryFetcher()
         ]
 
-    def _execute_fetcher(self, fetcher: BaseFetcher, word: str) -> tuple[BaseFetcher, Optional[Dict[str, Any]]]:
-        try:
-            res = fetcher.fetch(word)
-            return fetcher, res
-        except Exception:
-            return fetcher, None
+    def search(self, query: str, save_to_db: bool = True, use_qwen_agent: bool = False) -> Dict[str, Any]:
+        word_clean = query.strip().lower()
 
-    def search(self, word: str, save_to_db: bool = True, trigger_bg_warmup: bool = True, use_qwen_agent: bool = False) -> Dict[str, Any]:
-        word_clean = word.strip().lower()
-        if not word_clean:
-            raise ValueError("Arama için geçerli bir kelime giriniz.")
+        if save_to_db and not use_qwen_agent:
+            cached = self.db.get_finding(word_clean)
+            if cached:
+                cached["from_cache"] = True
+                return cached
 
-        # Morfolojik kök ve ek analizi yap
         stem, suffixes = analyze_morphology(word_clean)
 
-        # 1. Önce veritabanında arat (use_qwen_agent zorlanmadıkça)
-        if not use_qwen_agent:
-            existing_finding = self.db.get_finding(word_clean)
-            if existing_finding:
-                existing_finding["from_cache"] = True
-                return existing_finding
+        search_variants = list(set([word_clean, stem] + generate_dynamic_phonetic_variants(word_clean)))
 
-        # 2. Dinamik Zeki Diyalekt Varyantlarını Üret
-        target_words = generate_dynamic_phonetic_variants(word_clean)
-        if stem != word_clean and stem not in target_words:
-            target_words.append(stem)
-
-        # 3. Tüm 20 veri toplayıcıyı PARALEL çalıştır
         proto_root = ""
         root_meaning = ""
-        reconstruction_notes = ""
         sources = []
         turkic_entries_map = {}
-        processed_targets = set()
 
-        idx = 0
-        while idx < len(target_words):
-            target = target_words[idx]
-            idx += 1
-            if target in processed_targets:
-                continue
-            processed_targets.add(target)
+        def fetch_worker(fetcher: BaseFetcher):
+            results = []
+            for var in search_variants:
+                res = fetcher.fetch(var)
+                if res and (res.get("turkic_languages") or res.get("proto_turkic")):
+                    results.append(res)
+            return fetcher, results
 
-            with concurrent.futures.ThreadPoolExecutor(max_workers=len(self.fetchers)) as executor:
-                futures = [executor.submit(self._execute_fetcher, fetcher, target) for fetcher in self.fetchers]
-                for future in concurrent.futures.as_completed(futures):
-                    fetcher, res = future.result()
-                    if not res:
-                        continue
+        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+            future_to_fetcher = {executor.submit(fetch_worker, f): f for f in self.fetchers}
+            for future in concurrent.futures.as_completed(future_to_fetcher):
+                fetcher = future_to_fetcher[future]
+                try:
+                    fetcher_obj, results = future.result()
+                    for res in results:
+                        root_info = res.get("root", {})
+                        if root_info.get("proto_turkic") and not proto_root:
+                            proto_root = root_info.get("proto_turkic")
+                        if root_info.get("meaning") and not root_meaning:
+                            root_meaning = translate_meaning(root_info.get("meaning"))
 
-                    root_info = res.get("root", {})
-                    if not proto_root and root_info.get("proto_turkic"):
-                        proto_root = root_info.get("proto_turkic")
-                    if not root_meaning and root_info.get("meaning"):
-                        root_meaning = root_info.get("meaning")
-                    if not reconstruction_notes and root_info.get("reconstruction_notes"):
-                        reconstruction_notes = root_info.get("reconstruction_notes")
-
-                    for entry in res.get("turkic_languages", []):
-                        code = entry.get("lang_code")
-                        entry_word = entry.get('word', '')
-                        
-                        latin_trans = transliterate_to_latin(entry_word)
-                        if latin_trans != entry_word and not "(" in entry_word:
-                            entry["word"] = f"{entry_word} ({latin_trans})"
-
-                        shift_analysis = analyze_phonetic_shifts(word_clean, entry_word, entry.get("lang_name", ""))
-                        entry["phonetic_shift"] = shift_analysis
-
-                        geo_info = tag_geographical_region(entry.get("lang_name", "") + " " + entry.get("meaning", ""))
-                        if geo_info.get("geo_coordinates"):
-                            entry["geo_tag"] = geo_info
-
-                        raw_m = entry.get("meaning", "")
-                        cross_refs = extract_cross_references(raw_m)
-                        for ref_word in cross_refs:
-                            if ref_word not in target_words and ref_word not in processed_targets:
-                                target_words.append(ref_word)
-
-                        key = f"{code}_{entry.get('word')}"
-                        entry["meaning"] = translate_meaning(raw_m)
-
-                        if key not in turkic_entries_map:
-                            turkic_entries_map[key] = entry
-                        elif turkic_entries_map[key].get("meaning") in ["", f"Online {TURKIC_LANGUAGES_MAP.get(code, '')} Sözlük kaydı"]:
-                            if entry.get("meaning") and not entry.get("meaning").startswith("Online"):
+                        for entry in res.get("turkic_languages", []):
+                            entry["meaning"] = translate_meaning(entry.get("meaning", ""))
+                            entry["phonetic_shift"] = analyze_phonetic_shifts(word_clean, entry.get("word", ""), entry.get("lang_name", ""))
+                            key = (entry["lang_code"], entry["word"])
+                            if key not in turkic_entries_map:
                                 turkic_entries_map[key] = entry
+                            elif turkic_entries_map[key].get("meaning") in ["", f"Online {TURKIC_LANGUAGES_MAP.get(entry['lang_code'], '')} Sözlük kaydı"]:
+                                if entry.get("meaning") and not entry.get("meaning").startswith("Online"):
+                                    turkic_entries_map[key] = entry
 
-                    if res.get("turkic_languages") or root_info.get("proto_turkic"):
-                        sources.append(fetcher.source_name)
+                        if res.get("turkic_languages") or root_info.get("proto_turkic"):
+                            sources.append(fetcher.source_name)
+                except Exception:
+                    pass
 
         sorted_entries = sorted(
             list(turkic_entries_map.values()),
             key=lambda x: (0 if x["lang_code"] == "otk" else (0.3 if x["lang_code"] == "ai" else (0.5 if x["lang_code"] == "donor" else 1)), x["lang_name"])
         )
 
-        # 4. KÖKEN NLP VE OTONOM HİPOTEZ HESAPLAMALARI
+        # 4. KÖKEN NLP VE OTONOM İNATÇI HİPOTEZ REKONSTRÜKSİYONU
         loan_eval = self.loanword_classifier.classify(word_clean)
         cognate_eval = self.cognate_alignment_engine.evaluate_cognate_distribution(word_clean, sorted_entries)
         reconstruction_eval = self.reconstructor.reconstruct_proto_form(word_clean, sorted_entries)
@@ -221,7 +194,19 @@ class SearchEngine:
         }
         proven_hypothesis_eval = self.hypothesis_engine.prove_etymological_hypothesis(word_clean, finding_temp)
 
-        # Donör veritabanında kesin eşleşme bulunduysa kök ve anlam bilgilerini güncelle
+        # Çözülmemiş / Etimolojisi Sözlükte Kayıtlı Olmayan Kelimeler İçin Otonom İnatçı Prover
+        unattested_prover_eval = self.hypothesis_prover.prove_unattested_word(word_clean, sorted_entries)
+
+        # Eğer bilinen sözlüklerden kök bulunamadıysa Otonom AI Hypothesis PR'ını devreye sok
+        if not proto_root or proto_root == word_clean:
+            hypo_pr = unattested_prover_eval["proven_hypothesis"]
+            proto_root = hypo_pr.get("origin_form", f"*{word_clean}")
+            proven_hypothesis_eval["proven_hypothesis"] = hypo_pr
+
+        lingpy_eval = self.lingpy_aligner.align_sequences(proto_root or word_clean, word_clean)
+        semantic_eval = self.semantic_engine.evaluate_diachronic_trajectory(root_meaning or word_clean, word_clean)
+        sound_law_induced = self.sound_law_induction.induce_sound_law(proto_root or word_clean, word_clean)
+
         if proven_hypothesis_eval.get("proven_hypothesis", {}).get("confidence_score", 0) >= 0.95:
             hypo = proven_hypothesis_eval["proven_hypothesis"]
             proto_root = hypo.get("origin_form", proto_root)
@@ -248,6 +233,15 @@ class SearchEngine:
         morphology_info = f"Kök: {stem} + Ekler: {', '.join(suffixes)}" if suffixes else "Yalın Kök"
         related_cognates = get_related_cognates(stem) or get_related_cognates(word_clean)
 
+        # 5. Neo4j Uyumlu Graf Veritabanı Düğüm Şeması Oluşturma
+        graph_export = self.graph_db.build_etymology_graph(
+            word=word_clean,
+            root_form=proto_root or word_clean,
+            hypothesis=proven_hypothesis_eval.get("proven_hypothesis", {}),
+            attestations=timeline,
+            cognates=related_cognates
+        )
+
         finding = {
             "query_word": word_clean,
             "morphology": morphology_info,
@@ -261,20 +255,22 @@ class SearchEngine:
                 "cognate_distribution": cognate_eval,
                 "reconstruction": reconstruction_eval,
                 "donor_matching": donor_eval,
-                "proven_hypothesis": proven_hypothesis_eval.get("proven_hypothesis")
+                "proven_hypothesis": proven_hypothesis_eval.get("proven_hypothesis"),
+                "unattested_word_reconstruction": unattested_prover_eval,
+                "lingpy_alignment": lingpy_eval,
+                "diachronic_semantic_drift": semantic_eval,
+                "induced_sound_laws": sound_law_induced
             },
+            "graph_database": graph_export,
             "timeline": list(dict.fromkeys(timeline)),
             "related_cognates": related_cognates,
-            "turkic_languages": sorted_entries,
             "sources": sorted(list(set(sources))),
             "from_cache": False
         }
 
-        # 6. Qwen2.5:14b Bilimsel Otonom Ajan Zenginleştirmesi
         if use_qwen_agent:
             finding = self.qwen_agent.research_and_enrich(word_clean, finding)
 
-        # 7. Veritabanına kaydet
         if save_to_db:
             self.db.save_finding(finding)
 

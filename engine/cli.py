@@ -6,6 +6,7 @@ from typing import Dict, Any
 
 from engine.search_engine import SearchEngine
 from engine.db.database import DatabaseManager
+from engine.nlp.hypothesis_validation_protocol import HypothesisValidationProtocol
 
 def print_finding_formatted(finding: Dict[str, Any]) -> None:
     query_word = finding.get("query_word", "")
@@ -29,7 +30,36 @@ def print_finding_formatted(finding: Dict[str, Any]) -> None:
     print(f" 📖 Anlam                     : {root.get('meaning', 'Bilinmiyor')}")
     print(f" 📚 Kaynak Portföyü           : {', '.join(sources)}")
 
-    # 2. TÜRKİ DİLLERDEKİ ANLAMLARI VE KARŞILIKLARI (VERİ KATMANI - EN ÜSTE)
+    # 2. A-HVP (YAPAY ZEKA HİPOTEZ DOĞRULAMA VE HAKEMLİK PROTOKOLÜ) ÇIKTISI
+    proven_hypo = nlp_analysis.get("proven_hypothesis") or {}
+    val_report = proven_hypo.get("validation_report") or {}
+    if val_report:
+        print("\n" + "─" * 80)
+        print(" ⚖️  A-HVP (AI HYPOTHESIS VALIDATION PROTOCOL) HAKEM RAPORU")
+        print("─" * 80)
+        print(f"  • Hakem Kararı & Rozet      : {val_report.get('badge')}")
+        print(f"  • Genel Güven Skoru          : {val_report.get('score_percentage')} ({val_report.get('final_confidence_score')})")
+        print(f"  • Hipotez Türü              : {proven_hypo.get('hypothesis_type')}")
+        print(f"  • Kaynak Form / Ata Biçim    : {proven_hypo.get('origin_form')}")
+        
+        stages = val_report.get("stage_breakdown", {})
+        s1 = stages.get("stage1_phonetic_chain", {})
+        s2 = stages.get("stage2_time_lock", {})
+        s3 = stages.get("stage3_semantic_drift", {})
+        s4 = stages.get("stage4_cognate_triangulation", {})
+
+        print(f"  • 1. Fonetik Halka (IPA Kuralları): {'✅ GEÇTİ' if s1.get('is_valid') else '❌ İHLAL'} -> Eşleşen Ses Kuralları: {', '.join(s1.get('matched_rules', []))}")
+        print(f"  • 2. Kronolojik Zaman Kilidi : {'✅ GEÇTİ' if s2.get('is_valid') else '❌ ANAKRONİZM'}")
+        print(f"  • 3. Semantik Yörünge Sınırı : {'✅ GEÇTİ' if s3.get('is_valid') else '⚠️ UYARI'} -> {s3.get('reason')}")
+        print(f"  • 4. Akraba Dil Triangulation: {'✅ GEÇTİ' if s4.get('is_valid') else '⚠️ EKSİK'} -> Numune Akrabalar: {', '.join(s4.get('sample_cognates', [])[:4])}")
+
+        rejections = val_report.get("rejection_reasons", [])
+        if rejections:
+            print("\n  ⚠️  AKADEMİK HAKEM RED GEREKÇELERİ:")
+            for rej in rejections:
+                print(f"     ❌ {rej}")
+
+    # 3. TÜRKİ DİLLERDEKİ ANLAMLARI VE KARŞILIKLARI
     print("\n" + "─" * 80)
     print(f" 🌍 TÜRKİ DİLLERDEKİ ANLAMLARI VE KARŞILIKLARI ({len(turkic_languages)} Dil/Katman)")
     print("─" * 80)
@@ -49,7 +79,7 @@ def print_finding_formatted(finding: Dict[str, Any]) -> None:
             shift_info = f" [Ses Değişimi: {shift}]" if shift and shift != "Standart Lehçe Ses Uyumu" else ""
             print(f"  • {lang_name:<30} : {word:<24} [{'Anlam: ' + meaning if meaning else 'N/A'}]{shift_info}")
 
-    # 3. CANLI KEŞFEDİLEN WEB KAYNAKLARI VE MAKALE BAĞLANTILARI
+    # 4. CANLI KEŞFEDİLEN WEB KAYNAKLARI VE MAKALE BAĞLANTILARI
     if web_sources:
         print("\n" + "─" * 80)
         print(" 🌐 CANLI KEŞFEDİLEN WEB KAYNAKLARI VE MAKALE BAĞLANTILARI")
@@ -63,7 +93,7 @@ def print_finding_formatted(finding: Dict[str, Any]) -> None:
             if snip:
                 print(f"     Özet : {snip[:120]}...")
 
-    # 4. TARİHSEL ZAMAN ÇİZELGESİ VE KÖK AKRABA SÖZCÜK AĞI
+    # 5. TARİHSEL ZAMAN ÇİZELGESİ VE KÖK AKRABA SÖZCÜK AĞI
     if timeline:
         print("\n" + "─" * 80)
         print(" ⏳ TARİHSEL ZAMAN ÇİZELGESİ (EVRİM KRONOLOJİSİ)")
@@ -77,7 +107,7 @@ def print_finding_formatted(finding: Dict[str, Any]) -> None:
         print("─" * 80)
         print(f"  • Aynı kökten türeyen akraba kelimeler: {', '.join(related_cognates)}")
 
-    # 5. HESAPLAMALI NLP ALINTI & REKONSTRÜKSİYON ANALİZİ
+    # 6. HESAPLAMALI NLP ALINTI & REKONSTRÜKSİYON ANALİZİ
     if nlp_analysis:
         loan_eval = nlp_analysis.get("loanword_classification", {})
         cog_eval = nlp_analysis.get("cognate_distribution", {})
@@ -96,10 +126,10 @@ def print_finding_formatted(finding: Dict[str, Any]) -> None:
         print(f"  • 25 Lehçe Yayılımı Skorlama : %{cog_eval.get('spreading_ratio', 0)*100:.0f} ({cog_eval.get('assessment')})")
         print(f"  • Rekonstrüksiyon Değerlend: {recon_eval.get('reconstruction_notes')}")
 
-    # 6. EN ALTA FİNAL SENTEZİ OLARAK: Qwen2.5:14b Otonom Yapay Zeka Ajanı Analizi
+    # 7. EN ALTA FİNAL SENTEZİ OLARAK: Qwen2.5 Otonom Yapay Zeka Ajanı Analizi
     if ai_enrichment:
         print("\n" + "┌" + "─" * 78 + "┐")
-        print("│ 🤖 QWEN2.5:14b OTONOM BİLİMSEL AJAN AKIL YÜRÜTME & FİNAL SENTEZ PARAGRAFI  │")
+        print("│ 🤖 QWEN2.5 OTONOM BİLİMSEL AJAN AKIL YÜRÜTME & FİNAL SENTEZ PARAGRAFI  │")
         print("├" + "─" * 78 + "┤")
         lines = ai_enrichment.split("\n")
         for line in lines:
@@ -127,8 +157,14 @@ def main():
     search_parser = subparsers.add_parser("search", help="Bir kelimenin etimolojisini ve Türki dillerdeki anlamlarını arar")
     search_parser.add_argument("word", type=str, help="Aranacak kelime (örn: su, deniz, göz, us, tetik, güzellik)")
     search_parser.add_argument("--json", action="store_true", help="Çıktıyı ham JSON formatında basar")
-    search_parser.add_argument("--ai", action="store_true", help="Qwen2.5:14b otonom web araştırma ajanı ile derinleştirilmiş arama yap")
+    search_parser.add_argument("--ai", action="store_true", help="Qwen2.5 otonom web araştırma ajanı ile derinleştirilmiş arama yap")
     search_parser.add_argument("--no-save", action="store_false", dest="save", help="Sonucu veritabanına kaydetme")
+
+    validate_parser = subparsers.add_parser("validate", help="Bir etimoloji hipotezini A-HVP protokolü ile bilimsel olarak doğrular")
+    validate_parser.add_argument("word", type=str, help="Hedef kelime")
+    validate_parser.add_argument("--origin", type=str, default=None, help="Önerilen ata biçim / kök")
+    validate_parser.add_argument("--donor", type=str, default="Öz Türkçe", help="Önerilen donör/kaynak dil")
+    validate_parser.add_argument("--attestation", type=str, default="11. yüzyıl Divanü Lugati't-Türk", help="Yazılı ilk kayıt dönemi")
 
     bulk_parser = subparsers.add_parser("bulk", help="Bir metin dosyasındaki tüm kelimelerin etimolojisini topluca sorgular")
     bulk_parser.add_argument("--file", type=str, required=True, help="Kelimelerin bulunduğu metin dosyası")
@@ -151,7 +187,7 @@ def main():
     if args.command == "search":
         try:
             if args.ai:
-                print("🤖 Qwen2.5:14b Otonom Web Keşif Ajanı Devrede... (Derin Web & Makale Taraması Yapılıyor)")
+                print("🤖 Qwen2.5 Otonom Web Keşif Ajanı Devrede... (Derin Web & Makale Taraması Yapılıyor)")
             finding = engine.search(args.word, save_to_db=args.save, use_qwen_agent=args.ai)
             if args.json:
                 print(json.dumps(finding, ensure_ascii=False, indent=2))
@@ -160,6 +196,47 @@ def main():
         except Exception as e:
             print(f"❌ Hata oluştu: {e}", file=sys.stderr)
             sys.exit(1)
+
+    elif args.command == "validate":
+        protocol = HypothesisValidationProtocol()
+        origin_form = args.origin or args.word
+        hypothesis = {
+            "hypothesis_type": f"Özel Etimoloji Hipotezi ({args.donor})",
+            "origin_form": origin_form,
+            "donor_language": args.donor,
+            "proof_summary": f"Kullanıcı Hipotezi: {args.donor} kökenli {origin_form}",
+            "historical_meaning": args.word
+        }
+        attestation = {"first_attestation_record": args.attestation}
+
+        report = protocol.validate_hypothesis(args.word, hypothesis, attestation)
+        print("\n" + "═" * 80)
+        print(f" ⚖️  A-HVP AKADEMİK DOĞRULAMA VE HAKEM HİPOTEZİ RAPORU: {args.word.upper()}")
+        print("═" * 80)
+        print(f"  • Hakem Kararı & Rozet      : {report['badge']}")
+        print(f"  • Hakem Skoru (% Yüzde)      : {report['score_percentage']}")
+        print(f"  • Önerilen Ata Kök          : {origin_form}")
+        print(f"  • Önerilen Donör Dil         : {args.donor}")
+        print(f"  • İlk Yazılı Tanıklama      : {args.attestation}")
+        
+        stages = report.get("stage_breakdown", {})
+        s1 = stages.get("stage1_phonetic_chain", {})
+        s2 = stages.get("stage2_time_lock", {})
+        s3 = stages.get("stage3_semantic_drift", {})
+        s4 = stages.get("stage4_cognate_triangulation", {})
+
+        print("\n  📌 5 KADEMELİ HAKEM AŞAMA DETAYLARI:")
+        print(f"   1. Fonetik Halka (IPA Evrimi): {'✅ GEÇTİ' if s1.get('is_valid') else '❌ İHLAL'} -> {', '.join(s1.get('matched_rules', []))}")
+        print(f"   2. Kronolojik Zaman Kilidi  : {'✅ GEÇTİ' if s2.get('is_valid') else '❌ ANAKRONİZM'}")
+        print(f"   3. Diyakronik Semantik Sınır: {'✅ GEÇTİ' if s3.get('is_valid') else '⚠️ UYARI'} -> {s3.get('reason')}")
+        print(f"   4. Akraba Dil Triangulation : {'✅ GEÇTİ' if s4.get('is_valid') else '⚠️ EKSİK'} -> Numune: {', '.join(s4.get('sample_cognates', [])[:4])}")
+
+        rejections = report.get("rejection_reasons", [])
+        if rejections:
+            print("\n  ⚠️  AKADEMİK HAKEM RED GEREKÇELERİ:")
+            for rej in rejections:
+                print(f"     ❌ {rej}")
+        print("═" * 80 + "\n")
 
     elif args.command == "bulk":
         if not os.path.exists(args.file):

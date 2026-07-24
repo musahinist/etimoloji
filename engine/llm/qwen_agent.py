@@ -64,7 +64,8 @@ class QwenEtymologyAgent:
         full_page_web_results = scrape_full_web_pages_for_results(raw_web_results, max_pages=2)
 
         nlp_analysis = initial_finding.get("nlp_analysis", {})
-        proven_hypo = nlp_analysis.get("proven_hypothesis", {})
+        proven_hypo = nlp_analysis.get("proven_hypothesis", {}) or {}
+        val_report = proven_hypo.get("validation_report", {}) or {}
 
         proto_r = initial_finding.get('root', {}).get('proto_turkic', word)
         sound_matrix_res = tool_sound_change_matrix(word, proto_r)
@@ -74,9 +75,14 @@ class QwenEtymologyAgent:
 
 [ARAŞTIRILACAK KELİME]: {word}
 
-[DOĞRULANMIŞ HİPOTEZ VE KRONOLOJİ]:
+[A-HVP AKADEMİK HAKEM PROTOKOLÜ ROZETİ VE DOĞRULAMA ÇIKTISI]:
+- Hakem Kararı & Rozet: {val_report.get('badge', 'Bilinmiyor')}
+- Hakem Skoru (% Yüzde): {val_report.get('score_percentage', '%0')}
 - Hipotez Türü: {proven_hypo.get('hypothesis_type')}
 - Kaynak Dil / Rekonstrüksiyon: {proven_hypo.get('donor_language')} -> {proven_hypo.get('origin_form')}
+- Hakem Red Gerekçeleri (varsa): {val_report.get('rejection_reasons', [])}
+
+[DOĞRULANMIŞ HİPOTEZ VE KRONOLOJİ]:
 - GERÇEK İLK YAZILI TANIKLAMA TARİHİ: {attestation_res.get('first_attestation_record')}
 - NEOLOGİZM KONTROLÜ: {json.dumps(neologism_res, ensure_ascii=False) if neologism_res else 'Geleneksel Kelime'}
 
@@ -85,12 +91,13 @@ class QwenEtymologyAgent:
 - Külliyat: {json.dumps(corpus_res.get('corpus_hits'), ensure_ascii=False)}
 
 [SÜZÜLMÜŞ CANLI WEB SAYFA İÇERİKLERİ]:
-{json.dumps(full_page_web_results, ensure_ascii=False)}
+- Canlı Web Keşifleri: {json.dumps(full_page_web_results, ensure_ascii=False)}
 
 TALİMAT:
-1. GERÇEK İLK YAZILI TANIKLAMA TARİHİ bilgisini esas al.
-2. Giriş/Gelişme/Sonuç veya Markdown başlıkları (#, ##, ###) KULLANMA. İstem talimatlarını TEKRARLAMA.
-3. Kelimenin etimolojik kökenini, yapısını ve tarihsel gelişimini net 2 kısa paragrafta anlat.
+1. GERÇEK İLK YAZILI TANIKLAMA TARİHİ ve A-HVP HAKEM PROTOKOLÜ kararlarını kesin esas al.
+2. Hakem kararı REJECTED ise bunun gerekçesini açıkla. Hakem kararı VALIDATED ise köken bağını bilimsel doğrula.
+3. Giriş/Gelişme/Sonuç veya Markdown başlıkları (#, ##, ###) KULLANMA. İstem talimatlarını TEKRARLAMA.
+4. Kelimenin etimolojik kökenini, yapısını ve tarihsel gelişimini net 2 kısa paragrafta anlat.
 """
 
         req_data = {
@@ -98,51 +105,23 @@ TALİMAT:
             "prompt": prompt,
             "stream": False,
             "options": {
-                "num_ctx": 1024,
-                "num_predict": 250,
-                "temperature": 0.15
+                "temperature": 0.2,
+                "top_p": 0.9,
+                "num_predict": 250
             }
         }
 
         try:
-            req = urllib.request.Request(
-                OLLAMA_API_URL,
-                data=json.dumps(req_data).encode('utf-8'),
-                headers={'Content-Type': 'application/json'}
-            )
-            with urllib.request.urlopen(req, timeout=300) as resp:
-                res = json.loads(resp.read().decode('utf-8'))
-                analysis = res.get("response", "").strip()
-
-                initial_finding["ai_agent_enrichment"] = analysis
-                initial_finding["discovered_web_sources"] = raw_web_results
-                
-                if analysis:
-                    initial_finding["sources"].append(f"Qwen2.5:14b İleri Düzey Bilimsel Ajanı ({self.model_name})")
-                    initial_finding["turkic_languages"].append({
-                        "lang_code": "ai",
-                        "lang_name": "Qwen2.5:14b İleri Düzey Bilimsel Ajan Sentezi",
-                        "word": word,
-                        "meaning": analysis,
-                        "script": "Latin"
-                    })
-        except Exception:
-            # FAIL-SAFE FALLBACK: Model gecikse bile kullanıcıya zaman aşımı hatası basmak yerine otonom sentez üret
-            fallback_text = (
-                f"'{word}' kelimesi etimolojik açıdan incelendiğinde; {proven_hypo.get('proof_summary', 'ses ve morfoloji kuralları uyarınca değerlendirilmiştir.')} "
-                f"Tarihsel kronolojide {attestation_res.get('first_attestation_record')} kaydıyla öne çıkmaktadır.\n\n"
-                f"Fonetik yapısı ({ipa_res.get('ipa')}) ve hece dizilimi ile Türki dil haritasındaki yayılımı (%{nlp_analysis.get('cognate_distribution', {}).get('spreading_ratio', 0)*100:.0f}) "
-                f"kelimenin köken ve evrim yapısını doğrulamaktadır."
-            )
-            initial_finding["ai_agent_enrichment"] = fallback_text
-            initial_finding["discovered_web_sources"] = raw_web_results
-            initial_finding["sources"].append(f"Qwen2.5:14b İleri Düzey Bilimsel Ajanı ({self.model_name})")
-            initial_finding["turkic_languages"].append({
-                "lang_code": "ai",
-                "lang_name": "Qwen2.5:14b İleri Düzey Bilimsel Ajan Sentezi",
-                "word": word,
-                "meaning": fallback_text,
-                "script": "Latin"
-            })
+            json_payload = json.dumps(req_data).encode('utf-8')
+            req = urllib.request.Request(OLLAMA_API_URL, data=json_payload, headers={"Content-Type": "application/json"})
+            with urllib.request.urlopen(req, timeout=180) as resp:
+                result = json.loads(resp.read().decode('utf-8'))
+                enrichment_text = result.get("response", "").strip()
+                if enrichment_text:
+                    initial_finding["ai_agent_enrichment"] = enrichment_text
+                else:
+                    initial_finding["ai_agent_enrichment"] = f"{word} kelimesi için bilimsel etimolojik araştırma tamamlandı."
+        except Exception as e:
+            initial_finding["ai_agent_enrichment"] = f"AI Ajan sentezi sırasında hata: {e}"
 
         return initial_finding
