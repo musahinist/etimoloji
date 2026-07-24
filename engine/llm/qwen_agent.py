@@ -18,6 +18,8 @@ from engine.llm.research_tools import (
     tool_web_search
 )
 from engine.nlp.full_web_scraper import scrape_full_web_pages_for_results
+from engine.nlp.neologism_detector import NeologismDetector
+from engine.nlp.historical_attestation_verifier import HistoricalAttestationVerifier
 
 OLLAMA_API_URL = "http://localhost:11434/api/generate"
 MODEL_NAME = "qwen2.5:14b"
@@ -31,6 +33,8 @@ def clean_html(text: str) -> str:
 class QwenEtymologyAgent:
     def __init__(self, model_name: str = MODEL_NAME):
         self.model_name = model_name
+        self.neologism_detector = NeologismDetector()
+        self.attestation_verifier = HistoricalAttestationVerifier()
 
     def is_available(self) -> bool:
         try:
@@ -43,19 +47,20 @@ class QwenEtymologyAgent:
             return False
 
     def research_and_enrich(self, word: str, initial_finding: Dict[str, Any]) -> Dict[str, Any]:
-        """Qwen2.5:14b ajanı canlı web sayfalarının tam metinlerini okuyarak çok adımlı etimolojik sentez üretir."""
+        """Qwen2.5:14b ajanı neologizm, gerçek kronoloji ve tam metin kazımayla sentez üretir."""
         if not self.is_available():
             initial_finding["ai_agent_enrichment"] = "Ollama veya qwen2.5:14b modeli aktif değil."
             return initial_finding
 
-        # --- 1. İLERİ DÜZEY ARAÇLAR VE CANLI WEB TAM SAYFA KAZIMA ---
         wiktionary_res = tool_wiktionary_multilingual_api(word)
         ipa_res = tool_ipa_phonetic_analyzer(word)
         donor_pattern_res = tool_donor_pattern_analyzer(word)
         corpus_res = tool_historical_corpus_search(word)
         suffixes_analysis = tool_extract_suffixes(word)
         
-        # Web arama sonuçlarının SAYFA İÇİNE GİRİP TAM METNİ KAZI
+        neologism_res = self.neologism_detector.detect(word)
+        attestation_res = self.attestation_verifier.verify_attestation(word)
+
         raw_web_results = tool_web_search(word)
         full_page_web_results = scrape_full_web_pages_for_results(raw_web_results, max_pages=2)
 
@@ -65,16 +70,17 @@ class QwenEtymologyAgent:
         proto_r = initial_finding.get('root', {}).get('proto_turkic', word)
         sound_matrix_res = tool_sound_change_matrix(word, proto_r)
 
-        # 2. Qwen2.5:14b İçin Tam Metin Okumalı İteratif Prompt Hazırla
         prompt = f"""
 {QWEN_AGENT_SYSTEM_GUIDELINE}
 
 [ARAŞTIRILACAK KELİME]: {word}
 
-[KANITLANMIŞ ETİMOLOJİK VERİLER]:
+[DOĞRULANMIŞ HİPOTEZ VE KRONOLOJİ (GROUND TRUTH)]:
+- Hipotez Türü: {proven_hypo.get('hypothesis_type')}
 - Kaynak Dil / Rekonstrüksiyon: {proven_hypo.get('donor_language')} -> {proven_hypo.get('origin_form')}
 - Detay: {proven_hypo.get('proof_summary')}
-- Anlam: {proven_hypo.get('historical_meaning')}
+- GERÇEK İLK YAZILI TANIKLAMA TARİHİ: {attestation_res.get('first_attestation_record')}
+- NEOLOGİZM / DİL DEVRİMİ KONTROLÜ: {json.dumps(neologism_res, ensure_ascii=False) if neologism_res else 'Geleneksel Kelime'}
 
 [BİLİMSEL VE NLP ARAÇ ÇIKTILARI]:
 1. IPA Fonetik Yapı: IPA={ipa_res.get('ipa')}, Ünlü Uyumu={ipa_res.get('vowel_harmony_status')}
@@ -82,12 +88,13 @@ class QwenEtymologyAgent:
 3. Tarihsel Külliyat Bulguları: {json.dumps(corpus_res.get('corpus_hits'), ensure_ascii=False)}
 4. Morfolojik Ek/Kök Yapısı: {suffixes_analysis}
 
-[CANLI WEB SAYFALARI TAM METİN İÇERİKLERİ (FULL WEBPAGE CONTENT)]:
+[CANLI WEB SAYFALARI TAM METİN İÇERİKLERİ]:
 {json.dumps(full_page_web_results, ensure_ascii=False, indent=2)}
 
-TALİMAT:
-Giriş/Gelişme/Sonuç veya Markdown başlıkları (#, ##, ###) KULLANMA. İstem talimatlarını ("halk etimolojisini reddeder" vb.) TEKRARLAMA.
-Yukarıda sayfalarından TAM METNİ çekilen akademik makale ve donör verilerine dayanarak kelimenin etimolojik kökenini, kaynak dildeki parçalarını ve tarihsel evrimini net paragraflar halinde anlat.
+KRİTİK UYARI:
+1. GERÇEK İLK YAZILI TANIKLAMA TARİHİ bilgisini esas al! Eğer kelime Cumhuriyet dönemi / Dil Devrimi türetmesiyse (okul, öğretmen, uçak vb.) KESİNLİKLE "13. yüzyıl Osmanlı/Çağatay el yazması" gibi uydurma tarihler YAZMA!
+2. Giriş/Gelişme/Sonuç veya Markdown başlıkları (#, ##, ###) KULLANMA. İstem talimatlarını TEKRARLAMA.
+3. Kelimenin kökenini, yapısını ve tarihsel gelişimini net ve akıcı paragraflar halinde anlat.
 """
 
         req_data = {
@@ -97,7 +104,7 @@ Yukarıda sayfalarından TAM METNİ çekilen akademik makale ve donör verilerin
             "options": {
                 "num_ctx": 4096,
                 "num_predict": 512,
-                "temperature": 0.2
+                "temperature": 0.15
             }
         }
 
