@@ -22,9 +22,9 @@ class TestSearchEngine(unittest.TestCase):
         self.assertEqual(res1["query_word"], "su")
         self.assertTrue(len(res1["turkic_languages"]) > 0)
 
-        # İkinci arama (Önbellekten gelmeli)
+        # İkinci arama (Cache kullanılmadığı için yine taze canlı arama yapılmalı)
         res2 = self.engine.search("su", save_to_db=True)
-        self.assertTrue(res2.get("from_cache", False))
+        self.assertFalse(res2.get("from_cache", True))
         self.assertEqual(res2["query_word"], "su")
 
 if __name__ == "__main__":

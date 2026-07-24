@@ -104,39 +104,85 @@ def tool_donor_nearest_neighbor(word: str) -> str:
 # --- WEB & AKADEMİK ARAMA ARAÇLARI (STRICT AUTO-CORRECT FILTERING) ---
 
 def tool_web_search(query: str) -> List[Dict[str, str]]:
-    """Canlı web araması yapıp yeni akademik portallar keşfeder. Otomatik düzeltilmiş alakasız kelimeleri (hekir/hacker) FİLTRELER!"""
+    """Canlı web araması yapıp yeni akademik portallar, Vikipedi, Wiktionary ve Etimoloji sayfaları keşfeder (Multi-fallback)."""
     results = []
-    w_clean = query.strip().lower()
-    clean_q = urllib.parse.quote(f"{w_clean} etimolojisi")
-    url = f"https://html.duckduckgo.com/html/?q={clean_q}"
+    word = query.strip().lower().split()[0]
+    
+    # 1. Fallback: Türkçe Wiktionary / Wikipedia API Araması
     try:
-        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'})
-        with urllib.request.urlopen(req, timeout=2.5) as resp:
-            html = resp.read().decode('utf-8', errors='ignore')
-            links = re.findall(r'<a[^>]*class=\"result__a\"[^>]*href=\"([^\"]+)\">(.*?)</a>', html, re.DOTALL)
-            snippets = re.findall(r'<a[^>]*class=\"result__snippet\"[^>]*>(.*?)</a>', html, re.DOTALL)
-            for i, (link, title_text) in enumerate(links[:10]):
-                clean_title = re.sub(r'<[^>]+>', '', title_text).strip()
-                snippet_text = re.sub(r'<[^>]+>', '', snippets[i]).strip() if i < len(snippets) else ""
-                
-                # FİLTRELEME: Aranan kelime başlıkta/özette geçmiyorsa alakasız sonuçları ele!
-                title_snip_lower = (clean_title + " " + snippet_text).lower()
-                if w_clean not in title_snip_lower and len(w_clean) > 3:
-                    continue
-
-                real_url = link
-                if "uddg=" in link:
-                    m = re.search(r'uddg=([^&]+)', link)
-                    if m:
-                        real_url = urllib.parse.unquote(m.group(1))
-
+        wiki_url = f"https://tr.wiktionary.org/w/api.php?action=query&list=search&srsearch={urllib.parse.quote(word)}&utf8=&format=json"
+        req = urllib.request.Request(wiki_url, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)'})
+        with urllib.request.urlopen(req, timeout=3.0) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+            search_items = data.get("query", {}).get("search", [])
+            for item in search_items[:3]:
+                title = item.get("title", "")
+                snippet = re.sub(r'<[^>]+>', '', item.get("snippet", "")).strip()
+                page_url = f"https://tr.wiktionary.org/wiki/{urllib.parse.quote(title)}"
                 results.append({
-                    "url": real_url,
-                    "title": clean_title,
-                    "snippet": snippet_text
+                    "url": page_url,
+                    "title": f"Wiktionary: {title}",
+                    "snippet": snippet
                 })
     except Exception:
         pass
+
+    # 2. Fallback: Türkçe Wikipedia API Araması (Etimoloji Maddeleri)
+    try:
+        wp_url = f"https://tr.wikipedia.org/w/api.php?action=query&list=search&srsearch={urllib.parse.quote(word + ' etimolojisi')}&utf8=&format=json"
+        req = urllib.request.Request(wp_url, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)'})
+        with urllib.request.urlopen(req, timeout=3.0) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+            search_items = data.get("query", {}).get("search", [])
+            for item in search_items[:3]:
+                title = item.get("title", "")
+                snippet = re.sub(r'<[^>]+>', '', item.get("snippet", "")).strip()
+                page_url = f"https://tr.wikipedia.org/wiki/{urllib.parse.quote(title)}"
+                results.append({
+                    "url": page_url,
+                    "title": f"Vikipedi: {title}",
+                    "snippet": snippet
+                })
+    except Exception:
+        pass
+
+    # 3. Fallback: Nişanyan / EtimolojiTürkçe Doğrudan Sayfa Araması
+    try:
+        et_url = f"https://www.etimolojiturkce.com/kelime/{urllib.parse.quote(word)}"
+        req = urllib.request.Request(et_url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'})
+        with urllib.request.urlopen(req, timeout=3.0) as resp:
+            html = resp.read().decode('utf-8', errors='ignore')
+            if len(html) > 1500 and "Bulunamadı" not in html:
+                clean_t = re.sub(r'<[^>]+>', ' ', html)
+                clean_t = re.sub(r'\s+', ' ', clean_t).strip()
+                results.append({
+                    "url": et_url,
+                    "title": f"EtimolojiTürkçe: {word}",
+                    "snippet": clean_t[:300]
+                })
+    except Exception:
+        pass
+
+    # 4. Fallback: DuckDuckGo Lite / HTML Multi-Agent Search
+    if len(results) < 2:
+        try:
+            clean_q = urllib.parse.quote(f"{word} etimoloji kökeni")
+            ddg_url = f"https://html.duckduckgo.com/html/?q={clean_q}"
+            req = urllib.request.Request(ddg_url, headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/119.0'})
+            with urllib.request.urlopen(req, timeout=3.0) as resp:
+                html = resp.read().decode('utf-8', errors='ignore')
+                links = re.findall(r'<a[^>]*href=\"([^\"]+)\"[^>]*>(.*?)</a>', html, re.DOTALL)
+                for link, title_text in links[:15]:
+                    clean_title = re.sub(r'<[^>]+>', '', title_text).strip()
+                    if len(clean_title) > 10 and word in clean_title.lower():
+                        results.append({
+                            "url": link,
+                            "title": clean_title,
+                            "snippet": f"{clean_title} etimolojik sözlük ve dilbilim kaydı."
+                        })
+        except Exception:
+            pass
+
     return results
 
 def tool_web_scrape_url(url: str) -> str:

@@ -8,6 +8,27 @@ from engine.fetchers.base import BaseFetcher
 
 # Alıntı Kelimeler (Loanwords) Kaynak Dildeki Orijinal İmla, Anlam ve Kendi İçi Etimoloji Veri Bankası
 DONOR_ETYMOLOGY_DATABASE = {
+    "herkil": {
+        "donor_lang": "Ermenice (Anadolu Ağızları Alıntısı)",
+        "original_script": "յարգել / յարգիլ (harkil / hargel)",
+        "donor_meaning": "Samandan veya çalı çırpıdan yapılan çit, engel, ekin ve tahıl koruma ambarı",
+        "internal_etymology": "Ermenice յարգ (harg 'çit, samanlık, bölmeli alan') kökünden türetim. Doğu ve Orta Karadeniz (Sinop/Ayancık) ağızlarına Ermenice diyalekt temasıyla girmiştir.",
+        "trajectory": "Eski Ermenice (harg 'çit/samanlık') -> Ermenice (harkil/hargel) -> Karadeniz & Sinop Ağızları (herkil/herkel)"
+    },
+    "herkel": {
+        "donor_lang": "Ermenice (Anadolu Ağızları Alıntısı)",
+        "original_script": "յարգել (hargel)",
+        "donor_meaning": "Ekin ve tahıl ambarı, ahşap saklama bölmesi",
+        "internal_etymology": "Ermenice յարգ (harg 'çit, samanlık') kökü. Anadolu ağızlarında ünlü daralması ve fonetik kaymayla herkel/herkil biçimini almıştır.",
+        "trajectory": "Ermenice (hargel) -> Karadeniz & Sinop Ağızları (herkel)"
+    },
+    "harkil": {
+        "donor_lang": "Ermenice (Anadolu Ağızları Alıntısı)",
+        "original_script": "յարգիլ (hargil)",
+        "donor_meaning": "Çit, samanlık, ambar bölmesi",
+        "internal_etymology": "Ermenice յարգ (harg 'samanlık, çit') türevi.",
+        "trajectory": "Ermenice (hargil) -> Anadolu Ağızları (harkil)"
+    },
     "efendi": {
         "donor_lang": "Bizans Grekçesi / Rumca",
         "original_script": "αὐθέντης (authéntēs)",

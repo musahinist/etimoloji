@@ -131,12 +131,7 @@ class SearchEngine:
     def search(self, query: str, save_to_db: bool = True, use_qwen_agent: bool = False) -> Dict[str, Any]:
         word_clean = query.strip().lower()
 
-        if save_to_db and not use_qwen_agent:
-            cached = self.db.get_finding(word_clean)
-            if cached:
-                cached["from_cache"] = True
-                return cached
-
+        # Önbellek (Cache) kontrolü devre dışı bırakıldı - Her aramada taze canlı arama yapılır.
         stem, suffixes = analyze_morphology(word_clean)
 
         search_variants = list(set([word_clean, stem] + generate_dynamic_phonetic_variants(word_clean)))
@@ -188,6 +183,14 @@ class SearchEngine:
         )
 
         # 4. KÖKEN NLP VE OTONOM İNATÇI HİPOTEZ REKONSTRÜKSİYONU
+        # Eğer kök anlamı henüz atanmadıysa sorted_entries içindeki gerçek sözlük tanımından çek
+        if not root_meaning or root_meaning == word_clean:
+            for entry in sorted_entries:
+                m = entry.get("meaning", "").strip()
+                if m and not m.startswith("Online") and m != word_clean:
+                    root_meaning = m
+                    break
+
         loan_eval = self.loanword_classifier.classify(word_clean)
         cognate_eval = self.cognate_alignment_engine.evaluate_cognate_distribution(word_clean, sorted_entries)
         reconstruction_eval = self.reconstructor.reconstruct_proto_form(word_clean, sorted_entries)
@@ -211,18 +214,34 @@ class SearchEngine:
         semantic_eval = self.semantic_engine.evaluate_diachronic_trajectory(root_meaning or word_clean, word_clean)
         sound_law_induced = self.sound_law_induction.induce_sound_law(proto_root or word_clean, word_clean)
 
+
+        if donor_eval and donor_eval.get("found_match"):
+            donor_lang = donor_eval.get("donor_language")
+            origin_form = donor_eval.get("origin_form")
+            donor_meaning = donor_eval.get("donor_meaning")
+            proto_root = f"[{donor_lang}] {origin_form}"
+            sources.append(f"Donör Dil Etimoloji Veritabanı ({donor_lang})")
+            sorted_entries.insert(0, {
+                "lang_code": "donor",
+                "lang_name": f"Kaynak Dil Etimolojisi ({donor_lang})",
+                "word": origin_form,
+                "meaning": donor_meaning,
+                "script": "Original"
+            })
+
         if proven_hypothesis_eval.get("proven_hypothesis", {}).get("confidence_score", 0) >= 0.95:
             hypo = proven_hypothesis_eval["proven_hypothesis"]
             proto_root = hypo.get("origin_form", proto_root)
             root_meaning = hypo.get("historical_meaning", root_meaning)
             sources.append(f"Derin Komşu Diller Etimoloji Veritabanı ({hypo.get('donor_language')})")
-            sorted_entries.insert(0, {
-                "lang_code": "donor",
-                "lang_name": f"Kaynak Dil Etimolojisi ({hypo.get('donor_language')})",
-                "word": hypo.get("origin_form"),
-                "meaning": hypo.get("proof_summary"),
-                "script": "Original"
-            })
+            if not any(e.get("lang_code") == "donor" for e in sorted_entries):
+                sorted_entries.insert(0, {
+                    "lang_code": "donor",
+                    "lang_name": f"Kaynak Dil Etimolojisi ({hypo.get('donor_language')})",
+                    "word": hypo.get("origin_form"),
+                    "meaning": hypo.get("proof_summary"),
+                    "script": "Original"
+                })
 
         timeline = []
         for entry in sorted_entries:
@@ -235,7 +254,7 @@ class SearchEngine:
                 timeline.append(f"19. YY (Osmanlıca / Lehçe-i Osmanî / Kamus-ı Türkî): {entry.get('word')}")
 
         morphology_info = f"Kök: {stem} + Ekler: {', '.join(suffixes)}" if suffixes else "Yalın Kök"
-        related_cognates = get_related_cognates(stem) or get_related_cognates(word_clean)
+        related_cognates = get_related_cognates(word_clean, sorted_entries)
 
         # 5. Neo4j Uyumlu Graf Veritabanı Düğüm Şeması Oluşturma
         graph_export = self.graph_db.build_etymology_graph(
