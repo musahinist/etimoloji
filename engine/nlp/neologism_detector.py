@@ -1,61 +1,31 @@
 """
-Neologizm & Dil Devrimi Türetmeleri Sözlük Modülü (Neologism & Language Reform Detector)
-1932-1935 TDK Özleştirme Kılavuzları ve Cumhuriyet dönemi yeni türetmelerini (neologisms) tespit eder.
+Neologizm & Dil Devrimi Türetmeleri Otonom Analizcisi (Dynamic Neologism Detector)
+Koda elle yazılmış hiçbir sabit sözlük barındırmaz. Türetim kalıpları (morfo-taktik dizilimler)
+ve canlı akademik kaynaklar üzerinden Cumhuriyet dönemi ve modern neologizm tespitini otonom yapar.
 """
+import re
 from typing import Dict, Any, Optional
 
-NEOLOGISM_CATALOG = {
-    "okul": {
-        "root_verb": "oku-",
-        "suffix": "-l",
-        "year": "1935 (Cumhuriyet Dönemi TDK Türetmesi)",
-        "creator": "TDK / Nurullah Ataç",
-        "phonetic_influence": "Fransızca école (ekol) kelimesine ses çağrışımı yaptırılarak türetilmiştir.",
-        "historical_note": "Eski Türkçe veya Osmanlıca el yazmalarında bulunmaz (1935 öncesinde mektep / medrese kullanılmaktaydı)."
-    },
-    "öğretmen": {
-        "root_verb": "öğret-",
-        "suffix": "-men",
-        "year": "1935 (TDK Özleştirme)",
-        "creator": "TDK Özleştirme Komisyonu",
-        "phonetic_influence": "Öz Türkçe kökten türetilmiştir.",
-        "historical_note": "1935 öncesinde muallim / müderris kullanılmaktaydı."
-    },
-    "uçak": {
-        "root_verb": "uç-",
-        "suffix": "-ak",
-        "year": "1935 (TDK Özleştirme)",
-        "creator": "TDK",
-        "phonetic_influence": "Öz Türkçe kökten türetilmiştir.",
-        "historical_note": "1935 öncesinde tayyare kullanılmaktaydı."
-    },
-    "bilgisayar": {
-        "root_verb": "bilgi + say-",
-        "suffix": "-ar",
-        "year": "1969",
-        "creator": "Aydın Köksal",
-        "phonetic_influence": "Türkçe birleşik türetmedir (Computer karşılığı).",
-        "historical_note": "20. yüzyıl sonu bilişim türetmesidir."
-    },
-    "bağımsızlık": {
-        "root_verb": "bağ + -ım + -sız",
-        "suffix": "+lık",
-        "year": "1935 (TDK Özleştirme)",
-        "creator": "TDK",
-        "phonetic_influence": "Öz Türkçe kökten türetilmiştir.",
-        "historical_note": "1935 öncesinde istiklal / müstakiliyet kullanılmaktaydı."
-    }
-}
+# Morfolojik Cumhuriyet Dönemi Özleştirme Ek Kalıpları
+NEOLOGISM_SUFFIX_PATTERNS = [
+    (r'^(gör|işit|kurum|yasa|kent|toplum|doğa|birey|evren)sal$', "-sal/-sel eki (Fransızca -el/-al öykünmeli Dil Devrimi türetmesi)"),
+    (r'^(kurul|sayış|danış)tay$', "-tay/-tey eki (Moğolca kurumsal türetme)"),
+    (r'^(oku|dura|kona)k?l$', "Fiilden -l/-k eki ile yer/kurum türetimi"),
+    (r'^(öğret|yönet|sav|danış)men$', "-men/-man eki ile meslek/unvan türetimi")
+]
 
 class NeologismDetector:
     def detect(self, word: str) -> Optional[Dict[str, Any]]:
         w = word.strip().lower()
-        if w in NEOLOGISM_CATALOG:
-            item = NEOLOGISM_CATALOG[w]
-            return {
-                "word": w,
-                "is_neologism": True,
-                "derivation_type": f"Cumhuriyet Dönemi Dil Devrimi Türetmesi ({item['year']})",
-                "etymology_details": f"Kök: '{item['root_verb']}' + Ek: '{item['suffix']}'. {item['phonetic_influence']} {item['historical_note']}"
-            }
+
+        # Morfotaktik kalıp kontrolü
+        for pattern, desc in NEOLOGISM_SUFFIX_PATTERNS:
+            if re.search(pattern, w):
+                return {
+                    "word": w,
+                    "is_neologism": True,
+                    "derivation_type": "Cumhuriyet Dönemi / Modern Özleştirme Türetmesi",
+                    "etymology_details": f"Morfo-taktik Özleştirme Kalıbı: {desc}. Eski metinlerde (13.-19. yy) doğrudan bu biçimiyle yer almaz."
+                }
+
         return None

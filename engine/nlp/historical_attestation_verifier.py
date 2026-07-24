@@ -1,36 +1,38 @@
 """
-Tarihsel Kronoloji ve İlk Tanıklama Doğrulayıcı (Historical Attestation Verifier)
-Kelimenin Türkçedeki GERÇEK İLK YAZILI KAYIT TARİHİNİ hesaplar ve AI hallusinasyonlarını engeller.
+Tarihsel Kronoloji ve İlk Tanıklama Doğrulayıcı (Dynamic Historical Attestation Verifier)
+Koda yazılmış hiçbir sabit kelime listesi barındırmaz. Metin içi canlı tanıklama verilerinden
+ve indekslerden tarihsel tanıklama kaydını dinamik çıkarır.
 """
 from typing import Dict, Any, List
 
-ATTESTATION_CHRONOLOGY = {
-    "tengri": "M.Ö. III. YY (Hunlar) / 735 Orhun Yazıtları (Kültigin E1: 'Üze kök teŋri')",
-    "su": "735 Orhun Yazıtları (sub) / 1074 DLT (sub/suv)",
-    "deniz": "735 Orhun Yazıtları (teŋiz) / 1074 DLT (teŋiz)",
-    "us": "735 Orhun Yazıtları (usı bar) / 1074 DLT (us)",
-    "kaçan": "735 Orhun Yazıtları (kaçan) / 1074 DLT (kaçan)",
-    "herkil": "19. YY Anadolu Ağızları / TDK Derleme Sözlüğü (Ermenice harkil/herkil alıntısı)",
-    "helkir": "19. YY Anadolu Ağızları (herkil varyantı)",
-    "fistan": "14. YY Osmanlı Metinleri (Orta Çağ İtalyancası fustagno / Grekçe foustáni alıntısı)",
-    "harman": "13. YY Çağatay / Osmanlı Metinleri (Farsça xırman / xarman alıntısı)",
-    "okul": "1935 Cumhuriyet Dönemi TDK Dil Devrimi (Eski metinlerde bulunmaz; mektep yerine türetilmiştir)",
-    "öğretmen": "1935 Cumhuriyet Dönemi TDK Dil Devrimi (Muallim yerine türetilmiştir)",
-    "uçak": "1935 Cumhuriyet Dönemi TDK Dil Devrimi (Tayyare yerine türetilmiştir)"
-}
-
 class HistoricalAttestationVerifier:
-    def verify_attestation(self, word: str) -> Dict[str, Any]:
+    def verify_attestation(self, word: str, live_entries: List[Dict[str, Any]] = None) -> Dict[str, Any]:
         w = word.strip().lower()
-        if w in ATTESTATION_CHRONOLOGY:
+        earliest_record = ""
+
+        if live_entries:
+            for entry in live_entries:
+                lname = entry.get("lang_name", "")
+                meaning = entry.get("meaning", "")
+                if "Orhun" in lname or "735" in meaning or "Kül Tigin" in meaning:
+                    earliest_record = "735 Orhun Yazıtları (Eski Türkçe Metinler)"
+                    break
+                elif "Divanü Lugati't-Türk" in lname or "1074" in lname:
+                    earliest_record = "1074 Divanü Lugati't-Türk (Kaşgarlı Mahmud)"
+                    break
+                elif "Codex Cumanicus" in lname or "1303" in lname:
+                    earliest_record = "1303 Codex Cumanicus (Kıpçakça Metinler)"
+                    break
+
+        if earliest_record:
             return {
                 "word": w,
-                "first_attestation_record": ATTESTATION_CHRONOLOGY[w],
+                "first_attestation_record": earliest_record,
                 "verified": True
             }
-        
+
         return {
             "word": w,
-            "first_attestation_record": f"'{w}' kelimesi için kesin tarihi kayit ilk olarak 13.-19. yüzyıl Osmanlı/Çağatay metinlerindedir.",
+            "first_attestation_record": f"'{w}' için ilk tanıklama 13.-19. yüzyıl Osmanlı/Çağatay metinleri veya Cumhuriyet dönemi özleştirme kayıtlarındadır.",
             "verified": False
         }
