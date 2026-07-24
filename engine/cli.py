@@ -20,6 +20,7 @@ def print_finding_formatted(finding: Dict[str, Any]) -> None:
     web_sources = finding.get("discovered_web_sources", [])
     nlp_analysis = finding.get("nlp_analysis", {})
 
+    # 1. GENEL BAŞLIK VE MORFOLOJİ ÖZETİ
     print("\n" + "═" * 80)
     print(f" 🔍 ETIMOLOJI BULGUSU VE KÖKEN RAPORU: {query_word.upper()} {'(Veritabanı Önbelleği)' if from_cache else ''}")
     print("═" * 80)
@@ -28,77 +29,7 @@ def print_finding_formatted(finding: Dict[str, Any]) -> None:
     print(f" 📖 Anlam                     : {root.get('meaning', 'Bilinmiyor')}")
     print(f" 📚 Kaynak Portföyü           : {', '.join(sources)}")
 
-    # NLP Katmanı Analiz Sonuçları
-    if nlp_analysis:
-        loan_eval = nlp_analysis.get("loanword_classification", {})
-        cog_eval = nlp_analysis.get("cognate_distribution", {})
-        recon_eval = nlp_analysis.get("reconstruction", {})
-
-        print("\n" + "─" * 80)
-        print(" 🧬 HESAPLAMALI NLP ALINTI & REKONSTRÜKSİYON ANALİZİ")
-        print("─" * 80)
-        print(f"  • Sınıflandırma              : {loan_eval.get('classification')}")
-        probs = loan_eval.get('probabilities', {})
-        p_native = probs.get('p_native_turkic', 0) * 100
-        p_east = probs.get('p_arabic_persian', 0) * 100
-        p_med = probs.get('p_greek_latin', 0) * 100
-        p_west = probs.get('p_western', 0) * 100
-        print(f"  • Olasılık Dağılımı         : Öz Türkçe: %{p_native:.1f} | Doğu (Arap/Fars): %{p_east:.1f} | Akdeniz (Grek/Erm): %{p_med:.1f} | Batı: %{p_west:.1f}")
-        print(f"  • 25 Lehçe Yayılımı Skorlama : %{cog_eval.get('spreading_ratio', 0)*100:.0f} ({cog_eval.get('assessment')})")
-        print(f"  • Rekonstrüksiyon Değerlend: {recon_eval.get('reconstruction_notes')}")
-
-    # Qwen2.5:14b Otonom Yapay Zeka Ajanı Analizi
-    if ai_enrichment:
-        print("\n" + "┌" + "─" * 78 + "┐")
-        print("│ 🤖 QWEN2.5:14b OTONOM BİLİMSEL AJAN AKIL YÜRÜTME & BİLİMSEL SENTEZ PARAGRAFI │")
-        print("├" + "─" * 78 + "┤")
-        lines = ai_enrichment.split("\n")
-        for line in lines:
-            if line.strip():
-                wrapped_words = line.strip().split()
-                current_line = "│ "
-                for w in wrapped_words:
-                    if len(current_line) + len(w) + 1 > 77:
-                        print(f"{current_line:<79}│")
-                        current_line = "│ " + w + " "
-                    else:
-                        current_line += w + " "
-                if current_line.strip() != "│":
-                    print(f"{current_line:<79}│")
-            else:
-                print("│" + " " * 78 + "│")
-        print("└" + "─" * 78 + "┘")
-
-    # Canlı Keşfedilen Web Kaynakları
-    if web_sources:
-        print("\n" + "─" * 80)
-        print(" 🌐 CANLI KEŞFEDİLEN WEB KAYNAKLARI VE MAKALE BAĞLANTILARI")
-        print("─" * 80)
-        for s in web_sources:
-            url = s.get("url", "")
-            title = s.get("title", "")
-            snip = s.get("snippet", "")
-            print(f"  🔗 [{title}]")
-            print(f"     URL  : {url}")
-            if snip:
-                print(f"     Özet : {snip[:120]}...")
-
-    # Tarihsel Zaman Çizelgesi
-    if timeline:
-        print("\n" + "─" * 80)
-        print(" ⏳ TARİHSEL ZAMAN ÇİZELGESİ (EVRİM KRONOLOJİSİ)")
-        print("─" * 80)
-        for step in timeline:
-            print(f"  • {step}")
-
-    # Kök Akraba Sözcük Ağı
-    if related_cognates:
-        print("\n" + "─" * 80)
-        print(" 🔗 KÖK AKRABA SÖZCÜK AĞI")
-        print("─" * 80)
-        print(f"  • Aynı kökten türeyen akraba kelimeler: {', '.join(related_cognates)}")
-
-    # Türki Dillerdeki Anlamları
+    # 2. TÜRKİ DİLLERDEKİ ANLAMLARI VE KARŞILIKLARI (VERİ KATMANI - EN ÜSTE)
     print("\n" + "─" * 80)
     print(f" 🌍 TÜRKİ DİLLERDEKİ ANLAMLARI VE KARŞILIKLARI ({len(turkic_languages)} Dil/Katman)")
     print("─" * 80)
@@ -118,27 +49,92 @@ def print_finding_formatted(finding: Dict[str, Any]) -> None:
             shift_info = f" [Ses Değişimi: {shift}]" if shift and shift != "Standart Lehçe Ses Uyumu" else ""
             print(f"  • {lang_name:<30} : {word:<24} [{'Anlam: ' + meaning if meaning else 'N/A'}]{shift_info}")
 
+    # 3. CANLI KEŞFEDİLEN WEB KAYNAKLARI VE MAKALE BAĞLANTILARI
+    if web_sources:
+        print("\n" + "─" * 80)
+        print(" 🌐 CANLI KEŞFEDİLEN WEB KAYNAKLARI VE MAKALE BAĞLANTILARI")
+        print("─" * 80)
+        for s in web_sources:
+            url = s.get("url", "")
+            title = s.get("title", "")
+            snip = s.get("snippet", "")
+            print(f"  🔗 [{title}]")
+            print(f"     URL  : {url}")
+            if snip:
+                print(f"     Özet : {snip[:120]}...")
+
+    # 4. TARİHSEL ZAMAN ÇİZELGESİ VE KÖK AKRABA SÖZCÜK AĞI
+    if timeline:
+        print("\n" + "─" * 80)
+        print(" ⏳ TARİHSEL ZAMAN ÇİZELGESİ (EVRİM KRONOLOJİSİ)")
+        print("─" * 80)
+        for step in timeline:
+            print(f"  • {step}")
+
+    if related_cognates:
+        print("\n" + "─" * 80)
+        print(" 🔗 KÖK AKRABA SÖZCÜK AĞI")
+        print("─" * 80)
+        print(f"  • Aynı kökten türeyen akraba kelimeler: {', '.join(related_cognates)}")
+
+    # 5. HESAPLAMALI NLP ALINTI & REKONSTRÜKSİYON ANALİZİ
+    if nlp_analysis:
+        loan_eval = nlp_analysis.get("loanword_classification", {})
+        cog_eval = nlp_analysis.get("cognate_distribution", {})
+        recon_eval = nlp_analysis.get("reconstruction", {})
+
+        print("\n" + "─" * 80)
+        print(" 🧬 HESAPLAMALI NLP ALINTI & REKONSTRÜKSİYON ANALİZİ")
+        print("─" * 80)
+        print(f"  • Sınıflandırma              : {loan_eval.get('classification')}")
+        probs = loan_eval.get('probabilities', {})
+        p_native = probs.get('p_native_turkic', 0) * 100
+        p_east = probs.get('p_arabic_persian', 0) * 100
+        p_med = probs.get('p_greek_latin', 0) * 100
+        p_west = probs.get('p_western', 0) * 100
+        print(f"  • Olasılık Dağılımı         : Öz Türkçe: %{p_native:.1f} | Doğu (Arap/Fars): %{p_east:.1f} | Akdeniz (Grek/Erm): %{p_med:.1f} | Batı: %{p_west:.1f}")
+        print(f"  • 25 Lehçe Yayılımı Skorlama : %{cog_eval.get('spreading_ratio', 0)*100:.0f} ({cog_eval.get('assessment')})")
+        print(f"  • Rekonstrüksiyon Değerlend: {recon_eval.get('reconstruction_notes')}")
+
+    # 6. EN ALTA FİNAL SENTEZİ OLARAK: Qwen2.5:14b Otonom Yapay Zeka Ajanı Analizi
+    if ai_enrichment:
+        print("\n" + "┌" + "─" * 78 + "┐")
+        print("│ 🤖 QWEN2.5:14b OTONOM BİLİMSEL AJAN AKIL YÜRÜTME & FİNAL SENTEZ PARAGRAFI  │")
+        print("├" + "─" * 78 + "┤")
+        lines = ai_enrichment.split("\n")
+        for line in lines:
+            if line.strip():
+                wrapped_words = line.strip().split()
+                current_line = "│ "
+                for w in wrapped_words:
+                    if len(current_line) + len(w) + 1 > 77:
+                        print(f"{current_line:<79}│")
+                        current_line = "│ " + w + " "
+                    else:
+                        current_line += w + " "
+                if current_line.strip() != "│":
+                    print(f"{current_line:<79}│")
+            else:
+                print("│" + " " * 78 + "│")
+        print("└" + "─" * 78 + "┘")
+
     print("═" * 80 + "\n")
 
 def main():
     parser = argparse.ArgumentParser(description="Türki Diller Etimoloji Araştırma Motoru CLI")
     subparsers = parser.add_subparsers(dest="command", help="Komutlar")
 
-    # Search komutu
     search_parser = subparsers.add_parser("search", help="Bir kelimenin etimolojisini ve Türki dillerdeki anlamlarını arar")
     search_parser.add_argument("word", type=str, help="Aranacak kelime (örn: su, deniz, göz, us, tetik, güzellik)")
     search_parser.add_argument("--json", action="store_true", help="Çıktıyı ham JSON formatında basar")
     search_parser.add_argument("--ai", action="store_true", help="Qwen2.5:14b otonom web araştırma ajanı ile derinleştirilmiş arama yap")
     search_parser.add_argument("--no-save", action="store_false", dest="save", help="Sonucu veritabanına kaydetme")
 
-    # Bulk komutu
     bulk_parser = subparsers.add_parser("bulk", help="Bir metin dosyasındaki tüm kelimelerin etimolojisini topluca sorgular")
     bulk_parser.add_argument("--file", type=str, required=True, help="Kelimelerin bulunduğu metin dosyası")
 
-    # List komutu
     list_parser = subparsers.add_parser("list", help="Veritabanına kaydedilmiş tüm kelimeleri listeler")
 
-    # Show komutu
     show_parser = subparsers.add_parser("show", help="Veritabanındaki bir kelimenin bulgusunu detaylı gösterir")
     show_parser.add_argument("word", type=str, help="Gösterilecek kelime")
     show_parser.add_argument("--json", action="store_true", help="JSON formatında göster")
