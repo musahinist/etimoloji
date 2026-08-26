@@ -131,7 +131,7 @@ class SearchEngine:
         self.lingpy_aligner = CldfLingPyAligner()
         self.semantic_engine = DiachronicSemanticEngine()
         self.sound_law_induction = SoundLawInductionEngine()
-        # research/ planlarının uygulanmamış kalemleri (Faz 6)
+        # Alıntı keşfi, akraba kümeleme ve tarihsel morfoloji katmanları
         self.loanword_detector = LoanwordDetector(classifier=self.loanword_classifier)
         self.cognate_cluster_engine = CognateClusterEngine()
         self.historical_morphology = HistoricalMorphologyAnalyzer()

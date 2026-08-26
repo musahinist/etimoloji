@@ -1,8 +1,8 @@
 """
 Alıntı Kelime Sınıflandırıcısı — Katman 1 + 2 (Loanword Classifier)
 
-`research/ai_nlp_loanword_classifier_master_plan.md` Katman 1 (fonotaktik
-ihlal analizi) ve Katman 2 (çapraz lehçe yayılımı) uygulamasıdır.
+Alıntı keşif hattının **Katman 1** (fonotaktik ihlal analizi) ve
+**Katman 2** (çapraz lehçe yayılımı) uygulamasıdır.
 
 Düzeltilen kritik hata
 ----------------------

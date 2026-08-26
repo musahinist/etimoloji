@@ -1,8 +1,8 @@
 """
 Çapraz Türki Lehçe Dağılım Skorlaması (Cross-Turkic Cognate Distribution)
 
-`research/ai_nlp_loanword_classifier_master_plan.md` Katman 2'nin uygulaması:
-bir kelimenin kaç Türki dilde karşılığı bulunduğunu ölçer. Geniş yayılım asli
+Alıntı keşif hattının **Katman 2** uygulaması: bir kelimenin kaç Türki dilde
+karşılığı bulunduğunu ölçer. Geniş yayılım asli
 Öz Türkçe kök göstergesi, dar yayılım son dönem alıntı göstergesidir.
 
 Düzeltilen sorunlar
@@ -17,7 +17,7 @@ Düzeltilen sorunlar
 * ``alignment_score`` daima ``85.0 + …`` idi; yani hiçbir hizalama yapılmadan
   her kelime 85–100 arası bir "hizalama skoru" alıyordu. Artık gerçek fonetik
   hizalamadan hesaplanır.
-* Eşikler plan dokümanındaki değerlerle (>%70 öz / <%20 alıntı) hizalandı.
+* Eşikler tasarım hedefindeki değerlerle (>%70 öz / <%20 alıntı) hizalandı.
 """
 from __future__ import annotations
 

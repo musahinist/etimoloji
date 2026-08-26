@@ -189,7 +189,7 @@ data/
   seed/                      tohum veri (kaynak künyeli JSON)
   books/                     kullanıcı PDF'leri (tam metin taranır)
 web/index.html               tek dosyalık statik panel
-research/                    tasarım planları ve uygulama durumu
+scripts/                     fixture kaydedici, veritabanı temizliği
 ```
 
 ## Bilinen sınırlar

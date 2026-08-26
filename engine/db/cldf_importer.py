@@ -1,8 +1,7 @@
 """
 CLDF Veri Kümesi İçe Alıcı (CLDF Dataset Importer)
 
-`research/ai_nlp_loanword_classifier_master_plan.md` §1.2'de listelenen açık
-veri kümelerini projeye alır:
+Açık dilbilim veri kümelerini projeye alır:
 
 * **WOLD** (World Loanword Database) — 395 dilde alıntı kelime ilişkileri
 * **Wiktionary CLDF Loanword Bank**

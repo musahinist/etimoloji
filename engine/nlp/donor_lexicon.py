@@ -1,11 +1,10 @@
 """
 Donör Dil Sözlüğü ve En Yakın Komşu Araması (Donor Lexicon & Nearest-Neighbour)
 
-`research/ai_nlp_loanword_classifier_master_plan.md` **Katman 4**'ün
-uygulaması: kelimenin 10 komşu kaynak dildeki en yakın karşılığını
-IPA fonetik mesafesiyle arar.
+Alıntı keşif hattının **Katman 4** uygulaması: kelimenin 10 komşu kaynak
+dildeki en yakın karşılığını IPA fonetik mesafesiyle arar.
 
-Plan dokümanındaki ölçüt::
+Tasarım ölçütü::
 
     IPA Fonetik Mesafe (Levenshtein Edit Distance) <= 2
     Vektörel Semantik Benzerlik (FastText Cosine) >= 0.75

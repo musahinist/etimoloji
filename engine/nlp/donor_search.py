@@ -1,8 +1,8 @@
 """
 Donör (Kaynak Dil) Arama Motoru — Katman 4
 
-`research/ai_nlp_loanword_classifier_master_plan.md` Katman 4'ün uygulaması:
-kelimenin komşu kaynak dillerdeki en yakın karşılığını arar.
+Alıntı keşif hattının **Katman 4** uygulaması: kelimenin komşu kaynak
+dillerdeki en yakın karşılığını arar.
 
 Yeniden yazılma gerekçesi
 -------------------------

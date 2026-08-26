@@ -1,7 +1,7 @@
 """
 Tarihsel Ek Ağacı Çözücüsü (Historical Suffix Tree Solver)
 
-`research/ai_nlp_etymology_reconstruction_plan.md` §2.5:
+Tarihsel morfotaktik çözümleme hedefi:
 
     "Kelimeyi tarihsel yapım eklerine (+gU, -ik, -gə, -ba) bölerek kelimenin
      ham kökünü ayrıştırma."

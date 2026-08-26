@@ -1,7 +1,7 @@
 """
 Akraba Kümesi Tespiti (Cognate Cluster Detection)
 
-`research/ai_nlp_etymology_reconstruction_plan.md` §2.1'in asıl hedefi:
+Rekonstrüksiyon mimarisinin asıl hedeflerinden biri:
 
     "25 Türki dildeki kelimeleri ses dizilimi olarak hizalayarak gizli
      akrabalıkları (*cognate clusters*) tespit etme."

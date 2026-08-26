@@ -190,8 +190,7 @@ birbirine karışmaz.
 
 ## Alıntı keşif hattı
 
-`nlp/loanword_detector.py`, `research/ai_nlp_loanword_classifier_master_plan.md`
-dokümanındaki dört katmanı uygular:
+`nlp/loanword_detector.py` dört katmanı uygular:
 
 1. **Fonotaktik ihlal analizi** — söz başı ünsüz kısıtı, ünsüz kümesi, ünlü
    uyumu (bileşikler istisna), Arapça vezin, Farsça/Batı ekleri

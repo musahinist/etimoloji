@@ -1,10 +1,7 @@
 """
 Alıntı Kelime Keşif Hattı (Loanword Detection Pipeline)
 
-`research/ai_nlp_loanword_classifier_master_plan.md` dokümanının **4 katmanlı
-otonom keşif hattının** birleşik uygulamasıdır. Plan bu dosyayı açıkça hedef
-olarak adlandırıyordu (``engine/utils/loanword_detector.py``); dosya hiç
-oluşturulmamıştı.
+**4 katmanlı otonom alıntı keşif hattının** birleşik uygulamasıdır.
 
 Katmanlar
 ---------
