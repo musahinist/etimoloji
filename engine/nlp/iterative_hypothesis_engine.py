@@ -1,83 +1,150 @@
 """
-Otonom Hipotez Kurucu ve Doğrulayıcı Döngüsü (Iterative Hypothesis Prover Engine)
-Kelimeyi inceleyip neologizm, donör alıntısı veya Öz Türkçe kök hipotezlerini otonom test eder ve A-HVP protokolü ile doğrular.
+Etimolojik Hipotez Kurucu (Etymological Hypothesis Engine)
+
+Kelime için en iyi desteklenen etimoloji hipotezini kurar ve A-HVP
+protokolünden geçirir.
+
+Düzeltilen sorun
+----------------
+Önceki sürümde dört hipotez dalının dördü de **sabit güven skoru** taşıyordu
+(0.99 / 0.98 / 0.85 / 0.90) ve son ``else`` dalı her kelimeye mutlaka bir
+"Asli Öz Türkçe Köken Hipotezi" kuruyordu — akraba tanığı olmasa bile.
+Bu yüzden ``bilgisayar`` için ``*bilgisayar``, ``zzzqx`` için ``*zzzqx``
+gibi var olmayan ata biçimler üretiliyordu.
+
+Sabit skorlar zaten A-HVP çıktısıyla eziliyordu (yani ölü koddu) ama kod
+okuyanı ve JSON tüketicisini yanıltıyordu. Artık hipotez yalnızca kanıt
+varsa kurulur ve tek güven kaynağı A-HVP'dir.
 """
-from typing import Dict, Any, List
+from __future__ import annotations
+
+from typing import Any
+
+from engine.logging_setup import get_logger
+from engine.nlp.comparative_reconstruction import ComparativeReconstructor
 from engine.nlp.donor_etymology_database import DeepDonorEtymologyDatabase
-from engine.nlp.neologism_detector import NeologismDetector
 from engine.nlp.historical_attestation_verifier import HistoricalAttestationVerifier
-from engine.nlp.trusted_whitelisted_scraper import scrape_whitelisted_academic_sources
 from engine.nlp.hypothesis_validation_protocol import HypothesisValidationProtocol
-from engine.utils.morphology import NON_TURKIC_INITIAL_CONSONANTS
+from engine.nlp.neologism_detector import NeologismDetector
+from engine.utils.phonotactics import initial_consonant_violation
+
+logger = get_logger(__name__)
+
 
 class IterativeHypothesisEngine:
-    def __init__(self):
+    def __init__(self) -> None:
         self.donor_db = DeepDonorEtymologyDatabase()
         self.neologism_detector = NeologismDetector()
         self.attestation_verifier = HistoricalAttestationVerifier()
         self.validator_protocol = HypothesisValidationProtocol()
+        self.reconstructor = ComparativeReconstructor()
 
-    def prove_etymological_hypothesis(self, word: str, initial_finding: Dict[str, Any]) -> Dict[str, Any]:
-        w = word.strip().lower()
+    def prove_etymological_hypothesis(
+        self,
+        word: str,
+        initial_finding: dict[str, Any],
+        turkic_entries: list[dict[str, Any]] | None = None,
+        fetcher_results: list[dict[str, Any]] | None = None,
+    ) -> dict[str, Any]:
+        w = (word or "").strip().lower()
+        entries = turkic_entries if turkic_entries is not None else initial_finding.get("turkic_languages", [])
+        root = initial_finding.get("root", {}) or {}
 
-        # 1. ADIM: Neologizm ve Tanıklama Kontrolü
-        neologism_match = self.neologism_detector.detect(w)
-        attestation_record = self.attestation_verifier.verify_attestation(w)
+        neologism = self.neologism_detector.detect(w)
         donor_match = self.donor_db.lookup(w)
-        academic_scrapes = scrape_whitelisted_academic_sources(w)
+        attestation = self.attestation_verifier.verify_attestation(w, entries, fetcher_results)
+        reconstruction = self.reconstructor.reconstruct(w, entries)
 
-        raw_proto = initial_finding.get("root", {}).get("proto_turkic", w)
-        clean_proto = (raw_proto or w).strip().lstrip("*")
-        if not clean_proto:
-            clean_proto = w
+        hypothesis = self._select_hypothesis(w, root, neologism, donor_match, reconstruction)
 
-        # 2. ADIM: Hipotez Oluşturma
-        if neologism_match:
-            best_hypothesis = {
-                "hypothesis_type": "Cumhuriyet Dönemi Dil Devrimi Özleştirme Türetmesi (Neologism Hypothesis)",
-                "confidence_score": 0.99,
-                "donor_language": "Türkçe (TDK Türetmesi)",
-                "origin_form": w,
-                "proof_summary": neologism_match["etymology_details"],
-                "historical_meaning": f"Cumhuriyet dönemi türetmesidir. İlk yazılı kayıt: {attestation_record['first_attestation_record']}"
-            }
-        elif donor_match:
-            best_hypothesis = {
-                "hypothesis_type": "Doğrulanmış Alıntı Köken (Verified Loanword Hypothesis)",
-                "confidence_score": 0.98,
-                "donor_language": donor_match["donor_language"],
-                "origin_form": donor_match["origin_form"],
-                "proof_summary": donor_match["etymology"],
-                "historical_meaning": donor_match["historical_meaning"]
-            }
-        elif w and w[0] in NON_TURKIC_INITIAL_CONSONANTS:
-            best_hypothesis = {
-                "hypothesis_type": "Söz Başı İhlalli Ağız / Alıntı Hipotezi (Dialect/Loanword Hypothesis)",
-                "confidence_score": 0.85,
-                "donor_language": "Anadolu Ağızları Göçüşmesi veya Komşu Dil",
-                "origin_form": w,
-                "proof_summary": f"Söz başındaki '{w[0]}' harfi Anadolu ağızlarındaki ses göçüşmesi veya komşu dil alıntısı göstergesidir.",
-                "historical_meaning": initial_finding.get("root", {}).get("meaning", w)
-            }
-        else:
-            best_hypothesis = {
-                "hypothesis_type": "Asli Öz Türkçe Köken Hipotezi (Native Proto-Turkic Hypothesis)",
-                "confidence_score": 0.90,
-                "donor_language": "Proto-Türkçe",
-                "origin_form": f"*{clean_proto}",
-                "proof_summary": f"Söz başı harfi, hece yapısı ve ses uyumu Öz Türkçe kurallarına uygundur. {attestation_record['first_attestation_record']}",
-                "historical_meaning": initial_finding.get("root", {}).get("meaning", w)
+        if hypothesis is None:
+            return {
+                "word": w,
+                "hypothesis_available": False,
+                "proven_hypothesis": None,
+                "attestation": attestation,
+                "validation_report": None,
+                "reason": (
+                    "Ne donör sözlük eşleşmesi, ne modern türetme kalıbı, ne de yeterli "
+                    "akraba tanığı bulundu. Hipotez ÜRETİLMEDİ (uydurma yapılmaz)."
+                ),
             }
 
-        # 3. ADIM: A-HVP (AI Hypothesis Validation Protocol) İle Otomatik Doğrulama ve Hakemlik
-        validation_report = self.validator_protocol.validate_hypothesis(w, best_hypothesis, attestation_record)
-        best_hypothesis["validation_report"] = validation_report
-        best_hypothesis["confidence_score"] = validation_report["final_confidence_score"]
+        val_report = self.validator_protocol.validate_hypothesis(w, hypothesis, attestation, entries)
+        hypothesis["validation_report"] = val_report
+        hypothesis["confidence_score"] = val_report["final_confidence_score"]
 
         return {
             "word": w,
-            "proven_hypothesis": best_hypothesis,
-            "attestation": attestation_record,
-            "academic_whitelisted_sources": academic_scrapes,
-            "validation_report": validation_report
+            "hypothesis_available": True,
+            "proven_hypothesis": hypothesis,
+            "attestation": attestation,
+            "validation_report": val_report,
         }
+
+    @staticmethod
+    def _select_hypothesis(
+        w: str,
+        root: dict[str, Any],
+        neologism: dict[str, Any] | None,
+        donor_match: dict[str, Any] | None,
+        reconstruction: dict[str, Any],
+    ) -> dict[str, Any] | None:
+        """Kanıt gücüne göre en iyi hipotezi seçer. Kanıt yoksa ``None``."""
+        modern_meaning = root.get("meaning", "") or ""
+
+        # 1. Donör sözlük eşleşmesi — en güçlü doğrudan kanıt
+        if donor_match:
+            return {
+                "hypothesis_type": "Doğrulanmış alıntı kökeni",
+                "donor_language": donor_match["donor_language"],
+                "origin_form": donor_match["origin_form"],
+                "proof_summary": donor_match.get("etymology", ""),
+                "historical_meaning": donor_match.get("historical_meaning", ""),
+                "modern_meaning": modern_meaning,
+                "evidence_kind": "donor_lexicon",
+            }
+
+        # 2. Modern türetme (bileşik veya güçlü özleştirme eki)
+        if neologism and neologism.get("is_neologism"):
+            return {
+                "hypothesis_type": "Modern Türkçe türetme (Cumhuriyet dönemi)",
+                "donor_language": "Türkçe (modern türetme)",
+                "origin_form": "+".join(neologism.get("components", [])) or w,
+                "proof_summary": neologism.get("etymology_details", ""),
+                "historical_meaning": "",
+                "modern_meaning": modern_meaning,
+                "evidence_kind": "morphological_derivation",
+                "is_modern_derivation": True,
+            }
+
+        # 3. Karşılaştırmalı yöntemle ata biçim (en az 2 bağımsız dil tanığı)
+        if reconstruction.get("evidence_available") and reconstruction.get("reconstructed_root"):
+            return {
+                "hypothesis_type": "Asli Proto-Türkçe kök (karşılaştırmalı yöntem)",
+                "donor_language": "Proto-Türkçe",
+                "origin_form": reconstruction["reconstructed_root"],
+                "proof_summary": reconstruction.get("reconstruction_notes", ""),
+                "historical_meaning": modern_meaning,
+                "modern_meaning": modern_meaning,
+                "evidence_kind": "comparative_method",
+                "witness_count": reconstruction.get("witness_count", 0),
+                "branches": reconstruction.get("branches", []),
+                "applied_correspondences": reconstruction.get("applied_correspondences", []),
+            }
+
+        # 4. Fonotaktik ihlal — alıntı adayı, kaynak dil belirsiz
+        violated, reason = initial_consonant_violation(w)
+        if violated:
+            return {
+                "hypothesis_type": "Alıntı adayı (kaynak dil belirlenemedi)",
+                "donor_language": "",
+                "origin_form": w,
+                "proof_summary": f"{reason}. Kaynak dil için donör sözlük kanıtı gerekiyor.",
+                "historical_meaning": "",
+                "modern_meaning": modern_meaning,
+                "evidence_kind": "phonotactic_only",
+                "is_loan_candidate": True,
+            }
+
+        return None

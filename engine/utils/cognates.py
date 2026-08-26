@@ -3,11 +3,13 @@ Türki Diller Derin Akraba Kelime ve Türev Ağı (Cognate Network Builder)
 Araması yapılan kelimelerin aynı kökten türeyen akraba sözcük kümesini
 yalnızca gerçek sözlük kayıtları ve doğrulanmış diyalekt denkliği üzerinden tespit eder.
 """
-from typing import List, Dict, Any, Optional
-from engine.utils.sound_shifts import generate_turkic_cognate_candidates
-from engine.utils.morphology import analyze_morphology
+from typing import Any
 
-def get_related_cognates(word: str, entries: Optional[List[Dict[str, Any]]] = None) -> List[str]:
+from engine.utils.morphology import analyze_morphology
+from engine.utils.sound_shifts import generate_turkic_cognate_candidates
+
+
+def get_related_cognates(word: str, entries: list[dict[str, Any]] | None = None) -> list[str]:
     """Herhangi bir kelime için yalnızca GERÇEK sözlük kayıtları ve doğrulanmış Türki dil denklerini toplar."""
     w = (word or "").strip().lower()
     if not w:

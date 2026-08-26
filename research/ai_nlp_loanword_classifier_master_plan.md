@@ -101,3 +101,31 @@ Bu belge, **sözlüklerde veya literatürde henüz etimolojisi hiç yapılmamı�
 
 ## 4. Zamanlama ve Entegrasyon
 Bu mimari, **Data Ingestion Pipeline (Veri Toplama Katmanı)** tamamlandıktan sonra `engine/utils/loanword_detector.py` ve `engine/nlp/` klasörü altına kurulup sisteme dâhil edilecektir.
+
+---
+
+## Uygulama Durumu
+
+> Bu bölüm, plandaki maddelerin koddaki karşılığını izler.
+> ✅ uygulandı · 🟡 kısmen · ⏸ ertelendi (gerekçeli)
+
+| Plan maddesi | Durum | Karşılık |
+|---|---|---|
+| §1.1 `Epitran` & `PanPhon` | ✅ | `pyproject.toml` `[phon]` ekstrası; `nlp/phonological_feature_engine.py` |
+| §1.1 `loanpy` | ⏸ | Değerlendirildi, ertelendi — Katman 4 kendi IPA Levenshtein araması ile karşılanıyor |
+| §1.1 `Zemberek-NLP`, `Starlang KeNet` | ⏸ | JVM bağımlılığı; `utils/morphology.py` + `nlp/historical_morphology.py` yeterli görüldü |
+| §1.1 `csu-signal/loan-word-detection` | ⏸ | Bakımsız; kapsam dışı |
+| §1.2 **WOLD** / Wiktionary CLDF Loanword Bank | ✅ | `db/cldf_importer.py` — herhangi bir CLDF veri kümesinden alıntı kaydı içe alır (`python -m engine.db.cldf_importer <dizin>`) |
+| §1.2 ZurichNLP / ConLoan | ⏸ | CLDF içe alıcı üzerinden eklenebilir; ayrı iş |
+| Katman 1 · Söz başı ünsüz kısıtı | ✅ | `utils/phonotactics.py` — kesin/zayıf kısıt ayrımı |
+| Katman 1 · Söz başı ünsüz kümesi | ✅ | `utils/phonotactics.py` |
+| Katman 1 · Ünlü uyumu | ✅ | `utils/phonotactics.py` — bileşik kelimeler istisna |
+| Katman 1 · Arapça vezin kalıpları | ✅ | Desenler **Türkçe imlaya uyarlandı**; eski makronlu (`ī`, `ā`) desenler hiç tetiklenmiyordu |
+| Katman 2 · Çapraz lehçe yayılımı | ✅ | `nlp/cognate_alignment.py` — gerçek `lang_code` sayımı / 25 dil |
+| Katman 2 · Eşikler (>%70 öz, <%20 alıntı) | ✅ | Plan değerleriyle hizalandı |
+| Katman 3 · ML sınıflandırıcı (LogReg/RF) | ⏸ | **Etiketli veri kümesi olmadan eğitilmez.** WOLD ingest'i tamamlandıktan sonra ayrı çalışma. Kural motoru kalibre edildi ve sezgisel olduğu çıktıda bildiriliyor. |
+| Katman 3 · Olasılık dağılımı | ✅ | `nlp/loanword_classifier.py` — öz Türkçelik ve donör atfı **ayrı** hesaplanır (eski normalizasyon hatası giderildi) |
+| Katman 4 · 10 komşu dilde arama | ✅ | `nlp/donor_lexicon.py` — tohum sözlük + canlı çok dilli Wiktionary |
+| Katman 4 · IPA Levenshtein ≤ 2 | ✅ | `nlp/donor_lexicon.py:ipa_distance` |
+| Katman 4 · FastText kosinüs ≥ 0.75 | ⏸ | `gensim`'in Python 3.14 tekerleği yok; anlam örtüşmesi ölçütü kullanılıyor |
+| §4 Hedef dosya `loanword_detector.py` | ✅ | `engine/nlp/loanword_detector.py` — dört katmanı birleştiren hat |

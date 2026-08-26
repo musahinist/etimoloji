@@ -1,7 +1,9 @@
 import os
-import unittest
 import tempfile
+import unittest
+
 from engine.db.database import DatabaseManager
+
 
 class TestDatabaseManager(unittest.TestCase):
     def setUp(self):
@@ -24,7 +26,7 @@ class TestDatabaseManager(unittest.TestCase):
             "turkic_languages": [
                 {"lang_code": "tr", "lang_name": "Türkiye Türkçesi", "word": "göz", "meaning": "göz", "script": "Latin"},
                 {"lang_code": "az", "lang_name": "Azerbaycan Türkçesi", "word": "göz", "meaning": "göz", "script": "Latin"},
-                {"lang_code": "kk", "lang_name": "Kazakça", "word": "kөз", "meaning": "göz", "script": "Cyrillic"}
+                {"lang_code": "kk", "lang_name": "Kazakça", "word": "көз", "meaning": "göz", "script": "Cyrillic"}
             ],
             "sources": ["Test Source"]
         }

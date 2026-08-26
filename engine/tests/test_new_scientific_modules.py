@@ -4,11 +4,13 @@ Yeni Hesaplamalı Dilbilim ve Bilimsel NLP Modülleri Birim Testleri
 """
 
 import unittest
-from engine.nlp.phonological_feature_engine import PhonologicalFeatureEngine
-from engine.nlp.cldf_lingpy_aligner import CldfLingPyAligner
-from engine.nlp.diachronic_semantic_engine import DiachronicSemanticEngine
+
 from engine.db.cldf_exporter import CldfExporter
 from engine.fetchers.wiktextract_local import WiktextractFetcher
+from engine.nlp.cldf_lingpy_aligner import CldfLingPyAligner
+from engine.nlp.diachronic_semantic_engine import DiachronicSemanticEngine
+from engine.nlp.phonological_feature_engine import PhonologicalFeatureEngine
+
 
 class TestNewScientificModules(unittest.TestCase):
 
@@ -20,20 +22,44 @@ class TestNewScientificModules(unittest.TestCase):
         self.wiktextract = WiktextractFetcher()
 
     def test_panphon_articulatory_feature_vector(self):
-        """PanPhon 21-boyutlu IPA artikülatör fonetik vektör ve Hamming uzaklığı testi"""
-        v_a = self.panphon.get_feature_vector('a')
-        v_e = self.panphon.get_feature_vector('e')
-        self.assertEqual(len(v_a), 21)
-        self.assertEqual(len(v_e), 21)
+        """Gerçek PanPhon artikülatör özellik vektörleri ve mesafe testi.
 
-        # Ünlü-Ünlü ve Ünlü-Ünsüz mesafesi
-        dist_ae = self.panphon.articulatory_hamming_distance('a', 'e')
-        dist_ab = self.panphon.articulatory_hamming_distance('a', 'b')
+        Gerçek PanPhon 24 özellik kullanır; eski sürümdeki elle yazılmış
+        taklit matris 21 boyutluydu ve yalnızca 35 karakter içeriyordu.
+        """
+        v_a = self.panphon.get_feature_vector("a")
+        v_e = self.panphon.get_feature_vector("e")
+        self.assertEqual(len(v_a), len(v_e))
+        self.assertGreaterEqual(len(v_a), 21)
+
+        # İki ünlü birbirine, ünlü-ünsüzden daha yakın olmalı
+        dist_ae = self.panphon.articulatory_distance("a", "e")
+        dist_ab = self.panphon.articulatory_distance("a", "b")
         self.assertLess(dist_ae, dist_ab)
 
-        # Dizilim artikülatör mesafesi
+        # Aynı ses sıfır mesafe
+        self.assertEqual(self.panphon.articulatory_distance("a", "a"), 0.0)
+
+        # Düzenli ses denkliği yüksek benzerlik vermeli
         res = self.panphon.sequence_phonological_distance("sub", "suv")
+        self.assertTrue(res["evidence_available"])
         self.assertGreater(res["phonetic_similarity"], 0.70)
+
+        # Alâkasız biçimler düşük benzerlik
+        unrelated = self.panphon.sequence_phonological_distance("deniz", "araba")
+        self.assertLess(unrelated["phonetic_similarity"], 0.40)
+
+    def test_panphon_empty_input_reports_no_evidence(self):
+        """Boş girdi tek ve tutarlı bir şema döndürmelidir.
+
+        Eski sürümde boş dal {distance, similarity, matrix}, normal dal
+        {phonological_edit_distance, ...} döndürüyor; çağıranlar sessizce
+        varsayılanlara düşüyordu.
+        """
+        res = self.panphon.sequence_phonological_distance("", "")
+        self.assertFalse(res["evidence_available"])
+        self.assertIsNone(res["phonetic_similarity"])
+        self.assertIn("phonological_edit_distance", res)
 
     def test_cldf_lingpy_sca_dolgopolsky_alignment(self):
         """LingPy SCA Dolgopolsky ses sınıfları hizalaması testi"""

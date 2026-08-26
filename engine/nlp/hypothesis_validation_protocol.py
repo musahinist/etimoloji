@@ -1,215 +1,397 @@
 """
-Yapay Zeka Hipotez Doğrulama ve Hakemlik Protokolü (AI Hypothesis Validation Protocol - A-HVP)
-Kelime etimolojisi hipotezlerini 5 aşamalı akademik süzgeçten geçirir:
-1. Fonetik Evrim & IPA Kural Kontrolü (No Broken Phonetic Chain & LingPy Sequence Alignment)
-2. Kronolojik Zaman Kilidi (Anachronism Lock: T_source < T_target)
-3. Diyakronik Semantik Vektör & Yörünge Analizi (d^2S/dt^2 < theta)
-4. Çapraz Akraba Kelime Triangulation (Cognates)
-5. Hakem Raporu & Güven Skoru Basımı (%85+ Validated, <50% Rejected)
-"""
+Etimoloji Hipotezi Doğrulama Protokolü (A-HVP)
 
-from typing import Dict, Any, List, Optional
-import re
-from engine.utils.phonetic_rules import verify_phonetic_chain
-from engine.utils.sound_shifts import generate_turkic_cognate_candidates
+Bir etimolojik hipotezi dört bağımsız aşamadan geçirir ve **yalnızca gerçekten
+kanıt üretebilen aşamalardan** bir güven skoru hesaplar.
+
+Temel ilke: KANIT YOKSA PUAN DA YOK
+------------------------------------
+Önceki sürümde dört aşamanın dördü de kanıt yokluğunda cömert varsayılan
+puanlar veriyordu:
+
+===========================  ==========================================
+Aşama (ağırlık)              Kanıt yokken verilen puan
+===========================  ==========================================
+1 · Fonetik (%35)            karakter kümesi kesişimiyle 0.75'e kadar
+2 · Kronoloji (%30)          tarih ayrıştırılamazsa **1.0**
+3 · Semantik (%15)           veri eksikse **0.85**
+4 · Triangulation (%20)      daima **0.95**
+===========================  ==========================================
+
+Sonuç: uydurma ``zzzqx`` kelimesi boş kanıtla **%96 "🟢 VALIDATED"** alıyordu.
+
+Artık her aşama ``evidence_available`` bildirir. Kanıt üretemeyen aşamanın
+ağırlığı toplamdan DÜŞÜLÜR, skor katkıda bulunan aşamalara normalize edilir ve
+``evidence_coverage`` alanı kaç aşamanın gerçekten konuştuğunu raporlar.
+Kapsam ``MIN_EVIDENCE_COVERAGE`` altındaysa rozet en fazla
+``⚪ INSUFFICIENT_EVIDENCE`` olabilir.
+"""
+from __future__ import annotations
+
+from typing import Any
+
+from engine.config import A_HVP_WEIGHTS, BADGE_THRESHOLDS, MIN_EVIDENCE_COVERAGE
+from engine.fetchers.base import TURKIC_LANGUAGE_COUNT, TURKIC_LANGUAGES_MAP
+from engine.logging_setup import get_logger
 from engine.nlp.cldf_lingpy_aligner import CldfLingPyAligner
 from engine.nlp.diachronic_semantic_engine import DiachronicSemanticEngine
+from engine.nlp.historical_attestation_verifier import HistoricalAttestationVerifier
+from engine.utils.phonetic_rules import verify_phonetic_chain
+
+logger = get_logger(__name__)
+
 
 class PhoneticChainVerifier:
-    """A-HVP Aşama 1: Fonetik Evrim ve LingPy Ses Hizalama Kontrolü"""
-    def __init__(self):
-        self.lingpy_aligner = CldfLingPyAligner()
+    """Aşama 1 — Ata biçim ile modern biçim arasında geçerli ses evrimi var mı?"""
 
-    def verify(self, origin_form: str, word: str) -> Dict[str, Any]:
+    def __init__(self, aligner: CldfLingPyAligner | None = None):
+        self.lingpy_aligner = aligner or CldfLingPyAligner()
+
+    def verify(self, origin_form: str, word: str) -> dict[str, Any]:
         clean_origin = (origin_form or "").strip().lstrip("*")
-        if not clean_origin:
-            clean_origin = word
+        target = (word or "").strip()
 
-        base_verification = verify_phonetic_chain(clean_origin, word)
-        align_res = self.lingpy_aligner.align_sequences(clean_origin, word)
+        if not clean_origin or not target:
+            return {
+                "evidence_available": False,
+                "is_valid": None,
+                "score": None,
+                "violations": [],
+                "matched_rules": [],
+                "reason": "Karşılaştırılacak ata biçim veya modern biçim yok.",
+            }
 
-        # Base verification score ile LingPy hizalama skorunun sentezi
-        combined_score = round((base_verification["score"] * 0.6) + (align_res["phonetic_similarity"] * 0.4), 3)
+        base = verify_phonetic_chain(clean_origin, target)
+        if not base.get("evidence_available"):
+            return {
+                "evidence_available": False,
+                "is_valid": None,
+                "score": None,
+                "violations": base.get("violations", []),
+                "matched_rules": base.get("matched_rules", []),
+                "reason": base.get("reason", "Fonetik zincir değerlendirilemedi."),
+            }
+
+        align = self.lingpy_aligner.align_sequences(clean_origin, target)
+        alignment_similarity = float(align.get("phonetic_similarity") or 0.0)
+
+        # Sıralı dizi benzerliği (%60) + ses sınıfı hizalaması (%40)
+        combined = round(base["score"] * 0.6 + alignment_similarity * 0.4, 3)
 
         return {
-            "is_valid": base_verification["is_valid"] and (align_res["phonetic_similarity"] > 0.15 or clean_origin == word),
-            "score": combined_score,
-            "violations": base_verification["violations"],
-            "matched_rules": base_verification["matched_rules"],
-            "alignment_details": align_res
+            "evidence_available": True,
+            "is_valid": bool(base["is_valid"]),
+            "score": combined,
+            "sequence_similarity": base.get("similarity"),
+            "alignment_similarity": alignment_similarity,
+            "violations": base.get("violations", []),
+            "matched_rules": base.get("matched_rules", []),
+            "alignment_details": {
+                "aligned_seq1": align.get("aligned_seq1"),
+                "aligned_seq2": align.get("aligned_seq2"),
+                "sound_class_seq1": align.get("sound_class_seq1"),
+                "sound_class_seq2": align.get("sound_class_seq2"),
+            },
         }
+
 
 class ChronologicalTimeLock:
-    """A-HVP Aşama 2: Kronolojik Zaman Kilidi Testi (Anachronism Lock)"""
-    def parse_year_or_century(self, text: str) -> Optional[int]:
+    """
+    Aşama 2 — Anakronizm kilidi.
+
+    Kaynak dilin temas dönemi, kelimenin ilk tanıklanma tarihinden SONRA
+    olamaz. Tarih bilinmiyorsa aşama kanıt üretmez (eskiden 1.0 veriyordu).
+    """
+
+    #: Donör dillerin Türkçe ile temas dönemi (yaklaşık, yıl olarak).
+    DONOR_CONTACT_PERIODS: dict[str, int] = {
+        "proto-türkçe": -500, "eski türkçe": 700, "çince": 200, "soğdca": 400,
+        "sanskritçe": 500, "moğolca": 1200, "arapça": 900, "farsça": 900,
+        "grekçe": 1000, "yunanca": 1000, "ermenice": 1000, "rumca": 1300,
+        "slavca": 1300, "rusça": 1700, "italyanca": 1300, "venedikçe": 1300,
+        "macarca": 1400, "fransızca": 1800, "ingilizce": 1900, "almanca": 1850,
+        "latince": 1500,
+    }
+
+    def __init__(self) -> None:
+        self._verifier = HistoricalAttestationVerifier()
+
+    def parse_year_or_century(self, text: str) -> int | None:
+        """Serbest metinden yıl çıkarır; sayfa/cilt numaralarını dışlar."""
         if not text:
             return None
-        text_lower = text.lower()
-        
-        is_bc = "m.ö" in text_lower or "mö" in text_lower or "bc" in text_lower
-        
-        year_match = re.search(r'\b(1\d{3}|20\d{2}|\d{3})\b', text)
-        if year_match:
-            year = int(year_match.group(1))
-            return -year if is_bc else year
-            
-        century_match = re.search(r'(\d{1,2})\.?\s*(yy|yüzyıl|century)', text_lower)
-        if century_match:
-            century = int(century_match.group(1))
-            approx_year = (century - 1) * 100 + 50
-            return -approx_year if is_bc else approx_year
+        year = self._verifier.parse_year(text)
+        if year is not None:
+            return year
 
-        if "orhun" in text_lower or "köktürk" in text_lower:
-            return 735
-        if "divan" in text_lower or "kaşgarlı" in text_lower:
-            return 1074
-        if "cumhuriyet" in text_lower or "tdk" in text_lower:
-            return 1935
-        if "fransızca" in text_lower or "latin" in text_lower or "batı" in text_lower:
-            return 1850
+        import re
 
+        lowered = text.lower()
+        masked = re.sub(r"\b(?:s|sf|sayfa|p|pp|cilt|c|nr|no|vol)\.?\s*\d+", " ", lowered)
+        m = re.search(r"(\d{1,2})\.?\s*(?:yy|yüzyıl|century)", masked)
+        if m:
+            century = int(m.group(1))
+            approx = (century - 1) * 100 + 50
+            return -approx if ("m.ö" in lowered or "mö " in lowered or "bc" in lowered) else approx
         return None
 
-    def verify(self, source_period: str, target_attestation: str) -> Dict[str, Any]:
-        t_source = self.parse_year_or_century(source_period)
-        t_target = self.parse_year_or_century(target_attestation)
+    def donor_contact_year(self, donor_language: str) -> int | None:
+        d = (donor_language or "").strip().lower()
+        for name, year in self.DONOR_CONTACT_PERIODS.items():
+            if name in d:
+                return year
+        return None
 
-        if t_source is not None and t_target is not None:
-            if t_source > t_target:
-                return {
-                    "is_valid": False,
-                    "score": 0.0,
-                    "violation": f"ANAKRONİZM ENGELİ: Kaynak dönemi ({source_period} -> ~{t_source}) hedef kelimenin ilk tanıklanma tarihinden ({target_attestation} -> ~{t_target}) daha sonradır (T_kaynak > T_hedef)."
-                }
-        
+    def verify(self, donor_language: str, attestation: dict[str, Any] | None) -> dict[str, Any]:
+        """
+        :param donor_language: Hipotezin öne sürdüğü kaynak dil.
+        :param attestation: :class:`HistoricalAttestationVerifier` çıktısı.
+            Serbest ``proof_summary`` metni ARTIK GİRDİ DEĞİLDİR; eski sürümde
+            oradaki sayfa numaraları yıl sanılıyordu.
+        """
+        t_source = self.donor_contact_year(donor_language)
+        t_target = (attestation or {}).get("first_attestation_year")
+
+        if t_source is None or t_target is None:
+            missing = []
+            if t_source is None:
+                missing.append(f"donör dil temas dönemi bilinmiyor ({donor_language or '—'})")
+            if t_target is None:
+                missing.append("kelimenin tarihli ilk tanıklaması yok")
+            return {
+                "evidence_available": False,
+                "is_valid": None,
+                "score": None,
+                "source_year": t_source,
+                "attestation_year": t_target,
+                "reason": "Kronoloji değerlendirilemedi: " + ", ".join(missing),
+            }
+
+        if t_source > t_target:
+            return {
+                "evidence_available": True,
+                "is_valid": False,
+                "score": 0.0,
+                "source_year": t_source,
+                "attestation_year": t_target,
+                "violation": (
+                    f"ANAKRONİZM: Kaynak dil teması (~{t_source}) kelimenin ilk "
+                    f"tanıklamasından ({t_target}) sonradır."
+                ),
+            }
+
+        # Temas ile tanıklama arasındaki mesafe ne kadar makulse skor o kadar yüksek
+        gap = t_target - t_source
+        score = 1.0 if gap <= 800 else max(0.5, 1.0 - (gap - 800) / 4000)
         return {
+            "evidence_available": True,
             "is_valid": True,
-            "score": 1.0,
-            "violation": None
+            "score": round(score, 3),
+            "source_year": t_source,
+            "attestation_year": t_target,
+            "reason": f"Kronolojik sıra tutarlı (temas ~{t_source}, tanıklama {t_target}).",
         }
+
 
 class SemanticDriftEvaluator:
-    """A-HVP Aşama 3: Diyakronik Semantik Vektör ve Yörünge Kontrolü"""
-    def __init__(self):
-        self.semantic_engine = DiachronicSemanticEngine()
+    """Aşama 3 — Tarihsel anlam ile modern anlam arasındaki mesafe makul mü?"""
 
-    def verify(self, source_meaning: str, target_meaning: str) -> Dict[str, Any]:
-        s_m = (source_meaning or "").lower()
-        t_m = (target_meaning or "").lower()
+    def __init__(self, engine: DiachronicSemanticEngine | None = None):
+        self.engine = engine or DiachronicSemanticEngine()
 
-        if not s_m or not t_m:
-            return {"is_valid": True, "score": 0.85, "reason": "Semantik veri tam değil, varsayılan uyum kabul edildi."}
-
-        trajectory_res = self.semantic_engine.evaluate_diachronic_trajectory(s_m, t_m)
-
+    def verify(self, historical_meaning: str, modern_meaning: str) -> dict[str, Any]:
+        res = self.engine.evaluate_diachronic_trajectory(historical_meaning, modern_meaning)
+        if not res.get("evidence_available"):
+            return {
+                "evidence_available": False,
+                "is_valid": None,
+                "score": None,
+                "reason": res.get("reason"),
+                "trajectory_details": res,
+            }
+        distance = res["total_shift_distance"]
         return {
-            "is_valid": trajectory_res["is_plausible"],
-            "score": max(0.20, round(1.0 - trajectory_res["total_shift_distance"], 3)),
-            "reason": trajectory_res["reason"],
-            "trajectory_details": trajectory_res
+            "evidence_available": True,
+            "is_valid": bool(res["is_plausible"]),
+            "score": round(max(0.0, 1.0 - distance), 3),
+            "reason": res.get("reason"),
+            "trajectory_details": res,
         }
+
 
 class CrossCognateTriangulator:
-    """A-HVP Aşama 4: Çapraz Akraba Kelime Sorgusu (Triangulation)"""
-    def verify(self, word: str) -> Dict[str, Any]:
-        cognates = generate_turkic_cognate_candidates(word)
-        has_dialectic_matches = len(cognates) > 1
+    """
+    Aşama 4 — Kelimenin GERÇEK akraba dağılımı.
 
-        score = 0.95 if has_dialectic_matches else 0.60
-        return {
-            "is_valid": True,
-            "score": score,
-            "cognate_count": len(cognates),
-            "sample_cognates": cognates[:6]
+    Eski sürüm ``generate_turkic_cognate_candidates(word)`` çağırıp KENDİ
+    ÜRETTİĞİ varyantları sayıyordu; transkripsiyon nedeniyle sayı her zaman
+    1'den büyük çıkıyor ve skor **daima 0.95** oluyordu. Artık yalnızca veri
+    katmanından gelen gerçek kayıtlar sayılır.
+    """
+
+    def verify(self, word: str, turkic_entries: list[dict[str, Any]] | None) -> dict[str, Any]:
+        entries = turkic_entries or []
+        real_langs = {
+            e.get("lang_code") for e in entries if e.get("lang_code") in TURKIC_LANGUAGES_MAP
+        }
+        # Bağımsız kaynak çeşitliliği: tek bir kaynağın ürettiği liste zayıf kanıttır.
+        sources = {e.get("source") for e in entries if e.get("source")}
+        live_sources = {
+            e.get("source") for e in entries
+            if e.get("source") and e.get("origin") == "live"
         }
 
+        if not real_langs:
+            return {
+                "evidence_available": False,
+                "is_valid": None,
+                "score": None,
+                "cognate_count": 0,
+                "languages": [],
+                "reason": "Veri katmanında hiç Türki dil karşılığı bulunamadı.",
+            }
+
+        spread = len(real_langs) / TURKIC_LANGUAGE_COUNT
+        source_factor = min(1.0, len(sources) / 3.0)
+        live_factor = min(1.0, len(live_sources) / 2.0) if live_sources else 0.4
+
+        score = round(0.55 * min(1.0, spread / 0.4) + 0.25 * source_factor + 0.20 * live_factor, 3)
+
+        return {
+            "evidence_available": True,
+            "is_valid": True,
+            "score": min(1.0, score),
+            "cognate_count": len(real_langs),
+            "languages": sorted(real_langs),
+            "spreading_ratio": round(spread, 3),
+            "source_count": len(sources),
+            "live_source_count": len(live_sources),
+            "sample_cognates": [e.get("word") for e in entries[:6] if e.get("word")],
+        }
+
+
 class HypothesisValidationProtocol:
-    """A-HVP Master Doğrulama ve Otomatik Hakemlik Mimarisi"""
-    def __init__(self):
+    """Dört aşamalı hakem protokolü ve kanıt kapsamına göre normalize skor."""
+
+    def __init__(self) -> None:
         self.phonetic_verifier = PhoneticChainVerifier()
         self.time_lock = ChronologicalTimeLock()
         self.semantic_evaluator = SemanticDriftEvaluator()
         self.cognate_triangulator = CrossCognateTriangulator()
 
-    def validate_hypothesis(self, word: str, hypothesis: Dict[str, Any], attestation_record: Dict[str, Any]) -> Dict[str, Any]:
+    def validate_hypothesis(
+        self,
+        word: str,
+        hypothesis: dict[str, Any],
+        attestation_record: dict[str, Any] | None = None,
+        turkic_entries: list[dict[str, Any]] | None = None,
+    ) -> dict[str, Any]:
         raw_origin = hypothesis.get("origin_form") or word
-        clean_origin = raw_origin.strip().lstrip("*")
-        if not clean_origin:
-            clean_origin = word
-        origin_form = f"*{clean_origin}" if hypothesis.get("donor_language") == "Proto-Türkçe" else clean_origin
-
+        clean_origin = str(raw_origin).strip().lstrip("*") or word
         donor_lang = hypothesis.get("donor_language", "")
-        proof_summary = hypothesis.get("proof_summary", "")
-        hist_meaning = hypothesis.get("historical_meaning", "")
-        first_attestation = attestation_record.get("first_attestation_record", "")
+        origin_form = f"*{clean_origin}" if donor_lang == "Proto-Türkçe" else clean_origin
 
-        # 1. Fonetik Halka & LingPy Hizalama Kontrolü
         phonetic_res = self.phonetic_verifier.verify(origin_form, word)
+        time_res = self.time_lock.verify(donor_lang, attestation_record)
+        semantic_res = self.semantic_evaluator.verify(
+            hypothesis.get("historical_meaning", ""), hypothesis.get("modern_meaning", "")
+        )
+        cognate_res = self.cognate_triangulator.verify(word, turkic_entries)
 
-        # 2. Kronolojik Zaman Kilidi Testi
-        time_res = self.time_lock.verify(donor_lang + " " + proof_summary, first_attestation)
-
-        # 3. Diyakronik Semantik Kontrol
-        semantic_res = self.semantic_evaluator.verify(hist_meaning, proof_summary)
-
-        # 4. Çapraz Akraba Triangulation
-        cognate_res = self.cognate_triangulator.verify(word)
-
-        # Ağırlıklı Güven Skoru Hesabı
-        p_score = phonetic_res["score"]
-        t_score = time_res["score"]
-        s_score = semantic_res["score"]
-        c_score = cognate_res["score"]
-
-        total_score = (p_score * 0.35) + (t_score * 0.30) + (s_score * 0.15) + (c_score * 0.20)
-
-        # Otomatik Red Şartları
-        rejections = []
-        if not phonetic_res["is_valid"]:
-            rejections.extend(phonetic_res["violations"])
-            total_score *= 0.4 # Fonetik halka kırıksa skoru düşür
-        if not time_res["is_valid"]:
-            rejections.append(time_res["violation"])
-            total_score = min(total_score, 0.30) # Anakronizm varsa skor en fazla %30 olabilir
-
-        # Hakem Kararı ve Rozet
-        if total_score >= 0.75 and not rejections:
-            status_code = "VALIDATED"
-            badge = "🟢 VALIDATED (Bilimsel Hakem Onaylı)"
-        elif total_score >= 0.50 and not rejections:
-            status_code = "NEEDS_REVIEW"
-            badge = "🟡 NEEDS REVIEW (İnceleme Gerekli Hipotez)"
-        else:
-            status_code = "REJECTED"
-            badge = "🔴 REJECTED (Akademik Red / Anakronizm veya Fonetik İhlal)"
-
-        referee_report = {
-            "status_code": status_code,
-            "badge": badge,
-            "final_confidence_score": round(total_score, 3),
-            "score_percentage": f"%{round(total_score * 100, 1)}",
-            "stage_breakdown": {
-                "stage1_phonetic_chain": {
-                    "is_valid": phonetic_res["is_valid"],
-                    "matched_rules": phonetic_res["matched_rules"],
-                    "alignment_details": phonetic_res.get("alignment_details", {}),
-                    "violations": phonetic_res.get("violations", [])
-                },
-                "stage2_time_lock": {
-                    "is_valid": time_res["is_valid"],
-                    "violation": time_res.get("violation")
-                },
-                "stage3_semantic_drift": {
-                    "is_valid": semantic_res["is_valid"],
-                    "reason": semantic_res.get("reason"),
-                    "trajectory_details": semantic_res.get("trajectory_details", {})
-                },
-                "stage4_cognate_triangulation": {
-                    "is_valid": cognate_res["is_valid"],
-                    "sample_cognates": cognate_res.get("sample_cognates", [])
-                }
-            },
-            "rejection_reasons": rejections
+        stages = {
+            "phonetic": phonetic_res,
+            "chronology": time_res,
+            "semantic": semantic_res,
+            "triangulation": cognate_res,
         }
 
-        return referee_report
+        # --- Kanıt kapsamına göre normalize skor ---
+        contributing_weight = 0.0
+        weighted_sum = 0.0
+        for key, res in stages.items():
+            if not res.get("evidence_available") or res.get("score") is None:
+                continue
+            weight = A_HVP_WEIGHTS[key]
+            contributing_weight += weight
+            weighted_sum += weight * float(res["score"])
+
+        total_weight = sum(A_HVP_WEIGHTS.values())
+        evidence_coverage = round(contributing_weight / total_weight, 3) if total_weight else 0.0
+        # `stage_score`: ÖLÇÜLEBİLEN kanıtın kalitesi.
+        # `total_score` : kapsamla ağırlıklandırılmış yayımlanan güven.
+        # İkisi ayrı tutulur; aksi hâlde "kanıt eksik" ile "kanıt kötü" aynı
+        # kefeye girer ve iyi belgelenmiş bir etimoloji, yalnızca tarih verisi
+        # eksik olduğu için reddedilir.
+        stage_score = round(weighted_sum / contributing_weight, 3) if contributing_weight else 0.0
+        total_score = round(stage_score * evidence_coverage, 3)
+
+        rejections: list[str] = []
+        for res in stages.values():
+            rejections.extend(res.get("violations", []) or [])
+            if res.get("violation"):
+                rejections.append(res["violation"])
+
+        if any(s.get("is_valid") is False for s in stages.values()):
+            stage_score = round(stage_score * 0.4, 3)
+            total_score = round(total_score * 0.4, 3)
+        if time_res.get("is_valid") is False:
+            stage_score = min(stage_score, 0.30)
+            total_score = min(total_score, 0.30)
+
+        status_code, badge = self._decide(stage_score, evidence_coverage, rejections)
+
+        report = {
+            "status_code": status_code,
+            "badge": badge,
+            "final_confidence_score": total_score,
+            "score_percentage": f"%{round(total_score * 100, 1)}",
+            "stage_score": stage_score,
+            "evidence_coverage": evidence_coverage,
+            "contributing_stages": sorted(
+                k for k, v in stages.items() if v.get("evidence_available") and v.get("score") is not None
+            ),
+            "missing_evidence": sorted(
+                k for k, v in stages.items() if not v.get("evidence_available") or v.get("score") is None
+            ),
+            "stage_breakdown": {
+                "stage1_phonetic_chain": phonetic_res,
+                "stage2_time_lock": time_res,
+                "stage3_semantic_drift": semantic_res,
+                "stage4_cognate_triangulation": cognate_res,
+            },
+            "rejection_reasons": rejections,
+            "weights": dict(A_HVP_WEIGHTS),
+        }
+        logger.debug(
+            "A-HVP %r: skor=%.3f kapsam=%.2f rozet=%s", word, total_score, evidence_coverage, status_code
+        )
+        return report
+
+    @staticmethod
+    def _decide(stage_score: float, coverage: float, rejections: list[str]) -> tuple[str, str]:
+        """
+        Rozet kararı.
+
+        Karar ``stage_score`` (ölçülebilen kanıtın KALİTESİ) üzerinden verilir;
+        ``coverage`` ise bir KAPI görevi görür. Böylece:
+
+        * kanıtın yarısından azı ölçülebildiyse -> YETERSİZ KANIT
+        * ölçülebilen kanıt bir ihlal gösteriyorsa -> REDDEDİLDİ
+        * ölçülebilen kanıt iyi ama eksikse -> DOĞRULANDI (kısmi kanıt)
+        """
+        if coverage < MIN_EVIDENCE_COVERAGE:
+            return (
+                "INSUFFICIENT_EVIDENCE",
+                f"⚪ YETERSİZ KANIT (aşamaların yalnızca %{coverage * 100:.0f}'i değerlendirilebildi)",
+            )
+        if rejections:
+            return "REJECTED", "🔴 REDDEDİLDİ (anakronizm veya fonetik zincir ihlali)"
+
+        partial = coverage < 0.999
+        if stage_score >= BADGE_THRESHOLDS["validated"]:
+            suffix = f" — kısmi kanıt, %{coverage * 100:.0f} kapsam" if partial else ""
+            return "VALIDATED", f"🟢 DOĞRULANDI (kanıta dayalı){suffix}"
+        if stage_score >= BADGE_THRESHOLDS["needs_review"]:
+            suffix = f" (%{coverage * 100:.0f} kapsam)" if partial else ""
+            return "NEEDS_REVIEW", f"🟡 İNCELEME GEREKLİ{suffix}"
+        return "REJECTED", "🔴 REDDEDİLDİ (ölçülebilen kanıt zayıf)"

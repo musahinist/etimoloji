@@ -1,17 +1,23 @@
-import re
 import json
-import urllib.request
+import re
 import urllib.parse
-from typing import Dict, Any, Optional, List
+import urllib.request
+from typing import Any
 
-from engine.fetchers.base import BaseFetcher, TURKIC_LANGUAGES_MAP
+from engine import config
+from engine.fetchers.base import TURKIC_LANGUAGES_MAP, BaseFetcher
+from engine.logging_setup import get_logger
+from engine.utils.network import fetch as http_get
+
+logger = get_logger(__name__)
+
 
 class TdkFetcher(BaseFetcher):
     @property
     def source_name(self) -> str:
         return "TDK (Türk Dil Kurumu)"
 
-    def fetch(self, word: str) -> Dict[str, Any]:
+    def fetch(self, word: str) -> dict[str, Any]:
         word_clean = word.strip().lower()
         result = {
             "root": {"proto_turkic": "", "meaning": "", "reconstruction_notes": ""},
@@ -20,15 +26,15 @@ class TdkFetcher(BaseFetcher):
 
         url = f"https://sozluk.gov.tr/gts?ara={urllib.parse.quote(word_clean)}"
         try:
-            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-            with urllib.request.urlopen(req, timeout=5) as resp:
-                data = json.loads(resp.read().decode('utf-8'))
-                if isinstance(data, list) and len(data) > 0 and "anlamlarList" in data[0]:
-                    meanings = [item["anlam"] for item in data[0]["anlamlarList"] if "anlam" in item]
+            _body = http_get(url, timeout=config.HTTP_TIMEOUT_MEDIUM)
+            if _body is not None:
+                data = json.loads(_body)
+                if isinstance(data, list) and len(data) > 0 and "anlamlarListe" in data[0]:
+                    meanings = [item["anlam"] for item in data[0]["anlamlarListe"] if "anlam" in item]
                     meaning_str = "; ".join(meanings[:2])
-                    
+
                     lisan = data[0].get("lisan", "")
-                    
+
                     result["turkic_languages"].append({
                         "lang_code": "tr",
                         "lang_name": TURKIC_LANGUAGES_MAP["tr"],
@@ -40,8 +46,7 @@ class TdkFetcher(BaseFetcher):
                     if lisan:
                         result["root"]["reconstruction_notes"] = f"TDK Köken Bilgisi: {lisan}"
         except Exception:
-            pass
-
+            logger.warning("%s: kaynak işlenemedi", self.source_name if hasattr(self, "source_name") else __name__, exc_info=True)
         return result
 
 
@@ -50,7 +55,7 @@ class NisanyanFetcher(BaseFetcher):
     def source_name(self) -> str:
         return "Nişanyan Etimoloji Sözlüğü"
 
-    def fetch(self, word: str) -> Dict[str, Any]:
+    def fetch(self, word: str) -> dict[str, Any]:
         word_clean = word.strip().lower()
         result = {
             "root": {"proto_turkic": "", "meaning": "", "reconstruction_notes": ""},
@@ -59,15 +64,15 @@ class NisanyanFetcher(BaseFetcher):
 
         url = f"https://www.nisanyansozluk.com/kelime/{urllib.parse.quote(word_clean)}"
         try:
-            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)'})
-            with urllib.request.urlopen(req, timeout=8) as resp:
-                html = resp.read().decode('utf-8')
+            _body = http_get(url, timeout=config.HTTP_TIMEOUT_LONG)
+            if _body is not None:
+                html = _body
                 tokens = re.findall(r'text:\"([^\"]+)\"', html)
                 if not tokens:
                     return result
 
                 text_full = "".join(tokens)
-                
+
                 # Eski Türkçe veya Ana Türkçe kök tespiti
                 etü_match = re.search(r'Eski\s+Türkçe\s+([a-zçğıöşüA-ZÇĞİÖŞÜ\*]+)\s+“([^”]+)”', text_full)
                 if etü_match:
@@ -107,6 +112,5 @@ class NisanyanFetcher(BaseFetcher):
                     result["root"]["reconstruction_notes"] = f"Nişanyan Etimoloji: {text_full[:300]}..."
 
         except Exception:
-            pass
-
+            logger.warning("%s: kaynak işlenemedi", self.source_name if hasattr(self, "source_name") else __name__, exc_info=True)
         return result

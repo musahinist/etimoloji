@@ -4,7 +4,6 @@ Sözlük tanımlarında yer alan '[-> herkil]', 'bkz. herkil', 'yön. herkil' gi
 ve hedef kelimenin etimolojik anlamını zincirleme olarak sorgular.
 """
 import re
-from typing import List, Optional
 
 REFERENCE_PATTERNS = [
     r'\[\s*->\s*([a-zA-ZçğıöşuüÇĞİÖŞÜ]+)\s*-\s*\d+\s*\]',
@@ -14,10 +13,10 @@ REFERENCE_PATTERNS = [
     r'->\s*([a-zA-ZçğıöşuüÇĞİÖŞÜ]+)'
 ]
 
-def extract_cross_references(definition: str) -> List[str]:
+def extract_cross_references(definition: str) -> list[str]:
     if not definition:
         return []
-    
+
     found_refs = []
     for pattern in REFERENCE_PATTERNS:
         matches = re.findall(pattern, definition, re.IGNORECASE)

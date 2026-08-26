@@ -1,14 +1,20 @@
-import sys
-import os
-import json
 import argparse
-from typing import Dict, Any
+import json
+import os
+import sys
+from pathlib import Path
+from typing import Any
 
-from engine.search_engine import SearchEngine
+from engine.db.cldf_exporter import CldfExporter
 from engine.db.database import DatabaseManager
+from engine.logging_setup import get_logger, set_verbose
 from engine.nlp.hypothesis_validation_protocol import HypothesisValidationProtocol
+from engine.search_engine import SearchEngine
 
-def print_finding_formatted(finding: Dict[str, Any]) -> None:
+logger = get_logger(__name__)
+
+
+def print_finding_formatted(finding: dict[str, Any]) -> None:
     query_word = finding.get("query_word", "")
     morphology = finding.get("morphology", "Yalın Kök")
     root = finding.get("root", {})
@@ -41,7 +47,7 @@ def print_finding_formatted(finding: Dict[str, Any]) -> None:
         print(f"  • Genel Güven Skoru          : {val_report.get('score_percentage')} ({val_report.get('final_confidence_score')})")
         print(f"  • Hipotez Türü              : {proven_hypo.get('hypothesis_type')}")
         print(f"  • Kaynak Form / Ata Biçim    : {proven_hypo.get('origin_form')}")
-        
+
         stages = val_report.get("stage_breakdown", {})
         s1 = stages.get("stage1_phonetic_chain", {})
         s2 = stages.get("stage2_time_lock", {})
@@ -72,7 +78,7 @@ def print_finding_formatted(finding: Dict[str, Any]) -> None:
             word = entry.get("word", "")
             meaning = entry.get("meaning", "")
             shift = entry.get("phonetic_shift", "")
-            
+
             if entry.get("lang_code") == "ai":
                 continue
 
@@ -169,13 +175,22 @@ def main():
     bulk_parser = subparsers.add_parser("bulk", help="Bir metin dosyasındaki tüm kelimelerin etimolojisini topluca sorgular")
     bulk_parser.add_argument("--file", type=str, required=True, help="Kelimelerin bulunduğu metin dosyası")
 
-    list_parser = subparsers.add_parser("list", help="Veritabanına kaydedilmiş tüm kelimeleri listeler")
+    subparsers.add_parser("list", help="Veritabanına kaydedilmiş tüm kelimeleri listeler")
 
     show_parser = subparsers.add_parser("show", help="Veritabanındaki bir kelimenin bulgusunu detaylı gösterir")
     show_parser.add_argument("word", type=str, help="Gösterilecek kelime")
     show_parser.add_argument("--json", action="store_true", help="JSON formatında göster")
 
+    export_parser = subparsers.add_parser(
+        "export", help="Kayıtlı bulguyu CLDF (Cross-Linguistic Data Formats) olarak dışa aktarır"
+    )
+    export_parser.add_argument("word", type=str, help="Dışa aktarılacak kelime")
+    export_parser.add_argument("--out", type=str, default=None, help="Çıktı dizini (varsayılan: cldf_export/)")
+
+    parser.add_argument("--verbose", "-v", action="store_true", help="Ayrıntılı log çıktısı")
+
     args = parser.parse_args()
+    set_verbose(getattr(args, "verbose", False))
 
     if not args.command:
         parser.print_help()
@@ -194,7 +209,8 @@ def main():
             else:
                 print_finding_formatted(finding)
         except Exception as e:
-            print(f"❌ Hata oluştu: {e}", file=sys.stderr)
+            logger.error("Arama başarısız: %s", args.word, exc_info=True)
+            print(f"❌ Arama başarısız: {type(e).__name__}. Ayrıntı için --verbose kullanın.", file=sys.stderr)
             sys.exit(1)
 
     elif args.command == "validate":
@@ -218,7 +234,7 @@ def main():
         print(f"  • Önerilen Ata Kök          : {origin_form}")
         print(f"  • Önerilen Donör Dil         : {args.donor}")
         print(f"  • İlk Yazılı Tanıklama      : {args.attestation}")
-        
+
         stages = report.get("stage_breakdown", {})
         s1 = stages.get("stage1_phonetic_chain", {})
         s2 = stages.get("stage2_time_lock", {})
@@ -242,7 +258,7 @@ def main():
         if not os.path.exists(args.file):
             print(f"❌ Dosya bulunamadı: {args.file}", file=sys.stderr)
             sys.exit(1)
-        with open(args.file, "r", encoding="utf-8") as f:
+        with open(args.file, encoding="utf-8") as f:
             words = [line.strip() for line in f if line.strip()]
         print(f"\n📦 TOPLU ETIMOLOJI TARAMASI BAŞLATILDI ({len(words)} Kelime)\n")
         for i, w in enumerate(words, 1):
@@ -268,6 +284,29 @@ def main():
             print(json.dumps(finding, ensure_ascii=False, indent=2))
         else:
             print_finding_formatted(finding)
+
+    elif args.command == "export":
+        finding = db_manager.get_finding(args.word)
+        if not finding:
+            print(f"❌ '{args.word}' kelimesi veritabanında bulunamadı. Önce `search` çalıştırın.", file=sys.stderr)
+            sys.exit(1)
+        out_dir = Path(args.out) if args.out else Path("cldf_export")
+        out_dir.mkdir(parents=True, exist_ok=True)
+        bundle = CldfExporter().export_to_cldf(finding)
+        written = []
+        file_map = {
+            "forms.csv": bundle["cldf_forms_csv"],
+            "cognates.csv": bundle["cldf_cognates_csv"],
+            "cldf-metadata.json": json.dumps(bundle["metadata"], ensure_ascii=False, indent=2),
+        }
+        for name, content in file_map.items():
+            path = out_dir / name
+            path.write_text(content, encoding="utf-8")
+            written.append(str(path))
+        print(f"\n📦 CLDF dışa aktarımı tamamlandı ({len(written)} dosya):")
+        for w in written:
+            print(f"  • {w}")
+        print()
 
 if __name__ == "__main__":
     main()

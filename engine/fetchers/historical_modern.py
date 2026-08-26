@@ -1,66 +1,22 @@
-import re
-from typing import Dict, Any
+from typing import Any
 
-from engine.fetchers.base import BaseFetcher, TURKIC_LANGUAGES_MAP
+from engine.fetchers.base import BaseFetcher
+from engine.utils.seed import load_seed_entries, seed_source_label
 
 # Divanü Lugati't-Türk (1074), Kamus-ı Türkî (1901), Codex Cumanicus (1303), Mukaddimetü'l-Edeb (12. yy), Sanglax & Güncel Sözlükler
-HISTORICAL_MODERN_LEXICON = {
-    "tetik": {
-        "dlt": "Divanü Lugati't-Türk (Kaşgarlı Mahmud, 1074): tetik (تِتِكْ) 'çabuk anlayan, uyanık, çabuk kavrayan adam'. tät- eyleminden.",
-        "kamus": "Kamus-ı Türkî (Şemseddin Sami, 1901): tetik (تتیك) 'uyanık, zeki, gayretli, silah mekanizması mandalı'.",
-        "codex": "Codex Cumanicus (1303 Kıpçakça): tetiq / tetik 'promptus, vigil, uyanık'.",
-        "sanglax": "Sanglax (Çağatayca Nevai Sözlüğü): tetik 'kıvrak, zinde, zeki'."
-    },
-    "su": {
-        "dlt": "Divanü Lugati't-Türk (1074): sub (سُبْ) 'su, akarsu, ırmak'.",
-        "kamus": "Kamus-ı Türkî (1901): su (صو) 'mayi, sıvı, hayat kaynağı'. Eski Türkçe suv / sub.",
-        "codex": "Codex Cumanicus (1303): suv / su 'aqua'.",
-        "sanglax": "Sanglax (Çağatayca): suv / su."
-    },
-    "deniz": {
-        "dlt": "Divanü Lugati't-Türk (1074): teŋiz (تِңِزْ) 'deniz, ulu göl'.",
-        "kamus": "Kamus-ı Türkî (1901): deniz (دниз) 'büyük su kütlesi, bahr'. Eski Türkçe teŋiz.",
-        "codex": "Codex Cumanicus (1303): deŋiz 'mare'.",
-        "sanglax": "Sanglax (Çağatayca): teŋiz / deniz."
-    },
-    "göz": {
-        "dlt": "Divanü Lugati't-Türk (1074): göz (كُؤزْ) 'göz, basar organı'.",
-        "kamus": "Kamus-ı Türkî (1901): göz (كوز) 'görüş organı, ayn'.",
-        "codex": "Codex Cumanicus (1303): küz / göz 'oculus'.",
-        "sanglax": "Sanglax (Çağatayca): köz."
-    },
-    "el": {
-        "dlt": "Divanü Lugati't-Türk (1074): elig (اِلِكْ) 'el, tutma organı' & el (اِلْ) 'halk, vilayet, memleket'.",
-        "kamus": "Kamus-ı Türkî (1901): el (ايل) 'yed, tutma organı, memleket, yabancı'.",
-        "codex": "Codex Cumanicus (1303): el / il 'manus, populus'.",
-        "sanglax": "Sanglax (Çağatayca): elig / el."
-    },
-    "belge": {
-        "dlt": "Divanü Lugati't-Türk (1074): belgü (بِلْكُو) 'nişan, işaret, alamet'.",
-        "kamus": "Kamus-ı Türkî (1901): belge / belgü 'işaret, alamet, senet, vesika'.",
-        "codex": "Codex Cumanicus (1303): belgi / belgü 'signum'.",
-        "sanglax": "Sanglax (Çağatayca): belgi."
-    },
-    "bilgi": {
-        "dlt": "Divanü Lugati't-Türk (1074): biliğ (بِلِكْ) 'akıl, ilim, bilgi'. bil- eyleminden.",
-        "kamus": "Kamus-ı Türkî (1901): bilgi / biliğ 'ilm, malumat, vukuf'.",
-        "codex": "Codex Cumanicus (1303): bilik / bilgi 'scientia'.",
-        "sanglax": "Sanglax (Çağatayca): bilik."
-    },
-    "kut": {
-        "dlt": "Divanü Lugati't-Türk (1074): kut (قُتْ) 'devlet, saadet, uğur, tanrı lütfu'.",
-        "kamus": "Kamus-ı Türkî (1901): kut (قوت) 'saadet, baht, kutsallık'.",
-        "codex": "Codex Cumanicus (1303): kut 'fortuna, gratia'.",
-        "sanglax": "Sanglax (Çağatayca): kut."
-    }
-}
+#: Tohum (seed) veri. Kod içinde değil, data/seed/lexicon/dlt_kamus.json dosyasında tutulur.
+SEED_PATH = "lexicon/dlt_kamus.json"
+HISTORICAL_MODERN_LEXICON = load_seed_entries(SEED_PATH)
 
 class HistoricalModernLexiconFetcher(BaseFetcher):
+    #: Bu kaynak yerel tohum veriden beslenir, canlı bir servis DEĞİLDİR.
+    is_seed_source = True
+
     @property
     def source_name(self) -> str:
-        return "Tarihi Türk Lehçeleri Sözlükleri (DLT 1074, Kamus-ı Türkî 1901, Codex Cumanicus 1303, Sanglax)"
+        return seed_source_label("Tarihi Türk Lehçeleri Sözlükleri (DLT 1074, Kamus-ı Türkî 1901, Codex Cumanicus 1303, Sanglax)", SEED_PATH)
 
-    def fetch(self, word: str) -> Dict[str, Any]:
+    def fetch(self, word: str) -> dict[str, Any]:
         word_clean = word.strip().lower()
         result = {
             "root": {"proto_turkic": "", "meaning": "", "reconstruction_notes": ""},
@@ -69,7 +25,7 @@ class HistoricalModernLexiconFetcher(BaseFetcher):
 
         if word_clean in HISTORICAL_MODERN_LEXICON:
             entry = HISTORICAL_MODERN_LEXICON[word_clean]
-            
+
             if "dlt" in entry:
                 result["turkic_languages"].append({
                     "lang_code": "otk",
@@ -90,7 +46,7 @@ class HistoricalModernLexiconFetcher(BaseFetcher):
 
             if "codex" in entry:
                 result["turkic_languages"].append({
-                    "lang_code": "krc", # Kıpçakça
+                    "lang_code": "chg",  # Codex Cumanicus: tarihî Kıpçak/Kuman metni (modern krc DEĞİL)
                     "lang_name": "Codex Cumanicus (Kıpçakça Metinler, 1303)",
                     "word": word_clean,
                     "meaning": entry["codex"],

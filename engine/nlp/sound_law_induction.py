@@ -1,18 +1,30 @@
 """
-Otomatik Ses Kanunu İndüksiyon Motoru (Automated Sound Law Induction - SLI)
-Akraba veya ata kelime çiftlerinden sıralı ses dönüşüm kurallarını (Ordered String Rewrite Rules)
-otonom olarak öğrenebilen ve indükleyen hesaplamalı dilbilim motoru.
+Ses Kanunu İndüksiyon Motoru (Sound Law Induction)
+
+Akraba kelime çiftlerinden düzenli ses dönüşüm kurallarını çıkarır.
+
+Düzeltilen sorun
+----------------
+* Güven skoru sabitti: kural üretildiyse ``0.95``, üretilmediyse ``0.70``.
+  Herhangi bir ünlü farkı VOWEL_SHIFT kuralını tetiklediği için pratikte
+  neredeyse her çift ``0.95`` alıyordu.
+* Tek çiftten "indüksiyon" yapılamaz. Gerçek indüksiyon, aynı kuralın BİRDEN
+  ÇOK çiftte tekrarlanmasıyla doğrulanır. ``induce_from_pairs`` bunu yapar;
+  tek çift için ``rule_confidence`` artık ``None`` (kanıt yok) döner.
 """
 
-from typing import Dict, Any, List, Tuple
-import re
+from collections import Counter
+from typing import Any
+
+from engine.utils.orthography import to_comparison_form
+
 
 class SoundLawInductionEngine:
     """Akraba ve ata sözcük çiftlerinden ses yasası kurallarını indükleyen motor"""
 
-    def induce_sound_law(self, source_word: str, target_word: str) -> Dict[str, Any]:
-        s = re.sub(r'[^a-zçğıöşüа-я]', '', (source_word or "").lower().lstrip("*"))
-        t = re.sub(r'[^a-zçğıöşüа-я]', '', (target_word or "").lower())
+    def induce_sound_law(self, source_word: str, target_word: str) -> dict[str, Any]:
+        s = to_comparison_form(source_word or "")
+        t = to_comparison_form(target_word or "")
 
         if not s or not t or s == t:
             return {
@@ -56,12 +68,66 @@ class SoundLawInductionEngine:
                 "description": f"Kök ünlü kümesinin {''.join(s_vowels)} -> {''.join(t_vowels)} şeklinde kayması"
             })
 
-        confidence = 0.95 if induced_rules else 0.70
-
         return {
             "source_word": s,
             "target_word": t,
             "has_induced_rule": len(induced_rules) > 0,
             "induced_rules": induced_rules,
-            "rule_confidence": confidence
+            # Tek çiftten güven skoru ÇIKARILAMAZ. İndüksiyon, kuralın birden
+            # çok çiftte tekrarlanmasını gerektirir -> `induce_from_pairs`.
+            "rule_confidence": None,
+            "evidence_available": False,
+            "note": "Tek çiftlik gözlem; kural güveni için induce_from_pairs kullanın.",
+        }
+
+    def induce_from_pairs(self, pairs: list[tuple[str, str]]) -> dict[str, Any]:
+        """
+        Birden çok akraba çiftinden ses kanunu indükler.
+
+        Bir kuralın güveni, o kuralın kaç çiftte gözlendiğine ve kuralın
+        uygulanabilir olduğu çiftlerin ne kadarında GERÇEKTEN gözlendiğine
+        bağlıdır (düzenlilik oranı).
+
+        :param pairs: ``(ata_biçim, modern_biçim)`` çiftleri.
+        """
+        if len(pairs) < 2:
+            return {
+                "pair_count": len(pairs),
+                "evidence_available": False,
+                "induced_rules": [],
+                "note": "İndüksiyon için en az 2 akraba çifti gerekir.",
+            }
+
+        observations: list[dict[str, Any]] = []
+        for src, tgt in pairs:
+            res = self.induce_sound_law(src, tgt)
+            observations.extend(res.get("induced_rules", []))
+
+        counts = Counter((r["rule_id"], r["pattern"]) for r in observations)
+        by_id: dict[str, list[dict[str, Any]]] = {}
+        for rule in observations:
+            by_id.setdefault(rule["rule_id"], []).append(rule)
+
+        induced = []
+        for (rule_id, pattern), count in counts.most_common():
+            # Düzenlilik: bu kural, aynı türden kuralların kaçında bu desenle gözlendi?
+            same_kind = len(by_id.get(rule_id, []))
+            regularity = count / same_kind if same_kind else 0.0
+            support = count / len(pairs)
+            confidence = round(0.6 * support + 0.4 * regularity, 3)
+            sample = next(r for r in observations if r["rule_id"] == rule_id and r["pattern"] == pattern)
+            induced.append({
+                **sample,
+                "observed_in_pairs": count,
+                "total_pairs": len(pairs),
+                "support": round(support, 3),
+                "regularity": round(regularity, 3),
+                "confidence": confidence,
+            })
+
+        return {
+            "pair_count": len(pairs),
+            "evidence_available": True,
+            "induced_rules": induced,
+            "note": "Güven = 0.6 × destek (kaç çiftte gözlendi) + 0.4 × düzenlilik.",
         }

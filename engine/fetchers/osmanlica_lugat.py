@@ -1,56 +1,31 @@
 import re
-import json
-import urllib.request
 import urllib.parse
-from typing import Dict, Any
+import urllib.request
+from typing import Any
 
-from engine.fetchers.base import BaseFetcher, TURKIC_LANGUAGES_MAP
+from engine import config
+from engine.fetchers.base import BaseFetcher
+from engine.logging_setup import get_logger
+from engine.utils.network import fetch as http_get
+from engine.utils.seed import load_seed_entries, seed_source_label
+from engine.utils.text import strip_html
+
+logger = get_logger(__name__)
 
 # Dahili Osmanlıca ve Klasik Türkçe Lügat Dizini (Kubbealtı, Lehçe-i Osmanî, LexiQamus)
-OSMANLICA_LUGAT_INDEX = {
-    "deniz": {
-        "word_osmanli": "دڭز / deniz",
-        "meaning": "Deniz, umman, büyük su kütlesi. Kubbealtı Lugatı: (Eski Türkçe teŋiz).",
-        "source": "Kubbealtı Lugatı & Ahmet Vefik Paşa (Lehçe-i Osmanî)"
-    },
-    "su": {
-        "word_osmanli": "صو / su",
-        "meaning": "Su, ma, ab. Kubbealtı Lugatı: (Eski Türkçe sub / suv).",
-        "source": "Kubbealtı Lugatı & Ahmet Vefik Paşa (Lehçe-i Osmanî)"
-    },
-    "göz": {
-        "word_osmanli": "كوز / göz",
-        "meaning": "Göz, basar, ayn. Kubbealtı Lugatı: (Eski Türkçe göz / köz).",
-        "source": "Kubbealtı Lugatı & Ahmet Vefik Paşa (Lehçe-i Osmanî)"
-    },
-    "el": {
-        "word_osmanli": "يد / el / elig",
-        "meaning": "1. Tutma organı (Eski Türkçe elig). 2. Devlet, memleket.",
-        "source": "Kubbealtı Lugatı & Ahmet Vefik Paşa (Lehçe-i Osmanî)"
-    },
-    "ayak": {
-        "word_osmanli": "ایاق / ayak",
-        "meaning": "Ayak, kadem. Kubbealtı Lugatı: (Eski Türkçe adak).",
-        "source": "Kubbealtı Lugatı & Ahmet Vefik Paşa (Lehçe-i Osmanî)"
-    },
-    "kut": {
-        "word_osmanli": "قوت / kut",
-        "meaning": "1. Tanrı lütfu, iyi talih, kut. 2. Can, gıda, azık.",
-        "source": "Kubbealtı Lugatı & Ahmet Vefik Paşa (Lehçe-i Osmanî)"
-    },
-    "tengri": {
-        "word_osmanli": "تڭرى / tanrı",
-        "meaning": "Tanrı, ilah, Huda, Halık. Kubbealtı Lugatı: (Eski Türkçe teŋri).",
-        "source": "Kubbealtı Lugatı & Ahmet Vefik Paşa (Lehçe-i Osmanî)"
-    }
-}
+#: Tohum (seed) veri. Kod içinde değil, data/seed/lexicon/osmanlica.json dosyasında tutulur.
+SEED_PATH = "lexicon/osmanlica.json"
+OSMANLICA_LUGAT_INDEX = load_seed_entries(SEED_PATH)
 
 class OsmanlicaLugatFetcher(BaseFetcher):
+    #: Bu kaynak yerel tohum veriden beslenir, canlı bir servis DEĞİLDİR.
+    is_seed_source = True
+
     @property
     def source_name(self) -> str:
-        return "Osmanlıca ve Klasik Türkçe Lügat Portalları (Kubbealtı & Lehçe-i Osmanî)"
+        return seed_source_label("Osmanlıca ve Klasik Türkçe Lügat Portalları (Kubbealtı & Lehçe-i Osmanî)", SEED_PATH)
 
-    def fetch(self, word: str) -> Dict[str, Any]:
+    def fetch(self, word: str) -> dict[str, Any]:
         word_clean = word.strip().lower()
         result = {
             "root": {"proto_turkic": "", "meaning": "", "reconstruction_notes": ""},
@@ -72,12 +47,12 @@ class OsmanlicaLugatFetcher(BaseFetcher):
         # 2. Canlı Lugatim Web İsteği
         url = f"https://www.lugatim.com/s/{urllib.parse.quote(word_clean)}"
         try:
-            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-            with urllib.request.urlopen(req, timeout=4) as resp:
-                html = resp.read().decode('utf-8')
+            _body = http_get(url, timeout=config.HTTP_TIMEOUT_MEDIUM)
+            if _body is not None:
+                html = _body
                 m = re.search(r'<div class=\"[^\"]*meaning[^\"]*\"[^>]*>(.*?)</div>', html, re.DOTALL)
                 if m:
-                    clean_m = re.sub(r'<[^>]+>', '', m.group(1)).strip()
+                    clean_m = strip_html(m.group(1)).strip()
                     if clean_m:
                         result["turkic_languages"].append({
                             "lang_code": "ota",
@@ -87,6 +62,5 @@ class OsmanlicaLugatFetcher(BaseFetcher):
                             "script": "Latin"
                         })
         except Exception:
-            pass
-
+            logger.warning("%s: kaynak işlenemedi", self.source_name if hasattr(self, "source_name") else __name__, exc_info=True)
         return result

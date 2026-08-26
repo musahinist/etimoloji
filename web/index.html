@@ -9,9 +9,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Cytoscape.js CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"
+            integrity="sha384-J7Q85oZE4GJ/e7+n2aOQsLXfDwwfnA8S2nZAL5BpFsfpCF84zQD7LroZ/dMnLgex"
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -168,22 +170,36 @@
                         <span id="ahvpBadge" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">🟢 VALIDATED</span>
                     </div>
 
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                         <div class="bg-slate-900/80 rounded-2xl p-3.5 border border-slate-800">
                             <span class="text-[11px] text-slate-400 block mb-1">Güven Skoru</span>
-                            <span id="ahvpScore" class="text-2xl font-extrabold text-teal-300 font-heading">%0</span>
+                            <span id="ahvpScore" class="text-2xl font-extrabold text-teal-300 font-heading">—</span>
                         </div>
                         <div class="bg-slate-900/80 rounded-2xl p-3.5 border border-slate-800">
+                            <span class="text-[11px] text-slate-400 block mb-1">Kanıt Kapsamı</span>
+                            <span id="ahvpCoverage" class="text-2xl font-extrabold text-amber-300 font-heading">—</span>
+                        </div>
+                        <div class="bg-slate-900/80 rounded-2xl p-3.5 border border-slate-800">
+                            <span class="text-[11px] text-slate-400 block mb-1">Ölçülemeyen Aşamalar</span>
+                            <span id="ahvpMissing" class="text-xs font-bold text-slate-300 block mt-1">—</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                        <div class="bg-slate-900/80 rounded-2xl p-3.5 border border-slate-800">
                             <span class="text-[11px] text-slate-400 block mb-1">1. Fonetik Halka</span>
-                            <span id="stagePhonetic" class="text-xs font-bold text-emerald-400 block">✅ GEÇTİ</span>
+                            <span id="stagePhonetic" class="text-xs font-bold text-slate-400 block">—</span>
                         </div>
                         <div class="bg-slate-900/80 rounded-2xl p-3.5 border border-slate-800">
                             <span class="text-[11px] text-slate-400 block mb-1">2. Zaman Kilidi</span>
-                            <span id="stageTime" class="text-xs font-bold text-emerald-400 block">✅ GEÇTİ</span>
+                            <span id="stageTime" class="text-xs font-bold text-slate-400 block">—</span>
                         </div>
                         <div class="bg-slate-900/80 rounded-2xl p-3.5 border border-slate-800">
-                            <span class="text-[11px] text-slate-400 block mb-1">3. Semantik Manifold</span>
-                            <span id="stageSemantic" class="text-xs font-bold text-emerald-400 block">✅ GEÇTİ</span>
+                            <span class="text-[11px] text-slate-400 block mb-1">3. Semantik Mesafe</span>
+                            <span id="stageSemantic" class="text-xs font-bold text-slate-400 block">—</span>
+                        </div>
+                        <div class="bg-slate-900/80 rounded-2xl p-3.5 border border-slate-800">
+                            <span class="text-[11px] text-slate-400 block mb-1">4. Akraba Triangulation</span>
+                            <span id="stageCognate" class="text-xs font-bold text-slate-400 block">—</span>
                         </div>
                     </div>
 
@@ -232,7 +248,20 @@
     </main>
 
     <script>
-        const API_URL = "http://localhost:8000/api";
+        // API adresi: ?api= sorgu parametresiyle ezilebilir
+        const API_URL = new URLSearchParams(location.search).get("api")
+            || "http://127.0.0.1:8000/api";
+
+        /**
+         * HTML kaçışı — kazınmış içerik (Nişanyan, TDK, İSAM, DuckDuckGo)
+         * doğrudan innerHTML'e basılıyordu; kaynak sitedeki bir
+         * <img src=x onerror=...> yükü XSS'e dönüşüyordu.
+         */
+        function esc(value) {
+            return String(value ?? "").replace(/[&<>"']/g, c => ({
+                "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+            })[c]);
+        }
         let cyInstance = null;
 
         document.getElementById('searchForm').addEventListener('submit', function(e) {
@@ -265,37 +294,69 @@
                 stepCounter.textContent = `${stepNum}/6 Adım`;
                 const line = document.createElement('div');
                 line.className = "flex items-start gap-2.5 text-slate-300 animate-fade-in";
-                line.innerHTML = `<span class="text-teal-400 font-bold">${icon}</span> <div><strong class="text-teal-300">${title}:</strong> <span class="text-slate-400">${desc}</span></div>`;
+                line.innerHTML = `<span class="text-teal-400 font-bold">${esc(icon)}</span> <div><strong class="text-teal-300">${esc(title)}:</strong> <span class="text-slate-400">${esc(desc)}</span></div>`;
                 logsDiv.appendChild(line);
                 logsDiv.scrollTop = logsDiv.scrollHeight;
             }
 
-            // Adım Adım Canlı İlerleme Simülasyonu
-            addLogLine("🧩", "[Adım 1/6] Morfolojik Kök Ayrıştırma", `'${word}' kelimesinin yapım ve çekim ekleri ayrıştırılıyor...`, 1);
-            await new Promise(r => setTimeout(r, 400));
-
-            addLogLine("🌐", "[Adım 2/6] 19 Paralel Veri Katmanı Taraması", "Wiktionary, Nişanyan, Clauson, İSAM, TDK Tarama/Derleme ve Türki dil sözlükleri sorgulanıyor...", 2);
-            await new Promise(r => setTimeout(r, 400));
-
-            addLogLine("🧬", "[Adım 3/6] PanPhon & LingPy Fonetik Hizalama", "21-boyutlu IPA artikülatör matrisi ve LingPy SCA (Sound Class Alignment) hesaplanıyor...", 3);
-            await new Promise(r => setTimeout(r, 400));
-
-            addLogLine("🧠", "[Adım 4/6] Sentence-Transformers Semantik Manifold", "Tarihsel anlam tanımı ile modern anlam arasındaki diyakronik sapma ivmesi (d²S/dt²) ölçülüyor...", 4);
-            await new Promise(r => setTimeout(r, 400));
-
-            addLogLine("⚖️", "[Adım 5/6] A-HVP Hakem Protokolü", "Anakronizm zaman kilidi ve fonetik halka kuralları denetleniyor...", 5);
+            // Gerçek telemetri: sunucudan dönen diagnostics.stage_timings_ms
+            // kullanılır. Eskiden burada 6 adımlık sahte bir setTimeout
+            // simülasyonu vardı; gösterilen adımların gerçekle ilgisi yoktu.
+            addLogLine("🔎", "Arama başlatıldı", `'${esc(word)}' için veri katmanı sorgulanıyor…`, 1);
+            const t0 = performance.now();
 
             try {
                 const resp = await fetch(`${API_URL}/search?word=${encodeURIComponent(word)}&ai=${ai}`);
                 if (!resp.ok) throw new Error("REST API Sunucu Yanıt Vermedi");
                 const data = await resp.json();
 
-                addLogLine("🤖", "[Adım 6/6] Sonuç Raporu & Graf Derlemesi", "Etimolojik ağaç ve 25 Türki dil haritası hazırlandı.", 6);
-                await new Promise(r => setTimeout(r, 500));
-
+                renderTelemetry(data, performance.now() - t0);
                 renderResults(data);
             } catch (err) {
-                addLogLine("❌", "[Hata]", `REST API sunucusu ile bağlantı kurulamadı (${err.message}). Lütfen http://localhost:8000 adresinin açık olduğunu doğrulayın.`, 6);
+                addLogLine("❌", "Bağlantı hatası",
+                    `REST API sunucusuna ulaşılamadı (${esc(err.message)}). ` +
+                    `\`python -m engine.server\` çalışıyor mu?`, 6);
+            }
+        }
+
+        /** Sunucudan gelen GERÇEK aşama sürelerini ve kaynak durumlarını gösterir. */
+        function renderTelemetry(data, wallMs) {
+            const diag = data.diagnostics || {};
+            const timings = diag.stage_timings_ms || {};
+            const sources = diag.sources || {};
+
+            const labels = {
+                morphology: ["🧩", "Morfolojik kök ayrıştırma"],
+                fetch: ["🌐", "Paralel veri katmanı taraması"],
+                nlp: ["🧬", "NLP: hizalama, rekonstrüksiyon, A-HVP"],
+                ai_enrichment: ["🤖", "Yapay zekâ sentezi"],
+            };
+
+            const okCount = Object.values(sources).filter(s => s.status === "ok").length;
+            const total = Object.keys(sources).length;
+
+            let step = 2;
+            for (const [key, [icon, label]] of Object.entries(labels)) {
+                if (timings[key] === undefined) continue;
+                let detail = `${timings[key]} ms`;
+                if (key === "fetch") {
+                    detail += ` · ${okCount}/${total} kaynak veri döndürdü`;
+                    if (diag.variants_used) detail += ` · ${diag.variants_used.length} varyant`;
+                }
+                addLogLine(icon, label, detail, step++);
+            }
+
+            if (data.from_cache) {
+                addLogLine("⚡", "Önbellekten döndürüldü", `${Math.round(wallMs)} ms`, 6);
+            } else {
+                addLogLine("✅", "Tamamlandı", `Toplam ${timings.total ?? Math.round(wallMs)} ms`, 6);
+            }
+
+            // Veri döndürmeyen / hata veren kaynakları açıkça bildir
+            const failed = Object.entries(sources).filter(([, s]) => s.status === "error");
+            if (failed.length) {
+                addLogLine("⚠️", `${failed.length} kaynak hata verdi`,
+                    failed.map(([n]) => esc(n)).join(", ").slice(0, 220), 6);
             }
         }
 
@@ -319,20 +380,43 @@
             const hyp = nlp.proven_hypothesis || {};
             const val = hyp.validation_report || {};
 
-            document.getElementById('ahvpBadge').textContent = val.badge || "🟡 NEEDS REVIEW";
-            document.getElementById('ahvpScore').textContent = val.score_percentage || "%0";
+            document.getElementById('ahvpBadge').textContent = val.badge || "⚪ Hipotez üretilmedi";
+            document.getElementById('ahvpScore').textContent = val.score_percentage || "—";
+            document.getElementById('ahvpCoverage').textContent =
+                val.evidence_coverage !== undefined ? `%${Math.round(val.evidence_coverage * 100)}` : "—";
+
+            const missing = val.missing_evidence || [];
+            const missingTr = { chronology: "Kronoloji", semantic: "Semantik",
+                                phonetic: "Fonetik", triangulation: "Triangulation" };
+            document.getElementById('ahvpMissing').textContent =
+                missing.length ? missing.map(m => missingTr[m] || m).join(", ") : "yok — tam kapsam";
 
             const stages = val.stage_breakdown || {};
-            document.getElementById('stagePhonetic').textContent = (stages.stage1_phonetic_chain && stages.stage1_phonetic_chain.is_valid) ? "✅ GEÇTİ" : "❌ İHLAL";
-            document.getElementById('stageTime').textContent = (stages.stage2_time_lock && stages.stage2_time_lock.is_valid) ? "✅ GEÇTİ" : "❌ ANAKRONİZM";
-            document.getElementById('stageSemantic').textContent = (stages.stage3_semantic_drift && stages.stage3_semantic_drift.is_valid) ? "✅ GEÇTİ" : "⚠️ UYARI";
+            /** Kanıt YOKLUĞU ile İHLAL'i ayırt eder (eskiden ikisi de "❌" görünüyordu). */
+            function stageLabel(stage) {
+                if (!stage || stage.evidence_available === false) return ["⚪ KANIT YOK", "text-slate-500"];
+                if (stage.is_valid === true) return ["✅ GEÇTİ", "text-emerald-400"];
+                if (stage.is_valid === false) return ["❌ İHLAL", "text-red-400"];
+                return ["—", "text-slate-500"];
+            }
+            for (const [elId, key] of [
+                ["stagePhonetic", "stage1_phonetic_chain"],
+                ["stageTime", "stage2_time_lock"],
+                ["stageSemantic", "stage3_semantic_drift"],
+                ["stageCognate", "stage4_cognate_triangulation"],
+            ]) {
+                const [text, cls] = stageLabel(stages[key]);
+                const el = document.getElementById(elId);
+                el.textContent = text;
+                el.className = `text-xs font-bold block ${cls}`;
+            }
 
             const rejections = val.rejection_reasons || [];
             const rejCont = document.getElementById('rejectionContainer');
             const rejList = document.getElementById('rejectionList');
             if (rejections.length > 0) {
                 rejCont.classList.remove('hidden');
-                rejList.innerHTML = rejections.map(r => `<li>${r}</li>`).join("");
+                rejList.innerHTML = rejections.map(r => `<li>${esc(r)}</li>`).join("");
             } else {
                 rejCont.classList.add('hidden');
             }
@@ -348,10 +432,11 @@
             } else {
                 grid.innerHTML = turkicList.map(item => `
                     <div class="bg-slate-900/70 rounded-2xl p-4 border border-slate-800/90 hover:border-teal-500/40 transition-all hover:bg-slate-900">
-                        <span class="text-[10px] uppercase font-bold tracking-wider text-teal-400 block mb-1">${item.lang_name || ""}</span>
-                        <span class="font-bold text-base text-white block">${item.word || ""}</span>
-                        <span class="text-xs text-slate-300 block mt-1.5 truncate">${item.meaning || "N/A"}</span>
-                        ${item.phonetic_shift ? `<span class="text-[10px] text-teal-300/80 block mt-2 pt-2 border-t border-slate-800/60 italic">${item.phonetic_shift}</span>` : ""}
+                        <span class="text-[10px] uppercase font-bold tracking-wider text-teal-400 block mb-1">${esc(item.lang_name)}</span>
+                        <span class="font-bold text-base text-white block">${esc(item.word)}</span>
+                        <span class="text-xs text-slate-300 block mt-1.5 truncate">${esc(item.meaning || "N/A")}</span>
+                        <span class="text-[9px] uppercase tracking-wider block mt-1 ${item.origin === "seed" ? "text-amber-400/80" : "text-emerald-400/80"}">${item.origin === "seed" ? "tohum veri" : "canlı kaynak"}</span>
+                        ${item.phonetic_shift ? `<span class="text-[10px] text-teal-300/80 block mt-2 pt-2 border-t border-slate-800/60 italic">${esc(item.phonetic_shift)}</span>` : ""}
                     </div>
                 `).join("");
             }

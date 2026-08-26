@@ -2,8 +2,6 @@
 Türki Diller Morfolojik Analizör ve Akıllı Kök Ayrıştırıcı (Turkic Stemmer & Morphological Analyzer)
 Karmaşık türemiş ve çekim ekli kelimeleri köklerine ayrıştırır. Alıntı kelimelerde yapay ek kesimini engeller.
 """
-import re
-from typing import List, Tuple
 
 # Öz Türkçede söz başında KESİNLİKLE bulunmayan (veya aşırı nadir olan) ünsüzler
 NON_TURKIC_INITIAL_CONSONANTS = ['f', 'h', 'p', 'v', 'j', 'z']
@@ -22,7 +20,7 @@ TURKIC_SUFFIXES = [
     "mak", "mek", "ma", "me", "ış", "iş", "uş", "üş"
 ]
 
-def analyze_morphology(word: str) -> Tuple[str, List[str]]:
+def analyze_morphology(word: str) -> tuple[str, list[str]]:
     w = word.strip().lower()
 
     # 1. Alıntı Kelime Koruması: f-, h-, p-, v-, j-, z- ile başlayan kelimelerde mekanik ek kesimi yapma!

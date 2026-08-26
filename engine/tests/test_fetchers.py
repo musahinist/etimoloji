@@ -1,6 +1,8 @@
 import unittest
+
 from engine.fetchers.starling import StarlingFetcher
 from engine.fetchers.wiktionary import WiktionaryFetcher
+
 
 class TestFetchers(unittest.TestCase):
     def test_starling_offline_lexicon(self):

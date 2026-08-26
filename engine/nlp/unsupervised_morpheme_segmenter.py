@@ -4,8 +4,10 @@ Eklemeli (agglutinative) diller için kelimelerin yapım/çekim eklerini ve diya
 hiçbir kelime ismi veya sabit metin kullanmadan jenerik kurallarla katman katman soyup yalın iskelet kökü çıkarır.
 """
 
-from typing import Dict, Any, List, Tuple
 import re
+from typing import Any
+
+from engine.utils.orthography import strip_non_turkic
 
 # Jenerik Eklemeli Dil Yapım ve Çekim Ek Kalıpları (Regex tabanlı - Sıfır Hardcode Kelime)
 GENERIC_SUFFIX_PATTERNS = [
@@ -26,8 +28,8 @@ GENERIC_SUFFIX_PATTERNS = [
 class UnsupervisedMorphemeSegmenter:
     """Sıfır Hardcode: Eklemeli Diller İçin Jenerik Katmanlı Ek Soyma Motoru"""
 
-    def segment_morphemes(self, word: str) -> Dict[str, Any]:
-        w = re.sub(r'[^a-zçğıöşüа-я]', '', (word or "").strip().lower())
+    def segment_morphemes(self, word: str) -> dict[str, Any]:
+        w = strip_non_turkic((word or "").strip())
         if not w:
             return {"word": "", "stem": "", "affixes": [], "is_segmented": False}
 
@@ -38,7 +40,7 @@ class UnsupervisedMorphemeSegmenter:
         changed = True
         while changed and len(stem) >= 3:
             changed = False
-            for pat, aff_type in GENERIC_SUFFIX_PATTERNS:
+            for pat, _aff_type in GENERIC_SUFFIX_PATTERNS:
                 match = re.search(pat, stem)
                 if match and len(stem) - len(match.group(1)) >= 2:
                     matched_suf = "-" + match.group(1)

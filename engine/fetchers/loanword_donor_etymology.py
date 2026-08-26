@@ -1,91 +1,23 @@
 import re
-import json
-import urllib.request
-import urllib.parse
-from typing import Dict, Any, Optional
+from typing import Any
 
 from engine.fetchers.base import BaseFetcher
+from engine.utils.seed import load_seed_entries, seed_source_label
 
 # Alıntı Kelimeler (Loanwords) Kaynak Dildeki Orijinal İmla, Anlam ve Kendi İçi Etimoloji Veri Bankası
-DONOR_ETYMOLOGY_DATABASE = {
-    "herkil": {
-        "donor_lang": "Ermenice (Anadolu Ağızları Alıntısı)",
-        "original_script": "յարգել / յարգիլ (harkil / hargel)",
-        "donor_meaning": "Samandan veya çalı çırpıdan yapılan çit, engel, ekin ve tahıl koruma ambarı",
-        "internal_etymology": "Ermenice յարգ (harg 'çit, samanlık, bölmeli alan') kökünden türetim. Doğu ve Orta Karadeniz (Sinop/Ayancık) ağızlarına Ermenice diyalekt temasıyla girmiştir.",
-        "trajectory": "Eski Ermenice (harg 'çit/samanlık') -> Ermenice (harkil/hargel) -> Karadeniz & Sinop Ağızları (herkil/herkel)"
-    },
-    "herkel": {
-        "donor_lang": "Ermenice (Anadolu Ağızları Alıntısı)",
-        "original_script": "յարգել (hargel)",
-        "donor_meaning": "Ekin ve tahıl ambarı, ahşap saklama bölmesi",
-        "internal_etymology": "Ermenice յարգ (harg 'çit, samanlık') kökü. Anadolu ağızlarında ünlü daralması ve fonetik kaymayla herkel/herkil biçimini almıştır.",
-        "trajectory": "Ermenice (hargel) -> Karadeniz & Sinop Ağızları (herkel)"
-    },
-    "harkil": {
-        "donor_lang": "Ermenice (Anadolu Ağızları Alıntısı)",
-        "original_script": "յարգիլ (hargil)",
-        "donor_meaning": "Çit, samanlık, ambar bölmesi",
-        "internal_etymology": "Ermenice յարգ (harg 'samanlık, çit') türevi.",
-        "trajectory": "Ermenice (hargil) -> Anadolu Ağızları (harkil)"
-    },
-    "efendi": {
-        "donor_lang": "Bizans Grekçesi / Rumca",
-        "original_script": "αὐθέντης (authéntēs)",
-        "donor_meaning": "Kendi işini gören, kendi başına karar veren, hakim, buyurucu",
-        "internal_etymology": "Bizans Grekçesi authéntēs < Eski Grekçe αὐτο- (auto- 'kendi') + ἔντης (éntēs 'yapan/eyleyen'). Osmanlıcaya 14. yüzyılda geçmiştir.",
-        "trajectory": "Eski Grekçe -> Bizans Grekçesi (authéntēs) -> Osmanlıca (افندی / efendi) -> Çağdaş Türkçe"
-    },
-    "rüzgar": {
-        "donor_lang": "Farsça",
-        "original_script": "روزگار (rūzgār)",
-        "donor_meaning": "Zaman, felek, devir, esinti, yel",
-        "internal_etymology": "Farsça rūzgār < Farsça rūz (روز 'gün, zaman') + -gār (گار yapım ve aidiyet eki). Asıl anlamı 'zaman, devir' iken Türkçede mecazen 'esinti, yel' anlamı kazanmıştır.",
-        "trajectory": "Eski Farsça (raučah) -> Orta Farsça (rōčgār) -> Klasik Farsça (rūzgār) -> Türkçe"
-    },
-    "kitap": {
-        "donor_lang": "Arapça",
-        "original_script": "كتاب (kitāb)",
-        "donor_meaning": "Yazılı şey, defter, mektup, risale, kutsal metin",
-        "internal_etymology": "Arapça k-t-b (ك-ت-ب 'yazmak') üçlü sami kökünden fi'āl (فِعَال) kalıbında masdar/isim. Aynı kökten: katip, mektup, kütüphane, katibe.",
-        "trajectory": "Proto-Sami (*katab-) -> Arapça (kitāb) -> Karahanlı Türkçe (11. yy) -> Çağdaş Türkçe"
-    },
-    "kalem": {
-        "donor_lang": "Arapça (Grekçe Alıntısı)",
-        "original_script": "قلم (qalam) / Grekçe κάλαμος (kálamos)",
-        "donor_meaning": "Yazı kamışı, yontulmuş kamış",
-        "internal_etymology": "Arapça qalam < Eski Grekçe kálamos (κάλαμος 'kamış, saz'). Arapçaya Grekçeden geçmiş, Türkçeye 11. yüzyılda Karahanlı döneminde girmiştir.",
-        "trajectory": "Eski Grekçe (kálamos) -> Arapça (qalam) -> Karahanlıca (11. yy) -> Çağdaş Türkçe"
-    },
-    "dünya": {
-        "donor_lang": "Arapça",
-        "original_script": "دنيا (dunyā)",
-        "donor_meaning": "Aşağıda olan, yakın olan yer, yeryüzü, alemi fani",
-        "internal_etymology": "Arapça d-n-v (د-ن-و 'yakın olmak, alçakta olmak') kökünden fu'lā (فُعْلَى) vezninde ism-i tafdil. Ahirete nispetle 'yakın/aşağı alem'.",
-        "trajectory": "Arapça (dunyā) -> Karahanlıca (11. yy) -> Çağdaş Türkçe"
-    },
-    "sümen": {
-        "donor_lang": "Fransızca (Macarca Aracılığıyla)",
-        "original_script": "sous-main / Macarca sujtás",
-        "donor_meaning": "Masa üstü yazı altlığı, el altı dosyası",
-        "internal_etymology": "Fransızca sous-main < sous ('altında') + main ('el'). Fransızca el altı matbuası.",
-        "trajectory": "Fransızca (sous-main) -> Macarca -> Osmanlıca -> Türkçe"
-    },
-    "televizyon": {
-        "donor_lang": "Fransızca (Grekçe + Latince Hibrit)",
-        "original_script": "télévision",
-        "donor_meaning": "Uzaktan görüntü aktarım cihazı",
-        "internal_etymology": "Fransızca télévision < Grekçe tēle (تῆλε 'uzak') + Latince visio ('görme, görüntü'). 20. yüzyıl teknoloji terimi.",
-        "trajectory": "Grekçe + Latince -> Fransızca (télévision) -> Türkçe"
-    }
-}
+#: Tohum (seed) veri. Kod içinde değil, data/seed/donor/donor_etymology.json dosyasında tutulur.
+SEED_PATH = "donor/donor_etymology.json"
+DONOR_ETYMOLOGY_DATABASE = load_seed_entries(SEED_PATH)
 
 class LoanwordDonorEtymologyFetcher(BaseFetcher):
+    #: Bu kaynak yerel tohum veriden beslenir, canlı bir servis DEĞİLDİR.
+    is_seed_source = True
+
     @property
     def source_name(self) -> str:
-        return "Alıntı Kelimeler Kaynak Dil Orijinal İmla ve Kendi İçi Etimoloji Veri Bankası"
+        return seed_source_label("Alıntı Kelimeler Kaynak Dil Orijinal İmla ve Kendi İçi Etimoloji Veri Bankası", SEED_PATH)
 
-    def fetch(self, word: str) -> Dict[str, Any]:
+    def fetch(self, word: str) -> dict[str, Any]:
         word_clean = word.strip().lower()
         result = {
             "root": {"proto_turkic": "", "meaning": "", "reconstruction_notes": ""},

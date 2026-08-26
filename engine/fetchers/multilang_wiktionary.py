@@ -1,73 +1,127 @@
-import re
-import json
-import urllib.request
-import urllib.parse
-from typing import Dict, Any, List
+"""
+Çok Dilli Wiktionary Veri Toplayıcı (Multi-Language Wiktionary Fetcher)
 
-from engine.fetchers.base import BaseFetcher, TURKIC_LANGUAGES_MAP
-from engine.utils.sound_shifts import generate_turkic_cognate_candidates
+Her Türki dilin kendi Wiktionary'sinde kelimenin karşılığını arar ve **gerçek
+tanımı** çıkarır.
+
+Yeniden yazılma gerekçesi
+-------------------------
+Önceki uygulama:
+
+* ``lang_target_map`` içinde 15 dil × 7 kelime = ~95 elle yazılmış kelime
+  taşıyordu (yalnızca belge/deniz/göz/el/su/ayak için). Kaynak adı
+  "25 Türki Dil Kapsamı" diyordu ama harita 15 dil içeriyordu.
+* Kazakça girdisi ``kөз`` şeklinde **karışık alfabeliydi** (Latin k + Kiril өз);
+  bu biçim hiçbir zaman bulunamıyordu.
+* Anlam olarak gerçek tanım yerine ``"Online Kazakça Sözlük kaydı"``
+  yer tutucusu yazıyordu.
+* 15 Wiktionary'yi **seri** sorguluyordu; tek bir aramada 58,9 saniye
+  harcıyordu (toplam sürenin %93'ü).
+
+Artık: gömülü kelime yok, sorgular paralel, anlamlar gerçek.
+"""
+from __future__ import annotations
+
+import concurrent.futures
+import json
+import re
+import urllib.parse
+from typing import Any
+
+from engine import config
+from engine.fetchers.base import TURKIC_LANGUAGES_MAP, BaseFetcher, detect_script
+from engine.logging_setup import get_logger
+from engine.utils.network import fetch as http_get
+
+logger = get_logger(__name__)
+
+#: Kendi Wiktionary alan adı bulunan Türki diller.
+#: (Tüm Türki dillerin ayrı Wiktionary'si yoktur.)
+WIKTIONARY_EDITIONS: tuple[str, ...] = (
+    "az", "kk", "uz", "ky", "tt", "ba", "cv", "sah", "tk", "ug", "gag", "krc", "tyv", "alt",
+)
+
+#: Tanım satırlarını yakalar: "# tanım" veya "# [[bağlantı]]"
+_DEF_RE = re.compile(r"^#\s*(?!#)(.+)$", re.M)
+_WIKI_MARKUP_RE = re.compile(r"\{\{[^}]*\}\}|\[\[([^\]|]*\|)?|\]\]|'''|''")
+
 
 class MultiLangWiktionaryFetcher(BaseFetcher):
     @property
     def source_name(self) -> str:
-        return "Türki Diller Online Wiktionary ve Sözlük Portalları (25 Türki Dil Kapsamı)"
+        return f"Türki Diller Wiktionary Sürümleri ({len(WIKTIONARY_EDITIONS)} dil)"
 
-    def _query_wiktionary(self, lang_code: str, word: str) -> bool:
-        url = f"https://{lang_code}.wiktionary.org/w/api.php?action=parse&page={urllib.parse.quote(word)}&format=json&prop=wikitext"
+    def _clean_definition(self, raw: str) -> str:
+        text = _WIKI_MARKUP_RE.sub("", raw or "")
+        text = re.sub(r"<[^>]+>", "", text)
+        return re.sub(r"\s+", " ", text).strip(" .;:,")
+
+    def _query_wiktionary(self, lang_code: str, word: str) -> str | None:
+        """Verilen dilin Wiktionary'sinde kelimeyi arar; ilk tanımı döndürür."""
+        url = (
+            f"https://{lang_code}.wiktionary.org/w/api.php?action=parse"
+            f"&page={urllib.parse.quote(word)}&format=json&prop=wikitext"
+        )
+        body = http_get(url, timeout=config.HTTP_TIMEOUT_SHORT, max_retries=0)
+        if body is None:
+            return None
         try:
-            req = urllib.request.Request(url, headers={'User-Agent': 'TurkicEtymologyEngine/1.0'})
-            with urllib.request.urlopen(req, timeout=3) as resp:
-                data = json.loads(resp.read().decode('utf-8'))
-                if "error" not in data and "parse" in data:
-                    wt = data.get("parse", {}).get("wikitext", {}).get("*", "")
-                    return len(wt) > 10
-        except Exception:
-            pass
-        return False
+            data = json.loads(body)
+        except ValueError:
+            logger.debug("Wiktionary JSON ayrıştırılamadı: %s/%s", lang_code, word)
+            return None
+        if "error" in data or "parse" not in data:
+            return None
 
-    def fetch(self, word: str) -> Dict[str, Any]:
-        result = {
-            "root": {"proto_turkic": "", "meaning": "", "reconstruction_notes": ""},
-            "turkic_languages": []
-        }
+        wikitext = data.get("parse", {}).get("wikitext", {}).get("*", "")
+        if len(wikitext) < 10:
+            return None
 
-        candidates = generate_turkic_cognate_candidates(word)
-        seen_langs = set()
+        for m in _DEF_RE.finditer(wikitext):
+            definition = self._clean_definition(m.group(1))
+            if definition and len(definition) > 1:
+                return definition[:200]
+        # Sayfa var ama tanım satırı çıkarılamadı — yine de varlık kanıtıdır.
+        return ""
 
-        # 25 Türki dilde arama haritası
-        lang_target_map = {
-            "az": ["bəlgə", "bəlgi", "dəniz", "göz", "el", "su", "ayaq", word],
-            "kk": ["белгі", "теңіз", "kөз", "қол", "су", "аяқ", word],
-            "uz": ["belgi", "dengiz", "ko'z", "qo'l", "suv", "oyoq", word],
-            "ky": ["белги", "деңиз", "көз", "кол", "суу", "аяк", word],
-            "tt": ["билге", "тиңез", "күз", "кул", "су", "аяк", word],
-            "ba": ["билдә", "һыу", "күз", "ил", "аяҡ", word],
-            "cv": ["паллӑ", "тинӗс", "куҫ", "алӑ", "шыв", "ура", word],
-            "sah": ["бэлиэ", "тиңис", "көс", "ilii", "уу", "атах", word],
-            "tk": ["belgi", "deňiz", "göz", "el", "suw", "aýak", word],
-            "ug": ["بەلگە", "دەڭىز", "كۆز", "ئەل", "سۇ", "ئاياق", word],
-            "gag": ["belgi", "deniz", "göz", "el", "su", "ayak", word],
-            "krc": ["тенгиз", "кёз", "эл", "сув", "аякъ", word],
-            "tyv": ["суг", "деңгис", "көскү", "аяк", word],
-            "alt": ["теҥис", "кӧс", "суу", "айак", word],
-            "khk": ["суғ", "тиңіс", "кӧс", "азах", word]
-        }
+    def fetch(self, word: str) -> dict[str, Any]:
+        from engine.utils.sound_shifts import generate_turkic_cognate_candidates
 
-        for code, target_words in lang_target_map.items():
-            if code in seen_langs:
-                continue
-            for tw in target_words:
-                if tw in candidates or tw == word:
-                    if self._query_wiktionary(code, tw):
-                        display_word = tw
-                        result["turkic_languages"].append({
-                            "lang_code": code,
-                            "lang_name": TURKIC_LANGUAGES_MAP.get(code, f"Türki Dil ({code})"),
-                            "word": display_word,
-                            "meaning": f"Online {TURKIC_LANGUAGES_MAP.get(code, code)} Sözlük kaydı",
-                            "script": "Cyrillic" if re.search(r'[\u0400-\u04FF]', display_word) else ("Arabic" if re.search(r'[\u0600-\u06FF]', display_word) else "Latin")
-                        })
-                        seen_langs.add(code)
-                        break
+        result = self.empty_result()
+        w = (word or "").strip().lower()
+        if not w:
+            return result
 
+        # Aday biçimler: kelimenin kendisi + türetilen ses varyantları.
+        # Gömülü kelime listesi yok; varyantlar sound_shifts'ten gelir.
+        candidates = [w, *[c for c in generate_turkic_cognate_candidates(w) if c != w]]
+        candidates = candidates[: config.MAX_VARIANTS]
+
+        jobs = [(code, cand) for code in WIKTIONARY_EDITIONS for cand in candidates]
+
+        found: dict[str, tuple[str, str]] = {}
+        with concurrent.futures.ThreadPoolExecutor(max_workers=config.MAX_WORKERS) as ex:
+            future_map = {ex.submit(self._query_wiktionary, code, cand): (code, cand) for code, cand in jobs}
+            for fut in concurrent.futures.as_completed(future_map):
+                code, cand = future_map[fut]
+                try:
+                    definition = fut.result()
+                except Exception:
+                    logger.warning("Wiktionary sorgusu başarısız: %s/%s", code, cand, exc_info=True)
+                    continue
+                if definition is None:
+                    continue
+                # Aynı dil için ilk (en kısa adaya ait) kaydı tut
+                if code not in found or len(cand) < len(found[code][0]):
+                    found[code] = (cand, definition)
+
+        for code, (cand, definition) in sorted(found.items()):
+            result["turkic_languages"].append(
+                self.make_entry(
+                    code,
+                    cand,
+                    definition or f"{TURKIC_LANGUAGES_MAP.get(code, code)} Wiktionary'de madde mevcut",
+                    script=detect_script(cand),
+                )
+            )
         return result

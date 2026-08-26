@@ -1,238 +1,262 @@
-# 🌍 Türki Diller Etimoloji Araştırma Motoru (System Architecture & Pipeline Technical Document)
+# Mimari
 
-Bu doküman, **Türki Diller Etimoloji Araştırma Motoru** projesinin arka planındaki yazılım mimarisini, veri alma hatlarını, hesaplamalı dilbilim/NLP motorlarını, Neo4j uyumlu graf veritabanı yapısını ve 5 aşamalı **Yapay Zeka Hakem Protokolü'nü (A-HVP)** kapsayıcı diyagramlar ve teknik ayrıntılarla açıklamaktadır.
+Bu belge motorun katmanlarını, veri akışını ve hakem protokolünü açıklar.
+İddialar koddan doğrulanabilir; doğrulanamayan hiçbir teknoloji burada
+listelenmez.
 
----
-
-## 1. Yüksek Seviye Sistem Mimarisi (High-Level System Architecture)
-
-Sistem; istemci katmanı, REST API/CLI arayüzleri, ana orkestrasyon motoru, 20+ paralel veri toplayıcı, NLP hesaplama modülleri, A-HVP hakem mekanizması, LLM zenginleştirme ajanı ve veri kalıcılık katmanlarından oluşan modüler bir mimariye sahiptir.
+## Genel bakış
 
 ```mermaid
-graph TD
-    %% İstemci ve Giriş Katmanı
-    subgraph ClientLayer ["1. İstemci & Arayüz Katmanı"]
-        WebUI["Web UI (Next.js / Cytoscape.js)<br/>[index.html](file:///Users/mshn/Documents/etimoloji/web/index.html)"]
-        CLI["CLI Komut Satırı Arayüzü<br/>[cli.py](file:///Users/mshn/Documents/etimoloji/engine/cli.py)"]
+graph TB
+    subgraph Client["1. İstemci"]
+        CLI["CLI<br/>engine/cli.py"]
+        WebUI["Statik Web Paneli<br/>web/index.html"]
     end
 
-    %% REST API Sunucusu
-    subgraph ServerLayer ["2. REST API & Sunucu Katmanı"]
-        API["Python HTTP Server REST API<br/>[server.py](file:///Users/mshn/Documents/etimoloji/engine/server.py)<br/>GET /api/search | GET /api/list"]
+    subgraph API["2. Arayüz"]
+        REST["ThreadingHTTPServer<br/>engine/server.py<br/>127.0.0.1, CORS sınırlı"]
     end
 
-    %% Ana Araştırma & Orkestrasyon Motoru
-    subgraph CoreEngine ["3. Ana Orkestrasyon Motoru"]
-        SearchEngine["SearchEngine Motoru<br/>[search_engine.py](file:///Users/mshn/Documents/etimoloji/engine/search_engine.py)"]
-        MorphEngine["Morfoloji & Fonetik Varyasyon<br/>[morphology.py](file:///Users/mshn/Documents/etimoloji/engine/utils/morphology.py)"]
+    subgraph Core["3. Orkestrasyon"]
+        SE["SearchEngine<br/>engine/search_engine.py<br/>fetcher enjeksiyonu + teşhis"]
+        CFG["config.py<br/>URL, timeout, eşikler"]
+        LOG["logging_setup.py"]
     end
 
-    %% Paralel Veri Toplama Katmanı (20+ Fetcher)
-    subgraph FetcherLayer ["4. 20+ Paralel Veri Katmanı (ThreadPoolExecutor)"]
-        Fetchers["Parallel Fetchers Portföyü<br/>[engine/fetchers](file:///Users/mshn/Documents/etimoloji/engine/fetchers)<br/>• Sir Gerard Clauson (EDPT) & Sevortjan ÉSTJa<br/>• Divanü Lugati't-Türk & Kamus-ı Türkî<br/>• TDV İSAM & Codex Cumanicus<br/>• TDK (GTS, Tarama, Derleme, TTAS)<br/>• Nişanyan & Starling Altaic DB<br/>• 25 Türki Ülke İzahlı Lügatı (Azleks, Savodxon vb.)<br/>• Alıntı Dil Kökleri (Arapça, Farsça, Grekçe vb.)"]
+    subgraph Fetch["4. Veri Toplama — 18 kaynak"]
+        Live["9 CANLI kaynak<br/>TDK · Nişanyan · EtimolojiTürkçe<br/>Wiktionary ×2 · Wiktextract · Archive.org"]
+        Seed["9 TOHUM veri dosyası<br/>data/seed/ — 59 kayıt<br/>Clauson · ÉSTJa · DLT · Starling · Tietze"]
+        HTTP["Ortak HTTP istemcisi<br/>utils/network.py<br/>retry · SSRF koruması · teşhis"]
     end
 
-    %% Hesaplamalı Dilbilim ve NLP Katmanı
-    subgraph NLPLayer ["5. Dilbilimsel & NLP Zeka Katmanı"]
-        LoanClass["Alıntı Kelime Sınıflandırıcı<br/>[loanword_classifier.py](file:///Users/mshn/Documents/etimoloji/engine/nlp/loanword_classifier.py)"]
-        Reconstruct["Proto-Türkçe Rekonstrüktör<br/>[reconstruction.py](file:///Users/mshn/Documents/etimoloji/engine/nlp/reconstruction.py)"]
-        SoundLaw["Ses Yasası İndüksiyonu<br/>[sound_law_induction.py](file:///Users/mshn/Documents/etimoloji/engine/nlp/sound_law_induction.py)"]
-        LingPy["CLDF LingPy Hizalayıcı<br/>[cldf_lingpy_aligner.py](file:///Users/mshn/Documents/etimoloji/engine/nlp/cldf_lingpy_aligner.py)"]
-        SemanticEngine["Diyakronik Semantik Vektör Motoru<br/>[diachronic_semantic_engine.py](file:///Users/mshn/Documents/etimoloji/engine/nlp/diachronic_semantic_engine.py)"]
-        HypoEngine["Otonom İnatçı Prover<br/>[iterative_hypothesis_prover.py](file:///Users/mshn/Documents/etimoloji/engine/nlp/iterative_hypothesis_prover.py)"]
+    subgraph NLP["5. Hesaplamalı Dilbilim"]
+        Recon["Karşılaştırmalı rekonstrüksiyon<br/>nlp/comparative_reconstruction.py"]
+        Align["Fonetik hizalama<br/>nlp/cldf_lingpy_aligner.py (LingPy SCA)"]
+        Phon["Artikülatör özellikler<br/>nlp/phonological_feature_engine.py (PanPhon)"]
+        Loan["Alıntı keşif hattı — 4 katman<br/>nlp/loanword_detector.py"]
+        Clust["Akraba kümeleme<br/>nlp/cognate_clustering.py"]
+        Morph["Tarihsel ek ağacı<br/>nlp/historical_morphology.py"]
+        SLI["Ses kanunu indüksiyonu<br/>nlp/sound_law_induction.py"]
     end
 
-    %% A-HVP Akademik Hakem Protokolü
-    subgraph AHVP ["6. A-HVP Yapay Zeka Hakem Protokolü (5 Aşama)"]
-        ValidationProtocol["HypothesisValidationProtocol<br/>[hypothesis_validation_protocol.py](file:///Users/mshn/Documents/etimoloji/engine/nlp/hypothesis_validation_protocol.py)<br/>🟢 VALIDATED (%75+) | 🟡 NEEDS REVIEW | 🔴 REJECTED"]
+    subgraph AHVP["6. A-HVP Hakem Protokolü"]
+        S1["Aşama 1 · Fonetik zincir (%35)"]
+        S2["Aşama 2 · Kronoloji (%30)"]
+        S3["Aşama 3 · Semantik mesafe (%15)"]
+        S4["Aşama 4 · Triangulation (%20)"]
+        Cover["Kanıt kapsamı normalizasyonu"]
     end
 
-    %% LLM & Sentez Katmanı
-    subgraph LLMLayer ["7. LLM Yapay Zeka Katmanı"]
-        QwenAgent["Qwen2.5:14b Ollama Ajansı<br/>[qwen_agent.py](file:///Users/mshn/Documents/etimoloji/engine/llm/qwen_agent.py)"]
-        WebScraper["Canlı Akademik Web Kazıyıcı<br/>[full_web_scraper.py](file:///Users/mshn/Documents/etimoloji/engine/nlp/full_web_scraper.py)"]
+    subgraph Persist["7. Kalıcılık ve Dışa Aktarım"]
+        DB["SQLite + TTL önbellek<br/>db/database.py"]
+        Graph["Cytoscape graf üretici<br/>db/graph_database.py"]
+        CLDF["CLDF içe/dışa aktarım<br/>db/cldf_exporter.py · cldf_importer.py"]
     end
 
-    %% Veritabanı ve Çizge Katmanı
-    subgraph DBLayer ["8. Kalıcılık & Çizge Graf Katmanı"]
-        SQLiteDB["SQLite Veritabanı (etymology.db)<br/>[database.py](file:///Users/mshn/Documents/etimoloji/engine/db/database.py)"]
-        GraphDB["Neo4j / Cytoscape Graf Üretici<br/>[graph_database.py](file:///Users/mshn/Documents/etimoloji/engine/db/graph_database.py)"]
+    subgraph LLM["8. Opsiyonel LLM"]
+        Qwen["Ollama sentezi<br/>llm/qwen_agent.py"]
     end
 
-    %% Bağlantılar
-    WebUI -->|HTTP GET /api/search| API
-    CLI -->|Doğrudan Çağrı| SearchEngine
-    API --> SearchEngine
-    SearchEngine --> MorphEngine
-    SearchEngine -->|10 Worker Thread| Fetchers
-    Fetchers -->|Ham Sözlük & Metin Verisi| SearchEngine
-    SearchEngine --> NLPLayer
-    NLPLayer --> AHVP
-    AHVP -->|Skor & Rozet| SearchEngine
-    SearchEngine --> GraphDB
-    SearchEngine -->|Yapay Zeka Modu Aktifse| QwenAgent
-    QwenAgent --> WebScraper
-    SearchEngine --> SQLiteDB
-    SearchEngine -->|JSON Yanıtı| API
-    API -->|Graf & Etimoloji JSON| WebUI
+    CLI --> SE
+    WebUI --> REST --> SE
+    CFG --> SE
+    LOG --> SE
+    SE --> Live & Seed
+    Live --> HTTP
+    SE --> Recon & Loan & Clust & Morph & SLI
+    Recon --> Align --> Phon
+    Recon --> S1
+    SE --> S2 & S3 & S4
+    S1 & S2 & S3 & S4 --> Cover
+    Cover --> SE
+    SE --> DB & Graph & CLDF
+    SE -.opsiyonel.-> Qwen
 ```
 
----
+## Katmanlar
 
-## 2. Temel Modül Haritası
+| Katman | Dosya | Sorumluluk |
+|---|---|---|
+| Yapılandırma | `engine/config.py` | Tüm URL, timeout, port, model adı, eşik ve ağırlıklar. `ETY_*` ortam değişkenleriyle ezilebilir. |
+| Loglama | `engine/logging_setup.py` | Merkezî logger; her yutulan hata görünür olur. |
+| Orkestrasyon | `engine/search_engine.py` | Fetcher paralelleştirme, teşhis toplama, NLP zinciri, önbellek. Fetcher listesi enjekte edilebilir (`fetchers=`). |
+| HTTP | `engine/utils/network.py` | Tek HTTP kapısı: retry/backoff, tek User-Agent, SSRF koruması, charset sezimi, istek bazlı teşhis. |
+| Veri toplama | `engine/fetchers/` | 18 toplayıcı + `BaseFetcher` sözleşmesi. Sözleşme: `fetch()` asla istisna fırlatmaz. |
+| Dilbilim | `engine/nlp/` | Rekonstrüksiyon, hizalama, kümeleme, alıntı keşfi, A-HVP. |
+| Ortak kurallar | `engine/utils/phonotactics.py`, `orthography.py` | Fonotaktik kısıtlar, ünlü uyumu, alıntı dil kalıpları, Türki Kiril karakter sınıfı. |
+| Kalıcılık | `engine/db/` | SQLite (TTL önbellekli), Cytoscape graf, CLDF içe/dışa aktarım. |
+| LLM | `engine/llm/` | Ollama sentezi. Kazınmış içerik `<untrusted_source>` sınırlayıcılarıyla verilir. |
 
-| Katman | Modül Dosyası | Açıklama & Sorumluluk |
-| :--- | :--- | :--- |
-| **Giriş / REST API** | [server.py](file:///Users/mshn/Documents/etimoloji/engine/server.py) | Python `HTTPServer` tabanlı REST API. `/api/search` ve `/api/list` uç noktalarını sunar. |
-| **Giriş / CLI** | [cli.py](file:///Users/mshn/Documents/etimoloji/engine/cli.py) | Tekil arama (`search`), toplu arama (`bulk`), kayıt listeleme (`list`) komut satırı arayüzü. |
-| **Orkestrasyon** | [search_engine.py](file:///Users/mshn/Documents/etimoloji/engine/search_engine.py) | Arama akışını yöneten, veri fetcher'larını paralelleştiren ve NLP/A-HVP katmanlarını tetikleyen ana motor. |
-| **Veri Toplama** | [engine/fetchers](file:///Users/mshn/Documents/etimoloji/engine/fetchers) | Clauson, Sevortjan, DLT, TDK, Nişanyan, Starling, Tietze, 25 Türki dil lügatı dahil 20+ veri kaynağı toplayıcısı. |
-| **Morfoloji** | [morphology.py](file:///Users/mshn/Documents/etimoloji/engine/utils/morphology.py) | Kelimeleri eklerinden temizleyerek kök biçimlerini tespit eder (`güzellik` $\rightarrow$ `güzel`). |
-| **Alıntı Analizi** | [loanword_classifier.py](file:///Users/mshn/Documents/etimoloji/engine/nlp/loanword_classifier.py) | Arapça (üçlü ünsüz vezinleri), Farsça ve Batı dilleri alıntı örüntülerini tespit eder. |
-| **Rekonstrüksiyon** | [reconstruction.py](file:///Users/mshn/Documents/etimoloji/engine/nlp/reconstruction.py) | Diyalektik ses değişim kurallarını uygulayarak Proto-Türkçe kök rekonstrüksiyonu yapar (`*kōz`). |
-| **Hakem Protokolü** | [hypothesis_validation_protocol.py](file:///Users/mshn/Documents/etimoloji/engine/nlp/hypothesis_validation_protocol.py) | Hipotezleri 5 akademik testten geçirir ve bilimsel rozet (🟢 / 🟡 / 🔴) ile skor üretir. |
-| **Çizge Veritabanı** | [graph_database.py](file:///Users/mshn/Documents/etimoloji/engine/db/graph_database.py) | Neo4j ve Cytoscape.js ile uyumlu düğüm (`WordForm`, `ProtoRoot`, `Attestation`) ve kenar haritası üretir. |
-| **LLM Ajansı** | [qwen_agent.py](file:///Users/mshn/Documents/etimoloji/engine/llm/qwen_agent.py) | Ollama üzerindeki `qwen2.5:14b` modelini kullanarak derinlikli etimoloji raporu oluşturur. |
-| **Veri Kalıcılığı** | [database.py](file:///Users/mshn/Documents/etimoloji/engine/db/database.py) | Aramaları SQLite (`etymology.db`) üzerinde önbellekler. |
-
----
-
-## 3. Uçtan Uca Arama & İcra Akış Diyagramı (Execution Sequence)
-
-Bir arama isteği geldiğinde sistemde gerçekleşen adım adım kronolojik akış:
+## Veri akışı
 
 ```mermaid
 sequenceDiagram
-    autonumber
-    actor User as Kullanıcı / Web Arayüzü
-    participant API as server.py (REST API)
-    participant SE as search_engine.py (Orchestrator)
-    participant DB as database.py (SQLite)
-    participant Morph as morphology.py & variants
-    participant Fetch as 20+ Parallel Fetchers
-    participant NLP as NLP Engine & Sound Laws
-    participant AHVP as hypothesis_validation_protocol.py
-    participant Graph as graph_database.py (Cytoscape)
-    participant Qwen as qwen_agent.py (LLM)
+    participant U as Kullanıcı
+    participant SE as SearchEngine
+    participant DB as SQLite
+    participant F as 18 Fetcher
+    participant N as NLP
+    participant A as A-HVP
 
-    User->>API: GET /api/search?word=güzellik&ai=true
-    API->>SE: search("güzellik", save_to_db=True, use_qwen_agent=True)
-    
-    SE->>DB: get_finding("güzellik") [SQLite Önbellek Kontrolü]
-    alt Önbellekte var (ve AI istenmediyse)
-        DB-->>SE: cached_json
-        SE-->>API: cached_json (from_cache: true)
-    else Önbellekte Yok veya AI Sorgusu
-        SE->>Morph: analyze_morphology("güzellik")
-        Morph-->>SE: Stem: "güzel", Suffixes: ["-lik"], Dinamik Varyantlar
-        
-        par 20+ Kaynaktan Paralel Tarama (ThreadPoolExecutor - 10 Worker)
-            SE->>Fetch: Sir Gerard Clauson, ÉSTJa, DLT, TDK, Nişanyan, 25 Türki Dil Lügatı...
-            Fetch-->>SE: Matched Entries (Eski Türkçe, Kazakça, Özbekçe, Uygurca...)
+    U->>SE: search("göz")
+    SE->>DB: get_finding(word, max_age=TTL)
+    alt Önbellekte taze kayıt var
+        DB-->>SE: kayıtlı bulgu
+        SE-->>U: from_cache = true
+    else Önbellek ıskası
+        SE->>SE: morfolojik ayrıştırma + varyant üretimi (MAX_VARIANTS ile sınırlı)
+        par Paralel toplama (ThreadPoolExecutor)
+            SE->>F: fetch(varyant)
+            F-->>SE: kayıtlar + kaynak teşhisi (süre, durum, hata)
         end
-
-        SE->>NLP: classify_loanword & reconstruct_proto_form & induce_sound_laws
-        NLP-->>SE: Proto-form: *kōz, Alıntı Tipi: Öz Türkçe, Ses Kaymaları: g->k, z->s
-        
-        SE->>AHVP: validate_hypothesis(word, hypothesis, attestations)
-        Note over AHVP: 5 Aşama: Fonetik Hizalama, Zaman Kilidi,<br/>Semantik Vektör, Akraba Triangulation
-        AHVP-->>SE: Hakem Raporu (Rozet: 🟢 VALIDATED, Skor: %92)
-
-        SE->>Graph: build_etymology_graph(word, root, attestations, cognates)
-        Graph-->>SE: Cytoscape/Neo4j Graf Düğümleri & Kenarları (Nodes/Edges JSON)
-
-        opt AI Ajansı Aktifse (use_qwen_agent = true)
-            SE->>Qwen: research_and_enrich("güzellik", finding)
-            Qwen->>Qwen: IPA Analizi, Fonotaktik, Neolojizm & Derin Web Kazıma
-            Qwen-->>SE: Zenginleştirilmiş Akademik Sentez Metni
-        end
-
-        SE->>DB: save_finding(final_finding_json)
-        SE-->>API: final_finding_json
+        SE->>N: karşılaştırmalı rekonstrüksiyon (gerçek akraba kayıtlarıyla)
+        N-->>SE: ata biçim + kanıta dayalı güven
+        SE->>N: alıntı keşif hattı (4 katman)
+        SE->>N: akraba kümeleme + tarihsel ek ağacı + ses kanunu indüksiyonu
+        SE->>A: hipotez doğrulama
+        A-->>SE: rozet + skor + evidence_coverage + eksik aşamalar
+        SE->>DB: save_finding
+        SE-->>U: bulgu + diagnostics (gerçek aşama süreleri)
     end
-    API-->>User: JSON Yanıtı (Web Arayüzünde Grafik & Kronoloji Çizilir)
 ```
 
----
+## Karşılaştırmalı rekonstrüksiyon
 
-## 4. Yapay Zeka Hakem Protokolü Detayı (A-HVP 5 Stage Protocol)
+Ata biçim, akraba biçimlerin hizalanmasıyla **konum duyarlı denklik
+kümelerinden** türetilir:
 
-Sistem bir kelimenin etimolojik hipotezini otomatik olarak doğrulamak veya reddetmek için [hypothesis_validation_protocol.py](file:///Users/mshn/Documents/etimoloji/engine/nlp/hypothesis_validation_protocol.py) modülünde tanımlanan 5 akademik kontrol süzgecini çalıştırır:
+| Konum | Denklik | Ata ses | Örnek |
+|---|---|---|---|
+| söz başı | `d ~ t` | `*t-` | deniz ~ теңіз → `*teŋiŕ` |
+| söz başı | `g ~ k` | `*k-` | göz ~ көз → `*köŕ` |
+| söz başı | `y ~ c ~ j ~ ç` | `*j-` | yol ~ жол ~ ҫул → `*jol` |
+| söz sonu | `z ~ r` | `*-ŕ` | Lir-Şaz rotasizmi |
+| söz sonu | `ş ~ l` | `*-ĺ` | lambdaizm |
+| her yer | `n ~ ŋ` | `*-ŋ-` | deniz ~ teŋiz |
+
+Güven skoru üç bileşenden hesaplanır:
+
+```
+güven = 0.40 × (tanık sayısı / 6)      # kaç bağımsız dil
+      + 0.30 × (kol sayısı / 4)        # Oğuz, Kıpçak, Karluk, Sibirya, Oğur
+      + 0.30 × sütun uyumu             # hizalama sütunlarında tanıkların uzlaşması
+```
+
+En az **iki bağımsız dil tanığı** yoksa ata biçim üretilmez.
+
+## A-HVP hakem protokolü
 
 ```mermaid
-flowchart LR
-    Start([Hipotez Girdisi: *kōz -> güzellik]) --> Stage1
+flowchart TD
+    H[Hipotez] --> S1 & S2 & S3 & S4
 
-    subgraph Stage1 ["Aşama 1: Fonetik & LingPy Hizalama"]
-        S1_1["No Broken Phonetic Chain Testi"] --> S1_2["LingPy Sequence Alignment"]
-        S1_2 --> S1_Res["Ağırlık: %35"]
-    end
+    S1["Aşama 1 · Fonetik zincir<br/>sıralı dizi hizalaması + yön denetimli ses kanunları"]
+    S2["Aşama 2 · Kronoloji<br/>donör temas dönemi vs ilk tanıklama yılı"]
+    S3["Aşama 3 · Semantik mesafe<br/>tarihsel anlam ↔ modern anlam"]
+    S4["Aşama 4 · Triangulation<br/>gerçek lehçe yayılımı + kaynak çeşitliliği"]
 
-    subgraph Stage2 ["Aşama 2: Kronolojik Zaman Kilidi"]
-        S2_1["Anachronism Lock Testi"] --> S2_2["T_kaynak < T_hedef Kontrolü"]
-        S2_2 --> S2_Res["Ağırlık: %30<br/>(İhlal durumunda skor max %30)"]
-    end
+    S1 --> C{Kanıt üretebildi mi?}
+    S2 --> C
+    S3 --> C
+    S4 --> C
 
-    subgraph Stage3 ["Aşama 3: Diyakronik Semantik Vektör"]
-        S3_1["Semantik Yörünge Analizi"] --> S3_2["d²S/dt² < θ Kayma Mesafesi"]
-        S3_2 --> S3_Res["Ağırlık: %15"]
-    end
+    C -->|hayır| D[Aşama ağırlığı toplamdan DÜŞÜLÜR]
+    C -->|evet| E[Ağırlıklı skora katılır]
 
-    subgraph Stage4 ["Aşama 4: Çapraz Akraba Triangulation"]
-        S4_1["25 Türki Lehçe Akraba Taraması"] --> S4_2["Diyalekt Eşleşme Kontrolü"]
-        S4_2 --> S4_Res["Ağırlık: %20"]
-    end
-
-    Stage1 --> Stage2 --> Stage3 --> Stage4 --> Decision
-
-    subgraph Decision ["Aşama 5: Hakem Kararı ve Skorlama"]
-        ScoreCalc["Ağırlıklı Güven Skoru Hesabı"] --> Badges
-        Badges --> B1["Skor ≥ %75: 🟢 VALIDATED (Bilimsel Hakem Onaylı)"]
-        Badges --> B2["Skor %50-%74: 🟡 NEEDS REVIEW (İnceleme Gerekli)"]
-        Badges --> B3["Skor < %50 veya Anakronizm: 🔴 REJECTED (Akademik Red)"]
-    end
+    D --> N[evidence_coverage hesaplanır]
+    E --> N
+    N --> V{kapsam ≥ %50?}
+    V -->|hayır| IE["⚪ YETERSİZ KANIT"]
+    V -->|evet| R{ihlal var mı?}
+    R -->|evet| RJ["🔴 REDDEDİLDİ"]
+    R -->|hayır| SC{aşama skoru}
+    SC -->|≥ 0.75| OK["🟢 DOĞRULANDI<br/>(kapsam bildirilir)"]
+    SC -->|≥ 0.50| NR["🟡 İNCELEME GEREKLİ"]
+    SC -->|< 0.50| RJ2["🔴 REDDEDİLDİ"]
 ```
 
-### A-HVP Aşamalarının Matematiksel ve Mantıksal Formülü:
+**Skor formülü**
 
-1. **Aşama 1: Fonetik Evrim ve LingPy Hizalama ($S_{fonetik}$ - %35 Ağırlık)**:
-   $$\text{Skor}_{fonetik} = (0.6 \times \text{Zincir Uyum Skoru}) + (0.4 \times \text{LingPy Benzerlik Skoru})$$
-   Fonetik kurallarda kırılma varsa hipotez skoru otomatik düşürülür.
+```
+aşama_skoru = Σ(ağırlık_i × skor_i) / Σ(ağırlık_i)      # yalnızca kanıtlı aşamalar
+kapsam      = Σ(ağırlık_i) / Σ(tüm ağırlıklar)
+yayımlanan  = aşama_skoru × kapsam
+```
 
-2. **Aşama 2: Kronolojik Zaman Kilidi (Anachronism Lock - $S_{zaman}$ - %30 Ağırlık)**:
-   $$T_{kaynak} < T_{hedef}$$
-   Eğer kelimenin türediği iddia edilen dil/kaynak dönemi ($T_{kaynak}$), hedef kelimenin ilk yazılı tanıklanma tarihinden ($T_{hedef}$) daha sonraya denk geliyorsa **anakronizm ihlali** gerçekleşir ve toplam skor en fazla $\%30$ olarak sınırlandırılır.
+`aşama_skoru` ölçülebilen kanıtın **kalitesini**, `kapsam` ne kadarının
+ölçülebildiğini bildirir. Rozet kararı `aşama_skoru` üzerinden verilir;
+`kapsam` bir kapı görevi görür. Böylece "kanıt eksik" ile "kanıt kötü"
+birbirine karışmaz.
 
-3. **Aşama 3: Diyakronik Semantik Vektör ($S_{semantik}$ - %15 Ağırlık)**:
-   Tarihsel anlam ile günümüz anlamı arasındaki semantik vektör mesafesi hesaplanır ($\frac{d^2S}{dt^2} < \theta$).
+## Alıntı keşif hattı
 
-4. **Aşama 4: Çapraz Akraba Kelime Triangulation ($S_{akraba}$ - %20 Ağırlık)**:
-   25 Türki dilde diyalektik denklerin varlığı ($d \sim y \sim t \sim r$) kontrol edilir.
+`nlp/loanword_detector.py`, `research/ai_nlp_loanword_classifier_master_plan.md`
+dokümanındaki dört katmanı uygular:
 
-5. **Aşama 5: Toplam Hakem Skoru ve Rozet**:
-   $$\text{Toplam Skor} = (S_{fonetik} \times 0.35) + (S_{zaman} \times 0.30) + (S_{semantik} \times 0.15) + (S_{akraba} \times 0.20)$$
+1. **Fonotaktik ihlal analizi** — söz başı ünsüz kısıtı, ünsüz kümesi, ünlü
+   uyumu (bileşikler istisna), Arapça vezin, Farsça/Batı ekleri
+2. **Çapraz lehçe yayılımı** — gerçek `lang_code` sayımı / 25 dil
+3. **Olasılık dağılımı** — öz Türkçelik ile donör atfı ayrı hesaplanır
+4. **Donör en-yakın-komşu** — IPA Levenshtein ≤ 2
 
----
+Katman 4 doğrudan eşleşme bulursa sınıflandırma ona uyar: sözlük kanıtı
+kural tabanlı tahmini ezer.
 
-## 5. Çizge Veritabanı (Graph DB) Düğüm Şeması
+## Graf şeması
 
-[graph_database.py](file:///Users/mshn/Documents/etimoloji/engine/db/graph_database.py) dosyası tarafından oluşturulan ve Web UI üzerindeki Cytoscape.js motoru tarafından görselleştirilen düğüm ve kenar yapısı:
+`db/graph_database.py` Neo4j şemasına uygun düğüm/kenar üretir ve Cytoscape.js
+JSON'u olarak dışa verir. **Neo4j sürücüsü kullanılmaz; canlı bir graf
+veritabanı bağlantısı yoktur.**
 
-- **Düğümler (Nodes)**:
-  - `WordForm` (TargetWord): Aratılan modern Türkçe kelime.
-  - `WordForm` (ProtoRoot): Rekonstrüksiyonu yapılan ata kök (Örn: `*kōz`).
-  - `EtymologyCase`: Etimoloji vaka kaydı ve güven skoru.
-  - `Attestation`: Tarihi yazılı metin tanıklaması (DLT 1074, Orhun Yazıtları vb.).
-  - `WordForm` (Cognate): Akraba Türki dillerdeki denkler (Kazakça `kóz`, Uygurca `köz` vb.).
+| Düğüm | Alanlar |
+|---|---|
+| `WordForm` | word, lang, script |
+| `ProtoRoot` | word, lang |
+| `EtymologyCase` | hypothesis_type, confidence_score *(kanıt yoksa `null`)* |
+| `Attestation` | kaynak, yıl |
 
-- **Kenarlar (Edges / Relationships)**:
-  - `DERIVED_FROM`: Ata kökten türeme bağı.
-  - `HAS_CASE`: Vaka kaydı bağı.
-  - `ATTESTED_IN`: Metinlerde tanıklanma bağı.
-  - `COGNATE_OF`: Akraba biçim bağı.
+| Kenar | Anlam |
+|---|---|
+| `DERIVED_FROM` | ata kök → modern biçim |
+| `HAS_HYPOTHESIS` | kelime → etimoloji vakası |
+| `ATTESTED_IN` | kelime → tarihsel tanıklama |
+| `COGNATE_OF` | ata kök → akraba biçim |
 
----
+Düğüm kimlikleri sanitize edilir; boşluk veya özel karakter içeren kelimeler
+bozuk seçici üretmez.
 
-## 6. Özet
+## Güvenlik
 
-Bu mimari; **paralel veri toplama**, **hesaplamalı fonetik/semantik NLP**, **otonom akademik doğrulama (A-HVP)** ve **graf veritabanı görselleştirmesi** bileşenlerini tek bir sistemde birleştirerek Türki diller etimoloji araştırmalarını uçtan uca otomatikleştirmektedir.
+| Yüzey | Önlem |
+|---|---|
+| Sunucu bağlanma | Varsayılan `127.0.0.1`; yerel olmayan adres uyarı loglar |
+| CORS | Yapılandırılmış origin listesi; `*` varsayılan değil |
+| Hata sızıntısı | İç istisna metni istemciye gitmez (`ETY_API_DEBUG_ERRORS` ile açılır) |
+| Girdi | `MAX_QUERY_LENGTH` sınırı, amplifikasyon için `MAX_VARIANTS` |
+| SSRF | `utils/network.py` özel/loopback/link-local adresleri ve `http(s)` dışı şemaları reddeder; kazıyıcılar alan adı beyaz listesi kullanır |
+| Prompt injection | Kazınmış içerik `<untrusted_source>` içinde, uzunluğu sınırlı, sınırlayıcı etiketler kaçırılır |
+| Web paneli XSS | Tüm dinamik içerik HTML kaçışından geçer; CDN betiklerinde SRI |
+
+## Test mimarisi
+
+```
+engine/tests/
+  conftest.py          soket düzeyinde ağ yalıtımı, geçici DB, tohum izolasyonu
+  fakes.py             BaseFetcher test ikizleri (Fake/Failing/Empty/Slow)
+  fixtures/http/       canlı kaynaklardan kaydedilmiş gerçek yanıtlar
+  test_*.py            323 ağsız test
+  live/                9 canlı kaynak testi (ETY_LIVE=1)
+```
+
+Testler soket düzeyinde ağdan yalıtılır: yanlışlıkla canlı ağa çıkan bir test
+açık bir hata alır. `responses` ile mock'lanan istekler soket açmadığı için geçer.
+
+## Bilinçli kapsam dışı bırakılanlar
+
+| Konu | Gerekçe |
+|---|---|
+| Eğitilmiş ML alıntı sınıflandırıcı | Etiketli Türkçe veri kümesi yok; WOLD ingest'i önce tamamlanmalı |
+| FastText semantik benzerlik | `gensim`'in Python 3.14 tekerleği yok |
+| Neo4j canlı bağlantı | Yerel araç için gereksiz karmaşıklık; şema uyumu korunuyor |
+| Next.js web uygulaması | Tek dosyalık statik panel yeterli |
+| loanpy, Zemberek, Starlang KeNet | Değerlendirildi, ertelendi |

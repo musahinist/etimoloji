@@ -1,46 +1,44 @@
 """
-Otonom Rekonstrüksiyon Motoru (Seq2Seq / HMM Proto-Language Reconstruction Engine)
-Etimolojisi bilinmeyen veya çözülmemiş Türki kelimelerin muhtemel Proto-Türkçe '*kök' formunu ve fonolojik evrim haritasını hesaplar.
+Proto-Türkçe Rekonstrüksiyon Cephesi (Reconstruction Facade)
+
+Gerçek hesaplama :mod:`engine.nlp.comparative_reconstruction` içindeki
+karşılaştırmalı yöntem motorunda yapılır. Bu modül, mevcut çağrı yerlerinin
+imzasını koruyan ince bir cephedir.
+
+Not: Bu modül eskiden ``d- -> t-`` kuralını uygularken
+``predictive_reconstructor`` TAM TERSİNİ (``t- -> d-``) uyguluyordu ve ikisi de
+aynı aramada çalışıyordu. Ayrıca ``turkic_entries`` parametresi imzada olmasına
+rağmen gövdede hiç kullanılmıyordu. Her ikisi de artık tek motordan beslenir.
 """
-from typing import Dict, Any, List
-from engine.utils.morphology import analyze_morphology, NON_TURKIC_INITIAL_CONSONANTS
+from __future__ import annotations
+
+from typing import Any
+
+from engine.nlp.comparative_reconstruction import ComparativeReconstructor
+from engine.utils.morphology import NON_TURKIC_INITIAL_CONSONANTS
+
 
 class ProtoTurkicReconstructor:
-    def reconstruct_proto_form(self, word: str, turkic_entries: List[Dict[str, Any]]) -> Dict[str, Any]:
-        """Tarihsel ses değişim kurallarını işleterek kelimenin muhtemel Proto-Türkçe '*kök' formunu tahmin eder."""
-        w = word.strip().lower()
+    def __init__(self) -> None:
+        self._engine = ComparativeReconstructor()
 
-        # Alıntı kelime kontrolü
+    def reconstruct_proto_form(
+        self, word: str, turkic_entries: list[dict[str, Any]] | None = None
+    ) -> dict[str, Any]:
+        """Akraba biçimlerden Proto-Türkçe ata biçimi türetir."""
+        w = (word or "").strip().lower()
+
         if w and w[0] in NON_TURKIC_INITIAL_CONSONANTS:
             return {
                 "word": w,
-                "reconstructed_root": f"*{w}",
+                "reconstructed_root": "",
                 "is_reconstructible": False,
-                "reconstruction_notes": "Söz başı ünsüzü Öz Türkçe olmadığı için Proto-Türkçe rekonstrüksiyon uygulanmaz (Alıntı Kök)."
+                "evidence_available": False,
+                "confidence": None,
+                "reconstruction_notes": (
+                    "Söz başı ünsüzü Türkçe fonotaktiğine aykırı; Proto-Türkçe rekonstrüksiyon "
+                    "uygulanmaz (alıntı kök adayı)."
+                ),
             }
 
-        stem, suffixes = analyze_morphology(w)
-        proto_stem = stem
-
-        # Tarihsel ses kayma kurallarını geriye dönük uygula (Reverse Sound Laws)
-        if proto_stem.startswith("h"):
-            proto_stem = "k" + proto_stem[1:]
-        elif proto_stem.startswith("d"):
-            proto_stem = "t" + proto_stem[1:]
-
-        if "l" in proto_stem and "r" in proto_stem:
-            l_idx, r_idx = proto_stem.find("l"), proto_stem.find("r")
-            if l_idx < r_idx:
-                proto_list = list(proto_stem)
-                proto_list[l_idx], proto_list[r_idx] = "r", "l"
-                proto_stem = "".join(proto_list)
-
-        reconstructed_root = f"*{proto_stem}"
-        notes = f"Geriye dönük tarihsel ses kuralları uygulandı: {w} -> {reconstructed_root}"
-
-        return {
-            "word": w,
-            "reconstructed_root": reconstructed_root,
-            "is_reconstructible": True,
-            "reconstruction_notes": notes
-        }
+        return self._engine.reconstruct(w, turkic_entries)

@@ -1,37 +1,46 @@
-import re
 import json
-import urllib.request
+import re
 import urllib.parse
-from typing import Dict, Any, List, Optional
-from engine.fetchers.base import BaseFetcher, TURKIC_LANGUAGES_MAP
+import urllib.request
+from typing import Any
+
+from engine import config
+from engine.fetchers.base import (
+    TURKIC_LANGUAGES_MAP,
+    BaseFetcher,
+    detect_script,
+    lang_code_from_wiktionary_header,
+)
+from engine.logging_setup import get_logger
+from engine.utils.network import fetch as http_get
+
+logger = get_logger(__name__)
+
 
 class WiktionaryFetcher(BaseFetcher):
     @property
     def source_name(self) -> str:
         return "Wiktionary"
 
-    def _http_get(self, url: str) -> Optional[str]:
-        try:
-            req = urllib.request.Request(url, headers={'User-Agent': 'TurkicEtymologyEngine/1.0'})
-            with urllib.request.urlopen(req, timeout=10) as resp:
-                return resp.read().decode('utf-8')
-        except Exception:
-            return None
+    def _http_get(self, url: str) -> str | None:
+        return http_get(url, timeout=config.HTTP_TIMEOUT_LONG)
 
-    def _get_page_wikitext(self, page_title: str) -> Optional[str]:
+    def _get_page_wikitext(self, page_title: str) -> str | None:
         url = f"https://en.wiktionary.org/w/api.php?action=parse&page={urllib.parse.quote(page_title)}&format=json&prop=wikitext"
         raw = self._http_get(url)
         if not raw:
             return None
         try:
             data = json.loads(raw)
-            if "error" in data:
-                return None
-            return data.get("parse", {}).get("wikitext", {}).get("*", "")
-        except Exception:
+        except ValueError:
+            logger.warning("Wiktionary wikitext JSON ayrıştırılamadı: %s", page_title, exc_info=True)
             return None
+        if "error" in data:
+            logger.debug("Wiktionary sayfası yok: %s", page_title)
+            return None
+        return data.get("parse", {}).get("wikitext", {}).get("*", "")
 
-    def fetch(self, word: str) -> Dict[str, Any]:
+    def fetch(self, word: str) -> dict[str, Any]:
         word_clean = word.strip().lower()
         result = {
             "root": {
@@ -68,7 +77,7 @@ class WiktionaryFetcher(BaseFetcher):
 
         return result
 
-    def _parse_reconstruction_page(self, wt: str, result: Dict[str, Any]) -> None:
+    def _parse_reconstruction_page(self, wt: str, result: dict[str, Any]) -> None:
         # Anlam çekme
         meaning_match = re.search(r'==Proto-Turkic==.*?(?:#\s*\[\[(.*?)\]\]|#\s*(.*?)\n)', wt, re.DOTALL)
         if meaning_match and not result["root"]["meaning"]:
@@ -78,7 +87,7 @@ class WiktionaryFetcher(BaseFetcher):
         # Türki diller türevlerini parsing
         # Template format: {{desc|code|word|...}} veya {{desctree|code|word|...}}
         desc_pattern = r'\{\{desc(?:tree)?\|([a-z0-9\-]+)\|([^|\}]+)(?:\|([^|\}]+))?(?:\|ts=([^|\}]+))?'
-        
+
         seen_langs = {item["lang_code"]: item for item in result["turkic_languages"]}
 
         for match in re.finditer(desc_pattern, wt):
@@ -101,26 +110,26 @@ class WiktionaryFetcher(BaseFetcher):
                         "lang_name": TURKIC_LANGUAGES_MAP[lang_code],
                         "word": display_word,
                         "meaning": result["root"]["meaning"],
-                        "script": "Cyrillic" if re.search(r'[\u0400-\u04FF]', display_word) else ("Arabic" if re.search(r'[\u0600-\u06FF]', display_word) else "Latin")
+                        "script": detect_script(display_word),
                     }
                     result["turkic_languages"].append(item)
                     seen_langs[lang_code] = item
 
-    def _parse_word_page(self, wt: str, word_clean: str, result: Dict[str, Any]) -> None:
+    def _parse_word_page(self, wt: str, word_clean: str, result: dict[str, Any]) -> None:
         seen_langs = {item["lang_code"]: item for item in result["turkic_languages"]}
 
-        # Wiktionary dil başlıklarını ara ==Turkish==, ==Azerbaijani== vs.
-        lang_sections = re.split(r'==\s*([A-Za-z\s]+)\s*==', wt)
+        # Yalnızca 2. seviye dil başlıkları: ==Turkish==, ==Azerbaijani==
+        # Not: eski desen `===Noun===` gibi ALT başlıkları da yakalıyor ve
+        # bölüm içeriğini ikiye bölerek anlamların kaybolmasına yol açıyordu.
+        lang_sections = re.split(r'^==\s*([^=\n]+?)\s*==\s*$', wt, flags=re.M)
         for i in range(1, len(lang_sections) - 1, 2):
             lang_header = lang_sections[i].strip()
             section_content = lang_sections[i+1]
 
-            # Header ile lang_code eşleştir
-            code = None
-            for lc, lname in TURKIC_LANGUAGES_MAP.items():
-                if lname.lower() in lang_header.lower() or lang_header.lower() in lname.lower():
-                    code = lc
-                    break
+            # Wiktionary başlıkları İNGİLİZCEDİR ("==Turkish=="); harita ise
+            # Türkçe adlar tutar. Doğrudan karşılaştırma hiçbir zaman
+            # eşleşmiyordu ve bu ayrıştırıcı fiilen ölüydü.
+            code = lang_code_from_wiktionary_header(lang_header)
 
             if code and code not in seen_langs:
                 # Anlam çıkar
@@ -134,7 +143,7 @@ class WiktionaryFetcher(BaseFetcher):
                     "lang_name": TURKIC_LANGUAGES_MAP[code],
                     "word": word_clean,
                     "meaning": meaning or result["root"]["meaning"],
-                    "script": "Latin"
+                    "script": detect_script(word_clean),
                 }
                 result["turkic_languages"].append(item)
                 seen_langs[code] = item

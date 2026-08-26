@@ -2,7 +2,7 @@
 Coğrafi Ağız Haritalayıcı (Geographical Dialect & Region Tagger)
 Derleme sözlüğü ve ağız verilerini bölge ve il koordinatlarıyla etiketler.
 """
-from typing import Dict, Any
+from typing import Any
 
 GEO_REGIONS_MAP = {
     "Urfa": {"region": "Güneydoğu Anadolu", "lat": 37.1674, "lon": 38.7955},
@@ -15,7 +15,7 @@ GEO_REGIONS_MAP = {
     "Kırım": {"region": "Kırım Karay / Tatarları", "lat": 44.9521, "lon": 34.1024}
 }
 
-def tag_geographical_region(location_text: str) -> Dict[str, Any]:
+def tag_geographical_region(location_text: str) -> dict[str, Any]:
     txt = location_text.strip()
     for loc, info in GEO_REGIONS_MAP.items():
         if loc.lower() in txt.lower():

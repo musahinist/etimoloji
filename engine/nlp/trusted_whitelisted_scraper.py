@@ -4,10 +4,15 @@ Amatör / uydurma etimoloji sitelerini engeller; sadece Nişanyan Sözlük, Kubb
 DergiPark Akademik Makaleler ve Wiktionary Etimoloji başlıklarını süzerek tam metin çeker.
 """
 import re
-import json
-import urllib.request
 import urllib.parse
-from typing import Dict, Any, List
+import urllib.request
+
+from engine import config
+from engine.logging_setup import get_logger
+from engine.utils.network import fetch as http_get
+from engine.utils.text import strip_html
+
+logger = get_logger(__name__)
 
 TRUSTED_DOMAINS = [
     "nisanyansozluk.com",
@@ -19,7 +24,7 @@ TRUSTED_DOMAINS = [
     "archive.org"
 ]
 
-def scrape_whitelisted_academic_sources(word: str) -> List[Dict[str, str]]:
+def scrape_whitelisted_academic_sources(word: str) -> list[dict[str, str]]:
     """Sadece akademik beyaz listedeki etimoloji kaynaklarını sorgular ve tam metin çeker."""
     w = word.strip().lower()
     whitelisted_results = []
@@ -27,14 +32,14 @@ def scrape_whitelisted_academic_sources(word: str) -> List[Dict[str, str]]:
     # 1. Nişanyan Canlı Kazıma
     try:
         url = f"https://www.nisanyansozluk.com/kelime/{urllib.parse.quote(w)}"
-        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'})
-        with urllib.request.urlopen(req, timeout=3) as resp:
-            html = resp.read().decode('utf-8', errors='ignore')
+        _body = http_get(url, timeout=config.HTTP_TIMEOUT_SHORT)
+        if _body is not None:
+            html = _body
             m_etym = re.search(r'class="etym[^"]*"[^>]*>(.*?)</div>', html, re.DOTALL)
             m_hist = re.search(r'class="hist[^"]*"[^>]*>(.*?)</div>', html, re.DOTALL)
-            
-            clean_etym = re.sub(r'<[^>]+>', ' ', m_etym.group(1)).strip() if m_etym else ""
-            clean_hist = re.sub(r'<[^>]+>', ' ', m_hist.group(1)).strip() if m_hist else ""
+
+            clean_etym = strip_html(m_etym.group(1)).strip() if m_etym else ""
+            clean_hist = strip_html(m_hist.group(1)).strip() if m_hist else ""
 
             if clean_etym or clean_hist:
                 whitelisted_results.append({
@@ -43,16 +48,15 @@ def scrape_whitelisted_academic_sources(word: str) -> List[Dict[str, str]]:
                     "content": f"Köken: {clean_etym} | Tarihçe: {clean_hist}"
                 })
     except Exception:
-        pass
-
+        logger.warning("dış kaynak işlenemedi", exc_info=True)
     # 2. DergiPark Akademik Makale Canlı Taraması
     try:
         url = f"https://dergipark.org.tr/tr/search?q={urllib.parse.quote(w)}+etimoloji"
-        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-        with urllib.request.urlopen(req, timeout=3) as resp:
-            html = resp.read().decode('utf-8', errors='ignore')
+        _body = http_get(url, timeout=config.HTTP_TIMEOUT_SHORT)
+        if _body is not None:
+            html = _body
             titles = re.findall(r'<a[^>]*class=\"[^\"]*card-title[^\"]*\"[^>]*>(.*?)</a>', html, re.DOTALL)
-            clean_titles = [re.sub(r'<[^>]+>', '', t).strip() for t in titles[:2] if "doğrulayınız" not in t]
+            clean_titles = [strip_html(t).strip() for t in titles[:2] if "doğrulayınız" not in t]
             if clean_titles:
                 whitelisted_results.append({
                     "domain": "dergipark.org.tr",
@@ -60,6 +64,5 @@ def scrape_whitelisted_academic_sources(word: str) -> List[Dict[str, str]]:
                     "content": "; ".join(clean_titles)
                 })
     except Exception:
-        pass
-
+        logger.warning("dış kaynak işlenemedi", exc_info=True)
     return whitelisted_results

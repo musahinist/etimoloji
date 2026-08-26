@@ -1,110 +1,23 @@
 import re
-import urllib.request
-import urllib.parse
-from typing import Dict, Any, List
-from engine.fetchers.base import BaseFetcher, TURKIC_LANGUAGES_MAP
+from typing import Any
+
+from engine.fetchers.base import TURKIC_LANGUAGES_MAP, BaseFetcher
+from engine.utils.seed import load_seed_entries, seed_source_label
 
 # Dahili Yıldız/Starling Proto-Türkçe Etimoloji Sözlük Dizini (Core Turkic Lexicon Index)
-STARLING_OFFLINE_LEXICON = {
-    "ayak": {
-        "proto_turkic": "*adak / *adaq",
-        "meaning": "foot / leg / step",
-        "cognates": {
-            "otk": {"word": "adak / adaq", "meaning": "ayak, adak"},
-            "tr": {"word": "ayak", "meaning": "vücudun yürüme organı, ayak"},
-            "az": {"word": "ayaq", "meaning": "ayak"},
-            "kk": {"word": "аяқ (ayaq)", "meaning": "ayak"},
-            "uz": {"word": "oyoq", "meaning": "ayak"},
-            "tk": {"word": "aýak", "meaning": "ayak"},
-            "ky": {"word": "аяк (ayak)", "meaning": "ayak"},
-            "tt": {"word": "аяк (ayaq)", "meaning": "ayak"},
-            "ug": {"word": "ئاياق (ayaq)", "meaning": "ayak"},
-            "cv": {"word": "ура (ura)", "meaning": "ayak (Oğur r-dili kayması)"},
-            "sah": {"word": "атах (atax)", "meaning": "ayak (Saha t-dili kayması)"},
-            "ba": {"word": "аяҡ (ayaq)", "meaning": "ayak"},
-            "tyv": {"word": "аяк (ayak)", "meaning": "ayak"},
-            "khk": {"word": "азах (azaq)", "meaning": "ayak (Hakas z-dili kayması)"}
-        }
-    },
-    "su": {
-        "proto_turkic": "*sub",
-        "meaning": "water / liquid / stream",
-        "cognates": {
-            "otk": {"word": "sub / suv", "meaning": "su, akarsu"},
-            "tr": {"word": "su", "meaning": "su, sıvı"},
-            "az": {"word": "su", "meaning": "su"},
-            "kk": {"word": "су (su)", "meaning": "su"},
-            "uz": {"word": "suv", "meaning": "su"},
-            "tk": {"word": "suw", "meaning": "su"},
-            "ky": {"word": "суу (suu)", "meaning": "su"},
-            "tt": {"word": "су (su)", "meaning": "su"},
-            "ug": {"word": "سۇ (su)", "meaning": "su"},
-            "cv": {"word": "шыв (šəv)", "meaning": "su"},
-            "sah": {"word": "уу (uu)", "meaning": "su"},
-            "ba": {"word": "һыу (hıw)", "meaning": "su"},
-            "tyv": {"word": "суг (suğ)", "meaning": "su"}
-        }
-    },
-    "göz": {
-        "proto_turkic": "*göŕ",
-        "meaning": "eye / sight",
-        "cognates": {
-            "otk": {"word": "göz / kör-", "meaning": "göz, görmek"},
-            "tr": {"word": "göz", "meaning": "görüş organı, göz"},
-            "az": {"word": "göz", "meaning": "göz"},
-            "kk": {"word": "kөз (köz)", "meaning": "göz"},
-            "uz": {"word": "ko'z", "meaning": "göz"},
-            "tk": {"word": "göz", "meaning": "göz"},
-            "ky": {"word": "көз (köz)", "meaning": "göz"},
-            "tt": {"word": "күз (küz)", "meaning": "göz"},
-            "ug": {"word": "كۆز (köz)", "meaning": "göz"},
-            "cv": {"word": "куҫ (kuś)", "meaning": "göz"},
-            "sah": {"word": "көс (kös)", "meaning": "göz, bakış"},
-            "ba": {"word": "күз (küz)", "meaning": "göz"}
-        }
-    },
-    "el": {
-        "proto_turkic": "*el / *elig",
-        "meaning": "hand / forearm / hold",
-        "cognates": {
-            "otk": {"word": "elig", "meaning": "el"},
-            "tr": {"word": "el", "meaning": "tutma organı, el"},
-            "az": {"word": "əl", "meaning": "el"},
-            "kk": {"word": "қол / елік", "meaning": "el"},
-            "uz": {"word": "qo'l / el", "meaning": "el"},
-            "tk": {"word": "el", "meaning": "el"},
-            "ky": {"word": "кол / эл", "meaning": "el"},
-            "tt": {"word": "кул / ил", "meaning": "el"},
-            "ug": {"word": "ئەل (el)", "meaning": "el"},
-            "cv": {"word": "алӑ (ală)", "meaning": "el"},
-            "sah": {"word": "ilii (ilii)", "meaning": "el"}
-        }
-    },
-    "deniz": {
-        "proto_turkic": "*teŋiz",
-        "meaning": "sea / large lake / ocean",
-        "cognates": {
-            "otk": {"word": "teŋiz", "meaning": "deniz, büyük göl"},
-            "tr": {"word": "deniz", "meaning": "büyük su kütlesi, deniz"},
-            "az": {"word": "dəniz", "meaning": "deniz"},
-            "kk": {"word": "теңіз (teŋiz)", "meaning": "deniz"},
-            "uz": {"word": "dengiz", "meaning": "deniz"},
-            "tk": {"word": "deňiz", "meaning": "deniz"},
-            "ky": {"word": "деңиз (deŋiz)", "meaning": "deniz"},
-            "tt": {"word": "тиңез (tiŋez)", "meaning": "deniz"},
-            "ug": {"word": "دەڭىز (deŋiz)", "meaning": "deniz"},
-            "cv": {"word": "тинӗс (tinĕs)", "meaning": "deniz"},
-            "sah": {"word": "тиңис (tiŋis)", "meaning": "deniz"}
-        }
-    }
-}
+#: Tohum (seed) veri. Kod içinde değil, data/seed/lexicon/starling.json dosyasında tutulur.
+SEED_PATH = "lexicon/starling.json"
+STARLING_OFFLINE_LEXICON = load_seed_entries(SEED_PATH)
 
 class StarlingFetcher(BaseFetcher):
+    #: Bu kaynak yerel tohum veriden beslenir, canlı bir servis DEĞİLDİR.
+    is_seed_source = True
+
     @property
     def source_name(self) -> str:
-        return "Starling Etymological Database"
+        return seed_source_label("Starling Etymological Database", SEED_PATH)
 
-    def fetch(self, word: str) -> Dict[str, Any]:
+    def fetch(self, word: str) -> dict[str, Any]:
         word_clean = word.strip().lower()
         result = {
             "root": {

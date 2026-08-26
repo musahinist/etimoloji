@@ -1,82 +1,209 @@
-# 🌍 Türki Diller Etimoloji Araştırma Motoru (Turkic Etymology Research Engine)
+# Türki Diller Etimoloji Araştırma Motoru
 
-Bağımsız, yerel (local) çalışan ve internet üzerindeki **19 akademik, tarihi, lügat ve yerel sözlük kaynağından** kelimelerin etimolojisini, alıntı kelime yörüngelerini, kaynak dildeki orijinal imla ve anlamlarını ve tüm Türki dillerdeki (Eski Türkçe, Türkiye Türkçesi, Azerbaycan, Kazak, Özbek, Türkmen, Kırgız, Tatar, Uygur, Çuvaş, Saha/Yakut, Başkurt, Hakas, Tuva, Gagavuz, Karaçay-Balkar vb.) karşılıklarını toplayan gelişmiş araştırma motoru.
+Yerel çalışan, kaynak-şeffaf bir etimoloji araştırma motoru. Bir Türkçe kelimenin
+Türki dillerdeki karşılıklarını toplar, **karşılaştırmalı yöntemle** Proto-Türkçe
+ata biçimini türetir, alıntı olup olmadığını sınıflandırır ve ürettiği her
+hipotezi dört aşamalı bir hakem protokolünden geçirir.
 
----
+Temel ilke: **kanıt yoksa puan da yok.** Motor bir sonucu ancak ölçebildiği
+kanıt kadar destekler; ölçemediği aşamayı skora katmaz ve eksikliği açıkça
+raporlar.
 
-## 🚀 Öne Çıkan Özellikler
+```
+$ python -m engine.cli search göz
 
-### 📚 19 Paralel Veri Katmanı Portföyü
-- **Akademik Türkoloji Veri Bankası**: Sir Gerard Clauson (EDPT - Pre-13th Century Old Turkic Corpus) & Sevortjan ÉSTJa (SSCB Bilimler Akademisi 8 Ciltlik Türki Diller Etimoloji Sözlüğü)
-- **Tarihi Türk Lehçeleri Sözlükleri**: Divanü Lugati't-Türk (Kaşgarlı Mahmud, 1074), Kamus-ı Türkî (Şemseddin Sami, 1901), Codex Cumanicus (1303 Kıpçakça), Sanglax (Nevai Çağatayca)
-- **TDV İslam Ansiklopedisi (İSAM)**: M.Ö. III. Yüzyıl Doğu Hunları ve Orhun Yazıtları etimoloji maddeleri
-- **Internet Archive Kitap Külliyatı**: Taranmış el yazmaları, Türkoloji kitapları ve sözlüklerde tam metin arama
-- **DergiPark Akademik Dergiler**: TÜBİTAK ULAKBİM üniversite Türkoloji makale dizini
-- **Osmanlıca ve Klasik Türkçe Lügatlar**: Kubbealtı Lugatı (`lugatim.com`) ve Ahmet Vefik Paşa (*Lehçe-i Osmanî*)
-- **TDK Tüm Alt Portalları**: TDK Türkiye Türkçesi Ağızlar Sözlüğü (`sozluk.gov.tr/ttas`), TDK Kişi Adları Etimoloji Sözlüğü (`sozluk.gov.tr/kisi`), TDK Yazım Kılavuzu Köken İşaretlemeleri
-- **Glosbe Multilingual API**: 25 Türki dil çeviri ve anlam ağı
-- **Türki Cumhuriyetler Yerel İzahlı Lügat Portalları**: Obastan & Azleks (Azerbaycan), Savodxon & ZiyoNET (Özbekistan), Tilqazyna & Sozlik.kz (Kazakistan), ElSözlük (Kırgızistan), Tatarica (Tataristan)
-- **Alıntı Kelimeler Kaynak Dil Orijinal İmla ve Etimoloji Katmanı**: Arapça (üçlü ünsüz kökü, vezin, orijinal imla `كتاب`), Farsça (orijinal imla `روزگار`, bileşenler `rūz` + `-gār`), Grekçe/Rumca (`αὐθέντης` -> `efendi`), Fransızca/İtalyanca/Latince ve Çince alıntı yörüngeleri
-- **Tietze & Altaica Etimoloji Külliyatı**: Andreas Tietze Etimoloji Külliyatı (TÜBA), Monumenta Altaica & Starostin Altaic Database, Turuz Dijital Filoloji Kütüphanesi
-- **EtimolojiTürkçe Portal**: Orhun ve Uygur Metin Tanıklamaları
-- **Starling Etymological Database**: Tower of Babel Proto-Turkic Reconstructions
-- **Nişanyan Etimoloji Sözlüğü & TDK GTS API**
-- **TDK Tarama & Derleme Sözlükleri**: 13.-19. yy Tarihi Türkçe ve Anadolu Ağızları
-- **25 Türki Dil Online Sözlük Portalları**: `az`, `kk`, `uz`, `ky`, `tt`, `ug`, `cv`, `sah`, `ba`, `tk`, `gag`, `krc`, `tyv`, `alt`, `khk`, `slq`, `chg`, `ota`, `otk`, `nog`, `kum`, `crh`, `kaa`, `cjs`
-
----
-
-### 🧩 Dilbilimsel & Fonetik Zeka Katmanları
-- ** Morfolojik Kök Ayrıştırıcı (`morphology.py`)**: Türemiş ve çekim ekli kelimeleri (`güzellik`, `denizcilik`, `bilimsel`) otomatik köklerine (`güzel`, `deniz`, `bilim`) ayırarak çift yönlü tarama yapar.
-- ** Otomatik Alfabe Transkripsiyon Motoru (`transliteration.py`)**: Kiril ve Arap alfabesindeki çıktıları okuma kolaylığı sağlamak için Latin fonetik transkripsiyonu ile zenginleştirir (Örn: Kazakça `көзел (közеl)`, Uygurca `گۈزەل (güzəl)`).
-- ** Fonetik Ses Kayması Analizcisi (`phonetic_rules.py`)**: Türkiye Türkçesi ile diğer diller arasındaki ses değişim kurallarını tespit eder (`g->k`, `z->s/ś`, `d~y~t~r` diyalekt denkliği).
-- ** Tarihsel Zaman Çizelgesi (Chronological Timeline)**: Kelimenin M.Ö. 3. yüzyıl Hun/Orhun kayıtlarından günümüze geçirdiği evrimi kronolojik sunar.
-- ** Kök Akraba Sözcük Ağı (`cognates.py`)**: Aynı Proto-Türkçe kökten türeyen akraba kelimeleri (`göz` -> `görmek`, `gözlem`, `gözlük`) otomatik bağlar.
-
----
-
-## 💻 Kullanım (CLI)
-
-### 🔍 Tekil Kelime Arama
-```bash
-python3 -m engine.cli search göz
-python3 -m engine.cli search deniz
-python3 -m engine.cli search efendi
-python3 -m engine.cli search güzellik
+  Ana Kök / Rekonstrüksiyon : *köŕ
+  Yöntem                    : karşılaştırmalı yöntem, 8 dil tanığı / 5 Türki kol
+  Uygulanan denklikler      : g- ~ k- (Proto-Türkçe *k-)
+                              Ortak Türkçe -z ~ Çuvaşça -r (Lir-Şaz rotasizmi)
+  Hakem kararı              : 🟢 DOĞRULANDI — kısmi kanıt, %85 kapsam
+  Alıntı sınıfı             : Asli Öz Türkçe (Native Turkic)
 ```
 
-### 📦 Toplu Arama (Bulk Search)
-```bash
-python3 -m engine.cli bulk --file kelimeler.txt
-```
-
-### 📄 Ham JSON Çıktısı Alma
-```bash
-python3 -m engine.cli search tengri --json
-```
-
-### 📂 Veritabanındaki Kayıtları Listeleme & Gösterme
-```bash
-python3 -m engine.cli list
-python3 -m engine.cli show ayak
-```
-
----
-
-## 🔬 Gelecek Yapay Zeka & NLP Araştırma Planları
-Henüz etimolojisi hiç yapılmamış kelimeler için geliştirilecek otonom NLP alıntı sınıflandırıcısı ve rekonstrüksiyon mimarisi planları `research/` klasöründe yer almaktadır:
-- [Otonom Yaptay Zeka & NLP Etimoloji Rekonstrüksiyon Mimarisi Planı](file:///Users/mshn/Documents/etimoloji/research/ai_nlp_etymology_reconstruction_plan.md)
-- [Otonom NLP Alıntı Kelime Sınıflandırıcısı Master Planı](file:///Users/mshn/Documents/etimoloji/research/ai_nlp_loanword_classifier_master_plan.md)
-
----
-
-## 🧪 Birim Testlerini Çalıştırma
+## Kurulum
 
 ```bash
-python3 -m unittest discover -s engine/tests
+python3 -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"                 # çekirdek + test araçları
+pip install -e ".[dev,phon,pdf]"        # + LingPy, PanPhon, Epitran, pdfminer
 ```
 
----
+| Ekstra | İçerik | Zorunlu mu? |
+|---|---|---|
+| *(çekirdek)* | `requests` | evet |
+| `phon` | `lingpy`, `panphon`, `epitran` — gerçek fonetik hizalama ve IPA | hayır, ama önerilir |
+| `pdf` | `pdfminer.six` — `data/books/` altındaki PDF'lerde tam metin arama | hayır |
+| `semantic` | `sentence-transformers` — semantik mesafe aşaması (~2-3 GB) | hayır |
+| `dev` | `pytest`, `pytest-cov`, `responses`, `ruff` | geliştirme |
 
-## 📜 Lisans
-MIT License
+Bu ekstralar kurulu değilse motor çökmez: ilgili aşama **kanıt üretmediğini
+bildirir** ve skora katılmaz.
+
+## Kullanım
+
+```bash
+python -m engine.cli search deniz              # arama
+python -m engine.cli search deniz --json       # ham JSON
+python -m engine.cli search deniz --ai         # + yerel LLM sentezi (Ollama)
+python -m engine.cli validate göz --origin '*köŕ' --donor 'Proto-Türkçe'
+python -m engine.cli list                      # kayıtlı bulgular
+python -m engine.cli show göz                  # kayıtlı bulguyu göster
+python -m engine.cli export göz --out cldf/    # CLDF dışa aktarım
+python -m engine.cli bulk --file kelimeler.txt # toplu sorgu
+python -m engine.cli search göz --verbose      # ayrıntılı log
+```
+
+### REST API ve web paneli
+
+```bash
+python -m engine.server            # http://127.0.0.1:8000
+cd web && npx serve -l 3000 .      # http://localhost:3000
+```
+
+| Uç nokta | Açıklama |
+|---|---|
+| `GET /api/search?word=X&ai=false&save=true` | Etimoloji araması |
+| `GET /api/list` | Kayıtlı bulgular |
+| `GET /api/health` | Kaynak sayıları ve önbellek durumu |
+
+Sunucu varsayılan olarak **yalnızca `127.0.0.1`** dinler ve CORS'u
+yapılandırılmış origin'lerle sınırlar. Kimlik doğrulaması yoktur; dışa açmayın.
+
+## Veri kaynakları
+
+Motor **9 canlı kaynak** ve **9 yerel tohum (seed) veri dosyası** kullanır.
+İkisi arasındaki fark her kayıtta `origin: "live" | "seed"` alanıyla,
+CLI ve web panelinde ise görsel olarak belirtilir.
+
+**Canlı kaynaklar** — TDK (Güncel Türkçe Sözlük, Tarama, Derleme), Nişanyan
+Sözlük, EtimolojiTürkçe (tarihli ilk tanıklamalar), İngilizce Wiktionary
+(kelime sayfası + Proto-Turkic rekonstrüksiyon sayfaları), 14 Türki dilin kendi
+Wiktionary sürümü, Wiktextract/Kaikki, Internet Archive.
+
+**Tohum veri** (`data/seed/`) — Clauson EDPT, Sevortjan ЭСТЯ, Divânu Lugâti't-Türk,
+Kamûs-ı Türkî, Codex Cumanicus, Starling Altaic, Tietze, İSAM, Kubbealtı ve
+donör dil kayıtlarından elle derlenmiş **toplam 59 kelimelik** çekirdek veri.
+Her dosya kaynak künyesi (`_provenance`) taşır. Bu veri canlı bir servis
+değildir ve öyle sunulmaz.
+
+> Ölü uç noktalar (Glosbe API, TDK TTAS/Kişi Adları, DergiPark arama) portföyden
+> **çıkarılmıştır**. Kaynak sayısını korumak için çalışmayan fetcher tutulmaz.
+
+## Nasıl çalışır
+
+```
+kelime
+  │
+  ├─ 1. Morfolojik ayrıştırma  ──────────  utils/morphology, nlp/historical_morphology
+  │        güzellik -> güzel +lIK ;  göz -> gö- + -z
+  │
+  ├─ 2. Paralel veri toplama  ───────────  18 fetcher, ThreadPoolExecutor
+  │        varyantlar sınırlı (MAX_VARIANTS), her istek teşhis defterine yazılır
+  │
+  ├─ 3. Karşılaştırmalı rekonstrüksiyon ─  nlp/comparative_reconstruction
+  │        konum duyarlı denklik kümeleri: söz başı d~t -> *t- ; söz sonu z~r -> *-ŕ
+  │        güven = tanık sayısı + Türki kol çeşitliliği + sütun uyumu
+  │
+  ├─ 4. Alıntı keşif hattı  ─────────────  nlp/loanword_detector (4 katman)
+  │        fonotaktik ihlaller -> lehçe yayılımı -> olasılık -> donör en-yakın-komşu
+  │
+  ├─ 5. A-HVP hakem protokolü  ──────────  nlp/hypothesis_validation_protocol
+  │        4 aşama; kanıt üretemeyen aşama skordan DÜŞÜLÜR
+  │
+  └─ 6. Graf, CLDF, önbellek, LLM sentezi
+```
+
+### A-HVP: dört aşamalı hakem protokolü
+
+| Aşama | Ağırlık | Ne ölçer | Kanıt yoksa |
+|---|---|---|---|
+| 1 · Fonetik zincir | %35 | Ata biçim ile modern biçim arasında düzenli ses denkliği | aşama düşülür |
+| 2 · Kronoloji | %30 | Kaynak dil teması ilk tanıklamadan önce mi (anakronizm kilidi) | aşama düşülür |
+| 3 · Semantik mesafe | %15 | Tarihsel anlam ile modern anlam arasındaki uzaklık | aşama düşülür |
+| 4 · Akraba triangulation | %20 | Gerçek Türki dil karşılıklarının yayılımı ve kaynak çeşitliliği | aşama düşülür |
+
+Skor, **yalnızca kanıt üretebilen aşamalara** normalize edilir. `evidence_coverage`
+alanı kaç aşamanın konuşabildiğini bildirir; kapsam %50'nin altındaysa rozet en
+fazla `⚪ YETERSİZ KANIT` olabilir.
+
+```
+göz    < *köŕ  (8 tanık, 5 kol)     -> 🟢 DOĞRULANDI — kısmi kanıt, %85 kapsam
+kitap  < Arapça kitāb               -> 🟡 İNCELEME GEREKLİ
+su     < Fransızca sous, 735 tanık  -> 🔴 REDDEDİLDİ (anakronizm)
+zzzqx  < *zzzqx, kanıt yok          -> ⚪ YETERSİZ KANIT (%35 kapsam)
+```
+
+## Yapılandırma
+
+Tüm ayarlar `engine/config.py` içinde toplanır ve `ETY_` önekli ortam
+değişkenleriyle ezilebilir:
+
+```bash
+ETY_API_HOST=127.0.0.1 ETY_API_PORT=8000 python -m engine.server
+ETY_MAX_VARIANTS=2 ETY_CACHE_ENABLED=false python -m engine.cli search göz
+ETY_OLLAMA_MODEL=qwen2.5:7b python -m engine.cli search göz --ai
+ETY_LOG_LEVEL=DEBUG python -m engine.cli search göz
+```
+
+## Geliştirme
+
+```bash
+make test        # ağsız test paketi (323 test, ~40 sn)
+make test-live   # canlı kaynak testleri (ağ gerektirir)
+make coverage    # kapsam raporu, %90 eşiği
+make lint        # ruff
+```
+
+Testler **soket düzeyinde ağdan yalıtılır**: bir test yanlışlıkla canlı ağa
+çıkmaya kalkarsa açık bir hata alır. Canlı kaynak testleri
+`engine/tests/live/` altındadır ve yalnızca `ETY_LIVE=1` ile çalışır.
+
+HTTP fixture'ları gerçek yanıtlardan kaydedilir:
+
+```bash
+python scripts/record_fixtures.py --live --word deniz --overwrite
+```
+
+## Harici veri kümesi içe alma
+
+WOLD gibi CLDF veri kümelerinden alıntı kelime kayıtları alınabilir:
+
+```bash
+python -m engine.db.cldf_importer /path/to/wold-cldf --target-language tur
+```
+
+## Proje yapısı
+
+```
+engine/
+  config.py                  merkezî yapılandırma (URL, timeout, eşikler)
+  logging_setup.py           merkezî loglama
+  search_engine.py           orkestrasyon, teşhis, önbellek
+  server.py  cli.py          REST API ve komut satırı
+  fetchers/                  18 veri toplayıcı + BaseFetcher sözleşmesi
+  nlp/                       rekonstrüksiyon, hizalama, A-HVP, alıntı keşfi
+  utils/                     fonotaktik, ortografi, morfoloji, HTTP istemcisi
+  db/                        SQLite, graf, CLDF içe/dışa aktarım
+  tests/                     332 test (9'u canlı ağ), fixture'lar, test ikizleri
+data/
+  seed/                      tohum veri (kaynak künyeli JSON)
+  books/                     kullanıcı PDF'leri (tam metin taranır)
+web/index.html               tek dosyalık statik panel
+research/                    tasarım planları ve uygulama durumu
+```
+
+## Bilinen sınırlar
+
+- **Alıntı sınıflandırıcı kural tabanlıdır**, eğitilmiş bir ML modeli değildir.
+  Çıktıda `method: "rule_based"` olarak bildirilir. Etiketli Türkçe alıntı veri
+  kümesi (WOLD ingest'i) tamamlanmadan model eğitimi planlanmamıştır.
+- **Semantik aşama** yalnızca `[semantic]` ekstrası kuruluysa kanıt üretir.
+- **Neo4j entegrasyonu yoktur.** `db/graph_database.py` Neo4j *şemasına uygun*
+  düğüm/kenar yapısı üretir ama Cytoscape.js JSON'u olarak dışa verir.
+- **Web paneli tek dosyalık statik HTML'dir**, Next.js kullanılmaz.
+- Tohum veri yalnızca 59 kelimeyi kapsar; bu kelimelerin dışında sonuç
+  tamamen canlı kaynaklara bağlıdır.
+
+## Lisans
+
+MIT — bkz. [LICENSE](LICENSE).

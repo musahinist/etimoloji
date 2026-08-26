@@ -4,15 +4,15 @@ Veritabanındaki etimoloji bulgularını ve akraba kelime dizilimlerini Max Plan
 tarafından tanımlanan uluslararası CLDF Wordlist / CognateSet standart CSV ve JSON meta formatında dışa aktarır.
 """
 
-from typing import Dict, Any, List
-import json
 import csv
 import io
+from typing import Any
+
 
 class CldfExporter:
     """CLDF Wordlist & CognateSet Standart Exporter"""
 
-    def export_to_cldf(self, finding: Dict[str, Any]) -> Dict[str, str]:
+    def export_to_cldf(self, finding: dict[str, Any]) -> dict[str, str]:
         """
         Verilen etimoloji bulgusunu CLDF Wordlist, CognateTable ve ParameterTable CSV dizgilerine dönüştürür.
         """
