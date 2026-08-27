@@ -49,12 +49,50 @@ logger = get_logger(__name__)
 #: (Miller & List 2023, ``sabor``: F1 0,806, kesinlik 0,931). Zincir
 #: kanıtından sonra en yüksek ağırlığı alır; ondan düşük olmasının sebebi
 #: zincirin DOĞRUDAN tanıklama, bunun ise çıkarım olmasıdır.
+#:
+#: ⚠️ ``ses_kanunu_ihlali`` ve ``değişimsiz_yayılım`` ağırlığı **sıfırdır**.
+#: Sinyaller hesaplanmaya ve kullanıcıya gösterilmeye devam eder (gerekçe
+#: değeri taşırlar) ama **karara katılmazlar**. Ölçüldü (WOLD/Sakha, n=769,
+#: her ablasyonda eşik yeniden ayarlanmış)::
+#:
+#:     çıkarılan sinyal                              F      doğruluk
+#:     yok                                        0,6235     0,7581
+#:     ses_kanunu_ihlali                          0,6318     0,7529
+#:     değişimsiz_yayılım                         0,6304     0,7529
+#:     ses_kanunu_ihlali + değişimsiz_yayılım     0,6417     0,7763
+#:
+#: ⚠️ **Yukarıdaki tablo RAPOR yarısındandır ve karar gerekçesi DEĞİLDİR.**
+#: Rapor yarısına bakıp ağırlık seçmek, ölçümün içine ayar sızdırmaktır.
+#: Karar AYAR yarısının kendi içinde bölünerek verildi (iç-ayar / iç-doğrulama,
+#: n=385; rapor yarısı hiç görülmedi)::
+#:
+#:     çıkarılan sinyal                            F      doğruluk
+#:     yok                                      0,6016     0,7455
+#:     ses_kanunu_ihlali                        0,6016     0,7455
+#:     değişimsiz_yayılım                       0,6016     0,7455
+#:     ses_kanunu_ihlali + değişimsiz_yayılım   0,6016     0,7455
+#:
+#: Yani ayar verisinde iki sinyal **hiçbir kararı değiştirmiyor** — ne iyi
+#: ne kötü. Gerekçe budur: hiçbir karara katkısı olmayan bir sinyal
+#: toplamın %20'sini taşımamalıdır. Rapor yarısındaki +0,023'lük iyileşme
+#: ayar verisinde ÖNGÖRÜLMEMİŞTİR; bağımsız olarak doğrulanmadı ve üst
+#: sınır sayılmalıdır.
+#:
+#: Eğitilmiş birleştirici de bağımsız olarak aynı yöne varıyor: bu ikisine
+#: +0,118 ve -0,022 katsayı veriyor, verici yakınlığına +1,534.
+#:
+#: ⚠️ Kavramsal açıklama **sınandı ve doğrulanmadı**. Denklikleri alıntıların
+#: da içinde olduğu veriden öğrendiğimiz için sinyalin zayıf olduğunu
+#: düşünüyorduk; yalnız uzmanın ata biçim verdiği kümelerden ikinci bir
+#: tablo öğrenildi (bkz. ``INHERITED_CORRESPONDENCE_PATH``) ve sinyalin
+#: katkısı -0,0101'den yalnız -0,0083'e geldi. Yani teşhis yanlıştı;
+#: yöntemin kendisi bu görevde zayıf.
 SIGNAL_WEIGHTS: dict[str, float] = {
-    "zincir_kanıtı": 0.40,
-    "verici_yakınlığı": 0.25,
-    "ses_kanunu_ihlali": 0.15,
-    "fonotaktik_ihlal": 0.15,
-    "değişimsiz_yayılım": 0.05,
+    "zincir_kanıtı": 0.50,
+    "verici_yakınlığı": 0.32,
+    "fonotaktik_ihlal": 0.18,
+    "ses_kanunu_ihlali": 0.0,
+    "değişimsiz_yayılım": 0.0,
 }
 
 #: Bu eşiğin üstünde kelime **alıntı olarak raporlanır**.
@@ -234,6 +272,7 @@ class BorrowingDetector:
     def __init__(self, index: Any = None, predictor: Any = None):
         self._index = index
         self._predictor = predictor
+        self._inherited_predictor = predictor
 
     @property
     def index(self) -> Any:
@@ -250,6 +289,31 @@ class BorrowingDetector:
 
             self._predictor = CognatePredictor()
         return self._predictor
+
+    @property
+    def inherited_predictor(self) -> Any:
+        """Yalnız MİRAS kümelerden öğrenilmiş tablolarla tahmin eder.
+
+        ⚠️ Miras tablosu yoksa ana tabloya dönülür — ama o tablo alıntıları
+        da içerir ve sinyal ölçülmüş biçimde zayıflar. Dönüş sessiz değildir:
+        günlüğe yazılır.
+        """
+        if self._inherited_predictor is None:
+            from engine.nlp.cognate_prediction import (
+                CognatePredictor,
+                load_inherited_tables,
+            )
+
+            tables = load_inherited_tables()
+            if not tables:
+                logger.info(
+                    "Miras denklik tablosu yok; ana tabloya dönülüyor "
+                    "(alıntılar da içinde — ses kanunu sinyali zayıflar)"
+                )
+                self._inherited_predictor = self.predictor
+            else:
+                self._inherited_predictor = CognatePredictor(tables)
+        return self._inherited_predictor
 
     # -- sinyaller ----------------------------------------------------------
 
@@ -355,6 +419,13 @@ class BorrowingDetector:
         denklikleri gösterir. Öğrenilmiş denklik tablolarıyla her tanıktan
         Türkçe biçim tahmin edilir; tahminler gerçek biçme uymuyorsa kelime
         ses kanunlarının işlediği dönemde dilde yoktu demektir.
+
+        ⚠️ **Beklenti MİRAS tablosundan okunur** (bkz.
+        ``cognate_prediction.INHERITED_CORRESPONDENCE_PATH``). Ana tablo
+        bütün akraba kümelerinden öğrenilir ve alıntıları da içerir; Arapça
+        alıntılar bütün Oğuz dillerinde aynı biçimde uyarlandığı için kendi
+        düzenli denkliklerini yaratıp bu testi geçiyorlardı. Ölçüldü:
+        sinyalin katkısı o hâlde **-0,0101** (zararlı) idi.
         """
         actual = to_comparison_form(word)
         if not actual or len(witnesses) < 2:
@@ -367,7 +438,7 @@ class BorrowingDetector:
         for source_lang, source_form in sorted(witnesses.items()):
             if source_lang == "tr":
                 continue
-            prediction = self.predictor.predict(source_form, source_lang, "tr")
+            prediction = self.inherited_predictor.predict(source_form, source_lang, "tr")
             if prediction.form and prediction.confidence > 0:
                 expectations.append(prediction.form)
         if not expectations:

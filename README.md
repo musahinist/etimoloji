@@ -111,18 +111,18 @@ gerçek doğruluk %23,9). Kullanıcıya gösterilen skor artık kalibre skordur.
 
 | Sistem | F | kesinlik | duyarlılık | doğruluk |
 |---|---|---|---|---|
-| **motor (eğitilmiş birleştirici)** | **0,644** | 0,610 | 0,681 | 0,772 |
-| motor (doğruluk hedefli eşik) | 0,633 | 0,654 | 0,612 | 0,785 |
+| **motor** | **0,646** | 0,618 | 0,677 | 0,776 |
+| motor (eğitilmiş birleştirici) | 0,642 | 0,608 | 0,681 | 0,771 |
+| motor (doğruluk hedefli eşik) | 0,635 | 0,661 | 0,612 | 0,788 |
 | yalnız verici yakınlığı | 0,624 | 0,697 | 0,565 | 0,795 |
-| motor (el ağırlıkları) | 0,622 | 0,591 | 0,655 | 0,759 |
 | hepsi alıntı (trivial) | 0,464 | 0,302 | 1,000 | 0,302 |
 | yalnız fonotaktik | 0,215 | 0,372 | 0,151 | 0,667 |
 
-**F 0,385 → 0,644.** Plan hedefi (≥0,60) aşıldı; PyBor'un WOLD 41 dil
+**F 0,385 → 0,646.** Plan hedefi (≥0,60) aşıldı; PyBor'un WOLD 41 dil
 ortalamasının (0,59–0,61) üstünde.
 
 ⚠️ Ablasyon hükmü **ilk kez pozitif ve anlamlı**: motor vs yalnız
-fonotaktik fark **+0,092**, %95 GA [+0,052, +0,134], p=0,0001.
+fonotaktik fark **+0,109**, %95 GA [+0,069, +0,150], p=0,0001.
 
 #### Kazancı sağlayan üç şey
 
@@ -132,11 +132,32 @@ yeniden ayarlanır):
 
 | çıkarılan sinyal | kalan F | katkısı |
 |---|---|---|
-| `verici_yakınlığı` | 0,385 | **+0,237** |
-| `zincir_kanıtı` | 0,600 | +0,021 |
-| `fonotaktik_ihlal` | 0,608 | +0,014 |
-| `değişimsiz_yayılım` | 0,627 | **−0,006** |
-| `ses_kanunu_ihlali` | 0,632 | **−0,010** |
+| `verici_yakınlığı` | 0,384 | **+0,262** |
+| `zincir_kanıtı` | 0,611 | +0,036 |
+| `fonotaktik_ihlal` | 0,635 | +0,011 |
+| `ses_kanunu_ihlali` | 0,646 | 0,000 (ağırlığı sıfır) |
+| `değişimsiz_yayılım` | 0,646 | 0,000 (ağırlığı sıfır) |
+
+**`ses_kanunu_ihlali` ve `değişimsiz_yayılım` artık karara katılmıyor.**
+Hesaplanmaya ve kullanıcıya gösterilmeye devam ediyorlar (gerekçe değeri
+taşırlar) ama ağırlıkları sıfır.
+
+⚠️ **Karar rapor yarısına bakılarak verilmedi** — o, ölçümün içine ayar
+sızdırmak olurdu. Ayar yarısı kendi içinde ikiye bölündü (iç-ayar /
+iç-doğrulama, n=385; rapor yarısı hiç görülmedi) ve orada iki sinyal
+**hiçbir kararı değiştirmiyordu**: F 0,6016 ve doğruluk 0,7455, dört
+kombinasyonda da birebir aynı. Gerekçe budur — hiçbir karara katkısı
+olmayan bir sinyal toplamın %20'sini taşımamalıdır.
+
+⚠️ Rapor yarısındaki +0,023'lük iyileşme ayar verisinde **öngörülmemişti**;
+bağımsız doğrulanmadı, üst sınır sayılmalıdır.
+
+⚠️ **Kavramsal teşhis sınandı ve DOĞRULANMADI.** Sinyalin zayıflığını
+"denklikleri alıntıların da içinde olduğu veriden öğrendik"e bağlıyorduk.
+Yalnız uzmanın ata biçim verdiği kümelerden ikinci bir denklik tablosu
+öğrenildi (395 eğitim kümesinin 237'si) ve sinyalin katkısı −0,0101'den
+yalnız −0,0083'e geldi. Teşhis yanlıştı: yöntemin kendisi bu görevde zayıf.
+İkinci tablo yine de kullanımda — kavramsal olarak doğru ve ölçüm nötr.
 
 **2. Yön süzgeci.** Verici sözlüğü Türkiden **alınmış** kelimeleri de
 içeriyor ve sinyali ters yönden tetikliyordu:
@@ -163,7 +184,8 @@ null da kayar ve eşik kendini ayarlar.
 
 #### Eğitilmiş birleştirici
 
-El ile konmuş ağırlıklı toplam, en güçlü sinyalin kararını **bozuyordu**:
+El ile konmuş ağırlıklı toplam (düzeltme öncesi), en güçlü sinyalin kararını
+**bozuyordu**:
 beş sinyalli motor madde başına doğrulukta yalnız verici yakınlığının
 altında kalıyordu (fark −0,030, %95 GA [−0,049, −0,010], p=0,004). Ayrıca
 aritmetik bir kusur vardı: zincir sinyali yokken `0,20 + 0,10 = 0,30 <
@@ -178,7 +200,7 @@ birebir doğruluyor:
                  · değişimsiz_yayılım +0,009
 
 ⚠️ **Hedef ölçü seçimi sonucu belirler ve gizlenemez.** Aynı model, yalnız
-eşik farklı: F hedefli 0,644/0,772 · doğruluk hedefli 0,633/0,785. İkisi
+eşik farklı: F hedefli 0,642/0,771 · doğruluk hedefli 0,635/0,788. İkisi
 aynı anda alınamaz; hangisinin seçildiği model dosyasında saklanıyor.
 
 ⚠️ Model WOLD/Sakha'da eğitildi. Başka bir dile uygulandığında çıktı

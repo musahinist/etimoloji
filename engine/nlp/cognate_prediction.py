@@ -43,6 +43,20 @@ logger = get_logger(__name__)
 
 CORRESPONDENCE_PATH = PROJECT_ROOT / "data" / "correspondences" / "learned.json"
 
+#: ⚠️ **İkinci tablo: yalnız uzmanın ata biçim verdiği kümelerden.**
+#:
+#: Ana tablo bütün akraba kümelerinden öğrenilir ve ileri tahminde en iyi
+#: kapsamı verir. Ama ALINTI TESPİTİNDE o tablo kavramsal olarak yanlıştır:
+#: alıntılar da eğitim verisinin içindedir ve Arapça alıntılar bütün Oğuz
+#: dillerinde aynı biçimde uyarlandığı için **kendi düzenli denkliklerini
+#: yaratırlar** (k~k, i~i, t~t). Böylece "beklenen refleks tutuyor mu"
+#: testini geçerler.
+#:
+#: Uzmanın ata biçim verdiği küme, uzmanın MİRAS saydığı kümedir.
+INHERITED_CORRESPONDENCE_PATH = (
+    PROJECT_ROOT / "data" / "correspondences" / "learned_inherited.json"
+)
+
 #: Bir denkliğin tabloya girmesi için gereken asgari gözlem sayısı.
 #: Tek gözlemli denklik kural değil, gürültüdür.
 MIN_SUPPORT = 2
@@ -185,11 +199,28 @@ def learn_tables(
     dataset: str = "savelyevturkic",
     *,
     split: str = "train",
+    reconstructed_only: bool = False,
 ) -> dict[tuple[str, str], CorrespondenceTable]:
     """Uzman akraba kümelerinden denklik tablolarını çıkarır.
 
     ⚠️ Yalnız ``split`` kavramları kullanılır. dev/test kavramlarını görmek
     ileri tahmin ölçümünü geçersiz kılardı.
+
+    :param reconstructed_only: yalnız uzmanın ata biçim verdiği (``Root``u
+        ``*`` ile başlayan) kümeler kullanılsın mı?
+
+        ⚠️ Gerekçe **ölçülmüş bir kusurdur**: denklikleri alıntıların da
+        içinde olduğu veriden öğreniyoruz. Arapça alıntılar bütün Oğuz
+        dillerinde aynı biçimde uyarlandığı için **kendi düzenli
+        denkliklerini yaratıyorlar** (k~k, i~i, t~t) ve "beklenen refleks
+        tutuyor mu" testini geçiyorlar. Alıntı ölçümünde
+        ``ses_kanunu_ihlali`` sinyalinin katkısı bu yüzden **-0,0101**
+        (zararlı) çıkıyordu.
+
+        Uzmanın ata biçim verdiği küme, uzmanın **miras saydığı** kümedir.
+        ⚠️ Tersi doğru değil: ata biçim verilmemiş küme "alıntı" demek
+        değildir, yalnız "rekonstrükte edilmemiş" demektir. Bedeli
+        ölçüldü — 395 eğitim kümesinin 237'si (%60) kalıyor.
     """
     from engine.db.cldf_wordlist import CldfWordlist
     from engine.db.language_mapping import build_mapping
@@ -202,6 +233,8 @@ def learn_tables(
 
     for cognate_set in wordlist.cognate_sets(min_languages=2):
         if assign_split(cognate_set.concept or cognate_set.id) != split:
+            continue
+        if reconstructed_only and not (cognate_set.root or "").strip().startswith("*"):
             continue
         forms = {
             mapping[lang]: to_comparison_form(form)
@@ -270,7 +303,7 @@ def save_tables(
     return out
 
 
-@lru_cache(maxsize=1)
+@lru_cache(maxsize=2)
 def load_tables(path: Path | None = None) -> dict[tuple[str, str], CorrespondenceTable]:
     """Öğrenilmiş tabloları diskten okur. Yoksa boş sözlük."""
     source = path or CORRESPONDENCE_PATH
@@ -293,6 +326,11 @@ def reset_table_cache() -> None:
     load_tables.cache_clear()
 
 
+def load_inherited_tables() -> dict[tuple[str, str], CorrespondenceTable]:
+    """Yalnız miras kümelerden öğrenilmiş tablolar; yoksa boş sözlük."""
+    return load_tables(INHERITED_CORRESPONDENCE_PATH)
+
+
 def main() -> int:
     import argparse
 
@@ -309,6 +347,18 @@ def main() -> int:
 
     rules = sum(len(t.as_dict()["rules"]) for t in tables.values())
     print(f"{len(tables)} dil çifti · {rules} kural · {path}")
+
+    # ⚠️ İkinci tablo: yalnız uzmanın ata biçim verdiği kümelerden.
+    # Alıntı tespiti bunu kullanır; bkz. INHERITED_CORRESPONDENCE_PATH.
+    inherited = learn_tables(args.dataset, split=args.split, reconstructed_only=True)
+    if inherited:
+        inherited_path = save_tables(
+            inherited,
+            trained_on=f"{args.dataset}/{args.split}/reconstructed_only",
+            path=INHERITED_CORRESPONDENCE_PATH,
+        )
+        inherited_rules = sum(len(t.as_dict()["rules"]) for t in inherited.values())
+        print(f"  miras tablosu: {len(inherited)} çift · {inherited_rules} kural · {inherited_path}")
 
     predictor = CognatePredictor(tables)
     print("\nörnek tahminler (tr ->):")
