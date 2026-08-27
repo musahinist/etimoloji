@@ -25,8 +25,15 @@
     },
     {
       "battery": "alinti_tuzagi",
-      "n": 6,
-      "reconstructed": 6,
+      "n": 5,
+      "reconstructed": 3,
+      "false_positive_rate": 0.6,
+      "strong_claim_rate": 0.0
+    },
+    {
+      "battery": "eşadlı",
+      "n": 3,
+      "reconstructed": 3,
       "false_positive_rate": 1.0,
       "strong_claim_rate": 0.0
     }
@@ -169,18 +176,18 @@
     "alinti_tuzagi": [
       {
         "query": "kitap",
-        "reconstructed": true,
-        "root": "*kitap",
-        "badge": "🟠 ZAYIF KANIT",
-        "calibrated": 0.1913,
+        "reconstructed": false,
+        "root": "",
+        "badge": "⚪ YETERSİZ KANIT",
+        "calibrated": null,
         "reason": "Arapça kitāb — bütün Türki dillerde var ama MİRAS DEĞİL"
       },
       {
         "query": "duvar",
-        "reconstructed": true,
-        "root": "*divar",
-        "badge": "🟠 ZAYIF KANIT",
-        "calibrated": 0.1899,
+        "reconstructed": false,
+        "root": "",
+        "badge": "⚪ YETERSİZ KANIT",
+        "calibrated": null,
         "reason": "Farsça dīwār"
       },
       {
@@ -206,14 +213,32 @@
         "badge": "🟠 ZAYIF KANIT",
         "calibrated": 0.202,
         "reason": "Arapça ṣābūn (nihayetinde Latince)"
-      },
+      }
+    ],
+    "eşadlı": [
       {
         "query": "çay",
         "reconstructed": true,
         "root": "*jay",
         "badge": "🟠 ZAYIF KANIT",
         "calibrated": 0.2023,
-        "reason": "Çince 茶 — geniş yayılım miras kanıtı değildir"
+        "reason": "'tea' Farsça alıntı, 'brook' Proto-Türkçe miras — aynı yazılış"
+      },
+      {
+        "query": "yaş",
+        "reconstructed": true,
+        "root": "*jaş",
+        "badge": "🟠 ZAYIF KANIT",
+        "calibrated": 0.1932,
+        "reason": "'age' ve 'wet/tear' ayrı köklerdir"
+      },
+      {
+        "query": "kat",
+        "reconstructed": true,
+        "root": "*kat",
+        "badge": "🟠 ZAYIF KANIT",
+        "calibrated": 0.209,
+        "reason": "'layer' ve 'hard' ayrı köklerdir"
       }
     ]
   }
