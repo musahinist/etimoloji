@@ -60,6 +60,10 @@ data/cldf/*/*.json
 data/lexicons/*.jsonl
 data/lexicons/*.jsonl.gz
 data/lexicons/index.db
+# Verici dil dökümleri (~352 MB) ve indeksi: `make donors` ile kurulur.
+data/lexicons/donors/*.jsonl
+data/lexicons/donors/*.jsonl.gz
+data/lexicons/donors/donors.db
 # Zincir dökümü büyük ve türetilmiş; kurallar özet olduğu için commit edilir.
 data/borrowing/chains.json
 # Toplu analiz çıktısı — türetilmiş ve büyük.

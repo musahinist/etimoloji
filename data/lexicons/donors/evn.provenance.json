@@ -1,0 +1,14 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Evenki",
+  "code": "evn",
+  "donor": true,
+  "url": "https://kaikki.org/dictionary/Evenki/kaikki.org-dictionary-Evenki.jsonl",
+  "retrieved_at": "2026-08-27T09:28:03+00:00",
+  "raw_bytes": 718113,
+  "stored_bytes": 77806,
+  "entries": 642,
+  "compressed": true,
+  "sha256_stored": "af61221d5ef0f3bf3ba745795a7a73882d7f7a77aa4a49e03d9ca44c53056844",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

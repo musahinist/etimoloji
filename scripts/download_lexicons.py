@@ -69,6 +69,34 @@ LEXICONS: dict[str, str] = {
     "Dolgan": "dlg",
 }
 
+#: **Verici** dil dökümleri. Bunlar Türki DEĞİLDİR ve akraba arama indeksine
+#: ASLA karışmaz — ayrı dizine iner (``data/lexicons/donors/``).
+#:
+#: Gerekçe: alıntı tespitinin en güçlü ölçülmüş sinyali "verici dil
+#: sözlüğüne yakınlık"tır (sabor, Miller & List 2023: F1 0,806, kesinlik
+#: 0,931). Bu sinyal verici sözlüğü olmadan hesaplanamaz.
+#:
+#: Hangi vericiler? WOLD'daki Sakha alıntılarının kaynak dağılımı ölçüldü:
+#: **Rusça 284 · Moğolca 253 · Evenkice 19** · Çince 4 · Arapça 3 · Farsça 3.
+#: Türkçe için ölçüt farklıdır (Arapça/Farsça/Fransızca ağırlıklı) ve C6'da
+#: kurulacak altın kümeyle birlikte inecektir.
+DONORS: dict[str, str] = {
+    "Russian": "ru",
+    "Mongolian": "mn",
+    "Evenki": "evn",
+    "Arabic": "ar",
+    "Persian": "fa",
+    "Greek": "el",
+    "Armenian": "hy",
+    "French": "fr",
+    "Italian": "it",
+}
+
+#: Verici dökümleri için ayrı dizin. Türki indeksle karışmaması **yapısal**
+#: olarak garanti edilir: ``lexicon_index`` yalnız ``LEXICON_DIR``in kendi
+#: köküne bakar.
+DONOR_SUBDIR = "donors"
+
 #: "küçük" sayılan eşik (bayt). Türkçe dökümü tek başına 410 MB.
 SMALL_LIMIT = 50 * 1024 * 1024
 
@@ -95,13 +123,19 @@ def download(
     session: requests.Session,
     force: bool = False,
     compress: bool = True,
+    donor: bool = False,
 ) -> dict[str, Any] | None:
-    """Tek bir dilin dökümünü indirir ve künyesini döndürür."""
-    code = LEXICONS[name]
-    LEXICON_DIR.mkdir(parents=True, exist_ok=True)
+    """Tek bir dilin dökümünü indirir ve künyesini döndürür.
+
+    :param donor: verici dil mi? Öyleyse ``data/lexicons/donors/`` altına
+        iner ve Türki arama indeksine **karışmaz**.
+    """
+    code = (DONORS if donor else LEXICONS)[name]
+    directory = LEXICON_DIR / DONOR_SUBDIR if donor else LEXICON_DIR
+    directory.mkdir(parents=True, exist_ok=True)
     suffix = ".jsonl.gz" if compress else ".jsonl"
-    target = LEXICON_DIR / f"{code}{suffix}"
-    provenance_path = LEXICON_DIR / f"{code}.provenance.json"
+    target = directory / f"{code}{suffix}"
+    provenance_path = directory / f"{code}.provenance.json"
 
     if provenance_path.exists() and not force:
         print(f"[{name}] zaten var (--force ile yeniden indirilir)")
@@ -137,6 +171,7 @@ def download(
         "_schema": "turkic-etymology-lexicon-provenance/v1",
         "language": name,
         "code": code,
+        "donor": donor,
         "url": url,
         "retrieved_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "raw_bytes": raw_bytes,
@@ -193,6 +228,12 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="kaikki.org sözlük dökümü indirici")
     ap.add_argument("languages", nargs="*", help="kaikki dil adları (ör. Turkish Kazakh)")
     ap.add_argument("--all", action="store_true", help="hepsini indir (~761 MB)")
+    ap.add_argument(
+        "--donors",
+        nargs="*",
+        metavar="DIL",
+        help="verici dil dökümleri (ad verilmezse Sakha ölçütü için Russian Mongolian Evenki)",
+    )
     ap.add_argument("--small", action="store_true", help=f"{SMALL_LIMIT >> 20} MB altındakiler")
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--no-compress", action="store_true", help="gzip'lemeden sakla")
@@ -208,6 +249,29 @@ def main() -> int:
             size = remote_size(name, session)
             print(f"{name:22} {LEXICONS[name]:5} {size / (1 << 20):>9.1f} MB")
         return 0
+
+    if args.donors is not None:
+        # Varsayılan: WOLD/Sakha birincil ölçütünün gerçek vericileri.
+        donor_names = args.donors or ["Russian", "Mongolian", "Evenki"]
+        unknown = [n for n in donor_names if n not in DONORS]
+        if unknown:
+            ap.error(f"bilinmeyen verici dil: {', '.join(unknown)}")
+        results = [
+            prov
+            for name in donor_names
+            if (
+                prov := download(
+                    name,
+                    session=session,
+                    force=args.force,
+                    compress=not args.no_compress,
+                    donor=True,
+                )
+            )
+        ]
+        for prov in results:
+            print(f"  verici: {prov['language']} -> {prov['entries']:,} kayıt")
+        return 0 if results else 1
 
     names: list[str]
     if args.all:

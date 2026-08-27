@@ -79,6 +79,15 @@ jobs:
       - name: Arama indeksi
         run: python -m engine.db.lexicon_index --build
 
+      # ⚠️ Verici dökümleri ~352 MB. Alıntı ölçümünün en güçlü sinyali
+      # (verici yakınlığı, F katkısı +0,199) bunlar olmadan HİÇ ateşlenmez
+      # ve ölçüm sessizce eski değerine döner.
+      - name: Verici dil dökümleri (~352 MB)
+        run: |
+          python scripts/download_lexicons.py --donors \
+            Russian Mongolian Evenki Arabic Persian Greek Armenian French Italian
+          python -m engine.db.donor_index --build
+
       - name: Altın standardı kur ve mühürle
         run: python -m engine.evaluation.gold --freeze
 
@@ -107,6 +116,9 @@ jobs:
               sys.exit(1)
           print("Negatif kontroller temiz.")
           EOF
+
+      - name: Alıntı tespiti ölçümü
+        run: python -m engine.evaluation.borrowing_eval
 
       - name: Taban çizgisi ölçümü
         run: python -m engine.evaluation.report

@@ -35,7 +35,7 @@ from __future__ import annotations
 import csv
 import json
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any
 
 from engine.config import CLDF_DIR
@@ -61,6 +61,10 @@ class BorrowingCase:
     donor: str = ""
     source: str = ""
     witnesses: tuple[tuple[str, str], ...] = ()
+    #: Kavram adı (Concepticon glossu). Verici yakınlığı sinyali **anlam
+    #: kısıtlıdır** (sabor'un yayınlanmış kurulumu); kavram olmadan arama
+    #: 440.910 maddelik Rusça sözlüğe yayılır ve şans benzerliğine açılır.
+    sense: str = ""
 
 
 @dataclass
@@ -179,6 +183,15 @@ def load_wold_cases(
         logger.info("WOLD indirilmemiş: python scripts/download_cldf.py wold")
         return []
 
+    parameters_path = directory / "parameters.csv"
+    senses: dict[str, str] = {}
+    if parameters_path.exists():
+        with parameters_path.open(encoding="utf-8", newline="") as handle:
+            for row in csv.DictReader(handle):
+                senses[row["ID"]] = (
+                    row.get("Concepticon_Gloss") or row.get("Name") or ""
+                ).strip()
+
     borrowed_scores = {"1. clearly borrowed", "2. probably borrowed"}
     inherited_scores = {"5. no evidence for borrowing", "4. very little evidence for borrowing"}
 
@@ -204,6 +217,7 @@ def load_wold_cases(
                     is_borrowed=is_borrowed,
                     donor=(row.get("Borrowed_base") or "").strip(),
                     source="wold",
+                    sense=senses.get(row.get("Parameter_ID") or "", ""),
                 )
             )
     return _attach_witnesses(cases, source_lang="sah") if with_witnesses else cases
@@ -243,23 +257,20 @@ def _attach_witnesses(
 ) -> list[BorrowingCase]:
     """Her maddeye akraba tanıklarını iliştirir.
 
-    ``BorrowingCase`` dondurulmuş bir veri sınıfı olduğu için yeniden
-    kurulur. Tanık bulunamayan madde ELENMEZ — tanıksız da olsa fonotaktik
-    ve zincir sinyalleri çalışır; elemek ölçümü kolaylaştırırdı.
+    Tanık bulunamayan madde ELENMEZ — tanıksız da olsa fonotaktik ve zincir
+    sinyalleri çalışır; elemek ölçümü kolaylaştırırdı.
+
+    ⚠️ ``dataclasses.replace`` kullanılır, alan alan yeniden kurulmaz.
+    Elle kurulan sürüm ``sense`` alanı eklendiğinde onu **sessizce
+    düşürüyordu** ve verici yakınlığı sinyali anlamsız kaldığı için
+    ablasyon boyunca F=0,0000 veriyordu. Bu, ``witnesses`` alanının daha
+    önce aynı yolla düşmesiyle birebir aynı hatadır; ``replace`` o hata
+    sınıfına yapısal olarak kapalıdır.
     """
-    out: list[BorrowingCase] = []
-    for case in cases:
-        witnesses = find_witnesses(case.word, source_lang=source_lang)
-        out.append(
-            BorrowingCase(
-                word=case.word,
-                lang_code=case.lang_code,
-                is_borrowed=case.is_borrowed,
-                donor=case.donor,
-                source=case.source,
-                witnesses=witnesses,
-            )
-        )
+    out = [
+        replace(case, witnesses=find_witnesses(case.word, source_lang=source_lang))
+        for case in cases
+    ]
     counts = [len(c.witnesses) for c in out]
     logger.info(
         "Tanıklar iliştirildi: %d madde, kelime başına ort. %.2f tanık",
@@ -280,27 +291,57 @@ def always_borrowed(case: BorrowingCase) -> bool:
     return True
 
 
-def score_of(case: BorrowingCase, *, use_chain: bool) -> float:
-    """Bir kelimenin alıntı skoru. ``use_chain=False`` ise zincir sinyali kapalı."""
+#: Hangi verici dillere bakılacak? Ölçüt Sakha olduğu için WOLD'da ölçülen
+#: gerçek kaynak dağılımı kullanılır: Rusça 284 · Moğolca 253 · Evenkice 19.
+SAKHA_DONORS = ["ru", "mn", "evn"]
+
+
+def score_of(
+    case: BorrowingCase, *, use_chain: bool, drop: tuple[str, ...] = ()
+) -> float:
+    """Bir kelimenin alıntı skoru.
+
+    :param use_chain: ``False`` ise zincir sinyali skordan çıkarılır.
+    :param drop: skordan çıkarılacak başka sinyal adları (ablasyon).
+
+    ⚠️ Sinyal çıkarıldığında skor **kalan ağırlıkların toplamına** yeniden
+    ölçeklenir. Ölçeklenmezse skor dağılımı çöker ve varsayılan eşik hiçbir
+    zaman aşılmaz; ölçüm "motor sıfır aldı" der ama bu bulgu değil ölçüm
+    hatasıdır.
+    """
     from engine.nlp.borrowing_detector import SIGNAL_WEIGHTS
 
     detector = _shared_detector()
     entries = [{"lang_code": c, "word": w} for c, w in case.witnesses]
-    verdict = detector.detect(case.word, entries, lang=case.lang_code)
-    if use_chain:
+    donors = SAKHA_DONORS if case.lang_code == "sah" else None
+    verdict = detector.detect(
+        case.word, entries, lang=case.lang_code, sense=case.sense, donors=donors
+    )
+    removed = set(drop) | ({"zincir_kanıtı"} if not use_chain else set())
+    if not removed:
         return verdict.score
-    # ⚠️ ABLASYON: zincir sinyali sözlük etiketini okur; ölçüm o etikete
-    # karşı yapılıyorsa döngüseldir. Sinyal skordan çıkarılır ve kalan
-    # ağırlıkların toplamına göre yeniden ölçeklenir.
-    remaining = sum(w for name, w in SIGNAL_WEIGHTS.items() if name != "zincir_kanıtı")
+    remaining = sum(w for name, w in SIGNAL_WEIGHTS.items() if name not in removed)
     if not remaining:
         return 0.0
     score = sum(
         SIGNAL_WEIGHTS[s.name] * s.strength
         for s in verdict.signals
-        if s.fired and s.name != "zincir_kanıtı"
+        if s.fired and s.name not in removed
     )
     return score / remaining
+
+
+def donor_proximity_only(case: BorrowingCase) -> bool:
+    """Yalnız verici yakınlığı — sabor'un (Miller & List 2023) tek sinyali.
+
+    Bu, motorun geçmesi gereken **gerçek** taban çizgidir: yayınlanmış F1
+    0,806'dır ve dört sinyalli motorumuz WOLD/Sakha'da 0,385 alıyordu.
+    """
+    from engine.nlp.donor_proximity import nearest_donor
+
+    donors = SAKHA_DONORS if case.lang_code == "sah" else None
+    match = nearest_donor(to_comparison_form(case.word), case.sense, languages=donors)
+    return match is not None and match.is_close
 
 
 _DETECTOR: Any = None
@@ -315,7 +356,9 @@ def _shared_detector():
     return _DETECTOR
 
 
-def tune_threshold(cases: list[BorrowingCase], *, use_chain: bool) -> tuple[float, float]:
+def tune_threshold(
+    cases: list[BorrowingCase], *, use_chain: bool, drop: tuple[str, ...] = ()
+) -> tuple[float, float]:
     """Eşiği **ayar bölümünde** arar.
 
     ⚠️ Ablasyonda varsayılan eşik kullanılamaz: o eşik zincir sinyali AÇIKKEN
@@ -323,7 +366,7 @@ def tune_threshold(cases: list[BorrowingCase], *, use_chain: bool) -> tuple[floa
     hiçbir zaman aşılmaz — ölçüm "motor sıfır aldı" der ama bu bir bulgu
     değil, ölçüm hatasıdır.
     """
-    scores = [(score_of(c, use_chain=use_chain), c.is_borrowed) for c in cases]
+    scores = [(score_of(c, use_chain=use_chain, drop=drop), c.is_borrowed) for c in cases]
     best = (0.5, 0.0)
     for step in range(1, 20):
         threshold = step / 20
@@ -374,6 +417,36 @@ def score_system(system: Callable[[BorrowingCase], bool], cases: list[BorrowingC
     return result
 
 
+def signal_ablation(
+    cases: list[BorrowingCase], *, use_chain: bool
+) -> dict[str, PRF]:
+    """Her sinyali TEK TEK çıkarıp motoru yeniden ölçer.
+
+    ⚠️ "Sinyal katkı sağlıyor mu?" sorusunun tek dürüst cevabı budur.
+    Motoru trivial bir taban çizgiyle karşılaştırmak sinyallerin **hangisinin**
+    işe yaradığını söylemez; bir sinyal ötekinin zararını kapatıyor olabilir.
+
+    Her ablasyonda eşik **yeniden ayarlanır**: sinyal çıkınca skor dağılımı
+    değişir, eski eşik anlamını yitirir.
+    """
+    from engine.nlp.borrowing_detector import SIGNAL_WEIGHTS
+
+    tune_set = [c for i, c in enumerate(cases) if i % 2 == 0]
+    report_set = [c for i, c in enumerate(cases) if i % 2 == 1]
+    out: dict[str, PRF] = {}
+    for name in SIGNAL_WEIGHTS:
+        if not use_chain and name == "zincir_kanıtı":
+            continue
+        drop = (name,)
+        threshold, _ = tune_threshold(tune_set, use_chain=use_chain, drop=drop)
+
+        def run(case: BorrowingCase, _d=drop, _t=threshold) -> bool:
+            return score_of(case, use_chain=use_chain, drop=_d) >= _t
+
+        out[f"-{name}"] = score_system(run, report_set)
+    return out
+
+
 def evaluate(
     cases: list[BorrowingCase], *, use_chain: bool
 ) -> tuple[dict[str, PRF], float]:
@@ -386,6 +459,7 @@ def evaluate(
         "always_inherited": always_inherited,
         "always_borrowed": always_borrowed,
         "phonotactic_only": phonotactic_only,
+        "donor_proximity_only": donor_proximity_only,
         "engine": _detector(use_chain, threshold),
     }
     return {name: score_system(fn, report_set) for name, fn in systems.items()}, threshold
@@ -404,6 +478,18 @@ def _print_block(title: str, note: str, cases: list[BorrowingCase], scores: dict
             f"{name + marker:20} {prf.fscore:>7.4f} {prf.precision:>9.4f} "
             f"{prf.recall:>11.4f} {prf.accuracy:>9.4f}"
         )
+
+
+def _print_signal_ablation(full: PRF, ablated: dict[str, PRF]) -> None:
+    """Sinyal sinyal katkı tablosu — düşüş ne kadarsa katkı o kadardır."""
+    if not ablated:
+        return
+    print(f"\n  sinyal katkısı (çıkarınca F ne kadar düşüyor?) — tam motor F={full.fscore:.4f}")
+    rows = sorted(ablated.items(), key=lambda kv: kv[1].fscore)
+    for name, prf in rows:
+        delta = full.fscore - prf.fscore
+        mark = "katkılı" if delta > 0 else ("nötr" if delta == 0 else "ZARARLI")
+        print(f"    {name:24} F={prf.fscore:.4f}  katkı {delta:+.4f}  {mark}")
 
 
 def _print_ablation_verdict(comparisons: list[dict[str, Any]]) -> None:
@@ -476,7 +562,25 @@ def main() -> int:
                 },
                 reference="phonotactic_only",
             ),
+            # ⚠️ ASIL SORU BU: hangi sinyal katkı sağlıyor?
+            "vs_donor_proximity": compare_systems(
+                {
+                    "engine": scores["engine"].per_item,
+                    "donor_proximity_only": scores["donor_proximity_only"].per_item,
+                },
+                reference="donor_proximity_only",
+            ),
         }
+        wold_signals = signal_ablation(wold, use_chain=True)
+        payload["wold"]["signal_ablation"] = {
+            k: v.as_dict() for k, v in wold_signals.items()
+        }
+        payload["wold"]["signal_significance"] = compare_systems(
+            {"engine": scores["engine"].per_item,
+             **{k: v.per_item for k, v in wold_signals.items()}},
+            reference="engine",
+        )
+        _print_signal_ablation(scores["engine"], wold_signals)
         _print_ablation_verdict(payload["wold"]["vs_phonotactic"])
     else:
         print("WOLD yok — birincil ölçüt atlandı (python scripts/download_cldf.py wold)")

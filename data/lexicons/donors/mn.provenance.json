@@ -1,0 +1,14 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Mongolian",
+  "code": "mn",
+  "donor": true,
+  "url": "https://kaikki.org/dictionary/Mongolian/kaikki.org-dictionary-Mongolian.jsonl",
+  "retrieved_at": "2026-08-27T09:28:03+00:00",
+  "raw_bytes": 12856804,
+  "stored_bytes": 1418936,
+  "entries": 6652,
+  "compressed": true,
+  "sha256_stored": "e81f4ee567421f7316616068cf25d6ba308c703bfbf02078b4ada94b01b919c6",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

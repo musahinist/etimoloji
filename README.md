@@ -111,29 +111,79 @@ gerçek doğruluk %23,9). Kullanıcıya gösterilen skor artık kalibre skordur.
 
 | Sistem | F | kesinlik | duyarlılık | doğruluk |
 |---|---|---|---|---|
-| **motor** | 0,421 | 0,416 | 0,427 | 0,646 |
-| yalnız fonotaktik | 0,294 | 0,444 | 0,220 | 0,681 |
+| **motor** | **0,584** | 0,506 | 0,690 | 0,704 |
+| yalnız verici yakınlığı | 0,581 | 0,553 | 0,612 | 0,733 |
 | hepsi alıntı (trivial) | 0,464 | 0,302 | 1,000 | 0,302 |
+| yalnız fonotaktik | 0,215 | 0,372 | 0,151 | 0,667 |
 
-⚠️ **Ablasyon hükmü — olumsuz ve dürüstçe raporlanıyor.** Zincir sinyali
-(sözlük etiketi) kapatıldığında motor, yalnız fonotaktik taban çizgisine
-karşı WOLD'da **anlamlı biçimde GERİDE** (fark −0,035, %95 GA [−0,062,
-−0,007], p=0,019); Wiktionary ablasyonunda ise fark anlamlı değil (+0,006,
-p=0,65). Yani `ses_kanunu_ihlali` ve `değişimsiz_yayılım` sinyalleri ölçülebilir
-katkı sağlamıyor, uzman ölçütünde zarar veriyor.
+Motor ilk kez trivial taban çizginin **üstünde**. Kazanç tek bir yeniliğin:
+**verici dil sözlüğüne SCA yakınlığı** (sabor, Miller & List 2023). Öncesi
+F 0,385'ti.
 
-Bunun **kavramsal** açıklaması da var: denklikleri alıntıların da içinde
-olduğu veriden öğrendik, ve Arapça alıntılar bütün Oğuz dillerinde aynı
-biçimde uyarlandığı için **kendi düzenli denkliklerini yaratıyorlar** — yani
-"beklenen refleks tutuyor mu" testini geçiyorlar.
+#### Hangi sinyal işe yarıyor? (sinyal sinyal ablasyon, n=769)
 
-> **Düzeltme kaydı.** Bu ablasyon bir kez yanlış raporlandı. Değerlendirme
-> kodu `witnesses` alanını hiç doldurmuyordu ve dört sinyalden ikisi tanık
-> gerektirdiği için **yapısal olarak devre dışıydı**; sonuç fonotaktikle
-> birebir aynı çıkıyor, biz de "sinyaller katkı sağlamıyor" diye
-> raporluyorduk. Doğrusu "sinyaller hiç çalıştırılmadı"ydı. Tanıklar
-> doldurulunca (kelime başına ort. 5,1) sinyaller ateşleniyor — ve yukarıdaki
-> gerçek ölçüm elde ediliyor.
+| çıkarılan sinyal | kalan F | katkısı |
+|---|---|---|
+| `verici_yakınlığı` | 0,385 | **+0,199** |
+| `fonotaktik_ihlal` | 0,570 | +0,014 |
+| `zincir_kanıtı` | 0,571 | +0,013 |
+| `ses_kanunu_ihlali` | 0,584 | +0,000 |
+| `değişimsiz_yayılım` | 0,590 | **−0,006** (zararlı) |
+
+⚠️ **Motor, tek sinyalden anlamlı biçimde iyi DEĞİL.** Madde başına
+doğrulukta motor (0,704) yalnız verici yakınlığının (0,733) **altında**
+kalıyor: fark −0,030, %95 GA [−0,049, −0,010], p=0,004. El ile konmuş
+ağırlıklı toplam, en güçlü sinyalin kararını bozuyor. Ölçüm eğitilmiş bir
+birleştiriciyi (Faz C5) işaret ediyor.
+
+⚠️ `ses_kanunu_ihlali` ve `değişimsiz_yayılım` hâlâ katkısız. Kavramsal
+açıklaması duruyor: denklikleri alıntıların da içinde olduğu veriden
+öğrendik, ve Arapça alıntılar bütün Oğuz dillerinde aynı biçimde
+uyarlandığı için **kendi düzenli denkliklerini yaratıyorlar** — "beklenen
+refleks tutuyor mu" testini geçiyorlar.
+
+#### Yön sorunu ve ölçülmüş çözümü
+
+Verici sözlüğü **Türkiden alınmış** kelimeleri de içerir; bunlar sinyali
+ters yönden tetikliyordu:
+
+    Türkçe göz   ~ Ermenice գյոզ (gyoz)  SCA 0,040   "From Ottoman Turkish"
+    Türkçe demir ~ Farsça   تمر  (tamor) SCA 0,075   "Borrowed from Turkic"
+
+Verici maddesinin kendi etimoloji metni Türki bir kaynağa işaret ediyorsa
+madde kanıttan çıkarılıyor (1.674.418 maddenin 2.900'ü). Süzgeç motorun
+F'sini 0,566'dan **0,584'e** çıkardı.
+
+⚠️ Süzgeç eksiksiz değil: Fransızca `béluga` Rusça `белуга`dan gelir, o da
+Türkiden — ama Fransızca madde yalnız Rusçayı gösterir. Zincirin ikinci
+halkasını görmüyoruz.
+
+#### Neden SCA, neden anlam kısıtı
+
+**SCA, düz Levenshtein değil.** Sakha Rusça `stol`u `ostuol` yapar
+(öntüreme ünlü + ikizünlü); düz uzaklık 3/6 = 0,50 verip eşiğin üstünde
+kalır, SCA 0,216 verir. LingPy yoksa sinyal **devre dışı kalır** — düz
+Levenshtein'a düşmek, yayınlanmış F1 0,806'yı başka bir mesafeyle iddia
+etmek olurdu.
+
+**Anlam kısıtı yayınlanmış kurulumun parçası.** Kısıtsız arama 1,67 milyon
+maddelik verici indeksine yayılır ve şans benzerliğine açılır. ⚠️ Kısıtın
+bedeli ölçülmüştür: sabor'da kaçan alıntıların %45'i tam bu kısıttan gelir.
+
+Uzunluk kapısı **konmadı**: ayrım her uzunlukta duruyor (alıntı ort. SCA
+0,31, miras 0,48) ve asgari uzunluk 4 koymak F'yi 0,565'ten 0,562'ye
+düşürüyor.
+
+> **Düzeltme kaydı — iki kez yanlış ölçüldü.**
+> **(1)** Değerlendirme kodu `witnesses` alanını hiç doldurmuyordu; dört
+> sinyalden ikisi tanık gerektirdiği için **yapısal olarak devre dışıydı**.
+> Sonuç fonotaktikle birebir aynı çıkıyor, biz "sinyaller katkı sağlamıyor"
+> diye raporluyorduk. Doğrusu "sinyaller hiç çalıştırılmadı"ydı.
+> **(2)** `_attach_witnesses` dondurulmuş kaydı alan alan yeniden kuruyordu
+> ve yeni eklenen `sense` alanını **sessizce düşürüyordu**; verici yakınlığı
+> sinyali anlamsız kaldığı için ilk koşuda F=0,0000 verdi. Aynı hata
+> sınıfı, ikinci kez. Artık `dataclasses.replace` kullanılıyor — o hataya
+> yapısal olarak kapalı.
 
 ### Öngörü testi (n=182, kilitli sicil)
 
@@ -504,7 +554,8 @@ kullanılmıyor veya kısıtlı kullanılıyor.
 | Róna-Tas & Berta 2011, *West Old Turkic: Turkic Loanwords in Hungarian* — `ronataswestoldturkic` ([loanwordbank](https://github.com/loanwordbank/ronataswestoldturkic), CC-BY) | 1.755 biçim · 430 kavram · 480 Oğur (Bolgar, `bolg1249`) biçimi | ⚠️ **atteste değil**, Macarcadaki alıntılardan geri kurulmuş; ayrı tanık kodu (`wot`), tek başına `*PT` taşımaz. Ölçüldü: kazanç yok, **varsayılan kapalı** |
 | [kaikki.org](https://kaikki.org) — Wiktionary makine-okunur dökümleri | 18 Türki dil, ~761 MB | ✅ arama indeksi · ⚠️ **altın standart değil** (bkz. Häuser & Stamatakis 2025) |
 | [NorthEuraLex](https://northeuralex.org) | Türki + İrani + Slav + Ural + Moğol + Yunanca tek çatıda | 🚧 komşu aile taraması |
-| WOLD — World Loanword Database | uzman alıntı derlemesi | 🚧 alıntı değerlendirmesinin birincil ölçütü |
+| WOLD — World Loanword Database | uzman alıntı derlemesi | ✅ alıntı değerlendirmesinin birincil ölçütü |
+| kaikki **verici dili** dökümleri — Rusça, Moğolca, Evenkice, Arapça, Farsça, Yunanca, Ermenice, Fransızca, İtalyanca | 1.674.418 madde, ~352 MB | ✅ verici yakınlığı sinyali · ⚠️ Türki arama indeksinden **AYRI** dosyada; karışsalardı Rusça `море` Türki akraba adayı olarak dönerdi |
 | DatSemShift | 10.565 anlam kayması | 🚧 semantik makullük |
 | CLICS⁴ | 3.447 dilde eş-adlandırma | 🚧 semantik makullük |
 | [Concepticon](https://concepticon.clld.org) · [Glottolog](https://glottolog.org) · [Lexibank](https://lexibank.clld.org) · [CLTS](https://clts.clld.org) | kavram kimliği, dil kimliği, sözvarlığı, fonetik gösterim | 🚧 standart katman |
@@ -542,7 +593,8 @@ kullanılmıyor veya kısıtlı kullanılıyor.
 ### Alıntı tespiti, temas ve geçiş yolu
 
 - [List & Forkel 2022](https://pmc.ncbi.nlm.nih.gov/articles/PMC10445856/) — otomatik alıntı tespiti, `seabor`, **F = 0,87**
-- [Miller ve ark. 2020, *PLOS ONE*](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0242709) — PyBor, tek dilli fonotaktik taban çizgi (**F1 ≈ 0,55**) · [Miller & List 2023](https://arxiv.org/pdf/2302.00189)
+- [Miller ve ark. 2020, *PLOS ONE*](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0242709) — PyBor, tek dilli fonotaktik taban çizgi (**F1 ≈ 0,55**)
+- **[Miller & List 2023, EACL — `sabor`](https://arxiv.org/pdf/2302.00189)** ✅ **uygulandı** — verici dil sözlüğüne SCA yakınlığı; yayınlanmış **F1 0,806 · kesinlik 0,931**. Bizde WOLD/Sakha'da motorun F'sini **0,385 -> 0,584** çıkardı ve tek başına 0,581 alıyor. ⚠️ Yayınlanmış kurulum **kavram kısıtlıdır** ve makale kaçan alıntıların %45'ini bu kısıta bağlıyor.
 - [Neureiter ve ark. 2022, *Humanit Soc Sci Commun*](https://www.nature.com/articles/s41599-022-01211-7) — contacTrees
 - Hruschka ve ark. 2015 — concerted evolution, düzenli ses değişimi tespiti
 - ⚠️ [Dellert 2019, *Information-theoretic causal inference of lexical flow*](https://langsci-press.org/catalog/book/233) — leksikal akışın **yönünü** verir, **yolunu vermez**; dil düzeyinde, kelime düzeyinde değil

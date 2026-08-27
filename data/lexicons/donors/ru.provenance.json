@@ -1,0 +1,14 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Russian",
+  "code": "ru",
+  "donor": true,
+  "url": "https://kaikki.org/dictionary/Russian/kaikki.org-dictionary-Russian.jsonl",
+  "retrieved_at": "2026-08-27T09:28:01+00:00",
+  "raw_bytes": 936648646,
+  "stored_bytes": 75488770,
+  "entries": 442348,
+  "compressed": true,
+  "sha256_stored": "4dceec974b3b6e686a1f34fa8e3645b51bf9e10a204892c9b35c6719544a5fb5",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

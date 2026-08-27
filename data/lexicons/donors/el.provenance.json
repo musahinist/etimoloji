@@ -1,0 +1,14 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Greek",
+  "code": "el",
+  "donor": true,
+  "url": "https://kaikki.org/dictionary/Greek/kaikki.org-dictionary-Greek.jsonl",
+  "retrieved_at": "2026-08-27T09:55:14+00:00",
+  "raw_bytes": 212282230,
+  "stored_bytes": 19989043,
+  "entries": 85316,
+  "compressed": true,
+  "sha256_stored": "18f8fcdd5080038fdbd8e8287f9acf19d0479b5579333d2fca64520392ed3aaf",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

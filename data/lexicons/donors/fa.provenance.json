@@ -1,0 +1,14 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Persian",
+  "code": "fa",
+  "donor": true,
+  "url": "https://kaikki.org/dictionary/Persian/kaikki.org-dictionary-Persian.jsonl",
+  "retrieved_at": "2026-08-27T09:54:38+00:00",
+  "raw_bytes": 86248884,
+  "stored_bytes": 10731771,
+  "entries": 20215,
+  "compressed": true,
+  "sha256_stored": "b49232f82772c7a42a9a7615aad038a7219f9be3c15f7ad7a60491d347cb43db",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

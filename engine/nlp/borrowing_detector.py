@@ -23,6 +23,8 @@ Dört bağımsız sinyal kullanılır; hiçbiri tek başına karar vermez:
 ``fonotaktik_ihlal``          Proto-Türkçe'de bulunmayan ses veya dizim
 ``ses_kanunu_ihlali``         beklenen refleks tutmuyor (özgün katkı)
 ``değişimsiz_yayılım``        bütün dillerde neredeyse aynı biçim
+``verici_yakınlığı``          verici dil sözlüğünde aynı kavramın karşılığı
+                              fonetik olarak neredeyse aynı (sabor)
 ============================  =============================================
 """
 
@@ -33,6 +35,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from engine.logging_setup import get_logger
+from engine.nlp.donor_proximity import nearest_donor, proximity_strength
 from engine.nlp.proto_phonology import PROHIBITED_INITIALS
 from engine.utils.orthography import to_comparison_form
 from engine.utils.phonotactics import VOWELS, has_vowel_harmony
@@ -41,11 +44,17 @@ logger = get_logger(__name__)
 
 #: Ağırlıklar. Zincir kanıtı en güçlüsüdür çünkü doğrudan tanıklamadır;
 #: ötekiler dolaylı göstergedir.
+#:
+#: ``verici_yakınlığı`` alanın **ölçülmüş en güçlü tek sinyalidir**
+#: (Miller & List 2023, ``sabor``: F1 0,806, kesinlik 0,931). Zincir
+#: kanıtından sonra en yüksek ağırlığı alır; ondan düşük olmasının sebebi
+#: zincirin DOĞRUDAN tanıklama, bunun ise çıkarım olmasıdır.
 SIGNAL_WEIGHTS: dict[str, float] = {
-    "zincir_kanıtı": 0.50,
-    "ses_kanunu_ihlali": 0.20,
-    "fonotaktik_ihlal": 0.20,
-    "değişimsiz_yayılım": 0.10,
+    "zincir_kanıtı": 0.40,
+    "verici_yakınlığı": 0.25,
+    "ses_kanunu_ihlali": 0.15,
+    "fonotaktik_ihlal": 0.15,
+    "değişimsiz_yayılım": 0.05,
 }
 
 #: Bu eşiğin üstünde kelime **alıntı olarak raporlanır**.
@@ -367,14 +376,51 @@ class BorrowingDetector:
 
     # -- karar --------------------------------------------------------------
 
+    @staticmethod
+    def _donor_signal(word: str, sense: str, donors: list[str] | None) -> Signal:
+        """Verici dil sözlüğüne fonetik yakınlık (sabor, Miller & List 2023).
+
+        ⚠️ Mesafe **SCA**'dır, düz Levenshtein değil: Sakha Rusça ``stol``u
+        ``ostuol`` yapar; düz uzaklık 0,50 verip eşiğin üstünde kalır, SCA
+        0,216 verir.
+
+        ⚠️ Arama **anlam kısıtlıdır**. Kısıtsız arama 440.910 maddelik Rusça
+        sözlüğe yayılır ve şans benzerliğine açılır.
+        """
+        comparison = to_comparison_form(word)
+        match = nearest_donor(comparison, sense, languages=donors)
+        strength = proximity_strength(match)
+        if match is None or strength <= 0.0:
+            return Signal(
+                "verici_yakınlığı",
+                False,
+                0.0,
+                "verici sözlüğünde yakın karşılık yok",
+            )
+        return Signal(
+            "verici_yakınlığı",
+            True,
+            strength,
+            f"verici sözlüğünde aynı kavramın karşılığı fonetik olarak yakın: "
+            f"{match.describe()}",
+            match.as_dict(),
+        )
+
     def detect(
         self,
         word: str,
         entries: list[dict[str, Any]] | None = None,
         *,
         lang: str = "tr",
+        sense: str = "",
+        donors: list[str] | None = None,
     ) -> BorrowingVerdict:
-        """Bir kelimenin alıntı olup olmadığına gerekçeli karar verir."""
+        """Bir kelimenin alıntı olup olmadığına gerekçeli karar verir.
+
+        :param sense: kelimenin anlamı. Verici yakınlığı sinyali bunsuz
+            çalışmaz (anlam kısıtı yayınlanmış kurulumun parçasıdır).
+        :param donors: bakılacak verici dil kodları. ``None`` ise hepsi.
+        """
         witnesses = {
             e["lang_code"]: e.get("word", "")
             for e in (entries or [])
@@ -386,8 +432,9 @@ class BorrowingDetector:
         phonotactic = self._phonotactic_signal(word)
         sound_law, expected = self._sound_law_signal(word, witnesses)
         uniformity = self._uniformity_signal(witnesses)
+        donor_proximity = self._donor_signal(word, sense, donors)
 
-        signals = [chain_signal, phonotactic, sound_law, uniformity]
+        signals = [chain_signal, phonotactic, sound_law, uniformity, donor_proximity]
         score = sum(
             SIGNAL_WEIGHTS[signal.name] * signal.strength for signal in signals if signal.fired
         )

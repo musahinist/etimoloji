@@ -1,0 +1,14 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "French",
+  "code": "fr",
+  "donor": true,
+  "url": "https://kaikki.org/dictionary/French/kaikki.org-dictionary-French.jsonl",
+  "retrieved_at": "2026-08-27T09:54:58+00:00",
+  "raw_bytes": 573612101,
+  "stored_bytes": 47666537,
+  "entries": 402395,
+  "compressed": true,
+  "sha256_stored": "74e72355368ebdf201f896eac1caf98e2c47cd132d4944cc64f3b6cb8267d24b",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

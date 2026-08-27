@@ -1,5 +1,5 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-prediction correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify semantic dialect
+        data gold donors eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-prediction correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify semantic dialect
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -18,6 +18,7 @@ help:
 	@echo "eval-borrowing - Alıntı tespiti P/R/F (verici dile göre ayrıştırılmış)"
 	@echo "eval-calibration - ECE + Brier + risk-coverage"
 	@echo "lexicons       - kaikki.org sözlük dökümlerini indir (19 dil, ~56 MB)"
+	@echo "donors         - VERİCİ dil dökümleri + indeksi (~352 MB) — alıntı sinyali için"
 	@echo "lexicon-index  - Yerel arama indeksini kur (SQLite FTS5)"
 	@echo "chains         - Alıntı geçiş zincirleri ve uyarlama kuralları"
 	@echo "correspondences - Ses denkliklerini TRAIN kavramlarından öğren"
@@ -68,11 +69,16 @@ eval: gold
 eval-cognates: data
 	.venv/bin/python -m engine.evaluation.cognate_eval
 
-eval-borrowing: data lexicon-index
+eval-borrowing: data lexicon-index donors
 	.venv/bin/python -m engine.evaluation.borrowing_eval
 
 lexicons:
 	.venv/bin/python scripts/download_lexicons.py --all
+
+donors:
+	.venv/bin/python scripts/download_lexicons.py --donors \
+		Russian Mongolian Evenki Arabic Persian Greek Armenian French Italian
+	.venv/bin/python -m engine.db.donor_index --build
 
 lexicon-index: lexicons
 	.venv/bin/python -m engine.db.lexicon_index --build

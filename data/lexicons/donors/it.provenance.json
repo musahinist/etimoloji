@@ -1,0 +1,14 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Italian",
+  "code": "it",
+  "donor": true,
+  "url": "https://kaikki.org/dictionary/Italian/kaikki.org-dictionary-Italian.jsonl",
+  "retrieved_at": "2026-08-27T09:56:21+00:00",
+  "raw_bytes": 761814894,
+  "stored_bytes": 62090493,
+  "entries": 623477,
+  "compressed": true,
+  "sha256_stored": "3be3f08c35bb9175c145b89277ea93a8cf7d6948609f508feed6964e7bf86d82",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

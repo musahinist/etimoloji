@@ -1,0 +1,14 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Armenian",
+  "code": "hy",
+  "donor": true,
+  "url": "https://kaikki.org/dictionary/Armenian/kaikki.org-dictionary-Armenian.jsonl",
+  "retrieved_at": "2026-08-27T09:55:27+00:00",
+  "raw_bytes": 160644375,
+  "stored_bytes": 13833775,
+  "entries": 22096,
+  "compressed": true,
+  "sha256_stored": "e6b107a1e4b16fa83fa0e97fac4b80bc1bb1faf763856de79ff44d94c1d6734d",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

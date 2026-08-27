@@ -1,0 +1,14 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Arabic",
+  "code": "ar",
+  "donor": true,
+  "url": "https://kaikki.org/dictionary/Arabic/kaikki.org-dictionary-Arabic.jsonl",
+  "retrieved_at": "2026-08-27T09:54:34+00:00",
+  "raw_bytes": 512415664,
+  "stored_bytes": 40172910,
+  "entries": 77339,
+  "compressed": true,
+  "sha256_stored": "f6e5d7f5e318096d1f82f8cb0129d1b422dd6ad78eb40a4f4bde36d0bbea7a4e",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}
