@@ -30,6 +30,7 @@ import gzip
 import json
 import re
 import sqlite3
+import unicodedata
 from collections.abc import Iterator
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -171,6 +172,7 @@ CREATE TABLE IF NOT EXISTS entries (
     gloss         TEXT,
     ipa           TEXT,
     etymology     TEXT,
+    long_vowels   TEXT,          -- IPA'dan çıkarılmış uzun ünlüler
     origin        TEXT,          -- 'alıntı' | 'miras' | NULL
     donor_lang    TEXT,
     donor_form    TEXT
@@ -178,6 +180,7 @@ CREATE TABLE IF NOT EXISTS entries (
 CREATE INDEX IF NOT EXISTS idx_comparison ON entries(comparison);
 CREATE INDEX IF NOT EXISTS idx_lang ON entries(lang_code);
 CREATE INDEX IF NOT EXISTS idx_origin ON entries(origin);
+CREATE INDEX IF NOT EXISTS idx_length ON entries(long_vowels);
 CREATE INDEX IF NOT EXISTS idx_donor ON entries(donor_lang);
 
 CREATE VIRTUAL TABLE IF NOT EXISTS entries_fts USING fts5(
@@ -203,6 +206,11 @@ class LexiconEntry:
     gloss: str = ""
     ipa: str = ""
     etymology: str = ""
+    #: IPA'dan çıkarılmış uzun ünlüler. Ünlü uzunluğu Proto-Türkçe
+    #: rekonstrüksiyonunun en zayıf tarafıydı: ``savelyevturkic``te yalnız
+    #: 478 uzunluk tanığı var ve Türkmence'de **yalnız 2**. Oysa indirilmiş
+    #: kaikki dökümlerinde Halaçça 561, Türkmence 293 tanık duruyor.
+    long_vowels: str = ""
     origin: str | None = None
     donor_lang: str = ""
     donor_form: str = ""
@@ -216,6 +224,7 @@ class LexiconEntry:
             self.gloss,
             self.ipa,
             self.etymology,
+            self.long_vowels,
             self.origin,
             self.donor_lang,
             self.donor_form,
@@ -235,6 +244,47 @@ def _first_ipa(record: dict[str, Any]) -> str:
         if sound.get("ipa"):
             return str(sound["ipa"])
     return ""
+
+
+#: IPA ünlüleri. Uzunluk işareti ``ː`` bir ÜNSÜZDEN sonra gelirse ikizleşme
+#: (gemination) demektir, ünlü uzunluğu değil — ``борщ [buɔɐ̯rɕː]`` bir
+#: uzunluk tanığı DEĞİLDİR.
+IPA_VOWELS = frozenset("aeiouɑɒæɐəɘɛɜɞɔɵøœyʉɨɯʌʊɪɤʏ")
+
+#: Uzunluk işaretleri: modifier letter triangular colon ve düz iki nokta.
+LENGTH_MARKS = ("ː", ":")
+
+#: Ünlünün üstüne binen birleşik işaretler (ton, nazal, uzunluk işaretinden
+#: önce gelebilir): ``aː`` ile ``ã ː`` arasında fark kalmasın diye atlanır.
+_SKIPPABLE_COMBINING = frozenset(range(0x0300, 0x0370)) | frozenset(range(0x1AB0, 0x1B00))
+
+
+def extract_long_vowels(ipa: str) -> str:
+    """IPA gösteriminden **uzun ünlüleri** çıkarır.
+
+    ⚠️ Yalnız ``ː`` aramak yetmez: o işaret ünsüzden sonra gelirse
+    ikizleşmedir. Ölçüldü — indirilmiş dökümlerde ``ː`` taşıyan 5.506
+    maddenin bir kısmı ``ɕː``, ``rː``, ``щ`` gibi ünsüz ikizleşmeleridir ve
+    ünlü uzunluğu tanığı sayılamazlar.
+
+    :returns: uzun ünlülerin sırayla birleştirilmiş hâli (``"aːiː"`` gibi),
+        yoksa boş dizgi.
+    """
+    if not ipa:
+        return ""
+    text = unicodedata.normalize("NFD", ipa)
+    found: list[str] = []
+    for index, char in enumerate(text):
+        if char not in LENGTH_MARKS:
+            continue
+        # İşaretten geriye doğru git, birleşik işaretleri atlayarak taban
+        # sesi bul.
+        cursor = index - 1
+        while cursor >= 0 and ord(text[cursor]) in _SKIPPABLE_COMBINING:
+            cursor -= 1
+        if cursor >= 0 and text[cursor].lower() in IPA_VOWELS:
+            found.append(text[cursor].lower() + "ː")
+    return "".join(found)
 
 
 #: Türki dil kodları. Zincirin bir halkası bu ailenin DIŞINA çıkıyorsa
@@ -339,6 +389,7 @@ def iter_entries(path: Path, lang_code: str) -> Iterator[LexiconEntry]:
                 gloss=_first_gloss(record),
                 ipa=_first_ipa(record),
                 etymology=str(record.get("etymology_text", "")),
+                long_vowels=extract_long_vowels(_first_ipa(record)),
                 origin=origin,
                 donor_lang=donor_lang,
                 donor_form=donor_form,
@@ -414,8 +465,8 @@ class LexiconIndex:
     def _insert(connection: sqlite3.Connection, rows: list[tuple]) -> None:
         connection.executemany(
             "INSERT INTO entries(lang_code, word, comparison, pos, gloss, ipa, "
-            "etymology, origin, donor_lang, donor_form) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "etymology, long_vowels, origin, donor_lang, donor_form) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             rows,
         )
 
@@ -519,6 +570,9 @@ class LexiconIndex:
             borrowed = connection.execute(
                 "SELECT COUNT(*) FROM entries WHERE origin = 'alıntı'"
             ).fetchone()[0]
+            with_length = connection.execute(
+                "SELECT COUNT(*) FROM entries WHERE long_vowels != ''"
+            ).fetchone()[0]
         # ⚠️ ``**info`` ÖNCE gelmeli: ``build_info`` tablosunda da
         # ``total_entries`` anahtarı var ama değeri METİN. Sona konursa
         # hesaplanan tamsayıyı ezer ve ``stats()["total_entries"]`` bir
@@ -530,6 +584,7 @@ class LexiconIndex:
             "total_entries": total,
             "with_origin": with_etymology,
             "borrowed": borrowed,
+            "with_long_vowels": with_length,
         }
 
 

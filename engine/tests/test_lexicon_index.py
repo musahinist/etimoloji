@@ -16,6 +16,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from engine.db.lexicon_index import (
+    SCHEMA,
     TURKIC_FAMILY_CODES,
     LexiconEntry,
     LexiconIndex,
@@ -234,8 +235,22 @@ class TestEntryParsing(unittest.TestCase):
             self.assertEqual(len(list(iter_entries(path, "tr"))), 1)
 
     def test_row_shape_matches_schema(self):
+        """Satır uzunluğu INSERT'teki sütun sayısıyla birebir olmalı.
+
+        Şemaya sütun eklenip ``as_row`` güncellenmezse veya tersi olursa,
+        indeks kurulumu sessizce yanlış sütuna yazar.
+        """
         entry = LexiconEntry(lang_code="tr", word="a", comparison="a")
-        self.assertEqual(len(entry.as_row()), 10)
+        columns = [
+            line.split()[0]
+            for line in SCHEMA.split("CREATE TABLE IF NOT EXISTS entries (")[1]
+            .split(");")[0]
+            .strip()
+            .splitlines()
+            if line.strip() and not line.strip().startswith("--")
+        ]
+        # ``id`` otomatik atanır, satıra girmez.
+        self.assertEqual(len(entry.as_row()), len(columns) - 1)
 
 
 if __name__ == "__main__":

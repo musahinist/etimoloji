@@ -30,6 +30,7 @@ from engine.logging_setup import get_logger
 from engine.nlp.confidence import apply_calibration
 from engine.nlp.multi_alignment import align_forms
 from engine.nlp.proto_phonology import OGHUR_CODES, pick_proto_sound, proto_plausibility
+from engine.nlp.vowel_length import apply_length, gather_evidence
 from engine.utils.orthography import to_comparison_form
 
 logger = get_logger(__name__)
@@ -140,6 +141,7 @@ class ComparativeReconstructor:
         turkic_entries: list[dict[str, Any]] | None = None,
         *,
         check_borrowing: bool = True,
+        sense: str = "",
     ) -> dict[str, Any]:
         """
         :param word: Modern sorgu kelimesi.
@@ -255,6 +257,18 @@ class ComparativeReconstructor:
             return self._no_result(word, "Hiçbir konumda ata ses belirlenemedi.")
 
         proto_form = "*" + "".join(proto_chars)
+
+        # Ünlü uzunluğu AYRI bir katmandır: hizalama sütunlarından değil,
+        # uzunluğu koruyan dillerin (Halaçça, Türkmence, Yakutça…) IPA
+        # gösteriminden okunur. `savelyevturkic`in çevriyazısı uzunluğu
+        # büyük ölçüde yazmıyor; kaikki dökümlerinde 4.031 gerçek uzun ünlü
+        # duruyordu ve hiç işlenmiyordu.
+        # `sense` verilirse eşadlılık filtresi devreye girer ve uzunluk
+        # kanıtının kesinliği 0,30'dan 0,58'e çıkar.
+        length_evidence = gather_evidence(by_lang, sense=sense)
+        if length_evidence.any_evidence:
+            proto_form = apply_length(proto_form, length_evidence)
+
         branches = {LANGUAGE_BRANCHES.get(c) for c in by_lang if LANGUAGE_BRANCHES.get(c)}
         agreement = sum(agreements) / len(agreements) if agreements else 0.0
         has_oghur = bool(by_lang.keys() & OGHUR_CODES)
@@ -297,6 +311,7 @@ class ComparativeReconstructor:
             "alignment_width": len(informative),
             "diagnostic_columns": diagnostic_hits,
             "applied_correspondences": applied_rules,
+            "vowel_length_evidence": length_evidence.describe(),
             "borrowing": borrowing.as_dict() if borrowing is not None else None,
             "reconstruction_notes": (
                 f"{len(by_lang)} dil tanığı ve {len(branches)} Türki kol üzerinden "
