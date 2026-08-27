@@ -1,0 +1,12 @@
+{
+  "_schema": "turkic-etymology-calibration/v1",
+  "a": 0.9804177170018953,
+  "b": -1.8819911434219279,
+  "method": "platt",
+  "trained_on": "savelyevturkic/train",
+  "n": 223,
+  "ece_before": 0.4286,
+  "ece_after": 0.0203,
+  "trained_at": "2026-08-27T00:33:22+00:00",
+  "note": "Yalnız altın standardın TRAIN bölümüyle eğitilmiştir. dev/test ile eğitmek ölçümü geçersiz kılar."
+}

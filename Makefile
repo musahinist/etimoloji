@@ -1,5 +1,5 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold eval eval-baseline eval-cognates eval-borrowing eval-calibration
+        data gold eval eval-baseline eval-cognates eval-borrowing eval-calibration calibrate
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -17,6 +17,7 @@ help:
 	@echo "eval-cognates  - Akraba tespiti B-Cubed F (LexStat-Infomap taban çizgisine karşı)"
 	@echo "eval-borrowing - Alıntı tespiti P/R/F (verici dile göre ayrıştırılmış)"
 	@echo "eval-calibration - ECE + Brier + risk-coverage"
+	@echo "calibrate      - Güven kalibratörünü TRAIN bölümünde eğit"
 	@echo ""
 	@echo "serve       - REST API sunucusu"
 	@echo "web         - Web panelini yayınla (localhost:3000)"
@@ -61,7 +62,10 @@ eval-borrowing: data
 	.venv/bin/python -m engine.evaluation.borrowing_eval
 
 eval-calibration: gold
-	.venv/bin/python -m engine.evaluation.calibration --split dev
+	.venv/bin/python -m engine.evaluation.calibration --split all
+
+calibrate: gold
+	.venv/bin/python -m engine.nlp.confidence
 
 serve:
 	.venv/bin/python -m engine.server

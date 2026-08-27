@@ -27,8 +27,9 @@ from typing import Any
 
 from engine.fetchers.base import TURKIC_LANGUAGES_MAP
 from engine.logging_setup import get_logger
+from engine.nlp.confidence import apply_calibration
 from engine.nlp.multi_alignment import align_forms
-from engine.nlp.proto_phonology import OGHUR_CODES, pick_proto_sound
+from engine.nlp.proto_phonology import OGHUR_CODES, pick_proto_sound, proto_plausibility
 from engine.utils.orthography import to_comparison_form
 
 logger = get_logger(__name__)
@@ -214,7 +215,13 @@ class ComparativeReconstructor:
         agreement = sum(agreements) / len(agreements) if agreements else 0.0
         has_oghur = bool(by_lang.keys() & OGHUR_CODES)
 
-        return {
+        # Sütun uyumu yalnız tanıkların BİRBİRİYLE uyuşmasını ölçer; ortaya
+        # çıkan biçmin Türkçe olup olmadığını ölçmez. Uydurma bir kelime
+        # (``zzzqx`` ~ ``zzzqy``) tanıkları arasında son derece uyumludur ve
+        # bu yüzden yüksek güven alıyordu.
+        plausibility, plausibility_notes = proto_plausibility(proto_form)
+
+        result: dict[str, Any] = {
             "word": word,
             "reconstructed_root": proto_form,
             "is_reconstructible": True,
@@ -224,7 +231,10 @@ class ComparativeReconstructor:
                 branches=len(branches),
                 agreement=agreement,
                 has_oghur=has_oghur,
+                plausibility=plausibility,
             ),
+            "proto_plausibility": plausibility,
+            "plausibility_violations": plausibility_notes,
             # Çuvaşça/Oğur tanığı olmadan rotasizm ve lambdaizm TÜRETİLEMEZ;
             # o hâlde iddia edilebilecek en derin düğüm Ana Ortak Türkçe'dir.
             "proto_level": "PT" if has_oghur else "PCT",
@@ -249,6 +259,11 @@ class ComparativeReconstructor:
             ),
         }
 
+        # Kullanıcıya giden skor HAM skor değildir: ham skor sistematik olarak
+        # yüksektir (ölçüldü: ECE 0,43). Kalibrasyon ve çekimserlik eşiği
+        # burada uygulanır.
+        return apply_calibration(result)
+
     @staticmethod
     def _no_result(word: str, note: str, **extra: Any) -> dict[str, Any]:
         """Rekonstrüksiyon yapılamadığında dönen tekil yapı."""
@@ -263,7 +278,14 @@ class ComparativeReconstructor:
         }
 
     @staticmethod
-    def _confidence(*, witnesses: int, branches: int, agreement: float, has_oghur: bool) -> float:
+    def _confidence(
+        *,
+        witnesses: int,
+        branches: int,
+        agreement: float,
+        has_oghur: bool,
+        plausibility: float = 1.0,
+    ) -> float:
         """Kanıta dayalı güven skoru.
 
         ⚠️ Ağırlıklar ÖLÇÜLEREK belirlenmiştir, elle atanmamıştır. Önceki
@@ -285,4 +307,6 @@ class ComparativeReconstructor:
         branch_factor = min(1.0, branches / 4.0)
         oghur_factor = 1.0 if has_oghur else 0.75
         raw = 0.60 * agreement + 0.20 * witness_factor + 0.20 * branch_factor
-        return round(raw * oghur_factor, 3)
+        # Makullük bir ÇARPANDIR, toplama terimi değil: Proto-Türkçe olamayacak
+        # bir biçim, tanıkları ne kadar uyumlu olursa olsun güvenilir değildir.
+        return round(raw * oghur_factor * plausibility, 3)

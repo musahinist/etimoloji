@@ -192,6 +192,13 @@ class Correspondence:
     proto: str
     note: str
     position: str
+    #: Kural yalnız Oğur (Çuvaşça) tanığı varken uygulanır mı?
+    #:
+    #: ⚠️ ``*ŕ`` ve ``*ĺ`` ancak Lir-Şaz ayrımı görülebiliyorsa türetilebilir.
+    #: Oğur tanığı olmadan iddia edilebilecek en derin düğüm Ana Ortak
+    #: Türkçe'dir ve o düğümde ``*ŕ``/``*r``/``*z`` ayrımı ZATEN BİRLEŞMİŞTİR.
+    #: Onsuz ``*ŕ`` yazmak, veriden çıkmayan bir ayrımı iddia etmektir.
+    requires_oghur: bool = False
     #: Kuralın ateşlenmesi için sütunda bulunması ZORUNLU seslerden en az biri.
     #: Boşsa kısıt yoktur.
     #:
@@ -255,12 +262,14 @@ CORRESPONDENCES: tuple[Correspondence, ...] = (
         "ŕ",
         "Ortak Türkçe -z ~ -r < Proto-Türkçe *-ŕ",
         "final",
+        requires_oghur=True,
     ),
     Correspondence(
         frozenset({"ş", "l"}),
         "ĺ",
         "Ortak Türkçe -ş ~ -l < Proto-Türkçe *-ĺ",
         "final",
+        requires_oghur=True,
     ),
     Correspondence(
         frozenset({"n", "ŋ"}),
@@ -384,6 +393,8 @@ def pick_proto_sound(column: AlignedColumn, position: str) -> ColumnDecision:
     for rule in CORRESPONDENCES:
         if rule.position not in ("any", position):
             continue
+        if rule.requires_oghur and not oghur_sounds:
+            continue
         if not distinct <= rule.members:
             continue  # kısmi örtüşme yeterli DEĞİL
         if rule.core and not (distinct & rule.core):
@@ -399,3 +410,72 @@ def pick_proto_sound(column: AlignedColumn, position: str) -> ColumnDecision:
     winner = max(sorted(counts), key=lambda s: counts[s])
     method = "arkaik_agirlik" if len(set(counts.values())) > 1 else "cogunluk"
     return ColumnDecision(winner, None, method, agreement)
+
+
+# --- Ata biçmin kendi makullüğü -------------------------------------------
+
+
+def proto_plausibility(proto_form: str) -> tuple[float, list[str]]:
+    """Üretilen ata biçim Proto-Türkçe olarak makul mü? → [0, 1] ve gerekçeler.
+
+    Sütun uyumu yalnız **tanıkların birbiriyle** ne kadar uyuştuğunu ölçer;
+    ortaya çıkan biçmin Türkçe olup olmadığını ölçmez. Uydurma bir kelime
+    (``zzzqx`` ~ ``zzzqy``) tanıkları arasında son derece uyumludur ve bu
+    yüzden yüksek güven alıyordu.
+
+    Denetlenen dört yerleşik kısıt:
+
+    * **Ünlü uyumu** — Proto-Türkçe kökler art/ön uyumludur.
+    * **Ünlü/ünsüz dengesi** — ünlüsüz veya neredeyse ünlüsüz kök yoktur.
+    * **Söz başı kümesi** — Proto-Türkçe söz başında ünsüz kümesi yoktur.
+    * **Yasak söz başı sesler** — ``*f-``, ``*v-``, ``*z-``, ``*ž-``, ``*h-``
+      Proto-Türkçe'de bulunmaz (``*p-`` de tartışmalıdır).
+    """
+    import unicodedata
+
+    from engine.utils.phonotactics import VOWELS, has_vowel_harmony
+
+    # Uzunluk işareti sesbirim değil, nicelik işaretidir: ``ā`` bir ünlüdür.
+    # Normalize edilmezse ``*kāpuk`` "ünlüsüz" ve "söz başı küme" sayılıyordu.
+    decomposed = unicodedata.normalize("NFD", proto_form.lstrip("*").lower())
+    form = unicodedata.normalize(
+        "NFC", "".join(ch for ch in decomposed if not unicodedata.combining(ch))
+    ).replace("ː", "")
+    if not form:
+        return 0.0, ["boş biçim"]
+
+    penalties: list[str] = []
+    score = 1.0
+
+    vowels = [ch for ch in form if ch in VOWELS]
+    if not vowels:
+        score -= 0.5
+        penalties.append("hiç ünlü yok — Proto-Türkçe kök ünlüsüz olamaz")
+    elif len(vowels) / len(form) < 0.25:
+        score -= 0.2
+        penalties.append("ünlü oranı çok düşük")
+
+    if len(vowels) >= 2 and not has_vowel_harmony(form):
+        score -= 0.2
+        penalties.append("ünlü uyumu ihlali")
+
+    if form[0] in PROHIBITED_INITIALS:
+        score -= 0.3
+        penalties.append(f"Proto-Türkçe'de söz başı *{form[0]}- bulunmaz")
+
+    if len(form) >= 2 and form[0] not in VOWELS and form[1] not in VOWELS:
+        score -= 0.25
+        penalties.append("söz başı ünsüz kümesi — Proto-Türkçe'de bulunmaz")
+
+    # Aynı ünsüzün üç kez üst üste gelmesi hiçbir doğal dilde olmaz.
+    for i in range(len(form) - 2):
+        if form[i] == form[i + 1] == form[i + 2]:
+            score -= 0.4
+            penalties.append(f"üç kez tekrarlanan ses: {form[i]!r}")
+            break
+
+    return max(0.0, round(score, 3)), penalties
+
+
+#: Proto-Türkçe'de söz başında bulunmayan sesler (Clauson, Erdal).
+PROHIBITED_INITIALS = frozenset("fvzžhğcñŋlr")
