@@ -366,22 +366,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
-
-def tune_edit_distance_threshold(
-    tasks: list[ConceptTask], *, candidates: tuple[float, ...] = tuple(i / 20 for i in range(4, 17))
-) -> tuple[float, float]:
-    """En iyi düzenleme uzaklığı eşiğini **train** kavramlarında arar.
-
-    :returns: ``(eşik, o eşikte alınan B-Cubed F)``
-    """
-    best = (0.5, 0.0)
-    for threshold in candidates:
-        score = evaluate_system(
-            f"edit@{threshold}",
-            lambda task, t=threshold: cluster_edit_distance(task, threshold=t),
-            tasks,
-        )["bcubed_f"]
-        if score > best[1]:
-            best = (threshold, score)
-    return best
