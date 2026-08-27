@@ -1,0 +1,220 @@
+{
+  "_schema": "turkic-etymology-negative-controls/v1",
+  "note": "Yanlış-pozitif oranı ANA SONUCUN YANINDA raporlanır. Tek bir uydurma kelime yetmez; asıl sınav fonotaktik olarak geçerli sahte kökler ve alıntı tuzaklarıdır.",
+  "batteries": [
+    {
+      "battery": "fonotaktik_gecerli_sahte",
+      "n": 8,
+      "reconstructed": 8,
+      "false_positive_rate": 1.0,
+      "strong_claim_rate": 0.0
+    },
+    {
+      "battery": "bariz_sahte",
+      "n": 4,
+      "reconstructed": 0,
+      "false_positive_rate": 0.0,
+      "strong_claim_rate": 0.0
+    },
+    {
+      "battery": "sahte_akraba",
+      "n": 4,
+      "reconstructed": 0,
+      "false_positive_rate": 0.0,
+      "strong_claim_rate": 0.0
+    },
+    {
+      "battery": "alinti_tuzagi",
+      "n": 6,
+      "reconstructed": 6,
+      "false_positive_rate": 1.0,
+      "strong_claim_rate": 0.0
+    }
+  ],
+  "details": {
+    "fonotaktik_gecerli_sahte": [
+      {
+        "query": "kalgır",
+        "reconstructed": true,
+        "root": "*kalgır",
+        "badge": "🟠 ZAYIF KANIT",
+        "calibrated": 0.205,
+        "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
+      },
+      {
+        "query": "sötüm",
+        "reconstructed": true,
+        "root": "*sötem",
+        "badge": "🟠 ZAYIF KANIT",
+        "calibrated": 0.1807,
+        "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
+      },
+      {
+        "query": "tirbek",
+        "reconstructed": true,
+        "root": "*tirbek",
+        "badge": "🟠 ZAYIF KANIT",
+        "calibrated": 0.2118,
+        "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
+      },
+      {
+        "query": "yomgan",
+        "reconstructed": true,
+        "root": "*jomgan",
+        "badge": "🟠 ZAYIF KANIT",
+        "calibrated": 0.1973,
+        "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
+      },
+      {
+        "query": "bürtel",
+        "reconstructed": true,
+        "root": "*bürtel",
+        "badge": "🟠 ZAYIF KANIT",
+        "calibrated": 0.1854,
+        "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
+      },
+      {
+        "query": "kañtar",
+        "reconstructed": true,
+        "root": "*kaŋtar",
+        "badge": "🟠 ZAYIF KANIT",
+        "calibrated": 0.2101,
+        "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
+      },
+      {
+        "query": "üsper",
+        "reconstructed": true,
+        "root": "*üsper",
+        "badge": "🟠 ZAYIF KANIT",
+        "calibrated": 0.1898,
+        "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
+      },
+      {
+        "query": "dolgaş",
+        "reconstructed": true,
+        "root": "*dolgaş",
+        "badge": "🟠 ZAYIF KANIT",
+        "calibrated": 0.2114,
+        "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
+      }
+    ],
+    "bariz_sahte": [
+      {
+        "query": "zzzqx",
+        "reconstructed": false,
+        "root": "*zzzkh",
+        "badge": "⚪ YETERSİZ KANIT",
+        "calibrated": 0.1322,
+        "reason": "Türkçenin ses dizimini ihlal ediyor"
+      },
+      {
+        "query": "ftrxq",
+        "reconstructed": false,
+        "root": "*ftrhk",
+        "badge": "⚪ YETERSİZ KANIT",
+        "calibrated": 0.1322,
+        "reason": "Türkçenin ses dizimini ihlal ediyor"
+      },
+      {
+        "query": "vlkrn",
+        "reconstructed": false,
+        "root": "*vlkrl",
+        "badge": "⚪ YETERSİZ KANIT",
+        "calibrated": 0.1322,
+        "reason": "Türkçenin ses dizimini ihlal ediyor"
+      },
+      {
+        "query": "psxth",
+        "reconstructed": false,
+        "root": "*pshth",
+        "badge": "⚪ YETERSİZ KANIT",
+        "calibrated": 0.1474,
+        "reason": "Türkçenin ses dizimini ihlal ediyor"
+      }
+    ],
+    "sahte_akraba": [
+      {
+        "query": "ay",
+        "reconstructed": false,
+        "root": "",
+        "badge": "",
+        "calibrated": null,
+        "reason": "Türkçe 'ay' ~ İng. 'eye': salt rastlantı"
+      },
+      {
+        "query": "bad",
+        "reconstructed": false,
+        "root": "",
+        "badge": "",
+        "calibrated": null,
+        "reason": "Farsça 'bād' rüzgâr ~ İng. 'bad': ilgisiz"
+      },
+      {
+        "query": "kol",
+        "reconstructed": false,
+        "root": "",
+        "badge": "",
+        "calibrated": null,
+        "reason": "salt ses benzerliği"
+      },
+      {
+        "query": "gel",
+        "reconstructed": false,
+        "root": "",
+        "badge": "",
+        "calibrated": null,
+        "reason": "salt ses benzerliği"
+      }
+    ],
+    "alinti_tuzagi": [
+      {
+        "query": "kitap",
+        "reconstructed": true,
+        "root": "*kitap",
+        "badge": "🟠 ZAYIF KANIT",
+        "calibrated": 0.1913,
+        "reason": "Arapça kitāb — bütün Türki dillerde var ama MİRAS DEĞİL"
+      },
+      {
+        "query": "duvar",
+        "reconstructed": true,
+        "root": "*divar",
+        "badge": "🟠 ZAYIF KANIT",
+        "calibrated": 0.1899,
+        "reason": "Farsça dīwār"
+      },
+      {
+        "query": "çorap",
+        "reconstructed": true,
+        "root": "*jorap",
+        "badge": "🟠 ZAYIF KANIT",
+        "calibrated": 0.2023,
+        "reason": "Farsça/Arapça ǧurāb"
+      },
+      {
+        "query": "pencere",
+        "reconstructed": true,
+        "root": "*penjire",
+        "badge": "🟠 ZAYIF KANIT",
+        "calibrated": 0.1994,
+        "reason": "Farsça panǧara"
+      },
+      {
+        "query": "sabun",
+        "reconstructed": true,
+        "root": "*sabın",
+        "badge": "🟠 ZAYIF KANIT",
+        "calibrated": 0.202,
+        "reason": "Arapça ṣābūn (nihayetinde Latince)"
+      },
+      {
+        "query": "çay",
+        "reconstructed": true,
+        "root": "*jay",
+        "badge": "🟠 ZAYIF KANIT",
+        "calibrated": 0.2023,
+        "reason": "Çince 茶 — geniş yayılım miras kanıtı değildir"
+      }
+    ]
+  }
+}

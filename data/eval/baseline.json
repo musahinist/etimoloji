@@ -1,6 +1,36 @@
 {
   "_schema": "turkic-etymology-baseline/v1",
-  "measured_at": "2026-08-27T00:35:43+00:00",
+  "negative_controls": [
+    {
+      "battery": "fonotaktik_gecerli_sahte",
+      "n": 8,
+      "reconstructed": 8,
+      "false_positive_rate": 1.0,
+      "strong_claim_rate": 0.0
+    },
+    {
+      "battery": "bariz_sahte",
+      "n": 4,
+      "reconstructed": 0,
+      "false_positive_rate": 0.0,
+      "strong_claim_rate": 0.0
+    },
+    {
+      "battery": "sahte_akraba",
+      "n": 4,
+      "reconstructed": 0,
+      "false_positive_rate": 0.0,
+      "strong_claim_rate": 0.0
+    },
+    {
+      "battery": "alinti_tuzagi",
+      "n": 6,
+      "reconstructed": 6,
+      "false_positive_rate": 1.0,
+      "strong_claim_rate": 0.0
+    }
+  ],
+  "measured_at": "2026-08-27T00:42:06+00:00",
   "dataset": "savelyevturkic",
   "dataset_ref": "v2.1",
   "dataset_commit": "4a540590580f",
@@ -195,7 +225,23 @@
             }
           }
         }
-      }
+      },
+      "significance": [
+        {
+          "system": "comparative",
+          "vs": "majority_character",
+          "difference": -0.015,
+          "ci95": [
+            -0.0425,
+            0.0125
+          ],
+          "permutation_p": 0.37566,
+          "mcnemar_p": 0.37709,
+          "ci_excludes_zero": false,
+          "significant_after_fdr": false
+        }
+      ],
+      "significance_note": "Eşleşmiş permütasyon ve McNemar testi; bootstrap %95 güven aralığı sıfırı içeriyorsa fark anlamlı değildir."
     },
     "tum_veri_capa_dahil": {
       "note": "çapa dili girdide bırakılmış — motor kendi sorusunu tanık olarak görüyor",
@@ -367,7 +413,23 @@
             }
           }
         }
-      }
+      },
+      "significance": [
+        {
+          "system": "comparative",
+          "vs": "majority_character",
+          "difference": 0.02,
+          "ci95": [
+            -0.0075,
+            0.0475
+          ],
+          "permutation_p": 0.22748,
+          "mcnemar_p": 0.22948,
+          "ci_excludes_zero": false,
+          "significant_after_fdr": false
+        }
+      ],
+      "significance_note": "Eşleşmiş permütasyon ve McNemar testi; bootstrap %95 güven aralığı sıfırı içeriyorsa fark anlamlı değildir."
     },
     "15_tanik_capa_haric": {
       "note": "yalnız 15+ tanıklı kolay altküme, çapa çıkarılmış",
@@ -533,7 +595,23 @@
             }
           }
         }
-      }
+      },
+      "significance": [
+        {
+          "system": "comparative",
+          "vs": "majority_character",
+          "difference": 0.0127,
+          "ci95": [
+            -0.0253,
+            0.0506
+          ],
+          "permutation_p": 0.75822,
+          "mcnemar_p": 0.75391,
+          "ci_excludes_zero": false,
+          "significant_after_fdr": false
+        }
+      ],
+      "significance_note": "Eşleşmiş permütasyon ve McNemar testi; bootstrap %95 güven aralığı sıfırı içeriyorsa fark anlamlı değildir."
     },
     "15_tanik_capa_dahil": {
       "note": "kolay altküme + çapa sızıntısı — ÖN ÖLÇÜMÜN koşuluna en yakın hâli",
@@ -699,7 +777,23 @@
             }
           }
         }
-      }
+      },
+      "significance": [
+        {
+          "system": "comparative",
+          "vs": "majority_character",
+          "difference": 0.0127,
+          "ci95": [
+            -0.019,
+            0.0506
+          ],
+          "permutation_p": 0.72183,
+          "mcnemar_p": 0.72656,
+          "ci_excludes_zero": false,
+          "significant_after_fdr": false
+        }
+      ],
+      "significance_note": "Eşleşmiş permütasyon ve McNemar testi; bootstrap %95 güven aralığı sıfırı içeriyorsa fark anlamlı değildir."
     }
   }
 }

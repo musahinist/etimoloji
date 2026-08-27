@@ -1,0 +1,75 @@
+{
+  "_schema": "turkic-etymology-cognate-eval/v1",
+  "dataset": "savelyevturkic",
+  "protocol": "Eşik TRAIN kavramlarında seçildi, sonuç DEV kavramlarında raporlandı. Kavram bazlı ayrım altın standartla aynı tuzu kullanır, dolayısıyla rekonstrüksiyon ölçümüyle tutarlıdır.",
+  "n_train_concepts": 152,
+  "n_dev_concepts": 46,
+  "gold_clusters_per_concept": 3.63,
+  "tuned_threshold": 0.5,
+  "reference_bcubed_f": 0.89,
+  "systems": [
+    {
+      "system": "engine",
+      "bcubed_f": 0.8131,
+      "precision": 0.9811,
+      "recall": 0.7267,
+      "n_concepts": 46,
+      "n_forms": 1507,
+      "skipped": 0
+    },
+    {
+      "system": "lexstat_like",
+      "bcubed_f": 0.8183,
+      "precision": 0.741,
+      "recall": 0.9871,
+      "n_concepts": 46,
+      "n_forms": 1507,
+      "skipped": 0
+    },
+    {
+      "system": "sca_like",
+      "bcubed_f": 0.8586,
+      "precision": 0.8247,
+      "recall": 0.9512,
+      "n_concepts": 46,
+      "n_forms": 1507,
+      "skipped": 0
+    },
+    {
+      "system": "edit_distance",
+      "bcubed_f": 0.9314,
+      "precision": 0.9432,
+      "recall": 0.9274,
+      "n_concepts": 46,
+      "n_forms": 1507,
+      "skipped": 0
+    },
+    {
+      "system": "all_together",
+      "bcubed_f": 0.7426,
+      "precision": 0.6418,
+      "recall": 1.0,
+      "n_concepts": 46,
+      "n_forms": 1507,
+      "skipped": 0
+    },
+    {
+      "system": "all_apart",
+      "bcubed_f": 0.1911,
+      "precision": 1.0,
+      "recall": 0.1108,
+      "n_concepts": 46,
+      "n_forms": 1507,
+      "skipped": 0
+    },
+    {
+      "system": "edit_distance_tuned",
+      "bcubed_f": 0.9314,
+      "precision": 0.9432,
+      "recall": 0.9274,
+      "n_concepts": 46,
+      "n_forms": 1507,
+      "skipped": 0
+    }
+  ]
+}

@@ -5,7 +5,7 @@ düzenlemeyin. Her sayı, adı geçen veri kümesi sürümünden sıfırdan
 hesaplanır.
 
 - **Veri kümesi:** `savelyevturkic` `v2.1` (commit `4a540590580f`)
-- **Ölçüm:** 2026-08-27T00:35:43+00:00
+- **Ölçüm:** 2026-08-27T00:42:06+00:00
 - **Bölüm:** `all`
 - **Altın standart:** 400 madde · train 237 / dev 83 / test 80
 - **Kavram sızıntısı:** 0 (0 olmalı)
@@ -23,6 +23,8 @@ hesaplanır.
 | copy_longest | 0.100 | 0.147 | 3.04 | 0.552 | 0.541 | 1.000 |
 | majority_character | 0.237 | 0.330 | 1.94 | 0.382 | 0.363 | 1.000 |
 
+> `comparative` vs `majority_character`: fark **-0.0150**, %95 GA [-0.0425, +0.0125], permütasyon p=0.376, McNemar p=0.377 → anlamlı DEĞİL — güven aralığı sıfırı içeriyor.
+
 ## `tum_veri_capa_dahil` — n=400
 
 > çapa dili girdide bırakılmış — motor kendi sorusunu tanık olarak görüyor
@@ -34,6 +36,8 @@ hesaplanır.
 | copy_random_daughter | 0.158 | 0.233 | 2.30 | 0.457 | 0.422 | 1.000 |
 | copy_longest | 0.080 | 0.133 | 3.11 | 0.560 | 0.550 | 1.000 |
 | majority_character | 0.223 | 0.307 | 2.02 | 0.395 | 0.368 | 1.000 |
+
+> `comparative` vs `majority_character`: fark **+0.0200**, %95 GA [-0.0075, +0.0475], permütasyon p=0.227, McNemar p=0.229 → anlamlı DEĞİL — güven aralığı sıfırı içeriyor.
 
 ## `15_tanik_capa_haric` — n=158
 
@@ -47,6 +51,8 @@ hesaplanır.
 | copy_longest | 0.038 | 0.089 | 3.35 | 0.632 | 0.650 | 1.000 |
 | majority_character | 0.285 | 0.418 | 1.49 | 0.340 | 0.330 | 1.000 |
 
+> `comparative` vs `majority_character`: fark **+0.0127**, %95 GA [-0.0253, +0.0506], permütasyon p=0.758, McNemar p=0.754 → anlamlı DEĞİL — güven aralığı sıfırı içeriyor.
+
 ## `15_tanik_capa_dahil` — n=158
 
 > kolay altküme + çapa sızıntısı — ÖN ÖLÇÜMÜN koşuluna en yakın hâli
@@ -59,6 +65,8 @@ hesaplanır.
 | copy_longest | 0.038 | 0.089 | 3.34 | 0.628 | 0.652 | 1.000 |
 | majority_character | 0.285 | 0.418 | 1.49 | 0.341 | 0.330 | 1.000 |
 
+> `comparative` vs `majority_character`: fark **+0.0127**, %95 GA [-0.0190, +0.0506], permütasyon p=0.722, McNemar p=0.727 → anlamlı DEĞİL — güven aralığı sıfırı içeriyor.
+
 ## Yorum
 
 Dürüst koşulda motor **%22.2 tam** (%30.0 kabul edilebilir) alıyor.
@@ -66,3 +74,24 @@ Dürüst koşulda motor **%22.2 tam** (%30.0 kabul edilebilir) alıyor.
 Aynı motor, kolay altküme seçilip çapa sızıntısı bırakıldığında **%29.8 tam** (%43.7) gösteriyor. Aradaki fark yöntemden değil, ölçüm kurgusundan geliyor — bu yüzden raporlanan sayı daima dürüst koşulun sayısıdır.
 
 Motorun aşması gereken çıta, en iyi trivial taban çizgisidir: `copy_anchor` %20.2, `copy_random_daughter` %16.8, `copy_longest` %10.0, `majority_character` %23.8.
+
+### Negatif kontroller
+
+Yüksek doğruluk, yüksek yanlış-pozitif oranıyla birlikte anlamsızdır.
+**Güçlü iddia oranı** en kritik sütundur: motorun uydurma veya alıntı
+bir kelimeye 🟢/🟡 rozet verme oranı sıfır olmalıdır.
+
+| Batarya | n | rekonstrükte | yanlış-pozitif | güçlü iddia |
+|---|---|---|---|---|
+| `fonotaktik_gecerli_sahte` | 8 | 8 | 1.000 | **0.000** |
+| `bariz_sahte` | 4 | 0 | 0.000 | **0.000** |
+| `sahte_akraba` | 4 | 0 | 0.000 | **0.000** |
+| `alinti_tuzagi` | 6 | 6 | 1.000 | **0.000** |
+
+### İstatistiksel durum
+
+Her koşulun altındaki satır, motor ile en iyi trivial taban çizgisi
+arasındaki farkın eşleşmiş permütasyon ve McNemar testiyle sınanmış
+sonucunu verir. **Bootstrap güven aralığı sıfırı içeriyorsa fark
+anlamlı değildir** ve öyle raporlanır — bu, motorun kötü olduğunu
+değil, farkın henüz kanıtlanmadığını söyler.

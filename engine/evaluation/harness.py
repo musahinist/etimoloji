@@ -55,8 +55,13 @@ class HarnessResult:
     score: ReconstructionScore
     error_modes: Counter = field(default_factory=Counter)
     by_proto_level: dict[str, dict[str, float]] = field(default_factory=dict)
+    #: Kalibrasyon için: yalnız motorun CEVAP VERDİĞİ maddeler.
     confidences: list[float] = field(default_factory=list)
     correctness: list[bool] = field(default_factory=list)
+    #: Anlamlılık testi için: **her** madde, çekimserlik ``False`` sayılarak.
+    #: Eşleşmiş test ancak diziler aynı maddeleri kapsarsa geçerlidir.
+    item_correct: list[bool] = field(default_factory=list)
+    item_ids: list[str] = field(default_factory=list)
     mean_fer: float = 0.0
     mean_witnesses: float = 0.0
 
@@ -161,6 +166,10 @@ def run(
     per_level: dict[str, list[bool]] = {}
 
     for item in items:
+        # Her madde sonuç dizisine MUTLAKA bir kayıt bırakır; aksi hâlde
+        # sistemler arası eşleşmiş test kurulamaz.
+        result.item_ids.append(item.set_id)
+        result.item_correct.append(False)
         witnesses = _witnesses_for(item, mapping)
         anchor, anchor_lang = _anchor_for(witnesses)
         if not anchor:
@@ -193,6 +202,7 @@ def run(
         result.error_modes[classify_error(predicted, matched_gold, item)] += 1
         fers.append(feature_error_rate(predicted, matched_gold))
 
+        result.item_correct[-1] = is_exact
         confidence = output.get("confidence")
         if isinstance(confidence, (int, float)):
             result.confidences.append(float(confidence))

@@ -31,6 +31,8 @@ from engine.db.language_mapping import build_mapping, unmapped_languages
 from engine.evaluation.baselines import BASELINES
 from engine.evaluation.gold import GoldStandard
 from engine.evaluation.harness import comparative_reconstructor, run
+from engine.evaluation.negative_controls import ALL_BATTERIES, run_battery
+from engine.evaluation.significance import compare_systems
 from engine.logging_setup import get_logger
 
 logger = get_logger(__name__)
@@ -100,12 +102,50 @@ def measure(dataset: str = "savelyevturkic", split: str | None = None) -> dict[s
                 exclude_anchor_language=condition.exclude_anchor,
             )
             per_system[name] = outcome.as_dict()
+            per_system[name]["_correct_flags"] = outcome.item_correct
             if name == "comparative":
                 per_system[name]["by_proto_level"] = outcome.by_proto_level
-        results[condition.name] = {"note": condition.note, "n_items": len(items), "systems": per_system}
+
+        # ⚠️ Anlamlılık testi yalnız AYNI maddeler üzerinde yapılabilir.
+        # Sistemler farklı maddelerde çekimser kaldığında bayrak dizileri
+        # farklı uzunlukta olur ve eşleşmiş test geçersizdir.
+        flags = {
+            name: stats.pop("_correct_flags")
+            for name, stats in per_system.items()
+        }
+        reference = max(
+            (n for n in flags if n != "comparative"),
+            key=lambda n: per_system[n]["accuracy"],
+            default=None,
+        )
+        comparisons: list[dict[str, Any]] = []
+        if reference:
+            comparisons = compare_systems(
+                {"comparative": flags["comparative"], reference: flags[reference]},
+                reference=reference,
+            )
+        results[condition.name] = {
+            "note": condition.note,
+            "n_items": len(items),
+            "systems": per_system,
+            "significance": comparisons,
+            "significance_note": (
+                "Eşleşmiş permütasyon ve McNemar testi; bootstrap %95 güven "
+                "aralığı sıfırı içeriyorsa fark anlamlı değildir."
+            ),
+        }
+
+    # Negatif kontroller ANA SONUCUN YANINDA raporlanır: yüksek doğruluk,
+    # yüksek yanlış-pozitif oranıyla birlikte anlamsızdır.
+    engine_fn = systems["comparative"]
+    controls = [
+        run_battery(engine_fn, battery_items, name).as_dict()
+        for name, battery_items in ALL_BATTERIES.items()
+    ]
 
     return {
         "_schema": "turkic-etymology-baseline/v1",
+        "negative_controls": controls,
         "measured_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "dataset": dataset,
         "dataset_ref": wordlist.provenance.get("ref", ""),
@@ -162,6 +202,20 @@ def write_markdown(payload: dict[str, Any], path: Path) -> Path:
                 f"| {stats['ED']:.2f} | {stats['NED']:.3f} | {stats['FER']:.3f} | {stats['coverage']:.3f} |"
             )
         lines.append("")
+        for comparison in block.get("significance", []):
+            low, high = comparison["ci95"]
+            verdict = (
+                "**anlamlı**"
+                if comparison["significant_after_fdr"]
+                else "anlamlı DEĞİL — güven aralığı sıfırı içeriyor"
+            )
+            lines += [
+                f"> `comparative` vs `{comparison['vs']}`: fark "
+                f"**{comparison['difference']:+.4f}**, %95 GA [{low:+.4f}, {high:+.4f}], "
+                f"permütasyon p={comparison['permutation_p']:.3f}, "
+                f"McNemar p={comparison['mcnemar_p']:.3f} → {verdict}.",
+                "",
+            ]
 
     honest = payload["conditions"]["tum_veri_capa_haric"]["systems"]
     leaky = payload["conditions"]["15_tanik_capa_dahil"]["systems"]
@@ -180,6 +234,30 @@ def write_markdown(payload: dict[str, Any], path: Path) -> Path:
         "Motorun aşması gereken çıta, en iyi trivial taban çizgisidir: "
         + ", ".join(f"`{s}` %{honest[s]['accuracy'] * 100:.1f}" for s in honest if s != "comparative")
         + ".",
+        "",
+        "### Negatif kontroller",
+        "",
+        "Yüksek doğruluk, yüksek yanlış-pozitif oranıyla birlikte anlamsızdır.",
+        "**Güçlü iddia oranı** en kritik sütundur: motorun uydurma veya alıntı",
+        "bir kelimeye 🟢/🟡 rozet verme oranı sıfır olmalıdır.",
+        "",
+        "| Batarya | n | rekonstrükte | yanlış-pozitif | güçlü iddia |",
+        "|---|---|---|---|---|",
+    ]
+    for control in payload.get("negative_controls", []):
+        lines.append(
+            f"| `{control['battery']}` | {control['n']} | {control['reconstructed']} "
+            f"| {control['false_positive_rate']:.3f} | **{control['strong_claim_rate']:.3f}** |"
+        )
+    lines += [
+        "",
+        "### İstatistiksel durum",
+        "",
+        "Her koşulun altındaki satır, motor ile en iyi trivial taban çizgisi",
+        "arasındaki farkın eşleşmiş permütasyon ve McNemar testiyle sınanmış",
+        "sonucunu verir. **Bootstrap güven aralığı sıfırı içeriyorsa fark",
+        "anlamlı değildir** ve öyle raporlanır — bu, motorun kötü olduğunu",
+        "değil, farkın henüz kanıtlanmadığını söyler.",
         "",
     ]
     path.write_text("\n".join(lines), encoding="utf-8")
