@@ -1,5 +1,5 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-prediction correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify
+        data gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-prediction correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify semantic dialect
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -22,6 +22,8 @@ help:
 	@echo "chains         - Alıntı geçiş zincirleri ve uyarlama kuralları"
 	@echo "correspondences - Ses denkliklerini TRAIN kavramlarından öğren"
 	@echo "eval-prediction - İleri akraba tahmini (tr -> 31 dil)"
+	@echo "semantic       - Türkçe kavram köprüsünü kur (CLICS eş-adlandırma için)"
+	@echo "dialect        - Ağız kelimeleri toplu analizi (Faz 10)"
 	@echo "predict-lock   - Öngörü üret ve kilitle (NAME=... gerekli)"
 	@echo "predict-verify - Kilitli öngörüleri doğrula (NAME=... gerekli)"
 	@echo "eval-controls  - Negatif kontrol bataryası (sahte kök, alıntı tuzağı)"
@@ -83,6 +85,12 @@ correspondences: gold
 
 eval-prediction: correspondences
 	.venv/bin/python -m engine.evaluation.prediction_eval
+
+semantic:
+	.venv/bin/python -m engine.nlp.semantic_plausibility --build-bridge
+
+dialect: correspondences lexicon-index
+	.venv/bin/python scripts/analyse_dialect_words.py --limit 200
 
 predict-lock: correspondences lexicon-index
 	.venv/bin/python -m engine.evaluation.prediction_test generate --name $(NAME)

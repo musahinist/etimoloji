@@ -62,3 +62,5 @@ data/lexicons/*.jsonl.gz
 data/lexicons/index.db
 # Zincir dökümü büyük ve türetilmiş; kurallar özet olduğu için commit edilir.
 data/borrowing/chains.json
+# Toplu analiz çıktısı — türetilmiş ve büyük.
+data/dialect/analysis.json
