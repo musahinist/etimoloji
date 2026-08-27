@@ -211,9 +211,17 @@ class TestReconstructionEndToEnd(unittest.TestCase):
         )
         self.assertGreater(agreeing["confidence"], disagreeing["confidence"])
 
-    def test_single_datum_abstains(self):
+    def test_single_datum_is_labelled_as_not_comparative(self):
+        """Tek veri noktasında karşılaştırmalı yöntem UYGULANAMAZ.
+
+        Motor sorgu biçmini aday olarak döndürür ama `method` alanı bunun
+        türetilmediğini söyler ve güven sıfırdır. Sessizce "rekonstrüksiyon"
+        diye sunmak, yapılmamış bir işi yapılmış göstermek olurdu.
+        """
         out = self.engine.reconstruct("göz", entries([("tr", "göz")]))
-        self.assertFalse(out["is_reconstructible"])
+        self.assertEqual(out.get("method"), "anchor_fallback")
+        self.assertFalse(out["evidence_available"])
+        self.assertEqual(out.get("confidence"), 0.0)
 
     def test_query_word_counts_as_a_witness(self):
         """Regresyon: iki dilli kümelerde motor gereksiz çekimser kalıyordu.

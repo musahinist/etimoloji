@@ -31,22 +31,44 @@ saklanır.
 
 ### Rekonstrüksiyon (n=400, uzman altın standardı)
 
-| Sistem | tam | kabul edilebilir | ED | kapsam |
-|---|---|---|---|---|
-| **motor** | **%21,5** | %29,2 | 1,80 | %93 |
-| `majority_character` (trivial) | %23,7 | %33,0 | 1,94 | %100 |
-| `copy_anchor` (hiçbir şey yapma) | %20,3 | %26,8 | 2,13 | %100 |
-| `copy_random_daughter` | %16,8 | %24,2 | 2,29 | %100 |
+**Birincil metrikler NED ve B-Cubed F'tir.** Bu, keyfî bir tercih değil alan
+standardı: SIGTYP 2022'nin resmi metrikleri ED, NED, B-Cubed F ve BLEU'dur ve
+**tam doğruluk hiç yer almaz**; Bouchard-Côté ve ark. 2013 yalnız normalize
+Levenshtein raporlar; Meloni ve ark. 2021'in ana metriği ortalama ED'dir.
+List 2019 (*Beyond Edit Distances*) sistematik hataların ED tarafından her
+örnekte yeniden cezalandırıldığını gösterip B-Cubed F önerir.
 
-⚠️ **Motor ile en iyi trivial taban çizgisi arasındaki fark dört koşulun
-hiçbirinde istatistiksel olarak anlamlı değildir** — bütün bootstrap güven
-aralıkları sıfırı içeriyor (permütasyon p = 0,23–0,76). Yani bugünkü hâliyle
-"karşılaştırmalı yöntem katmanı ölçülebilir bir katkı sağlıyor" **denemez**.
-Bu, motorun kötü olduğunu değil, farkın henüz kanıtlanmadığını söyler.
+| Sistem | **NED**↓ | **BCFS**↑ | ED↓ | FER↓ | tam | kapsam |
+|---|---|---|---|---|---|---|
+| **motor** | **0,384** | **0,508** | 1,97 | **0,359** | 0,230 | 0,988 |
+| `majority_character` (trivial) | 0,382 | 0,500 | 1,94 | 0,363 | 0,237 | 1,000 |
+| `copy_anchor` (hiçbir şey yapma) | 0,417 | 0,466 | 2,13 | 0,392 | 0,203 | 1,000 |
+| `copy_random_daughter` | 0,453 | 0,427 | 2,29 | 0,414 | 0,168 | 1,000 |
+| `copy_longest` | 0,552 | 0,362 | 3,04 | 0,541 | 0,100 | 1,000 |
 
-Karşılaştırma noktası: Kim ve ark. (ACL 2023) Transformer, **8.799 eğitim
-örneğiyle** Roman dillerinde %53, Sinitik dillerde %39,5 alıyor. Bu motor
-sıfır eğitim verisiyle çalışıyor.
+Birincil metrikte fark **+0,0018**, %95 GA [−0,0146, +0,0190] → **anlamlı
+değil**. Motor trivial taban çizgisiyle istatistiksel olarak **berabere**;
+B-Cubed F ve FER'de hafif önde, NED ve tam doğrulukta hafif geride.
+
+⚠️ **Çekimserlik bedava değildir.** Cevaplanmayan madde ortalamaya mümkün
+olan en kötü NED'i (1,0) katar. Bir dönem yalnızca cevaplanan maddeler
+ortalanıyordu; o muhasebe cevap vermemeyi kusursuz cevap vermekle bir
+tutuyor ve çekimser kalmayı ödüllendiriyordu.
+
+Karşılaştırma noktası — **bu, kural tabanlı sistemlerin normal bandıdır**:
+
+| Sistem sınıfı | Rom-phon tam doğruluk |
+|---|---|
+| rastgele kız dil | %0,06 |
+| CorPaR (kural/örüntü) | %22,2 |
+| SVM+PosStrIni (kural/örüntü) | %24,7 |
+| **bu motor** | **%23,0** |
+| RNN (denetimli) | %52,3 |
+| Transformer (denetimli) | %53,8 |
+
+Sinitic verisinde birebir aynı örüntü görülüyor: CorPaR majority'den daha iyi
+PED alıyor (3,28 < 3,50) ama aynı tam doğruluğu veriyor. Sorun uygulamada
+değil, **paradigmada**: %50 bandına yalnız denetimli öğrenme çıkıyor.
 
 ### Akraba tespiti (B-Cubed F, dev kavramları)
 
@@ -89,14 +111,29 @@ gerçek doğruluk %23,9). Kullanıcıya gösterilen skor artık kalibre skordur.
 
 | Sistem | F | kesinlik | duyarlılık | doğruluk |
 |---|---|---|---|---|
-| **motor** | 0,432 | 0,518 | 0,371 | 0,706 |
+| **motor** | 0,421 | 0,416 | 0,427 | 0,646 |
 | yalnız fonotaktik | 0,294 | 0,444 | 0,220 | 0,681 |
 | hepsi alıntı (trivial) | 0,464 | 0,302 | 1,000 | 0,302 |
 
-⚠️ **Olumsuz bulgu:** zincir sinyali (sözlük etiketi) kapatıldığında motor,
-yalnız fonotaktik taban çizgisiyle **birebir aynı** sonucu veriyor (F=0,685).
-Yani ses kanunu ihlali ve değişimsiz yayılım sinyalleri bu veride ölçülebilir
-katkı sağlamıyor; alıntı tespiti şu an büyük ölçüde sözlük etiketine dayanıyor.
+⚠️ **Ablasyon hükmü — olumsuz ve dürüstçe raporlanıyor.** Zincir sinyali
+(sözlük etiketi) kapatıldığında motor, yalnız fonotaktik taban çizgisine
+karşı WOLD'da **anlamlı biçimde GERİDE** (fark −0,035, %95 GA [−0,062,
+−0,007], p=0,019); Wiktionary ablasyonunda ise fark anlamlı değil (+0,006,
+p=0,65). Yani `ses_kanunu_ihlali` ve `değişimsiz_yayılım` sinyalleri ölçülebilir
+katkı sağlamıyor, uzman ölçütünde zarar veriyor.
+
+Bunun **kavramsal** açıklaması da var: denklikleri alıntıların da içinde
+olduğu veriden öğrendik, ve Arapça alıntılar bütün Oğuz dillerinde aynı
+biçimde uyarlandığı için **kendi düzenli denkliklerini yaratıyorlar** — yani
+"beklenen refleks tutuyor mu" testini geçiyorlar.
+
+> **Düzeltme kaydı.** Bu ablasyon bir kez yanlış raporlandı. Değerlendirme
+> kodu `witnesses` alanını hiç doldurmuyordu ve dört sinyalden ikisi tanık
+> gerektirdiği için **yapısal olarak devre dışıydı**; sonuç fonotaktikle
+> birebir aynı çıkıyor, biz de "sinyaller katkı sağlamıyor" diye
+> raporluyorduk. Doğrusu "sinyaller hiç çalıştırılmadı"ydı. Tanıklar
+> doldurulunca (kelime başına ort. 5,1) sinyaller ateşleniyor — ve yukarıdaki
+> gerçek ölçüm elde ediliyor.
 
 ### Öngörü testi (n=182, kilitli sicil)
 

@@ -102,10 +102,70 @@ class PRF:
         }
 
 
+# --- Tanık bulma ------------------------------------------------------------
+
+
+def find_witnesses(
+    word: str,
+    *,
+    source_lang: str = "tr",
+    max_languages: int = 12,
+) -> tuple[tuple[str, str], ...]:
+    """Bir kelime için akraba tanıklarını bulur.
+
+    ⚠️ **Bu adım eksikti ve ölçümü geçersiz kılıyordu.** Dört alıntı
+    sinyalinden ikisi tanık gerektirir (``_sound_law_signal``:
+    ``len(witnesses) < 2``, ``_uniformity_signal``: ``len(forms) < 3``).
+    ``witnesses`` alanı hiç doldurulmadığı için o iki sinyal ablasyon
+    boyunca **yapısal olarak devre dışıydı** ve sonuç "yalnız fonotaktik"
+    ile birebir aynı çıkıyordu. Ölçüm "bu sinyaller katkı sağlamıyor"
+    demiyordu; "hiç çalıştırılmadı" diyordu.
+
+    Doğrulandı — tanıklar doldurulunca (n=150): ``ses_kanunu_ihlali`` 0 → 15
+    kez (%10,0), ``değişimsiz_yayılım`` 0 → 6 kez (%4,0).
+
+    Akış ``scripts/analyse_dialect_words.py``dekiyle aynıdır: ileri tahminle
+    aday üret, sözlükte tam ve bulanık ara. Kelime başına ortalama 2,6 tanık.
+    """
+    from engine.db.lexicon_index import LexiconIndex
+
+    index = LexiconIndex()
+    if not index.exists:
+        return ()
+
+    predictor = _shared_predictor_for_witnesses()
+    found: list[tuple[str, str]] = []
+    for prediction in predictor.predict_all(word, source_lang)[:max_languages]:
+        if not prediction.form or prediction.confidence <= 0:
+            continue
+        hits = index.lookup(prediction.form, languages=[prediction.language], limit=1)
+        if not hits:
+            hits = index.fuzzy_lookup(
+                prediction.form, max_distance=1, languages=[prediction.language]
+            )[:1]
+        if hits:
+            found.append((prediction.language, hits[0]["word"]))
+    return tuple(found)
+
+
+_WITNESS_PREDICTOR: Any = None
+
+
+def _shared_predictor_for_witnesses():
+    global _WITNESS_PREDICTOR
+    if _WITNESS_PREDICTOR is None:
+        from engine.nlp.cognate_prediction import CognatePredictor
+
+        _WITNESS_PREDICTOR = CognatePredictor()
+    return _WITNESS_PREDICTOR
+
+
 # --- Altın standartlar ------------------------------------------------------
 
 
-def load_wold_cases(*, language: str = "Sakha") -> list[BorrowingCase]:
+def load_wold_cases(
+    *, language: str = "Sakha", with_witnesses: bool = True
+) -> list[BorrowingCase]:
     """WOLD'dan uzman etiketli alıntı/miras kayıtları.
 
     WOLD'un ``Borrowed`` alanı beş kademelidir; burada "kesinlikle alıntı"
@@ -146,10 +206,12 @@ def load_wold_cases(*, language: str = "Sakha") -> list[BorrowingCase]:
                     source="wold",
                 )
             )
-    return cases
+    return _attach_witnesses(cases, source_lang="sah") if with_witnesses else cases
 
 
-def load_wiktionary_cases(*, lang: str = "tr", limit: int = 4000) -> list[BorrowingCase]:
+def load_wiktionary_cases(
+    *, lang: str = "tr", limit: int = 4000, with_witnesses: bool = True
+) -> list[BorrowingCase]:
     """Sözlük indeksinden etiketli kayıtlar — **yalnız ablasyon ölçümü için**."""
     from engine.db.lexicon_index import LexiconIndex
 
@@ -163,7 +225,7 @@ def load_wiktionary_cases(*, lang: str = "tr", limit: int = 4000) -> list[Borrow
             "ORDER BY word LIMIT ?",
             (lang, limit),
         ).fetchall()
-    return [
+    cases = [
         BorrowingCase(
             word=row["word"],
             lang_code=lang,
@@ -173,6 +235,38 @@ def load_wiktionary_cases(*, lang: str = "tr", limit: int = 4000) -> list[Borrow
         )
         for row in rows
     ]
+    return _attach_witnesses(cases, source_lang=lang) if with_witnesses else cases
+
+
+def _attach_witnesses(
+    cases: list[BorrowingCase], *, source_lang: str
+) -> list[BorrowingCase]:
+    """Her maddeye akraba tanıklarını iliştirir.
+
+    ``BorrowingCase`` dondurulmuş bir veri sınıfı olduğu için yeniden
+    kurulur. Tanık bulunamayan madde ELENMEZ — tanıksız da olsa fonotaktik
+    ve zincir sinyalleri çalışır; elemek ölçümü kolaylaştırırdı.
+    """
+    out: list[BorrowingCase] = []
+    for case in cases:
+        witnesses = find_witnesses(case.word, source_lang=source_lang)
+        out.append(
+            BorrowingCase(
+                word=case.word,
+                lang_code=case.lang_code,
+                is_borrowed=case.is_borrowed,
+                donor=case.donor,
+                source=case.source,
+                witnesses=witnesses,
+            )
+        )
+    counts = [len(c.witnesses) for c in out]
+    logger.info(
+        "Tanıklar iliştirildi: %d madde, kelime başına ort. %.2f tanık",
+        len(out),
+        sum(counts) / len(counts) if counts else 0.0,
+    )
+    return out
 
 
 # --- Sistemler --------------------------------------------------------------
@@ -312,6 +406,33 @@ def _print_block(title: str, note: str, cases: list[BorrowingCase], scores: dict
         )
 
 
+def _print_ablation_verdict(comparisons: list[dict[str, Any]]) -> None:
+    """Motorun yalnız fonotaktiğe karşı üstünlüğü kanıtlandı mı?
+
+    ⚠️ Bu ablasyon bir kez **ölçüm hatası yüzünden** anlamsız çıktı: tanıklar
+    hiç doldurulmadığı için dört sinyalden ikisi devre dışıydı ve sonuç
+    fonotaktikle birebir aynıydı. O sonuç "sinyaller katkısız" diye
+    raporlanmıştı; doğrusu "sinyaller hiç çalıştırılmadı"ydı.
+    """
+    for row in comparisons:
+        low, high = row["ci95"]
+        significant = row["significant_after_fdr"]
+        if not significant:
+            verdict = "anlamlı DEĞİL — güven aralığı sıfırı içeriyor"
+        elif row["difference"] > 0:
+            verdict = "ANLAMLI ve POZİTİF — bağımsız sinyaller katkı sağlıyor"
+        else:
+            # ⚠️ Anlamlı ama NEGATİF fark, "katkı yok"tan kötüdür: sinyaller
+            # ölçülebilir biçimde ZARAR veriyor demektir. Yönü gözden kaçıran
+            # bir hüküm metni bunu "başarı" diye raporlardı.
+            verdict = "ANLAMLI ama NEGATİF — bağımsız sinyaller ZARAR veriyor"
+        print(
+            f"\n  ablasyon hükmü: motor vs yalnız fonotaktik "
+            f"fark {row['difference']:+.4f} [{low:+.4f}, {high:+.4f}] "
+            f"p={row['permutation_p']:.4f}\n  -> {verdict}"
+        )
+
+
 def main() -> int:
     import argparse
 
@@ -346,7 +467,17 @@ def main() -> int:
             "significance": compare_systems(
                 {k: v.per_item for k, v in scores.items()}, reference="always_inherited"
             ),
+            # ⚠️ ASIL ABLASYON SORUSU: motor, yalnız fonotaktikten iyi mi?
+            # `always_inherited`e karşı karşılaştırma bunu cevaplamaz.
+            "vs_phonotactic": compare_systems(
+                {
+                    "engine": scores["engine"].per_item,
+                    "phonotactic_only": scores["phonotactic_only"].per_item,
+                },
+                reference="phonotactic_only",
+            ),
         }
+        _print_ablation_verdict(payload["wold"]["vs_phonotactic"])
     else:
         print("WOLD yok — birincil ölçüt atlandı (python scripts/download_cldf.py wold)")
 
@@ -373,26 +504,21 @@ def main() -> int:
             "significance": compare_systems(
                 {k: v.per_item for k, v in scores.items()}, reference="always_inherited"
             ),
+            "vs_phonotactic": compare_systems(
+                {
+                    "engine": scores["engine"].per_item,
+                    "phonotactic_only": scores["phonotactic_only"].per_item,
+                },
+                reference="phonotactic_only",
+            ),
         }
+        _print_ablation_verdict(payload["wiktionary_ablation"]["vs_phonotactic"])
 
     print(
         f"\nreferanslar: tek dilli fonotaktik F1 ≈ {REFERENCE_MONOLINGUAL_F1} "
         f"(Miller ve ark. 2020) · aileler arası seabor F ≈ {REFERENCE_CROSSFAMILY_F} "
         f"(List & Forkel 2022)"
     )
-
-    if "wiktionary_ablation" in payload:
-        engine = payload["wiktionary_ablation"]["systems"]["engine"]
-        phono = payload["wiktionary_ablation"]["systems"]["phonotactic_only"]
-        if abs(engine["fscore"] - phono["fscore"]) < 1e-6:
-            print(
-                "\n⚠️ OLUMSUZ BULGU: zincir sinyali kapalıyken motor, yalnız\n"
-                "   fonotaktik taban çizgisiyle AYNI sonucu veriyor. Yani ses\n"
-                "   kanunu ihlali ve değişimsiz yayılım sinyalleri bu veride\n"
-                "   ölçülebilir bir katkı sağlamıyor. Motorun alıntı tespiti\n"
-                "   şu an büyük ölçüde SÖZLÜK ETİKETİNE dayanıyor; bağımsız\n"
-                "   fonolojik çıkarıma değil."
-            )
 
     EVAL_DIR.mkdir(parents=True, exist_ok=True)
     out = EVAL_DIR / "borrowing.json"

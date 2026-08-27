@@ -52,12 +52,19 @@ class TestComparativeReconstruction(unittest.TestCase):
                 out = r.reconstruct(word, entries(pairs))
                 self.assertEqual(out["reconstructed_root"], expected)
 
-    def test_requires_two_witnesses(self):
-        """Tek tanıkla ata biçim ÜRETİLMEMELİDİR."""
+    def test_single_witness_is_not_presented_as_evidence(self):
+        """Tek tanıkla KARŞILAŞTIRMALI ata biçim üretilmemelidir.
+
+        Motor bir aday döndürebilir (ölçümde cevapsızlık mümkün olan en kötü
+        NED'i alır ve çekimserliği ödüllendirmek yanlıştır) ama bunu
+        **karşılaştırmalı yöntemin sonucu gibi sunamaz**: `method` alanı
+        `anchor_fallback` demeli ve `evidence_available` false olmalı.
+        """
         r = ComparativeReconstructor()
         out = r.reconstruct("göz", entries([("tr", "göz")]))
         self.assertFalse(out["evidence_available"])
-        self.assertEqual(out["reconstructed_root"], "")
+        self.assertEqual(out.get("method"), "anchor_fallback")
+        self.assertEqual(out.get("confidence"), 0.0)
 
     def test_confidence_grows_with_evidence(self):
         r = ComparativeReconstructor()

@@ -39,6 +39,10 @@ from dataclasses import dataclass, field
 #: parçası değildir; parantez ise belirsizlik/isteğe bağlılık işaretidir.
 _STRIP_CHARS = "*()[]{}?"
 
+#: Cevaplanmayan bir madde ED ortalamasına ne kadar katkı yapsın?
+#: Altın biçimlerin ortalama uzunluğu ~5; boş cevabın ED'si o uzunluktur.
+WORST_CASE_EDIT_DISTANCE = 5
+
 #: Arşifonem gösterimi: büyük harf "bu konumda iki ses arasında karar
 #: verilmemiştir" demektir (``*Kāpuk`` = *k-* mi *g-* mi belli değil).
 #: "Kabul edilebilir" eşleşmede bu belirsizlik tolere edilir.
@@ -300,7 +304,17 @@ def score_reconstructions(
         score.per_item.append(
             {"predicted": predicted, "gold": gold, "exact": exact, "acceptable": acceptable, "ed": ed}
         )
+    # ⚠️ Çekimserlik BEDAVA DEĞİLDİR. Eskiden yalnız ``n`` artırılıyordu;
+    # ``total_ned`` ve ``total_ed`` değişmediği için çekimser madde ortalamaya
+    # **NED=0 (mümkün olan en iyi)** olarak giriyordu. Bu, cevap vermemeyi
+    # kusursuz cevap vermekle bir tutuyor ve çekimser kalmayı ödüllendiriyordu.
+    #
+    # Doğrusu: cevaplanmayan madde mümkün olan **en kötü** değeri alır.
+    # Anlamlılık testi de aynı muhasebeyi kullanır; ikisi ayrışırsa tablo ile
+    # test birbiriyle çelişir.
     score.n += abstentions
+    score.total_ned += float(abstentions)
+    score.total_ed += abstentions * WORST_CASE_EDIT_DISTANCE
     return score
 
 
@@ -479,3 +493,87 @@ def best_match(predicted: str, gold_candidates: Sequence[str]) -> tuple[str, boo
         if best_ed is None or ed < best_ed:
             best, best_ed = candidate, ed
     return best, exact, acceptable
+
+
+# --- Rekonstrüksiyon için B-Cubed F ----------------------------------------
+#
+# ⚠️ Bu, akraba kümeleme B-Cubed'inden FARKLI bir ölçüdür ve farklı bir soru
+# sorar. List (2019, *Beyond Edit Distances: Comparing linguistic
+# reconstruction systems*, Theoretical Linguistics 45) tam olarak şunu
+# gösteriyor: edit distance **sistematik** hataları her örnekte yeniden
+# cezalandırır. Bir sistem ``*č``yi tutarlı biçimde ``*c`` yazıyorsa bu tek
+# bir yanlış karardır ve geri döndürülebilir; ED ise onu yüz kelimede yüz kez
+# cezalandırır.
+#
+# B-Cubed bunu düzeltir: hataların ne kadar TUTARLI olduğunu ölçer. Yüksek
+# B-Cubed, "yanlış ama sistemli" demektir — yani yeniden eşlenebilir.
+#
+# SIGTYP 2022'nin resmi metrikleri ED, NED, **B-Cubed F** ve BLEU'dur; tam
+# doğruluk hiç yer almaz.
+
+
+def reconstruction_bcubed(pairs: Sequence[tuple[str, str]]) -> dict[str, float]:
+    """Veri kümesi düzeyinde B-Cubed F — hataların tutarlılığını ölçer.
+
+    Her ``(tahmin, altın)`` çifti hizalanır; hizalamanın her sütunu bir
+    ``(tahmin_sesi, altın_sesi)`` karşılığı üretir. Sonra:
+
+    * **kesinlik**: aynı tahmin sesini taşıyan konumların ne kadarı aynı
+      altın sesine karşılık geliyor
+    * **duyarlılık**: aynı altın sesini taşıyan konumların ne kadarı aynı
+      tahmin sesinden geliyor
+
+    Rastgele hata yapan bir sistem düşük, tutarlı biçimde yanlış eşleyen bir
+    sistem yüksek alır — ve ikincisi düzeltilebilir bir sistemdir.
+
+    :param pairs: ``(tahmin, altın)`` çiftleri (yıldızlı ham biçimler)
+    """
+    from engine.nlp.multi_alignment import GAP, align_forms
+
+    predicted_groups: dict[str, list[int]] = defaultdict(list)
+    gold_groups: dict[str, list[int]] = defaultdict(list)
+    position = 0
+
+    for raw_prediction, raw_gold in pairs:
+        prediction = normalize_proto(raw_prediction)
+        gold = normalize_proto(raw_gold)
+        if not prediction or not gold:
+            continue
+        columns = align_forms({"pred": prediction, "gold": gold})
+        for column in columns:
+            sounds = column.sounds
+            left = sounds.get("pred", GAP) or GAP
+            right = sounds.get("gold", GAP) or GAP
+            if left == GAP and right == GAP:
+                continue
+            predicted_groups[left].append(position)
+            gold_groups[right].append(position)
+            position += 1
+
+    if not position:
+        return {"precision": 0.0, "recall": 0.0, "fscore": 0.0, "n": 0}
+
+    membership_predicted = {
+        index: sound for sound, indices in predicted_groups.items() for index in indices
+    }
+    membership_gold = {
+        index: sound for sound, indices in gold_groups.items() for index in indices
+    }
+
+    precision = recall = 0.0
+    for index in range(position):
+        own_predicted = set(predicted_groups[membership_predicted[index]])
+        own_gold = set(gold_groups[membership_gold[index]])
+        overlap = len(own_predicted & own_gold)
+        precision += overlap / len(own_predicted)
+        recall += overlap / len(own_gold)
+
+    precision /= position
+    recall /= position
+    fscore = 2 * precision * recall / (precision + recall) if (precision + recall) else 0.0
+    return {
+        "precision": round(precision, 4),
+        "recall": round(recall, 4),
+        "fscore": round(fscore, 4),
+        "n": position,
+    }

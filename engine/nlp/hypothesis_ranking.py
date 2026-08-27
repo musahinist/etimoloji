@@ -227,6 +227,17 @@ class HypothesisRanker:
 
     @staticmethod
     def _inherited_hypothesis(reconstruction: dict[str, Any], borrowing: Any) -> Hypothesis:
+        # ⚠️ `anchor_fallback` bir REKONSTRÜKSİYON DEĞİLDİR: motor sorgu
+        # biçmini aday olarak döndürmüştür çünkü ölçümde cevapsızlık mümkün
+        # olan en kötü değeri alır. Onu miras hipotezi için kanıt saymak,
+        # yapılmamış bir işi kanıt göstermek olurdu.
+        if reconstruction.get("method") == "anchor_fallback":
+            return Hypothesis(
+                kind="inherited",
+                claim="MİRAS — karşılaştırmalı yöntem uygulanamadı",
+                score=0.05,
+                against=["akraba tanığı yok; ata biçim türetilemedi"],
+            )
         if not reconstruction.get("is_reconstructible"):
             return Hypothesis(
                 kind="inherited",

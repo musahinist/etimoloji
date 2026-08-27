@@ -33,6 +33,8 @@ class TestUnattestedEtymologyReconstruction(unittest.TestCase):
         self.assertFalse(res["evidence_available"])
         self.assertEqual(res["reconstructed_proto_form"], "")
         self.assertIsNone(res["reconstruction_confidence"])
+        # Motorun ürettiği aday saklanır ama ata biçim diye SUNULMAZ.
+        self.assertEqual(res["method"], "anchor_fallback")
 
     def test_predictive_proto_form_from_real_cognates(self):
         """Gerçek akraba tanıklarından karşılaştırmalı yöntemle ata biçim türetimi."""

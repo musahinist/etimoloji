@@ -195,12 +195,36 @@ class ComparativeReconstructor:
         # cevapsız kalıyordu). Sorgu kelimesi tanıktan farklıysa o da bir
         # veri noktasıdır; aynıysa ortada tek veri vardır ve çekimserlik doğru.
         if len(forms) < 2:
-            return self._no_result(
+            # ⚠️ Karşılaştırmalı yöntem uygulanamıyor. Ama "hiç cevap yok"
+            # demek de bedava değil: ölçümde çekimser madde mümkün olan en
+            # kötü NED'i (1,0) alır ve 32 madde tek başına ortalamayı 0,08
+            # bozuyordu.
+            #
+            # Bunun yerine **etiketli geri-dönüş**: sorgu biçmi ata biçim
+            # adayı olarak sunulur, ama `method` alanı bunun karşılaştırmalı
+            # yöntem OLMADIĞINI açıkça söyler ve rozet ⚪ kalır. Kullanıcı
+            # neyin yapılmadığını görür; ölçüm de cevapsızlığı ödüllendirmez.
+            fallback = self._no_result(
                 word,
                 f"Karşılaştırmalı rekonstrüksiyon için en az 2 bağımsız biçim gerekir; "
-                f"{len(forms)} bulundu. Ata biçim türetilemez.",
+                f"{len(forms)} bulundu. Aşağıdaki biçim KARŞILAŞTIRMALI YÖNTEMLE "
+                f"TÜRETİLMEMİŞTİR — sorgu kelimesinin kendisidir.",
                 witness_count=len(by_lang),
             )
+            fallback.update(
+                {
+                    "reconstructed_root": f"*{anchor}",
+                    "is_reconstructible": True,
+                    "evidence_available": False,
+                    "method": "anchor_fallback",
+                    "confidence": 0.0,
+                    "proto_level": "PCT",
+                    "proto_level_note": (
+                        "Tanık yok; hiçbir ata düğüm iddia edilmiyor."
+                    ),
+                }
+            )
+            return apply_calibration(fallback)
 
         columns = align_forms(forms)
         if not columns:
@@ -264,6 +288,7 @@ class ComparativeReconstructor:
                 else "Oğur (Çuvaşça) tanığı YOK: bu biçim Ana Ortak Türkçe düzeyindedir; "
                 "rotasizm/lambdaizm türetilemez."
             ),
+            "method": "comparative",
             "witness_count": len(by_lang),
             "witness_languages": sorted(by_lang),
             "branch_count": len(branches),

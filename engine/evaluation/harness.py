@@ -32,6 +32,8 @@ from engine.evaluation.metrics import (
     best_match,
     feature_error_rate,
     normalize_proto,
+    normalized_edit_distance,
+    reconstruction_bcubed,
     score_reconstructions,
 )
 from engine.logging_setup import get_logger
@@ -61,15 +63,22 @@ class HarnessResult:
     #: Anlamlılık testi için: **her** madde, çekimserlik ``False`` sayılarak.
     #: Eşleşmiş test ancak diziler aynı maddeleri kapsarsa geçerlidir.
     item_correct: list[bool] = field(default_factory=list)
+    #: Madde başına NED — **çekimser madde 1,0 alır** (mümkün olan en kötü).
+    #: Yalnız cevaplanan maddeleri saymak, çekimser kalmayı ödüllendirirdi.
+    item_ned: list[float] = field(default_factory=list)
     item_ids: list[str] = field(default_factory=list)
     mean_fer: float = 0.0
     mean_witnesses: float = 0.0
+    #: ``(tahmin, altın)`` çiftleri — veri kümesi düzeyi B-Cubed için.
+    pairs: list[tuple[str, str]] = field(default_factory=list)
+    bcubed: dict[str, float] = field(default_factory=dict)
 
     def as_dict(self) -> dict[str, Any]:
         return {
             "split": self.split,
             "system": self.system,
             **self.score.as_dict(),
+            "BCFS": self.bcubed.get("fscore", 0.0),
             "FER": round(self.mean_fer, 4),
             "mean_witnesses": round(self.mean_witnesses, 2),
             "error_modes": dict(self.error_modes.most_common()),
@@ -170,6 +179,7 @@ def run(
         # sistemler arası eşleşmiş test kurulamaz.
         result.item_ids.append(item.set_id)
         result.item_correct.append(False)
+        result.item_ned.append(1.0)
         witnesses = _witnesses_for(item, mapping)
         anchor, anchor_lang = _anchor_for(witnesses)
         if not anchor:
@@ -203,6 +213,9 @@ def run(
         fers.append(feature_error_rate(predicted, matched_gold))
 
         result.item_correct[-1] = is_exact
+        result.item_ned[-1] = normalized_edit_distance(
+            normalize_proto(predicted), normalize_proto(matched_gold)
+        )
         confidence = output.get("confidence")
         if isinstance(confidence, (int, float)):
             result.confidences.append(float(confidence))
@@ -210,6 +223,10 @@ def run(
         per_level.setdefault(item.proto_level, []).append(is_exact)
 
     result.score = score_reconstructions(pairs, abstentions=abstentions)
+    result.pairs = pairs
+    # ⚠️ B-Cubed veri kümesi DÜZEYİNDE hesaplanır, kelime kelime değil:
+    # ölçtüğü şey hataların ne kadar tutarlı olduğudur (List 2019).
+    result.bcubed = reconstruction_bcubed(pairs)
     result.mean_fer = sum(fers) / len(fers) if fers else 0.0
     result.mean_witnesses = sum(witness_counts) / len(witness_counts) if witness_counts else 0.0
     result.by_proto_level = {
@@ -255,7 +272,11 @@ def main() -> int:
 
     payload = result.as_dict()
     print(f"\n=== {args.dataset} / {args.split} · n={payload['n']} ===")
-    for key in ("accuracy", "acceptable", "ED", "NED", "FER", "coverage", "mean_witnesses"):
+    print("  --- BİRİNCİL (SIGTYP 2022 / List 2019) ---")
+    for key in ("NED", "BCFS", "ED", "FER"):
+        print(f"  {key:16} {payload[key]}")
+    print("  --- ikincil ---")
+    for key in ("accuracy", "acceptable", "coverage", "mean_witnesses"):
         print(f"  {key:16} {payload[key]}")
     print("\n  ata düğüme göre:")
     for level, stats in result.by_proto_level.items():

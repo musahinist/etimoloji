@@ -309,17 +309,24 @@ class TestBorrowingEvalMechanics(unittest.TestCase):
 
 @unittest.skipUnless(HAS_WOLD, "WOLD indirilmemiş")
 class TestWoldGold(unittest.TestCase):
+    """Etiket okuma testleri — tanık iliştirme KAPALI.
+
+    ``with_witnesses=True`` her madde için ileri tahmin + sözlük araması
+    yapar (1.500 madde × 12 dil). Etiketlerin doğru okunduğunu sınamak için
+    o iş gereksiz; testi dakikalarca uzatır.
+    """
+
     def test_wold_yields_labelled_cases(self):
-        cases = load_wold_cases()
+        cases = load_wold_cases(with_witnesses=False)
         self.assertGreater(len(cases), 100)
 
     def test_uncertain_middle_grade_is_excluded(self):
         """Kararsız kademe ölçüme sokulmaz — hem sistemi hem ölçütü cezalandırır."""
-        cases = load_wold_cases()
+        cases = load_wold_cases(with_witnesses=False)
         self.assertTrue(all(isinstance(c.is_borrowed, bool) for c in cases))
 
     def test_both_classes_are_present(self):
-        cases = load_wold_cases()
+        cases = load_wold_cases(with_witnesses=False)
         self.assertTrue(any(c.is_borrowed for c in cases))
         self.assertTrue(any(not c.is_borrowed for c in cases))
 
@@ -400,3 +407,41 @@ class TestReportWriting(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+@unittest.skipUnless(HAS_WOLD and HAS_CLDF, "veri eksik")
+class TestWitnessAttachment(unittest.TestCase):
+    """⚠️ Tanıkların iliştirilmesi ölçümün geçerliliği için ZORUNLUDUR.
+
+    Bir dönem ``witnesses`` alanı hiç doldurulmuyordu; dört alıntı
+    sinyalinden ikisi tanık gerektirdiği için **yapısal olarak devre
+    dışıydı** ve ablasyon "yalnız fonotaktik" ile birebir aynı çıkıyordu.
+    O sonuç "sinyaller katkı sağlamıyor" diye raporlanmıştı; doğrusu
+    "sinyaller hiç çalıştırılmadı"ydı.
+    """
+
+    def test_witnesses_are_attached_by_default(self):
+        from engine.evaluation.borrowing_eval import load_wiktionary_cases
+
+        cases = load_wiktionary_cases(limit=20)
+        if not cases:
+            self.skipTest("sözlük indeksi yok")
+        self.assertTrue(any(c.witnesses for c in cases))
+
+    def test_witness_dependent_signals_actually_fire(self):
+        """Tanıklı maddede ses kanunu / yayılım sinyalleri ateşlenebilmeli."""
+        from engine.evaluation.borrowing_eval import find_witnesses
+        from engine.nlp.borrowing_detector import BorrowingDetector
+
+        witnesses = find_witnesses("kitap")
+        if len(witnesses) < 3:
+            self.skipTest("yeterli tanık bulunamadı (sözlük indeksi eksik olabilir)")
+        entries = [{"lang_code": c, "word": w} for c, w in witnesses]
+        verdict = BorrowingDetector().detect("kitap", entries)
+        names = {s.name for s in verdict.signals}
+        self.assertIn("ses_kanunu_ihlali", names)
+        self.assertIn("değişimsiz_yayılım", names)
+        # Tanıksız çağrıda bu iki sinyal "yeterli tanık yok" der ve ASLA
+        # ateşlenemez; tanıklıda en azından değerlendirilebilir olmalı.
+        evaluated = [s for s in verdict.signals if "yeterli tanık yok" not in s.explanation]
+        self.assertGreaterEqual(len(evaluated), 3)

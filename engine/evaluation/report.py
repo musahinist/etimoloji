@@ -32,7 +32,7 @@ from engine.evaluation.baselines import BASELINES
 from engine.evaluation.gold import GoldStandard
 from engine.evaluation.harness import comparative_reconstructor, run
 from engine.evaluation.negative_controls import ALL_BATTERIES, run_battery
-from engine.evaluation.significance import compare_systems
+from engine.evaluation.significance import bootstrap_metric_difference, compare_systems
 from engine.logging_setup import get_logger
 
 logger = get_logger(__name__)
@@ -103,16 +103,17 @@ def measure(dataset: str = "savelyevturkic", split: str | None = None) -> dict[s
             )
             per_system[name] = outcome.as_dict()
             per_system[name]["_correct_flags"] = outcome.item_correct
+            # Sürekli birincil metrikler madde madde saklanır: eşleşmiş
+            # bootstrap testi ancak böyle kurulabilir.
+            per_system[name]["_ned"] = outcome.item_ned
             if name == "comparative":
                 per_system[name]["by_proto_level"] = outcome.by_proto_level
 
         # ⚠️ Anlamlılık testi yalnız AYNI maddeler üzerinde yapılabilir.
         # Sistemler farklı maddelerde çekimser kaldığında bayrak dizileri
         # farklı uzunlukta olur ve eşleşmiş test geçersizdir.
-        flags = {
-            name: stats.pop("_correct_flags")
-            for name, stats in per_system.items()
-        }
+        flags = {name: stats.pop("_correct_flags") for name, stats in per_system.items()}
+        neds = {name: stats.pop("_ned") for name, stats in per_system.items()}
         reference = max(
             (n for n in flags if n != "comparative"),
             key=lambda n: per_system[n]["accuracy"],
@@ -124,11 +125,23 @@ def measure(dataset: str = "savelyevturkic", split: str | None = None) -> dict[s
                 {"comparative": flags["comparative"], reference: flags[reference]},
                 reference=reference,
             )
+        # ⚠️ BİRİNCİL metrik NED'dir (SIGTYP 2022); anlamlılık orada da
+        # sınanmalı. Yalnız ikili doğru/yanlış bayrağı üzerinde test etmek,
+        # alanın kullanmadığı bir metriği tek kanıt saymak olurdu.
+        primary: dict[str, Any] = {}
+        if reference and len(neds["comparative"]) == len(neds[reference]):
+            primary = bootstrap_metric_difference(
+                neds["comparative"], neds[reference], lower_is_better=True
+            )
+            primary["metric"] = "NED"
+            primary["vs"] = reference
+
         results[condition.name] = {
             "note": condition.note,
             "n_items": len(items),
             "systems": per_system,
             "significance": comparisons,
+            "primary_significance": primary,
             "significance_note": (
                 "Eşleşmiş permütasyon ve McNemar testi; bootstrap %95 güven "
                 "aralığı sıfırı içeriyorsa fark anlamlı değildir."
@@ -192,16 +205,39 @@ def write_markdown(payload: dict[str, Any], path: Path) -> Path:
             "",
             f"> {block['note']}",
             "",
-            "| Sistem | tam | kabul edilebilir | ED | NED | FER | kapsam |",
+            "**Birincil metrikler NED ve B-Cubed F'tir** (SIGTYP 2022 resmi",
+            "metrikleri; List 2019). Tam doğruluk ikincildir ve alanda tek başına",
+            "raporlanmaz — n=400'de en oynak ölçüdür.",
+            "",
+            "| Sistem | **NED**↓ | **BCFS**↑ | ED↓ | FER↓ | tam | kapsam |",
             "|---|---|---|---|---|---|---|",
         ]
         for system, stats in block["systems"].items():
             marker = "**" if system == "comparative" else ""
             lines.append(
-                f"| {marker}{system}{marker} | {stats['accuracy']:.3f} | {stats['acceptable']:.3f} "
-                f"| {stats['ED']:.2f} | {stats['NED']:.3f} | {stats['FER']:.3f} | {stats['coverage']:.3f} |"
+                f"| {marker}{system}{marker} | **{stats['NED']:.3f}** "
+                f"| **{stats.get('BCFS', 0):.3f}** | {stats['ED']:.2f} | {stats['FER']:.3f} "
+                f"| {stats['accuracy']:.3f} | {stats['coverage']:.3f} |"
             )
         lines.append("")
+        primary = block.get("primary_significance") or {}
+        if primary:
+            low, high = primary["ci95"]
+            verdict = (
+                "**motor daha iyi**"
+                if primary.get("a_is_better")
+                else (
+                    "**taban çizgi daha iyi**"
+                    if primary.get("significant")
+                    else "anlamlı DEĞİL — güven aralığı sıfırı içeriyor"
+                )
+            )
+            lines += [
+                f"> **BİRİNCİL (NED)** `comparative` vs `{primary['vs']}`: fark "
+                f"**{primary['difference']:+.4f}** (düşük olan iyi), "
+                f"%95 GA [{low:+.4f}, {high:+.4f}] → {verdict}.",
+                "",
+            ]
         for comparison in block.get("significance", []):
             low, high = comparison["ci95"]
             verdict = (
@@ -210,7 +246,7 @@ def write_markdown(payload: dict[str, Any], path: Path) -> Path:
                 else "anlamlı DEĞİL — güven aralığı sıfırı içeriyor"
             )
             lines += [
-                f"> `comparative` vs `{comparison['vs']}`: fark "
+                f"> ikincil (tam doğruluk) `comparative` vs `{comparison['vs']}`: fark "
                 f"**{comparison['difference']:+.4f}**, %95 GA [{low:+.4f}, {high:+.4f}], "
                 f"permütasyon p={comparison['permutation_p']:.3f}, "
                 f"McNemar p={comparison['mcnemar_p']:.3f} → {verdict}.",

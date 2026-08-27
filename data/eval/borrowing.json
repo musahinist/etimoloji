@@ -5,7 +5,7 @@
   "wold": {
     "language": "sah",
     "n": 769,
-    "tuned_threshold": 0.05,
+    "tuned_threshold": 0.1,
     "systems": {
       "always_inherited": {
         "precision": 0.0,
@@ -38,14 +38,14 @@
         "tn": 473
       },
       "engine": {
-        "precision": 0.5181,
-        "recall": 0.3707,
-        "fscore": 0.4322,
-        "accuracy": 0.7061,
-        "tp": 86,
-        "fp": 80,
-        "fn": 146,
-        "tn": 457
+        "precision": 0.416,
+        "recall": 0.4267,
+        "fscore": 0.4213,
+        "accuracy": 0.6463,
+        "tp": 99,
+        "fp": 139,
+        "fn": 133,
+        "tn": 398
       }
     },
     "significance": [
@@ -78,73 +78,88 @@
       {
         "system": "engine",
         "vs": "always_inherited",
-        "difference": 0.0078,
+        "difference": -0.052,
         "ci95": [
-          -0.0247,
-          0.0403
+          -0.091,
+          -0.013
         ],
-        "permutation_p": 0.70553,
-        "mcnemar_p": 0.69808,
-        "ci_excludes_zero": false,
-        "significant_after_fdr": false
+        "permutation_p": 0.0112,
+        "mcnemar_p": 0.01132,
+        "ci_excludes_zero": true,
+        "significant_after_fdr": true
+      }
+    ],
+    "vs_phonotactic": [
+      {
+        "system": "engine",
+        "vs": "phonotactic_only",
+        "difference": -0.0351,
+        "ci95": [
+          -0.0624,
+          -0.0065
+        ],
+        "permutation_p": 0.0193,
+        "mcnemar_p": 0.01869,
+        "ci_excludes_zero": true,
+        "significant_after_fdr": true
       }
     ]
   },
   "wiktionary_ablation": {
     "language": "tr",
-    "n": 1000,
-    "tuned_threshold": 0.05,
+    "n": 500,
+    "tuned_threshold": 0.15,
     "chain_signal": "disabled",
     "systems": {
       "always_inherited": {
         "precision": 0.0,
         "recall": 0.0,
         "fscore": 0.0,
-        "accuracy": 0.287,
+        "accuracy": 0.288,
         "tp": 0,
         "fp": 0,
-        "fn": 713,
-        "tn": 287
+        "fn": 356,
+        "tn": 144
       },
       "always_borrowed": {
-        "precision": 0.713,
+        "precision": 0.712,
         "recall": 1.0,
-        "fscore": 0.8325,
-        "accuracy": 0.713,
-        "tp": 713,
-        "fp": 287,
+        "fscore": 0.8318,
+        "accuracy": 0.712,
+        "tp": 356,
+        "fp": 144,
         "fn": 0,
         "tn": 0
       },
       "phonotactic_only": {
-        "precision": 0.7919,
-        "recall": 0.6031,
-        "fscore": 0.6847,
-        "accuracy": 0.604,
-        "tp": 430,
-        "fp": 113,
-        "fn": 283,
-        "tn": 174
+        "precision": 0.743,
+        "recall": 0.5927,
+        "fscore": 0.6594,
+        "accuracy": 0.564,
+        "tp": 211,
+        "fp": 73,
+        "fn": 145,
+        "tn": 71
       },
       "engine": {
-        "precision": 0.7919,
-        "recall": 0.6031,
-        "fscore": 0.6847,
-        "accuracy": 0.604,
-        "tp": 430,
-        "fp": 113,
-        "fn": 283,
-        "tn": 174
+        "precision": 0.7327,
+        "recall": 0.6236,
+        "fscore": 0.6737,
+        "accuracy": 0.57,
+        "tp": 222,
+        "fp": 81,
+        "fn": 134,
+        "tn": 63
       }
     },
     "significance": [
       {
         "system": "always_borrowed",
         "vs": "always_inherited",
-        "difference": 0.426,
+        "difference": 0.424,
         "ci95": [
-          0.37,
-          0.482
+          0.344,
+          0.504
         ],
         "permutation_p": 0.0001,
         "mcnemar_p": 0.0,
@@ -154,10 +169,10 @@
       {
         "system": "phonotactic_only",
         "vs": "always_inherited",
-        "difference": 0.317,
+        "difference": 0.276,
         "ci95": [
-          0.276,
-          0.358
+          0.214,
+          0.338
         ],
         "permutation_p": 0.0001,
         "mcnemar_p": 0.0,
@@ -167,15 +182,30 @@
       {
         "system": "engine",
         "vs": "always_inherited",
-        "difference": 0.317,
+        "difference": 0.282,
         "ci95": [
-          0.276,
-          0.358
+          0.218,
+          0.346
         ],
         "permutation_p": 0.0001,
         "mcnemar_p": 0.0,
         "ci_excludes_zero": true,
         "significant_after_fdr": true
+      }
+    ],
+    "vs_phonotactic": [
+      {
+        "system": "engine",
+        "vs": "phonotactic_only",
+        "difference": 0.006,
+        "ci95": [
+          -0.01,
+          0.024
+        ],
+        "permutation_p": 0.65243,
+        "mcnemar_p": 0.64761,
+        "ci_excludes_zero": false,
+        "significant_after_fdr": false
       }
     ]
   }

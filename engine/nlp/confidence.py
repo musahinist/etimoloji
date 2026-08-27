@@ -35,9 +35,25 @@ logger = get_logger(__name__)
 CALIBRATION_DIR = PROJECT_ROOT / "data" / "calibration"
 MODEL_PATH = CALIBRATION_DIR / "model.json"
 
-#: Kalibre skorun altında motorun çekimser kalacağı eşik.
-#: Risk-coverage eğrisinden seçilir; ``config`` üzerinden geçersiz kılınabilir.
-DEFAULT_ABSTENTION_THRESHOLD = 0.15
+#: **Çekimserlik biçim MAKULLÜĞÜNE bağlıdır, güven skoruna değil.**
+#:
+#: ⚠️ Eskiden kalibre güven < 0,15 olunca çekimser kalınıyordu. Bu, zayıf
+#: kanıtlı ama gerçek kelimeleri de eliyordu: altın standardın %14'ü (56
+#: madde) cevapsız kalıyor ve tam doğrulukta otomatik kayıp sayılıyordu.
+#:
+#: Doğru ölçüt "kanıt zayıf mı" değil, "**bu biçim Proto-Türkçe olabilir
+#: mi**"dir. Ölçüldü — ayrım temiz:
+#:
+#:     altın standart maddeleri   makullük ort 0,973 · **min 0,50**
+#:     bariz uydurmalar           makullük ort 0,062 · **maks 0,25**
+#:
+#: Zayıf kanıtta motor cevap verir ama rozeti ⚪ kalır; imkânsız biçimde
+#: hiç cevap vermez.
+DEFAULT_PLAUSIBILITY_FLOOR = 0.35
+
+#: Rozet eşiğinin altındaki kalibre skor cevabı ENGELLEMEZ, yalnız rozeti
+#: düşürür. Geriye uyumluluk için korunuyor.
+DEFAULT_ABSTENTION_THRESHOLD = 0.0
 
 #: Rozet eşikleri — kalibre skora göre. Ham skora göre verilmez.
 BADGE_THRESHOLDS: tuple[tuple[float, str], ...] = (
@@ -117,13 +133,15 @@ def apply_calibration(
     result: dict[str, object],
     *,
     abstention_threshold: float = DEFAULT_ABSTENTION_THRESHOLD,
+    plausibility_floor: float = DEFAULT_PLAUSIBILITY_FLOOR,
 ) -> dict[str, object]:
     """Rekonstrüksiyon sonucuna kalibre skoru ve rozeti ekler.
 
-    Kalibre skor eşiğin altındaysa ``is_reconstructible`` **false** yapılır:
-    motor cevabı bulur ama savunulabilir bulmaz ve söylemez. Ata biçim
-    ``withheld_reconstruction`` alanında saklanır — kullanıcı isterse görsün,
-    ama "sonuç" olarak sunulmasın.
+    Motor **yalnız biçim Proto-Türkçe olamayacaksa** çekimser kalır
+    (:data:`DEFAULT_PLAUSIBILITY_FLOOR`); zayıf kanıtta cevap verir ama
+    rozeti ⚪ olur. Ata biçim engellendiğinde ``withheld_reconstruction``
+    alanında saklanır — kullanıcı isterse görsün, ama "sonuç" olarak
+    sunulmasın.
     """
     raw = result.get("confidence")
     if not isinstance(raw, (int, float)):
@@ -148,15 +166,26 @@ def apply_calibration(
             "sistematik olarak yüksek olabilir."
         )
 
-    if calibrated < abstention_threshold and result.get("is_reconstructible"):
+    plausibility = result.get("proto_plausibility")
+    impossible = isinstance(plausibility, (int, float)) and plausibility < plausibility_floor
+    too_weak = calibrated < abstention_threshold
+
+    if (impossible or too_weak) and result.get("is_reconstructible"):
+        reason = (
+            f"üretilen biçim Proto-Türkçe olamaz (makullük {plausibility:.2f} < "
+            f"{plausibility_floor:.2f})"
+            if impossible
+            else f"kalibre güven {calibrated:.2f} < {abstention_threshold:.2f}"
+        )
         result["withheld_reconstruction"] = result.get("reconstructed_root")
         result["reconstructed_root"] = ""
         result["is_reconstructible"] = False
         result["abstained"] = True
+        result["abstention_reason"] = "makullük" if impossible else "güven"
         result["reconstruction_notes"] = (
-            f"Kanıt yetersiz: kalibre güven {calibrated:.2f} < {abstention_threshold:.2f}. "
-            f"Motorun ürettiği aday `withheld_reconstruction` alanındadır ama sonuç "
-            f"olarak sunulmamaktadır."
+            f"Kanıt yetersiz: {reason}. Motorun ürettiği aday "
+            f"`withheld_reconstruction` alanındadır ama sonuç olarak "
+            f"sunulmamaktadır."
         )
     return result
 

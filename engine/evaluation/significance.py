@@ -30,6 +30,7 @@ from __future__ import annotations
 import random
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
+from typing import Any
 
 from engine.logging_setup import get_logger
 
@@ -270,3 +271,48 @@ def compare_systems(
     for row, significant in zip(rows, decisions, strict=True):
         row["significant_after_fdr"] = significant
     return rows
+
+
+def bootstrap_metric_difference(
+    a: Sequence[float],
+    b: Sequence[float],
+    *,
+    iterations: int = 10000,
+    alpha: float = 0.05,
+    seed: int = SIGNIFICANCE_SEED,
+    lower_is_better: bool = False,
+) -> dict[str, Any]:
+    """**Sürekli** metrikler (NED, ED, FER) için eşleşmiş bootstrap farkı.
+
+    ⚠️ :func:`permutation_test` ve :func:`mcnemar_test` yalnız ikili
+    doğru/yanlış bayrakları üzerinde çalışır. NED/ED/FER sürekli ölçülerdir
+    ve alanın **birincil** metrikleridir (SIGTYP 2022); onlar için ayrı bir
+    test gerekir. Bu eksik olduğu sürece birincil metriklerde "anlamlı fark"
+    iddiası kurulamazdı.
+
+    :param lower_is_better: ED/NED/FER için ``True`` — fark işareti buna
+        göre yorumlanır ve "A daha iyi" doğru yönde raporlanır.
+    """
+    if len(a) != len(b) or not a:
+        return {"difference": 0.0, "ci95": [0.0, 0.0], "significant": False, "n": len(a)}
+
+    rng = random.Random(seed)
+    size = len(a)
+    observed = sum(a) / size - sum(b) / size
+    samples: list[float] = []
+    for _ in range(iterations):
+        picked = [rng.randrange(size) for _ in range(size)]
+        samples.append(sum(a[i] - b[i] for i in picked) / size)
+    samples.sort()
+    low = samples[int(alpha / 2 * iterations)]
+    high = samples[min(iterations - 1, int((1 - alpha / 2) * iterations))]
+    excludes_zero = low > 0 or high < 0
+    better = (observed < 0) if lower_is_better else (observed > 0)
+    return {
+        "difference": round(observed, 5),
+        "ci95": [round(low, 5), round(high, 5)],
+        "significant": excludes_zero,
+        "a_is_better": bool(better and excludes_zero),
+        "n": size,
+        "lower_is_better": lower_is_better,
+    }

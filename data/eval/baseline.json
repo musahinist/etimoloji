@@ -18,8 +18,8 @@
     {
       "battery": "sahte_akraba",
       "n": 4,
-      "reconstructed": 0,
-      "false_positive_rate": 0.0,
+      "reconstructed": 4,
+      "false_positive_rate": 1.0,
       "strong_claim_rate": 0.0
     },
     {
@@ -37,7 +37,7 @@
       "strong_claim_rate": 0.0
     }
   ],
-  "measured_at": "2026-08-27T02:01:39+00:00",
+  "measured_at": "2026-08-27T08:07:35+00:00",
   "dataset": "savelyevturkic",
   "dataset_ref": "v2.1",
   "dataset_commit": "4a540590580f",
@@ -70,29 +70,30 @@
           "split": "all",
           "system": "comparative",
           "n": 400,
-          "accuracy": 0.215,
-          "acceptable": 0.2925,
-          "ED": 1.79,
-          "NED": 0.3462,
-          "coverage": 0.92,
-          "abstained": 32,
-          "FER": 0.3611,
+          "accuracy": 0.23,
+          "acceptable": 0.3125,
+          "ED": 1.9725,
+          "NED": 0.3835,
+          "coverage": 0.9875,
+          "abstained": 5,
+          "BCFS": 0.5085,
+          "FER": 0.3595,
           "mean_witnesses": 11.84,
           "error_modes": {
-            "ses_hatasi": 111,
-            "dogru": 86,
-            "soz_basi_yanlis": 65,
-            "ek_soyulmamis": 53,
-            "cekimser": 32,
+            "ses_hatasi": 119,
+            "dogru": 92,
+            "soz_basi_yanlis": 67,
+            "ek_soyulmamis": 63,
             "unlu_uzunlugu": 20,
             "capa_kisa": 20,
-            "rotasizm_lambdaizm_kacirildi": 12,
+            "rotasizm_lambdaizm_kacirildi": 13,
+            "cekimser": 5,
             "unlu_uzunlugu_taniksiz": 1
           },
           "by_proto_level": {
             "PCT": {
-              "n": 256,
-              "accuracy": 0.1992
+              "n": 283,
+              "accuracy": 0.2014
             },
             "PT": {
               "n": 112,
@@ -110,6 +111,7 @@
           "NED": 0.417,
           "coverage": 1.0,
           "abstained": 0,
+          "BCFS": 0.4657,
           "FER": 0.3918,
           "mean_witnesses": 11.84,
           "error_modes": {
@@ -143,6 +145,7 @@
           "NED": 0.4533,
           "coverage": 1.0,
           "abstained": 0,
+          "BCFS": 0.4273,
           "FER": 0.4138,
           "mean_witnesses": 11.84,
           "error_modes": {
@@ -176,6 +179,7 @@
           "NED": 0.5521,
           "coverage": 1.0,
           "abstained": 0,
+          "BCFS": 0.362,
           "FER": 0.541,
           "mean_witnesses": 11.84,
           "error_modes": {
@@ -209,6 +213,7 @@
           "NED": 0.3817,
           "coverage": 1.0,
           "abstained": 0,
+          "BCFS": 0.5,
           "FER": 0.3634,
           "mean_witnesses": 11.84,
           "error_modes": {
@@ -237,17 +242,30 @@
         {
           "system": "comparative",
           "vs": "majority_character",
-          "difference": -0.0225,
+          "difference": -0.0075,
           "ci95": [
-            -0.05,
-            0.005
+            -0.035,
+            0.02
           ],
-          "permutation_p": 0.17238,
-          "mcnemar_p": 0.17547,
+          "permutation_p": 0.72433,
+          "mcnemar_p": 0.72833,
           "ci_excludes_zero": false,
           "significant_after_fdr": false
         }
       ],
+      "primary_significance": {
+        "difference": 0.00181,
+        "ci95": [
+          -0.01465,
+          0.01904
+        ],
+        "significant": false,
+        "a_is_better": false,
+        "n": 400,
+        "lower_is_better": true,
+        "metric": "NED",
+        "vs": "majority_character"
+      },
       "significance_note": "Eşleşmiş permütasyon ve McNemar testi; bootstrap %95 güven aralığı sıfırı içeriyorsa fark anlamlı değildir."
     },
     "tum_veri_capa_dahil": {
@@ -258,29 +276,30 @@
           "split": "all",
           "system": "comparative",
           "n": 400,
-          "accuracy": 0.23,
-          "acceptable": 0.315,
-          "ED": 1.8575,
-          "NED": 0.3617,
-          "coverage": 0.97,
-          "abstained": 12,
-          "FER": 0.3559,
+          "accuracy": 0.2325,
+          "acceptable": 0.3175,
+          "ED": 1.9875,
+          "NED": 0.3877,
+          "coverage": 0.975,
+          "abstained": 10,
+          "BCFS": 0.5099,
+          "FER": 0.3551,
           "mean_witnesses": 12.84,
           "error_modes": {
             "ses_hatasi": 120,
-            "dogru": 92,
+            "dogru": 93,
             "soz_basi_yanlis": 65,
-            "ek_soyulmamis": 58,
+            "ek_soyulmamis": 59,
             "unlu_uzunlugu": 21,
             "capa_kisa": 19,
             "rotasizm_lambdaizm_kacirildi": 12,
-            "cekimser": 12,
+            "cekimser": 10,
             "unlu_uzunlugu_taniksiz": 1
           },
           "by_proto_level": {
             "PCT": {
-              "n": 276,
-              "accuracy": 0.2101
+              "n": 278,
+              "accuracy": 0.2122
             },
             "PT": {
               "n": 112,
@@ -298,6 +317,7 @@
           "NED": 0.417,
           "coverage": 1.0,
           "abstained": 0,
+          "BCFS": 0.4657,
           "FER": 0.3918,
           "mean_witnesses": 12.84,
           "error_modes": {
@@ -331,6 +351,7 @@
           "NED": 0.4574,
           "coverage": 1.0,
           "abstained": 0,
+          "BCFS": 0.4284,
           "FER": 0.4216,
           "mean_witnesses": 12.84,
           "error_modes": {
@@ -364,6 +385,7 @@
           "NED": 0.5596,
           "coverage": 1.0,
           "abstained": 0,
+          "BCFS": 0.3605,
           "FER": 0.5501,
           "mean_witnesses": 12.84,
           "error_modes": {
@@ -397,6 +419,7 @@
           "NED": 0.3947,
           "coverage": 1.0,
           "abstained": 0,
+          "BCFS": 0.4866,
           "FER": 0.3683,
           "mean_witnesses": 12.84,
           "error_modes": {
@@ -425,17 +448,30 @@
         {
           "system": "comparative",
           "vs": "majority_character",
-          "difference": 0.0075,
+          "difference": 0.01,
           "ci95": [
-            -0.0225,
-            0.0375
+            -0.02,
+            0.04
           ],
-          "permutation_p": 0.74183,
-          "mcnemar_p": 0.74283,
+          "permutation_p": 0.61424,
+          "mcnemar_p": 0.61772,
           "ci_excludes_zero": false,
           "significant_after_fdr": false
         }
       ],
+      "primary_significance": {
+        "difference": -0.007,
+        "ci95": [
+          -0.02761,
+          0.01383
+        ],
+        "significant": false,
+        "a_is_better": false,
+        "n": 400,
+        "lower_is_better": true,
+        "metric": "NED",
+        "vs": "majority_character"
+      },
       "significance_note": "Eşleşmiş permütasyon ve McNemar testi; bootstrap %95 güven aralığı sıfırı içeriyorsa fark anlamlı değildir."
     },
     "15_tanik_capa_haric": {
@@ -448,10 +484,11 @@
           "n": 158,
           "accuracy": 0.2785,
           "acceptable": 0.4177,
-          "ED": 1.4304,
-          "NED": 0.3288,
+          "ED": 1.5253,
+          "NED": 0.3477,
           "coverage": 0.981,
           "abstained": 3,
+          "BCFS": 0.6075,
           "FER": 0.3339,
           "mean_witnesses": 24.18,
           "error_modes": {
@@ -485,6 +522,7 @@
           "NED": 0.3655,
           "coverage": 1.0,
           "abstained": 0,
+          "BCFS": 0.5683,
           "FER": 0.3514,
           "mean_witnesses": 24.18,
           "error_modes": {
@@ -517,6 +555,7 @@
           "NED": 0.4456,
           "coverage": 1.0,
           "abstained": 0,
+          "BCFS": 0.47,
           "FER": 0.399,
           "mean_witnesses": 24.18,
           "error_modes": {
@@ -549,6 +588,7 @@
           "NED": 0.632,
           "coverage": 1.0,
           "abstained": 0,
+          "BCFS": 0.3555,
           "FER": 0.6503,
           "mean_witnesses": 24.18,
           "error_modes": {
@@ -581,6 +621,7 @@
           "NED": 0.34,
           "coverage": 1.0,
           "abstained": 0,
+          "BCFS": 0.6033,
           "FER": 0.3303,
           "mean_witnesses": 24.18,
           "error_modes": {
@@ -619,6 +660,19 @@
           "significant_after_fdr": false
         }
       ],
+      "primary_significance": {
+        "difference": 0.00776,
+        "ci95": [
+          -0.01881,
+          0.03788
+        ],
+        "significant": false,
+        "a_is_better": false,
+        "n": 158,
+        "lower_is_better": true,
+        "metric": "NED",
+        "vs": "majority_character"
+      },
       "significance_note": "Eşleşmiş permütasyon ve McNemar testi; bootstrap %95 güven aralığı sıfırı içeriyorsa fark anlamlı değildir."
     },
     "15_tanik_capa_dahil": {
@@ -631,10 +685,11 @@
           "n": 158,
           "accuracy": 0.2785,
           "acceptable": 0.4177,
-          "ED": 1.4241,
-          "NED": 0.3271,
+          "ED": 1.519,
+          "NED": 0.3461,
           "coverage": 0.981,
           "abstained": 3,
+          "BCFS": 0.6076,
           "FER": 0.3308,
           "mean_witnesses": 25.18,
           "error_modes": {
@@ -668,6 +723,7 @@
           "NED": 0.3655,
           "coverage": 1.0,
           "abstained": 0,
+          "BCFS": 0.5683,
           "FER": 0.3514,
           "mean_witnesses": 25.18,
           "error_modes": {
@@ -700,6 +756,7 @@
           "NED": 0.4601,
           "coverage": 1.0,
           "abstained": 0,
+          "BCFS": 0.4647,
           "FER": 0.4185,
           "mean_witnesses": 25.18,
           "error_modes": {
@@ -732,6 +789,7 @@
           "NED": 0.628,
           "coverage": 1.0,
           "abstained": 0,
+          "BCFS": 0.355,
           "FER": 0.6517,
           "mean_witnesses": 25.18,
           "error_modes": {
@@ -764,6 +822,7 @@
           "NED": 0.3408,
           "coverage": 1.0,
           "abstained": 0,
+          "BCFS": 0.6036,
           "FER": 0.3297,
           "mean_witnesses": 25.18,
           "error_modes": {
@@ -802,6 +861,19 @@
           "significant_after_fdr": false
         }
       ],
+      "primary_significance": {
+        "difference": 0.00528,
+        "ci95": [
+          -0.02068,
+          0.03494
+        ],
+        "significant": false,
+        "a_is_better": false,
+        "n": 158,
+        "lower_is_better": true,
+        "metric": "NED",
+        "vs": "majority_character"
+      },
       "significance_note": "Eşleşmiş permütasyon ve McNemar testi; bootstrap %95 güven aralığı sıfırı içeriyorsa fark anlamlı değildir."
     }
   }
