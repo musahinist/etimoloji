@@ -114,6 +114,41 @@ puan, kelime düzeyinde 0,324 → 0,257). Sütun düzeyi ölçümü (dev, n=206)
 uzunluğuyla tutmayan kümeler atlanıyor. Yanlış hizalanmış bir sütundan
 öğrenmek, hiç öğrenmemekten kötüdür.
 
+#### ⚠️ Denenmiş ve KAZANÇ VERMEYEN iki şey
+
+**Bağlam kodlaması (Faz D3).** List ve ark. 2022 Pos/Str/Ini kodlamasının
+CorPaR'ın ED'sini %11 düşürdüğünü ölçüyor. Tablo anahtarı
+`(konum, dil, ses)` yapıldı, konuma özgü destek yetmezse konumsuz toplama
+geri çekilecek şekilde. Sonuç: NED 0,3063 → 0,3067, tam doğruluk aynı, çapa
+dahil koşulda 0,386 → 0,373 (hafif **kötü**). Sebebi veri azlığı: 515 sütun
+üçe bölününce konuma özgü sayımların çoğu destek eşiğini geçemiyor. Basit
+olan tutuldu.
+
+**N-best yeniden sıralama (Faz D5).** Lu, Wang & Mortensen 2024 (P2D) dört
+veri setinde +0,9…+3,1 puan ölçüyor. Bizde:
+
+| sıralama ölçütü | tam doğruluk |
+|---|---|
+| konsensüs (= top-1, mevcut) | **0,434** |
+| yalnız P2D üretim uyumu | 0,361 |
+| konsensüs + 0,2·P2D | 0,422 |
+| konsensüs + 0,5·P2D | 0,434 |
+| **N-best oracle (tavan)** | **0,506** |
+
+Hiçbir karışım konsensüsü geçmiyor. Doğru cevap adayların içinde — oracle
+top-1'in **7 puan** üstünde — ama sıralayıcı onu öne çıkaramıyor. Kök neden
+büyük olasılıkla üreteç zayıflığı: `pt → X` denklikleri yalnız ~237
+rekonstrüksiyonlu eğitim kümesinden öğreniliyor; P2D'nin yayınlanmış
+kazançları sinir ağı üreteçlerle elde edilmiş.
+
+⚠️ İlk sürüm üretim uyumunu **jenerik** Ortak Türkçe refleksiyle
+hesaplıyordu ve daha da kötüydü (0,313). Gerçek P2D için ata dil, denklik
+tablolarına **sözde dil** olarak katıldı (`pt`) ve her tanık dilin kendi
+biçmi üretiliyor — bu 0,313 → 0,361 yaptı ama yetmedi.
+
+**Karar:** adaylar üretiliyor ve çıktıda **rakip hipotez** olarak
+gösteriliyor (`alternative_forms`), ama seçilen biçim değişmiyor.
+
 ⚠️ **Çekimserlik bedava değildir.** Cevaplanmayan madde ortalamaya mümkün
 olan en kötü NED'i (1,0) katar. Bir dönem yalnızca cevaplanan maddeler
 ortalanıyordu; o muhasebe cevap vermemeyi kusursuz cevap vermekle bir
@@ -746,7 +781,7 @@ kullanılmıyor veya kısıtlı kullanılıyor.
 - [Bouchard-Côté ve ark. 2013, *PNAS*](https://www.pnas.org/doi/10.1073/pnas.1204678110) — olasılıksal ses değişimi modeli, 637 Austronesian dili
 - Meloni ve ark. 2021 · Kim ve ark. 2023 (ACL) — Transformer rekonstrüksiyon taban çizgileri (%53 Roman / %39,5 Sinitik, 8.799 eğitim örneğiyle)
 - Lu, Xie & Mortensen 2024 (**ACL 2024 Best Paper**) — DPD-BiReconstructor, yarı-denetimli rekonstrüksiyon
-- [Lu, Wang & Mortensen 2024 (LREC-COLING)](https://arxiv.org/abs/2403.18769) — refleks tahminiyle N-best yeniden sıralama (P2D)
+- **[Lu, Wang & Mortensen 2024 (LREC-COLING)](https://arxiv.org/abs/2403.18769)** ⚠️ **uygulandı, KAZANÇ YOK** — refleks tahminiyle N-best yeniden sıralama (P2D); yayında dört veri setinde +0,9…+3,1 puan. Bizde konsensüsü geçemedi (P2D 0,361 vs konsensüs 0,434). Ata dil denklik tablolarına sözde dil olarak katıldı (`pt`), yine yetmedi. N-best oracle 0,506 — tavan var ama sıralayıcı ulaşamıyor. Adaylar `alternative_forms` olarak sunuluyor, seçilen biçim değişmiyor.
 - Akavarapu & Bhattacharya 2023/2024 — Cognate Transformer (MSA Transformer, çapraz-aile ön-eğitim) · Cui ve ark. 2024
 - [List ve ark. 2023 (LChange @ EMNLP)](https://aclanthology.org/2023.lchange-1.3/) — fonolojik rekonstrüksiyonda belirsizlik gösterimi (`*[p a|i t]`)
 - ⚠️ Häuser & Stamatakis 2025 — Wiktionary/BabelNet'ten kazınan akraba kümelerinin altın standart ağaçlarla tutarsızlığı

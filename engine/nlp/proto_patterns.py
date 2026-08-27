@@ -36,6 +36,21 @@ dilin bir sesinin ata sese ne kadar tanıklık ettiği, o dile atfedilen genel
 
 ⚠️ **Bölme kavram bazlıdır** (``gold.assign_split``). Aynı kavramın başka
 bir kümesi eğitimde görünürse sızıntı olur.
+
+## ⚠️ Denenmiş ve KAZANÇ VERMEYEN: bağlam kodlaması (Faz D3)
+
+List ve ark. 2022 bağlam kodlamasının (Pos/Str/Ini) CorPaR'ın ED'sini
+0,938'den 0,834'e (%11 göreli) düşürdüğünü ölçüyor. Tablo anahtarı
+``(konum, dil, ses)`` yapılıp, konuma özgü destek yetmezse konumdan
+bağımsız toplama geri çekilecek şekilde uygulandı. Ölçüm (dev, n=83)::
+
+    konumsuz    tam 0,3614   NED 0,3063   BCFS 0,583   ED 1,482
+    konumlu     tam 0,3614   NED 0,3067   BCFS 0,583   ED 1,482
+    (çapa dahil koşulda 0,386 -> 0,373, yani hafif KÖTÜ)
+
+Kazanç yok. Sebebi büyük olasılıkla veri azlığı: 515 sütun üçe bölününce
+konuma özgü sayımların çoğu ``MIN_SUPPORT``ı geçemiyor ve karar zaten geri
+çekilmeyle konumsuz toplama düşüyor. Basit olan tutuldu.
 """
 
 from __future__ import annotations

@@ -1,7 +1,7 @@
 {
   "_schema": "turkic-etymology-proto-patterns/v1",
   "trained_on": "savelyevturkic/train",
-  "trained_at": "2026-08-27T12:24:15+00:00",
+  "trained_at": "2026-08-27T12:42:49+00:00",
   "n_sets": 135,
   "n_columns": 515,
   "min_support": 3,

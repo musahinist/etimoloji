@@ -57,6 +57,11 @@ INHERITED_CORRESPONDENCE_PATH = (
     PROJECT_ROOT / "data" / "correspondences" / "learned_inherited.json"
 )
 
+#: Ata dili de içeren tablolar — P2D yeniden sıralaması için.
+PROTO_CORRESPONDENCE_PATH = (
+    PROJECT_ROOT / "data" / "correspondences" / "learned_proto.json"
+)
+
 #: Bir denkliğin tabloya girmesi için gereken asgari gözlem sayısı.
 #: Tek gözlemli denklik kural değil, gürültüdür.
 MIN_SUPPORT = 2
@@ -195,17 +200,32 @@ class CognatePredictor:
 # --- Öğrenme ---------------------------------------------------------------
 
 
+#: Ata dilin sözde dil kodu.
+#:
+#: ⚠️ Ata biçim, eğitim verisine **bir satır olarak** katılırsa denklik
+#: tabloları ``pt -> tr``, ``pt -> cv`` gibi çiftleri de öğrenir. Bu,
+#: LingRex'in kullandığı ve P2D'nin (Lu, Wang & Mortensen 2024) gerektirdiği
+#: kurulumdur: ata biçim adayından kız dilleri ÜRETİP gerçek tanıklarla
+#: karşılaştırmak ancak böyle mümkün olur.
+#:
+#: ⚠️ Bu **denetimlidir** ve yalnız TRAIN kavramlarından öğrenilir.
+PROTO_CODE = "pt"
+
+
 def learn_tables(
     dataset: str = "savelyevturkic",
     *,
     split: str = "train",
     reconstructed_only: bool = False,
+    include_proto: bool = False,
 ) -> dict[tuple[str, str], CorrespondenceTable]:
     """Uzman akraba kümelerinden denklik tablolarını çıkarır.
 
     ⚠️ Yalnız ``split`` kavramları kullanılır. dev/test kavramlarını görmek
     ileri tahmin ölçümünü geçersiz kılardı.
 
+    :param include_proto: ata biçim hizalamaya sözde dil (``pt``) olarak
+        katılsın mı? P2D yeniden sıralaması bunu gerektirir.
     :param reconstructed_only: yalnız uzmanın ata biçim verdiği (``Root``u
         ``*`` ile başlayan) kümeler kullanılsın mı?
 
@@ -241,6 +261,14 @@ def learn_tables(
             for lang, form in cognate_set.forms_by_language().items()
             if lang in mapping and to_comparison_form(form)
         }
+        if include_proto:
+            # ⚠️ Ata biçim bir tanık DEĞİLDİR; hizalamaya sözde dil olarak
+            # katılır ki ``pt -> X`` denklikleri öğrenilsin. Bu satır
+            # olmadan ata biçimden kız dil üretmek mümkün değildir.
+            root = (cognate_set.root or "").strip()
+            proto = to_comparison_form(root) if root.startswith("*") else ""
+            if proto:
+                forms[PROTO_CODE] = proto
         if len(forms) < 2:
             continue
         columns = align_forms(forms)
@@ -303,7 +331,7 @@ def save_tables(
     return out
 
 
-@lru_cache(maxsize=2)
+@lru_cache(maxsize=3)
 def load_tables(path: Path | None = None) -> dict[tuple[str, str], CorrespondenceTable]:
     """Öğrenilmiş tabloları diskten okur. Yoksa boş sözlük."""
     source = path or CORRESPONDENCE_PATH
@@ -324,6 +352,11 @@ def load_tables(path: Path | None = None) -> dict[tuple[str, str], Correspondenc
 
 def reset_table_cache() -> None:
     load_tables.cache_clear()
+
+
+def load_proto_tables() -> dict[tuple[str, str], CorrespondenceTable]:
+    """``pt -> X`` denkliklerini içeren tablolar; yoksa boş sözlük."""
+    return load_tables(PROTO_CORRESPONDENCE_PATH)
 
 
 def load_inherited_tables() -> dict[tuple[str, str], CorrespondenceTable]:
@@ -359,6 +392,17 @@ def main() -> int:
         )
         inherited_rules = sum(len(t.as_dict()["rules"]) for t in inherited.values())
         print(f"  miras tablosu: {len(inherited)} çift · {inherited_rules} kural · {inherited_path}")
+
+    # Üçüncü tablo: ata dil sözde dil olarak dahil (P2D yeniden sıralaması).
+    with_proto = learn_tables(args.dataset, split=args.split, include_proto=True)
+    proto_pairs = {k: v for k, v in with_proto.items() if PROTO_CODE in k}
+    if proto_pairs:
+        proto_path = save_tables(
+            with_proto,
+            trained_on=f"{args.dataset}/{args.split}/with_proto",
+            path=PROTO_CORRESPONDENCE_PATH,
+        )
+        print(f"  ata dil tablosu: {len(proto_pairs)} `pt` çifti · {proto_path}")
 
     predictor = CognatePredictor(tables)
     print("\nörnek tahminler (tr ->):")

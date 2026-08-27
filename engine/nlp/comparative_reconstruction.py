@@ -29,6 +29,7 @@ from engine.fetchers.base import TURKIC_LANGUAGES_MAP
 from engine.logging_setup import get_logger
 from engine.nlp.confidence import apply_calibration
 from engine.nlp.multi_alignment import align_forms
+from engine.nlp.nbest_reranking import generate as generate_candidates
 from engine.nlp.proto_phonology import (
     LIVE_OGHUR_CODES,
     OGHUR_CODES,
@@ -247,11 +248,13 @@ class ComparativeReconstructor:
         proto_chars: list[str] = []
         applied_rules: list[str] = []
         agreements: list[float] = []
+        decisions: list[Any] = []
         diagnostic_hits = 0
         last = len(informative) - 1
         for i, column in enumerate(informative):
             position = "initial" if i == 0 else ("final" if i == last else "medial")
             decision = pick_proto_sound(column, position)
+            decisions.append(decision)
             if decision.sound:
                 proto_chars.append(decision.sound)
             agreements.append(decision.agreement)
@@ -263,6 +266,13 @@ class ComparativeReconstructor:
             return self._no_result(word, "Hiçbir konumda ata ses belirlenemedi.")
 
         proto_form = "*" + "".join(proto_chars)
+
+        # N-best rakip adaylar (Faz D5). Seçilen biçim DEĞİŞMEZ.
+        alternative_forms = [
+            f"*{form}"
+            for form, _ in generate_candidates(decisions)[:5]
+            if f"*{form}" != proto_form
+        ]
 
         # Ünlü uzunluğu AYRI bir katmandır: hizalama sütunlarından değil,
         # uzunluğu koruyan dillerin (Halaçça, Türkmence, Yakutça…) IPA
@@ -329,6 +339,12 @@ class ComparativeReconstructor:
             "diagnostic_columns": diagnostic_hits,
             "applied_correspondences": applied_rules,
             "vowel_length_evidence": length_evidence.describe(),
+            # ⚠️ Rakip adaylar **yeniden sıralanmaz**; sütun konsensüsü
+            # sırasıyla sunulur. Ölçüldü: P2D üretim uyumuyla yeniden
+            # sıralamak doğruluğu 0,4337'den 0,3614'e DÜŞÜRÜYOR
+            # (bkz. `nbest_reranking`). Adaylar yine de değerlidir:
+            # doğru cevap %50,6 oranında bu listenin içindedir (top-1 %43,4).
+            "alternative_forms": alternative_forms,
             "borrowing": borrowing.as_dict() if borrowing is not None else None,
             "reconstruction_notes": (
                 f"{len(by_lang)} dil tanığı ve {len(branches)} Türki kol üzerinden "

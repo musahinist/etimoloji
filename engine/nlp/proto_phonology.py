@@ -398,6 +398,13 @@ class ColumnDecision:
     method: str
     agreement: float
     is_diagnostic: bool = False
+    #: ``ses -> göreli puan`` — sütunun **öteki** adayları (Faz D5).
+    #:
+    #: ⚠️ Tek bir sesle dönmek ölçülmüş bir tavan koyuyordu: top-1 %28,4
+    #: iken N-best oracle **%43,2** — yani doğru cevap adayların içinde ama
+    #: sıralamanın tepesinde değil. Adaylar taşınmazsa yeniden sıralama
+    #: yapılamaz.
+    alternatives: tuple[tuple[str, float], ...] = ()
 
 
 def _weighted_counts(column: AlignedColumn) -> dict[str, float]:
@@ -405,6 +412,17 @@ def _weighted_counts(column: AlignedColumn) -> dict[str, float]:
     for lang, sound in column.present.items():
         counts[sound] += weight_for(lang, sound)
     return dict(counts)
+
+
+def _merge_alternatives(
+    winner: tuple[str, float], others: tuple[tuple[str, float], ...]
+) -> tuple[tuple[str, float], ...]:
+    """Kazananı başa alıp ötekileri arkasına dizer, tekrarları eler."""
+    merged: dict[str, float] = {winner[0]: max(winner[1], 0.5)}
+    for sound, score in others:
+        if sound not in merged:
+            merged[sound] = score * 0.5
+    return tuple(sorted(merged.items(), key=lambda kv: (-kv[1], kv[0])))
 
 
 def _agreement(column: AlignedColumn) -> float:
@@ -429,7 +447,8 @@ def pick_proto_sound(column: AlignedColumn, position: str) -> ColumnDecision:
 
     distinct = column.distinct
     if len(distinct) == 1:
-        return ColumnDecision(next(iter(distinct)), None, "tek_ses", 1.0)
+        sound = next(iter(distinct))
+        return ColumnDecision(sound, None, "tek_ses", 1.0, alternatives=((sound, 1.0),))
 
     # 1 — Oğur tanıklı tanısal denklik. Kesindir, önceliklidir.
     #
@@ -446,7 +465,15 @@ def pick_proto_sound(column: AlignedColumn, position: str) -> ColumnDecision:
             if position not in rule.positions:
                 continue
             if oghur_sounds & rule.oghur_sounds and common_sounds & rule.common_sounds:
-                return ColumnDecision(rule.proto, rule.note, "tanisal", agreement, True)
+                # ⚠️ Tanısal karar bir TANIMDIR; alternatifi yoktur.
+                return ColumnDecision(
+                    rule.proto,
+                    rule.note,
+                    "tanisal",
+                    agreement,
+                    True,
+                    alternatives=((rule.proto, 1.0),),
+                )
 
     # 2 — Sütundaki BÜTÜN sesleri açıklayan denklik.
     best: Correspondence | None = None
@@ -463,7 +490,15 @@ def pick_proto_sound(column: AlignedColumn, position: str) -> ColumnDecision:
         if best is None or len(rule.members) < len(best.members):
             best = rule
     if best is not None:
-        return ColumnDecision(best.proto, best.note, "denklik", agreement)
+        return ColumnDecision(
+            best.proto,
+            best.note,
+            "denklik",
+            agreement,
+            alternatives=_merge_alternatives(
+                (best.proto, 1.0), _ranked(_weighted_counts(column))
+            ),
+        )
 
     # 3 — ÖĞRENİLMİŞ örüntü oyu (Faz D2).
     #
@@ -487,13 +522,27 @@ def pick_proto_sound(column: AlignedColumn, position: str) -> ColumnDecision:
                 f"öğrenilmiş örüntü oyu (güven {confidence:.2f}, {support} tanık çifti)",
                 "ogrenilmis_oruntu",
                 agreement,
+                alternatives=_merge_alternatives(
+                    (sound, confidence), _ranked(_weighted_counts(column))
+                ),
             )
 
     # 4 — Arkaiklik ağırlıklı oy.
     counts = _weighted_counts(column)
     winner = max(sorted(counts), key=lambda s: counts[s])
     method = "arkaik_agirlik" if len(set(counts.values())) > 1 else "cogunluk"
-    return ColumnDecision(winner, None, method, agreement)
+    return ColumnDecision(
+        winner, None, method, agreement, alternatives=_ranked(counts)
+    )
+
+
+def _ranked(counts: dict[str, float]) -> tuple[tuple[str, float], ...]:
+    """Sütun adaylarını normalize puanlarıyla sıralar (Faz D5)."""
+    total = sum(counts.values())
+    if not total:
+        return ()
+    ordered = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+    return tuple((sound, score / total) for sound, score in ordered)
 
 
 # --- Ata biçmin kendi makullüğü -------------------------------------------
