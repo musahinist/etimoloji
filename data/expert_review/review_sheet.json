@@ -1,0 +1,1969 @@
+{
+  "_schema": "turkic-etymology-expert-review/v1",
+  "scale": {
+    "0": "açıkça yanlış — dilbilimsel olarak imkânsız",
+    "1": "çok zayıf — kanıt yok",
+    "2": "zayıf — mümkün ama gerekçe yetersiz",
+    "3": "makul — kabul edilebilir ama tartışmalı",
+    "4": "güçlü — yerleşik yönteme uygun",
+    "5": "kesin — literatürdeki yerleşik görüşle aynı"
+  },
+  "instructions": "Her iddiayı 0-5 ölçeğinde derecelendirin. Gerekçeyi de okuyun: değerlendirilen şey yalnız sonuç değil, ona götüren kanıttır. Emin değilseniz boş bırakın — tahmin yürütmek uyum katsayısını bozar.",
+  "claims": [
+    {
+      "id": "109",
+      "query": "dur",
+      "concept": "STAND",
+      "claim": "*tur",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 31,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "31 dil tanığı ve 7 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: dur -> *tur [*PT]",
+      "applied_correspondences": [
+        "Söz başı ötümlüleşme: Oğuz d- ~ diğer t- < Proto-Türkçe *t-",
+        "öğrenilmiş örüntü oyu (güven 0.70, 31 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*dur"
+      ],
+      "vowel_length_evidence": "uzunluk tanıkları: klj turş [ɑː], tk -dar [oː]"
+    },
+    {
+      "id": "13",
+      "query": "kan",
+      "concept": "BLOOD",
+      "claim": "*kan",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 31,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "31 dil tanığı ve 7 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: kan -> *kan [*PT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.95, 30 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.88, 31 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*han"
+      ],
+      "vowel_length_evidence": "uzunluk tanıkları: klj قان [ɑː], tk gan [ɑː]"
+    },
+    {
+      "id": "14",
+      "query": "sümük",
+      "concept": "BONE",
+      "claim": "*söŋek",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 27,
+      "branches": [
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "27 dil tanığı ve 6 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: sümük -> *söŋek [*PT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.76, 23 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.91, 26 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*söŋök",
+        "*süŋek",
+        "*süŋök",
+        "*söyek"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "142",
+      "query": "yeni",
+      "concept": "NEW",
+      "claim": "*jaŋı",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 28,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "28 dil tanığı ve 7 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: yeni -> *jaŋı [*PT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.70, 26 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.72, 28 tanık çifti)",
+        "Genizsil denkliği: -n- ~ -ŋ- < Proto-Türkçe *-ŋ-"
+      ],
+      "alternative_forms": [
+        "*jaŋa",
+        "*jaŋi",
+        "*yaŋı",
+        "*yaŋa"
+      ],
+      "vowel_length_evidence": "uzunluk tanıkları: sah Саха [aː]"
+    },
+    {
+      "id": "143",
+      "query": "yan",
+      "concept": "BURN",
+      "claim": "*jan",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 16,
+      "branches": [
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz"
+      ],
+      "reasoning": "16 dil tanığı ve 4 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: yan -> *jan [*PT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.82, 16 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.88, 16 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*yan",
+        "*san"
+      ],
+      "vowel_length_evidence": "uzunluk tanıkları: tk aýan [ɑː]"
+    },
+    {
+      "id": "144/*köń",
+      "query": "küy",
+      "concept": "BURN",
+      "claim": "*küj",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 12,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "12 dil tanığı ve 5 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: küy -> *küj [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.96, 12 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.67, 6 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*köj",
+        "*küy",
+        "*kij",
+        "*köy"
+      ],
+      "vowel_length_evidence": "uzunluk tanıkları: klj kîem [iː]"
+    },
+    {
+      "id": "147",
+      "query": "ḳïp",
+      "concept": "BURN",
+      "claim": "*kıp",
+      "proto_level": "PCT",
+      "confidence_badge": "⚪ YETERSİZ KANIT",
+      "witness_count": 1,
+      "branches": null,
+      "reasoning": "Karşılaştırmalı rekonstrüksiyon için en az 2 bağımsız biçim gerekir; 1 bulundu. Aşağıdaki biçim KARŞILAŞTIRMALI YÖNTEMLE TÜRETİLMEMİŞTİR — sorgu kelimesinin kendisidir.",
+      "applied_correspondences": [],
+      "alternative_forms": [],
+      "vowel_length_evidence": ""
+    },
+    {
+      "id": "15",
+      "query": "kemik",
+      "concept": "BONE",
+      "claim": "*kemik",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 2,
+      "branches": [
+        "kipchak",
+        "oguz"
+      ],
+      "reasoning": "2 dil tanığı ve 2 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: kemik -> *kemik [*PCT]",
+      "applied_correspondences": [],
+      "alternative_forms": [],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "161",
+      "query": "gül",
+      "concept": "LAUGH",
+      "claim": "*kül",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 26,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz",
+        "siberian"
+      ],
+      "reasoning": "26 dil tanığı ve 6 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: gül -> *kül [*PT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.94, 26 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.53, 26 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*kul"
+      ],
+      "vowel_length_evidence": "uzunluk tanıkları: klj bil [aː]"
+    },
+    {
+      "id": "162",
+      "query": "χatχïr",
+      "concept": "LAUGH",
+      "claim": "*katkır",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 4,
+      "branches": [
+        "siberian"
+      ],
+      "reasoning": "4 dil tanığı ve 1 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: hathır -> *katkır [*PCT]",
+      "applied_correspondences": [
+        "Söz başı k- ~ g- ~ h- < Proto-Türkçe *k-",
+        "öğrenilmiş örüntü oyu (güven 0.54, 4 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.65, 3 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*kathır",
+        "*kakkır",
+        "*kattır",
+        "*hatkır"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "163",
+      "query": "išit",
+      "concept": "HEAR",
+      "claim": "*eĺit",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 24,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "24 dil tanığı ve 7 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: işit -> *eĺit [*PT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.69, 24 tanık çifti)",
+        "Lambdaizm: Çuvaşça -l ~ Ortak Türkçe -ş < Proto-Türkçe *-ĺ",
+        "öğrenilmiş örüntü oyu (güven 0.58, 20 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*iĺit",
+        "*eĺüt",
+        "*iĺüt"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "164",
+      "query": "uḳ",
+      "concept": "HEAR",
+      "claim": "*uk",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 4,
+      "branches": [
+        "kipchak",
+        "siberian"
+      ],
+      "reasoning": "4 dil tanığı ve 2 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: uk -> *uk [*PCT]",
+      "applied_correspondences": [],
+      "alternative_forms": [],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "165",
+      "query": "tinna",
+      "concept": "HEAR",
+      "claim": "*tıŋna",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 2,
+      "branches": [
+        "siberian"
+      ],
+      "reasoning": "2 dil tanığı ve 1 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: tinna -> *tıŋna [*PCT]",
+      "applied_correspondences": [
+        "Söz başı ötümlüleşme: Oğuz d- ~ diğer t- < Proto-Türkçe *t-",
+        "öğrenilmiş örüntü oyu (güven 0.62, 2 tanık çifti)",
+        "Genizsil denkliği: -n- ~ -ŋ- < Proto-Türkçe *-ŋ-"
+      ],
+      "alternative_forms": [
+        "*dıŋna",
+        "*tiŋna",
+        "*tınna",
+        "*diŋna"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "173",
+      "query": "ġïzïl",
+      "concept": "RED",
+      "claim": "*kıŕıl",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 28,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oghur",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "28 dil tanığı ve 6 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: gızıl -> *kıŕıl [*PT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.96, 26 tanık çifti)",
+        "Lir-Şaz rotasizmi: Çuvaşça -r ~ Ortak Türkçe -z < Proto-Türkçe *-ŕ"
+      ],
+      "alternative_forms": [
+        "*kıŕil",
+        "*kıŕel",
+        "*keŕıl",
+        "*keŕil"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "182",
+      "query": "deri",
+      "concept": "SKIN",
+      "claim": "*teri",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 27,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "27 dil tanığı ve 7 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: deri -> *teri [*PT]",
+      "applied_correspondences": [
+        "Söz başı ötümlüleşme: Oğuz d- ~ diğer t- < Proto-Türkçe *t-",
+        "öğrenilmiş örüntü oyu (güven 0.81, 27 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.50, 24 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*tere",
+        "*tiri",
+        "*tire"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "184",
+      "query": "keš",
+      "concept": "SKIN",
+      "claim": "*keş",
+      "proto_level": "PCT",
+      "confidence_badge": "⚪ YETERSİZ KANIT",
+      "witness_count": 1,
+      "branches": null,
+      "reasoning": "Karşılaştırmalı rekonstrüksiyon için en az 2 bağımsız biçim gerekir; 1 bulundu. Aşağıdaki biçim KARŞILAŞTIRMALI YÖNTEMLE TÜRETİLMEMİŞTİR — sorgu kelimesinin kendisidir.",
+      "applied_correspondences": [],
+      "alternative_forms": [],
+      "vowel_length_evidence": ""
+    },
+    {
+      "id": "186",
+      "query": "sor",
+      "concept": "SUCK",
+      "claim": "*sor",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 19,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "19 dil tanığı ve 6 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: sor -> *sor [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.71, 18 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.80, 19 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*sur"
+      ],
+      "vowel_length_evidence": "uzunluk tanıkları: klj bûor [uː], tk dor [oː]"
+    },
+    {
+      "id": "187",
+      "query": "em",
+      "concept": "SUCK",
+      "claim": "*em",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 27,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz",
+        "siberian"
+      ],
+      "reasoning": "27 dil tanığı ve 6 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: em -> *em [*PT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.86, 27 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.58, 19 tanık çifti)"
+      ],
+      "alternative_forms": [],
+      "vowel_length_evidence": "uzunluk tanıkları: klj êm [eː]"
+    },
+    {
+      "id": "188",
+      "query": "obor",
+      "concept": "SUCK",
+      "claim": "*obor",
+      "proto_level": "PCT",
+      "confidence_badge": "⚪ YETERSİZ KANIT",
+      "witness_count": 1,
+      "branches": null,
+      "reasoning": "Karşılaştırmalı rekonstrüksiyon için en az 2 bağımsız biçim gerekir; 1 bulundu. Aşağıdaki biçim KARŞILAŞTIRMALI YÖNTEMLE TÜRETİLMEMİŞTİR — sorgu kelimesinin kendisidir.",
+      "applied_correspondences": [],
+      "alternative_forms": [],
+      "vowel_length_evidence": ""
+    },
+    {
+      "id": "196",
+      "query": "ḳŭmïrsḳa",
+      "concept": "ANT",
+      "claim": "*kumıska",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 18,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "18 dil tanığı ve 5 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: kumırska -> *kumıska [*PCT]",
+      "applied_correspondences": [
+        "Söz başı k- ~ g- ~ h- < Proto-Türkçe *k-",
+        "öğrenilmiş örüntü oyu (güven 0.65, 18 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.88, 15 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*kumuska",
+        "*kımıska",
+        "*kımuska",
+        "*kumırka"
+      ],
+      "vowel_length_evidence": "uzunluk tanıkları: klj qumurğâç [ɑː]"
+    },
+    {
+      "id": "197",
+      "query": "karïnǰa",
+      "concept": "ANT",
+      "claim": "*karınca",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 4,
+      "branches": [
+        "kipchak",
+        "oguz"
+      ],
+      "reasoning": "4 dil tanığı ve 2 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: karınca -> *karınca [*PCT]",
+      "applied_correspondences": [
+        "Söz başı ötümlüleşme: Oğuz g- ~ diğer k- < Proto-Türkçe *k-",
+        "öğrenilmiş örüntü oyu (güven 0.67, 3 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*garınca",
+        "*karınga",
+        "*karımca",
+        "*karışca"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "198",
+      "query": "čumɔli",
+      "concept": "ANT",
+      "claim": "*çübeli",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 4,
+      "branches": [
+        "karluk",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "4 dil tanığı ve 3 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: çumoli -> *çübeli [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.57, 2 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*çübali",
+        "*çubeli",
+        "*çümeli",
+        "*çubali"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "214",
+      "query": "kalïn",
+      "concept": "THICK",
+      "claim": "*kalıŋ",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 25,
+      "branches": [
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "25 dil tanığı ve 6 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: kalın -> *kalıŋ [*PT]",
+      "applied_correspondences": [
+        "Söz başı k- ~ g- ~ h- < Proto-Türkçe *k-",
+        "öğrenilmiş örüntü oyu (güven 0.79, 25 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.55, 25 tanık çifti)",
+        "Genizsil denkliği: -n- ~ -ŋ- < Proto-Türkçe *-ŋ-"
+      ],
+      "alternative_forms": [
+        "*kalın",
+        "*halıŋ",
+        "*halın"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "215",
+      "query": "yoɣun",
+      "concept": "THICK",
+      "claim": "*jogon",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 14,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "14 dil tanığı ve 6 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: yoğun -> *jogon [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.76, 14 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.56, 14 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.76, 9 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*jogun",
+        "*jogan",
+        "*joğon",
+        "*yogon"
+      ],
+      "vowel_length_evidence": "uzunluk tanıkları: tyv чон [ɔː]"
+    },
+    {
+      "id": "216",
+      "query": "bazïḳ",
+      "concept": "THICK",
+      "claim": "*bazık",
+      "proto_level": "PCT",
+      "confidence_badge": "⚪ YETERSİZ KANIT",
+      "witness_count": 1,
+      "branches": null,
+      "reasoning": "Karşılaştırmalı rekonstrüksiyon için en az 2 bağımsız biçim gerekir; 1 bulundu. Aşağıdaki biçim KARŞILAŞTIRMALI YÖNTEMLE TÜRETİLMEMİŞTİR — sorgu kelimesinin kendisidir.",
+      "applied_correspondences": [],
+      "alternative_forms": [],
+      "vowel_length_evidence": ""
+    },
+    {
+      "id": "232",
+      "query": "žügĭr",
+      "concept": "RUN",
+      "claim": "*jügür",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 19,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "19 dil tanığı ve 5 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: zügır -> *jügür [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.70, 18 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.52, 18 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.60, 6 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*jügir",
+        "*yügür",
+        "*jügır",
+        "*jugür"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "233",
+      "query": "ġač",
+      "concept": "RUN",
+      "claim": "*kaç",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 1,
+      "branches": [
+        "oguz"
+      ],
+      "reasoning": "1 dil tanığı ve 1 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: gaç -> *kaç [*PCT]",
+      "applied_correspondences": [
+        "Söz başı ötümlüleşme: Oğuz g- ~ diğer k- < Proto-Türkçe *k-"
+      ],
+      "alternative_forms": [
+        "*gaç"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "283",
+      "query": "geniš",
+      "concept": "WIDE",
+      "claim": "*keŋ",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 22,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "22 dil tanığı ve 6 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: geniş -> *keŋ [*PCT]",
+      "applied_correspondences": [
+        "Söz başı ötümlüleşme: Oğuz g- ~ diğer k- < Proto-Türkçe *k-",
+        "öğrenilmiş örüntü oyu (güven 0.81, 22 tanık çifti)",
+        "Genizsil denkliği: -n- ~ -ŋ- < Proto-Türkçe *-ŋ-"
+      ],
+      "alternative_forms": [
+        "*kiŋ",
+        "*geŋ",
+        "*giŋ"
+      ],
+      "vowel_length_evidence": "uzunluk tanıkları: klj kîem [iː], tk giň [iː]"
+    },
+    {
+      "id": "284",
+      "query": "yalbïrsaḳ",
+      "concept": "WIDE",
+      "claim": "*jalbahk",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 4,
+      "branches": [
+        "siberian"
+      ],
+      "reasoning": "4 dil tanığı ve 1 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: yalbırsak -> *jalbahk [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.63, 4 tanık çifti)",
+        "Ünsüz yumuşaması: b ~ v ~ w < Proto-Türkçe *b",
+        "öğrenilmiş örüntü oyu (güven 0.87, 4 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*çalbahk",
+        "*jalbask",
+        "*çalbask",
+        "*dalbahk"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "287",
+      "query": "allïɣ",
+      "concept": "WIDE",
+      "claim": "*alhığ",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 1,
+      "branches": [
+        "siberian"
+      ],
+      "reasoning": "1 dil tanığı ve 1 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: allığ -> *alhığ [*PCT]",
+      "applied_correspondences": [],
+      "alternative_forms": [
+        "*allığ"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "310",
+      "query": "tašla",
+      "concept": "THROW",
+      "claim": "*taĺla",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 15,
+      "branches": [
+        "karluk",
+        "kipchak",
+        "siberian"
+      ],
+      "reasoning": "15 dil tanığı ve 3 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: taşla -> *taĺla [*PCT]",
+      "applied_correspondences": [
+        "Söz başı ötümlüleşme: Oğuz d- ~ diğer t- < Proto-Türkçe *t-",
+        "öğrenilmiş örüntü oyu (güven 0.62, 15 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.59, 14 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*taşla",
+        "*taĺta",
+        "*tasla",
+        "*taşta"
+      ],
+      "vowel_length_evidence": "uzunluk tanıkları: tyv аза [aː]"
+    },
+    {
+      "id": "311",
+      "query": "pəraχ",
+      "concept": "THROW",
+      "claim": "*bırak",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 2,
+      "branches": [
+        "siberian"
+      ],
+      "reasoning": "2 dil tanığı ve 1 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: perah -> *bırak [*PCT]",
+      "applied_correspondences": [
+        "Söz başı b- ~ p- < Proto-Türkçe *b-",
+        "öğrenilmiş örüntü oyu (güven 0.75, 2 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*bırah",
+        "*berak",
+        "*berah",
+        "*pırak"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "314",
+      "query": "at",
+      "concept": "THROW",
+      "claim": "*at",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 13,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz",
+        "old_turkic"
+      ],
+      "reasoning": "13 dil tanığı ve 6 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: at -> *at [*PT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.85, 13 tanık çifti)"
+      ],
+      "alternative_forms": [],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "317",
+      "query": "ïrgït",
+      "concept": "THROW",
+      "claim": "*ırgıt",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 1,
+      "branches": [
+        "kipchak"
+      ],
+      "reasoning": "1 dil tanığı ve 1 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: ırgıt -> *ırgıt [*PCT]",
+      "applied_correspondences": [
+        "Ünlü arası yumuşama: g ~ ğ < Proto-Türkçe *g"
+      ],
+      "alternative_forms": [
+        "*ırğıt"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "318",
+      "query": "bär",
+      "concept": "THROW",
+      "claim": "*ber",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 1,
+      "branches": [
+        "oghur"
+      ],
+      "reasoning": "1 dil tanığı ve 1 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: ber -> *ber [*PT]",
+      "applied_correspondences": [
+        "Söz başı b- ~ p- < Proto-Türkçe *b-"
+      ],
+      "alternative_forms": [
+        "*per"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "321",
+      "query": "üč",
+      "concept": "THREE",
+      "claim": "*üç",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 31,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "31 dil tanığı ve 7 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: üç -> *üç [*PT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.61, 31 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.75, 30 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*üş",
+        "*üs"
+      ],
+      "vowel_length_evidence": "uzunluk tanıkları: klj ü̂ç [yː]"
+    },
+    {
+      "id": "35",
+      "query": "kanat",
+      "concept": "WING",
+      "claim": "*kanat",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 29,
+      "branches": [
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "29 dil tanığı ve 6 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: kanat -> *kanat [*PT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.90, 29 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.83, 29 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.87, 29 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.73, 29 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*kınat",
+        "*hanat",
+        "*hınat"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "360/*jïl",
+      "query": "yïl",
+      "concept": "YEAR",
+      "claim": "*jıl",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 26,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "26 dil tanığı ve 6 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: yıl -> *jıl [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.74, 25 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*yıl",
+        "*jil",
+        "*çıl",
+        "*yil"
+      ],
+      "vowel_length_evidence": "uzunluk tanıkları: klj bil [iː], tk ýel [oː]"
+    },
+    {
+      "id": "37",
+      "query": "et",
+      "concept": "MEAT",
+      "claim": "*et",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 27,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "27 dil tanığı ve 6 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: et -> *et [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.89, 27 tanık çifti)"
+      ],
+      "alternative_forms": [],
+      "vowel_length_evidence": "uzunluk tanıkları: tk at [ɑː]"
+    },
+    {
+      "id": "405",
+      "query": "irin",
+      "concept": "PUS",
+      "claim": "*iriŋ",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 24,
+      "branches": [
+        "karluk",
+        "kipchak",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "24 dil tanığı ve 5 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: irin -> *iriŋ [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.61, 24 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.59, 24 tanık çifti)",
+        "Genizsil denkliği: -n- ~ -ŋ- < Proto-Türkçe *-ŋ-"
+      ],
+      "alternative_forms": [
+        "*irin",
+        "*ireŋ",
+        "*eriŋ",
+        "*iren"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "407",
+      "query": "uč",
+      "concept": "FLY (MOVE THROUGH AIR)",
+      "claim": "*uç",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 29,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "29 dil tanığı ve 7 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: uç -> *uç [*PT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.72, 29 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.78, 28 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*uş",
+        "*us"
+      ],
+      "vowel_length_evidence": "uzunluk tanıkları: klj iç [ɒː]"
+    },
+    {
+      "id": "408",
+      "query": "köt",
+      "concept": "FLY (MOVE THROUGH AIR)",
+      "claim": "*köt",
+      "proto_level": "PCT",
+      "confidence_badge": "⚪ YETERSİZ KANIT",
+      "witness_count": 1,
+      "branches": null,
+      "reasoning": "Karşılaştırmalı rekonstrüksiyon için en az 2 bağımsız biçim gerekir; 1 bulundu. Aşağıdaki biçim KARŞILAŞTIRMALI YÖNTEMLE TÜRETİLMEMİŞTİR — sorgu kelimesinin kendisidir.",
+      "applied_correspondences": [],
+      "alternative_forms": [],
+      "vowel_length_evidence": ""
+    },
+    {
+      "id": "461",
+      "query": "inǰe",
+      "concept": "THIN",
+      "claim": "*iniçge",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 24,
+      "branches": [
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "24 dil tanığı ve 6 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: ince -> *iniçge [*PT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.61, 18 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.66, 14 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.56, 14 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.74, 14 tanık çifti)",
+        "Ünlü arası ötümlüleşme: k ~ g ~ ğ < Proto-Türkçe *g",
+        "öğrenilmiş örüntü oyu (güven 0.76, 24 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*iniçke",
+        "*iŋiçge",
+        "*inıçge",
+        "*inişge"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "491",
+      "query": "atla",
+      "concept": "JUMP",
+      "claim": "*atıl",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 5,
+      "branches": [
+        "kipchak",
+        "oguz",
+        "siberian"
+      ],
+      "reasoning": "5 dil tanığı ve 3 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: atla -> *atıl [*PCT]",
+      "applied_correspondences": [],
+      "alternative_forms": [],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "492",
+      "query": "oy",
+      "concept": "JUMP",
+      "claim": "*oy",
+      "proto_level": "PCT",
+      "confidence_badge": "⚪ YETERSİZ KANIT",
+      "witness_count": 1,
+      "branches": null,
+      "reasoning": "Karşılaştırmalı rekonstrüksiyon için en az 2 bağımsız biçim gerekir; 1 bulundu. Aşağıdaki biçim KARŞILAŞTIRMALI YÖNTEMLE TÜRETİLMEMİŞTİR — sorgu kelimesinin kendisidir.",
+      "applied_correspondences": [],
+      "alternative_forms": [],
+      "vowel_length_evidence": ""
+    },
+    {
+      "id": "494",
+      "query": "sekĭr",
+      "concept": "JUMP",
+      "claim": "*sekir",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 17,
+      "branches": [
+        "karluk",
+        "kipchak",
+        "oghur",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "17 dil tanığı ve 5 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: sekır -> *sekir [*PT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.81, 16 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.84, 17 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.96, 15 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.59, 13 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*seker",
+        "*sekır",
+        "*sikir",
+        "*siker"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "496",
+      "query": "bök",
+      "concept": "JUMP",
+      "claim": "*bok",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 1,
+      "branches": [
+        "siberian"
+      ],
+      "reasoning": "1 dil tanığı ve 1 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: bök -> *bok [*PCT]",
+      "applied_correspondences": [
+        "Söz başı b- ~ p- < Proto-Türkçe *b-"
+      ],
+      "alternative_forms": [
+        "*bök",
+        "*pok",
+        "*pök"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "521",
+      "query": "köp",
+      "concept": "MANY",
+      "claim": "*köp",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 22,
+      "branches": [
+        "karluk",
+        "kipchak",
+        "siberian"
+      ],
+      "reasoning": "22 dil tanığı ve 3 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: köp -> *köp [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.97, 22 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*kop",
+        "*küp",
+        "*köy",
+        "*koy"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "522",
+      "query": "čok",
+      "concept": "MANY",
+      "claim": "*çok",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 3,
+      "branches": [
+        "kipchak",
+        "oguz"
+      ],
+      "reasoning": "3 dil tanığı ve 2 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: çok -> *çok [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.96, 2 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*çoh"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "523",
+      "query": "ügüs",
+      "concept": "MANY",
+      "claim": "*ügüş",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 1,
+      "branches": [
+        "old_turkic"
+      ],
+      "reasoning": "1 dil tanığı ve 1 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: ügüs -> *ügüş [*PCT]",
+      "applied_correspondences": [
+        "Ünlü arası ötümlüleşme: k ~ g ~ ğ < Proto-Türkçe *g"
+      ],
+      "alternative_forms": [
+        "*ügüs",
+        "*üküş",
+        "*üküs"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "546",
+      "query": "burun",
+      "concept": "NASAL MUCUS (SNOT)",
+      "claim": "*burun",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 4,
+      "branches": [
+        "arghu",
+        "kipchak"
+      ],
+      "reasoning": "4 dil tanığı ve 2 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: burun -> *burun [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.58, 3 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*burın"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "550",
+      "query": "sümük",
+      "concept": "NASAL MUCUS (SNOT)",
+      "claim": "*simirik",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 9,
+      "branches": [
+        "kipchak",
+        "oguz",
+        "siberian"
+      ],
+      "reasoning": "9 dil tanığı ve 3 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: sümük -> *simirik [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.53, 9 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.67, 3 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.68, 6 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.58, 8 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*çimirik",
+        "*simirük",
+        "*sümirik",
+        "*sımirik"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "553",
+      "query": "yeriŋ",
+      "concept": "NASAL MUCUS (SNOT)",
+      "claim": "*iriŋ",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 3,
+      "branches": [
+        "siberian"
+      ],
+      "reasoning": "3 dil tanığı ve 1 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: yeriŋ -> *iriŋ [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.51, 3 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.59, 3 tanık çifti)",
+        "Genizsil denkliği: -n- ~ -ŋ- < Proto-Türkçe *-ŋ-"
+      ],
+      "alternative_forms": [
+        "*eriŋ",
+        "*irıŋ",
+        "*ıriŋ",
+        "*erıŋ"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "605",
+      "query": "urḳačï",
+      "concept": "FEMALE ANIMAL",
+      "claim": "*urgaçı",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 7,
+      "branches": [
+        "karluk",
+        "kipchak"
+      ],
+      "reasoning": "7 dil tanığı ve 2 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: urkaçı -> *urgaçı [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.55, 7 tanık çifti)",
+        "Ünlü arası ötümlüleşme: k ~ g ~ ğ < Proto-Türkçe *g",
+        "öğrenilmiş örüntü oyu (güven 0.87, 7 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.88, 7 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*urğaçı",
+        "*ırgaçı",
+        "*urgaşı",
+        "*urgaçi"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "606",
+      "query": "diši",
+      "concept": "FEMALE ANIMAL",
+      "claim": "*tiĺi",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 20,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "20 dil tanığı ve 6 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: dişi -> *tiĺi [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.65, 20 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.54, 20 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.53, 17 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.56, 20 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*tişi",
+        "*tıĺi",
+        "*tiĺı",
+        "*tizi"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "608",
+      "query": "ana",
+      "concept": "FEMALE ANIMAL",
+      "claim": "*ene",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 3,
+      "branches": [
+        "karluk",
+        "kipchak",
+        "siberian"
+      ],
+      "reasoning": "3 dil tanığı ve 3 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: ana -> *ene [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.67, 3 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.63, 3 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*ine",
+        "*ane",
+        "*ena",
+        "*ina"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "617",
+      "query": "χamaχ",
+      "concept": "FOREHEAD",
+      "claim": "*kamak",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 4,
+      "branches": [
+        "siberian"
+      ],
+      "reasoning": "4 dil tanığı ve 1 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: hamah -> *kamak [*PCT]",
+      "applied_correspondences": [
+        "Söz başı k- ~ g- ~ h- < Proto-Türkçe *k-",
+        "öğrenilmiş örüntü oyu (güven 0.99, 4 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*kabak",
+        "*kavak",
+        "*hamak",
+        "*habak"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "618",
+      "query": "alïn",
+      "concept": "FOREHEAD",
+      "claim": "*alın",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 7,
+      "branches": [
+        "arghu",
+        "kipchak",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "7 dil tanığı ve 5 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: alın -> *alın [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.81, 6 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.61, 4 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*alan"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "619",
+      "query": "hü:s",
+      "concept": "FOREHEAD",
+      "claim": "*süs",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 1,
+      "branches": [
+        "siberian"
+      ],
+      "reasoning": "1 dil tanığı ve 1 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: hüs -> *süs [*PCT]",
+      "applied_correspondences": [],
+      "alternative_forms": [
+        "*hüs"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "624",
+      "query": "sol",
+      "concept": "LEFT",
+      "claim": "*sol",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 20,
+      "branches": [
+        "karluk",
+        "kipchak",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "20 dil tanığı ve 5 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: sol -> *sol [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.77, 19 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.88, 20 tanık çifti)"
+      ],
+      "alternative_forms": [],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "627",
+      "query": "köter",
+      "concept": "RISE (MOVE UPWARDS)",
+      "claim": "*köteril",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 13,
+      "branches": [
+        "karluk",
+        "kipchak",
+        "siberian"
+      ],
+      "reasoning": "13 dil tanığı ve 3 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: köter -> *köteril [*PCT]",
+      "applied_correspondences": [
+        "Söz başı ötümlüleşme: Oğuz g- ~ diğer k- < Proto-Türkçe *k-",
+        "Söz içi ötümlüleşme: -d- ~ -t- < Proto-Türkçe *-t-"
+      ],
+      "alternative_forms": [
+        "*köterül",
+        "*kötüril",
+        "*kötürül",
+        "*köterel"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "628",
+      "query": "örlä",
+      "concept": "RISE (MOVE UPWARDS)",
+      "claim": "*örle",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 5,
+      "branches": [
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "5 dil tanığı ve 2 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: örle -> *örle [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.71, 3 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*örlö"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "63",
+      "query": "ev",
+      "concept": "HOUSE",
+      "claim": "*ej",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 22,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "22 dil tanığı ve 6 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: ev -> *ej [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.59, 10 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*üj",
+        "*öj",
+        "*ey",
+        "*ev"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "630",
+      "query": "pin",
+      "concept": "RISE (MOVE UPWARDS)",
+      "claim": "*men",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 2,
+      "branches": [
+        "kipchak",
+        "siberian"
+      ],
+      "reasoning": "2 dil tanığı ve 2 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: pin -> *men [*PCT]",
+      "applied_correspondences": [],
+      "alternative_forms": [
+        "*min",
+        "*mün",
+        "*pen",
+        "*pin"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "633",
+      "query": "hin",
+      "concept": "RISE (MOVE UPWARDS)",
+      "claim": "*ün",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 4,
+      "branches": [
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "4 dil tanığı ve 2 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: hin -> *ün [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.70, 4 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*in"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "64",
+      "query": "yort",
+      "concept": "HOUSE",
+      "claim": "*jort",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 2,
+      "branches": [
+        "kipchak",
+        "oghur"
+      ],
+      "reasoning": "2 dil tanığı ve 2 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: yort -> *jort [*PT]",
+      "applied_correspondences": [
+        "Söz başı akıcı: y- ~ c- ~ j- ~ ç- ~ ş- < Proto-Türkçe *j-"
+      ],
+      "alternative_forms": [
+        "*jurt",
+        "*sort",
+        "*surt",
+        "*yort"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "65",
+      "query": "tura",
+      "concept": "HOUSE",
+      "claim": "*tura",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 2,
+      "branches": [
+        "siberian"
+      ],
+      "reasoning": "2 dil tanığı ve 1 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: tura -> *tura [*PCT]",
+      "applied_correspondences": [],
+      "alternative_forms": [],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "675",
+      "query": "kabuk",
+      "concept": "BARK",
+      "claim": "*kabık",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 19,
+      "branches": [
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz",
+        "siberian"
+      ],
+      "reasoning": "19 dil tanığı ve 5 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: kabuk -> *kabık [*PT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.96, 19 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.80, 19 tanık çifti)",
+        "Ünsüz yumuşaması: b ~ v ~ w < Proto-Türkçe *b",
+        "öğrenilmiş örüntü oyu (güven 0.89, 18 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*kabuk",
+        "*kabak",
+        "*habık",
+        "*gabık"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "676",
+      "query": "χaχpas",
+      "concept": "BARK",
+      "claim": "*kakpaç",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 2,
+      "branches": [
+        "siberian"
+      ],
+      "reasoning": "2 dil tanığı ve 1 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: hahpas -> *kakpaç [*PCT]",
+      "applied_correspondences": [
+        "Söz başı k- ~ g- ~ h- < Proto-Türkçe *k-",
+        "öğrenilmiş örüntü oyu (güven 1.00, 2 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*kakpaş",
+        "*kakpas",
+        "*kakvaç",
+        "*kakvaş"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "677",
+      "query": "katïrïk",
+      "concept": "BARK",
+      "claim": "*katık",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 4,
+      "branches": [
+        "arghu",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "4 dil tanığı ve 3 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: katırık -> *katık [*PCT]",
+      "applied_correspondences": [
+        "Söz başı k- ~ g- ~ h- < Proto-Türkçe *k-",
+        "Söz içi ötümlüleşme: -d- ~ -t- < Proto-Türkçe *-t-"
+      ],
+      "alternative_forms": [
+        "*katıs",
+        "*katız",
+        "*katak",
+        "*kadık"
+      ],
+      "vowel_length_evidence": "uzunluk tanıkları: klj qâan [ɑː]"
+    },
+    {
+      "id": "72",
+      "query": "diš",
+      "concept": "TOOTH",
+      "claim": "*tiĺ",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 28,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "28 dil tanığı ve 6 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: diş -> *tiĺ [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.67, 28 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.60, 28 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.54, 25 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*tiş",
+        "*tis",
+        "*tıĺ",
+        "*diĺ"
+      ],
+      "vowel_length_evidence": "uzunluk tanıkları: tk diş [iː]"
+    },
+    {
+      "id": "760",
+      "query": "tiril",
+      "concept": "BE ALIVE",
+      "claim": "*tiril",
+      "proto_level": "PCT",
+      "confidence_badge": "⚪ YETERSİZ KANIT",
+      "witness_count": 1,
+      "branches": null,
+      "reasoning": "Karşılaştırmalı rekonstrüksiyon için en az 2 bağımsız biçim gerekir; 1 bulundu. Aşağıdaki biçim KARŞILAŞTIRMALI YÖNTEMLE TÜRETİLMEMİŞTİR — sorgu kelimesinin kendisidir.",
+      "applied_correspondences": [],
+      "alternative_forms": [],
+      "vowel_length_evidence": ""
+    },
+    {
+      "id": "8",
+      "query": "su",
+      "concept": "WATER",
+      "claim": "*sug",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 31,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "31 dil tanığı ve 7 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: su -> *sug [*PT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.79, 27 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.67, 31 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.83, 12 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*suv",
+        "*suğ"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "84",
+      "query": "soḳ",
+      "concept": "BEAT",
+      "claim": "*sok",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 11,
+      "branches": [
+        "kipchak",
+        "siberian"
+      ],
+      "reasoning": "11 dil tanığı ve 2 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: sok -> *sok [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.67, 9 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.67, 11 tanık çifti)",
+        "öğrenilmiş örüntü oyu (güven 0.81, 10 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*suk",
+        "*sos",
+        "*ğok",
+        "*gok"
+      ],
+      "vowel_length_evidence": "uzunluk tanıkları: tyv бок [ɔː]"
+    },
+    {
+      "id": "85",
+      "query": "hïs",
+      "concept": "BEAT",
+      "claim": "*has",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 1,
+      "branches": [
+        "kipchak"
+      ],
+      "reasoning": "1 dil tanığı ve 1 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: hıs -> *has [*PCT]",
+      "applied_correspondences": [],
+      "alternative_forms": [
+        "*haç",
+        "*hıs",
+        "*hıç",
+        "*yas"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "86",
+      "query": "kïrba:",
+      "concept": "BEAT",
+      "claim": "*kırba",
+      "proto_level": "PCT",
+      "confidence_badge": "⚪ YETERSİZ KANIT",
+      "witness_count": 1,
+      "branches": null,
+      "reasoning": "Karşılaştırmalı rekonstrüksiyon için en az 2 bağımsız biçim gerekir; 1 bulundu. Aşağıdaki biçim KARŞILAŞTIRMALI YÖNTEMLE TÜRETİLMEMİŞTİR — sorgu kelimesinin kendisidir.",
+      "applied_correspondences": [],
+      "alternative_forms": [],
+      "vowel_length_evidence": ""
+    },
+    {
+      "id": "87",
+      "query": "śap",
+      "concept": "BEAT",
+      "claim": "*çap",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 5,
+      "branches": [
+        "karluk",
+        "kipchak",
+        "siberian"
+      ],
+      "reasoning": "5 dil tanığı ve 3 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: sap -> *çap [*PCT]",
+      "applied_correspondences": [
+        "öğrenilmiş örüntü oyu (güven 0.52, 5 tanık çifti)"
+      ],
+      "alternative_forms": [
+        "*sap",
+        "*şap"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "88",
+      "query": "tuḳma",
+      "concept": "BEAT",
+      "claim": "*tokı",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 1,
+      "branches": [
+        "old_turkic"
+      ],
+      "reasoning": "1 dil tanığı ve 1 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: tukma -> *tokı [*PCT]",
+      "applied_correspondences": [],
+      "alternative_forms": [
+        "*toka",
+        "*tukı",
+        "*tuka"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "90",
+      "query": "vur",
+      "concept": "BEAT",
+      "claim": "*ur",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 14,
+      "branches": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oguz"
+      ],
+      "reasoning": "14 dil tanığı ve 4 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: vur -> *ur [*PCT]",
+      "applied_correspondences": [],
+      "alternative_forms": [],
+      "vowel_length_evidence": "uzunluk tanıkları: klj vâr [aː]"
+    },
+    {
+      "id": "91",
+      "query": "ḳaḳ",
+      "concept": "BEAT",
+      "claim": "*kak",
+      "proto_level": "PCT",
+      "confidence_badge": "⚪ YETERSİZ KANIT",
+      "witness_count": 1,
+      "branches": null,
+      "reasoning": "Karşılaştırmalı rekonstrüksiyon için en az 2 bağımsız biçim gerekir; 1 bulundu. Aşağıdaki biçim KARŞILAŞTIRMALI YÖNTEMLE TÜRETİLMEMİŞTİR — sorgu kelimesinin kendisidir.",
+      "applied_correspondences": [],
+      "alternative_forms": [],
+      "vowel_length_evidence": ""
+    },
+    {
+      "id": "92",
+      "query": "bär",
+      "concept": "BEAT",
+      "claim": "*ber",
+      "proto_level": "PCT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 1,
+      "branches": [
+        "siberian"
+      ],
+      "reasoning": "1 dil tanığı ve 1 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: ber -> *ber [*PCT]",
+      "applied_correspondences": [
+        "Söz başı b- ~ p- < Proto-Türkçe *b-"
+      ],
+      "alternative_forms": [
+        "*per"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    },
+    {
+      "id": "95",
+      "query": "boynuz",
+      "concept": "HORN (ANATOMY)",
+      "claim": "*büüs",
+      "proto_level": "PT",
+      "confidence_badge": "🟠 ZAYIF KANIT",
+      "witness_count": 27,
+      "branches": [
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "reasoning": "27 dil tanığı ve 6 Türki kol üzerinden karşılaştırmalı yöntemle türetildi: boynuz -> *büüs [*PT]",
+      "applied_correspondences": [
+        "Genizsilleşme: b- ~ m- < Proto-Türkçe *b-"
+      ],
+      "alternative_forms": [
+        "*büüz",
+        "*büus",
+        "*müüs",
+        "*büuz"
+      ],
+      "vowel_length_evidence": "uzunluk tanığı yok"
+    }
+  ]
+}

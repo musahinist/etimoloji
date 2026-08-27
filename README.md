@@ -821,6 +821,48 @@ ayırt edilemez.
 Durum işaretleri: ✅ kullanımda · 🚧 yol haritasında · ⚠️ bilinçli olarak
 kullanılmıyor veya kısıtlı kullanılıyor.
 
+### Uzman değerlendirmesi protokolü (Faz E2) — kurulu, henüz koşulmadı
+
+Altın standart yalnız **bilinen** kümeleri kapsıyor; yeni iddiaların değeri
+ancak Türkologlara sorularak ölçülebilir. Protokolün ölçüm tarafı kuruldu:
+
+- **Anket formu** `data/expert_review/review_sheet.json` — dev bölümünden
+  82 gerçek iddia, her biri **gerekçesiyle**. ⚠️ Yalnız sonucu sormak
+  (`göz → *köŕ`) uzmanı motorun akıl yürütmesini görmeden karar vermeye
+  zorlar; ölçülen şey iddia değil uzmanın kendi bilgisi olurdu.
+- **Ölçek** 0–5 ordinal ("açıkça yanlış" … "kesin").
+- **Uyum katsayısı** Krippendorff **ordinal α** + bootstrap %95 GA.
+
+⚠️ **Metrik Cohen κ DEĞİLDİR.** κ iki kodlayıcı ve **nominal** ölçek
+içindir; burada 2–3 kodlayıcı ve **ordinal** ölçek var. κ iki ayrı hata
+yapardı: "0 vs 5" ile "3 vs 4" uyuşmazlığını aynı sayardı, ve üçüncü
+kodlayıcıyı doğrudan alamazdı (çiftler ortalanırsa güven aralığı bozulur).
+Krippendorff α ikisini de çözer (Artstein & Poesio 2008).
+
+⚠️ Nokta tahmin tek başına yetmez: n≈100 maddede α oynaktır, bootstrap
+aralığı zorunludur (Zapf ve ark. 2016).
+
+⚠️ **Uzman girdisi yoksa hiçbir sayı üretilmiyor.** `make expert-review`
+derecelendirme dosyası bulamazsa hata verip çıkıyor. Uydurma
+derecelendirme, hiç değerlendirme yapmamaktan kötüdür.
+
+### Ön-kayıt (Faz E3) — taslak hazır, kayıt yapılmadı
+
+`docs/PREREGISTRATION.md`: hipotezler, **karar eşikleri**, sızıntı
+önlemleri ve "ne raporlanmayacak" listesi veriye bakılmadan yazıldı.
+
+⚠️ Kayıt OSF hesabı gerektiriyor ve bu depodan yapılamaz. Yapıldığında DOI
+hem belgeye hem `prediction_test.PredictionRegistry.external_doi` alanına
+yazılacak.
+
+Şablon: OSF **Secondary Data Preregistration** — çalışma mevcut,
+yayımlanmış veriyle yapılıyor; veri toplanmadan önce kayıt yapılan
+şablonlar bu senaryoya uymuyor.
+
+⚠️ H5 (uzman kabulü) için **ön koşul** kayda yazıldı: kodlayıcılar arası
+uyum α < 0,60 ise ortalama derece **yorumlanmaz**, hipotez "test edilmemiş"
+sayılır.
+
 ### Yayın çıktısı — SIGTYP 2022 biçimi
 
 Altın standardımız alanın yayınlanmış paylaşılan görev biçiminde dışa
@@ -941,6 +983,8 @@ türetmek.
 - Zadrozny & Elkan — izotonik kalibrasyon · Platt scaling · Kull ve ark. — beta kalibrasyon
 - King 2026, *PLOS Computational Biology* — Bayesçi filogenilikte simülasyon tabanlı kalibrasyon (SBC)
 - [Hariharan & Mortensen 2025](https://arxiv.org/abs/2512.05364) — tarihsel dilbilimde ECE raporlaması (diakronik değişim tespitinde)
+- **Artstein & Poesio 2008, *Computational Linguistics* 34(4)** ✅ **uygulandı** — kodlayıcılar arası uyumda metrik seçimi; **Krippendorff ordinal α**, Cohen κ'nın iki kısıtını (iki kodlayıcı, nominal ölçek) aşar. Ordinal fark fonksiyonu "0 vs 5" uyuşmazlığını "3 vs 4"ten ağır sayar. Kod: `engine/evaluation/expert_review.py`.
+- **Zapf ve ark. 2016, *BMC Medical Research Methodology*** ✅ **uygulandı** — α için **bootstrap güven aralığı**; n≈100 maddede nokta tahmin oynaktır. ⚠️ Yeniden örnekleme madde düzeyinde yapılır, derecelendirme düzeyinde değil.
 - [Krarup ve ark., *JAIR*](https://arxiv.org/abs/2103.15575) — karşıtsal plan açıklaması ("neden bu değil de şu?") · Miller — contrastive explanation (fact vs. foil)
 - [Lawrence & Reed 2019, *Computational Linguistics* 45(3)](https://direct.mit.edu/coli/article/45/3/603/93385/Argumentation-Mining) · [Stede & Schneider — survey](https://direct.mit.edu/coli/article/45/4/765/93362/Argument-Mining-A-Survey) — argümantasyon madenciliği
 
