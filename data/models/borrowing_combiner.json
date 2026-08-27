@@ -3,21 +3,23 @@
   "signal_order": [
     "zincir_kanıtı",
     "verici_yakınlığı",
+    "fonotaktik_model",
     "ses_kanunu_ihlali",
     "fonotaktik_ihlal",
     "değişimsiz_yayılım"
   ],
   "weights": {
-    "zincir_kanıtı": 1.412699,
-    "verici_yakınlığı": 1.533969,
-    "ses_kanunu_ihlali": 0.118324,
-    "fonotaktik_ihlal": 0.048109,
-    "değişimsiz_yayılım": -0.021646
+    "zincir_kanıtı": 1.013899,
+    "verici_yakınlığı": 1.552491,
+    "fonotaktik_model": 0.877889,
+    "ses_kanunu_ihlali": 0.038432,
+    "fonotaktik_ihlal": 0.139708,
+    "değişimsiz_yayılım": -0.018423
   },
-  "bias": -1.927794,
-  "threshold": 0.37,
+  "bias": -1.9931,
+  "threshold": 0.39,
   "objective": "fscore",
   "trained_on": "wold/sah/tune",
-  "n": 770,
-  "trained_at": "2026-08-27T11:43:41+00:00"
+  "n": 385,
+  "trained_at": "2026-08-27T12:17:51+00:00"
 }

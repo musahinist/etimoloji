@@ -111,18 +111,23 @@ gerçek doğruluk %23,9). Kullanıcıya gösterilen skor artık kalibre skordur.
 
 | Sistem | F | kesinlik | duyarlılık | doğruluk |
 |---|---|---|---|---|
-| **motor** | **0,646** | 0,618 | 0,677 | 0,776 |
-| motor (eğitilmiş birleştirici) | 0,642 | 0,608 | 0,681 | 0,771 |
-| motor (doğruluk hedefli eşik) | 0,635 | 0,661 | 0,612 | 0,788 |
+| **motor (eğitilmiş birleştirici)** | **0,651** | 0,635 | 0,668 | 0,784 |
 | yalnız verici yakınlığı | 0,624 | 0,697 | 0,565 | 0,795 |
+| motor (doğrusal yedek yol) | 0,623 | 0,547 | 0,724 | 0,736 |
+| yalnız dizilim modeli (PyBor) | 0,558 | 0,556 | 0,560 | 0,732 |
 | hepsi alıntı (trivial) | 0,464 | 0,302 | 1,000 | 0,302 |
-| yalnız fonotaktik | 0,215 | 0,372 | 0,151 | 0,667 |
+| yalnız fonotaktik kural | 0,215 | 0,372 | 0,151 | 0,667 |
 
-**F 0,385 → 0,646.** Plan hedefi (≥0,60) aşıldı; PyBor'un WOLD 41 dil
+**F 0,385 → 0,651.** Plan hedefi (≥0,60) aşıldı; PyBor'un WOLD 41 dil
 ortalamasının (0,59–0,61) üstünde.
 
 ⚠️ Ablasyon hükmü **ilk kez pozitif ve anlamlı**: motor vs yalnız
-fonotaktik fark **+0,109**, %95 GA [+0,069, +0,150], p=0,0001.
+fonotaktik fark **+0,069**, %95 GA [+0,025, +0,112], p=0,0038.
+
+⚠️ Motor, tek başına verici yakınlığından **anlamlı biçimde iyi değil**:
+madde başına doğrulukta fark −0,010, %95 GA [−0,030, +0,009], p=0,354.
+Yani "istatistiksel olarak berabere" — üstünlük iddia edilmiyor. (Bu turun
+başında aynı fark −0,030, p=0,004 ile motorun **aleyhineydi**.)
 
 #### Kazancı sağlayan üç şey
 
@@ -132,11 +137,15 @@ yeniden ayarlanır):
 
 | çıkarılan sinyal | kalan F | katkısı |
 |---|---|---|
-| `verici_yakınlığı` | 0,384 | **+0,262** |
-| `zincir_kanıtı` | 0,611 | +0,036 |
-| `fonotaktik_ihlal` | 0,635 | +0,011 |
-| `ses_kanunu_ihlali` | 0,646 | 0,000 (ağırlığı sıfır) |
-| `değişimsiz_yayılım` | 0,646 | 0,000 (ağırlığı sıfır) |
+| `verici_yakınlığı` | 0,384 | **+0,239** |
+| `zincir_kanıtı` | 0,611 | +0,013 |
+| `fonotaktik_ihlal` | 0,635 | −0,012 |
+| `fonotaktik_model` | 0,626 | −0,002 (ağırlığı sıfır) |
+| `ses_kanunu_ihlali` | 0,626 | −0,002 (ağırlığı sıfır) |
+| `değişimsiz_yayılım` | 0,626 | −0,002 (ağırlığı sıfır) |
+
+(Tablo **doğrusal yedek yol** içindir, F=0,623. Sıfır ağırlıklı sinyallerin
+−0,002'si eşik seçiminin gürültüsüdür.)
 
 **`ses_kanunu_ihlali` ve `değişimsiz_yayılım` artık karara katılmıyor.**
 Hesaplanmaya ve kullanıcıya gösterilmeye devam ediyorlar (gerekçe değeri
@@ -182,6 +191,42 @@ Aynı havuza karşı 12 kontrol kelimesi ölçülüyor; gözlenen mesafe kontrol
 dağılımının %10'undan düşük değilse sinyal ateşlenmiyor. Havuz büyüdükçe
 null da kayar ve eşik kendini ayarlar.
 
+#### Eğitilmiş dizilim modeli (PyBor)
+
+Elle yazılmış fonotaktik kurallar (ünlü uyumu, yasak söz başı ses)
+WOLD/Sakha'da tek başına **F 0,215** alıyor. Aynı veride eğitilmiş iki
+modelli sınıflandırıcı — biri miras kelimelerden, biri alıntılardan, karar
+log olasılık farkıyla — **F 0,558** alıyor. Yayınlanmış PyBor ortalaması
+0,59–0,61; bu bağımsız bir yeniden üretimdir.
+
+Uygulama: karakter 3-gram Markov, Witten-Bell yumuşatmalı. LSTM sürümü
+yayında biraz daha iyi (0,61 vs 0,59) ama bağımlılık gerektiriyor.
+
+⚠️ **Model dile özgüdür**; başka dilin modeline dönülmez. Fonotaktik dilden
+dile değişir ve zaten ölçtüğü şey odur.
+
+> **⚠️ Yığın sızıntısı — ölçülmüş ve düzeltilmiş.** Model tüm ayar
+> yarısında eğitilip eşik de aynı yarıda ayarlanınca, eşiğe modelin
+> gerçekte sahip olmadığı bir ayırt etme gücü varsaydırıldı:
+>
+>     ayar yarısı (model burada eğitildi)  sınıf ayrımı 1,9197
+>     rapor yarısı (hiç görülmedi)         sınıf ayrımı 0,6278  → 3,1 kat şişkin
+>
+> Sonuç: motorun F'si 0,646'dan **0,587'ye düştü** ve ablasyon "verici
+> yakınlığı zararlı" gibi saçma bir sonuç verdi. Düzeltme: ayar yarısı ikiye
+> bölünüyor — model ilk parçada eğitiliyor, eşik ikinci parçada ayarlanıyor.
+> Bunun bedeli de var: eşik yarı veriyle seçildiği için doğrusal yedek yol
+> 0,646'dan 0,623'e indi.
+
+⚠️ Dizilim modelinin **doğrusal yedek yolda ağırlığı sıfır**. Öğrenilen
+katsayıları normalize edip doğrusal toplama koymak lojistik modelin
+davranışını yeniden üretmiyor — sabit terim (−1,993) ve sigmoid kararın
+parçasıdır:
+
+    doğrusal toplam, dizilim modeli dışarıda        F 0,646
+    doğrusal toplam, öğrenilen katsayılar normalize F 0,614
+    eğitilmiş birleştirici (sigmoid + sabit terim)  F 0,651
+
 #### Eğitilmiş birleştirici
 
 El ile konmuş ağırlıklı toplam (düzeltme öncesi), en güçlü sinyalin kararını
@@ -195,12 +240,12 @@ Ağırlıklar artık **ayar yarısında** öğreniliyor (lojistik regresyon; skl
 yok, optimizasyon repoda ve deterministik). Öğrenilen katsayılar ablasyonu
 birebir doğruluyor:
 
-    sabit −1,933 · verici_yakınlığı +1,537 · zincir_kanıtı +1,413
-                 · ses_kanunu_ihlali +0,123 · fonotaktik_ihlal +0,046
-                 · değişimsiz_yayılım +0,009
+    sabit −1,993 · verici_yakınlığı +1,552 · zincir_kanıtı +1,014
+                 · fonotaktik_model +0,878 · fonotaktik_ihlal +0,140
+                 · ses_kanunu_ihlali +0,038 · değişimsiz_yayılım −0,018
 
 ⚠️ **Hedef ölçü seçimi sonucu belirler ve gizlenemez.** Aynı model, yalnız
-eşik farklı: F hedefli 0,642/0,771 · doğruluk hedefli 0,635/0,788. İkisi
+eşik farklı: F hedefli 0,651/0,784 · doğruluk hedefli 0,534/0,787. İkisi
 aynı anda alınamaz; hangisinin seçildiği model dosyasında saklanıyor.
 
 ⚠️ Model WOLD/Sakha'da eğitildi. Başka bir dile uygulandığında çıktı
@@ -661,7 +706,7 @@ kullanılmıyor veya kısıtlı kullanılıyor.
 ### Alıntı tespiti, temas ve geçiş yolu
 
 - [List & Forkel 2022](https://pmc.ncbi.nlm.nih.gov/articles/PMC10445856/) — otomatik alıntı tespiti, `seabor`, **F = 0,87**
-- [Miller ve ark. 2020, *PLOS ONE*](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0242709) — PyBor, tek dilli fonotaktik taban çizgi (**F1 ≈ 0,55**)
+- **[Miller ve ark. 2020, *PLOS ONE* — PyBor](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0242709)** ✅ **uygulandı** — miras ve alıntı için ayrı dizilim modeli, karar log olasılık farkıyla. Yayınlanmış WOLD 41 dil ortalaması **F1 0,59–0,61**. Bizde Sakha'da tek başına **F 0,558** (bağımsız yeniden üretim); elle yazılmış fonotaktik kural aynı veride 0,215. Markov(3-gram) + Witten-Bell; LSTM sürümü yayında 0,61.
 - **[Miller & List 2023, EACL — `sabor`](https://arxiv.org/pdf/2302.00189)** ✅ **uygulandı** — verici dil sözlüğüne SCA yakınlığı; yayınlanmış **F1 0,806 · kesinlik 0,931**. Bizde WOLD/Sakha'da motorun F'sini **0,385 -> 0,644** çıkardı; sinyal ablasyonundaki katkısı **+0,237**. ⚠️ Yayınlanmış kurulum **kavram kısıtlıdır** ve makale kaçan alıntıların %45'ini bu kısıta bağlıyor.
 - [Neureiter ve ark. 2022, *Humanit Soc Sci Commun*](https://www.nature.com/articles/s41599-022-01211-7) — contacTrees
 - Hruschka ve ark. 2015 — concerted evolution, düzenli ses değişimi tespiti

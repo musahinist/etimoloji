@@ -25,6 +25,8 @@ Dört bağımsız sinyal kullanılır; hiçbiri tek başına karar vermez:
 ``değişimsiz_yayılım``        bütün dillerde neredeyse aynı biçim
 ``verici_yakınlığı``          verici dil sözlüğünde aynı kavramın karşılığı
                               fonetik olarak neredeyse aynı (sabor)
+``fonotaktik_model``          eğitilmiş dizilim modeli kelimeyi alıntı
+                              sınıfında daha olası buluyor (PyBor)
 ============================  =============================================
 """
 
@@ -87,10 +89,26 @@ logger = get_logger(__name__)
 #: tablo öğrenildi (bkz. ``INHERITED_CORRESPONDENCE_PATH``) ve sinyalin
 #: katkısı -0,0101'den yalnız -0,0083'e geldi. Yani teşhis yanlıştı;
 #: yöntemin kendisi bu görevde zayıf.
+#: ⚠️ Bu tablo **yedek yoldur**. Asıl karar eğitilmiş birleştiricidedir
+#: (``borrowing_combiner``); bu ağırlıklar yalnız model dosyası yokken
+#: kullanılır ve o durum ``verdict.is_trained == False`` ile ilan edilir.
+#:
+#: ⚠️ ``fonotaktik_model`` ağırlığı **sıfırdır** ve bu bilinçlidir. Sinyal
+#: eğitilmiş birleştiriciye girer (orada +0,878 katsayı alır) ama elle
+#: ağırlıklandırılmış toplama girmez. Ölçüldü (WOLD/Sakha, n=769)::
+#:
+#:     el ağırlıklı toplam, fonotaktik_model DIŞARIDA       F 0,6461
+#:     el ağırlıklı toplam, öğrenilen katsayılar normalize  F 0,6137
+#:     eğitilmiş birleştirici (sigmoid + sabit terim)       F 0,6513
+#:
+#: Öğrenilen katsayıları normalize edip doğrusal toplama koymak lojistik
+#: modelin davranışını **yeniden üretmiyor**: sabit terim (-1,993) ve
+#: sigmoid, kararın parçasıdır. Doğrusal yedek yol bu sinyali taşıyamıyor.
 SIGNAL_WEIGHTS: dict[str, float] = {
     "zincir_kanıtı": 0.50,
     "verici_yakınlığı": 0.32,
     "fonotaktik_ihlal": 0.18,
+    "fonotaktik_model": 0.0,
     "ses_kanunu_ihlali": 0.0,
     "değişimsiz_yayılım": 0.0,
 }
@@ -520,6 +538,49 @@ class BorrowingDetector:
     # -- karar --------------------------------------------------------------
 
     @staticmethod
+    def _phonotactic_model_signal(word: str, lang: str) -> Signal:
+        """Eğitilmiş dizilim modeli (PyBor, Miller ve ark. 2020).
+
+        Elle yazılmış fonotaktik kurallar (ünlü uyumu, yasak söz başı ses)
+        WOLD/Sakha'da tek başına **F 0,215** alıyor. Aynı veride eğitilmiş
+        iki modelli sınıflandırıcı **F 0,568** alıyor — yayınlanmış PyBor
+        ortalamasının (0,59-0,61) hemen altında, bağımsız bir yeniden
+        üretim.
+
+        ⚠️ Model **dile özgüdür**; başka dilin modeline dönülmez.
+        Fonotaktik dilden dile değişir ve zaten ölçtüğü şey odur.
+        """
+        from engine.nlp.phonotactic_lm import load
+
+        classifier = load(lang)
+        if classifier is None:
+            return Signal(
+                "fonotaktik_model",
+                False,
+                0.0,
+                f"{lang} için eğitilmiş dizilim modeli yok",
+            )
+        strength = classifier.strength(word)
+        if strength <= 0.0:
+            return Signal(
+                "fonotaktik_model",
+                False,
+                0.0,
+                "dizilim modeli miras sınıfını daha olası buluyor",
+            )
+        return Signal(
+            "fonotaktik_model",
+            True,
+            strength,
+            (
+                f"eğitilmiş dizilim modeli alıntı sınıfını daha olası buluyor "
+                f"(log oran {classifier.score(word):+.3f}, eşik "
+                f"{classifier.threshold:+.3f})"
+            ),
+            {"log_ratio": round(classifier.score(word), 4), "language": lang},
+        )
+
+    @staticmethod
     def _donor_signal(word: str, sense: str, donors: list[str] | None) -> Signal:
         """Verici dil sözlüğüne fonetik yakınlık (sabor, Miller & List 2023).
 
@@ -576,8 +637,16 @@ class BorrowingDetector:
         sound_law, expected = self._sound_law_signal(word, witnesses)
         uniformity = self._uniformity_signal(witnesses)
         donor_proximity = self._donor_signal(word, sense, donors)
+        phonotactic_model = self._phonotactic_model_signal(word, lang)
 
-        signals = [chain_signal, phonotactic, sound_law, uniformity, donor_proximity]
+        signals = [
+            chain_signal,
+            phonotactic,
+            sound_law,
+            uniformity,
+            donor_proximity,
+            phonotactic_model,
+        ]
         score = sum(
             SIGNAL_WEIGHTS[signal.name] * signal.strength for signal in signals if signal.fired
         )

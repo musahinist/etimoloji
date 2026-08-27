@@ -390,6 +390,29 @@ def train_combiner(
     return fit(samples, trained_on=trained_on, objective=objective)
 
 
+def train_phonotactic_lm(cases: list[BorrowingCase], *, language: str, trained_on: str):
+    """Fonotaktik dizilim modelini **ayar yarısında** eğitir ve kaydeder.
+
+    ⚠️ Model diske yazılır çünkü ``BorrowingDetector`` onu oradan okur.
+    Eğitim ayar yarısındadır; rapor yarısı hiç görülmez.
+    """
+    from engine.nlp.phonotactic_lm import fit, save
+
+    samples = [(c.word, c.is_borrowed) for c in cases]
+    classifier = fit(samples, language=language, trained_on=trained_on)
+    save(classifier)
+    return classifier
+
+
+def phonotactic_model_only(case: BorrowingCase) -> bool:
+    """Yalnız eğitilmiş dizilim modeli — PyBor'un (Miller ve ark. 2020)
+    yayınlanmış kurulumu. WOLD 41 dil ortalaması F1 0,59-0,61."""
+    from engine.nlp.phonotactic_lm import load
+
+    classifier = load(case.lang_code)
+    return classifier is not None and classifier.predict(case.word)
+
+
 def donor_proximity_only(case: BorrowingCase) -> bool:
     """Yalnız verici yakınlığı — sabor'un (Miller & List 2023) tek sinyali.
 
@@ -478,7 +501,10 @@ def score_system(system: Callable[[BorrowingCase], bool], cases: list[BorrowingC
 
 
 def signal_ablation(
-    cases: list[BorrowingCase], *, use_chain: bool
+    cases: list[BorrowingCase],
+    *,
+    use_chain: bool,
+    tune_set: list[BorrowingCase] | None = None,
 ) -> dict[str, PRF]:
     """Her sinyali TEK TEK çıkarıp motoru yeniden ölçer.
 
@@ -491,7 +517,12 @@ def signal_ablation(
     """
     from engine.nlp.borrowing_detector import SIGNAL_WEIGHTS
 
-    tune_set = [c for i, c in enumerate(cases) if i % 2 == 0]
+    # ⚠️ Eşik, tam motorunkiyle **aynı** ayar kümesinde seçilmeli. Dizilim
+    # modeli devreye girince ayar yarısı ikiye bölündü; ablasyon o bölünmeyi
+    # görmezse daha çok veriyle daha iyi bir eşik bulur ve "sinyali
+    # çıkarmak motoru iyileştirdi" gibi sahte bir sonuç üretir.
+    if tune_set is None:
+        tune_set = [c for i, c in enumerate(cases) if i % 2 == 0]
     report_set = [c for i, c in enumerate(cases) if i % 2 == 1]
     out: dict[str, PRF] = {}
     for name in SIGNAL_WEIGHTS:
@@ -509,10 +540,35 @@ def signal_ablation(
 
 def evaluate(
     cases: list[BorrowingCase], *, use_chain: bool, trained_on: str = ""
-) -> tuple[dict[str, PRF], float, Any]:
+) -> tuple[dict[str, PRF], float, Any, list[BorrowingCase]]:
     """Eşik AYAR yarısında seçilir, sonuç RAPOR yarısında verilir."""
     tune_set = [c for i, c in enumerate(cases) if i % 2 == 0]
     report_set = [c for i, c in enumerate(cases) if i % 2 == 1]
+
+    # ⚠️ **YIĞIN SIZINTISI.** Dizilim modeli eğitildiği veride kendi
+    # eğitim örneklerini EZBERLER. Modeli tüm ayar yarısında eğitip eşiği
+    # de aynı yarıda ayarlamak, eşiğe modelin gerçekte sahip olmadığı bir
+    # ayırt etme gücünü varsaydırır. Ölçüldü::
+    #
+    #     ayar yarısı (model burada eğitildi)  sınıf ayrımı 1,9197
+    #     rapor yarısı (hiç görülmedi)         sınıf ayrımı 0,6278
+    #                                          -> 3,1 kat şişkin
+    #
+    # Sonuç: motorun F'si 0,6461'den 0,5868'e DÜŞTÜ ve ablasyon "verici
+    # yakınlığı zararlı" gibi saçma bir sonuç verdi.
+    #
+    # Düzeltme: ayar yarısı ikiye bölünür. Model YALNIZ ilk parçada
+    # eğitilir; eşik ikinci parçada, modelin hiç görmediği veride ayarlanır.
+    language = tune_set[0].lang_code if tune_set else ""
+    if language:
+        model_set = [c for i, c in enumerate(tune_set) if i % 2 == 0]
+        threshold_set = [c for i, c in enumerate(tune_set) if i % 2 == 1]
+        train_phonotactic_lm(model_set, language=language, trained_on=trained_on)
+        from engine.nlp.borrowing_detector import BorrowingDetector
+
+        BorrowingDetector.reset_combiner_cache()
+        tune_set = threshold_set
+
     threshold, _ = tune_threshold(tune_set, use_chain=use_chain)
 
     systems: dict[str, Callable[[BorrowingCase], bool]] = {
@@ -520,6 +576,7 @@ def evaluate(
         "always_borrowed": always_borrowed,
         "phonotactic_only": phonotactic_only,
         "donor_proximity_only": donor_proximity_only,
+        "phonotactic_model_only": phonotactic_model_only,
         "engine": _detector(use_chain, threshold),
     }
 
@@ -538,7 +595,7 @@ def evaluate(
         signal_strengths(case, use_chain=use_chain)
     )
     scores = {name: score_system(fn, report_set) for name, fn in systems.items()}
-    return scores, threshold, combiner
+    return scores, threshold, combiner, tune_set
 
 
 def _print_block(title: str, note: str, cases: list[BorrowingCase], scores: dict[str, PRF]) -> None:
@@ -634,7 +691,7 @@ def main() -> int:
 
     wold = load_wold_cases()
     if wold:
-        scores, wold_threshold, wold_combiner = evaluate(
+        scores, wold_threshold, wold_combiner, wold_tune = evaluate(
             wold, use_chain=True, trained_on="wold/sah/tune"
         )
         _print_block(
@@ -674,7 +731,7 @@ def main() -> int:
                 reference="donor_proximity_only",
             ),
         }
-        wold_signals = signal_ablation(wold, use_chain=True)
+        wold_signals = signal_ablation(wold, use_chain=True, tune_set=wold_tune)
         payload["wold"]["signal_ablation"] = {
             k: v.as_dict() for k, v in wold_signals.items()
         }
@@ -690,7 +747,7 @@ def main() -> int:
 
     wiktionary = load_wiktionary_cases(limit=args.wiktionary_limit)
     if wiktionary:
-        scores, ablation_threshold, wiki_combiner = evaluate(
+        scores, ablation_threshold, wiki_combiner, _ = evaluate(
             wiktionary, use_chain=False, trained_on="wiktionary/tr/tune"
         )
         _print_block(

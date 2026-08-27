@@ -56,6 +56,7 @@ MODEL_PATH = MODEL_DIR / "borrowing_combiner.json"
 SIGNAL_ORDER: tuple[str, ...] = (
     "zincir_kanıtı",
     "verici_yakınlığı",
+    "fonotaktik_model",
     "ses_kanunu_ihlali",
     "fonotaktik_ihlal",
     "değişimsiz_yayılım",
