@@ -1,0 +1,116 @@
+{
+  "_schema": "turkic-etymology-sigtyp-export/v1",
+  "format": "SIGTYP 2022 Shared Task on Cognate Reflex Prediction",
+  "source_dataset": "savelyevturkic",
+  "exported_at": "2026-08-27T13:22:36+00:00",
+  "split_seed": 20260827,
+  "n_cognate_sets": 400,
+  "n_languages": 32,
+  "languages": [
+    "alt",
+    "atv",
+    "az",
+    "ba",
+    "bay",
+    "cjs",
+    "clw",
+    "crh",
+    "cv",
+    "dlg",
+    "gag",
+    "kaa",
+    "kdr",
+    "khk",
+    "kim",
+    "kk",
+    "klj",
+    "krc",
+    "kum",
+    "ky",
+    "nog",
+    "otk",
+    "qwm",
+    "sah",
+    "slq",
+    "tk",
+    "tr",
+    "tt",
+    "tyv",
+    "ug",
+    "uz",
+    "ybe"
+  ],
+  "proto_column": "Proto-Turkic",
+  "caveats": [
+    "Bölütleme HARF düzeyindedir; IPA çok-karakterli bölütleri (t͡ʃ gibi) korunmaz.",
+    "Gizlenen hücreler yalnız kız dillerden seçilir; ata sütunu her zaman görünürdür.",
+    "Her satırda en az bir kız hücre görünür kalır.",
+    "ST2022'ye dış veri PR ile eklenmemiştir; bu bir VERİ YAYINIDIR, katkı önerisi değil."
+  ],
+  "files": {
+    "cognates.tsv": {
+      "rows": 400,
+      "sha256": "72d1a5892b63db35f8243b7ac5af320922dfeaa8032f2f9972450aa5cfbdeabc"
+    },
+    "training-0.10.tsv": {
+      "rows": 400,
+      "sha256": "a6f17d7d704201e591744fa43d4786d0434c9369f71d31572725926eb591d329"
+    },
+    "test-0.10.tsv": {
+      "rows": 400,
+      "sha256": "56027fb6b0082dfc6aa0f8ee120a0a66f6fe51273854994456c739f509783c67"
+    },
+    "solutions-0.10.tsv": {
+      "rows": 400,
+      "sha256": "18cfce82c4c1ea15d6912506eb8720ad6a42f06cdb5956803b18923081d44006"
+    },
+    "training-0.20.tsv": {
+      "rows": 400,
+      "sha256": "7a16cc8188773a8b9459919a04c94b196739351fb0bbdef3a557c73b141b7647"
+    },
+    "test-0.20.tsv": {
+      "rows": 400,
+      "sha256": "906d6fbc20f9923fd654624a4472cc4c60c96d9a8ca66d8f6d9108d6f9d032ab"
+    },
+    "solutions-0.20.tsv": {
+      "rows": 400,
+      "sha256": "159f1c33a75f490159a10d8efdbee1eb5ab87b91f0210da87975fcdc16b420f9"
+    },
+    "training-0.30.tsv": {
+      "rows": 400,
+      "sha256": "efab4cfabbb6be087cc3d79025347f08d2652614f04a61f9831ae45f13ecd333"
+    },
+    "test-0.30.tsv": {
+      "rows": 400,
+      "sha256": "29a772eacf45fd83efa609763eee6c36c139e6626669074c1a02b21e46df24a9"
+    },
+    "solutions-0.30.tsv": {
+      "rows": 400,
+      "sha256": "bf7331cac3bd456f1fb9d4fbc5124e8fe3c0ee5fa50e5e881a7827e4bbf06a26"
+    },
+    "training-0.40.tsv": {
+      "rows": 400,
+      "sha256": "a871cd0c626b26dd214418814cba88dd0e5bd273710e458b8933d043ef0a2b09"
+    },
+    "test-0.40.tsv": {
+      "rows": 400,
+      "sha256": "187574dca5c09f156e85917a150f2814a53fee8e6b701100c7901ef5618882a8"
+    },
+    "solutions-0.40.tsv": {
+      "rows": 400,
+      "sha256": "c0ca7bf8e279fc2875cb37689cb18d109d4ca18d4388b0475c0d6e02e23e75fb"
+    },
+    "training-0.50.tsv": {
+      "rows": 400,
+      "sha256": "f7c71061616679fe2dcc681bbba4e81eda4ee99123088b2985fbe40793e045d5"
+    },
+    "test-0.50.tsv": {
+      "rows": 400,
+      "sha256": "6c95bfb4a46591335ed8f2150b12e64477cb9f65c4c45054ad3b85a60c5ea990"
+    },
+    "solutions-0.50.tsv": {
+      "rows": 400,
+      "sha256": "2a5f885b5510cb10158dd0bdc2f2f223bd9dde836b96280d1e7580b44877e8f7"
+    }
+  }
+}

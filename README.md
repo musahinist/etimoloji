@@ -821,6 +821,33 @@ ayırt edilemez.
 Durum işaretleri: ✅ kullanımda · 🚧 yol haritasında · ⚠️ bilinçli olarak
 kullanılmıyor veya kısıtlı kullanılıyor.
 
+### Yayın çıktısı — SIGTYP 2022 biçimi
+
+Altın standardımız alanın yayınlanmış paylaşılan görev biçiminde dışa
+aktarılıyor (`make sigtyp`), ki başka sistemler aynı veride ölçülebilsin ve
+buradaki sayılar **bağımsız olarak yeniden üretilebilsin**:
+
+    data/sigtyp/
+        cognates.tsv           400 akraba kümesi · 32 dil · ata sütunu dahil
+        training-0.10…0.50.tsv kız dil hücrelerinin %10…%50'si gizli
+        test-0.10…0.50.tsv     gizlenen hücreler "?" ile işaretli
+        solutions-0.10…0.50.tsv gizlenen hücrelerin gerçek değerleri
+        _provenance.json       her dosyanın SHA-256'sı ve bölme tohumu
+
+⚠️ Bölmeler **deterministiktir** (`SPLIT_SEED = 20260827`); aynı komut aynı
+bölmeleri üretir. Yoksa "aynı veride ölçtük" iddiası kurulamaz.
+
+⚠️ **Bilinen kısıtlar, veriyle birlikte gidiyor:** bölütleme harf
+düzeyindedir (IPA çok-karakterli bölütleri `t͡ʃ` korunmaz); gizlenen hücreler
+yalnız kız dillerden seçilir ve ata sütunu her zaman görünürdür (ST2022
+görevi "eksik **refleksi** tahmin et"tir, "ata biçmi tahmin et" değil); her
+satırda en az bir kız hücre görünür kalır.
+
+⚠️ ST2022'ye dış veri PR ile eklenmemiş; organizatörler veri kümelerini
+Lexibank'tan derlemiş. Bu bir **veri yayınıdır**, katkı önerisi değil.
+Gerçekçi rota: Lexibank uyumlu CLDF + Zenodo DOI, ST2022 bölmelerini ondan
+türetmek.
+
 ### Veri kümeleri
 
 | Kaynak | İçerik | Durum |

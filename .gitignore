@@ -68,3 +68,6 @@ data/lexicons/donors/donors.db
 data/borrowing/chains.json
 # Toplu analiz çıktısı — türetilmiş ve büyük.
 data/dialect/analysis.json
+
+# SIGTYP dışa aktarımı `make sigtyp` ile üretilir (deterministik).
+data/sigtyp/*.tsv
