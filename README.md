@@ -148,6 +148,31 @@ hariç olandır.
 > 0,571 → **0,696**) — tahminleri hiç değişmemiş olmasına rağmen. Şimdi
 > `align_forms(..., trim=False)` ölçüm ve fark sayma yollarında zorunlu.
 
+#### Denklik düzenliliği: doğruluğun üst sınırı (Faz D1, CoPaR)
+
+⚠️ **Plan CoPaR'ı elle yazılmış denkliklerin YERİNE koymayı öngörüyordu;
+ölçüm o planı değiştirdi.** Elle yazılmış denklikleri öğrenilmiş sayımların
+önüne koymak dilbilimsel olarak yerleşik iki kararı bozuyordu (yukarıda).
+Elle yazılmış tablo dar ve küratörlüdür; öğrenilmiş katman onun **arkasında**
+duruyor ve orada katkı sağlıyor.
+
+CoPaR bu yüzden **teşhis** olarak koşuluyor, karar katmanı olarak değil:
+
+| | değer |
+|---|---|
+| akraba kümesi (TRAIN) | 395 |
+| hizalama sütunu | 1.565 |
+| denklik örüntüsü | 762 (450'si **tekil**) |
+| **düzenli sütun oranı** | **0,713** |
+
+Tekil örüntü = o sütunun denkliği başka hiçbir yerde görülmüyor. Sayısı
+düzensizliğin doğrudan ölçüsüdür.
+
+⚠️ **Bu oran rekonstrüksiyon doğruluğunun üst sınırını belirler:** hiçbir
+örüntüye oturmayan %29'luk sütunda kural tabanlı bir sistem ancak şansa
+kalır. Blum & List'in budamayla düzenliliği artırma bulgusu bizde de
+tutarlı: budama rekonstrüksiyon doğruluğunu 0,361 → 0,386 çıkardı.
+
 #### ⚠️ Denenmiş ve KAZANÇ VERMEYEN iki şey
 
 **Bağlam kodlaması (Faz D3).** List ve ark. 2022 Pos/Str/Ini kodlamasının
@@ -986,6 +1011,7 @@ türetmek.
 
 - List, Greenhill & Gray 2017, *PLOS ONE* — LexStat-Infomap; **B-Cubed F ≈ 0,89** taban çizgisi
 - List 2019, *Computational Linguistics* — değerlendirme metrikleri; **salt edit distance reddi** (ED + NED + B-Cubed F + accuracy dörtlüsü)
+- **List 2019, *Computational Linguistics* — CoPaR** ⚠️ **teşhis olarak uygulandı, karar katmanına bağlanmadı** — denklik örüntülerini asgari klik örtüsüyle veriden çıkarır. Plan bunu elle yazılmış `CORRESPONDENCES` yerine koymayı öngörüyordu; ölçüm planı değiştirdi (elle yazılmış tablo öğrenilmiş sayımı geçti). Teşhis sonucu: TRAIN'de 1.565 sütunun **%71,3'ü** düzenli örüntülere oturuyor, 762 örüntünün 450'si tekil. Bu oran kural tabanlı rekonstrüksiyonun üst sınırıdır.
 - **Blum & List 2023, `lingrex.trimming`** ✅ **uygulandı** — boşluk-yönelimli hizalama budaması; yayında 10 ailenin 10'unda düzenli denklik oranını artırıyor (+0,03…+0,07). Rekonstrüksiyon **doğruluğuna** etkisi yayınlanmamıştı; bizde dev'de tam 0,361 → **0,386**, NED 0,306 → 0,302, ED 1,48 → 1,45.
 - Blum & List 2026 — leave-one-out düzensizlik tespiti (%85). ⚠️ Teşhisi sınandı ve doğrulanmadı: denklik tablosunu yalnız miras kümelerden öğrenmek `ses_kanunu_ihlali` sinyalini kurtarmadı (−0,0101 → −0,0083).
 - [Bouchard-Côté ve ark. 2013, *PNAS*](https://www.pnas.org/doi/10.1073/pnas.1204678110) — olasılıksal ses değişimi modeli, 637 Austronesian dili

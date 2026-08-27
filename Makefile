@@ -1,5 +1,5 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold donors patterns gold-agreement sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-prediction correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify semantic dialect
+        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-prediction correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify semantic dialect
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -16,6 +16,7 @@ help:
 	@echo "patterns       - Ata ses örüntü tablosunu TRAIN'den öğren (denetimli katman)"
 	@echo "eval           - Rekonstrüksiyon ölçümü (dev bölümü)"
 	@echo "eval-cognates  - Akraba tespiti B-Cubed F (LexStat-Infomap taban çizgisine karşı)"
+	@echo "regularity     - CoPaR: verinin ne kadarı düzenli denkliklerle açıklanıyor (üst sınır)"
 	@echo "gold-agreement - Altın standartlar arası uyum: otomatik sistemin GERÇEKÇİ tavanı"
 	@echo "sigtyp         - Altın standardı SIGTYP 2022 paylaşılan görev biçiminde dışa aktar"
 	@echo "expert-review  - Uzman derecelendirmelerinden Krippendorff ordinal α (uzman girdisi gerekir)"
@@ -80,6 +81,9 @@ expert-review:
 
 sigtyp: gold
 	.venv/bin/python scripts/export_sigtyp.py
+
+regularity: gold
+	.venv/bin/python -m engine.evaluation.regularity
 
 gold-agreement: data
 	.venv/bin/python -m engine.evaluation.gold_agreement

@@ -122,6 +122,9 @@ jobs:
           print("Negatif kontroller temiz.")
           EOF
 
+      - name: Denklik düzenliliği (CoPaR) — doğruluğun üst sınırı
+        run: python -m engine.evaluation.regularity
+
       - name: Altın standartlar arası uyum (uzman bandı)
         run: python -m engine.evaluation.gold_agreement
 

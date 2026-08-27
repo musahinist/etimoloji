@@ -1,0 +1,10 @@
+{
+  "_schema": "turkic-etymology-regularity/v1",
+  "n_cognate_sets": 395,
+  "n_sites": 1565,
+  "n_patterns": 762,
+  "n_singleton_patterns": 450,
+  "regular_ratio": 0.7125,
+  "purity": null,
+  "min_refs": 3
+}
