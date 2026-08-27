@@ -1,0 +1,38 @@
+{
+  "_schema": "turkic-etymology-cldf-provenance/v1",
+  "dataset": "hruschkaturkic",
+  "repository": "https://github.com/lexibank/hruschkaturkic",
+  "ref": "v1.0",
+  "commit": "72e8095234f8",
+  "retrieved_at": "2026-08-26T23:44:45+00:00",
+  "citation": "Hruschka ve ark. 2015, Current Biology",
+  "role": "bağımsız çapraz kontrol",
+  "caveat": "",
+  "files": {
+    "forms.csv": {
+      "sha256": "e2c5b5108f6c064375d69efc612a7d3030ca4bcf6570bbea9b619fad26ef557f",
+      "bytes": 266987,
+      "rows": 4213
+    },
+    "cognates.csv": {
+      "sha256": "63ac74068e73dc72d7f209712c5b096878252c2133086853e0146ae4473706f3",
+      "bytes": 309520,
+      "rows": 4213
+    },
+    "languages.csv": {
+      "sha256": "c31c0d2398db5dfb15f4230341d0decf6bb07834e8a7e95fde1547c9e1d2a644",
+      "bytes": 1723,
+      "rows": 26
+    },
+    "parameters.csv": {
+      "sha256": "eceb531d150d6d4d8c4c59c7bf3e8ed4bd11e88d8edd807575710b95687231c4",
+      "bytes": 4713,
+      "rows": 222
+    },
+    "cldf-metadata.json": {
+      "sha256": "42b15d99c8b2c23946ab7e48e5b9f465f874fa0350dec6eb698cf2c5165e4009",
+      "bytes": 12964,
+      "rows": 0
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "_schema": "turkic-etymology-cldf-provenance/v1",
+  "dataset": "savelyevturkic",
+  "repository": "https://github.com/lexibank/savelyevturkic",
+  "ref": "v2.1",
+  "commit": "4a540590580f",
+  "retrieved_at": "2026-08-26T23:44:41+00:00",
+  "citation": "Savelyev & Robbeets 2020, Journal of Language Evolution",
+  "role": "birincil altın standart",
+  "caveat": "",
+  "files": {
+    "forms.csv": {
+      "sha256": "eb86f50123fa0e0062c294434638c209f2ad15df6af0ddeccd7bb4d90b789fea",
+      "bytes": 804696,
+      "rows": 8360
+    },
+    "cognates.csv": {
+      "sha256": "5db3b459f38c79cf84f8cf1ecb9c263b90a646abab67ec571e809cc04be20b46",
+      "bytes": 845672,
+      "rows": 8360
+    },
+    "languages.csv": {
+      "sha256": "9224c045c86b335a6a87d402ca5b1edd47cfa6f984d6f733a09840c99151883e",
+      "bytes": 2966,
+      "rows": 32
+    },
+    "parameters.csv": {
+      "sha256": "19408ab6ecda42f68cca156cbfdf979bf3d2740d451010893c2a5aae39ad464d",
+      "bytes": 7946,
+      "rows": 254
+    },
+    "cldf-metadata.json": {
+      "sha256": "13974fc271f382dc26e10a9194180b26a8e8e5db4122415f62b844ef9e8af3b5",
+      "bytes": 13338,
+      "rows": 0
+    }
+  }
+}

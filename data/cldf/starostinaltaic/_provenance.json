@@ -1,0 +1,38 @@
+{
+  "_schema": "turkic-etymology-cldf-provenance/v1",
+  "dataset": "starostinaltaic",
+  "repository": "https://github.com/lexibank/starostinaltaic",
+  "ref": "main",
+  "commit": "638500a49eda",
+  "retrieved_at": "2026-08-26T23:44:48+00:00",
+  "citation": "Starostin, Dybo & Mudrak, Altaic Etymological Dictionary",
+  "role": "yalnız karşılaştırma",
+  "caveat": "Altay hipotezi tartışmalıdır (Vovin 2005). Tek kaynak olarak kullanılmaz; akrabalık kanıtına katılmaz.",
+  "files": {
+    "forms.csv": {
+      "sha256": "48adfe90803767ed1f1b08cfb80e6fc94aef97a1890a8fa876ef19b371dec54a",
+      "bytes": 449106,
+      "rows": 5756
+    },
+    "cognates.csv": {
+      "sha256": "dd601eec94f906a081e4e7343b2da3c9aedf4be5f19f3fde72dc45f672df2888",
+      "bytes": 462556,
+      "rows": 5756
+    },
+    "languages.csv": {
+      "sha256": "673dbf240df3a0f17180c959592eee54eabf391401ad37ea54e7313edacf886c",
+      "bytes": 2069,
+      "rows": 54
+    },
+    "parameters.csv": {
+      "sha256": "84681aa3aed86fda0bfc706a90684461f26b21bc75abd937b8922ac69828645c",
+      "bytes": 3083,
+      "rows": 110
+    },
+    "cldf-metadata.json": {
+      "sha256": "b24a2591298407e1f593218f6bb8d6927db2434eb9d82e5a8773bd9890d408a6",
+      "bytes": 13183,
+      "rows": 0
+    }
+  }
+}

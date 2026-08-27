@@ -1,4 +1,5 @@
-.PHONY: help install test test-live lint fix coverage clean serve web
+.PHONY: help install test test-live lint fix coverage clean serve web \
+        data gold eval eval-baseline eval-cognates eval-borrowing eval-calibration
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -7,14 +8,24 @@ help:
 	@echo "lint        - ruff denetimi"
 	@echo "fix         - ruff otomatik düzeltme"
 	@echo "coverage    - Kapsam raporu (%90 eşiği)"
+	@echo ""
+	@echo "  --- veri ve değerlendirme ---"
+	@echo "data           - CLDF veri kümelerini indir (savelyev, hruschka, starostin, robbeets)"
+	@echo "gold           - Altın standardı kur, kavram bazlı böl ve test setini mühürle"
+	@echo "eval-baseline  - Taban çizgisi: motor vs trivial sistemler, 4 koşulda"
+	@echo "eval           - Rekonstrüksiyon ölçümü (dev bölümü)"
+	@echo "eval-cognates  - Akraba tespiti B-Cubed F (LexStat-Infomap taban çizgisine karşı)"
+	@echo "eval-borrowing - Alıntı tespiti P/R/F (verici dile göre ayrıştırılmış)"
+	@echo "eval-calibration - ECE + Brier + risk-coverage"
+	@echo ""
 	@echo "serve       - REST API sunucusu"
 	@echo "web         - Web panelini yayınla (localhost:3000)"
 	@echo "clean       - Önbellek ve geçici dosyaları sil"
 
 install:
 	python3 -m venv .venv || uv venv .venv
-	.venv/bin/python -m pip install -e ".[dev,phon,pdf]" || \
-		uv pip install --python .venv/bin/python -e ".[dev,phon,pdf]"
+	.venv/bin/python -m pip install -e ".[dev,phon,pdf,cldf]" || \
+		uv pip install --python .venv/bin/python -e ".[dev,phon,pdf,cldf]"
 
 test:
 	.venv/bin/pytest -q
@@ -30,6 +41,27 @@ fix:
 
 coverage:
 	.venv/bin/pytest --cov=engine --cov-report=term-missing --cov-fail-under=90
+
+data:
+	.venv/bin/python scripts/download_cldf.py --all
+
+gold: data
+	.venv/bin/python -m engine.evaluation.gold --freeze
+
+eval-baseline: gold
+	.venv/bin/python -m engine.evaluation.report
+
+eval: gold
+	.venv/bin/python -m engine.evaluation.harness --split dev
+
+eval-cognates: data
+	.venv/bin/python -m engine.evaluation.cognate_eval
+
+eval-borrowing: data
+	.venv/bin/python -m engine.evaluation.borrowing_eval
+
+eval-calibration: gold
+	.venv/bin/python -m engine.evaluation.calibration --split dev
 
 serve:
 	.venv/bin/python -m engine.server

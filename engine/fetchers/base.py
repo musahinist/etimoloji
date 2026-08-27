@@ -37,6 +37,21 @@ TURKIC_LANGUAGES_MAP: dict[str, str] = {
     "khk": "Hakasça",
     "cjs": "Şorca",
     "slq": "Salarca",
+    # --- Faz 3'te eklendi: ünlü uzunluğu tanıkları --------------------------
+    # `savelyevturkic` üzerinde ölçüldü: 478 uzun ünlülü biçimin **231'i**
+    # (%48) aşağıdaki diller haritada olmadığı için rekonstrüktör tarafından
+    # sessizce düşürülüyordu (`reconstruct()` girişteki lang_code filtresi).
+    # Halaçça ve Dolganca ünlü uzunluğunu koruyan başlıca tanıklardır;
+    # onlar olmadan *Kāpuk gibi ata biçimler türetilemez.
+    "klj": "Halaçça",           # 73 uzun ünlülü biçim — en zengin tanık
+    "dlg": "Dolganca",          # 62
+    "clw": "Orta Çulım Türkçesi",  # 49
+    "kim": "Tofaca",            # 24
+    "ybe": "Sarı Yugurca",      # 3
+    "kdr": "Karayca",
+    "atv": "Kuzey Altay Türkçesi",
+    "bay": "Baraba Tatarcası",
+    "qwm": "Kıpçakça (Codex Cumanicus)",
 }
 
 #: Toplam Türki dil sayısı. `cognate_alignment` gibi yayılım hesapları bu

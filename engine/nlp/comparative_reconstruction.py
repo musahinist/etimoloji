@@ -44,6 +44,18 @@ LANGUAGE_BRANCHES: dict[str, str] = {
     "khk": "siberian", "cjs": "siberian",
     "cv": "oghur",
     "otk": "old_turkic",
+    # Faz 3'te eklenen ünlü uzunluğu tanıkları (bkz. fetchers/base.py notu).
+    "dlg": "siberian",   # Dolganca — Yakutça ile birlikte
+    "clw": "siberian",   # Orta Çulım
+    "kim": "siberian",   # Tofaca
+    "ybe": "siberian",   # Sarı Yugurca
+    "atv": "siberian",   # Kuzey Altay
+    "kdr": "kipchak",    # Karayca
+    "bay": "kipchak",    # Baraba Tatarcası
+    "qwm": "kipchak",    # Codex Cumanicus
+    # Halaçça hiçbir ana kola girmez: Arguca kendi başına en erken ayrılan
+    # koldur (Doerfer). Ayrı kol sayılması güven skorunu doğru etkiler.
+    "klj": "arghu",
 }
 
 #: Bilinen Proto-Türkçe denklik kümeleri.

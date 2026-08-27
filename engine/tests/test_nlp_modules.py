@@ -81,9 +81,16 @@ class TestComparativeReconstruction(unittest.TestCase):
 
 class TestCognateAlignment(unittest.TestCase):
     def test_spreading_uses_real_language_count(self):
-        """Yayılım, koda gömülü 25 yerine gerçek dil sayısına bölünmelidir."""
+        """Yayılım, koda gömülü sabit yerine gerçek dil sayısına bölünmelidir.
+
+        Sayı sabitlenmez: dil haritası büyüdükçe (Faz 3'te ünlü uzunluğu
+        tanıkları eklendi) bu testin de büyümesi gerekir, yoksa harita
+        genişletildiğinde yanlış yere kırmızı yanar.
+        """
+        from engine.fetchers.base import TURKIC_LANGUAGES_MAP
+
         res = CognateAlignmentEngine().evaluate_cognate_distribution("göz", GOZ)
-        self.assertEqual(res["total_language_count"], 25)
+        self.assertEqual(res["total_language_count"], len(TURKIC_LANGUAGES_MAP))
         self.assertEqual(res["present_dialects_count"], 8)
 
     def test_pseudo_codes_excluded(self):

@@ -45,3 +45,11 @@ venv/
 htmlcov/
 .pytest_cache/
 .ruff_cache/
+
+# --- Harici CLDF veri kümeleri ---------------------------------------------
+# Ham CSV'ler repoya alınmaz (7,7 MB, üçüncü taraf veri). Bunun yerine her
+# indirmenin künyesi ve SHA-256'sı `_provenance.json` ile commit edilir:
+# `make data` ile yeniden indirip aynı özetleri alan herkes aynı veriye sahiptir.
+data/cldf/*/*.csv
+data/cldf/*/*.json
+!data/cldf/*/_provenance.json

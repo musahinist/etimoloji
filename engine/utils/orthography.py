@@ -12,9 +12,11 @@ dönüşüyordu (ör. "һыу" -> "ы").
 
 Burada tek bir doğru sınıf tanımlanır ve tüm modüller bunu kullanır.
 """
+
 from __future__ import annotations
 
 import re
+import unicodedata
 
 #: Latin tabanlı Türki alfabelerdeki harfler (Türkçe + Azerice + ortak transkripsiyon)
 LATIN_TURKIC = "a-zçğıöşüâîûəäŕŗñŋśčžǰāīūōē"
@@ -22,13 +24,13 @@ LATIN_TURKIC = "a-zçğıöşüâîûəäŕŗñŋśčžǰāīūōē"
 #: Kiril tabanlı Türki alfabelerdeki harfler.
 #: Temel Rus Kiril bloğu (а-я) + Türki dillere özgü genişletilmiş harfler.
 CYRILLIC_TURKIC = (
-    "а-яё"          # temel Kiril
-    "әғқңөұүһٴ"     # Kazakça / Başkurtça
-    "ҫӑӗҪ"          # Çuvaşça
-    "җңүөһ"         # Tatarca
-    "іӣӯ"           # Kırgızca / diğer
-    "ҡҙҭҫ"          # Başkurtça
-    "ӧӱ"            # Altayca / Hakasça
+    "а-яё"  # temel Kiril
+    "әғқңөұүһٴ"  # Kazakça / Başkurtça
+    "ҫӑӗҪ"  # Çuvaşça
+    "җңүөһ"  # Tatarca
+    "іӣӯ"  # Kırgızca / diğer
+    "ҡҙҭҫ"  # Başkurtça
+    "ӧӱ"  # Altayca / Hakasça
 )
 
 #: Arap alfabesi (Osmanlıca / Uygurca / Çağatayca)
@@ -45,23 +47,183 @@ NON_TURKIC_CHAR_RE = re.compile(f"[^{ALL_TURKIC_CHARS}]")
 
 #: Latin harflerine normalize etme haritası (hizalama ve karşılaştırma için).
 LATIN_NORMALISATION = {
-    "ŕ": "ŕ", "ŗ": "r", "ŋ": "ŋ", "ñ": "ŋ", "ə": "e", "ä": "a", "ā": "a",
-    "ī": "i", "ū": "u", "ō": "o", "ē": "e", "ś": "s", "č": "c", "ž": "z",
-    "ǰ": "j", "q": "k", "â": "a", "î": "i", "û": "u",
+    "ŕ": "ŕ",
+    "ŗ": "r",
+    "ŋ": "ŋ",
+    "ñ": "ŋ",
+    "ə": "e",
+    "ä": "a",
+    "ā": "a",
+    "ī": "i",
+    "ū": "u",
+    "ō": "o",
+    "ē": "e",
+    "ś": "s",
+    "č": "c",
+    "ž": "z",
+    "ǰ": "j",
+    "q": "k",
+    "â": "a",
+    "î": "i",
+    "û": "u",
     # Kiril -> Latin (kaba çeviri yazı; karşılaştırma amaçlı)
-    "а": "a", "б": "b", "в": "v", "г": "g", "ғ": "g", "д": "d", "е": "e", "ё": "yo",
-    "ж": "j", "җ": "j", "з": "z", "и": "i", "і": "i", "й": "y", "к": "k", "қ": "k",
-    "ҡ": "k", "л": "l", "м": "m", "н": "n", "ң": "ŋ", "о": "o", "ө": "ö", "п": "p",
-    "р": "r", "с": "s", "ҫ": "s", "т": "t", "у": "u", "ұ": "u", "ү": "ü", "ф": "f",
-    "х": "h", "һ": "h", "ҳ": "h", "ц": "ts", "ч": "ç", "ш": "ş", "щ": "ş", "ы": "ı",
-    "ь": "", "ъ": "", "э": "e", "ә": "ä", "ю": "yu", "я": "ya", "ӑ": "a", "ӗ": "e",
-    "ӧ": "ö", "ӱ": "ü", "ӣ": "i", "ӯ": "u", "ҙ": "z", "ҭ": "t",
+    "а": "a",
+    "б": "b",
+    "в": "v",
+    "г": "g",
+    "ғ": "g",
+    "д": "d",
+    "е": "e",
+    "ё": "yo",
+    "ж": "j",
+    "җ": "j",
+    "з": "z",
+    "и": "i",
+    "і": "i",
+    "й": "y",
+    "к": "k",
+    "қ": "k",
+    "ҡ": "k",
+    "л": "l",
+    "м": "m",
+    "н": "n",
+    "ң": "ŋ",
+    "о": "o",
+    "ө": "ö",
+    "п": "p",
+    "р": "r",
+    "с": "s",
+    "ҫ": "s",
+    "т": "t",
+    "у": "u",
+    "ұ": "u",
+    "ү": "ü",
+    "ф": "f",
+    "х": "h",
+    "һ": "h",
+    "ҳ": "h",
+    "ц": "ts",
+    "ч": "ç",
+    "ш": "ş",
+    "щ": "ş",
+    "ы": "ı",
+    "ь": "",
+    "ъ": "",
+    "э": "e",
+    "ә": "ä",
+    "ю": "yu",
+    "я": "ya",
+    "ӑ": "a",
+    "ӗ": "e",
+    "ӧ": "ö",
+    "ӱ": "ü",
+    "ӣ": "i",
+    "ӯ": "u",
+    "ҙ": "z",
+    "ҭ": "t",
+}
+
+
+#: **Türkolojik çeviriyazı ve IPA harfleri.**
+#:
+#: Bilimsel Türkoloji kaynakları (Clauson, ЭСТЯ, savelyevturkic…) Türkiye
+#: Türkçesi imlasını değil, kendi çeviriyazı geleneğini kullanır: ``tïrnaḳ``,
+#: ``oɣul``, ``čɘrne``. CLDF veri kümeleri de öyle.
+#:
+#: ⚠️ Bu tablo eklenmeden önce :func:`to_comparison_form` tanımadığı harfi
+#: **siliyordu** ve kelimeler yok oluyordu — ölçüldü::
+#:
+#:     'ïsïr'  -> 'sr'      (iki ünlü birden silindi)
+#:     'ḳan'   -> 'an'      (söz başı ünsüz silindi)
+#:     'oɣul'  -> 'oul'
+#:
+#: Bu, önceki turda Kiril için düzeltilen hatanın (``көз`` -> ``кз``) Latin
+#: çeviriyazıdaki aynısıydı. Silmek değil, **eşlemek** gerekir.
+TRANSCRIPTION_NORMALISATION = {
+    # --- ünlüler ---
+    "ï": "ı",  # Türkolojik art düz i — en sık kaybolan harf
+    "ɯ": "ı",  # IPA karşılığı
+    "ɨ": "ı",
+    "ɪ": "i",
+    "ɘ": "ı",  # Çuvaşça indirgenmiş ünlü
+    "ĭ": "ı",
+    "ə": "e",
+    "ø": "ö",
+    "œ": "ö",
+    "ʉ": "ü",
+    "ɵ": "ö",
+    "ɔ": "o",
+    "ɑ": "a",
+    "ɛ": "e",
+    "ẹ": "e",
+    "ė": "e",
+    "ǝ": "e",
+    # --- ünsüzler ---
+    "ḳ": "k",  # nokta altlı k — art damaksıl /q/
+    "ķ": "k",
+    "ǩ": "k",
+    "ḵ": "k",
+    "ġ": "g",
+    "ɢ": "g",
+    "ǧ": "ğ",
+    "ɣ": "ğ",  # gamma — art damaksıl sürtünmeli
+    "ʁ": "ğ",
+    "ǥ": "ğ",
+    "ɡ": "g",  # U+0261 SCRIPT G — normal g'den FARKLI kod noktası
+    "χ": "h",
+    "x": "h",
+    "ħ": "h",
+    "ḥ": "h",
+    "š": "ş",
+    "ʃ": "ş",
+    "ɕ": "ş",
+    "ʂ": "ş",
+    "ʒ": "j",
+    "ʐ": "j",
+    "ʑ": "j",
+    "ʨ": "ç",
+    "ʧ": "ç",
+    "ʥ": "c",
+    "ʤ": "c",
+    "ǯ": "c",
+    "ń": "ŋ",
+    "ɲ": "n",
+    "ṅ": "ŋ",
+    "ṭ": "t",
+    "ṫ": "t",
+    "ḏ": "d",
+    "ð": "d",
+    "θ": "t",
+    "ẓ": "z",
+    "ż": "z",
+    "ṣ": "s",
+    "ṡ": "s",
+    "ḷ": "l",
+    "ɫ": "l",
+    "ĺ": "ĺ",  # lambdaizmin ata sesi — KORUNUR
+    "ł": "l",
+    "ṙ": "ŕ",
+    "ʋ": "v",
+    "w": "v",
+    "β": "v",
+    "ɓ": "b",
+    "ʔ": "",  # gırtlak durağı — sesbirim değil, işaret
+    "ʼ": "",
+    "ʻ": "",
+    "ʲ": "",
+    "ʰ": "",
+    "ː": "",  # uzunluk — karşılaştırma biçiminde düşer, ÇIKTIDA korunur
+    "ˑ": "",
 }
 
 
 def strip_non_turkic(text: str) -> str:
     """Türki yazı sistemleri dışındaki karakterleri siler."""
     return NON_TURKIC_CHAR_RE.sub("", (text or "").lower())
+
+
+#: Karşılaştırma biçiminin hedef alfabesi. Bu harfler olduğu gibi korunur.
+COMPARISON_ALPHABET = frozenset("abcdefghijklmnopqrstuvwxyzçğıöşüŋŕĺ")
 
 
 def to_comparison_form(text: str) -> str:
@@ -71,10 +233,24 @@ def to_comparison_form(text: str) -> str:
     Kiril ve özel fonetik işaretler Latin karşılıklarına çevrilir; böylece
     ``көз`` ile ``göz`` hizalanabilir hâle gelir.
     """
-    t = (text or "").strip().lower().lstrip("*")
-    out = []
+    t = unicodedata.normalize("NFC", (text or "").strip().lower().lstrip("*?"))
+    out: list[str] = []
     for ch in t:
-        out.append(LATIN_NORMALISATION.get(ch, ch))
+        mapped = LATIN_NORMALISATION.get(ch)
+        if mapped is None:
+            mapped = TRANSCRIPTION_NORMALISATION.get(ch)
+        if mapped is None and ch in COMPARISON_ALPHABET:
+            # Zaten hedef alfabede: dokunma. (``ö`` ve ``ü`` NFD ile ``o``/``u``
+            # olurdu — aşağıdaki kurtarma onlara UYGULANMAMALIDIR.)
+            mapped = ch
+        if mapped is None:
+            # Bilinmeyen harf: birleşik işaretleri (uzunluk makronu, breve…)
+            # ayırıp taban harfi kurtar. Silmek SON çaredir — silinen ünlü
+            # kelimeyi tanınmaz hâle getirir.
+            decomposed = unicodedata.normalize("NFD", ch)
+            base = "".join(c for c in decomposed if not unicodedata.combining(c))
+            mapped = LATIN_NORMALISATION.get(base, TRANSCRIPTION_NORMALISATION.get(base, base))
+        out.append(mapped)
     joined = "".join(out)
     return re.sub(r"[^a-zçğıöşüŋŕĺ]", "", joined)
 
@@ -85,10 +261,10 @@ def to_comparison_form(text: str) -> str:
 #: `ŕ` sesi `z` refleksine çevrilir, aksi hâlde düzenli bir denklik "fark"
 #: olarak sayılır ve benzerlik skoru haksız yere düşer.
 PROTO_REFLEXES = {
-    "ŕ": "z",   # Lir-Şaz rotasizmi: PT *-ŕ > Ortak Türkçe -z
-    "ĺ": "ş",   # Lambdaizm: PT *-ĺ > Ortak Türkçe -ş
-    "ŋ": "n",   # PT *-ŋ- > çoğu kolda -n-
-    "j": "y",   # PT *j- > Ortak Türkçe y-
+    "ŕ": "z",  # Lir-Şaz rotasizmi: PT *-ŕ > Ortak Türkçe -z
+    "ĺ": "ş",  # Lambdaizm: PT *-ĺ > Ortak Türkçe -ş
+    "ŋ": "n",  # PT *-ŋ- > çoğu kolda -n-
+    "j": "y",  # PT *j- > Ortak Türkçe y-
 }
 
 

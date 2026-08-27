@@ -1,0 +1,38 @@
+{
+  "_schema": "turkic-etymology-cldf-provenance/v1",
+  "dataset": "robbeetstriangulation",
+  "repository": "https://github.com/lexibank/robbeetstriangulation",
+  "ref": "v0.3",
+  "commit": "5f59f1522ed8",
+  "retrieved_at": "2026-08-26T23:44:53+00:00",
+  "citation": "Robbeets & Bouckaert, Triangulation dataset",
+  "role": "yalnız temas çerçevesi",
+  "caveat": "Transeurasian verisi en az EDAL kadar tartışmalıdır (Tian ve ark. 2022). YALNIZCA temas/ödünçleme analizinde kullanılır; akrabalık kanıtına asla katılmaz.",
+  "files": {
+    "forms.csv": {
+      "sha256": "491df4c6077ee11e679f7ac610b6be0d60a72019367deddecdb5470966fe8369",
+      "bytes": 2628041,
+      "rows": 26224
+    },
+    "cognates.csv": {
+      "sha256": "ae829a9ffc64fa3f86a42a0e2a433bf6e4b6a229b740d877e92a15c4a5121788",
+      "bytes": 2197251,
+      "rows": 26224
+    },
+    "languages.csv": {
+      "sha256": "40754f67b0cbcf821fd7db0675a08f77ca34ed1751db2cda25dd739e3c8174e5",
+      "bytes": 7162,
+      "rows": 101
+    },
+    "parameters.csv": {
+      "sha256": "9a030109986770d902798f57eeca68b628c1cfbd610156a54448a55a94598db7",
+      "bytes": 7961,
+      "rows": 254
+    },
+    "cldf-metadata.json": {
+      "sha256": "eeddee3ed52b41da32f3497c60b2446514c7c1478d63bf70f51b4431c8fc7004",
+      "bytes": 13236,
+      "rows": 0
+    }
+  }
+}

@@ -47,6 +47,10 @@ DB_PATH = Path(_env_str("DB_PATH", str(PROJECT_ROOT / "etymology.db")))
 SCHEMA_PATH = PROJECT_ROOT / "engine" / "db" / "schema.sql"
 SEED_DIR = Path(_env_str("SEED_DIR", str(PROJECT_ROOT / "data" / "seed")))
 BOOKS_DIR = Path(_env_str("BOOKS_DIR", str(PROJECT_ROOT / "data" / "books")))
+CLDF_DIR = Path(_env_str("CLDF_DIR", str(PROJECT_ROOT / "data" / "cldf")))
+GOLD_DIR = Path(_env_str("GOLD_DIR", str(PROJECT_ROOT / "data" / "gold")))
+LEXICON_DIR = Path(_env_str("LEXICON_DIR", str(PROJECT_ROOT / "data" / "lexicons")))
+PREDICTIONS_DIR = Path(_env_str("PREDICTIONS_DIR", str(PROJECT_ROOT / "data" / "predictions")))
 
 # --- Ağ --------------------------------------------------------------------
 

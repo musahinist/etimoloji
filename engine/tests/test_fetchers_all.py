@@ -87,11 +87,35 @@ def assert_contract(testcase: unittest.TestCase, result, who: str) -> None:
 class TestBaseFetcherContract(unittest.TestCase):
     """BaseFetcher sözleşmesi ve yardımcıları."""
 
-    def test_language_map_has_25_languages(self):
-        """README '25 Türki dil' diyordu ama harita 18 kod içeriyordu."""
-        self.assertEqual(len(TURKIC_LANGUAGES_MAP), 25)
+    def test_language_map_covers_documented_languages(self):
+        """Haritada eksik dil kalmamalı.
+
+        Regresyon 1: README "25 Türki dil" diyordu ama harita 18 kod
+        içeriyordu; nog/kum/crh/kaa/cjs/ota/slq eksikti ve bu dillerden gelen
+        kayıtlar sessizce düşürülüyordu.
+
+        Regresyon 2 (Faz 3): ünlü uzunluğunu koruyan diller de eksikti.
+        `savelyevturkic` üzerinde ölçüldü — 478 uzun ünlülü biçimin 231'i
+        (%48) haritada olmadıkları için rekonstrüktöre hiç ulaşmıyordu.
+        """
         for code in ("nog", "kum", "crh", "kaa", "cjs", "ota", "slq"):
             self.assertIn(code, TURKIC_LANGUAGES_MAP, code)
+        # Ünlü uzunluğu tanıkları — bunlar olmadan *Kāpuk türetilemez.
+        for code in ("klj", "dlg", "clw", "kim", "ybe"):
+            self.assertIn(code, TURKIC_LANGUAGES_MAP, code)
+        self.assertGreaterEqual(len(TURKIC_LANGUAGES_MAP), 34)
+
+    def test_every_language_has_a_branch(self):
+        """Kolu olmayan dil güven skorunu sessizce düşürür.
+
+        `reconstruct()` kol sayısını güven formülünde kullanıyor; haritada
+        olup `LANGUAGE_BRANCHES`te olmayan bir dil, tanık sayılıp kol
+        sayılmadığı için skoru olduğundan düşük gösterir.
+        """
+        from engine.nlp.comparative_reconstruction import LANGUAGE_BRANCHES
+
+        missing = sorted(set(TURKIC_LANGUAGES_MAP) - set(LANGUAGE_BRANCHES))
+        self.assertEqual(missing, [], f"kolu tanımsız diller: {missing}")
 
     def test_wiktionary_header_mapping(self):
         """İngilizce Wiktionary başlıkları dil koduna eşlenmelidir.
