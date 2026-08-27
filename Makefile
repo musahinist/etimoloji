@@ -1,5 +1,5 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold donors patterns gold-agreement sigtyp expert-review eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-prediction correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify semantic dialect
+        data gold donors patterns gold-agreement sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-prediction correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify semantic dialect
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -19,6 +19,7 @@ help:
 	@echo "gold-agreement - Altın standartlar arası uyum: otomatik sistemin GERÇEKÇİ tavanı"
 	@echo "sigtyp         - Altın standardı SIGTYP 2022 paylaşılan görev biçiminde dışa aktar"
 	@echo "expert-review  - Uzman derecelendirmelerinden Krippendorff ordinal α (uzman girdisi gerekir)"
+	@echo "turkish-gold   - TDK + Nişanyan'dan Türkçe altın alıntı kümesi (Wiktionary'den bağımsız)"
 	@echo "eval-borrowing - Alıntı tespiti P/R/F (verici dile göre ayrıştırılmış)"
 	@echo "eval-calibration - ECE + Brier + risk-coverage"
 	@echo "lexicons       - kaikki.org sözlük dökümlerini indir (19 dil, ~56 MB)"
@@ -91,6 +92,12 @@ eval-borrowing: data lexicon-index donors
 
 lexicons:
 	.venv/bin/python scripts/download_lexicons.py --all
+	# ⚠️ Rusça sürüm (~2,8 MB): İngilizce sürümde olmayan diller
+	# (Karayca, Kırım Tatarcası, Şorca) ve Çuvaşça'nın 3 katı.
+	.venv/bin/python scripts/download_lexicons.py --ru
+
+turkish-gold: lexicon-index
+	.venv/bin/python scripts/build_turkish_loanword_gold.py --limit 2000
 
 donors:
 	.venv/bin/python scripts/download_lexicons.py --donors \

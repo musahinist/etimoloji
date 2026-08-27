@@ -64,6 +64,8 @@ data/lexicons/index.db
 data/lexicons/donors/*.jsonl
 data/lexicons/donors/*.jsonl.gz
 data/lexicons/donors/donors.db
+data/lexicons/ru_edition/*.jsonl
+data/lexicons/ru_edition/*.jsonl.gz
 # Zincir dökümü büyük ve türetilmiş; kurallar özet olduğu için commit edilir.
 data/borrowing/chains.json
 # Toplu analiz çıktısı — türetilmiş ve büyük.
@@ -71,3 +73,7 @@ data/dialect/analysis.json
 
 # SIGTYP dışa aktarımı `make sigtyp` ile üretilir (deterministik).
 data/sigtyp/*.tsv
+
+# TDK/Nişanyan'dan çekilen Türkçe altın küme yeniden dağıtılmaz
+# (Nişanyan API lisansı ilan edilmemiş); `make turkish-gold` ile kurulur.
+data/gold/

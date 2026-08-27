@@ -286,8 +286,14 @@ gerçek doğruluk %23,9). Kullanıcıya gösterilen skor artık kalibre skordur.
 **F 0,385 → 0,651.** Plan hedefi (≥0,60) aşıldı; PyBor'un WOLD 41 dil
 ortalamasının (0,59–0,61) üstünde.
 
-⚠️ Ablasyon hükmü **ilk kez pozitif ve anlamlı**: motor vs yalnız
-fonotaktik fark **+0,069**, %95 GA [+0,025, +0,112], p=0,0038.
+⚠️ **Ablasyon hükmü WOLD'da anlamlı DEĞİL**: gönderdiğimiz sistem
+(eğitilmiş birleştirici) vs yalnız fonotaktik fark +0,030, %95 GA
+[−0,018, +0,077], p=0,251. Doğrusal yedek yol için aynı fark +0,069
+(p=0,004) ama üretimde kullanılan sistem o değil; hüküm **gönderdiğimiz
+sisteme** göre verilmelidir.
+
+Anlamlı üstünlük **ikincil ölçütte** (aşağıda, TDK + Nişanyan) elde
+edildi.
 
 ⚠️ Motor, tek başına verici yakınlığından **anlamlı biçimde iyi değil**:
 madde başına doğrulukta fark −0,010, %95 GA [−0,030, +0,009], p=0,354.
@@ -419,6 +425,57 @@ F o dilde geçerli değildir.
 
 ⚠️ Model yoksa el ağırlıklarına dönülür ama bu **ilan edilir**
 (`verdict.is_trained == False`), sessizce yapılmaz.
+
+#### İkincil ölçüt — Türkçe altın küme (TDK + Nişanyan), n=349
+
+⚠️ **Neden gerekiyordu.** WOLD'da tek Türki dil Sakha'dır. Türkçe için
+elimizdeki tek etiket kaynağı Wiktionary'ydi ve motorun zincir sinyali
+**zaten o etiketi okuyor** — ona karşı ölçüm döngüseldir. Ayrıca o kümede
+alıntı oranı %72,9 olduğu için F'yi en yükselten karar "hepsine alıntı
+de"dir ve sistemler çöküyor.
+
+Bu küme **Wiktionary'ye hiç değmeden** iki bağımsız Türkçe kaynaktan
+kuruldu: TDK Güncel Türkçe Sözlük (`lisan` alanı) ve Nişanyan Sözlük
+(`relation` alanı). 2.000 kelime sorgulandı, **699 madde** etiketlendi,
+421'i iki kaynağın da onayıyla; **9 uyuşmazlık** (kaynak uyumu %98,7).
+
+| Sistem | F | kesinlik | duyarlılık | doğruluk |
+|---|---|---|---|---|
+| **motor (eğitilmiş)** | **0,877** | 0,884 | 0,871 | 0,854 |
+| yalnız dizilim modeli | 0,800 | 0,669 | 0,995 | 0,702 |
+| motor (doğrusal yedek) | 0,796 | 0,789 | 0,804 | 0,754 |
+| yalnız fonotaktik kural | 0,758 | 0,937 | 0,636 | 0,756 |
+| yalnız verici yakınlığı | 0,755 | 0,841 | 0,684 | 0,734 |
+| hepsi alıntı (trivial) | 0,749 | 0,599 | 1,000 | 0,599 |
+
+✅ **İlk kez trivial taban çizgiye karşı anlamlı üstünlük:**
+motor vs `always_borrowed` **+0,255**, %95 GA [+0,192, +0,318], p=0,0001.
+Motor vs yalnız fonotaktik **+0,097**, %95 GA [+0,054, +0,143], p=0,0001.
+
+⚠️ **Kanıt kuralı asimetriktir ve bu gizlenemez.** `alıntı` etiketi iki
+kaynağın da alıntı demesini gerektirir (güçlü). `miras` etiketi Nişanyan'ın
+açıkça `ses evrimi` demesi **ve** TDK'nın kaynak dil yazmamasıyla verilir
+(zayıf-orta) — çünkü TDK yalnız alıntı maddelerde `lisan` yazar ve "Türkçe
+kökenli" ile "etimoloji verilmemiş" ayırt edilemez. Bu asimetri yüzünden
+yanlış-negatif, yanlış-pozitiften daha olasıdır.
+
+> **⚠️ Dört ölçüm hatası, kurma sırasında bulundu ve düzeltildi.**
+> **(1)** İlk sürüm TDK sessiz kaldığında etiketi **Nişanyan'dan
+> türetiyordu**; "iki kaynak anlaştı" demek tautolojiydi ve uyum oranı
+> yapay olarak **%100** çıkıyordu.
+> **(2)** Sonraki sürüm sessizliği tümden belirsiz saydı ve küme **%100
+> alıntı** oldu — ölçüt olarak işe yaramaz. Asimetrik kural ikisini de
+> çözüyor.
+> **(3)** Kelime listesi alfabetik sıralanınca ilk 60 madde tümüyle **ek**
+> çıktı (`-abilmek`, `-acak`) ve hiçbir etiket alınamadı. Ekler eleniyor,
+> örneklem deterministik aralıklı.
+> **(4)** Nişanyan ilişki adı `türetme` diye yazılmıştı; gerçek değer
+> `türeme`. Türemiş kelimelerin **hiçbiri** etiketlenemiyordu.
+
+⚠️ **Lisans.** Nişanyan Sözlük geliştiriciye açık bir API lisansı ilan
+etmiyor. Veri **yalnız iç doğrulama** için, atıflı ve sınırlı hacimde
+çekiliyor; `data/gold/` .gitignore altında, yeniden dağıtılmıyor. TDK
+Güncel Türkçe Sözlük kamuya açık bir kurum sözlüğüdür.
 
 #### Türkçe ablasyon (Wiktionary etiketi, zincir sinyali kapalı), n=750
 

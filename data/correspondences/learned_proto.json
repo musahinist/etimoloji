@@ -1,7 +1,7 @@
 {
   "_schema": "turkic-etymology-correspondences/v1",
   "trained_on": "savelyevturkic/train/with_proto",
-  "trained_at": "2026-08-27T14:11:08+00:00",
+  "trained_at": "2026-08-27T15:33:00+00:00",
   "min_support": 2,
   "n_pairs": 1056,
   "note": "Yalnız TRAIN kavramlarından öğrenilmiştir. Kurallar elle yazılmamış, uzman akraba kümeleri hizalanarak sayılmıştır.",

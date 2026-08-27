@@ -738,7 +738,7 @@ def _print_ablation_verdict(comparisons: list[dict[str, Any]]) -> None:
             # bir hüküm metni bunu "başarı" diye raporlardı.
             verdict = "ANLAMLI ama NEGATİF — bağımsız sinyaller ZARAR veriyor"
         print(
-            f"\n  ablasyon hükmü: motor vs yalnız fonotaktik "
+            f"\n  ablasyon hükmü: {row['system']} vs {row['vs']} "
             f"fark {row['difference']:+.4f} [{low:+.4f}, {high:+.4f}] "
             f"p={row['permutation_p']:.4f}\n  -> {verdict}"
         )
@@ -786,9 +786,12 @@ def main() -> int:
             ),
             # ⚠️ ASIL ABLASYON SORUSU: motor, yalnız fonotaktikten iyi mi?
             # `always_inherited`e karşı karşılaştırma bunu cevaplamaz.
+            # ⚠️ Karşılaştırma ÜRETİMDEKİ sistemle yapılır. `detect()`
+            # eğitilmiş model varsa onu kullanıyor; hüküm doğrusal yedek
+            # yola göre verilirse gönderdiğimiz sistem ölçülmemiş olur.
             "vs_phonotactic": compare_systems(
                 {
-                    "engine": scores["engine"].per_item,
+                    "engine_trained": scores["engine_trained"].per_item,
                     "phonotactic_only": scores["phonotactic_only"].per_item,
                 },
                 reference="phonotactic_only",
@@ -844,13 +847,21 @@ def main() -> int:
             "systems": {k: v.as_dict() for k, v in scores.items()},
             "vs_phonotactic": compare_systems(
                 {
-                    "engine": scores["engine"].per_item,
+                    "engine_trained": scores["engine_trained"].per_item,
                     "phonotactic_only": scores["phonotactic_only"].per_item,
                 },
                 reference="phonotactic_only",
             ),
+            "vs_always_borrowed": compare_systems(
+                {
+                    "engine_trained": scores["engine_trained"].per_item,
+                    "always_borrowed": scores["always_borrowed"].per_item,
+                },
+                reference="always_borrowed",
+            ),
         }
         _print_ablation_verdict(payload["turkish_gold"]["vs_phonotactic"])
+        _print_ablation_verdict(payload["turkish_gold"]["vs_always_borrowed"])
     elif turkish:
         print(
             f"\n⚠️ Türkçe altın küme çok küçük (n={len(turkish)}); ölçüm "
@@ -885,7 +896,7 @@ def main() -> int:
             ),
             "vs_phonotactic": compare_systems(
                 {
-                    "engine": scores["engine"].per_item,
+                    "engine_trained": scores["engine_trained"].per_item,
                     "phonotactic_only": scores["phonotactic_only"].per_item,
                 },
                 reference="phonotactic_only",

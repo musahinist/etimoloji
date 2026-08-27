@@ -1,17 +1,17 @@
 {
   "_schema": "turkic-etymology-turkish-loanword-gold/v1",
-  "built_at": "2026-08-27T13:49:53+00:00",
+  "built_at": "2026-08-27T14:26:57+00:00",
   "sources": [
     "TDK Güncel Türkçe Sözlük",
     "Nişanyan Sözlük"
   ],
-  "n_queried": 150,
-  "n_agreed": 38,
-  "n_two_source": 20,
-  "n_disagreed": 0,
-  "n_unknown": 112,
-  "source_agreement_rate": 1.0,
-  "borrowed_rate": 0.5263,
+  "n_queried": 2000,
+  "n_agreed": 699,
+  "n_two_source": 421,
+  "n_disagreed": 9,
+  "n_unknown": 1292,
+  "source_agreement_rate": 0.9873,
+  "borrowed_rate": 0.6009,
   "caveats": [
     "⚠️ KANIT KURALI ASİMETRİKTİR. 'alıntı' etiketi İKİ kaynağın da alıntı demesini gerektirir (güçlü). 'miras' etiketi Nişanyan'ın açıkça `ses evrimi` demesi VE TDK'nın kaynak dil YAZMAMASIYLA verilir (zayıf-orta) — çünkü TDK yalnız alıntı maddelerde `lisan` yazar ve 'Türkçe kökenli' ile 'etimoloji verilmemiş' ayırt edilemez.",
     "Bu asimetri yüzünden yanlış-pozitif (miras'ı alıntı sanmak) hatası, yanlış-negatiften daha az olasıdır; ölçümde bu yön dikkate alınmalıdır.",
@@ -20,6 +20,258 @@
   ],
   "items": [
     {
+      "word": "Aya",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "Marksizm",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca marxisme",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "Sovyet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca soviet",
+      "nisanyan_source": "Rusça"
+    },
+    {
+      "word": "Tem",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca thème",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "abdiâciz",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ʿabd + ʿāciz",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "abes",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ʿabes̱",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "adaptasyon",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca adaptation",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "agnostisizm",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca agnosticisme",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "ajite",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca agité",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "akciğer",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "akide",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ʿaḳīde",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "akran",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça aḳrān",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "akrilik",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca acrylique",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "aktör",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca acteur",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "akü",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca accu",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "alageyik",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "albümin",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca albumine",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "aldırmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe"
+    },
+    {
+      "word": "alkali",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca alcali",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "alperen",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "alışmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "amca",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "amentü",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça āmentu",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "amonyak",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca ammoniaque",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "anafor",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Rumca",
+      "nisanyan_source": "Yunanca"
+    },
+    {
+      "word": "anason",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça anįsūn",
+      "nisanyan_source": "Yunanca"
+    },
+    {
+      "word": "angajman",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca engagement",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "anjiyografi",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca angiographie",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "anlatım",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe (yalnız Oğuzca)"
+    },
+    {
+      "word": "anlayışsız",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe (yalnız Oğuzca)"
+    },
+    {
+      "word": "anomali",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca anomalie",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "antagonist",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca antagoniste",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "antika",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İtalyanca antico",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "apandisit",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca appendicite",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "arbede",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ʿarbede",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "arkalık",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
       "word": "artmak",
       "label": "miras",
       "evidence": "nişanyan+tdk sessiz",
@@ -27,25 +279,403 @@
       "nisanyan_source": "Eski Türkçe"
     },
     {
-      "word": "ata",
-      "label": "miras",
-      "evidence": "nişanyan+tdk sessiz",
-      "tdk_source": "",
-      "nisanyan_source": "Eski Türkçe"
-    },
-    {
-      "word": "ağırbaşlı",
-      "label": "miras",
-      "evidence": "nişanyan+tdk sessiz",
-      "tdk_source": "",
-      "nisanyan_source": "Eski Türkçe"
-    },
-    {
-      "word": "baht",
+      "word": "arzu",
       "label": "alıntı",
       "evidence": "iki kaynak",
-      "tdk_source": "Farsça baḫt",
+      "tdk_source": "Farsça ārzū",
       "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "arşe",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca archet",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "asansör",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca ascenseur",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "asil",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça aṣīl",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "asker",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ʿasker",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "aslan",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "asuman",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça āsmān",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "atletik",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca athlétique",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "atışma",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "averaj",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca avérage",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "avurt",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "aydınlanmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "azamet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ʿaẓamet",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "azınlık",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Yeni Türkçe"
+    },
+    {
+      "word": "açıkgöz",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "açılış",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "ağustos",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Yunanca",
+      "nisanyan_source": "Yunanca"
+    },
+    {
+      "word": "aşina",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça āşinā",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "aşırtma",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "baba",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe"
+    },
+    {
+      "word": "badire",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça bādire",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "baktırmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "bakşı",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "bale",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca ballet",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "ballıbaba",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe"
+    },
+    {
+      "word": "bant",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca bande",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "barışmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "basit",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça basīṭ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "basur",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça bāsūr",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "bat",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "batı",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "baygın",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "baza",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İtalyanca base",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "bağlamak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "bağlılık",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "başhekim",
+      "label": "miras",
+      "evidence": "iki kaynak",
+      "tdk_source": "Türkçe baş + Arapça ḥekīm",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "beceri",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "bedevi",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça bedevī",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "beklemek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "belde",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça belde",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "belirginleşmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "belirti",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "benzin",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca benzine",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "berilyum",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca béryllium",
+      "nisanyan_source": "Yeni Latince"
+    },
+    {
+      "word": "betimlemek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "beylerbeyi",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "beğendirmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe"
+    },
+    {
+      "word": "beşlik",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "bijuteri",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca bijouterie",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "bitirmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "bitkisel",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "biye",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca biais",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "bizon",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca bison",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "bodur",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "boks",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca boxe",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "bonservis",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca bon service",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "bordro",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca bordereau",
+      "nisanyan_source": "Fransızca"
     },
     {
       "word": "boyatmak",
@@ -55,18 +685,718 @@
       "nisanyan_source": "Eski Türkçe"
     },
     {
-      "word": "buruşmak",
+      "word": "bozmak",
       "label": "miras",
       "evidence": "nişanyan+tdk sessiz",
       "tdk_source": "",
       "nisanyan_source": "Eski Türkçe"
     },
     {
-      "word": "dalalet",
+      "word": "boğa",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "boşamak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "brifing",
       "label": "alıntı",
       "evidence": "iki kaynak",
-      "tdk_source": "Arapça ḍalālet",
+      "tdk_source": "İngilizce briefing",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "bulak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "bulaşmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "buzağı",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "buğday",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "bölgesel",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "büyücü",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "büyükşehir",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "büz",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca buse",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "bıçak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "camız",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça cāmūs",
       "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "cenaze",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça cenāze",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "cephane",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça cebe + ḫāne",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "cezve",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ceẕve",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "cibinlik",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "cila",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça cilāʾ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "cinai",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça cināʾī",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "ciro",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İtalyanca giro",
+      "nisanyan_source": "İtalyanca"
+    },
+    {
+      "word": "conta",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İtalyanca giunta",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "cumhuriyet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça cumhūriyyet",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "dadanmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "dalaşmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe"
+    },
+    {
+      "word": "dalgıç",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "daniska",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "(Danzig yer adından)",
+      "nisanyan_source": "özel isim"
+    },
+    {
+      "word": "danışıklı",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "darp",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḍarb",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "davet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça daʿvet",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "dağ",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "defterdar",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça defter + Farsça -dār",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "deizm",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca déisme",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "delik",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "demek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "deneme",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "denizaltı",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "denizkestanesi",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "devetabanı",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "devinmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "devran",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça devrān",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "devşirmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "dezenfektan",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca désinfectant",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "değiş",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "dikey",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "dilek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "dilmaç",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "diremek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "diyakronik",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca diachronique",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "diğer",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça dīger",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "dolap",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça dūlāb",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "dolunay",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "don",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "dondurmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "doğmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "dudu",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça ṭūṭī",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "duyar",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "dâhilî",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça dāḫilī",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "dönüştürmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "döşenmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "düzenlemek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "düş",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "ebcet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ebced",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "ebegümeci",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe"
+    },
+    {
+      "word": "edilgen",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "egosantrik",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca égocentrique",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "ehliyet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ehliyyet",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "ekspoze",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca exposé",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "ela",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "elek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "emperyalizm",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca impérialisme",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "endirekt",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca indirect",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "ereksiyon",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İngilizce erection",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "esmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "eviye",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca évier",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "eyerlemek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "eğilmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "eşhas",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça eşḫāṣ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "eşkıya",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça eşḳiyā",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "faksimile",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca fac-similé",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "fani",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca phanie",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "fasone",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca façonné",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "fayton",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca phaéton",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "felç",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça felc",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "feribot",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İngilizce ferryboat",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "fiil",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça fiʿl",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "filigran",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca filigrane",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "fitil",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça fetīl",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "fraksiyon",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca fraction",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "fındık",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça funduḳ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "gaga",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "galon",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İngilizce gallon",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "garanti",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca garantie",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "gastroskopi",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca gastroscopie",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "gayri",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ġayr",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "gayritabii",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ġayr + ṭabīʿī",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "gazap",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ġażab",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "gece",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "gelenekçi",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "gelişme",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "genleşmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "gerek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
     },
     {
       "word": "gerici",
@@ -76,7 +1406,112 @@
       "nisanyan_source": "Türkiye Türkçesi"
     },
     {
-      "word": "gönüllü",
+      "word": "gerinmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "gerçekçi",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe (sadece Kıpçak ve Oğuz lehçeleri)"
+    },
+    {
+      "word": "gevşek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "geyşa",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İngilizce geisha",
+      "nisanyan_source": "Japonca"
+    },
+    {
+      "word": "gezgin",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "geçersiz",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "geçişli",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "gidermek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "girişim",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "grandük",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca grand-duc",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "gökkuşağı",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "gömüt",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "gönye",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Rumca",
+      "nisanyan_source": "Yunanca"
+    },
+    {
+      "word": "görünüm",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "gösterişli",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe (yalnız Oğuzca ve Kıpçakça)"
+    },
+    {
+      "word": "göynümek",
       "label": "miras",
       "evidence": "nişanyan+tdk sessiz",
       "tdk_source": "",
@@ -90,11 +1525,228 @@
       "nisanyan_source": "Eski Türkçe"
     },
     {
-      "word": "hikmet",
+      "word": "göçüşme",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "güldürmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "gülüş",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "gün",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "gündelik",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "güruh",
       "label": "alıntı",
       "evidence": "iki kaynak",
-      "tdk_source": "Arapça ḥikmet",
+      "tdk_source": "Farsça gurūh",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "güveyi",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "gıyabi",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ġiyābī",
       "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "hacim",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḥacm",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "haham",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İbranice",
+      "nisanyan_source": "Aramice-Süryanice"
+    },
+    {
+      "word": "halife",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḫalīfe",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "hamarat",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḥımāre",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "hamız",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḥāmiż",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "hanlık",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "hapishane",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḥabs + Farsça ḫāne",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "harami",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḥarāmī",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "harf",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḥarf",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "hariç",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḫāric",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "hasıla",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḥāṣila",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "hatime",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḫātime",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "havi",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḥāvī",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "hayalperest",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḫayāl + Farsça -perest",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "hayvanat",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḥayvānāt",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "haşin",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḫaşīn",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "hedik",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "hela",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḫalā",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "hemze",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça hemze",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "herek",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Rumca",
+      "nisanyan_source": "Yunanca"
+    },
+    {
+      "word": "heteroseksüel",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca hétérosexuel",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "hezaren",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça hezār + reng",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "hilafet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḫilāfet",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "homojen",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca homogène",
+      "nisanyan_source": "Fransızca"
     },
     {
       "word": "hususi",
@@ -104,74 +1756,1425 @@
       "nisanyan_source": "Arapça"
     },
     {
-      "word": "imha",
+      "word": "hükümdar",
       "label": "alıntı",
       "evidence": "iki kaynak",
-      "tdk_source": "Arapça imḥāʾ",
+      "tdk_source": "Arapça ḥukm + Farsça -dār",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "hüner",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça huner",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "hüsün",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḥusn",
       "nisanyan_source": "Arapça"
     },
     {
-      "word": "izlence",
+      "word": "hırka",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḫirḳa",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "iade",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça iʿāde",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "idam",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça iʿdām",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "ikrar",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça iḳrār",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "ilgeç",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "ilim",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ʿilm",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "iltihak",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça iltiḥāḳ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "imambayıldı",
       "label": "miras",
       "evidence": "nişanyan+tdk sessiz",
       "tdk_source": "",
       "nisanyan_source": "Eski Türkçe"
     },
     {
-      "word": "kahkaha",
+      "word": "imla",
       "label": "alıntı",
       "evidence": "iki kaynak",
-      "tdk_source": "Arapça ḳahḳaha",
+      "tdk_source": "Arapça imlāʾ",
       "nisanyan_source": "Arapça"
     },
     {
-      "word": "kamara",
+      "word": "imsak",
       "label": "alıntı",
       "evidence": "iki kaynak",
-      "tdk_source": "İtalyanca camera",
-      "nisanyan_source": "İtalyanca"
-    },
-    {
-      "word": "maymun",
-      "label": "alıntı",
-      "evidence": "iki kaynak",
-      "tdk_source": "Arapça meymūn",
+      "tdk_source": "Arapça imsāk",
       "nisanyan_source": "Arapça"
     },
     {
-      "word": "mimari",
+      "word": "indifa",
       "label": "alıntı",
       "evidence": "iki kaynak",
-      "tdk_source": "Arapça miʿmārī",
+      "tdk_source": "Arapça indifāʿ",
       "nisanyan_source": "Arapça"
     },
     {
-      "word": "muhafız",
+      "word": "infaz",
       "label": "alıntı",
       "evidence": "iki kaynak",
-      "tdk_source": "Arapça muḥāfiẓ",
+      "tdk_source": "Arapça infāẕ",
       "nisanyan_source": "Arapça"
     },
     {
-      "word": "müsamaha",
+      "word": "insani",
       "label": "alıntı",
       "evidence": "iki kaynak",
-      "tdk_source": "Arapça musāmaḥa",
+      "tdk_source": "Arapça insānī",
       "nisanyan_source": "Arapça"
     },
     {
-      "word": "naif",
+      "word": "irs",
       "label": "alıntı",
       "evidence": "iki kaynak",
-      "tdk_source": "Fransızca naïf",
+      "tdk_source": "Arapça irs̱",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "istasyon",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca station",
       "nisanyan_source": "Fransızca"
     },
     {
-      "word": "oyunculuk",
+      "word": "isteka",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İtalyanca stecca",
+      "nisanyan_source": "İtalyanca"
+    },
+    {
+      "word": "istemli",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "istihza",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça istihzāʾ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "istimlak",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça istimlāk",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "istişare",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça istişāre",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "itmam",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça itmām",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "iyot",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca iode",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "izmarit",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Rumca",
+      "nisanyan_source": "İtalyanca"
+    },
+    {
+      "word": "içkici",
       "label": "miras",
       "evidence": "nişanyan+tdk sessiz",
       "tdk_source": "",
       "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "iğneci",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "işleme",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "jakoben",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca jacobin",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "jeoloji",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca géologie",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "jet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İngilizce jet",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "jimnastik",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca gymnastique",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "kabahat",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḳabāḥat",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "kadraj",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca cadrage",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "kakmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kalcı",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "kamaşmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kamuoyu",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kapan",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kapatmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kapsam",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kaput",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca capote",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "karafatma",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "karakterize",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca caractérisé",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "kardiyoloji",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca cardiologie",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "kargı",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe"
+    },
+    {
+      "word": "karlı",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "karıştırmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kask",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca casque",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "kasılmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe"
+    },
+    {
+      "word": "katlamak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "kayık",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kazma",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kaçırmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kefil",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça kefīl",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "kemal",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça kemāl",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "kemirgen",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kenger",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça kenger",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "kerevit",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Rumca",
+      "nisanyan_source": "Yunanca"
+    },
+    {
+      "word": "kez",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kobalt",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca cobalt",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "kod",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca code",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "kola",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İtalyanca colla",
+      "nisanyan_source": "ticari marka"
+    },
+    {
+      "word": "kolaylaşmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe (sadece Kıpçak ve Oğuz lehçeleri)"
+    },
+    {
+      "word": "kolonyalist",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca colonialiste",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "kombi",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca combiné'den",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "konstrüksiyon",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca construction",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "kontrast",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca contraste",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "kopya",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İtalyanca copia",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "korkuluk",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe (sadece Kıpçak ve Oğuz lehçeleri)"
+    },
+    {
+      "word": "koruma",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kosinüs",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca cosinus",
+      "nisanyan_source": "Yeni Latince"
+    },
+    {
+      "word": "krizantem",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca chrysanthème",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "kruvaziyer",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca croisière",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "kullanmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kulluk",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kumul",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "kurban",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḳurbān",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "kurmay",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Yeni Türkçe"
+    },
+    {
+      "word": "kurumsal",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "kuskus",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḳusḳus",
+      "nisanyan_source": "Arapça (Mağrip)"
+    },
+    {
+      "word": "kutlu",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kuşçu",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kâşif",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça kāşif",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "köpük",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kösem",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "küffar",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça kuffār",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "künk",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça kunk",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "küsur",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça kusūr",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "kılkuyruk",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kırba",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḳirba",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "kırkmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kısa",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kısmet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḳismet",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "kıvrım",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe"
+    },
+    {
+      "word": "kızdırmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "laakal",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça lāaḳall",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "lama",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca lama",
+      "nisanyan_source": "İspanyolca"
+    },
+    {
+      "word": "laterna",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İtalyanca lanterna",
+      "nisanyan_source": "Latince"
+    },
+    {
+      "word": "lavta",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Almanca Laute",
+      "nisanyan_source": "İtalyanca"
+    },
+    {
+      "word": "lağım",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça laġm",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "lejant",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca légende",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "letafet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça leṭāfet",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "limuzin",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca limousine",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "lobelya",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Latince",
+      "nisanyan_source": "Yeni Latince"
+    },
+    {
+      "word": "lökosit",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca leucocyte",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "lüle",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça lūle",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "madalyon",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca médaillon",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "mahbup",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça maḥbūb",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "mahsul",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça maḥṣūl",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "majör",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca majeur",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "makûs",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça maʿkūs",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "malul",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça maʿlūl",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "manivela",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İtalyanca manovella",
+      "nisanyan_source": "İtalyanca"
+    },
+    {
+      "word": "manti",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İtalyanca mante",
+      "nisanyan_source": "Moğolca"
+    },
+    {
+      "word": "manzum",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça manẓūm",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "marul",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Rumca",
+      "nisanyan_source": "Orta Yunanca"
+    },
+    {
+      "word": "master",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İngilizce master",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "masum",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça maʿṣūm",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "mazur",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça maʿẕūr",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "mebus",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça mebʿūs̱",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "megapol",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca mégapole",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "melun",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça melʿūn",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "memnun",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça memnūn",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "menfaat",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça menfaʿat",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "menzil",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça menzil",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "merhale",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça merḥale",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "mesai",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça mesāʿī",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "mesuliyet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça mesʾūliyyet",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "metal",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca métal",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "metro",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca métro",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "meşhet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça meşhed",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "meşum",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça meşʾūm",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "mikroskop",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca microscope",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "milis",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca milice",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "minibüs",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca minibus",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "misafir",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça musāfir",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "mistisizm",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca mysticisme",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "mobilya",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İtalyanca mobilia",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "modifikasyon",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca modification",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "monden",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca mondain",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "muafiyet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça maʿfuviyyet",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "muayene",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça muʿāyene",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "mugayir",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça muġāyir",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "muhalefet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça muḫālefet",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "muhtelif",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça muḫtelif",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "murdar",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça murdār",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "mutavassıt",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça mutavassiṭ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "mutlu",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "muvaffak",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça muvaffaḳ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "muzip",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça muʿẕib",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "mücazat",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça mucāzāt",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "müeddep",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça muʾeddeb",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "müfrit",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça mufriṭ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "mühendis",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça muhendis",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "mühür",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça muhr",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "mümtaz",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça mumtāz",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "münhasır",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça munḥaṣir",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "müptela",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça mubtelā",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "müstahzar",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça mustaḥżar",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "müstensih",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça mustensiḫ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "mütebessim",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça mutebessim",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "mütekebbir",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça mutekebbir",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "mütevellit",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça mutevellid",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "müzmin",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça muzmin",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "müştak",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça muştaḳḳ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "mızrap",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça miżrāb",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "nadide",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça nādīde",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "nakdi",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça naḳdī",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "namahrem",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça nā + Arapça maḥrem",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "narin",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça nārīn",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "natamam",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça nā + Arapça tamām",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "nebi",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça nebī",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "neft",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça neft",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "nezif",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça nezf",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "nice",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "nilüfer",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça nīlūfer",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "nizamiye",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça niẓāmiyye",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "nota",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İtalyanca nota",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "nüfuz",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça nufūẕ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "oba",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe (yalnız Oğuzca)"
+    },
+    {
+      "word": "obüs",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca obus",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "odacı",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "odunsu",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "oftalmolojik",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca ophtalmologique",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "oksijen",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca oxygène",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "okutmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "oluşum",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "onarılmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "opsiyon",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca option",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "otlanmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "otomobil",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca automobile",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "otçul",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "palanka",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Sırpça",
+      "nisanyan_source": "Macarca"
+    },
+    {
+      "word": "panayır",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Rumca",
+      "nisanyan_source": "Yunanca"
+    },
+    {
+      "word": "papel",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İspanyolca papel",
+      "nisanyan_source": "İspanyolca"
+    },
+    {
+      "word": "paralel",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca parallèle",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "parmaklık",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe"
+    },
+    {
+      "word": "parti",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca parti",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "patlıcan",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça bādincān",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "patrikhane",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Rumca + Farsça ḫāne",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "pazar",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça bāzār",
+      "nisanyan_source": "Farsça"
     },
     {
       "word": "paşalık",
@@ -181,31 +3184,724 @@
       "nisanyan_source": "Farsça"
     },
     {
-      "word": "salon",
+      "word": "pençe",
       "label": "alıntı",
       "evidence": "iki kaynak",
-      "tdk_source": "Fransızca salon",
+      "tdk_source": "Farsça pence",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "peyk",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça peyk",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "pikap",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İngilizce pick-up",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "pişman",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça peşīmān",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "plütonyum",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca plutonium",
+      "nisanyan_source": "Yeni Latince"
+    },
+    {
+      "word": "polarizasyon",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca polarisation",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "polisiye",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca policier",
       "nisanyan_source": "Fransızca"
     },
     {
-      "word": "sermek",
+      "word": "pozitron",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca positron",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "problem",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca problème",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "prostat",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca prostate",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "pudra",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca poudre",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "puma",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca puma",
+      "nisanyan_source": "İspanyolca"
+    },
+    {
+      "word": "pürtük",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "radyum",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca radium",
+      "nisanyan_source": "Yeni Latince"
+    },
+    {
+      "word": "rahle",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça raḥle",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "raks",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça raḳṣ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "rast",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça rāst",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "rayiha",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça rāyiḥa",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "referans",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca référence",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "regülatör",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca régulateur",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "rekabet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça reḳābet",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "restoran",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca restaurant",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "rezistans",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca résistance",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "reçete",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İtalyanca ricetta",
+      "nisanyan_source": "İtalyanca"
+    },
+    {
+      "word": "ruhiyat",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça rūḥiyyāt",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "rögar",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca regard",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "sadık",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ṣādiḳ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "sahih",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ṣaḥīh",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "sahte",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça sāḫte",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "sakat",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça saḳaṭ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "sakırga",
       "label": "miras",
       "evidence": "nişanyan+tdk sessiz",
       "tdk_source": "",
       "nisanyan_source": "Eski Türkçe"
     },
     {
-      "word": "takunya",
+      "word": "salamanje",
       "label": "alıntı",
       "evidence": "iki kaynak",
-      "tdk_source": "Rumca",
+      "tdk_source": "Fransızca salle à manger",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "salep",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça saḥleb",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "sallanmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "salık",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "sanal",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "sandık",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ṣandūḳ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "santur",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça sentūr",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "saplantı",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "sarmaşık",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "sayfiye",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ṣayfiyye",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "saymak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "saç",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "sağaltma",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "sekans",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca séquence",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "sekte",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça sekte",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "selenyum",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca sélénium",
+      "nisanyan_source": "Yeni Latince"
+    },
+    {
+      "word": "sepet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça seped",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "seremoni",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca cérémonie",
+      "nisanyan_source": "İtalyanca"
+    },
+    {
+      "word": "serseri",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça serserī",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "set",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça sedd",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "sevk",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça sevḳ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "seyran",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça seyrān",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "sezinlemek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Yeni Türkçe"
+    },
+    {
+      "word": "sinirli",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "sirk",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca cirque",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "sismik",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca sismique",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "site",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca cité",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "siyahi",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça siyāh + Arapça -ī",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "sofa",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ṣuffe",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "solcu",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "somutlaşmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "sonuncu",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "sosyete",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca société",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "sote",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca sauté",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "spazm",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca spasme",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "standart",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca standard",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "strüktüralizm",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca structuralisme",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "sultan",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça sulṭān",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "suna",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe"
+    },
+    {
+      "word": "susak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "sömürü",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Yeni Türkçe"
+    },
+    {
+      "word": "sövülmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "söyleşi",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "sözel",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "sülün",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "süper",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca super",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "süpürmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "sürülmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "süzülmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "sıhhiye",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ṣiḥḥiyye",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "sırtlan",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "sızma",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "sığdırmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "taahhüt",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça taʿahhud",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "tadım",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "tahayyül",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça taḫayyul",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "tahmis",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça taḫmīs",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "tahsildar",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça taḥṣīl + Farsça -dār.",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "tahvilat",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça taḥvīlāt",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "taksi",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca taxi",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "tantal",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca tantale",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "tapu",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "tapınmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "tarak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "tasarruf",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça taṣarruf",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "taslamak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe (yalnız Oğuzca)"
+    },
+    {
+      "word": "tat",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "tatlıcı",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "taverna",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İtalyanca taverna",
       "nisanyan_source": "Yunanca"
     },
     {
-      "word": "tarikat",
+      "word": "tavus",
       "label": "alıntı",
       "evidence": "iki kaynak",
-      "tdk_source": "Arapça ṭarīḳat",
+      "tdk_source": "Arapça ṭāvus",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "taşıma",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "tebessüm",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça tebessum",
       "nisanyan_source": "Arapça"
     },
     {
@@ -216,6 +3912,286 @@
       "nisanyan_source": "Arapça"
     },
     {
+      "word": "tedris",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça tedrīs",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "teftiş",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça teftīş",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "tein",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca théine",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "tekrar",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça tekrār",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "teleskop",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca téléscope",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "tenis",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca tennis",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "tepik",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "terakki",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça teraḳḳī",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "terbiyum",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca terbium",
+      "nisanyan_source": "Yeni Latince"
+    },
+    {
+      "word": "tere",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça tere",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "terk",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça terk",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "terminoloji",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca terminologie",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "teskere",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça deskere",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "testi",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça destī",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "tetik",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "tevekkül",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça tevekkul",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "tezgâhtar",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça destgāhdār",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "teşekkür",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça teşekkur",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "teşkil",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça teşkīl",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "ticari",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ticārī",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "tiryaki",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça tiryāḳī",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "toptan",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "tozmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "tren",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca train",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "tretuvar",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca trottoir",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "trol",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İngilizce trawl",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "tulumba",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İtalyanca tromba",
+      "nisanyan_source": "İtalyanca"
+    },
+    {
+      "word": "turist",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca touriste",
+      "nisanyan_source": "İngilizce"
+    },
+    {
+      "word": "tutku",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "tutulmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "törpü",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "tüketmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "tümel",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "tüp",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca tube",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "tüyo",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca tuyau",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "tılsım",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ṭilesm",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "tırmanmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe"
+    },
+    {
+      "word": "tırpan",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Rumca",
+      "nisanyan_source": "Yunanca"
+    },
+    {
+      "word": "uluslararası",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "unlamak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
       "word": "unutulmak",
       "label": "miras",
       "evidence": "nişanyan+tdk sessiz",
@@ -223,32 +4199,417 @@
       "nisanyan_source": "Eski Türkçe"
     },
     {
-      "word": "uyuşturmak",
+      "word": "usanmak",
       "label": "miras",
       "evidence": "nişanyan+tdk sessiz",
       "tdk_source": "",
       "nisanyan_source": "Eski Türkçe"
     },
     {
-      "word": "vakum",
-      "label": "alıntı",
-      "evidence": "iki kaynak",
-      "tdk_source": "Fransızca vacuum",
-      "nisanyan_source": "Latince"
+      "word": "utanmaz",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe (yalnız Oğuzca)"
     },
     {
-      "word": "yelkovan",
+      "word": "uydu",
       "label": "miras",
       "evidence": "nişanyan+tdk sessiz",
       "tdk_source": "",
       "nisanyan_source": "Türkiye Türkçesi"
     },
     {
-      "word": "çanakçı",
+      "word": "uydurmasyon",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "uzak",
       "label": "miras",
       "evidence": "nişanyan+tdk sessiz",
       "tdk_source": "",
       "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "uzay",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "uzuv",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ʿużv",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "uçmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "uçurtma",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "uşak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "vahşi",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça vaḥşī",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "vale",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca valet",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "vasi",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça vaṣī",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "vatan",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça vaṭan",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "velinimet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça velī + niʿmet",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "veri",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "virgül",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca virgule",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "vurdumduymaz",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "vuzuh",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça vużūḥ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "yakınmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "yalan",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "yankı",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "yanılmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "yapılmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "yapışmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "yas",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "yayık",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "yazı",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe"
+    },
+    {
+      "word": "yazışmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "yağmurluk",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "yaş",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "yerel",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "yitirmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "yoklama",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe"
+    },
+    {
+      "word": "yolsuzluk",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "yonga",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "yontulmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "yoğunlaşmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "yumurcak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "yutkunmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "yönelik",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "yükseklik",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "yürütmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "yüzgeç",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "yılmaz",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "zaaf",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça żaʿf",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "zangoç",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Ermenice",
+      "nisanyan_source": "Ermenice"
+    },
+    {
+      "word": "zaruri",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça żarūrī",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "zeytin",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça zeytūn",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "zihin",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ẕihn",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "zirve",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ẕirve",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "ziynet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça zīnet",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "zulüm",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ẓulm",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "zürriyet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ẕurriyyet",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "zımpara",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça sunpāre",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "âdet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ʿaded",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "âmâ",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ammā",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "çatış",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe (yalnız Oğuzca)"
+    },
+    {
+      "word": "çelişki",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
     },
     {
       "word": "çerçeve",
@@ -258,11 +4619,200 @@
       "nisanyan_source": "Farsça"
     },
     {
-      "word": "çözelti",
+      "word": "çevirim",
       "label": "miras",
       "evidence": "nişanyan+tdk sessiz",
       "tdk_source": "",
       "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "çeçe",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca tsé-tsé",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "çifte",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça cufte",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "çikolata",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İtalyanca cioccolata",
+      "nisanyan_source": "İtalyanca"
+    },
+    {
+      "word": "çiroz",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Rumca",
+      "nisanyan_source": "Yunanca"
+    },
+    {
+      "word": "çizme",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "çolak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "çotra",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Rumca",
+      "nisanyan_source": "İtalyanca"
+    },
+    {
+      "word": "çıkar",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "çıkın",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe"
+    },
+    {
+      "word": "çığlık",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "öbek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "ölçüm",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Orta Türkçe"
+    },
+    {
+      "word": "ömür",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ʿumr",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "önderlik",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "örgüt",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "örneğin",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "özen",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "özne",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "ücret",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ucret",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "üfürük",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "ültimatom",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca ultimatum",
+      "nisanyan_source": "Yeni Latince"
+    },
+    {
+      "word": "üniversite",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca université",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "üretken",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "ürpermek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "ütülemek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "üzerlik",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe (yalnız Oğuzca)"
+    },
+    {
+      "word": "üşütmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
     },
     {
       "word": "ılık",
@@ -272,19 +4822,160 @@
       "nisanyan_source": "Eski Türkçe"
     },
     {
-      "word": "şapel",
+      "word": "ısrar",
       "label": "alıntı",
       "evidence": "iki kaynak",
-      "tdk_source": "Fransızca chapelle",
+      "tdk_source": "Arapça iṣrār",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "şahane",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça şāhāne",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "şaklaban",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "şamandıra",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Rumca",
+      "nisanyan_source": "Yunanca"
+    },
+    {
+      "word": "şan",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça şān",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "şarküteri",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca charcuterie",
       "nisanyan_source": "Fransızca"
     },
     {
-      "word": "şev",
+      "word": "şart",
       "label": "alıntı",
       "evidence": "iki kaynak",
-      "tdk_source": "Farsça şīb",
+      "tdk_source": "Arapça şarṭ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "şayan",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça şāyān",
       "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "şeffaf",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça şeffāf",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "şehadetname",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça şehādet + Farsça nāme",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "şeriat",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça şerīʿat",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "şirk",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça şirk",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "şürekâ",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça şurekā",
+      "nisanyan_source": "Arapça"
     }
   ],
-  "disagreements": []
+  "disagreements": [
+    {
+      "word": "armut",
+      "tdk": "alıntı",
+      "nisanyan": "miras",
+      "tdk_source": "Farsça armūd, emrūd",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "atıl",
+      "tdk": "alıntı",
+      "nisanyan": "miras",
+      "tdk_source": "Arapça ʿāṭil",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "karaborsa",
+      "tdk": "miras",
+      "nisanyan": "alıntı",
+      "tdk_source": "Türkçe kara + İtalyanca borsa",
+      "nisanyan_source": "İtalyanca"
+    },
+    {
+      "word": "kaydolmak",
+      "tdk": "miras",
+      "nisanyan": "alıntı",
+      "tdk_source": "Arapça ḳayd + Türkçe olmak",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "keşfetmek",
+      "tdk": "miras",
+      "nisanyan": "alıntı",
+      "tdk_source": "Arapça keşf + Türkçe etmek",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "yatakhane",
+      "tdk": "miras",
+      "nisanyan": "alıntı",
+      "tdk_source": "Türkçe yatak + Farsça ḫāne",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "çadır",
+      "tdk": "alıntı",
+      "nisanyan": "miras",
+      "tdk_source": "Farsça çāder",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "çene",
+      "tdk": "alıntı",
+      "nisanyan": "miras",
+      "tdk_source": "Farsça çāne",
+      "nisanyan_source": "Orta Türkçe"
+    },
+    {
+      "word": "çöp",
+      "tdk": "alıntı",
+      "nisanyan": "miras",
+      "tdk_source": "Farsça çūb",
+      "nisanyan_source": "Eski Türkçe"
+    }
+  ]
 }
