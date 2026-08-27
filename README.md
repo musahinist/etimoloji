@@ -999,7 +999,7 @@ türetmek.
 
 ### Alıntı tespiti, temas ve geçiş yolu
 
-- [List & Forkel 2022](https://pmc.ncbi.nlm.nih.gov/articles/PMC10445856/) — otomatik alıntı tespiti, `seabor`, **F = 0,87**
+- **[List & Forkel 2022 — `seabor`](https://pmc.ncbi.nlm.nih.gov/articles/PMC10445856/)** ⚠️ **kısmen uygulandı, DOĞRULANAMADI** — ağaç-uyumsuz dağılımla otomatik alıntı tespiti, yayınlanmış **F = 0,87** (aileler arası). Bizde Türki-içi alıntı etiketi olmadığı için doğruluğu ölçülemedi (tek kaynak WOLD/Sakha'da 18 madde). Modül aday üreteci olarak duruyor, karar katmanına bağlı değil (`USE_AS_SIGNAL = False`); 400 kümenin 28'ini işaretliyor.
 - **[Miller ve ark. 2020, *PLOS ONE* — PyBor](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0242709)** ✅ **uygulandı** — miras ve alıntı için ayrı dizilim modeli, karar log olasılık farkıyla. Yayınlanmış WOLD 41 dil ortalaması **F1 0,59–0,61**. Bizde Sakha'da tek başına **F 0,558** (bağımsız yeniden üretim); elle yazılmış fonotaktik kural aynı veride 0,215. Markov(3-gram) + Witten-Bell; LSTM sürümü yayında 0,61.
 - **[Miller & List 2023, EACL — `sabor`](https://arxiv.org/pdf/2302.00189)** ✅ **uygulandı** — verici dil sözlüğüne SCA yakınlığı; yayınlanmış **F1 0,806 · kesinlik 0,931**. Bizde WOLD/Sakha'da motorun F'sini **0,385 -> 0,644** çıkardı; sinyal ablasyonundaki katkısı **+0,237**. ⚠️ Yayınlanmış kurulum **kavram kısıtlıdır** ve makale kaçan alıntıların %45'ini bu kısıta bağlıyor.
 - [Neureiter ve ark. 2022, *Humanit Soc Sci Commun*](https://www.nature.com/articles/s41599-022-01211-7) — contacTrees

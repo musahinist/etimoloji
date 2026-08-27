@@ -1,0 +1,568 @@
+{
+  "_schema": "turkic-etymology-tree-incongruence/v1",
+  "note": "Aday üreteci; doğrulanmadı. Karar katmanına bağlı değil (USE_AS_SIGNAL = False).",
+  "n_candidates": 28,
+  "n_items": 400,
+  "candidates": [
+    {
+      "set_id": "779",
+      "concept": "RIVER",
+      "gold_form": "*örs",
+      "n_languages": 8,
+      "branches_present": [
+        "karluk",
+        "kipchak",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "oghur",
+        "oguz",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.7167,
+      "is_scattered": true,
+      "explanation": "3 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %28); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "56",
+      "concept": "DO OR MAKE",
+      "gold_form": "*jasa ? Mong.",
+      "n_languages": 10,
+      "branches_present": [
+        "karluk",
+        "kipchak",
+        "oguz",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "oghur",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.7125,
+      "is_scattered": true,
+      "explanation": "4 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %29); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "308",
+      "concept": "FINGERNAIL",
+      "gold_form": "*darmak",
+      "n_languages": 8,
+      "branches_present": [
+        "karluk",
+        "kipchak",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "oghur",
+        "oguz",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.6944,
+      "is_scattered": true,
+      "explanation": "3 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %31); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "605",
+      "concept": "FEMALE ANIMAL",
+      "gold_form": "*urag",
+      "n_languages": 8,
+      "branches_present": [
+        "karluk",
+        "kipchak",
+        "oguz"
+      ],
+      "branches_absent": [
+        "arghu",
+        "oghur",
+        "old_turkic",
+        "siberian"
+      ],
+      "gap_ratio": 0.6833,
+      "is_scattered": true,
+      "explanation": "3 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %32); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "344",
+      "concept": "TOMORROW",
+      "gold_form": "*daŋla",
+      "n_languages": 9,
+      "branches_present": [
+        "karluk",
+        "kipchak",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "oghur",
+        "oguz",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.6722,
+      "is_scattered": true,
+      "explanation": "3 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %33); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "533",
+      "concept": "WET",
+      "gold_form": "*sïb",
+      "n_languages": 12,
+      "branches_present": [
+        "karluk",
+        "kipchak",
+        "oguz",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "oghur",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.6667,
+      "is_scattered": true,
+      "explanation": "4 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %33); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "209",
+      "concept": "UPPER LEG (THIGH)",
+      "gold_form": "*sān",
+      "n_languages": 8,
+      "branches_present": [
+        "karluk",
+        "kipchak",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "oghur",
+        "oguz",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.6611,
+      "is_scattered": true,
+      "explanation": "3 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %34); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "462",
+      "concept": "GRASS",
+      "gold_form": "*öleŋ",
+      "n_languages": 8,
+      "branches_present": [
+        "kipchak",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "karluk",
+        "oghur",
+        "oguz",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.6417,
+      "is_scattered": true,
+      "explanation": "2 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %36); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "741",
+      "concept": "HUNT",
+      "gold_form": "*aŋ 'game'",
+      "n_languages": 8,
+      "branches_present": [
+        "kipchak",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "karluk",
+        "oghur",
+        "oguz",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.6167,
+      "is_scattered": true,
+      "explanation": "2 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %38); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "335",
+      "concept": "MAN",
+      "gold_form": "*ẹrkek",
+      "n_languages": 12,
+      "branches_present": [
+        "karluk",
+        "kipchak",
+        "oguz",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "oghur",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.6042,
+      "is_scattered": true,
+      "explanation": "4 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %40); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "267",
+      "concept": "ROPE",
+      "gold_form": "*jip",
+      "n_languages": 10,
+      "branches_present": [
+        "kipchak",
+        "oguz",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "karluk",
+        "oghur",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.6,
+      "is_scattered": true,
+      "explanation": "3 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %40); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "389",
+      "concept": "EDGE",
+      "gold_form": "*kïrgak",
+      "n_languages": 11,
+      "branches_present": [
+        "karluk",
+        "kipchak",
+        "oguz",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "oghur",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.6,
+      "is_scattered": true,
+      "explanation": "4 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %40); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "550",
+      "concept": "NASAL MUCUS (SNOT)",
+      "gold_form": "*simük",
+      "n_languages": 10,
+      "branches_present": [
+        "kipchak",
+        "oguz",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "karluk",
+        "oghur",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.5889,
+      "is_scattered": true,
+      "explanation": "3 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %41); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "507",
+      "concept": "FOREST",
+      "gold_form": "*ïgač",
+      "n_languages": 12,
+      "branches_present": [
+        "kipchak",
+        "oguz",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "karluk",
+        "oghur",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.5833,
+      "is_scattered": true,
+      "explanation": "3 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %42); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "423",
+      "concept": "BELLY",
+      "gold_form": "*Kurgsak",
+      "n_languages": 11,
+      "branches_present": [
+        "karluk",
+        "kipchak",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "oghur",
+        "oguz",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.5778,
+      "is_scattered": true,
+      "explanation": "3 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %42); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "343",
+      "concept": "TOMORROW",
+      "gold_form": "*ẹ̄r",
+      "n_languages": 13,
+      "branches_present": [
+        "karluk",
+        "kipchak",
+        "oguz",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "oghur",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.5667,
+      "is_scattered": true,
+      "explanation": "4 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %43); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "534",
+      "concept": "WET",
+      "gold_form": "*ȫl",
+      "n_languages": 9,
+      "branches_present": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "oguz",
+        "siberian"
+      ],
+      "branches_absent": [
+        "oghur",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.5633,
+      "is_scattered": true,
+      "explanation": "5 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %44); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "102",
+      "concept": "YESTERDAY",
+      "gold_form": "*dün?",
+      "n_languages": 13,
+      "branches_present": [
+        "karluk",
+        "kipchak",
+        "oguz",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "oghur",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.5625,
+      "is_scattered": true,
+      "explanation": "4 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %44); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "371",
+      "concept": "ASK (REQUEST)",
+      "gold_form": "*tile",
+      "n_languages": 8,
+      "branches_present": [
+        "kipchak",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "karluk",
+        "oghur"
+      ],
+      "gap_ratio": 0.5625,
+      "is_scattered": true,
+      "explanation": "4 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %44); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "422",
+      "concept": "BELLY",
+      "gold_form": "*ič",
+      "n_languages": 16,
+      "branches_present": [
+        "karluk",
+        "kipchak",
+        "oguz",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "oghur",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.5625,
+      "is_scattered": true,
+      "explanation": "4 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %44); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "733",
+      "concept": "GREEN",
+      "gold_form": "*kök",
+      "n_languages": 8,
+      "branches_present": [
+        "arghu",
+        "karluk",
+        "kipchak",
+        "siberian"
+      ],
+      "branches_absent": [
+        "oghur",
+        "oguz",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.5417,
+      "is_scattered": true,
+      "explanation": "4 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %46); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "310",
+      "concept": "THROW",
+      "gold_form": "*diāĺla",
+      "n_languages": 16,
+      "branches_present": [
+        "karluk",
+        "kipchak",
+        "oguz",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "oghur",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.5333,
+      "is_scattered": true,
+      "explanation": "4 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %47); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "795",
+      "concept": "ROUND",
+      "gold_form": "*jumarlak",
+      "n_languages": 14,
+      "branches_present": [
+        "karluk",
+        "kipchak",
+        "oguz",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "oghur",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.5292,
+      "is_scattered": true,
+      "explanation": "4 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %47); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "150",
+      "concept": "GOOD",
+      "gold_form": "*edgü",
+      "n_languages": 9,
+      "branches_present": [
+        "kipchak",
+        "oguz",
+        "old_turkic",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "karluk",
+        "oghur"
+      ],
+      "gap_ratio": 0.5167,
+      "is_scattered": true,
+      "explanation": "4 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %48); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "379",
+      "concept": "WEAVE",
+      "gold_form": "*sok",
+      "n_languages": 11,
+      "branches_present": [
+        "kipchak",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "karluk",
+        "oghur",
+        "oguz",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.5167,
+      "is_scattered": true,
+      "explanation": "2 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %48); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "52",
+      "concept": "FAR",
+      "gold_form": "*uŕak",
+      "n_languages": 13,
+      "branches_present": [
+        "karluk",
+        "kipchak",
+        "oguz",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "oghur",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.5167,
+      "is_scattered": true,
+      "explanation": "4 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %48); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "506",
+      "concept": "FOREST",
+      "gold_form": "*orman",
+      "n_languages": 13,
+      "branches_present": [
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz"
+      ],
+      "branches_absent": [
+        "arghu",
+        "old_turkic",
+        "siberian"
+      ],
+      "gap_ratio": 0.5125,
+      "is_scattered": true,
+      "explanation": "4 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %49); miras bir kök girdiği kolun içinde yayılır"
+    },
+    {
+      "set_id": "190",
+      "concept": "CARRY",
+      "gold_form": "*par",
+      "n_languages": 18,
+      "branches_present": [
+        "karluk",
+        "kipchak",
+        "oghur",
+        "oguz",
+        "siberian"
+      ],
+      "branches_absent": [
+        "arghu",
+        "old_turkic"
+      ],
+      "gap_ratio": 0.5067,
+      "is_scattered": true,
+      "explanation": "5 kolda görülüyor ama her kolda seyrek (ortalama kol kapsamı %49); miras bir kök girdiği kolun içinde yayılır"
+    }
+  ]
+}

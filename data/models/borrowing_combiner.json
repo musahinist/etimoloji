@@ -21,5 +21,5 @@
   "objective": "fscore",
   "trained_on": "wold/sah/tune",
   "n": 385,
-  "trained_at": "2026-08-27T15:38:20+00:00"
+  "trained_at": "2026-08-27T15:58:22+00:00"
 }
