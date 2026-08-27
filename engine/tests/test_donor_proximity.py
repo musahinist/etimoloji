@@ -209,9 +209,58 @@ class TestScaDistance(unittest.TestCase):
         self.assertEqual(dp.sca_distance("", "stol"), 1.0)
 
 
+class TestChanceResemblanceControl(unittest.TestCase):
+    """⚠️ Ham mesafe eşiği **havuz büyüklüğüne** gizlice bağlıdır.
+
+    Sakha ölçütünde havuz 3 dil / 448.000 madde, Türkçede 6 dil /
+    1.600.000. Aynı 0,35 eşiği ikisinde aynı şeyi ölçmez: büyük havuzda
+    rastgele bir kelime bile yakın bir eşleşme bulur. Ölçüldü — Türkçe
+    ``baş`` Fransızca ``pou``ya SCA 0,092'de düşüyordu.
+
+    Kessler (2001): gözlenen benzerlik **aynı havuza karşı** kurulmuş bir
+    null modele göre yorumlanır.
+    """
+
+    def _match(self, distance: float, percentile: float | None) -> dp.DonorMatch:
+        return dp.DonorMatch("fr", "pou", "pou", "head", distance, True, percentile)
+
+    def test_close_but_chance_explained_match_is_refused(self):
+        """Kontrol kelimelerinin %17'si de bu kadar yakınsa, yakınlık bir
+        bulgu değildir."""
+        self.assertFalse(self._match(0.092, 0.17).is_close)
+
+    def test_close_and_beyond_chance_is_accepted(self):
+        self.assertTrue(self._match(0.092, 0.0).is_close)
+
+    def test_far_match_is_refused_regardless(self):
+        self.assertFalse(self._match(0.80, 0.0).is_close)
+
+    def test_missing_control_means_no_check_not_a_failed_check(self):
+        """Ölçülmemiş bir denetimi geçilmemiş saymak da yanlış olurdu."""
+        self.assertTrue(self._match(0.10, None).beats_chance)
+
+    def test_controls_match_the_query_length(self):
+        """Null'ın uzunluğu gözlemle aynı olmalı; değilse mesafeler
+        karşılaştırılabilir değildir."""
+        for length in (3, 5, 7):
+            with self.subTest(length=length):
+                controls = dp._controls(length)
+                self.assertTrue(controls)
+                self.assertTrue(all(len(c) == length for c in controls))
+
+    def test_controls_are_real_turkic_forms(self):
+        """⚠️ Rastgele harf dizisi kullanılmaz: Türkçe fonotaktiğine uymayan
+        bir dizi verici sözlüğüne de uzak düşer ve null'ı yapay olarak
+        kolaylaştırır — o zaman HER gerçek kelime "anlamlı" çıkardı."""
+        self.assertIn("deniz", dp._controls(5))
+
+    def test_strength_is_zero_when_chance_explains_it(self):
+        self.assertEqual(dp.proximity_strength(self._match(0.10, 0.5)), 0.0)
+
+
 class TestProximityStrength(unittest.TestCase):
     def _match(self, distance: float) -> dp.DonorMatch:
-        return dp.DonorMatch("ru", "стол", "stol", "table", distance, True)
+        return dp.DonorMatch("ru", "стол", "stol", "table", distance, True, 0.0)
 
     def test_below_threshold_is_full_strength(self):
         self.assertEqual(dp.proximity_strength(self._match(0.10)), 1.0)

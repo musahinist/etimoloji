@@ -108,18 +108,58 @@ class BorrowingVerdict:
     expected_if_inherited: str = ""
     chain: list[str] = field(default_factory=list)
     donor_language: str = ""
+    #: **Eğitilmiş** birleştiricinin olasılığı. ``None`` ise model yok ve
+    #: el ağırlıkları kullanılıyor — bu durum ilan edilir, gizlenmez.
+    trained_probability: float | None = None
+    #: Eğitilmiş modelin künyesi (hangi veride, kaç örnekle, hangi hedefle).
+    combiner_note: str = ""
+
+    @property
+    def is_trained(self) -> bool:
+        return self.trained_probability is not None
 
     @property
     def is_borrowed(self) -> bool:
+        """Karar. Eğitilmiş model varsa **o** karar verir.
+
+        ⚠️ El ağırlıklı toplam ölçüldü ve en güçlü sinyalin kararını
+        bozuyordu: madde başına doğrulukta beş sinyalli motor (0,7035)
+        yalnız verici yakınlığının (0,7334) ANLAMLI biçimde altındaydı
+        (fark -0,030, %95 GA [-0,049, -0,010], p=0,004). Eğitilmiş
+        birleştirici F'yi 0,5839'dan 0,5982'ye çıkarıyor.
+        """
+        if self.trained_probability is not None:
+            return self.trained_probability >= self._trained_threshold
         return self.score >= BORROWING_THRESHOLD
+
+    #: Eğitilmiş modelin karar eşiği; ``detect`` doldurur.
+    _trained_threshold: float = 0.5
 
     @property
     def blocks_inherited_reconstruction(self) -> bool:
-        """Kanıt, miras rekonstrüksiyonunu hiç denememeyi haklı çıkarıyor mu?"""
+        """Kanıt, miras rekonstrüksiyonunu hiç denememeyi haklı çıkarıyor mu?
+
+        ⚠️ Engelleme kararı **el skoruna** bağlı kalır. Eğitilmiş model F
+        için ayarlıdır, yani bilinçli olarak duyarlılık yönüne kayar; o
+        eşikle rekonstrüksiyonu engellemek miras kelimeleri susturur.
+        Engelleme daha muhafazakâr bir karardır ve muhafazakâr eşikte kalır.
+        """
         return self.score >= BLOCK_THRESHOLD
 
     @property
     def verdict(self) -> str:
+        """Sözel karar. ``is_borrowed`` ile **aynı** kaynaktan gelmeli.
+
+        ⚠️ Eskiden ikisi ayrı hesaplanıyordu; eğitilmiş model devreye
+        girince ``is_borrowed=True`` ile ``verdict="miras adayı"`` aynı anda
+        çıkabilirdi.
+        """
+        if self.trained_probability is not None:
+            if self.trained_probability >= self._trained_threshold:
+                return "alıntı"
+            if self.trained_probability >= self._trained_threshold / 2:
+                return "belirsiz"
+            return "miras adayı"
         if self.score >= BORROWING_THRESHOLD:
             return "alıntı"
         if self.score >= BORROWING_THRESHOLD / 2:
@@ -152,12 +192,44 @@ class BorrowingVerdict:
             "chain": self.chain,
             "expected_if_inherited": self.expected_if_inherited,
             "signals": [s.as_dict() for s in self.signals],
+            "trained": self.is_trained,
+            "trained_probability": (
+                round(self.trained_probability, 4)
+                if self.trained_probability is not None
+                else None
+            ),
+            "combiner_note": self.combiner_note,
             "explanation": self.explain(),
         }
 
 
 class BorrowingDetector:
     """Dört sinyalli, gerekçeli alıntı tespiti."""
+
+    #: Eğitilmiş birleştirici bir kez yüklenir; yoksa ``None`` kalır.
+    _COMBINER: Any = None
+    _COMBINER_LOADED = False
+
+    @property
+    def combiner(self) -> Any:
+        """Eğitilmiş birleştirici — yoksa ``None``.
+
+        ⚠️ Model dosyası yoksa **el ağırlıklarına dönülür ama bu ilan
+        edilir** (``verdict.is_trained == False``). Kalibre edilmemiş bir
+        skoru kalibreymiş gibi sunmak, hiç kalibre etmemekten kötüdür.
+        """
+        cls = type(self)
+        if not cls._COMBINER_LOADED:
+            from engine.nlp.borrowing_combiner import load
+
+            cls._COMBINER = load()
+            cls._COMBINER_LOADED = True
+        return cls._COMBINER
+
+    @classmethod
+    def reset_combiner_cache(cls) -> None:
+        cls._COMBINER = None
+        cls._COMBINER_LOADED = False
 
     def __init__(self, index: Any = None, predictor: Any = None):
         self._index = index
@@ -438,7 +510,7 @@ class BorrowingDetector:
         score = sum(
             SIGNAL_WEIGHTS[signal.name] * signal.strength for signal in signals if signal.fired
         )
-        return BorrowingVerdict(
+        verdict = BorrowingVerdict(
             word=word,
             score=round(score, 3),
             signals=signals,
@@ -446,6 +518,28 @@ class BorrowingDetector:
             chain=chain,
             donor_language=donor,
         )
+
+        combiner = self.combiner
+        if combiner is not None and combiner.is_trained:
+            strengths = {s.name: (s.strength if s.fired else 0.0) for s in signals}
+            verdict.trained_probability = combiner.probability(strengths)
+            verdict._trained_threshold = combiner.threshold
+            note = (
+                f"eğitilmiş birleştirici ({combiner.trained_on}, n={combiner.n}, "
+                f"hedef={combiner.objective}): {combiner.explain()}"
+            )
+            # ⚠️ Model Sakha'da eğitildi. Başka bir dile uygulamak ALAN DIŞI
+            # kullanımdır: sinyal dağılımı dilden dile değişir ve ölçülmüş
+            # F 0,598 o dilde geçerli değildir.
+            if lang not in combiner.trained_on:
+                note += f" ⚠️ ALAN DIŞI: model {combiner.trained_on} verisinde eğitildi, sorgu dili {lang}"
+            verdict.combiner_note = note
+        else:
+            verdict.combiner_note = (
+                "⚠️ EĞİTİLMEMİŞ — el ağırlıkları kullanılıyor. Ölçüldü: el "
+                "ağırlıklı toplam en güçlü sinyalin kararını bozuyor."
+            )
+        return verdict
 
 
 def main() -> int:

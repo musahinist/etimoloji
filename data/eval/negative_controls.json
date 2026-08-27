@@ -19,15 +19,15 @@
     {
       "battery": "sahte_akraba",
       "n": 4,
-      "reconstructed": 0,
-      "false_positive_rate": 0.0,
+      "reconstructed": 4,
+      "false_positive_rate": 1.0,
       "strong_claim_rate": 0.0
     },
     {
       "battery": "alinti_tuzagi",
       "n": 5,
-      "reconstructed": 3,
-      "false_positive_rate": 0.6,
+      "reconstructed": 4,
+      "false_positive_rate": 0.8,
       "strong_claim_rate": 0.0
     },
     {
@@ -77,7 +77,7 @@
         "reconstructed": true,
         "root": "*bürtel",
         "badge": "🟠 ZAYIF KANIT",
-        "calibrated": 0.1854,
+        "calibrated": 0.1884,
         "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
       },
       {
@@ -142,44 +142,44 @@
     "sahte_akraba": [
       {
         "query": "ay",
-        "reconstructed": false,
-        "root": "",
-        "badge": "",
-        "calibrated": null,
+        "reconstructed": true,
+        "root": "*ay",
+        "badge": "⚪ YETERSİZ KANIT",
+        "calibrated": 0.1322,
         "reason": "Türkçe 'ay' ~ İng. 'eye': salt rastlantı"
       },
       {
         "query": "bad",
-        "reconstructed": false,
-        "root": "",
-        "badge": "",
-        "calibrated": null,
+        "reconstructed": true,
+        "root": "*bad",
+        "badge": "⚪ YETERSİZ KANIT",
+        "calibrated": 0.1322,
         "reason": "Farsça 'bād' rüzgâr ~ İng. 'bad': ilgisiz"
       },
       {
         "query": "kol",
-        "reconstructed": false,
-        "root": "",
-        "badge": "",
-        "calibrated": null,
+        "reconstructed": true,
+        "root": "*kol",
+        "badge": "⚪ YETERSİZ KANIT",
+        "calibrated": 0.1322,
         "reason": "salt ses benzerliği"
       },
       {
         "query": "gel",
-        "reconstructed": false,
-        "root": "",
-        "badge": "",
-        "calibrated": null,
+        "reconstructed": true,
+        "root": "*gel",
+        "badge": "⚪ YETERSİZ KANIT",
+        "calibrated": 0.1322,
         "reason": "salt ses benzerliği"
       }
     ],
     "alinti_tuzagi": [
       {
         "query": "kitap",
-        "reconstructed": false,
-        "root": "",
-        "badge": "⚪ YETERSİZ KANIT",
-        "calibrated": null,
+        "reconstructed": true,
+        "root": "*kitap",
+        "badge": "🟠 ZAYIF KANIT",
+        "calibrated": 0.1913,
         "reason": "Arapça kitāb — bütün Türki dillerde var ama MİRAS DEĞİL"
       },
       {
@@ -221,7 +221,7 @@
         "reconstructed": true,
         "root": "*jay",
         "badge": "🟠 ZAYIF KANIT",
-        "calibrated": 0.2023,
+        "calibrated": 0.1962,
         "reason": "'tea' Farsça alıntı, 'brook' Proto-Türkçe miras — aynı yazılış"
       },
       {
@@ -229,7 +229,7 @@
         "reconstructed": true,
         "root": "*jaş",
         "badge": "🟠 ZAYIF KANIT",
-        "calibrated": 0.1932,
+        "calibrated": 0.1859,
         "reason": "'age' ve 'wet/tear' ayrı köklerdir"
       },
       {

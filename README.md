@@ -111,79 +111,125 @@ gerçek doğruluk %23,9). Kullanıcıya gösterilen skor artık kalibre skordur.
 
 | Sistem | F | kesinlik | duyarlılık | doğruluk |
 |---|---|---|---|---|
-| **motor** | **0,584** | 0,506 | 0,690 | 0,704 |
-| yalnız verici yakınlığı | 0,581 | 0,553 | 0,612 | 0,733 |
+| **motor (eğitilmiş birleştirici)** | **0,644** | 0,610 | 0,681 | 0,772 |
+| motor (doğruluk hedefli eşik) | 0,633 | 0,654 | 0,612 | 0,785 |
+| yalnız verici yakınlığı | 0,624 | 0,697 | 0,565 | 0,795 |
+| motor (el ağırlıkları) | 0,622 | 0,591 | 0,655 | 0,759 |
 | hepsi alıntı (trivial) | 0,464 | 0,302 | 1,000 | 0,302 |
 | yalnız fonotaktik | 0,215 | 0,372 | 0,151 | 0,667 |
 
-Motor ilk kez trivial taban çizginin **üstünde**. Kazanç tek bir yeniliğin:
-**verici dil sözlüğüne SCA yakınlığı** (sabor, Miller & List 2023). Öncesi
-F 0,385'ti.
+**F 0,385 → 0,644.** Plan hedefi (≥0,60) aşıldı; PyBor'un WOLD 41 dil
+ortalamasının (0,59–0,61) üstünde.
 
-#### Hangi sinyal işe yarıyor? (sinyal sinyal ablasyon, n=769)
+⚠️ Ablasyon hükmü **ilk kez pozitif ve anlamlı**: motor vs yalnız
+fonotaktik fark **+0,092**, %95 GA [+0,052, +0,134], p=0,0001.
+
+#### Kazancı sağlayan üç şey
+
+**1. Verici dil sözlüğüne SCA yakınlığı** (`sabor`, Miller & List 2023).
+Sinyal ablasyonu (n=769, her sinyal tek tek çıkarılır, eşik her seferinde
+yeniden ayarlanır):
 
 | çıkarılan sinyal | kalan F | katkısı |
 |---|---|---|
-| `verici_yakınlığı` | 0,385 | **+0,199** |
-| `fonotaktik_ihlal` | 0,570 | +0,014 |
-| `zincir_kanıtı` | 0,571 | +0,013 |
-| `ses_kanunu_ihlali` | 0,584 | +0,000 |
-| `değişimsiz_yayılım` | 0,590 | **−0,006** (zararlı) |
+| `verici_yakınlığı` | 0,385 | **+0,237** |
+| `zincir_kanıtı` | 0,600 | +0,021 |
+| `fonotaktik_ihlal` | 0,608 | +0,014 |
+| `değişimsiz_yayılım` | 0,627 | **−0,006** |
+| `ses_kanunu_ihlali` | 0,632 | **−0,010** |
 
-⚠️ **Motor, tek sinyalden anlamlı biçimde iyi DEĞİL.** Madde başına
-doğrulukta motor (0,704) yalnız verici yakınlığının (0,733) **altında**
-kalıyor: fark −0,030, %95 GA [−0,049, −0,010], p=0,004. El ile konmuş
-ağırlıklı toplam, en güçlü sinyalin kararını bozuyor. Ölçüm eğitilmiş bir
-birleştiriciyi (Faz C5) işaret ediyor.
-
-⚠️ `ses_kanunu_ihlali` ve `değişimsiz_yayılım` hâlâ katkısız. Kavramsal
-açıklaması duruyor: denklikleri alıntıların da içinde olduğu veriden
-öğrendik, ve Arapça alıntılar bütün Oğuz dillerinde aynı biçimde
-uyarlandığı için **kendi düzenli denkliklerini yaratıyorlar** — "beklenen
-refleks tutuyor mu" testini geçiyorlar.
-
-#### Yön sorunu ve ölçülmüş çözümü
-
-Verici sözlüğü **Türkiden alınmış** kelimeleri de içerir; bunlar sinyali
-ters yönden tetikliyordu:
+**2. Yön süzgeci.** Verici sözlüğü Türkiden **alınmış** kelimeleri de
+içeriyor ve sinyali ters yönden tetikliyordu:
 
     Türkçe göz   ~ Ermenice գյոզ (gyoz)  SCA 0,040   "From Ottoman Turkish"
     Türkçe demir ~ Farsça   تمر  (tamor) SCA 0,075   "Borrowed from Turkic"
 
-Verici maddesinin kendi etimoloji metni Türki bir kaynağa işaret ediyorsa
-madde kanıttan çıkarılıyor (1.674.418 maddenin 2.900'ü). Süzgeç motorun
-F'sini 0,566'dan **0,584'e** çıkardı.
+Verici maddesinin kendi etimolojisi Türki kaynağa işaret ediyorsa madde
+kanıttan çıkarılıyor (1.674.418'in 2.900'ü). "Compare Turkish …" alıntı
+beyanı sayılmıyor; sayılsaydı Türki bir adı anan her madde elenirdi.
 
-⚠️ Süzgeç eksiksiz değil: Fransızca `béluga` Rusça `белуга`dan gelir, o da
-Türkiden — ama Fransızca madde yalnız Rusçayı gösterir. Zincirin ikinci
-halkasını görmüyoruz.
+**3. Şans benzerliği denetimi** (Kessler 2001). Ham mesafe eşiği **verici
+havuzunun büyüklüğüne gizlice bağlıdır**: Sakha ölçütünde havuz 3 dil /
+448.000 madde, Türkçede 6 dil / 1.600.000. Aynı 0,35 eşiği ikisinde aynı
+şeyi ölçmez.
+
+    Türkçe baş   ~ Fransızca pou     SCA 0,092  ama kontrollerin %17'si de bu kadar yakın
+    Türkçe balık ~ Fransızca béluga  SCA 0,146  kontrollerin %17'si
+    Türkçe kitap ~ Arapça    كتاب    SCA 0,000  kontrollerin %0'ı  -> BULGU
+
+Aynı havuza karşı 12 kontrol kelimesi ölçülüyor; gözlenen mesafe kontrol
+dağılımının %10'undan düşük değilse sinyal ateşlenmiyor. Havuz büyüdükçe
+null da kayar ve eşik kendini ayarlar.
+
+#### Eğitilmiş birleştirici
+
+El ile konmuş ağırlıklı toplam, en güçlü sinyalin kararını **bozuyordu**:
+beş sinyalli motor madde başına doğrulukta yalnız verici yakınlığının
+altında kalıyordu (fark −0,030, %95 GA [−0,049, −0,010], p=0,004). Ayrıca
+aritmetik bir kusur vardı: zincir sinyali yokken `0,20 + 0,10 = 0,30 <
+0,45` — o iki sinyal tek başlarına **hiçbir kararı değiştiremiyordu**.
+
+Ağırlıklar artık **ayar yarısında** öğreniliyor (lojistik regresyon; sklearn
+yok, optimizasyon repoda ve deterministik). Öğrenilen katsayılar ablasyonu
+birebir doğruluyor:
+
+    sabit −1,933 · verici_yakınlığı +1,537 · zincir_kanıtı +1,413
+                 · ses_kanunu_ihlali +0,123 · fonotaktik_ihlal +0,046
+                 · değişimsiz_yayılım +0,009
+
+⚠️ **Hedef ölçü seçimi sonucu belirler ve gizlenemez.** Aynı model, yalnız
+eşik farklı: F hedefli 0,644/0,772 · doğruluk hedefli 0,633/0,785. İkisi
+aynı anda alınamaz; hangisinin seçildiği model dosyasında saklanıyor.
+
+⚠️ Model WOLD/Sakha'da eğitildi. Başka bir dile uygulandığında çıktı
+"ALAN DIŞI" damgası taşır — sinyal dağılımı dilden dile değişir ve ölçülen
+F o dilde geçerli değildir.
+
+⚠️ Model yoksa el ağırlıklarına dönülür ama bu **ilan edilir**
+(`verdict.is_trained == False`), sessizce yapılmaz.
+
+#### Türkçe ablasyon (Wiktionary etiketi, zincir sinyali kapalı), n=750
+
+| Sistem | F | kesinlik | duyarlılık |
+|---|---|---|---|
+| hepsi alıntı (trivial) | 0,844 | 0,729 | 1,000 |
+| motor (eğitilmiş) | 0,844 | 0,729 | 1,000 |
+| motor (el ağırlıkları) | 0,811 | 0,738 | 0,900 |
+| yalnız fonotaktik | 0,660 | 0,766 | 0,580 |
+
+Motor vs yalnız fonotaktik: **+0,129**, %95 GA [+0,089, +0,169], p=0,0001.
+
+⚠️ **Eğitilmiş birleştirici bu kümede ÇÖKÜYOR**: kararları
+`always_borrowed` ile birebir aynı. Alıntı oranı %72,9 olduğu için F'yi en
+yükselten eşik "hepsine alıntı de"dir. Bu bir başarı değil, F ölçüsünün
+dengesiz sınıftaki bilinen patolojisidir — değerlendirme artık bu durumu
+kendi tespit edip uyarı basıyor.
 
 #### Neden SCA, neden anlam kısıtı
 
-**SCA, düz Levenshtein değil.** Sakha Rusça `stol`u `ostuol` yapar
-(öntüreme ünlü + ikizünlü); düz uzaklık 3/6 = 0,50 verip eşiğin üstünde
-kalır, SCA 0,216 verir. LingPy yoksa sinyal **devre dışı kalır** — düz
-Levenshtein'a düşmek, yayınlanmış F1 0,806'yı başka bir mesafeyle iddia
-etmek olurdu.
+Sakha Rusça `stol`u `ostuol` yapar (öntüreme ünlü + ikizünlü); düz
+Levenshtein 3/6 = 0,50 verip eşiğin üstünde kalır, SCA 0,216 verir. LingPy
+yoksa sinyal **devre dışı kalır** — düz Levenshtein'a düşmek, yayınlanmış
+F1 0,806'yı başka bir mesafeyle iddia etmek olurdu. (Hız için SCA öncesi
+ucuz düzenlenme uzaklığıyla en yakın 40 aday seçiliyor; **karar ölçütü hâlâ
+SCA**.)
 
-**Anlam kısıtı yayınlanmış kurulumun parçası.** Kısıtsız arama 1,67 milyon
-maddelik verici indeksine yayılır ve şans benzerliğine açılır. ⚠️ Kısıtın
-bedeli ölçülmüştür: sabor'da kaçan alıntıların %45'i tam bu kısıttan gelir.
+Anlam kısıtı yayınlanmış kurulumun parçası. Kısıtsız arama 1,67 milyon
+maddelik indekse yayılır. ⚠️ Kısıtın bedeli ölçülmüştür: sabor'da kaçan
+alıntıların %45'i tam bu kısıttan gelir.
 
 Uzunluk kapısı **konmadı**: ayrım her uzunlukta duruyor (alıntı ort. SCA
-0,31, miras 0,48) ve asgari uzunluk 4 koymak F'yi 0,565'ten 0,562'ye
-düşürüyor.
+0,31, miras 0,48).
 
-> **Düzeltme kaydı — iki kez yanlış ölçüldü.**
+> **Düzeltme kaydı — aynı hata sınıfı iki kez.**
 > **(1)** Değerlendirme kodu `witnesses` alanını hiç doldurmuyordu; dört
 > sinyalden ikisi tanık gerektirdiği için **yapısal olarak devre dışıydı**.
 > Sonuç fonotaktikle birebir aynı çıkıyor, biz "sinyaller katkı sağlamıyor"
 > diye raporluyorduk. Doğrusu "sinyaller hiç çalıştırılmadı"ydı.
 > **(2)** `_attach_witnesses` dondurulmuş kaydı alan alan yeniden kuruyordu
 > ve yeni eklenen `sense` alanını **sessizce düşürüyordu**; verici yakınlığı
-> sinyali anlamsız kaldığı için ilk koşuda F=0,0000 verdi. Aynı hata
-> sınıfı, ikinci kez. Artık `dataclasses.replace` kullanılıyor — o hataya
-> yapısal olarak kapalı.
+> anlam kısıtlı olduğu için sinyal ilk koşuda F=0,0000 verdi.
+> Artık `dataclasses.replace` kullanılıyor — o hataya yapısal olarak kapalı.
 
 ### Öngörü testi (n=182, kilitli sicil)
 
@@ -594,7 +640,7 @@ kullanılmıyor veya kısıtlı kullanılıyor.
 
 - [List & Forkel 2022](https://pmc.ncbi.nlm.nih.gov/articles/PMC10445856/) — otomatik alıntı tespiti, `seabor`, **F = 0,87**
 - [Miller ve ark. 2020, *PLOS ONE*](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0242709) — PyBor, tek dilli fonotaktik taban çizgi (**F1 ≈ 0,55**)
-- **[Miller & List 2023, EACL — `sabor`](https://arxiv.org/pdf/2302.00189)** ✅ **uygulandı** — verici dil sözlüğüne SCA yakınlığı; yayınlanmış **F1 0,806 · kesinlik 0,931**. Bizde WOLD/Sakha'da motorun F'sini **0,385 -> 0,584** çıkardı ve tek başına 0,581 alıyor. ⚠️ Yayınlanmış kurulum **kavram kısıtlıdır** ve makale kaçan alıntıların %45'ini bu kısıta bağlıyor.
+- **[Miller & List 2023, EACL — `sabor`](https://arxiv.org/pdf/2302.00189)** ✅ **uygulandı** — verici dil sözlüğüne SCA yakınlığı; yayınlanmış **F1 0,806 · kesinlik 0,931**. Bizde WOLD/Sakha'da motorun F'sini **0,385 -> 0,644** çıkardı; sinyal ablasyonundaki katkısı **+0,237**. ⚠️ Yayınlanmış kurulum **kavram kısıtlıdır** ve makale kaçan alıntıların %45'ini bu kısıta bağlıyor.
 - [Neureiter ve ark. 2022, *Humanit Soc Sci Commun*](https://www.nature.com/articles/s41599-022-01211-7) — contacTrees
 - Hruschka ve ark. 2015 — concerted evolution, düzenli ses değişimi tespiti
 - ⚠️ [Dellert 2019, *Information-theoretic causal inference of lexical flow*](https://langsci-press.org/catalog/book/233) — leksikal akışın **yönünü** verir, **yolunu vermez**; dil düzeyinde, kelime düzeyinde değil
@@ -627,7 +673,7 @@ kullanılmıyor veya kısıtlı kullanılıyor.
 
 ### İstatistiksel geçerlilik, kalibrasyon ve açıklanabilirlik
 
-- **Kessler 2001, *The Significance of Word Lists* (CSLI)** — permütasyon testiyle **rastlantısal benzerlik** kontrolü. Yeni etimoloji iddiasının olmazsa olmazı.
+- **Kessler 2001, *The Significance of Word Lists* (CSLI)** ✅ **uygulandı** — permütasyon testiyle **rastlantısal benzerlik** kontrolü. Verici yakınlığı sinyalinde null model olarak koşuyor: aynı havuza karşı 12 kontrol kelimesi ölçülüyor. Ham mesafe eşiği havuz büyüklüğüne gizlice bağlıdır (Sakha 448.000 madde, Türkçe 1.600.000); null modelsiz aynı eşik iki dilde aynı şeyi ölçmez. Ölçüldü: denetim motorun F'sini **0,584 -> 0,644** çıkardı.
 - Benjamini & Hochberg 1995 — FDR kontrolü (çoklu karşılaştırma)
 - Efron & Tibshirani — bootstrap güven aralığı · McNemar testi
 - Zadrozny & Elkan — izotonik kalibrasyon · Platt scaling · Kull ve ark. — beta kalibrasyon

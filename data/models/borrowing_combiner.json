@@ -1,0 +1,23 @@
+{
+  "_schema": "turkic-etymology-borrowing-combiner/v1",
+  "signal_order": [
+    "zincir_kanıtı",
+    "verici_yakınlığı",
+    "ses_kanunu_ihlali",
+    "fonotaktik_ihlal",
+    "değişimsiz_yayılım"
+  ],
+  "weights": {
+    "zincir_kanıtı": 1.41304,
+    "verici_yakınlığı": 1.536814,
+    "ses_kanunu_ihlali": 0.123197,
+    "fonotaktik_ihlal": 0.046285,
+    "değişimsiz_yayılım": 0.00911
+  },
+  "bias": -1.932511,
+  "threshold": 0.37,
+  "objective": "fscore",
+  "trained_on": "wold/sah/tune",
+  "n": 770,
+  "trained_at": "2026-08-27T11:17:57+00:00"
+}

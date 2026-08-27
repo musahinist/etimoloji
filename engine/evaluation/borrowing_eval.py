@@ -234,7 +234,11 @@ def load_wiktionary_cases(
         return []
     with index.connect() as connection:
         rows = connection.execute(
-            "SELECT word, origin, donor_lang FROM entries "
+            # ⚠️ ``gloss`` da alınır: verici yakınlığı sinyali ANLAM
+            # KISITLIDIR ve anlamsız madde o sinyali hiç ateşlemez.
+            # İlk sürümde alınmıyordu ve sinyal Türkçe ablasyonu boyunca
+            # F=0,0000 veriyordu — "katkısız" değil, "hiç çalışmadı".
+            "SELECT word, origin, donor_lang, gloss FROM entries "
             "WHERE lang_code = ? AND origin IS NOT NULL AND length(comparison) >= 3 "
             "ORDER BY word LIMIT ?",
             (lang, limit),
@@ -246,6 +250,7 @@ def load_wiktionary_cases(
             is_borrowed=row["origin"] == "alıntı",
             donor=row["donor_lang"] or "",
             source="wiktionary",
+            sense=row["gloss"] or "",
         )
         for row in rows
     ]
@@ -295,6 +300,24 @@ def always_borrowed(case: BorrowingCase) -> bool:
 #: gerçek kaynak dağılımı kullanılır: Rusça 284 · Moğolca 253 · Evenkice 19.
 SAKHA_DONORS = ["ru", "mn", "evn"]
 
+#: Türkçenin tarihsel vericileri. Sakha'dan bambaşka bir kümedir; aynı
+#: listeyi iki dile birden vermek her iki ölçümü de bozar.
+TURKISH_DONORS = ["ar", "fa", "el", "hy", "fr", "it"]
+
+
+def donors_for(lang_code: str) -> list[str] | None:
+    """Bu dil için hangi verici sözlüklerine bakılacak?
+
+    ⚠️ Verici kümesi dile göre değişir ve bu **ölçümü belirler**: havuz
+    büyüdükçe şans benzerliği artar. Sakha'ya Fransızca sözlüğü açmak
+    yalnız gürültü ekler.
+    """
+    if lang_code == "sah":
+        return SAKHA_DONORS
+    if lang_code in ("tr", "ota"):
+        return TURKISH_DONORS
+    return None
+
 
 def score_of(
     case: BorrowingCase, *, use_chain: bool, drop: tuple[str, ...] = ()
@@ -313,9 +336,12 @@ def score_of(
 
     detector = _shared_detector()
     entries = [{"lang_code": c, "word": w} for c, w in case.witnesses]
-    donors = SAKHA_DONORS if case.lang_code == "sah" else None
     verdict = detector.detect(
-        case.word, entries, lang=case.lang_code, sense=case.sense, donors=donors
+        case.word,
+        entries,
+        lang=case.lang_code,
+        sense=case.sense,
+        donors=donors_for(case.lang_code),
     )
     removed = set(drop) | ({"zincir_kanıtı"} if not use_chain else set())
     if not removed:
@@ -331,6 +357,39 @@ def score_of(
     return score / remaining
 
 
+def signal_strengths(case: BorrowingCase, *, use_chain: bool) -> dict[str, float]:
+    """Maddenin sinyal güçleri — eğitilmiş birleştiricinin girdisi.
+
+    ``use_chain=False`` ise zincir sinyali **sıfırlanır**, çıkarılmaz:
+    modelin girdi boyutu sabit kalmalı.
+    """
+    detector = _shared_detector()
+    entries = [{"lang_code": c, "word": w} for c, w in case.witnesses]
+    verdict = detector.detect(
+        case.word,
+        entries,
+        lang=case.lang_code,
+        sense=case.sense,
+        donors=donors_for(case.lang_code),
+    )
+    out = {s.name: (s.strength if s.fired else 0.0) for s in verdict.signals}
+    if not use_chain:
+        out["zincir_kanıtı"] = 0.0
+    return out
+
+
+def train_combiner(
+    cases: list[BorrowingCase], *, use_chain: bool, trained_on: str, objective: str = "fscore"
+):
+    """Birleştiriciyi **ayar yarısında** eğitir."""
+    from engine.nlp.borrowing_combiner import fit
+
+    samples = [
+        (signal_strengths(c, use_chain=use_chain), c.is_borrowed) for c in cases
+    ]
+    return fit(samples, trained_on=trained_on, objective=objective)
+
+
 def donor_proximity_only(case: BorrowingCase) -> bool:
     """Yalnız verici yakınlığı — sabor'un (Miller & List 2023) tek sinyali.
 
@@ -339,8 +398,9 @@ def donor_proximity_only(case: BorrowingCase) -> bool:
     """
     from engine.nlp.donor_proximity import nearest_donor
 
-    donors = SAKHA_DONORS if case.lang_code == "sah" else None
-    match = nearest_donor(to_comparison_form(case.word), case.sense, languages=donors)
+    match = nearest_donor(
+        to_comparison_form(case.word), case.sense, languages=donors_for(case.lang_code)
+    )
     return match is not None and match.is_close
 
 
@@ -448,8 +508,8 @@ def signal_ablation(
 
 
 def evaluate(
-    cases: list[BorrowingCase], *, use_chain: bool
-) -> tuple[dict[str, PRF], float]:
+    cases: list[BorrowingCase], *, use_chain: bool, trained_on: str = ""
+) -> tuple[dict[str, PRF], float, Any]:
     """Eşik AYAR yarısında seçilir, sonuç RAPOR yarısında verilir."""
     tune_set = [c for i, c in enumerate(cases) if i % 2 == 0]
     report_set = [c for i, c in enumerate(cases) if i % 2 == 1]
@@ -462,7 +522,23 @@ def evaluate(
         "donor_proximity_only": donor_proximity_only,
         "engine": _detector(use_chain, threshold),
     }
-    return {name: score_system(fn, report_set) for name, fn in systems.items()}, threshold
+
+    # ⚠️ Eğitilmiş birleştirici AYAR yarısında eğitilir, RAPOR yarısında
+    # ölçülür. Aynı veride hem eğitip hem ölçmek ölçümü yok sayar.
+    combiner = train_combiner(tune_set, use_chain=use_chain, trained_on=trained_on)
+    systems["engine_trained"] = lambda case: combiner.predict(
+        signal_strengths(case, use_chain=use_chain)
+    )
+    # ⚠️ Aynı model, yalnız eşik hedefi farklı. F ile doğruluk aynı anda
+    # alınamaz; ikisi de raporlanır ki seçim gizlenmesin.
+    accurate = train_combiner(
+        tune_set, use_chain=use_chain, trained_on=trained_on, objective="accuracy"
+    )
+    systems["engine_trained_acc"] = lambda case: accurate.predict(
+        signal_strengths(case, use_chain=use_chain)
+    )
+    scores = {name: score_system(fn, report_set) for name, fn in systems.items()}
+    return scores, threshold, combiner
 
 
 def _print_block(title: str, note: str, cases: list[BorrowingCase], scores: dict[str, PRF]) -> None:
@@ -472,11 +548,31 @@ def _print_block(title: str, note: str, cases: list[BorrowingCase], scores: dict
     print(f"n={len(cases)} · alıntı {borrowed} (%{100 * borrowed / len(cases):.1f}) · miras {len(cases) - borrowed}")
     print(f"\n{'sistem':20} {'F':>7} {'kesinlik':>9} {'duyarlılık':>11} {'doğruluk':>9}")
     print("-" * 60)
+    trivial = scores.get("always_borrowed")
+    degenerate: list[str] = []
     for name, prf in sorted(scores.items(), key=lambda kv: -kv[1].fscore):
         marker = " *" if name == "engine" else ""
         print(
             f"{name + marker:20} {prf.fscore:>7.4f} {prf.precision:>9.4f} "
             f"{prf.recall:>11.4f} {prf.accuracy:>9.4f}"
+        )
+        if (
+            trivial is not None
+            and name not in ("always_borrowed", "always_inherited")
+            and prf.per_item == trivial.per_item
+        ):
+            degenerate.append(name)
+    if degenerate:
+        # ⚠️ F skoru dengesiz sınıfta "hepsine alıntı de" diyerek en yükseğe
+        # çıkabilir. O skor bir başarı değil, ölçünün bilinen patolojisidir;
+        # tabloya bakıp geçen biri bunu "motor trivialle başa baş" sanır.
+        print(
+            f"\n  ⚠️ ÇÖKMÜŞ SİSTEM: {', '.join(degenerate)} — "
+            f"kararları `always_borrowed` ile BİREBİR aynı.\n"
+            f"     Alıntı oranı %{100 * borrowed / len(cases):.1f} olduğu için F'yi "
+            f"en yükselten eşik 'hepsine alıntı de'dir.\n"
+            f"     Bu bir başarı değil, F ölçüsünün dengesiz sınıftaki bilinen "
+            f"patolojisidir."
         )
 
 
@@ -524,6 +620,7 @@ def main() -> int:
 
     from engine.evaluation.report import EVAL_DIR
     from engine.evaluation.significance import compare_systems
+    from engine.nlp.borrowing_combiner import save
 
     ap = argparse.ArgumentParser(description="Alıntı tespiti değerlendirmesi")
     ap.add_argument("--wiktionary-limit", type=int, default=3000)
@@ -537,7 +634,9 @@ def main() -> int:
 
     wold = load_wold_cases()
     if wold:
-        scores, wold_threshold = evaluate(wold, use_chain=True)
+        scores, wold_threshold, wold_combiner = evaluate(
+            wold, use_chain=True, trained_on="wold/sah/tune"
+        )
         _print_block(
             "BİRİNCİL ÖLÇÜT — WOLD (uzman, Wiktionary'den bağımsız)",
             "Sakha (Yakutça); WOLD'un 41 dilinden tek Türki olanı.",
@@ -545,10 +644,13 @@ def main() -> int:
             scores,
         )
         print(f"(eşik ayar yarısında seçildi: {wold_threshold:.2f})")
+        print(f"  eğitilmiş birleştirici: {wold_combiner.explain()}")
+        save(wold_combiner)
         payload["wold"] = {
             "language": "sah",
             "n": len(wold) // 2,
             "tuned_threshold": wold_threshold,
+            "combiner": wold_combiner.as_dict(),
             "systems": {k: v.as_dict() for k, v in scores.items()},
             "significance": compare_systems(
                 {k: v.per_item for k, v in scores.items()}, reference="always_inherited"
@@ -566,6 +668,7 @@ def main() -> int:
             "vs_donor_proximity": compare_systems(
                 {
                     "engine": scores["engine"].per_item,
+                    "engine_trained": scores["engine_trained"].per_item,
                     "donor_proximity_only": scores["donor_proximity_only"].per_item,
                 },
                 reference="donor_proximity_only",
@@ -587,7 +690,9 @@ def main() -> int:
 
     wiktionary = load_wiktionary_cases(limit=args.wiktionary_limit)
     if wiktionary:
-        scores, ablation_threshold = evaluate(wiktionary, use_chain=False)
+        scores, ablation_threshold, wiki_combiner = evaluate(
+            wiktionary, use_chain=False, trained_on="wiktionary/tr/tune"
+        )
         _print_block(
             "ABLASYON — Wiktionary etiketi, zincir sinyali KAPALI",
             (
