@@ -37,7 +37,22 @@ class TestNormalisation(unittest.TestCase):
         self.assertEqual(normalize_proto("*Kāpuk", strip_length=True), "kapuk")
 
     def test_alternatives_cut_at_first(self):
-        self.assertEqual(normalize_proto("*Kūrɨk,gak"), "kūrɨk")
+        self.assertEqual(normalize_proto("*Kūrɨk,gak"), "kūrık")
+
+    def test_transcription_variants_folded(self):
+        """``*yol`` ile ``*jol`` AYNI rekonstrüksiyondur, farklı yazımdır.
+
+        Bunu hata saymak dilbilimi değil, çeviriyazı geleneğini ölçmek olur.
+        Ölçüldü: söz başı hatalarının üçte biri yalnız bundan ibaretti.
+        """
+        self.assertEqual(normalize_proto("*yol"), normalize_proto("*jol"))
+        self.assertEqual(normalize_proto("*kara"), normalize_proto("*ḳara"))
+        self.assertEqual(normalize_proto("*ıs"), normalize_proto("*ïs"))
+
+    def test_rhotic_and_lateral_are_not_folded_in_exact(self):
+        """``*ŕ``/``*ĺ`` Türkolojide ayrı sesbirimdir; EXACT'ta eşitlenmez."""
+        self.assertNotEqual(normalize_proto("*köz"), normalize_proto("*köŕ"))
+        self.assertNotEqual(normalize_proto("*bar"), normalize_proto("*baŕ"))
 
 
 class TestAcceptability(unittest.TestCase):

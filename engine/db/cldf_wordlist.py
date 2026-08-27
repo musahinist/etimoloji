@@ -37,6 +37,7 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 import unicodedata
 from collections import defaultdict
 from dataclasses import dataclass, field
@@ -46,6 +47,10 @@ from engine.config import CLDF_DIR
 from engine.logging_setup import get_logger
 
 logger = get_logger(__name__)
+
+#: ``Value`` içindeki parantezli ve tırnaklı İngilizce açıklamalar.
+_PARENTHETICAL = re.compile(r"\([^)]*\)")
+_QUOTED_GLOSS = re.compile(r"['\"\u2018\u2019\u201c\u201d][^'\"\u2018\u2019\u201c\u201d]*['\"\u2018\u2019\u201c\u201d]")
 
 #: Oğur (Bulgar) kolu — bu tanık varsa rekonstrüksiyon Proto-Türkçe düzeyindedir.
 #: Yoksa yalnızca Ana Ortak Türkçe (Proto-Common-Turkic) iddia edilebilir.
@@ -133,14 +138,29 @@ class FormEntry:
 
         Altın ``Root`` alanı **Value ile aynı geleneği** kullanır (``*tïrŋaḳ``,
         ``*Kāpuk``, ``*köŕ``). Motora ``Form`` verilirse ondan IPA'dan
-        Türkolojik yazıya çeviri de beklenmiş olur; bu, ölçülen şeyi
-        rekonstrüksiyondan çeviriyazıya kaydırır. Değerlendirmede ``Value``
-        kullanılır.
+        Türkolojik yazıya çeviri de beklenmiş olur; ölçülen şey
+        rekonstrüksiyondan çeviriyazıya kayar.
+
+        ``Value`` serbest metindir ve İNGİLİZCE açıklama taşıyabilir::
+
+            "alïp + motion verb"
+            "(køterip) alɯp bar (or other motion verbs)"
+
+        Temizlenmezse rekonstrüksiyon ``*alıpmotionverb`` gibi çöp üretir.
         """
-        text = self.value.split(",")[0]
-        if "(" in text:
-            text = text[: text.index("(")]
-        return text.strip()
+        text = _PARENTHETICAL.sub(" ", self.value)
+        text = _QUOTED_GLOSS.sub(" ", text)
+        text = text.split("+")[0].split(",")[0].split(";")[0]
+        # ``?`` ve benzeri belirsizlik işaretleri sesbirim değildir; kaynak
+        # "bu biçimden emin değilim" demek için koyar. Temizlenmezse çapa
+        # kelimesi tek başına ``?`` olabiliyor ve rekonstrüksiyon hiç
+        # başlamıyordu (ölçüldü: 24 madde bu yüzden cevapsız kalıyordu).
+        text = text.replace("?", " ").replace("ˁ", "").replace("ˀ", "")
+        text = text.strip().strip("-").strip()
+        if " " in text:
+            parts = [part for part in text.split() if part.strip("-")]
+            text = parts[0] if parts else ""
+        return text.strip().strip("-").strip()
 
 
 @dataclass

@@ -56,17 +56,46 @@ ARCHIPHONEME_EQUIVALENTS: dict[str, frozenset[str]] = {
 }
 
 
+#: **Salt yazım geleneği farkları.** Aynı sesi farklı yazan okulların
+#: uzlaştırılması. Bunlar EXACT ölçümde de eşitlenir: ``*yol`` ile ``*jol``
+#: aynı rekonstrüksiyondur, farklı yazımdır. Bunları hata saymak dilbilimi
+#: değil, çeviriyazı geleneğini ölçmek olurdu.
+#:
+#: Ölçüldü: "söz başı yanlış" sayılan 93 hatanın 31'i yalnız buydu
+#: (``y``/``j`` 18, ``c``/``č`` 5, ``ı``/``ï`` 3, ``k``/``ḳ`` 2 …).
+TRANSCRIPTION_VARIANTS: dict[str, str] = {
+    "ï": "ı", "ɨ": "ı", "ɯ": "ı",
+    "y": "j", "ǰ": "j", "ɟ": "j",
+    "č": "ç", "c": "ç", "ʧ": "ç",
+    "š": "ş", "ʃ": "ş",
+    "ñ": "ŋ", "ń": "ŋ", "ṅ": "ŋ",
+    "ḳ": "k", "q": "k", "ḵ": "k",
+    "ġ": "g", "ǧ": "ğ", "ɣ": "ğ",
+    "ẹ": "e", "ė": "e", "ạ": "a", "ǝ": "e", "ə": "e",
+    "ẓ": "z", "ṣ": "s", "ṭ": "t", "ḏ": "d",
+    "ʼ": "", "ʔ": "", "ʲ": "", "ˊ": "", "'": "", "ʻ": "",
+}
+
+
+def _fold_transcription(text: str) -> str:
+    return "".join(TRANSCRIPTION_VARIANTS.get(ch, ch) for ch in text)
+
+
 def normalize_proto(form: str, *, strip_length: bool = False) -> str:
     """Ata biçmi karşılaştırılabilir hâle getirir.
 
     ``*Kāpuk`` -> ``kāpuk``. ``strip_length=True`` ise uzunluk da atılır
     (``kapuk``) — "uzunluk dışında doğru mu?" sorusunu ayrıca ölçmek için.
+
+    Yazım geleneği farkları (:data:`TRANSCRIPTION_VARIANTS`) burada eşitlenir.
+    ⚠️ ``ŕ`` ve ``ĺ`` **eşitlenmez**: Türkolojide bunlar ``r``/``l``den ayrı
+    sesbirimlerdir; birleştirmek ``*ar`` ile ``*aŕ``ı aynı sayardı.
     """
     text = unicodedata.normalize("NFC", form.strip())
     for ch in _STRIP_CHARS:
         text = text.replace(ch, "")
     text = text.split(",")[0].split("/")[0].strip()  # "*Kūrɨk,gak" -> "*Kūrɨk"
-    text = text.casefold()
+    text = _fold_transcription(text.casefold())
     if strip_length:
         decomposed = unicodedata.normalize("NFD", text)
         text = unicodedata.normalize("NFC", "".join(c for c in decomposed if c != "̄")).replace("ː", "")
@@ -383,6 +412,8 @@ _COMMENT_SPLIT = ";"
 _PAREN_PATTERN = re.compile(r"\([^)]*\)")
 _TRAILING_GLOSS = re.compile(r":\s*[A-ZŠČŊĹŔ]{2,}\s*$")
 _COLON_LENGTH = re.compile(r"([aeıioöuüäɨėẹAEIOUÄ]):")
+#: ``*sV: sẹ`` — arşifonemli biçim, iki nokta, sonra somut biçim.
+_CONCRETE_AFTER_COLON = re.compile(r"^\s*(\*?[^\s:]+)\s*:\s+([^\s:]+)\s*$")
 
 
 def parse_gold_form(raw: str) -> list[str]:
@@ -395,6 +426,12 @@ def parse_gold_form(raw: str) -> list[str]:
     text = raw.split(_COMMENT_SPLIT)[0]
     text = _PAREN_PATTERN.sub("", text)
     text = _TRAILING_GLOSS.sub("", text)
+    # ``*sV: sẹ`` kalıbı: soldaki arşifonemli biçim ve sağdaki somut biçim
+    # AYNI rekonstrüksiyonun iki gösterimidir. İkisi de aday sayılır; yoksa
+    # ``: `` iki nokta uzunluk kuralına takılıp ``*sV̄ sẹ`` gibi çöp üretir.
+    concrete = _CONCRETE_AFTER_COLON.match(text)
+    if concrete:
+        text = f"{concrete.group(1)} / {concrete.group(2)}"
     text = _COLON_LENGTH.sub(lambda m: m.group(1) + "̄", text)
     text = unicodedata.normalize("NFC", text).strip()
 

@@ -5,7 +5,7 @@ düzenlemeyin. Her sayı, adı geçen veri kümesi sürümünden sıfırdan
 hesaplanır.
 
 - **Veri kümesi:** `savelyevturkic` `v2.1` (commit `4a540590580f`)
-- **Ölçüm:** 2026-08-27T00:04:25+00:00
+- **Ölçüm:** 2026-08-27T00:28:01+00:00
 - **Bölüm:** `all`
 - **Altın standart:** 400 madde · train 237 / dev 83 / test 80
 - **Kavram sızıntısı:** 0 (0 olmalı)
@@ -17,11 +17,11 @@ hesaplanır.
 
 | Sistem | tam | kabul edilebilir | ED | NED | FER | kapsam |
 |---|---|---|---|---|---|---|
-| **comparative** | 0.092 | 0.193 | 1.71 | 0.340 | 0.438 | 0.733 |
-| copy_anchor | 0.120 | 0.210 | 2.52 | 0.490 | 0.436 | 1.000 |
-| copy_random_daughter | 0.060 | 0.122 | 3.02 | 0.567 | 0.510 | 1.000 |
-| copy_longest | 0.040 | 0.068 | 4.05 | 0.624 | 0.608 | 1.000 |
-| majority_character | 0.077 | 0.168 | 2.77 | 0.520 | 0.462 | 1.000 |
+| **comparative** | 0.223 | 0.300 | 1.80 | 0.348 | 0.358 | 0.930 |
+| copy_anchor | 0.203 | 0.268 | 2.13 | 0.417 | 0.392 | 1.000 |
+| copy_random_daughter | 0.168 | 0.242 | 2.29 | 0.453 | 0.414 | 1.000 |
+| copy_longest | 0.100 | 0.147 | 3.04 | 0.552 | 0.541 | 1.000 |
+| majority_character | 0.237 | 0.330 | 1.94 | 0.382 | 0.363 | 1.000 |
 
 ## `tum_veri_capa_dahil` — n=400
 
@@ -29,11 +29,11 @@ hesaplanır.
 
 | Sistem | tam | kabul edilebilir | ED | NED | FER | kapsam |
 |---|---|---|---|---|---|---|
-| **comparative** | 0.128 | 0.255 | 2.34 | 0.461 | 0.431 | 0.998 |
-| copy_anchor | 0.120 | 0.210 | 2.52 | 0.490 | 0.436 | 1.000 |
-| copy_random_daughter | 0.077 | 0.158 | 2.81 | 0.536 | 0.479 | 1.000 |
-| copy_longest | 0.033 | 0.068 | 4.12 | 0.631 | 0.613 | 1.000 |
-| majority_character | 0.113 | 0.225 | 2.59 | 0.497 | 0.437 | 1.000 |
+| **comparative** | 0.242 | 0.328 | 1.88 | 0.367 | 0.351 | 0.995 |
+| copy_anchor | 0.203 | 0.268 | 2.13 | 0.417 | 0.392 | 1.000 |
+| copy_random_daughter | 0.158 | 0.233 | 2.30 | 0.457 | 0.422 | 1.000 |
+| copy_longest | 0.080 | 0.133 | 3.11 | 0.560 | 0.550 | 1.000 |
+| majority_character | 0.223 | 0.307 | 2.02 | 0.395 | 0.368 | 1.000 |
 
 ## `15_tanik_capa_haric` — n=158
 
@@ -41,11 +41,11 @@ hesaplanır.
 
 | Sistem | tam | kabul edilebilir | ED | NED | FER | kapsam |
 |---|---|---|---|---|---|---|
-| **comparative** | 0.158 | 0.329 | 1.85 | 0.429 | 0.402 | 0.994 |
-| copy_anchor | 0.177 | 0.304 | 1.93 | 0.432 | 0.376 | 1.000 |
-| copy_random_daughter | 0.051 | 0.127 | 2.84 | 0.590 | 0.528 | 1.000 |
-| copy_longest | 0.019 | 0.032 | 4.75 | 0.697 | 0.712 | 1.000 |
-| majority_character | 0.101 | 0.240 | 2.38 | 0.499 | 0.425 | 1.000 |
+| **comparative** | 0.297 | 0.437 | 1.43 | 0.329 | 0.328 | 1.000 |
+| copy_anchor | 0.260 | 0.335 | 1.62 | 0.365 | 0.351 | 1.000 |
+| copy_random_daughter | 0.165 | 0.272 | 1.97 | 0.446 | 0.399 | 1.000 |
+| copy_longest | 0.038 | 0.089 | 3.35 | 0.632 | 0.650 | 1.000 |
+| majority_character | 0.285 | 0.418 | 1.49 | 0.340 | 0.330 | 1.000 |
 
 ## `15_tanik_capa_dahil` — n=158
 
@@ -53,16 +53,16 @@ hesaplanır.
 
 | Sistem | tam | kabul edilebilir | ED | NED | FER | kapsam |
 |---|---|---|---|---|---|---|
-| **comparative** | 0.183 | 0.373 | 1.80 | 0.409 | 0.392 | 1.000 |
-| copy_anchor | 0.177 | 0.304 | 1.93 | 0.432 | 0.376 | 1.000 |
-| copy_random_daughter | 0.114 | 0.209 | 2.50 | 0.532 | 0.473 | 1.000 |
-| copy_longest | 0.019 | 0.038 | 4.67 | 0.684 | 0.705 | 1.000 |
-| majority_character | 0.171 | 0.348 | 2.16 | 0.451 | 0.388 | 1.000 |
+| **comparative** | 0.297 | 0.437 | 1.42 | 0.327 | 0.325 | 1.000 |
+| copy_anchor | 0.260 | 0.335 | 1.62 | 0.365 | 0.351 | 1.000 |
+| copy_random_daughter | 0.158 | 0.266 | 1.99 | 0.460 | 0.418 | 1.000 |
+| copy_longest | 0.038 | 0.089 | 3.34 | 0.628 | 0.652 | 1.000 |
+| majority_character | 0.285 | 0.418 | 1.49 | 0.341 | 0.330 | 1.000 |
 
 ## Yorum
 
-Dürüst koşulda motor **%9.2 tam** (%19.2 kabul edilebilir) alıyor.
+Dürüst koşulda motor **%22.2 tam** (%30.0 kabul edilebilir) alıyor.
 
-Aynı motor, kolay altküme seçilip çapa sızıntısı bırakıldığında **%18.4 tam** (%37.3) gösteriyor. Aradaki fark yöntemden değil, ölçüm kurgusundan geliyor — bu yüzden raporlanan sayı daima dürüst koşulun sayısıdır.
+Aynı motor, kolay altküme seçilip çapa sızıntısı bırakıldığında **%29.8 tam** (%43.7) gösteriyor. Aradaki fark yöntemden değil, ölçüm kurgusundan geliyor — bu yüzden raporlanan sayı daima dürüst koşulun sayısıdır.
 
-Motorun aşması gereken çıta, en iyi trivial taban çizgisidir: `copy_anchor` %12.0, `copy_random_daughter` %6.0, `copy_longest` %4.0, `majority_character` %7.8.
+Motorun aşması gereken çıta, en iyi trivial taban çizgisidir: `copy_anchor` %20.2, `copy_random_daughter` %16.8, `copy_longest` %10.0, `majority_character` %23.8.

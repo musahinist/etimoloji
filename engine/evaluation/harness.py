@@ -108,18 +108,34 @@ def _witnesses_for(item: GoldItem, mapping: dict[str, str]) -> list[Witness]:
     return out
 
 
-def _anchor_for(witnesses: list[Witness]) -> str:
-    """Sorgu (çapa) biçimi seçer.
+def _anchor_for(witnesses: list[Witness]) -> tuple[str, str]:
+    """Sorgu (çapa) biçmini ve **dilini** seçer.
 
     Gerçek kullanımda kullanıcı Türkçe bir kelime yazar. Altın maddede Türkçe
     tanık varsa o kullanılır; yoksa en çok konuşulan modern dilden biri.
     Çapa **tanıkların içinden** gelir — altın cevaptan değil.
+
+    :returns: ``(biçim, dil_kodu)``. Dil kodu döndürülmesi şart: çapayı
+        girdiden çıkarırken **dile** göre çıkarmak gerekir. Kelimeye göre
+        çıkarmak, aynı biçmi paylaşan bütün dilleri birden siler — Türki
+        dillerde ``tïrnaḳ`` gibi biçimler on dilde birden aynıdır, ve bu
+        tanık sayısını sıfıra düşürüp motoru haksız yere çekimser bırakır.
     """
-    by_code = {w["lang_code"]: w["word"] for w in witnesses}
+    from engine.utils.orthography import to_comparison_form
+
+    # Normalize edilince boş kalan biçim çapa olamaz: rekonstrüksiyon hiç
+    # başlamaz ve madde haksız yere çekimser sayılır.
+    by_code = {
+        w["lang_code"]: w["word"]
+        for w in witnesses
+        if w.get("word") and to_comparison_form(w["word"])
+    }
     for preferred in ("tr", "az", "tk", "gag", "kk", "ky", "tt", "uz", "ug"):
         if preferred in by_code:
-            return by_code[preferred]
-    return next(iter(by_code.values()), "")
+            return by_code[preferred], preferred
+    for code, form in by_code.items():
+        return form, code
+    return "", ""
 
 
 def run(
@@ -146,13 +162,13 @@ def run(
 
     for item in items:
         witnesses = _witnesses_for(item, mapping)
-        anchor = _anchor_for(witnesses)
+        anchor, anchor_lang = _anchor_for(witnesses)
         if not anchor:
             abstentions += 1
             result.error_modes["esleyen_dil_yok"] += 1
             continue
         if exclude_anchor_language:
-            witnesses = [w for w in witnesses if w["word"] != anchor]
+            witnesses = [w for w in witnesses if w["lang_code"] != anchor_lang]
         witness_counts.append(len(witnesses))
 
         try:

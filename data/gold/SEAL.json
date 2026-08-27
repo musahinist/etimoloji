@@ -11,13 +11,13 @@
   "counts": {
     "train": 237,
     "dev": 83,
-    "test": 79
+    "test": 80
   },
   "checksums": {
-    "train": "316cae8e432a5f5f51e2ae81f482e2ee904e328f4d15d33a48cb90b527690ab8",
-    "dev": "bf4fa40a885fe3cd6fd4de172beff7f0c84ba331ad0f032212db4ad378e75bf7",
-    "test": "0fc6f199e63e03838e7db0335ae640ebe55b4fe2a6b4d2f1ae817f1d4dc84bd4"
+    "train": "1c553edc9b509808820b84719b2fcd422268c91e89d9adc5f1bbb56b44eb861d",
+    "dev": "45ed6ffbdb05b2e90aa3a318aeeb780d7104b56b5f648f9b70279f5ccce793bd",
+    "test": "1557369cbf30678e1b71dc2e600627b36d6f42fbeb89dc66a7c541f26982cef6"
   },
-  "sealed_at": "2026-08-26T23:54:22+00:00",
+  "sealed_at": "2026-08-27T00:27:59+00:00",
   "note": "test.frozen.json geliştirme boyunca açılmaz. Checksum değişmişse ya veri kümesi sürümü ya bölme tuzu değişmiştir; her iki durumda da önceki ölçümler karşılaştırılabilir değildir."
 }

@@ -1,0 +1,401 @@
+"""
+Ata ses seçimi — karşılaştırmalı yöntemin karar katmanı.
+
+Bir hizalama sütunundaki seslerden ata sesi seçer. Önceki uygulamanın üç
+ölçülmüş kusuru vardı:
+
+1. **Denklikler aşırı ateşleniyordu.** ``{d, y, z, t, r} -> *d̮`` kuralı,
+   sütunda bu beş sesten *herhangi ikisi* bulunduğunda devreye giriyordu.
+   ``t`` ile ``r`` sıradan kelimelerde sürekli yan yana gelir; sonuç
+   ``*arka -> *arca``, ``*toprak -> *tobrau`` gibi bozulmalardı. Artık kural
+   yalnız sütundaki **bütün sesleri açıklıyorsa** uygulanır.
+
+2. **Tanıklar eşit ağırlıktaydı.** Karşılaştırmalı yöntemde arkaik tanık
+   ağır basar: Çuvaşça ``-r`` görüyorsa ötekiler ne derse desin ata ses
+   ``*ŕ``tir. Oysa çoğunluk oyu Çuvaşça'yı 30 dile karşı 1 sayıyordu.
+
+3. **Ünlüler için hiç kural yoktu** — düz çoğunluk oyu ``*bil -> *bel``,
+   ``*kül -> *kul`` gibi bozulmalar üretiyordu.
+
+Karar sırası artık şudur::
+
+    1. Oğur tanıklı tanısal denklik   (rotasizm / lambdaizm)  -- kesin
+    2. Sütunu tam açıklayan denklik   (söz başı ötümlüleşme…)
+    3. Arkaiklik ağırlıklı oy          (Halaçça/Çuvaşça/Eski Türkçe ağır)
+    4. Düz çoğunluk                    (son çare)
+"""
+
+from __future__ import annotations
+
+from collections import defaultdict
+from dataclasses import dataclass
+
+from engine.nlp.multi_alignment import AlignedColumn
+
+#: Oğur (Bulgar) kolu. Lir-Şaz ayrımının **tanısal** tanığıdır: rotasizm ve
+#: lambdaizm ancak bu kol görüldüğünde türetilebilir. Yoksa ata biçim
+#: Proto-Türkçe değil Ana Ortak Türkçe düzeyindedir.
+OGHUR_CODES = frozenset({"cv"})
+
+#: Arkaiklik ağırlıkları — bir tanığın oyunun kaç sayılacağı.
+#:
+#: Gerekçe, her dil için ayrı bir Türkoloji yerleşiğidir:
+#:
+#: * ``cv``  Oğur kolu; *ŕ/*ĺ ayrımının tek tanığı
+#: * ``klj`` Halaçça (Arguca); ünlü uzunluğunu ve söz başı *h-'yi korur (Doerfer)
+#: * ``otk`` Eski Türkçe; 8.-11. yy'da TANIKLANMIŞ, rekonstrüksiyon değil
+#: * ``sah``/``dlg`` Yakutça-Dolganca; ünlü uzunluğunu korur
+#: * ``tk``  Türkmence; ünlü uzunluğunu korur
+#: * ``tr``/``az`` Oğuz kolu; söz başı ötümlüleşme YENİLİĞİNİ yapmıştır,
+#:   bu yüzden söz başı kararında en az güvenilir tanıktır
+ARCHAISM_WEIGHTS: dict[str, float] = {
+    "cv": 3.0,
+    "klj": 2.5,
+    "otk": 2.5,
+    "sah": 2.0,
+    "dlg": 1.8,
+    "tk": 1.6,
+    "kim": 1.5,
+    "tyv": 1.4,
+    "ybe": 1.4,
+    "clw": 1.3,
+    "qwm": 1.3,
+    "chg": 1.3,
+    "ota": 1.2,
+    "khk": 1.1,
+    "cjs": 1.1,
+    "alt": 1.1,
+    "atv": 1.0,
+    "kdr": 1.0,
+    "bay": 1.0,
+    "slq": 1.0,
+    "ky": 1.0,
+    "kk": 1.0,
+    "kaa": 1.0,
+    "nog": 1.0,
+    "kum": 1.0,
+    "krc": 1.0,
+    "crh": 1.0,
+    "tt": 1.0,
+    "ba": 1.0,
+    "uz": 0.9,
+    "ug": 0.9,
+    "gag": 0.8,
+    "az": 0.7,
+    "tr": 0.7,
+}
+
+DEFAULT_WEIGHT = 1.0
+
+#: Ünlüler için AYRI ağırlıklar.
+#:
+#: ⚠️ Çuvaşça ünsüzlerde en arkaik tanıktır ama **ünlülerde değildir**:
+#: Oğur kolu kapsamlı bir ünlü kaymasından geçmiştir (*ö > u, *e > ĭ …).
+#: Tek bir ağırlık tablosu kullanmak ``*köŕ`` yerine ``*kuŕ`` üretiyordu —
+#: Çuvaşça'nın ``u``su, dört dilin ``ö``südüne karşı 3,0 ağırlıkla kazanıyordu.
+#:
+#: Ünlülerde ağır basan tanıklar uzunluğu ve nitelik ayrımını koruyanlardır:
+#: Halaçça, Türkmence, Yakutça-Dolganca ve tanıklanmış Eski Türkçe.
+VOWEL_ARCHAISM_WEIGHTS: dict[str, float] = {
+    "cv": 0.5,  # ünsüzde 3,0 — ünlüde en güvenilmez tanık
+    "klj": 3.0,
+    "otk": 2.5,
+    "tk": 2.2,
+    "sah": 2.0,
+    "dlg": 1.8,
+    "kim": 1.5,
+    "tyv": 1.4,
+    "ybe": 1.2,
+    "clw": 1.2,
+    "qwm": 1.2,
+    "chg": 1.2,
+    "ota": 1.1,
+    "uz": 0.8,  # Özbekçe ünlü sistemi yeniden düzenlenmiştir
+}
+
+#: Ünlü sesler — ağırlık tablosu seçimi buna göre yapılır.
+VOWELS = frozenset("aeıioöuüâîûēīūōā")
+
+
+def weight_for(lang: str, sound: str) -> float:
+    """Bir tanığın belirli bir seste kaç oy sayılacağı.
+
+    Arkaiklik sese göre değişir: Çuvaşça ünsüzde belirleyici, ünlüde
+    güvenilmezdir. Tek tablo kullanmak ölçülen bir hata kaynağıydı.
+    """
+    if sound in VOWELS:
+        return VOWEL_ARCHAISM_WEIGHTS.get(lang, ARCHAISM_WEIGHTS.get(lang, DEFAULT_WEIGHT))
+    return ARCHAISM_WEIGHTS.get(lang, DEFAULT_WEIGHT)
+
+
+@dataclass(frozen=True)
+class DiagnosticRule:
+    """Oğur tanığına dayanan tanısal denklik.
+
+    ``oghur_sounds`` Oğur kolunda, ``common_sounds`` Ortak Türkçe kolunda
+    görülürse ata ses kesindir. Bu, Lir-Şaz ayrımının tanımıdır.
+    """
+
+    oghur_sounds: frozenset[str]
+    common_sounds: frozenset[str]
+    proto: str
+    note: str
+    #: Kuralın geçerli olduğu konumlar.
+    #:
+    #: ⚠️ Rotasizm ve lambdaizm **söz başında yoktur**. Çuvaşça ``ś-`` ~ Ortak
+    #: Türkçe ``j-`` denkliği söz başında ``*j-`` demektir, ``*ŕ-`` değil.
+    #: Konum kısıtı olmadan ``*jan`` yerine ``*ŕan``, ``*jaŋï`` yerine
+    #: ``*ŕaŋı`` üretiliyordu — ölçümde 11 kelimede bu hata vardı.
+    positions: frozenset[str] = frozenset({"medial", "final"})
+
+
+#: Lir-Şaz tanısal denklikleri. Bunlar "kural" değil, **tanım**dır: Çuvaşça
+#: ``-r`` ~ Ortak Türkçe ``-z`` denkliği Proto-Türkçe ``*-ŕ`` demektir.
+DIAGNOSTIC_RULES: tuple[DiagnosticRule, ...] = (
+    DiagnosticRule(
+        frozenset({"r"}),
+        frozenset({"z"}),
+        "ŕ",
+        "Lir-Şaz rotasizmi: Çuvaşça -r ~ Ortak Türkçe -z < Proto-Türkçe *-ŕ",
+    ),
+    DiagnosticRule(
+        frozenset({"s", "ś"}),
+        frozenset({"z"}),
+        "ŕ",
+        "Çuvaşça -ś (< -r) ~ Ortak Türkçe -z < Proto-Türkçe *-ŕ",
+    ),
+    DiagnosticRule(
+        frozenset({"l"}),
+        frozenset({"ş"}),
+        "ĺ",
+        "Lambdaizm: Çuvaşça -l ~ Ortak Türkçe -ş < Proto-Türkçe *-ĺ",
+    ),
+    DiagnosticRule(
+        frozenset({"l"}),
+        frozenset({"s", "ş"}),
+        "ĺ",
+        "Çuvaşça -l ~ Ortak Türkçe -s/-ş < Proto-Türkçe *-ĺ",
+    ),
+)
+
+
+@dataclass(frozen=True)
+class Correspondence:
+    """Konuma bağlı ses denkliği.
+
+    ``members`` sütundaki **bütün** sesleri kapsamalıdır; kısmi örtüşmede
+    kural uygulanmaz. Bu kısıt olmadan ``{d,y,z,t,r}`` gibi geniş kümeler
+    sıradan kelimeleri bozar.
+    """
+
+    members: frozenset[str]
+    proto: str
+    note: str
+    position: str
+    #: Kuralın ateşlenmesi için sütunda bulunması ZORUNLU seslerden en az biri.
+    #: Boşsa kısıt yoktur.
+    #:
+    #: ⚠️ Bu alan olmadan geniş kümeler yanlış ateşleniyordu: ``*sub``ın söz
+    #: başı sütunu ``{s, ş}`` iken ``{y,c,j,ç,ş,s} -> *j-`` kuralı devreye
+    #: girip ``*jub`` üretiyordu. Oysa Çuvaşça ``ş-`` burada ``*s-``in düzenli
+    #: refleksidir; ``*j-`` demek için sütunda gerçekten bir ``y/c/j`` olmalı.
+    core: frozenset[str] = frozenset()
+
+
+#: Yerleşik Proto-Türkçe denklikleri.
+CORRESPONDENCES: tuple[Correspondence, ...] = (
+    # --- Söz başı ---
+    # Oğuz kolu söz başı ötümsüzleri ötümlüleştirdi; ata biçim ötümsüzdür.
+    Correspondence(
+        frozenset({"d", "t"}),
+        "t",
+        "Söz başı ötümlüleşme: Oğuz d- ~ diğer t- < Proto-Türkçe *t-",
+        "initial",
+    ),
+    Correspondence(
+        frozenset({"g", "k"}),
+        "k",
+        "Söz başı ötümlüleşme: Oğuz g- ~ diğer k- < Proto-Türkçe *k-",
+        "initial",
+    ),
+    Correspondence(
+        frozenset({"g", "k", "h"}),
+        "k",
+        "Söz başı k- ~ g- ~ h- < Proto-Türkçe *k-",
+        "initial",
+    ),
+    Correspondence(
+        frozenset({"y", "c", "j", "ç", "ş", "s"}),
+        "j",
+        "Söz başı akıcı: y- ~ c- ~ j- ~ ç- ~ ş- < Proto-Türkçe *j-",
+        "initial",
+        core=frozenset({"y", "c", "j"}),
+    ),
+    Correspondence(
+        frozenset({"y", "c", "j"}),
+        "j",
+        "Söz başı akıcı: y- ~ c- ~ j- < Proto-Türkçe *j-",
+        "initial",
+    ),
+    Correspondence(
+        frozenset({"b", "m"}),
+        "b",
+        "Genizsilleşme: b- ~ m- < Proto-Türkçe *b-",
+        "initial",
+    ),
+    Correspondence(
+        frozenset({"b", "p"}),
+        "b",
+        "Söz başı b- ~ p- < Proto-Türkçe *b-",
+        "initial",
+    ),
+    # --- Söz sonu / her yer ---
+    Correspondence(
+        frozenset({"z", "r"}),
+        "ŕ",
+        "Ortak Türkçe -z ~ -r < Proto-Türkçe *-ŕ",
+        "final",
+    ),
+    Correspondence(
+        frozenset({"ş", "l"}),
+        "ĺ",
+        "Ortak Türkçe -ş ~ -l < Proto-Türkçe *-ĺ",
+        "final",
+    ),
+    Correspondence(
+        frozenset({"n", "ŋ"}),
+        "ŋ",
+        "Genizsil denkliği: -n- ~ -ŋ- < Proto-Türkçe *-ŋ-",
+        "any",
+    ),
+    Correspondence(
+        frozenset({"b", "v", "w"}),
+        "b",
+        "Ünsüz yumuşaması: b ~ v ~ w < Proto-Türkçe *b",
+        "any",
+    ),
+    Correspondence(
+        frozenset({"g", "ğ"}),
+        "g",
+        "Ünlü arası yumuşama: g ~ ğ < Proto-Türkçe *g",
+        "any",
+    ),
+    Correspondence(
+        frozenset({"k", "g", "ğ"}),
+        "g",
+        "Ünlü arası ötümlüleşme: k ~ g ~ ğ < Proto-Türkçe *g",
+        "medial",
+    ),
+    # ⚠️ ``*d̮`` denkliğinin TANISAL sesleri ``y`` ve ``z``dir. Bunlar sütunda
+    # yoksa ortada yalnız ötümlülük değişimi vardır ve ata ses ``*t``tir.
+    # ``core`` kısıtı olmadan ``{d, t}`` sütunu da ``*d`` veriyordu:
+    # ``*jumurtka`` yerine ``*yumurdka`` üretiliyordu.
+    Correspondence(
+        frozenset({"d", "y", "z"}),
+        "d",
+        "Klasik *d̮ denkliği: d ~ y ~ z",
+        "medial",
+        core=frozenset({"y", "z"}),
+    ),
+    Correspondence(
+        frozenset({"d", "y", "z", "t"}),
+        "d",
+        "Klasik *d̮ denkliği: d ~ y ~ z ~ t",
+        "medial",
+        core=frozenset({"y", "z"}),
+    ),
+    Correspondence(
+        frozenset({"d", "y"}),
+        "d",
+        "*d̮ denkliği: d ~ y",
+        "medial",
+        core=frozenset({"y"}),
+    ),
+    # Söz içi ötümlülük değişimi: tanısal ses yoksa ata ses ÖTÜMSÜZDÜR.
+    Correspondence(
+        frozenset({"d", "t"}),
+        "t",
+        "Söz içi ötümlüleşme: -d- ~ -t- < Proto-Türkçe *-t-",
+        "medial",
+    ),
+    Correspondence(
+        frozenset({"b", "p"}),
+        "p",
+        "Söz içi ötümlüleşme: -b- ~ -p- < Proto-Türkçe *-p-",
+        "medial",
+    ),
+)
+
+
+@dataclass
+class ColumnDecision:
+    """Bir sütun için verilen karar ve gerekçesi."""
+
+    sound: str
+    note: str | None
+    method: str
+    agreement: float
+    is_diagnostic: bool = False
+
+
+def _weighted_counts(column: AlignedColumn) -> dict[str, float]:
+    counts: dict[str, float] = defaultdict(float)
+    for lang, sound in column.present.items():
+        counts[sound] += weight_for(lang, sound)
+    return dict(counts)
+
+
+def _agreement(column: AlignedColumn) -> float:
+    """Sütunun ne kadar hemfikir olduğu — güven skorunun asıl sinyali."""
+    present = column.present
+    if not present:
+        return 0.0
+    counts = _weighted_counts(column)
+    total = sum(counts.values())
+    return max(counts.values()) / total if total else 0.0
+
+
+def pick_proto_sound(column: AlignedColumn, position: str) -> ColumnDecision:
+    """Bir sütundan ata sesi seçer.
+
+    :param position: ``"initial"`` | ``"medial"`` | ``"final"``
+    """
+    present = column.present
+    agreement = _agreement(column)
+    if not present:
+        return ColumnDecision("", None, "bos", 0.0)
+
+    distinct = column.distinct
+    if len(distinct) == 1:
+        return ColumnDecision(next(iter(distinct)), None, "tek_ses", 1.0)
+
+    # 1 — Oğur tanıklı tanısal denklik. Kesindir, önceliklidir.
+    oghur_sounds = {s for lang, s in present.items() if lang in OGHUR_CODES}
+    if oghur_sounds:
+        common_sounds = {s for lang, s in present.items() if lang not in OGHUR_CODES}
+        for rule in DIAGNOSTIC_RULES:
+            if position not in rule.positions:
+                continue
+            if oghur_sounds & rule.oghur_sounds and common_sounds & rule.common_sounds:
+                return ColumnDecision(rule.proto, rule.note, "tanisal", agreement, True)
+
+    # 2 — Sütundaki BÜTÜN sesleri açıklayan denklik.
+    best: Correspondence | None = None
+    for rule in CORRESPONDENCES:
+        if rule.position not in ("any", position):
+            continue
+        if not distinct <= rule.members:
+            continue  # kısmi örtüşme yeterli DEĞİL
+        if rule.core and not (distinct & rule.core):
+            continue  # kuralın çekirdek sesi sütunda yok
+        # En dar kural tercih edilir: geniş kümeler yanlış ateşlenmeye yatkındır.
+        if best is None or len(rule.members) < len(best.members):
+            best = rule
+    if best is not None:
+        return ColumnDecision(best.proto, best.note, "denklik", agreement)
+
+    # 3 — Arkaiklik ağırlıklı oy.
+    counts = _weighted_counts(column)
+    winner = max(sorted(counts), key=lambda s: counts[s])
+    method = "arkaik_agirlik" if len(set(counts.values())) > 1 else "cogunluk"
+    return ColumnDecision(winner, None, method, agreement)
