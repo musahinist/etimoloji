@@ -539,7 +539,9 @@ def reconstruction_bcubed(pairs: Sequence[tuple[str, str]]) -> dict[str, float]:
         gold = normalize_proto(raw_gold)
         if not prediction or not gold:
             continue
-        columns = align_forms({"pred": prediction, "gold": gold})
+        # ⚠️ ``trim=False`` ŞART: budama bir tarafta boşluk olan sütunları
+        # atar, yani tam da ölçmek istediğimiz uyuşmazlıkları siler.
+        columns = align_forms({"pred": prediction, "gold": gold}, trim=False)
         for column in columns:
             sounds = column.sounds
             left = sounds.get("pred", GAP) or GAP

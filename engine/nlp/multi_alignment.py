@@ -188,8 +188,63 @@ def _center_star(forms: dict[str, str]) -> dict[str, list[str]]:
     return positions
 
 
-def align_forms(forms: dict[str, str]) -> list[AlignedColumn]:
+#: Boşluk-yönelimli hizalama budaması açık mı? (Faz D4)
+#:
+#: Blum & List (2023, ``lingrex.trimming``) budamanın 10 ailenin 10'unda
+#: düzenli denklik oranını artırdığını ölçüyor (+0,03…+0,07).
+#: ⚠️ Rekonstrüksiyon **doğruluğuna** etkisi yayınlanmamıştır; bizim
+#: ölçümümüz aşağıdaki sabitte.
+TRIM_ALIGNMENTS = True
+
+#: Budama eşiği: bu orandan çok boşluk içeren sütunlar budama adayıdır.
+TRIM_THRESHOLD = 0.5
+
+
+def _trim(rows: dict[str, list[str]]) -> dict[str, list[str]]:
+    """Boşluk-yönelimli hizalama budaması (Blum & List 2023).
+
+    Tek bir dilin kendi eklemesi olan sütunlar hizalamayı genişletir ve
+    ata biçme yanlış konum ekler. ``lingrex`` bunları CV iskeletini bozmadan
+    budar.
+
+    ⚠️ ``lingrex`` yoksa veya budama satırları eşitsiz bırakırsa **hiçbir
+    şey yapılmaz**: yarı budanmış bir hizalama, budanmamıştan kötüdür.
+    """
+    if not TRIM_ALIGNMENTS or len(rows) < 2:
+        return rows
+    try:
+        from lingrex.trimming import Sites
+    except ImportError:
+        return rows
+    langs = sorted(rows)
+    try:
+        sites = Sites([rows[lang] for lang in langs], gap=GAP)
+        trimmed = sites.trimmed(threshold=TRIM_THRESHOLD, strategy="gap-oriented")
+        matrix = trimmed.to_alignment()
+    except Exception:
+        logger.debug("Hizalama budaması başarısız; budanmamış hizalama kullanılıyor",
+                     exc_info=True)
+        return rows
+    if len(matrix) != len(langs) or not matrix[0]:
+        return rows
+    widths = {len(row) for row in matrix}
+    if len(widths) != 1:
+        return rows
+    return {lang: list(matrix[i]) for i, lang in enumerate(langs)}
+
+
+def align_forms(forms: dict[str, str], *, trim: bool = True) -> list[AlignedColumn]:
     """``dil_kodu -> biçim`` eşlemesini sütunlara ayırır.
+
+    :param trim: boşluk-yönelimli budama uygulansın mı? (Faz D4)
+
+        ⚠️ **Ölçüm hizalamalarında ``False`` OLMALIDIR.** Budama, bir
+        tarafta boşluk olan sütunları atar; ``metrics.reconstruction_bcubed``
+        tahmin ile altını hizalarken bunu yaparsa **uyuşmazlıkları
+        siler** ve skor yapay olarak şişer. Ölçüldü: budama metrik yoluna
+        sızdığında bütün sistemlerin B-Cubed F'si birden yükseldi
+        (``majority_character`` 0,571 -> 0,696) — tahminleri hiç
+        değişmemiş olmasına rağmen.
 
     :returns: hizalamanın sütunları; uzunluk **en uzun tanığa göre** belirlenir,
         çapa kelimeye göre değil.
@@ -234,6 +289,9 @@ def align_forms(forms: dict[str, str]) -> list[AlignedColumn]:
         rows = _center_star(usable)
     if not rows:
         return []
+
+    if trim:
+        rows = _trim(rows)
 
     width = max(len(r) for r in rows.values())
     columns: list[AlignedColumn] = []

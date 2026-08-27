@@ -343,3 +343,55 @@ class TestPlausibilityGuard(unittest.TestCase):
         from engine.nlp.proto_phonology import proto_plausibility
 
         self.assertEqual(proto_plausibility("")[0], 0.0)
+
+
+class TestAlignmentTrimming(unittest.TestCase):
+    """Boşluk-yönelimli hizalama budaması (Faz D4, Blum & List 2023).
+
+    Ölçüldü (dev, n=83): tam 0,3614 -> 0,3855 · NED 0,3063 -> 0,3020 ·
+    ED 1,482 -> 1,446.
+    """
+
+    def test_trimming_is_on_by_default(self):
+        from engine.nlp.multi_alignment import TRIM_ALIGNMENTS
+
+        self.assertTrue(TRIM_ALIGNMENTS)
+
+    def test_trimming_can_be_switched_off_per_call(self):
+        from engine.nlp.multi_alignment import align_forms
+
+        forms = {"tr": "su", "otk": "sub", "tk": "suv", "kk": "suw"}
+        self.assertGreaterEqual(
+            len(align_forms(forms, trim=False)), len(align_forms(forms, trim=True))
+        )
+
+    def test_trimming_keeps_rows_the_same_width(self):
+        """⚠️ Yarı budanmış bir hizalama, budanmamıştan kötüdür."""
+        from engine.nlp.multi_alignment import align_forms
+
+        columns = align_forms({"tr": "göz", "kk": "köz", "cv": "kuś", "sah": "härax"})
+        widths = {len(c.sounds) for c in columns}
+        self.assertEqual(len(widths), 1)
+
+    def test_metric_alignment_must_not_trim(self):
+        """⚠️ Budama bir tarafta boşluk olan sütunları atar — yani tam da
+        ölçmek istediğimiz uyuşmazlıkları siler.
+
+        Regresyon: budama metrik yoluna sızdığında BÜTÜN sistemlerin
+        B-Cubed F'si birden yükseldi (`majority_character` 0,571 -> 0,696)
+        — tahminleri hiç değişmemiş olmasına rağmen.
+        """
+        import inspect
+
+        from engine.evaluation import metrics
+
+        source = inspect.getsource(metrics.reconstruction_bcubed)
+        self.assertIn("trim=False", source)
+
+    def test_borrowing_chain_alignment_must_not_trim(self):
+        """Orada iki biçmin FARKLARI sayılıyor; budama onları silerdi."""
+        import inspect
+
+        from engine.nlp import borrowing_chain
+
+        self.assertIn("trim=False", inspect.getsource(borrowing_chain))

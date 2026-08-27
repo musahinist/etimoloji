@@ -351,7 +351,9 @@ class AdaptationRuleLearner:
         if len(source) < 2 or len(target) < 2:
             return False
 
-        columns = align_forms({"src": source, "tgt": target})
+        # ⚠️ ``trim=False``: burada iki biçmin FARKLARI sayılıyor; budama
+        # bir tarafta boşluk olan sütunları atarak tam o farkları silerdi.
+        columns = align_forms({"src": source, "tgt": target}, trim=False)
         if not columns:
             return False
 

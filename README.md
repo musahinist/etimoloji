@@ -44,15 +44,21 @@ veride ölçmek eğitim maddelerini ölçüme sokar ve raporlanan sayı motorun
 performansı değil **ezberi** olur. `engine.evaluation.report` bu durumu
 kendi tespit edip uyarı basıyor ve künyeye yazıyor.
 
-| Sistem | **NED**↓ | **BCFS**↑ | ED↓ | tam | kapsam |
-|---|---|---|---|---|---|
-| **motor** | **0,306** | **0,583** | **1,48** | **0,361** | — |
-| `majority_character` (trivial) | 0,341 | 0,571 | 1,60 | 0,325 | 1,000 |
+| Sistem | **NED**↓ | **BCFS**↑ | ED↓ | tam |
+|---|---|---|---|---|
+| **motor** | **0,302** | **0,595** | **1,45** | **0,386** |
+| `majority_character` (trivial) | 0,341 | 0,571 | 1,60 | 0,325 |
+| `copy_anchor` (hiçbir şey yapma) | 0,392 | 0,643 | 1,88 | 0,217 |
+| `copy_random_daughter` | 0,403 | 0,628 | 1,86 | 0,229 |
+| `copy_longest` | 0,502 | 0,564 | 2,58 | 0,145 |
 
-Birincil metrikte fark **−0,0345** (motor lehine), %95 GA [−0,0707,
-+0,0016] → **anlamlı DEĞİL**; aralık sıfırı kılpayı içeriyor. n=83'te daha
+Birincil metrikte fark **−0,0387** (motor lehine), %95 GA [−0,0786,
++0,0017] → **anlamlı DEĞİL**; aralık sıfırı kılpayı içeriyor. n=83'te daha
 fazlası gösterilemiyor. `test` bölümü **dondurulmuş** durumda ve Faz D
 bitene kadar açılmayacak.
+
+Tur başında (denetimli katman ve budama yokken) aynı bölümde motor NED
+0,334 · tam 0,337 alıyordu.
 
 #### Denetimli katman: örüntüden ata ses (Faz D2)
 
@@ -113,6 +119,34 @@ puan, kelime düzeyinde 0,324 → 0,257). Sütun düzeyi ölçümü (dev, n=206)
 ⚠️ Tablo yalnız 135 kümeden öğrenilebildi: hizalama genişliği ata biçim
 uzunluğuyla tutmayan kümeler atlanıyor. Yanlış hizalanmış bir sütundan
 öğrenmek, hiç öğrenmemekten kötüdür.
+
+#### Hizalama budaması (Faz D4)
+
+Blum & List 2023 (`lingrex.trimming`) boşluk-yönelimli budamanın 10 ailenin
+10'unda düzenli denklik oranını artırdığını ölçüyor (+0,03…+0,07). Tek bir
+dilin kendi eklemesi olan sütunlar hizalamayı genişletir ve ata biçme yanlış
+konum ekler.
+
+⚠️ Rekonstrüksiyon **doğruluğuna** etkisi yayınlanmamıştı; ölçtük:
+
+| | tam | NED | BCFS | ED |
+|---|---|---|---|---|
+| budamasız | 0,361 | 0,306 | 0,583 | 1,48 |
+| **budamalı** | **0,386** | **0,302** | **0,595** | **1,45** |
+
+Yan kazanç: örüntü tablosu 135 yerine **142** kümeden öğrenilebiliyor
+(hizalama genişliği ata biçim uzunluğuyla daha sık tutuyor).
+
+⚠️ Çapa dahil koşulda tersi oluyor: 0,386 → 0,373. Birincil koşul çapa
+hariç olandır.
+
+> **⚠️ Ölçüm bozulması — bulundu ve düzeltildi.** Budama ilk uygulandığında
+> `metrics.reconstruction_bcubed`in kendi hizalamasına da sızdı. O metrik
+> tahmin ile altın biçmi hizalar; budama bir tarafta boşluk olan sütunları
+> attığı için **tam da ölçmek istediği uyuşmazlıkları siliyordu**. Sonuç:
+> bütün sistemlerin B-Cubed F'si birden yükseldi (`majority_character`
+> 0,571 → **0,696**) — tahminleri hiç değişmemiş olmasına rağmen. Şimdi
+> `align_forms(..., trim=False)` ölçüm ve fark sayma yollarında zorunlu.
 
 #### ⚠️ Denenmiş ve KAZANÇ VERMEYEN iki şey
 
@@ -777,7 +811,8 @@ kullanılmıyor veya kısıtlı kullanılıyor.
 
 - List, Greenhill & Gray 2017, *PLOS ONE* — LexStat-Infomap; **B-Cubed F ≈ 0,89** taban çizgisi
 - List 2019, *Computational Linguistics* — değerlendirme metrikleri; **salt edit distance reddi** (ED + NED + B-Cubed F + accuracy dörtlüsü)
-- Blum & List 2023 — alignment trimming · Blum & List 2026 — leave-one-out düzensizlik tespiti (%85)
+- **Blum & List 2023, `lingrex.trimming`** ✅ **uygulandı** — boşluk-yönelimli hizalama budaması; yayında 10 ailenin 10'unda düzenli denklik oranını artırıyor (+0,03…+0,07). Rekonstrüksiyon **doğruluğuna** etkisi yayınlanmamıştı; bizde dev'de tam 0,361 → **0,386**, NED 0,306 → 0,302, ED 1,48 → 1,45.
+- Blum & List 2026 — leave-one-out düzensizlik tespiti (%85). ⚠️ Teşhisi sınandı ve doğrulanmadı: denklik tablosunu yalnız miras kümelerden öğrenmek `ses_kanunu_ihlali` sinyalini kurtarmadı (−0,0101 → −0,0083).
 - [Bouchard-Côté ve ark. 2013, *PNAS*](https://www.pnas.org/doi/10.1073/pnas.1204678110) — olasılıksal ses değişimi modeli, 637 Austronesian dili
 - Meloni ve ark. 2021 · Kim ve ark. 2023 (ACL) — Transformer rekonstrüksiyon taban çizgileri (%53 Roman / %39,5 Sinitik, 8.799 eğitim örneğiyle)
 - Lu, Xie & Mortensen 2024 (**ACL 2024 Best Paper**) — DPD-BiReconstructor, yarı-denetimli rekonstrüksiyon
