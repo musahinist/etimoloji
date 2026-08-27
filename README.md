@@ -291,6 +291,13 @@ Her rekonstrüksiyon hangi düğümü iddia ettiğini söyler:
 
 Ölçüldü: 400 maddenin yalnız %28,7'sinde Oğur tanığı var.
 
+`*PT` için gereken tanık **atteste** olmalıdır. Batı Eski Türkçe (`wot`,
+Róna-Tas & Berta 2011) Oğurdur ama Macarcadaki alıntılardan geri
+kurulmuştur; rekonstrüksiyondan rekonstrüksiyon türetip `*PT` yazmak
+zincirleme belirsizliği tek bir iddianın arkasına saklamak olurdu. `wot`
+tanısal (Lir-Şaz) kuralı ateşlemez, sıradan ağırlıklı tanık olarak sayılır
+ve düğüm `*PCT`de kalır.
+
 ## Nasıl çalışır
 
 ```
@@ -494,6 +501,7 @@ kullanılmıyor veya kısıtlı kullanılıyor.
 | Hruschka ve ark. 2015, *Current Biology* — `hruschkaturkic` | 4.213 biçim · 27 dil | 🚧 bağımsız çapraz kontrol |
 | Starostin, Dybo & Mudrak, *Altaic Etymological Dictionary* — `starostinaltaic` | 5.756 biçim · 55 dil | ⚠️ yalnız karşılaştırma; Vovin 2005 eleştirisiyle birlikte anılır, tek kaynak olarak kullanılmaz |
 | Robbeets & Bouckaert — `robbeetstriangulation` | 26.224 biçim · 102 dil | ⚠️ yalnız **temas** çerçevesinde; akrabalık kanıtına katılmaz (Tian ve ark. 2022 eleştirileri) |
+| Róna-Tas & Berta 2011, *West Old Turkic: Turkic Loanwords in Hungarian* — `ronataswestoldturkic` ([loanwordbank](https://github.com/loanwordbank/ronataswestoldturkic), CC-BY) | 1.755 biçim · 430 kavram · 480 Oğur (Bolgar, `bolg1249`) biçimi | ⚠️ **atteste değil**, Macarcadaki alıntılardan geri kurulmuş; ayrı tanık kodu (`wot`), tek başına `*PT` taşımaz. Ölçüldü: kazanç yok, **varsayılan kapalı** |
 | [kaikki.org](https://kaikki.org) — Wiktionary makine-okunur dökümleri | 18 Türki dil, ~761 MB | ✅ arama indeksi · ⚠️ **altın standart değil** (bkz. Häuser & Stamatakis 2025) |
 | [NorthEuraLex](https://northeuralex.org) | Türki + İrani + Slav + Ural + Moğol + Yunanca tek çatıda | 🚧 komşu aile taraması |
 | WOLD — World Loanword Database | uzman alıntı derlemesi | 🚧 alıntı değerlendirmesinin birincil ölçütü |

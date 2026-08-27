@@ -35,7 +35,13 @@ from engine.nlp.multi_alignment import AlignedColumn
 #: Oğur (Bulgar) kolu. Lir-Şaz ayrımının **tanısal** tanığıdır: rotasizm ve
 #: lambdaizm ancak bu kol görüldüğünde türetilebilir. Yoksa ata biçim
 #: Proto-Türkçe değil Ana Ortak Türkçe düzeyindedir.
-OGHUR_CODES = frozenset({"cv"})
+OGHUR_CODES = frozenset({"cv", "wot"})
+
+#: Oğur kolunun **yaşayan** (atteste) tanığı. ``wot`` bir rekonstrüksiyondur;
+#: tanısal denkliği destekler ama tek başına ``*PT`` düğümünü taşımaz —
+#: rekonstrüksiyondan rekonstrüksiyon türetmek zincirleme belirsizliktir.
+#: Bkz. ``west_old_turkic.PT_REQUIRES_LIVE_OGHUR``.
+LIVE_OGHUR_CODES = frozenset({"cv"})
 
 #: Arkaiklik ağırlıkları — bir tanığın oyunun kaç sayılacağı.
 #:
@@ -50,6 +56,8 @@ OGHUR_CODES = frozenset({"cv"})
 #:   bu yüzden söz başı kararında en az güvenilir tanıktır
 ARCHAISM_WEIGHTS: dict[str, float] = {
     "cv": 3.0,
+    # Oğur kolunun ikinci tanığı, ama ATTESTE DEĞİL: Çuvaşçanın altında.
+    "wot": 2.2,
     "klj": 2.5,
     "otk": 2.5,
     "sah": 2.0,
@@ -379,7 +387,14 @@ def pick_proto_sound(column: AlignedColumn, position: str) -> ColumnDecision:
         return ColumnDecision(next(iter(distinct)), None, "tek_ses", 1.0)
 
     # 1 — Oğur tanıklı tanısal denklik. Kesindir, önceliklidir.
-    oghur_sounds = {s for lang, s in present.items() if lang in OGHUR_CODES}
+    #
+    # ⚠️ Tanısal kural YALNIZ **atteste** Oğur tanığıyla ateşlenir. ``wot``
+    # (Batı Eski Türkçe) Oğurdur ama Macarcadaki alıntılardan GERİ
+    # KURULMUŞTUR; "kesin" damgasını taşıyacak gözlem değildir. Ölçüldü:
+    # ``wot`` tanısal kurala sokulunca kısalmış bir türev biçim (``ïsï``
+    # ~ ``*issig``) hizalamayı kaydırıp ``*iŕsi`` üretiyordu. ``wot`` yine de
+    # aşağıdaki 2. ve 3. adımlarda ağırlıklı tanık olarak sayılır.
+    oghur_sounds = {s for lang, s in present.items() if lang in LIVE_OGHUR_CODES}
     if oghur_sounds:
         common_sounds = {s for lang, s in present.items() if lang not in OGHUR_CODES}
         for rule in DIAGNOSTIC_RULES:

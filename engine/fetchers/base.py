@@ -52,12 +52,24 @@ TURKIC_LANGUAGES_MAP: dict[str, str] = {
     "atv": "Kuzey Altay Türkçesi",
     "bay": "Baraba Tatarcası",
     "qwm": "Kıpçakça (Codex Cumanicus)",
+    # --- Oğur kolunun ikinci kaynağı ----------------------------------------
+    # ⚠️ ATTESTE DEĞİL: Róna-Tas & Berta (2011) Macarcadaki Türki alıntılardan
+    # geri kurmuştur. ``cv`` ile karıştırılmaması için ayrı kod; ağırlığı da
+    # Çuvaşçadan düşüktür. Bkz. `engine/db/west_old_turkic.py`.
+    "wot": "Batı Eski Türkçe (Oğur, geri kurulmuş)",
 }
 
 #: Toplam Türki dil sayısı. `cognate_alignment` gibi yayılım hesapları bu
 #: değere bölmelidir; daha önce koda gömülü `25` sabiti kullanılıyordu ve
 #: harita 18 dil içerdiği için oran matematiksel olarak %72'yi aşamıyordu.
-TURKIC_LANGUAGE_COUNT = len(TURKIC_LANGUAGES_MAP)
+#: Geri kurulmuş (atteste olmayan) külliyatlar. Tanık olarak sayılırlar ama
+#: **yayılım paydası değildirler**: "bu kelime kaç Türki dilde görülüyor?"
+#: sorusunun paydası, kelimenin görülebileceği dillerin sayısıdır ve hiçbir
+#: getirici ``wot`` kaydı üretemez. Paydaya katılsaydı her yayılım oranı
+#: sessizce düşerdi (ölçüldü: 8 kognatlı ``göz`` 0,500 -> 0,498).
+RECONSTRUCTED_CORPORA = frozenset({"wot"})
+
+TURKIC_LANGUAGE_COUNT = len(set(TURKIC_LANGUAGES_MAP) - RECONSTRUCTED_CORPORA)
 
 # --- Wiktionary başlık eşlemesi -------------------------------------------
 # Wiktionary bölüm başlıkları İNGİLİZCEDİR ("==Turkish==").

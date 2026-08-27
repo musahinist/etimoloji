@@ -61,6 +61,7 @@ GLOTTOCODE_TO_ENGINE: dict[str, str] = {
     "west2402": "ybe",
     # Oğur
     "chuv1255": "cv",
+    "bolg1249": "wot",  # Batı Eski Türkçe — geri kurulmuş, bkz. west_old_turkic
     # Arguca — hiçbir ana kola girmez
     "turk1303": "klj",
     # Tarihî

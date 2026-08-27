@@ -29,7 +29,12 @@ from engine.fetchers.base import TURKIC_LANGUAGES_MAP
 from engine.logging_setup import get_logger
 from engine.nlp.confidence import apply_calibration
 from engine.nlp.multi_alignment import align_forms
-from engine.nlp.proto_phonology import OGHUR_CODES, pick_proto_sound, proto_plausibility
+from engine.nlp.proto_phonology import (
+    LIVE_OGHUR_CODES,
+    OGHUR_CODES,
+    pick_proto_sound,
+    proto_plausibility,
+)
 from engine.nlp.vowel_length import apply_length, gather_evidence
 from engine.utils.orthography import to_comparison_form
 
@@ -47,6 +52,7 @@ LANGUAGE_BRANCHES: dict[str, str] = {
     "sah": "siberian", "tyv": "siberian", "alt": "siberian",
     "khk": "siberian", "cjs": "siberian",
     "cv": "oghur",
+    "wot": "oghur",  # Batı Eski Türkçe — Oğur kolu, GERİ KURULMUŞ
     "otk": "old_turkic",
     # Faz 3'te eklenen ünlü uzunluğu tanıkları (bkz. fetchers/base.py notu).
     "dlg": "siberian",   # Dolganca — Yakutça ile birlikte
@@ -272,6 +278,12 @@ class ComparativeReconstructor:
         branches = {LANGUAGE_BRANCHES.get(c) for c in by_lang if LANGUAGE_BRANCHES.get(c)}
         agreement = sum(agreements) / len(agreements) if agreements else 0.0
         has_oghur = bool(by_lang.keys() & OGHUR_CODES)
+        # ⚠️ ``*PT`` düğümü YAŞAYAN Oğur tanığı ister. ``wot`` (Batı Eski
+        # Türkçe) Oğurdur ama kendisi bir rekonstrüksiyondur: Macarcadaki
+        # alıntılardan geri kurulmuştur. Tanısal denkliği DESTEKLER, ama
+        # rekonstrüksiyondan rekonstrüksiyon türetip ``*PT`` yazmak zincirleme
+        # belirsizliği tek bir iddianın arkasına saklamak olurdu.
+        has_live_oghur = bool(by_lang.keys() & LIVE_OGHUR_CODES)
 
         # Sütun uyumu yalnız tanıkların BİRBİRİYLE uyuşmasını ölçer; ortaya
         # çıkan biçmin Türkçe olup olmadığını ölçmez. Uydurma bir kelime
@@ -295,12 +307,17 @@ class ComparativeReconstructor:
             "plausibility_violations": plausibility_notes,
             # Çuvaşça/Oğur tanığı olmadan rotasizm ve lambdaizm TÜRETİLEMEZ;
             # o hâlde iddia edilebilecek en derin düğüm Ana Ortak Türkçe'dir.
-            "proto_level": "PT" if has_oghur else "PCT",
+            "proto_level": "PT" if has_live_oghur else "PCT",
             "proto_level_note": (
                 "Oğur (Çuvaşça) tanığı var: Proto-Türkçe düzeyinde rekonstrüksiyon."
-                if has_oghur
-                else "Oğur (Çuvaşça) tanığı YOK: bu biçim Ana Ortak Türkçe düzeyindedir; "
-                "rotasizm/lambdaizm türetilemez."
+                if has_live_oghur
+                else (
+                    "Oğur desteği yalnız Batı Eski Türkçe'den (GERİ KURULMUŞ) geliyor; "
+                    "atteste Oğur tanığı yok, iddia Ana Ortak Türkçe düzeyinde kalır."
+                    if has_oghur
+                    else "Oğur (Çuvaşça) tanığı YOK: bu biçim Ana Ortak Türkçe "
+                    "düzeyindedir; rotasizm/lambdaizm türetilemez."
+                )
             ),
             "method": "comparative",
             "witness_count": len(by_lang),
@@ -316,7 +333,7 @@ class ComparativeReconstructor:
             "reconstruction_notes": (
                 f"{len(by_lang)} dil tanığı ve {len(branches)} Türki kol üzerinden "
                 f"karşılaştırmalı yöntemle türetildi: {anchor} -> {proto_form} "
-                f"[*{'PT' if has_oghur else 'PCT'}]"
+                f"[*{'PT' if has_live_oghur else 'PCT'}]"
             ),
         }
 
