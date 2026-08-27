@@ -17,7 +17,7 @@ import time
 from contextlib import closing, contextmanager
 from typing import Any
 
-from engine.config import DB_PATH, SCHEMA_PATH
+from engine.config import DB_PATH, ENGINE_VERSION, SCHEMA_PATH
 from engine.logging_setup import get_logger
 
 logger = get_logger(__name__)
@@ -65,6 +65,11 @@ class DatabaseManager:
         query_word = finding.get("query_word", "").lower().strip()
         if not query_word:
             raise ValueError("query_word boş olamaz")
+
+        # Sürüm damgası KAYIT sırasında vurulur, çağırana bırakılmaz: her
+        # çağıranın hatırlaması gereken bir adım, unutulduğunda önbelleği
+        # sessizce devre dışı bırakırdı.
+        finding = {**finding, "engine_version": ENGINE_VERSION}
 
         root = finding.get("root", {})
         proto_turkic = root.get("proto_turkic", "")
@@ -118,6 +123,11 @@ class DatabaseManager:
 
         :param max_age_seconds: Verilirse, bu yaştan eski kayıtlar önbellek
             ıskalaması sayılır (``None`` döner). Önbellek TTL'i için kullanılır.
+
+        ⚠️ Kayıt, **farklı bir motor sürümüyle** üretilmişse ıskalama sayılır.
+        Bu olmadan önbellek, düzeltilmiş hatalarla üretilmiş sonuçları geri
+        verir: kullanıcı `göz` için hâlâ eski yanlış ata biçmi, `kitap` için
+        hâlâ "miras" kararını görürdü.
         """
         query_word = query_word.lower().strip()
         with self.connection() as conn:
@@ -139,10 +149,21 @@ class DatabaseManager:
                 logger.debug("Önbellek kaydı eskimiş (%.0f sn): %s", age, query_word)
                 return None
         try:
-            return json.loads(row["full_finding_json"])
+            finding = json.loads(row["full_finding_json"])
         except ValueError:
             logger.warning("Bozuk önbellek kaydı: %s", query_word, exc_info=True)
             return None
+
+        cached_version = str(finding.get("engine_version", ""))
+        if cached_version != ENGINE_VERSION:
+            logger.info(
+                "Önbellek kaydı eski motor sürümüyle üretilmiş (%s != %s): %s",
+                cached_version or "sürümsüz",
+                ENGINE_VERSION,
+                query_word,
+            )
+            return None
+        return finding
 
     def list_findings(self) -> list[dict[str, Any]]:
         """Tüm kaydedilmiş etimoloji bulgularını listeler."""

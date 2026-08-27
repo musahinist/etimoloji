@@ -42,6 +42,14 @@ def _env_bool(name: str, default: bool) -> bool:
 
 # --- Yollar ----------------------------------------------------------------
 
+#: **Motor sürümü — önbellek geçersizleştirme anahtarı.**
+#:
+#: ⚠️ Motorun analiz mantığı her değiştiğinde ARTTIRILMALIDIR. Aksi hâlde
+#: önbellek, eski ve düzeltilmiş hatalarla üretilmiş sonuçları geri verir:
+#: kullanıcı `göz` için hâlâ `*kuŕ` görür, `kitap` hâlâ miras sayılır.
+#: Sürüm değişince eski kayıtlar otomatik olarak ıskalama sayılır.
+ENGINE_VERSION = "4.0.0"
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DB_PATH = Path(_env_str("DB_PATH", str(PROJECT_ROOT / "etymology.db")))
 SCHEMA_PATH = PROJECT_ROOT / "engine" / "db" / "schema.sql"

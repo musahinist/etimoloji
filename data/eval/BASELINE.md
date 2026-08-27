@@ -5,7 +5,7 @@ düzenlemeyin. Her sayı, adı geçen veri kümesi sürümünden sıfırdan
 hesaplanır.
 
 - **Veri kümesi:** `savelyevturkic` `v2.1` (commit `4a540590580f`)
-- **Ölçüm:** 2026-08-27T01:21:21+00:00
+- **Ölçüm:** 2026-08-27T01:27:12+00:00
 - **Bölüm:** `all`
 - **Altın standart:** 400 madde · train 237 / dev 83 / test 80
 - **Kavram sızıntısı:** 0 (0 olmalı)

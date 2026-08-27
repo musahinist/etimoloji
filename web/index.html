@@ -207,6 +207,35 @@
                         <strong class="block mb-1 font-bold">❌ Akademik Hakem Red Gerekçeleri:</strong>
                         <ul id="rejectionList" class="list-disc list-inside space-y-1"></ul>
                     </div>
+
+                    <!-- Rakip hipotezler. Reddedilenler SİLİNMEZ: hangi köken
+                         önerisinin neden elendiği ve doğru olsaydı ne
+                         beklendiği kullanıcıya gösterilir. -->
+                    <div id="hypothesesContainer" class="hidden p-4 rounded-2xl bg-slate-800/40 border border-slate-600/40">
+                        <strong class="block mb-2 text-sm font-bold text-slate-200">⚖️ Rakip Köken Hipotezleri</strong>
+                        <div id="contestedWarning" class="hidden mb-2 text-xs text-amber-300"></div>
+                        <ol id="hypothesesList" class="space-y-2 text-xs"></ol>
+                    </div>
+
+                    <!-- Kalibre güven skoru ve ata düğüm etiketi. -->
+                    <div id="confidenceContainer" class="hidden p-4 rounded-2xl bg-slate-800/40 border border-slate-600/40 text-xs">
+                        <strong class="block mb-2 text-sm font-bold text-slate-200">🎯 Kalibre Güven</strong>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div><span class="text-slate-400 block">Rozet</span><span id="confBadge" class="font-bold text-slate-200">—</span></div>
+                            <div><span class="text-slate-400 block">Kalibre skor</span><span id="confScore" class="font-bold text-slate-200">—</span></div>
+                            <div><span class="text-slate-400 block">Ata düğüm</span><span id="protoLevel" class="font-bold text-slate-200">—</span></div>
+                            <div><span class="text-slate-400 block">Ham skor</span><span id="confRaw" class="font-bold text-slate-500">—</span></div>
+                        </div>
+                        <p id="calibrationNote" class="mt-2 text-slate-400 leading-relaxed"></p>
+                    </div>
+
+                    <!-- Alıntı zinciri: hangi dillerden geçmiş ve nasıl değişmiş. -->
+                    <div id="borrowingContainer" class="hidden p-4 rounded-2xl bg-amber-900/20 border border-amber-500/30 text-xs text-amber-200">
+                        <strong class="block mb-1 font-bold">🔗 Alıntı Geçiş Zinciri</strong>
+                        <div id="borrowingChain" class="font-mono mb-2"></div>
+                        <ul id="borrowingSignals" class="list-disc list-inside space-y-1"></ul>
+                        <p id="expectedIfInherited" class="mt-2 text-amber-300/80"></p>
+                    </div>
                 </div>
             </div>
 
@@ -419,6 +448,74 @@
                 rejList.innerHTML = rejections.map(r => `<li>${esc(r)}</li>`).join("");
             } else {
                 rejCont.classList.add('hidden');
+            }
+
+            // 2b. Rakip hipotezler — reddedilenler gerekçesiyle gösterilir
+            const ranked = nlp.ranked_hypotheses;
+            const hypCont = document.getElementById('hypothesesContainer');
+            if (ranked && (ranked.hypotheses || []).length) {
+                hypCont.classList.remove('hidden');
+                document.getElementById('hypothesesList').innerHTML = ranked.hypotheses.map(h => {
+                    const mark = h.rejected
+                        ? '<span class="text-red-400 font-bold">✗</span>'
+                        : '<span class="text-emerald-400 font-bold">✓</span>';
+                    const support = (h.supporting || []).slice(0, 3)
+                        .map(s => `<li class="text-slate-400">+ ${esc(s)}</li>`).join("");
+                    const why = h.rejected_because
+                        ? `<div class="text-red-300/90 mt-1">neden: ${esc(h.rejected_because)}</div>` : "";
+                    const cf = h.counterfactual
+                        ? `<div class="text-slate-500 italic">doğru olsaydı: ${esc(h.counterfactual)}</div>` : "";
+                    return `<li class="p-2 rounded-lg bg-slate-900/40">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-slate-200">${mark} ${esc(h.label)}</span>
+                            <span class="font-mono text-slate-400">${h.score.toFixed(2)}</span>
+                        </div>
+                        <ul class="mt-1 space-y-0.5">${support}</ul>${why}${cf}
+                    </li>`;
+                }).join("");
+                const warn = document.getElementById('contestedWarning');
+                if (ranked.is_contested) {
+                    warn.classList.remove('hidden');
+                    warn.textContent = `⚠️ Karar kırılgan: ilk iki hipotez arasındaki fark yalnız ${ranked.margin.toFixed(2)}`;
+                } else {
+                    warn.classList.add('hidden');
+                }
+            } else {
+                hypCont.classList.add('hidden');
+            }
+
+            // 2c. Kalibre güven — HAM skor kullanıcıya "sonuç" olarak sunulmaz
+            const rec = nlp.reconstruction || {};
+            const confCont = document.getElementById('confidenceContainer');
+            if (rec.calibrated_confidence !== undefined && rec.calibrated_confidence !== null) {
+                confCont.classList.remove('hidden');
+                document.getElementById('confBadge').textContent = rec.confidence_badge || "—";
+                document.getElementById('confScore').textContent = rec.calibrated_confidence.toFixed(3);
+                document.getElementById('confRaw').textContent =
+                    rec.confidence !== null && rec.confidence !== undefined ? rec.confidence.toFixed(3) : "—";
+                document.getElementById('protoLevel').textContent =
+                    rec.proto_level ? `*${rec.proto_level}` : "—";
+                document.getElementById('calibrationNote').textContent =
+                    (rec.calibration_note || "") + (rec.proto_level_note ? " " + rec.proto_level_note : "");
+            } else {
+                confCont.classList.add('hidden');
+            }
+
+            // 2d. Alıntı zinciri
+            const bor = rec.borrowing;
+            const borCont = document.getElementById('borrowingContainer');
+            if (bor && bor.is_borrowed) {
+                borCont.classList.remove('hidden');
+                document.getElementById('borrowingChain').textContent =
+                    (bor.chain || []).join("  ←  ") || "—";
+                document.getElementById('borrowingSignals').innerHTML =
+                    (bor.signals || []).filter(s => s.fired)
+                        .map(s => `<li>${esc(s.explanation)}</li>`).join("");
+                document.getElementById('expectedIfInherited').textContent =
+                    bor.expected_if_inherited
+                        ? `Miras olsaydı beklenen Türkçe biçim: ${bor.expected_if_inherited}` : "";
+            } else {
+                borCont.classList.add('hidden');
             }
 
             // 3. Turkic Languages Grid & Spreading Ratio

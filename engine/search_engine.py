@@ -140,6 +140,16 @@ class SearchEngine:
         self.fetchers: list[BaseFetcher] = fetchers if fetchers is not None else default_fetchers()
 
 
+    def _rank_hypotheses(self, word: str, entries: list[dict[str, Any]]) -> dict[str, Any] | None:
+        """Rakip köken hipotezlerini sıralar; başarısız olursa hattı durdurmaz."""
+        try:
+            from engine.nlp.hypothesis_ranking import HypothesisRanker
+
+            return HypothesisRanker().rank(word, entries).as_dict()
+        except Exception:
+            logger.warning("Hipotez sıralaması başarısız: %s", word, exc_info=True)
+            return None
+
     def search(self, query: str, save_to_db: bool = True, use_qwen_agent: bool = False) -> dict[str, Any]:
         word_clean = query.strip().lower()[: config.MAX_QUERY_LENGTH]
         search_started = time.perf_counter()
@@ -281,7 +291,43 @@ class SearchEngine:
         cognate_clusters = self.cognate_cluster_engine.cluster(sorted_entries)
         # Tarihsel yapım eki ağacı (plan §2.5)
         historical_morphology = self.historical_morphology.build_tree(word_clean)
-        reconstruction_eval = self.reconstructor.reconstruct_proto_form(word_clean, sorted_entries)
+
+        # Morfolojik kök rekonstrüksiyona GEÇİRİLİR. Eskiden `build_tree`
+        # sonucu yalnız çıktı sözlüğüne konuyor, rekonstrüktöre ham kelime
+        # gidiyordu; sözlük madde başı `içmek` için `*içmek` üretiliyordu.
+        #
+        # ⚠️ ÖLÇÜM NOTU. Altın standart üzerinde ek soymanın katkısı **net
+        # sıfır** çıktı (289 kez ateşlendi: 6 iyileşme, 6 bozulma). Sebep
+        # ölçüm verisinin doğası: CLDF biçimleri zaten ÇIPLAK KÖK'tür, sözlük
+        # madde başı değil. Yani ölçüm bu katmanı sınayamıyor.
+        #
+        # Gerçek kullanımda girdi TDK madde başıdır (`içmek`, `üzerinde`) ve
+        # orada soymak şart. Bu yüzden katman kalıyor ama muhafazakâr bir
+        # korumayla: yalnız çok heceli kelimelerde ve makul uzunlukta bir kök
+        # bırakıyorsa. Koruma olmadan `yan -> ya`, `karın -> kar` gibi aşırı
+        # soymalar oluyordu.
+        MIN_WORD_FOR_STRIPPING = 6
+        MIN_ROOT_AFTER_STRIPPING = 4
+        morphological_root = str(historical_morphology.get("root") or "")
+        strip_ok = (
+            morphological_root
+            and morphological_root != word_clean
+            and len(word_clean) >= MIN_WORD_FOR_STRIPPING
+            and len(morphological_root) >= MIN_ROOT_AFTER_STRIPPING
+        )
+        reconstruction_input = morphological_root if strip_ok else word_clean
+        reconstruction_eval = self.reconstructor.reconstruct_proto_form(
+            reconstruction_input, sorted_entries
+        )
+        if reconstruction_input != word_clean:
+            reconstruction_eval["stripped_from"] = word_clean
+            reconstruction_eval["stripped_suffixes"] = [
+                layer.get("suffix") for layer in historical_morphology.get("layers", [])
+            ]
+
+        # Rakip hipotezler ve red gerekçeleri (Faz 9). Reddedilen köken
+        # önerileri çıktıda KALIR; gerekçesiyle birlikte.
+        ranked_hypotheses = self._rank_hypotheses(word_clean, sorted_entries)
         donor_eval = self.donor_search_engine.search_donor_neighbors(word_clean)
 
         finding_temp = {"root": {"proto_turkic": proto_root, "meaning": root_meaning}}
@@ -400,6 +446,7 @@ class SearchEngine:
                 "loanword_detection": loanword_detection,
                 "cognate_clusters": cognate_clusters,
                 "historical_morphology": historical_morphology,
+                "ranked_hypotheses": ranked_hypotheses,
             },
             "graph_database": graph_export,
             "timeline": list(dict.fromkeys(timeline)),

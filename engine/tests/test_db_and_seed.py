@@ -11,6 +11,8 @@ import os
 import sqlite3
 import tempfile
 import unittest
+from pathlib import Path
+from unittest import mock
 
 from engine.db.cldf_exporter import CldfExporter
 from engine.db.cldf_importer import CldfImporter
@@ -244,3 +246,37 @@ class TestSeedLoader(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestCacheVersioning(unittest.TestCase):
+    """Motor sürümü değiştiğinde önbellek geçersiz olmalıdır.
+
+    Bu olmadan önbellek, düzeltilmiş hatalarla üretilmiş sonuçları geri
+    verirdi: kullanıcı `göz` için hâlâ eski yanlış ata biçmi, `kitap` için
+    hâlâ "miras" kararını görürdü.
+    """
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.db = DatabaseManager(Path(self._tmp.name) / "t.db")
+        self.db.init_db()
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def test_version_is_stamped_at_save_time(self):
+        """Damga çağırana bırakılmaz — unutulursa önbellek sessizce ölür."""
+        from engine.config import ENGINE_VERSION
+
+        self.db.save_finding({"query_word": "göz", "root": {}, "sources": []})
+        finding = self.db.get_finding("göz")
+        self.assertEqual(finding["engine_version"], ENGINE_VERSION)
+
+    def test_stale_version_is_a_cache_miss(self):
+        self.db.save_finding({"query_word": "göz", "root": {}, "sources": []})
+        with mock.patch("engine.db.database.ENGINE_VERSION", "99.0.0"):
+            self.assertIsNone(self.db.get_finding("göz"))
+
+    def test_same_version_is_a_cache_hit(self):
+        self.db.save_finding({"query_word": "göz", "root": {}, "sources": []})
+        self.assertIsNotNone(self.db.get_finding("göz"))
