@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Turkish",
+  "code": "tr",
+  "url": "https://kaikki.org/dictionary/Turkish/kaikki.org-dictionary-Turkish.jsonl",
+  "retrieved_at": "2026-08-27T00:53:21+00:00",
+  "raw_bytes": 430871505,
+  "stored_bytes": 27571718,
+  "entries": 45666,
+  "compressed": true,
+  "sha256_stored": "5cfca4cbd413de0167f6722c6e30624037a14ffe75277475d9534908bc26500b",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

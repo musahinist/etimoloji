@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Turkmen",
+  "code": "tk",
+  "url": "https://kaikki.org/dictionary/Turkmen/kaikki.org-dictionary-Turkmen.jsonl",
+  "retrieved_at": "2026-08-27T00:53:28+00:00",
+  "raw_bytes": 5338875,
+  "stored_bytes": 575168,
+  "entries": 2053,
+  "compressed": true,
+  "sha256_stored": "6806857b74416790405112b8b14584b858f6fb003feadc2b8baf173b1bf71bf3",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

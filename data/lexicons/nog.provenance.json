@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Nogai",
+  "code": "nog",
+  "url": "https://kaikki.org/dictionary/Nogai/kaikki.org-dictionary-Nogai.jsonl",
+  "retrieved_at": "2026-08-27T00:53:33+00:00",
+  "raw_bytes": 501859,
+  "stored_bytes": 51494,
+  "entries": 484,
+  "compressed": true,
+  "sha256_stored": "9050fb7d1d047682b5efddb3018e4fde3791e6b9014ce09b69bf97dd0b28fcbc",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

@@ -53,3 +53,12 @@ htmlcov/
 data/cldf/*/*.csv
 data/cldf/*/*.json
 !data/cldf/*/_provenance.json
+
+# --- Sözlük dökümleri ve türetilmiş indeks ----------------------------------
+# Ham dökümler (56 MB) ve SQLite indeksi repoya alınmaz; `make lexicons` ile
+# yeniden indirilir. Künye ve SHA-256 commit edilir.
+data/lexicons/*.jsonl
+data/lexicons/*.jsonl.gz
+data/lexicons/index.db
+# Zincir dökümü büyük ve türetilmiş; kurallar özet olduğu için commit edilir.
+data/borrowing/chains.json

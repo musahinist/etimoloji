@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Uzbek",
+  "code": "uz",
+  "url": "https://kaikki.org/dictionary/Uzbek/kaikki.org-dictionary-Uzbek.jsonl",
+  "retrieved_at": "2026-08-27T00:53:36+00:00",
+  "raw_bytes": 24379660,
+  "stored_bytes": 1578831,
+  "entries": 4465,
+  "compressed": true,
+  "sha256_stored": "4755ac7580494d096eb9e5941644d53055f6e4ad8a9ba6b7b452447cd9d5844f",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

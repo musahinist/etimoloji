@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Khakas",
+  "code": "khk",
+  "url": "https://kaikki.org/dictionary/Khakas/kaikki.org-dictionary-Khakas.jsonl",
+  "retrieved_at": "2026-08-27T00:53:39+00:00",
+  "raw_bytes": 817079,
+  "stored_bytes": 90482,
+  "entries": 452,
+  "compressed": true,
+  "sha256_stored": "a7a8cf50fe9bb8f9bcdc6cd518b7bb39bbcba9b2cbec9d68c81464986f06181d",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

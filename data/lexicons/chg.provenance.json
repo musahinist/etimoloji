@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Chagatai",
+  "code": "chg",
+  "url": "https://kaikki.org/dictionary/Chagatai/kaikki.org-dictionary-Chagatai.jsonl",
+  "retrieved_at": "2026-08-27T00:53:41+00:00",
+  "raw_bytes": 2953740,
+  "stored_bytes": 288486,
+  "entries": 599,
+  "compressed": true,
+  "sha256_stored": "9ac88dea8215ebf3df1daeaf6f94fde62079e98bc16af48b535dc2b4e656f78e",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

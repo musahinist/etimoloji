@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Bashkir",
+  "code": "ba",
+  "url": "https://kaikki.org/dictionary/Bashkir/kaikki.org-dictionary-Bashkir.jsonl",
+  "retrieved_at": "2026-08-27T00:53:33+00:00",
+  "raw_bytes": 11163905,
+  "stored_bytes": 1709771,
+  "entries": 3379,
+  "compressed": true,
+  "sha256_stored": "d9f7624a42551ecc745b2ae7f7fb8f0165a0533e6b6446a67e21960b35944462",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

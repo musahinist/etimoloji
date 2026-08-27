@@ -1,5 +1,5 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-prediction correspondences calibrate
+        data gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-prediction correspondences calibrate lexicons lexicon-index chains
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -17,6 +17,9 @@ help:
 	@echo "eval-cognates  - Akraba tespiti B-Cubed F (LexStat-Infomap taban çizgisine karşı)"
 	@echo "eval-borrowing - Alıntı tespiti P/R/F (verici dile göre ayrıştırılmış)"
 	@echo "eval-calibration - ECE + Brier + risk-coverage"
+	@echo "lexicons       - kaikki.org sözlük dökümlerini indir (19 dil, ~56 MB)"
+	@echo "lexicon-index  - Yerel arama indeksini kur (SQLite FTS5)"
+	@echo "chains         - Alıntı geçiş zincirleri ve uyarlama kuralları"
 	@echo "correspondences - Ses denkliklerini TRAIN kavramlarından öğren"
 	@echo "eval-prediction - İleri akraba tahmini (tr -> 31 dil)"
 	@echo "eval-controls  - Negatif kontrol bataryası (sahte kök, alıntı tuzağı)"
@@ -63,6 +66,15 @@ eval-cognates: data
 
 eval-borrowing: data
 	.venv/bin/python -m engine.evaluation.borrowing_eval
+
+lexicons:
+	.venv/bin/python scripts/download_lexicons.py --all
+
+lexicon-index: lexicons
+	.venv/bin/python -m engine.db.lexicon_index --build
+
+chains: lexicons
+	.venv/bin/python -m engine.nlp.borrowing_chain --save
 
 correspondences: gold
 	.venv/bin/python -m engine.nlp.cognate_prediction

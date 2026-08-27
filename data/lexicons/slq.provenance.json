@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Salar",
+  "code": "slq",
+  "url": "https://kaikki.org/dictionary/Salar/kaikki.org-dictionary-Salar.jsonl",
+  "retrieved_at": "2026-08-27T00:53:40+00:00",
+  "raw_bytes": 8706927,
+  "stored_bytes": 587458,
+  "entries": 1298,
+  "compressed": true,
+  "sha256_stored": "1b90befe8383ae548369ccdc776c7ee309856546ec9f414d3b0104f187caabde",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Kyrgyz",
+  "code": "ky",
+  "url": "https://kaikki.org/dictionary/Kyrgyz/kaikki.org-dictionary-Kyrgyz.jsonl",
+  "retrieved_at": "2026-08-27T00:53:32+00:00",
+  "raw_bytes": 26877348,
+  "stored_bytes": 2025514,
+  "entries": 4099,
+  "compressed": true,
+  "sha256_stored": "7857c0f209e133147d53fb151bfe0431f805905e69029dc9d5f8d724d60ccf5a",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Azerbaijani",
+  "code": "az",
+  "url": "https://kaikki.org/dictionary/Azerbaijani/kaikki.org-dictionary-Azerbaijani.jsonl",
+  "retrieved_at": "2026-08-27T00:53:27+00:00",
+  "raw_bytes": 188542264,
+  "stored_bytes": 12374296,
+  "entries": 16340,
+  "compressed": true,
+  "sha256_stored": "496708581bfbd14449ab7a3d9bf91ec3b3d4e677f95b0fd04f4edf4e3c6ce0d7",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

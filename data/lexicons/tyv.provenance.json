@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Tuvan",
+  "code": "tyv",
+  "url": "https://kaikki.org/dictionary/Tuvan/kaikki.org-dictionary-Tuvan.jsonl",
+  "retrieved_at": "2026-08-27T00:53:38+00:00",
+  "raw_bytes": 2268830,
+  "stored_bytes": 273109,
+  "entries": 907,
+  "compressed": true,
+  "sha256_stored": "d252f08a377cc5feac35935b6fc66729afdb3f15e0f15ba7d89341c4aaf4aab5",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

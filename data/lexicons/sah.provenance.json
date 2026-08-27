@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Yakut",
+  "code": "sah",
+  "url": "https://kaikki.org/dictionary/Yakut/kaikki.org-dictionary-Yakut.jsonl",
+  "retrieved_at": "2026-08-27T00:53:38+00:00",
+  "raw_bytes": 6102102,
+  "stored_bytes": 800336,
+  "entries": 3551,
+  "compressed": true,
+  "sha256_stored": "313a33c47cfd276109eb75c179c0aefc955eb5e7a68a310582fc8a557a25bcad",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

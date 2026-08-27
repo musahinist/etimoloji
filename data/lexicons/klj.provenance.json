@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Khalaj",
+  "code": "klj",
+  "url": "https://kaikki.org/dictionary/Khalaj/kaikki.org-dictionary-Khalaj.jsonl",
+  "retrieved_at": "2026-08-27T00:53:41+00:00",
+  "raw_bytes": 9240410,
+  "stored_bytes": 799234,
+  "entries": 2003,
+  "compressed": true,
+  "sha256_stored": "591cd54e842641c7e9792d2aa0eec78268098ec8d073a5666f9ff25b6edfc936",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

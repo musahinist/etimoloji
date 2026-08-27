@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Uyghur",
+  "code": "ug",
+  "url": "https://kaikki.org/dictionary/Uyghur/kaikki.org-dictionary-Uyghur.jsonl",
+  "retrieved_at": "2026-08-27T00:53:37+00:00",
+  "raw_bytes": 35595572,
+  "stored_bytes": 2310248,
+  "entries": 4215,
+  "compressed": true,
+  "sha256_stored": "ccc9a73d490a517efffe72a09b6f9b39569ac71dca3edc11229b94dd1ba42913",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

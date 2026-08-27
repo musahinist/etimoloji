@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Tatar",
+  "code": "tt",
+  "url": "https://kaikki.org/dictionary/Tatar/kaikki.org-dictionary-Tatar.jsonl",
+  "retrieved_at": "2026-08-27T00:53:32+00:00",
+  "raw_bytes": 3121712,
+  "stored_bytes": 359777,
+  "entries": 2044,
+  "compressed": true,
+  "sha256_stored": "1cc7a88fcc23946a68131c0f20c45a6b4d86ef405b24db4ca576538fc391ae2d",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Kumyk",
+  "code": "kum",
+  "url": "https://kaikki.org/dictionary/Kumyk/kaikki.org-dictionary-Kumyk.jsonl",
+  "retrieved_at": "2026-08-27T00:53:34+00:00",
+  "raw_bytes": 10528535,
+  "stored_bytes": 682492,
+  "entries": 1524,
+  "compressed": true,
+  "sha256_stored": "a7d79fb3c2a9eba5794699e4ceb82a35d56ed5cd0385aea20c83ce1c333b384b",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

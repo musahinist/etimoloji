@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Gagauz",
+  "code": "gag",
+  "url": "https://kaikki.org/dictionary/Gagauz/kaikki.org-dictionary-Gagauz.jsonl",
+  "retrieved_at": "2026-08-27T00:53:28+00:00",
+  "raw_bytes": 2442211,
+  "stored_bytes": 291352,
+  "entries": 1106,
+  "compressed": true,
+  "sha256_stored": "25444cfd63b9a1e035c082e5c877e18cd1369dc536a0a397c888a64d5649f486",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

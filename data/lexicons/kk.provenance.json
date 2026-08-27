@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Kazakh",
+  "code": "kk",
+  "url": "https://kaikki.org/dictionary/Kazakh/kaikki.org-dictionary-Kazakh.jsonl",
+  "retrieved_at": "2026-08-27T00:53:30+00:00",
+  "raw_bytes": 35761692,
+  "stored_bytes": 3811155,
+  "entries": 13552,
+  "compressed": true,
+  "sha256_stored": "9be0bd816bbfc860d7b5457431e5ce6e0da612d53cdf66992298a2edb63208b8",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

@@ -1,0 +1,13 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Chuvash",
+  "code": "cv",
+  "url": "https://kaikki.org/dictionary/Chuvash/kaikki.org-dictionary-Chuvash.jsonl",
+  "retrieved_at": "2026-08-27T00:53:37+00:00",
+  "raw_bytes": 1747823,
+  "stored_bytes": 219642,
+  "entries": 1074,
+  "compressed": true,
+  "sha256_stored": "3ebe9bf631116ad99988d4bdbe5a47ed8a5346d5a29778df85f06185305dc05c",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}
