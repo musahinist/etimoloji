@@ -30,7 +30,10 @@ from __future__ import annotations
 from collections import defaultdict
 from dataclasses import dataclass
 
+from engine.logging_setup import get_logger
 from engine.nlp.multi_alignment import AlignedColumn
+
+logger = get_logger(__name__)
 
 #: Oğur (Bulgar) kolu. Lir-Şaz ayrımının **tanısal** tanığıdır: rotasizm ve
 #: lambdaizm ancak bu kol görüldüğünde türetilebilir. Yoksa ata biçim
@@ -134,6 +137,48 @@ def weight_for(lang: str, sound: str) -> float:
     if sound in VOWELS:
         return VOWEL_ARCHAISM_WEIGHTS.get(lang, ARCHAISM_WEIGHTS.get(lang, DEFAULT_WEIGHT))
     return ARCHAISM_WEIGHTS.get(lang, DEFAULT_WEIGHT)
+
+
+#: Öğrenilmiş örüntü oyunun devreye girmesi için gereken güven.
+#:
+#: Ölçüldü (dev bölümü, sütun düzeyi, n=206)::
+#:
+#:     eşik   kural    öğrenilmiş   melez   öğrenilmiş oyun payı
+#:     0,0    0,7621     0,7816    0,7961          %98
+#:     0,5    0,7621     0,7816    0,8010          %85
+#:     0,6    0,7621     0,7816    0,7864          %72
+#:     0,7    0,7621     0,7816    0,7670          %60
+#:
+#: 0,5 en iyi melezi veriyor: öğrenilmiş oy çoğunlukta ama düşük güvenli
+#: kararlar elle yazılmış kurala bırakılıyor.
+LEARNED_MIN_CONFIDENCE = 0.5
+
+_PATTERN_TABLE: object | None = None
+_PATTERN_TABLE_LOADED = False
+
+
+def _pattern_table() -> object | None:
+    """Öğrenilmiş ata ses örüntü tablosu — yoksa ``None``.
+
+    ⚠️ Tablo yoksa motor **tümüyle kural tabanlı** çalışır. Bu bir hata
+    değildir ama ölçüm farkı yaratır; ``reset_pattern_cache`` ile
+    sıfırlanabilir.
+    """
+    global _PATTERN_TABLE, _PATTERN_TABLE_LOADED
+    if not _PATTERN_TABLE_LOADED:
+        from engine.nlp.proto_patterns import load
+
+        _PATTERN_TABLE = load()
+        _PATTERN_TABLE_LOADED = True
+        if _PATTERN_TABLE is None:
+            logger.info("Öğrenilmiş örüntü tablosu yok; yalnız kural katmanı")
+    return _PATTERN_TABLE
+
+
+def reset_pattern_cache() -> None:
+    global _PATTERN_TABLE, _PATTERN_TABLE_LOADED
+    _PATTERN_TABLE = None
+    _PATTERN_TABLE_LOADED = False
 
 
 @dataclass(frozen=True)
@@ -420,7 +465,31 @@ def pick_proto_sound(column: AlignedColumn, position: str) -> ColumnDecision:
     if best is not None:
         return ColumnDecision(best.proto, best.note, "denklik", agreement)
 
-    # 3 — Arkaiklik ağırlıklı oy.
+    # 3 — ÖĞRENİLMİŞ örüntü oyu (Faz D2).
+    #
+    # ⚠️ Elle yazılmış denkliklerden SONRA gelir. İlk kurulumda önce
+    # geliyordu ve dilbilimsel olarak yerleşik iki kararı BOZDU::
+    #
+    #     {tr: y, kk: z, otk: d}  ->  *j   (doğrusu *d̮)
+    #     *teŋiŕ                  ->  *teniŕ  (ŋ sütunu kayboldu)
+    #
+    # Elle yazılmış denklikler dar ve küratörlüdür; 135 kümeden öğrenilmiş
+    # bir sayım onları geçemez. Öğrenilmiş oyun asıl yeri **arkaiklik
+    # ağırlıklı oyun önü**dür: o yol en çok kullanılan (426 sütun) ama en
+    # zayıf (0,606) karar yoludur ve elle atanmış "arkaiklik" katsayılarına
+    # dayanır. Öğrenilmiş tablo onu gerçek sayımla değiştirir.
+    learned = _pattern_table()
+    if learned is not None:
+        sound, confidence, support = learned.vote(present)
+        if sound and confidence >= LEARNED_MIN_CONFIDENCE and support >= 2:
+            return ColumnDecision(
+                sound,
+                f"öğrenilmiş örüntü oyu (güven {confidence:.2f}, {support} tanık çifti)",
+                "ogrenilmis_oruntu",
+                agreement,
+            )
+
+    # 4 — Arkaiklik ağırlıklı oy.
     counts = _weighted_counts(column)
     winner = max(sorted(counts), key=lambda s: counts[s])
     method = "arkaik_agirlik" if len(set(counts.values())) > 1 else "cogunluk"

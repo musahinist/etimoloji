@@ -29,7 +29,7 @@ Bu bölüm reklam değil, **ölçüm**dür. Bütün sayılar `make eval-baseline
 yeniden üretilebilir ve `data/eval/BASELINE.md` içinde sürüm damgasıyla
 saklanır.
 
-### Rekonstrüksiyon (n=400, uzman altın standardı)
+### Rekonstrüksiyon (dev bölümü, n=83)
 
 **Birincil metrikler NED ve B-Cubed F'tir.** Bu, keyfî bir tercih değil alan
 standardı: SIGTYP 2022'nin resmi metrikleri ED, NED, B-Cubed F ve BLEU'dur ve
@@ -38,37 +38,86 @@ Levenshtein raporlar; Meloni ve ark. 2021'in ana metriği ortalama ED'dir.
 List 2019 (*Beyond Edit Distances*) sistematik hataların ED tarafından her
 örnekte yeniden cezalandırıldığını gösterip B-Cubed F önerir.
 
-| Sistem | **NED**↓ | **BCFS**↑ | ED↓ | FER↓ | tam | kapsam |
-|---|---|---|---|---|---|---|
-| **motor** | **0,384** | **0,508** | 1,97 | **0,359** | 0,230 | 0,988 |
-| `majority_character` (trivial) | 0,382 | 0,500 | 1,94 | 0,363 | 0,237 | 1,000 |
-| `copy_anchor` (hiçbir şey yapma) | 0,417 | 0,466 | 2,13 | 0,392 | 0,203 | 1,000 |
-| `copy_random_daughter` | 0,453 | 0,427 | 2,29 | 0,414 | 0,168 | 1,000 |
-| `copy_longest` | 0,552 | 0,362 | 3,04 | 0,541 | 0,100 | 1,000 |
+⚠️ **Ölçüm artık `dev` bölümündedir, tüm veride değil.** Motor denetimli bir
+katman taşıyor (`proto_patterns`, TRAIN kavramlarından öğrenilmiş); tüm
+veride ölçmek eğitim maddelerini ölçüme sokar ve raporlanan sayı motorun
+performansı değil **ezberi** olur. `engine.evaluation.report` bu durumu
+kendi tespit edip uyarı basıyor ve künyeye yazıyor.
 
-Birincil metrikte fark **+0,0018**, %95 GA [−0,0146, +0,0190] → **anlamlı
-değil**. Motor trivial taban çizgisiyle istatistiksel olarak **berabere**;
-B-Cubed F ve FER'de hafif önde, NED ve tam doğrulukta hafif geride.
+| Sistem | **NED**↓ | **BCFS**↑ | ED↓ | tam | kapsam |
+|---|---|---|---|---|---|
+| **motor** | **0,306** | **0,583** | **1,48** | **0,361** | — |
+| `majority_character` (trivial) | 0,341 | 0,571 | 1,60 | 0,325 | 1,000 |
 
-⚠️ **Çekimserlik bedava değildir.** Cevaplanmayan madde ortalamaya mümkün
-olan en kötü NED'i (1,0) katar. Bir dönem yalnızca cevaplanan maddeler
-ortalanıyordu; o muhasebe cevap vermemeyi kusursuz cevap vermekle bir
-tutuyor ve çekimser kalmayı ödüllendiriyordu.
+Birincil metrikte fark **−0,0345** (motor lehine), %95 GA [−0,0707,
++0,0016] → **anlamlı DEĞİL**; aralık sıfırı kılpayı içeriyor. n=83'te daha
+fazlası gösterilemiyor. `test` bölümü **dondurulmuş** durumda ve Faz D
+bitene kadar açılmayacak.
 
-Karşılaştırma noktası — **bu, kural tabanlı sistemlerin normal bandıdır**:
+#### Denetimli katman: örüntüden ata ses (Faz D2)
+
+⚠️ **"Sıfır eğitim verisi" iddiası bırakıldı.** Kullanıcı kararıyla 400
+uzman kümesi artık eğitim verisidir. Gerekçe ölçülmüştür — kural tabanlı
+paradigmanın tavanı bizim uygulamamızda değil, paradigmadadır:
 
 | Sistem sınıfı | Rom-phon tam doğruluk |
 |---|---|
 | rastgele kız dil | %0,06 |
 | CorPaR (kural/örüntü) | %22,2 |
 | SVM+PosStrIni (kural/örüntü) | %24,7 |
-| **bu motor** | **%23,0** |
 | RNN (denetimli) | %52,3 |
 | Transformer (denetimli) | %53,8 |
 
-Sinitic verisinde birebir aynı örüntü görülüyor: CorPaR majority'den daha iyi
-PED alıyor (3,28 < 3,50) ama aynı tam doğruluğu veriyor. Sorun uygulamada
-değil, **paradigmada**: %50 bandına yalnız denetimli öğrenme çıkıyor.
+Yöntem: hizalanmış her sütun bir denklik örüntüsüdür. ⚠️ **Örüntü tam
+eşleşmesi işe yaramıyor** — 400 kümenin dil kümeleri neredeyse hiç birebir
+örtüşmüyor. Bu yüzden örüntü **dil-ses çiftlerine** ayrıştırılıyor ve her
+çift ayrı oy veriyor. Oy **olasılıkla** ağırlıklandırılıyor, ham sayımla
+değil: ham sayım çok tanıklı dilleri kayırırdı.
+
+Bu, elle atanmış `ARCHAISM_WEIGHTS` oylamasının veriden öğrenilmiş
+karşılığıdır.
+
+**Katkı (dev, n=83, dürüst koşul):**
+
+| | tam | NED | BCFS | ED |
+|---|---|---|---|---|
+| öğrenilmiş tablo yok | 0,337 | 0,334 | 0,562 | 1,60 |
+| tablo var | **0,361** | **0,306** | **0,583** | **1,48** |
+
+⚠️ **Sıra ölçümle belirlendi ve ilk seçim yanlıştı.** Öğrenilmiş oy önce
+elle yazılmış denkliklerin ÖNÜNE kondu; dilbilimsel olarak yerleşik iki
+kararı bozdu:
+
+    {tr: y, kk: z, otk: d}  ->  *j       (doğrusu *d̮)
+    *teŋiŕ                  ->  *teniŕ   (ŋ sütunu kayboldu)
+
+Elle yazılmış denklikler dar ve küratörlüdür; 135 kümeden öğrenilmiş bir
+sayım onları geçemez. Öğrenilmiş oyun doğru yeri **arkaiklik ağırlıklı oyun
+önü**: o yol en çok kullanılan (426 sütun) ama en zayıf (0,606) karar
+yoludur ve elle atanmış katsayılara dayanır.
+
+Karar sırası: tanısal (Lir-Şaz) → elle yazılmış denklik → **öğrenilmiş
+örüntü** → arkaiklik ağırlıklı oy.
+
+⚠️ Öğrenilmiş oy yalnız **güven eşiğinin (0,5) üstünde** devreye giriyor.
+Koşulsuz üstün tutmak ölçüldü ve zarar veriyordu (sütun düzeyinde +5,7
+puan, kelime düzeyinde 0,324 → 0,257). Sütun düzeyi ölçümü (dev, n=206):
+
+| eşik | kural | öğrenilmiş | melez | öğrenilmiş oyun payı |
+|---|---|---|---|---|
+| 0,0 | 0,762 | 0,782 | 0,796 | %98 |
+| **0,5** | 0,762 | 0,782 | **0,801** | %85 |
+| 0,6 | 0,762 | 0,782 | 0,786 | %72 |
+| 0,7 | 0,762 | 0,782 | 0,767 | %60 |
+
+⚠️ Tablo yalnız 135 kümeden öğrenilebildi: hizalama genişliği ata biçim
+uzunluğuyla tutmayan kümeler atlanıyor. Yanlış hizalanmış bir sütundan
+öğrenmek, hiç öğrenmemekten kötüdür.
+
+⚠️ **Çekimserlik bedava değildir.** Cevaplanmayan madde ortalamaya mümkün
+olan en kötü NED'i (1,0) katar. Bir dönem yalnızca cevaplanan maddeler
+ortalanıyordu; o muhasebe cevap vermemeyi kusursuz cevap vermekle bir
+tutuyor ve çekimser kalmayı ödüllendiriyordu.
 
 ### Akraba tespiti (B-Cubed F, dev kavramları)
 

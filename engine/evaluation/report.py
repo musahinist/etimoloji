@@ -78,6 +78,20 @@ CONDITIONS: tuple[Condition, ...] = (
 )
 
 
+def _supervised_components() -> list[str]:
+    """Yüklü olan **denetimli** bileşenlerin adları.
+
+    Motorun hangi parçalarının altın veriden öğrenildiğini bilmek, hangi
+    bölümde ölçüm yapılabileceğini belirler.
+    """
+    found: list[str] = []
+    from engine.nlp.proto_patterns import load as load_patterns
+
+    if load_patterns() is not None:
+        found.append("proto_patterns")
+    return found
+
+
 def measure(dataset: str = "savelyevturkic", split: str | None = None) -> dict[str, Any]:
     """Motoru ve tüm taban çizgilerini her koşulda ölçer."""
     gold = GoldStandard.build(dataset)
@@ -87,6 +101,21 @@ def measure(dataset: str = "savelyevturkic", split: str | None = None) -> dict[s
 
     pool = gold.items if split is None else gold.split(split)
     systems: dict[str, Any] = {"comparative": comparative_reconstructor(), **BASELINES}
+
+    # ⚠️ **SIZINTI DENETİMİ.** Motor artık denetimli bir katman taşıyor
+    # (``proto_patterns``, TRAIN kavramlarından öğrenilmiş). Bölüm
+    # verilmezse ölçüm 400 maddenin tamamında koşar ve eğitim maddeleri
+    # ölçüme girer; o sayı motorun performansı DEĞİL, ezberidir.
+    #
+    # Denetim sessiz kalmaz: hem uyarı basılır hem künyeye yazılır.
+    supervised = _supervised_components()
+    leakage = bool(supervised) and split in (None, "all")
+    if leakage:
+        logger.warning(
+            "⚠️ SIZINTI: denetimli bileşen(ler) %s TRAIN'de eğitildi ama ölçüm "
+            "tüm veride koşuyor. Bu sayı raporlanamaz; --split dev kullanın.",
+            ", ".join(supervised),
+        )
 
     results: dict[str, dict[str, Any]] = {}
     for condition in CONDITIONS:
@@ -164,6 +193,13 @@ def measure(dataset: str = "savelyevturkic", split: str | None = None) -> dict[s
         "dataset_ref": wordlist.provenance.get("ref", ""),
         "dataset_commit": wordlist.provenance.get("commit", ""),
         "split": split or "all",
+        "supervised_components": supervised,
+        "leakage_warning": (
+            "⚠️ Denetimli bileşenler TRAIN'de eğitildi ve ölçüm TÜM veride "
+            "koşuldu: eğitim maddeleri ölçüme girdi. Bu sayı raporlanamaz."
+            if leakage
+            else ""
+        ),
         "gold_summary": gold.summary(),
         "unmapped_languages": unmapped,
         "conditions": results,

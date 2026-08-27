@@ -94,6 +94,11 @@ jobs:
       - name: Ses denkliklerini öğren (TRAIN)
         run: python -m engine.nlp.cognate_prediction
 
+      # ⚠️ Denetimli katman. Bu adım atlanırsa motor tümüyle kural tabanlı
+      # çalışır ve ölçüm sessizce başka bir sistemi ölçer.
+      - name: Ata ses örüntü tablosunu öğren (TRAIN)
+        run: python -m engine.nlp.proto_patterns
+
       - name: Kalibratörü eğit (TRAIN)
         run: python -m engine.nlp.confidence
 
@@ -120,8 +125,9 @@ jobs:
       - name: Alıntı tespiti ölçümü
         run: python -m engine.evaluation.borrowing_eval
 
-      - name: Taban çizgisi ölçümü
-        run: python -m engine.evaluation.report
+      # ⚠️ `--split dev` ŞART: motor TRAIN'de eğitilmiş bir katman taşıyor.
+      - name: Taban çizgisi ölçümü (dev bölümü)
+        run: python -m engine.evaluation.report --split dev
 
       - name: Ölçüm raporunu yükle
         uses: actions/upload-artifact@v4

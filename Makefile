@@ -1,5 +1,5 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold donors eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-prediction correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify semantic dialect
+        data gold donors patterns eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-prediction correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify semantic dialect
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -12,7 +12,8 @@ help:
 	@echo "  --- veri ve değerlendirme ---"
 	@echo "data           - CLDF veri kümelerini indir (savelyev, hruschka, starostin, robbeets)"
 	@echo "gold           - Altın standardı kur, kavram bazlı böl ve test setini mühürle"
-	@echo "eval-baseline  - Taban çizgisi: motor vs trivial sistemler, 4 koşulda"
+	@echo "eval-baseline  - Taban çizgisi: motor vs trivial sistemler (dev bölümü)"
+	@echo "patterns       - Ata ses örüntü tablosunu TRAIN'den öğren (denetimli katman)"
 	@echo "eval           - Rekonstrüksiyon ölçümü (dev bölümü)"
 	@echo "eval-cognates  - Akraba tespiti B-Cubed F (LexStat-Infomap taban çizgisine karşı)"
 	@echo "eval-borrowing - Alıntı tespiti P/R/F (verici dile göre ayrıştırılmış)"
@@ -60,8 +61,12 @@ data:
 gold: data
 	.venv/bin/python -m engine.evaluation.gold --freeze
 
-eval-baseline: gold
-	.venv/bin/python -m engine.evaluation.report
+# ⚠️ `--split dev` ŞART. Motor denetimli bir katman taşıyor
+# (`proto_patterns`, TRAIN kavramlarından öğrenilmiş); bölüm verilmezse
+# eğitim maddeleri ölçüme girer ve sayı motorun performansı değil ezberi
+# olur. `engine.evaluation.report` bu durumda uyarı basar.
+eval-baseline: gold patterns
+	.venv/bin/python -m engine.evaluation.report --split dev
 
 eval: gold
 	.venv/bin/python -m engine.evaluation.harness --split dev
@@ -85,6 +90,9 @@ lexicon-index: lexicons
 
 chains: lexicons
 	.venv/bin/python -m engine.nlp.borrowing_chain --save
+
+patterns: gold
+	.venv/bin/python -m engine.nlp.proto_patterns
 
 correspondences: gold
 	.venv/bin/python -m engine.nlp.cognate_prediction
