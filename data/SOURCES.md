@@ -12,6 +12,7 @@ indirildiğini ve içerik özetini gösterir.
 | [robbeetstriangulation](https://github.com/lexibank/robbeetstriangulation) | `v0.3` | `5f59f1522ed8` | 2026-08-26 | 26,224 biçim | yalnız temas çerçevesi |
 | [savelyevturkic](https://github.com/lexibank/savelyevturkic) | `v2.1` | `4a540590580f` | 2026-08-26 | 8,360 biçim | birincil altın standart |
 | [starostinaltaic](https://github.com/lexibank/starostinaltaic) | `main` | `638500a49eda` | 2026-08-26 | 5,756 biçim | yalnız karşılaştırma |
+| [wold](https://github.com/lexibank/wold) | `master` | `1df62b9bdc72` | 2026-08-27 | 64,289 biçim | alıntı değerlendirmesinin UZMAN ölçütü |
 
 ### Künye ve uyarılar
 
@@ -28,6 +29,10 @@ indirildiğini ve içerik özetini gösterir.
 **starostinaltaic** — Starostin, Dybo & Mudrak, Altaic Etymological Dictionary
 > ⚠️ Altay hipotezi tartışmalıdır (Vovin 2005). Tek kaynak olarak kullanılmaz; akrabalık kanıtına katılmaz.
 > `forms.csv` 5,756 kayıt · `cognates.csv` 5,756 kayıt · `languages.csv` 54 kayıt · `parameters.csv` 110 kayıt
+
+**wold** — Haspelmath & Tadmor (ed.), World Loanword Database
+> ⚠️ Alıntı tespiti Wiktionary etiketine karşı ölçülemez: motorun zincir sinyali zaten o etiketi okur, ölçüm döngüsel olur. WOLD bağımsız uzman derlemesidir ve BİRİNCİL ölçüt olarak kullanılır.
+> `forms.csv` 64,289 kayıt · `languages.csv` 41 kayıt · `parameters.csv` 1,814 kayıt · `borrowings.csv` 21,624 kayıt
 
 ### Doğrulama
 

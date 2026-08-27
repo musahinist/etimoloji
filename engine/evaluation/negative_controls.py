@@ -4,7 +4,7 @@ Negatif kontrol bataryası — motor "hayır" demeyi biliyor mu?
 Tek bir uydurma kelime (``zzzqx``) yetmez: o kadar bariz bir örneği herhangi
 bir sistem eler. Gerçek sınav, **elenmesi zor** olanlardır.
 
-Dört batarya:
+Beş batarya:
 
 ``fonotaktik_gecerli_sahte``
     Türkçenin ses dizimine **uyan** ama var olmayan kelimeler (``kalgır``,
@@ -19,6 +19,10 @@ Dört batarya:
     Alıntı olduğu **kesin** ama miras gibi görünen kelimeler (``kitap``,
     ``duvar``, ``çorap``). Motor bunları miras sayarsa alıntı katmanı işe
     yaramıyor demektir.
+``eşadlı``
+    Aynı yazılışta hem miras hem alıntı kelime bulunanlar (``çay`` = hem
+    "tea" Farsça alıntı, hem "brook" Proto-Türkçe miras). Doğru cevap
+    "belirsiz"dir; kesin karar vermek burada **hata**dır.
 
 Ölçülen büyüklük **yanlış-pozitif oranı**: motorun "bu rekonstrükte edilebilir"
 dediği ve bunu güçlü bir rozetle yaptığı kontrol maddelerinin oranı. Ana
@@ -44,11 +48,6 @@ class ControlItem:
     witnesses: list[tuple[str, str]]
     battery: str
     reason: str
-
-
-def _pseudo(word: str, mutations: list[tuple[str, str]]) -> list[tuple[str, str]]:
-    """Sahte 'akraba' tanıkları üretir — hepsi aynı uydurmanın varyantı."""
-    return [(code, form) for code, form in mutations]
 
 
 #: Fonotaktik olarak GEÇERLİ ama var olmayan kökler. Türkçenin ünlü uyumuna,
@@ -125,8 +124,32 @@ LOANWORD_TRAPS: tuple[ControlItem, ...] = tuple(
          "Farsça panǧara"),
         ("sabun", [("kk", "sabın"), ("tt", "sabın"), ("uz", "sovun")],
          "Arapça ṣābūn (nihayetinde Latince)"),
+
+    ]
+)
+
+#: **Gerçek eşadlılar.** Aynı yazılışta hem miras hem alıntı bir kelime
+#: bulunur. Doğru cevap "alıntı" da "miras" da değildir — **belirsiz**tir.
+#:
+#: ⚠️ Bu batarya, sistemi "kararlı görünsün" diye zorlamamak için ayrıdır:
+#: eşadlı bir kelimeye kesin karar vermek, karar vermemekten kötüdür.
+#: Ölçüldü — Türkçe `çay` sözlükte iki ayrı maddedir: "tea" (Farsça alıntı)
+#: ve "brook, small river" (Proto-Türkçe miras). Motorun "belirsiz" demesi
+#: DOĞRU davranıştır; ilk kontrol listesi bunu yanlışlıkla hata sayıyordu.
+HOMONYM_CASES: tuple[ControlItem, ...] = tuple(
+    ControlItem(
+        query=query,
+        witnesses=witnesses,
+        battery="eşadlı",
+        reason=reason,
+    )
+    for query, witnesses, reason in [
         ("çay", [("kk", "şay"), ("tt", "çäy"), ("uz", "choy"), ("ky", "çay")],
-         "Çince 茶 — geniş yayılım miras kanıtı değildir"),
+         "'tea' Farsça alıntı, 'brook' Proto-Türkçe miras — aynı yazılış"),
+        ("yaş", [("kk", "jas"), ("tt", "yäş"), ("ky", "jaş")],
+         "'age' ve 'wet/tear' ayrı köklerdir"),
+        ("kat", [("kk", "kat"), ("tt", "qat"), ("ky", "kat")],
+         "'layer' ve 'hard' ayrı köklerdir"),
     ]
 )
 
@@ -135,6 +158,7 @@ ALL_BATTERIES: dict[str, tuple[ControlItem, ...]] = {
     "bariz_sahte": OBVIOUSLY_FAKE,
     "sahte_akraba": FALSE_FRIENDS,
     "alinti_tuzagi": LOANWORD_TRAPS,
+    "eşadlı": HOMONYM_CASES,
 }
 
 

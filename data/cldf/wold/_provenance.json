@@ -1,0 +1,38 @@
+{
+  "_schema": "turkic-etymology-cldf-provenance/v1",
+  "dataset": "wold",
+  "repository": "https://github.com/lexibank/wold",
+  "ref": "master",
+  "commit": "1df62b9bdc72",
+  "retrieved_at": "2026-08-27T01:10:38+00:00",
+  "citation": "Haspelmath & Tadmor (ed.), World Loanword Database",
+  "role": "alıntı değerlendirmesinin UZMAN ölçütü",
+  "caveat": "Alıntı tespiti Wiktionary etiketine karşı ölçülemez: motorun zincir sinyali zaten o etiketi okur, ölçüm döngüsel olur. WOLD bağımsız uzman derlemesidir ve BİRİNCİL ölçüt olarak kullanılır.",
+  "files": {
+    "forms.csv": {
+      "sha256": "2a7e5f5bd981063758a018fa5b264d3e8ac63cf3768f38c56e6b18942a59a6c7",
+      "bytes": 17388139,
+      "rows": 64289
+    },
+    "languages.csv": {
+      "sha256": "b4138940684e909c1c64bfb8f680d307c97b4deedf0732ee83ab92c097413084",
+      "bytes": 3296,
+      "rows": 41
+    },
+    "parameters.csv": {
+      "sha256": "c06348f803fc4d5a607d60e8d94d8dfe47d09afae11f623ea3083a5998251964",
+      "bytes": 163838,
+      "rows": 1814
+    },
+    "borrowings.csv": {
+      "sha256": "66d1bdc8a5ae9259bdc1f23cf09c0835eab3a57246f65c39a8c71b6e92e8a8e4",
+      "bytes": 1695835,
+      "rows": 21624
+    },
+    "cldf-metadata.json": {
+      "sha256": "8e3483b5e20c1f6adcf34c0e4ef603d4cb2a0237c812bec93fab81635c88efea",
+      "bytes": 35085,
+      "rows": 0
+    }
+  }
+}

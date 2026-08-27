@@ -24,13 +24,20 @@
     },
     {
       "battery": "alinti_tuzagi",
-      "n": 6,
-      "reconstructed": 6,
+      "n": 5,
+      "reconstructed": 3,
+      "false_positive_rate": 0.6,
+      "strong_claim_rate": 0.0
+    },
+    {
+      "battery": "eşadlı",
+      "n": 3,
+      "reconstructed": 3,
       "false_positive_rate": 1.0,
       "strong_claim_rate": 0.0
     }
   ],
-  "measured_at": "2026-08-27T00:42:06+00:00",
+  "measured_at": "2026-08-27T01:21:21+00:00",
   "dataset": "savelyevturkic",
   "dataset_ref": "v2.1",
   "dataset_commit": "4a540590580f",
@@ -63,20 +70,20 @@
           "split": "all",
           "system": "comparative",
           "n": 400,
-          "accuracy": 0.2225,
-          "acceptable": 0.3,
-          "ED": 1.7975,
-          "NED": 0.3481,
-          "coverage": 0.93,
-          "abstained": 28,
-          "FER": 0.3585,
+          "accuracy": 0.215,
+          "acceptable": 0.2925,
+          "ED": 1.79,
+          "NED": 0.3462,
+          "coverage": 0.92,
+          "abstained": 32,
+          "FER": 0.3611,
           "mean_witnesses": 11.84,
           "error_modes": {
-            "ses_hatasi": 112,
-            "dogru": 89,
+            "ses_hatasi": 111,
+            "dogru": 86,
             "soz_basi_yanlis": 65,
             "ek_soyulmamis": 53,
-            "cekimser": 28,
+            "cekimser": 32,
             "unlu_uzunlugu": 20,
             "capa_kisa": 20,
             "rotasizm_lambdaizm_kacirildi": 12,
@@ -84,12 +91,12 @@
           },
           "by_proto_level": {
             "PCT": {
-              "n": 257,
-              "accuracy": 0.1984
+              "n": 256,
+              "accuracy": 0.1992
             },
             "PT": {
-              "n": 115,
-              "accuracy": 0.3304
+              "n": 112,
+              "accuracy": 0.3125
             }
           }
         },
@@ -230,13 +237,13 @@
         {
           "system": "comparative",
           "vs": "majority_character",
-          "difference": -0.015,
+          "difference": -0.0225,
           "ci95": [
-            -0.0425,
-            0.0125
+            -0.05,
+            0.005
           ],
-          "permutation_p": 0.37566,
-          "mcnemar_p": 0.37709,
+          "permutation_p": 0.17238,
+          "mcnemar_p": 0.17547,
           "ci_excludes_zero": false,
           "significant_after_fdr": false
         }
@@ -251,33 +258,33 @@
           "split": "all",
           "system": "comparative",
           "n": 400,
-          "accuracy": 0.2425,
-          "acceptable": 0.3275,
-          "ED": 1.88,
-          "NED": 0.3672,
-          "coverage": 0.995,
-          "abstained": 2,
-          "FER": 0.3515,
+          "accuracy": 0.23,
+          "acceptable": 0.315,
+          "ED": 1.8575,
+          "NED": 0.3617,
+          "coverage": 0.97,
+          "abstained": 12,
+          "FER": 0.3559,
           "mean_witnesses": 12.84,
           "error_modes": {
-            "ses_hatasi": 122,
-            "dogru": 97,
-            "soz_basi_yanlis": 66,
-            "ek_soyulmamis": 59,
+            "ses_hatasi": 120,
+            "dogru": 92,
+            "soz_basi_yanlis": 65,
+            "ek_soyulmamis": 58,
             "unlu_uzunlugu": 21,
             "capa_kisa": 19,
-            "rotasizm_lambdaizm_kacirildi": 13,
-            "cekimser": 2,
+            "rotasizm_lambdaizm_kacirildi": 12,
+            "cekimser": 12,
             "unlu_uzunlugu_taniksiz": 1
           },
           "by_proto_level": {
             "PCT": {
-              "n": 283,
-              "accuracy": 0.212
+              "n": 276,
+              "accuracy": 0.2101
             },
             "PT": {
-              "n": 115,
-              "accuracy": 0.3217
+              "n": 112,
+              "accuracy": 0.3036
             }
           }
         },
@@ -418,13 +425,13 @@
         {
           "system": "comparative",
           "vs": "majority_character",
-          "difference": 0.02,
+          "difference": 0.0075,
           "ci95": [
-            -0.0075,
-            0.0475
+            -0.0225,
+            0.0375
           ],
-          "permutation_p": 0.22748,
-          "mcnemar_p": 0.22948,
+          "permutation_p": 0.74183,
+          "mcnemar_p": 0.74283,
           "ci_excludes_zero": false,
           "significant_after_fdr": false
         }
@@ -439,22 +446,23 @@
           "split": "all",
           "system": "comparative",
           "n": 158,
-          "accuracy": 0.2975,
-          "acceptable": 0.4367,
+          "accuracy": 0.2785,
+          "acceptable": 0.4177,
           "ED": 1.4304,
           "NED": 0.3288,
-          "coverage": 1.0,
-          "abstained": 0,
-          "FER": 0.3275,
+          "coverage": 0.981,
+          "abstained": 3,
+          "FER": 0.3339,
           "mean_witnesses": 24.18,
           "error_modes": {
-            "dogru": 47,
             "ses_hatasi": 46,
+            "dogru": 44,
             "soz_basi_yanlis": 27,
             "unlu_uzunlugu": 14,
             "ek_soyulmamis": 13,
             "rotasizm_lambdaizm_kacirildi": 6,
-            "capa_kisa": 5
+            "capa_kisa": 5,
+            "cekimser": 3
           },
           "by_proto_level": {
             "PCT": {
@@ -462,8 +470,8 @@
               "accuracy": 0.2286
             },
             "PT": {
-              "n": 88,
-              "accuracy": 0.3523
+              "n": 85,
+              "accuracy": 0.3294
             }
           }
         },
@@ -600,13 +608,13 @@
         {
           "system": "comparative",
           "vs": "majority_character",
-          "difference": 0.0127,
+          "difference": -0.0063,
           "ci95": [
-            -0.0253,
-            0.0506
+            -0.0506,
+            0.038
           ],
-          "permutation_p": 0.75822,
-          "mcnemar_p": 0.75391,
+          "permutation_p": 1.0,
+          "mcnemar_p": 1.0,
           "ci_excludes_zero": false,
           "significant_after_fdr": false
         }
@@ -621,22 +629,23 @@
           "split": "all",
           "system": "comparative",
           "n": 158,
-          "accuracy": 0.2975,
-          "acceptable": 0.4367,
+          "accuracy": 0.2785,
+          "acceptable": 0.4177,
           "ED": 1.4241,
           "NED": 0.3271,
-          "coverage": 1.0,
-          "abstained": 0,
-          "FER": 0.3245,
+          "coverage": 0.981,
+          "abstained": 3,
+          "FER": 0.3308,
           "mean_witnesses": 25.18,
           "error_modes": {
-            "dogru": 47,
             "ses_hatasi": 45,
+            "dogru": 44,
             "soz_basi_yanlis": 28,
             "unlu_uzunlugu": 14,
             "ek_soyulmamis": 13,
             "rotasizm_lambdaizm_kacirildi": 6,
-            "capa_kisa": 5
+            "capa_kisa": 5,
+            "cekimser": 3
           },
           "by_proto_level": {
             "PCT": {
@@ -644,8 +653,8 @@
               "accuracy": 0.2429
             },
             "PT": {
-              "n": 88,
-              "accuracy": 0.3409
+              "n": 85,
+              "accuracy": 0.3176
             }
           }
         },
@@ -782,13 +791,13 @@
         {
           "system": "comparative",
           "vs": "majority_character",
-          "difference": 0.0127,
+          "difference": -0.0063,
           "ci95": [
-            -0.019,
-            0.0506
+            -0.0443,
+            0.0316
           ],
-          "permutation_p": 0.72183,
-          "mcnemar_p": 0.72656,
+          "permutation_p": 1.0,
+          "mcnemar_p": 1.0,
           "ci_excludes_zero": false,
           "significant_after_fdr": false
         }

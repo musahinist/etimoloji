@@ -66,7 +66,7 @@ eval: gold
 eval-cognates: data
 	.venv/bin/python -m engine.evaluation.cognate_eval
 
-eval-borrowing: data
+eval-borrowing: data lexicon-index
 	.venv/bin/python -m engine.evaluation.borrowing_eval
 
 lexicons:

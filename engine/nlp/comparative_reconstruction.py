@@ -134,7 +134,13 @@ class ComparativeReconstructor:
             self._aligner = CldfLingPyAligner()
         return self._aligner
 
-    def reconstruct(self, word: str, turkic_entries: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+    def reconstruct(
+        self,
+        word: str,
+        turkic_entries: list[dict[str, Any]] | None = None,
+        *,
+        check_borrowing: bool = True,
+    ) -> dict[str, Any]:
         """
         :param word: Modern sorgu kelimesi.
         :param turkic_entries: Fetcher'lardan gelen gerçek akraba kayıtları.
@@ -147,6 +153,20 @@ class ComparativeReconstructor:
         """
         anchor = to_comparison_form(word)
         entries = [e for e in (turkic_entries or []) if e.get("lang_code") in TURKIC_LANGUAGES_MAP]
+
+        # ⚠️ Alıntı bir kelimeye MİRAS ata biçim türetmek yanlıştır.
+        # Ölçüldü: negatif kontrol bataryasında alıntı tuzaklarının (kitap,
+        # duvar, çorap, sabun, pencere, çay) tamamı rekonstrükte edilebilir
+        # sayılıyordu. Bu denetim onları eler ve GEREKÇESİNİ verir.
+        borrowing = self._borrowing_verdict(word, turkic_entries) if check_borrowing else None
+        if borrowing is not None and borrowing.blocks_inherited_reconstruction:
+            result = self._no_result(
+                word,
+                f"Bu kelime alıntı görünüyor; miras ata biçim türetilmedi.\n"
+                f"{borrowing.explain()}",
+            )
+            result["borrowing"] = borrowing.as_dict()
+            return apply_calibration(result)
 
         # Dil başına tek biçim (en kısa, en çekirdek olan)
         by_lang: dict[str, str] = {}
@@ -252,6 +272,7 @@ class ComparativeReconstructor:
             "alignment_width": len(informative),
             "diagnostic_columns": diagnostic_hits,
             "applied_correspondences": applied_rules,
+            "borrowing": borrowing.as_dict() if borrowing is not None else None,
             "reconstruction_notes": (
                 f"{len(by_lang)} dil tanığı ve {len(branches)} Türki kol üzerinden "
                 f"karşılaştırmalı yöntemle türetildi: {anchor} -> {proto_form} "
@@ -263,6 +284,17 @@ class ComparativeReconstructor:
         # yüksektir (ölçüldü: ECE 0,43). Kalibrasyon ve çekimserlik eşiği
         # burada uygulanır.
         return apply_calibration(result)
+
+    @staticmethod
+    def _borrowing_verdict(word: str, entries: list[dict[str, Any]] | None) -> Any:
+        """Alıntı denetimi. Sözlük indeksi yoksa sessizce atlanır."""
+        try:
+            from engine.nlp.borrowing_detector import BorrowingDetector
+
+            return BorrowingDetector().detect(word, entries or [])
+        except Exception:
+            logger.warning("Alıntı denetimi başarısız: %s", word, exc_info=True)
+            return None
 
     @staticmethod
     def _no_result(word: str, note: str, **extra: Any) -> dict[str, Any]:

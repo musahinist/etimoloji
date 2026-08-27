@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import gzip
 import json
+import re
 import sqlite3
 from collections.abc import Iterator
 from dataclasses import dataclass
@@ -57,11 +58,108 @@ BORROWING_TEMPLATES: dict[str, str] = {
     "psm": "fono-semantik eşleme",
 }
 
+#: ``etymon`` / ``ety`` şablonları bambaşka bir yapı kullanır::
+#:
+#:     {"name": "etymon", "args": {"1": "tr", "2": ":inh", "3": "ota:كتاب"}}
+#:     {"name": "ety",    "args": {"2": ":inh", "3": "ota:صلا\n<ety:der<ar:صَلاَة>>"}}
+#:
+#: İlişki ``args["2"]``te ``:`` önekiyle, dil ve biçim ``args["3"]``te
+#: ``lang:form`` olarak gelir; daha derin halkalar ``<ety:REL<lang:form>>``
+#: biçiminde İÇ İÇE gömülüdür.
+#:
+#: ⚠️ Bu biçim tanınmazsa ``kitap`` gibi temel alıntılar KAÇIRILIR: Türkçe
+#: dökümünde `kitap`ın tek şablonu budur.
+TREE_TEMPLATES = frozenset({"etymon", "ety"})
+_TREE_NESTED = re.compile(r"<ety:(\w+)<([a-zA-Z-]+):([^<>]+)>>")
+_TREE_HEAD = re.compile(r"^([a-zA-Z-]+):(.+)$")
+
+
+def parse_tree_template(template: dict[str, Any]) -> list[tuple[str, str, str]]:
+    """``etymon``/``ety`` şablonundan ``(ilişki, dil, biçim)`` halkalarını çıkarır."""
+    args = template.get("args", {}) or {}
+    relation = str(args.get("2", "") or "").lstrip(":").strip().lower()
+    raw = str(args.get("3", "") or "")
+    if not raw:
+        return []
+
+    steps: list[tuple[str, str, str]] = []
+    head = _TREE_HEAD.match(raw.split("\n")[0].split("<")[0].strip())
+    if head:
+        steps.append((relation or "inh", head.group(1), head.group(2).strip()))
+    for nested_relation, lang, form in _TREE_NESTED.findall(raw):
+        steps.append((nested_relation.lower(), lang, form.strip()))
+    return steps
+
+
 INHERITANCE_TEMPLATES: dict[str, str] = {
     "inh": "miras",
     "inh+": "miras",
     "der": "türev",
 }
+
+#: Etimoloji METNİNDE geçen verici dil adları -> kod.
+#:
+#: ⚠️ Yedek yoldur, birincil değil. Bazı maddelerde zincirin uzak halkaları
+#: yalnız serbest metinde bulunur; ``kitap`` bunun tipik örneğidir::
+#:
+#:     Etymology tree
+#:     Arabic كِتَاب (kitāb)bor.
+#:     Ottoman Turkish كتاب
+#:     Turkish kitap
+#:
+#: Şablon dizisi yalnız ``ota``ya kadar gider; Arapça halkası metindedir.
+#: Bu yedek olmadan ``kitap`` "miras" sayılıyordu.
+ETYMOLOGY_TEXT_DONORS: dict[str, str] = {
+    "Arabic": "ar",
+    "Persian": "fa",
+    "Classical Persian": "fa-cls",
+    "Middle Persian": "pal",
+    "Ancient Greek": "grc",
+    "Byzantine Greek": "gkm",
+    "Greek": "el",
+    "Latin": "la",
+    "Italian": "it",
+    "French": "fr",
+    "English": "en",
+    "German": "de",
+    "Russian": "ru",
+    "Armenian": "hy",
+    "Georgian": "ka",
+    "Hebrew": "he",
+    "Aramaic": "arc",
+    "Syriac": "syc",
+    "Sanskrit": "sa",
+    "Chinese": "zh",
+    "Mongolian": "mn",
+    "Sogdian": "sog",
+    "Bulgarian": "bg",
+    "Serbo-Croatian": "sh",
+    "Romanian": "ro",
+    "Hungarian": "hu",
+    "Spanish": "es",
+    "Portuguese": "pt",
+    "Dutch": "nl",
+    "Kurdish": "ku",
+    "Adyghe": "ady",
+}
+
+#: Uzun adlar önce denenmeli: "Classical Persian" "Persian"dan önce.
+_DONOR_NAMES_BY_LENGTH = sorted(ETYMOLOGY_TEXT_DONORS, key=len, reverse=True)
+
+
+def donor_from_text(etymology_text: str) -> tuple[str, str]:
+    """Etimoloji metninden verici dili çıkarır. Bulamazsa ``("", "")``."""
+    if not etymology_text:
+        return "", ""
+    for name in _DONOR_NAMES_BY_LENGTH:
+        index = etymology_text.find(name + " ")
+        if index < 0:
+            continue
+        rest = etymology_text[index + len(name) + 1 :].strip()
+        form = rest.split()[0] if rest else ""
+        return ETYMOLOGY_TEXT_DONORS[name], form.strip("(),.")
+    return "", ""
+
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS entries (
@@ -139,27 +237,74 @@ def _first_ipa(record: dict[str, Any]) -> str:
     return ""
 
 
+#: Türki dil kodları. Zincirin bir halkası bu ailenin DIŞINA çıkıyorsa
+#: kelime nihayetinde alıntıdır — ilk halka "miras" etiketli olsa bile.
+TURKIC_FAMILY_CODES = frozenset(
+    {
+        "tr", "ota", "otk", "trk-pro", "trk-oat", "trk-ogz-pro", "trk-cmn-pro",
+        "az", "tk", "gag", "kk", "kaa", "ky", "tt", "ba", "nog", "kum", "krc",
+        "crh", "uz", "ug", "cv", "sah", "tyv", "alt", "khk", "cjs", "slq",
+        "chg", "klj", "dlg", "kim", "ybe", "clw", "atv", "bay", "qwm", "kdr",
+    }
+)
+
+
 def _origin_from_templates(record: dict[str, Any]) -> tuple[str | None, str, str]:
-    """``etymology_templates``ten köken, verici dil ve özgün biçmi çıkarır.
+    """``etymology_templates``ten köken, NİHAİ verici dil ve özgün biçmi çıkarır.
 
-    Serbest metin ayrıştırmaktan çok daha güvenilirdir: şablon zaten
-    ``{alan_dil, veren_dil, özgün_biçim}`` üçlüsünü taşır.
+    ⚠️ **Zincirin tamamı taranır, ilk halkası değil.** Bu ayrım ölçüldü ve
+    kritik çıktı: Türkçe ``sabun``un şablon dizisi şudur::
 
-    İlk **alıntı** şablonu önceliklidir; yoksa ilk **miras** şablonu.
+        ('inh', 'ota', 'صابون')      ilk halka MİRAS (Osmanlıcadan)
+        ('der', 'ar',  'صَابُون')      ikinci halka Arapçaya çıkıyor
+
+    Yalnız ilk halkaya bakan bir uygulama ``sabun``u **miras** sayar. Oysa
+    kelime nihayetinde Arapçadan gelir; Osmanlıca yalnız aracıdır. Aynı
+    hata ``kitap``, ``duvar``, ``çorap``, ``pencere`` ve ``çay``da da
+    tekrarlanıyordu — negatif kontrol bataryasında alıntı tuzaklarının
+    tamamı bu yüzden kaçırılıyordu.
+
+    Ölçüt: zincirin herhangi bir halkası **alıntı şablonu** taşıyorsa ya da
+    **Türki ailenin dışına** çıkıyorsa, kelime alıntıdır.
     """
-    inherited: tuple[str, str] | None = None
+    steps: list[tuple[str, str, str]] = []
     for template in record.get("etymology_templates", []) or []:
         name = str(template.get("name", "")).lower()
+        if name in TREE_TEMPLATES:
+            steps.extend(parse_tree_template(template))
+            continue
         args = template.get("args", {}) or {}
-        donor = str(args.get("2", "")).strip()
-        form = str(args.get("3", "")).strip()
-        if name in BORROWING_TEMPLATES:
-            return "alıntı", donor, form
-        if name in INHERITANCE_TEMPLATES and inherited is None:
-            inherited = (donor, form)
-    if inherited is not None:
-        return "miras", inherited[0], inherited[1]
-    return None, "", ""
+        donor = str(args.get("2", "") or "").strip()
+        form = str(args.get("3", "") or "").strip()
+        if not donor:
+            continue
+        if name in BORROWING_TEMPLATES or name in INHERITANCE_TEMPLATES:
+            steps.append((name, donor, form))
+
+    text_donor, text_form = donor_from_text(str(record.get("etymology_text", "")))
+
+    if not steps:
+        if text_donor:
+            return "alıntı", text_donor, text_form
+        return None, "", ""
+
+    explicit_borrowing = any(name in BORROWING_TEMPLATES for name, _, _ in steps)
+    leaves_family = any(donor not in TURKIC_FAMILY_CODES for _, donor, _ in steps)
+
+    # Nihai kaynak: zincirin en uzak ucundaki dil.
+    final_lang, final_form = steps[-1][1], steps[-1][2]
+    if explicit_borrowing or leaves_family:
+        # Aile dışına ilk çıkan halka gerçek vericidir.
+        for _, donor, form in steps:
+            if donor not in TURKIC_FAMILY_CODES:
+                return "alıntı", donor, form
+        return "alıntı", final_lang, final_form
+
+    # Şablon zinciri aile içinde kalıyor ama metin aile dışı bir kaynak
+    # gösteriyorsa, zincirin uzak halkası şablona yazılmamış demektir.
+    if text_donor and text_donor not in TURKIC_FAMILY_CODES:
+        return "alıntı", text_donor, text_form
+    return "miras", final_lang, final_form
 
 
 def iter_entries(path: Path, lang_code: str) -> Iterator[LexiconEntry]:

@@ -43,7 +43,7 @@ RAW = "https://raw.githubusercontent.com/lexibank/{repo}/{ref}/cldf/{name}"
 API = "https://api.github.com/repos/lexibank/{repo}"
 
 #: İndirilecek CLDF tabloları. Yıldızlılar zorunludur.
-TABLES = ("forms.csv", "cognates.csv", "languages.csv", "parameters.csv")
+TABLES = ("forms.csv", "cognates.csv", "languages.csv", "parameters.csv", "borrowings.csv")
 REQUIRED = ("forms.csv",)
 METADATA = "cldf-metadata.json"
 
@@ -67,6 +67,16 @@ DATASETS: dict[str, dict[str, str]] = {
         "citation": "Starostin, Dybo & Mudrak, Altaic Etymological Dictionary",
         "caveat": (
             "Altay hipotezi tartışmalıdır (Vovin 2005). Tek kaynak olarak kullanılmaz; akrabalık kanıtına katılmaz."
+        ),
+    },
+    "wold": {
+        "ref": "master",
+        "role": "alıntı değerlendirmesinin UZMAN ölçütü",
+        "citation": "Haspelmath & Tadmor (ed.), World Loanword Database",
+        "caveat": (
+            "Alıntı tespiti Wiktionary etiketine karşı ölçülemez: motorun "
+            "zincir sinyali zaten o etiketi okur, ölçüm döngüsel olur. WOLD "
+            "bağımsız uzman derlemesidir ve BİRİNCİL ölçüt olarak kullanılır."
         ),
     },
     "robbeetstriangulation": {

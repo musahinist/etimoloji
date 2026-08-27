@@ -193,5 +193,32 @@ class TestNegativeControlBatteries(unittest.TestCase):
                 self.assertTrue(item.reason.strip(), item.query)
 
 
+
+
+class TestHomonymBattery(unittest.TestCase):
+    """Eşadlı kelimeye KESİN karar vermek, karar vermemekten kötüdür."""
+
+    def test_homonyms_are_a_separate_battery(self):
+        from engine.evaluation.negative_controls import HOMONYM_CASES
+
+        self.assertIn("eşadlı", ALL_BATTERIES)
+        self.assertGreaterEqual(len(HOMONYM_CASES), 3)
+
+    def test_engine_does_not_block_reconstruction_for_homonyms(self):
+        """`çay` hem "tea" (Farsça alıntı) hem "brook" (miras) demektir.
+
+        Motorun bunu "alıntı" diye kesin karara bağlayıp miras hipotezini
+        hiç kurmaması yanlış olurdu.
+        """
+        from engine.evaluation.negative_controls import HOMONYM_CASES
+        from engine.nlp.borrowing_detector import BorrowingDetector
+
+        detector = BorrowingDetector()
+        for item in HOMONYM_CASES:
+            with self.subTest(word=item.query):
+                entries = [{"lang_code": c, "word": w} for c, w in item.witnesses]
+                verdict = detector.detect(item.query, entries)
+                self.assertFalse(verdict.blocks_inherited_reconstruction, item.query)
+
 if __name__ == "__main__":
     unittest.main()
