@@ -29,6 +29,23 @@ Bu bölüm reklam değil, **ölçüm**dür. Bütün sayılar `make eval-baseline
 yeniden üretilebilir ve `data/eval/BASELINE.md` içinde sürüm damgasıyla
 saklanır.
 
+### Nerede duruyoruz — özet
+
+| Ölçüm | Değer | Taban çizgi | Hüküm |
+|---|---|---|---|
+| Alıntı F — **Türkçe** (TDK+Nişanyan, n=349) | **0,877** | 0,749 hepsi-alıntı | ✅ **anlamlı** (+0,255, p=0,0001) |
+| Alıntı F — WOLD/Sakha (n=769) | **0,651** | 0,464 hepsi-alıntı | ⚠️ fonotaktiğe karşı anlamlı **değil** (p=0,251) |
+| Rekonstrüksiyon NED (dev, n=83) | **0,302** | 0,341 `majority_character` | ⚠️ anlamlı **değil** (GA [−0,079, +0,002]) |
+| Rekonstrüksiyon tam (dev) | **0,386** | 0,325 | — |
+| Akraba tespiti B-Cubed F (dev) | 0,818 | 0,934 düzenleme uzaklığı | ⚠️ motorun kümeleyicisi **geride** |
+| Uzman uyuşmazlık bandı | **0,914** | — | otomatik sistemin gerçekçi tavanı |
+| Denklik düzenliliği (CoPaR, TRAIN) | **0,713** | — | kural tabanlı doğruluğun üst sınırı |
+
+Doğrulanmamış ya da kazanç vermeyen şeyler de aynı ayrıntıda raporlanıyor:
+bağlam kodlaması (D3), N-best yeniden sıralama (D5), Batı Eski Türkçe
+entegrasyonu (B2), ağaç-uyumsuz dağılım (C3), ses kanunu sinyalinin miras
+tablosuyla kurtarılamaması (C4).
+
 ### Rekonstrüksiyon (dev bölümü, n=83)
 
 **Birincil metrikler NED ve B-Cubed F'tir.** Bu, keyfî bir tercih değil alan
