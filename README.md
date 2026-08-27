@@ -12,13 +12,129 @@ raporlar.
 ```
 $ python -m engine.cli search göz
 
-  Ana Kök / Rekonstrüksiyon : *köŕ
+  Ana Kök / Rekonstrüksiyon : *köŕ  [*PT]
   Yöntem                    : karşılaştırmalı yöntem, 8 dil tanığı / 5 Türki kol
   Uygulanan denklikler      : g- ~ k- (Proto-Türkçe *k-)
                               Ortak Türkçe -z ~ Çuvaşça -r (Lir-Şaz rotasizmi)
-  Hakem kararı              : 🟢 DOĞRULANDI — kısmi kanıt, %85 kapsam
-  Alıntı sınıfı             : Asli Öz Türkçe (Native Turkic)
+  Kalibre güven             : 0,26  🟠 ZAYIF KANIT
+  Rakip hipotezler          : 1. MİRAS 0,23 ✓  2. MODERN TÜRETME 0,05 ✗
+                              3. ALINTI 0,00 ✗ (sözlükte alıntı kaydı yok)
 ```
+
+---
+
+## ⚠️ Ölçülmüş doğruluk
+
+Bu bölüm reklam değil, **ölçüm**dür. Bütün sayılar `make eval-baseline` ile
+yeniden üretilebilir ve `data/eval/BASELINE.md` içinde sürüm damgasıyla
+saklanır.
+
+### Rekonstrüksiyon (n=400, uzman altın standardı)
+
+| Sistem | tam | kabul edilebilir | ED | kapsam |
+|---|---|---|---|---|
+| **motor** | **%21,5** | %29,2 | 1,80 | %93 |
+| `majority_character` (trivial) | %23,7 | %33,0 | 1,94 | %100 |
+| `copy_anchor` (hiçbir şey yapma) | %20,3 | %26,8 | 2,13 | %100 |
+| `copy_random_daughter` | %16,8 | %24,2 | 2,29 | %100 |
+
+⚠️ **Motor ile en iyi trivial taban çizgisi arasındaki fark dört koşulun
+hiçbirinde istatistiksel olarak anlamlı değildir** — bütün bootstrap güven
+aralıkları sıfırı içeriyor (permütasyon p = 0,23–0,76). Yani bugünkü hâliyle
+"karşılaştırmalı yöntem katmanı ölçülebilir bir katkı sağlıyor" **denemez**.
+Bu, motorun kötü olduğunu değil, farkın henüz kanıtlanmadığını söyler.
+
+Karşılaştırma noktası: Kim ve ark. (ACL 2023) Transformer, **8.799 eğitim
+örneğiyle** Roman dillerinde %53, Sinitik dillerde %39,5 alıyor. Bu motor
+sıfır eğitim verisiyle çalışıyor.
+
+### Akraba tespiti (B-Cubed F, dev kavramları)
+
+| Sistem | F | kesinlik | duyarlılık |
+|---|---|---|---|
+| ayarlı düzenleme uzaklığı | **0,931** | 0,943 | 0,927 |
+| SCA benzeri (LingPy) | 0,859 | | |
+| **motorun kümeleyicisi** | 0,813 | 0,981 | 0,727 |
+| hepsi tek küme (trivial) | 0,743 | | |
+
+Referans: LexStat-Infomap **F ≈ 0,89** (List, Greenhill & Gray 2017).
+⚠️ Motorun kendi kümeleyicisi aşırı muhafazakâr: kesinlik 0,98 ama
+duyarlılık 0,73.
+
+### İleri akraba tahmini (n=903 çift, tr → 31 dil)
+
+| Sistem | tam | %95 GA | ≤1 harf |
+|---|---|---|---|
+| **öğrenilmiş denklikler** | **%47,6** | [%44,3 %50,8] | **%75,5** |
+| elle yazılmış kurallar (oracle) | %47,7 | | %75,1 |
+| kimlik (kopyala) | %34,6 | [%31,5 %37,7] | %65,6 |
+
+Kimlik taban çizgisine karşı fark **+%13,1**, permütasyon p = 0,0001 →
+**anlamlı**. Sözlük araması için asıl önemli sayı "≤1 harf" oranıdır.
+
+### Güven kalibrasyonu (n=372)
+
+| Skor | ECE | %95 GA | Brier | AUC |
+|---|---|---|---|---|
+| ham | 0,406 | [0,363 0,446] | 0,342 | 0,648 |
+| kalibre (izotonik) | 0,057 | [0,037 0,104] | 0,177 | 0,620 |
+| **kalibre (Platt)** | **0,037** | [0,016 0,079] | 0,178 | 0,621 |
+
+Ham skor sistematik olarak **+0,41 aşırı güvenli**ydi (ortalama %64,6 güven,
+gerçek doğruluk %23,9). Kullanıcıya gösterilen skor artık kalibre skordur.
+
+### Alıntı tespiti
+
+**Birincil ölçüt — WOLD** (uzman derlemesi, Wiktionary'den bağımsız), Sakha, n=769:
+
+| Sistem | F | kesinlik | duyarlılık | doğruluk |
+|---|---|---|---|---|
+| **motor** | 0,432 | 0,518 | 0,371 | 0,706 |
+| yalnız fonotaktik | 0,294 | 0,444 | 0,220 | 0,681 |
+| hepsi alıntı (trivial) | 0,464 | 0,302 | 1,000 | 0,302 |
+
+⚠️ **Olumsuz bulgu:** zincir sinyali (sözlük etiketi) kapatıldığında motor,
+yalnız fonotaktik taban çizgisiyle **birebir aynı** sonucu veriyor (F=0,685).
+Yani ses kanunu ihlali ve değişimsiz yayılım sinyalleri bu veride ölçülebilir
+katkı sağlamıyor; alıntı tespiti şu an büyük ölçüde sözlük etiketine dayanıyor.
+
+### Öngörü testi (n=182, kilitli sicil)
+
+| | |
+|---|---|
+| tuttu | %11,0 |
+| tuttu + yakın (≤1 harf) | %29,7 |
+| **şans taban çizgisi** | **%1,26** |
+| şansın kaç katı | **8,7×** |
+
+Şans kontrolü olmadan "%11'i tuttu" bir bulgu değildir: motor 108 bin kayıtlık
+bir indekste arıyor ve kısa biçimler salt şansla eşleşir (Kessler 2001).
+
+### Negatif kontroller
+
+| Batarya | n | yanlış-pozitif | **güçlü iddia** |
+|---|---|---|---|
+| fonotaktik geçerli sahte | 8 | 1,000 | **0,000** |
+| bariz sahte | 4 | 0,000 | **0,000** |
+| sahte akraba | 4 | 0,000 | **0,000** |
+| alıntı tuzağı | 5 | 1,000 | **0,000** |
+| eşadlı | 3 | — | **0,000** |
+
+En kritik sütun sonuncusu: motor hiçbir negatif kontrolde 🟢/🟡 rozet
+vermiyor. Uydurma bir köke düşük güvenle aday üretmesi kabul edilebilir; onu
+güçlü bir iddia olarak sunması kabul edilemez.
+
+### Ağız kelimeleri (Faz 10, n=100)
+
+| | |
+|---|---|
+| çözüldü | %1 |
+| güçlü aday | %13 |
+| **yetersiz kanıt** | **%86** |
+
+⚠️ "Yetersiz kanıt" bir başarısızlık değil, **dürüst sonuçtur**. Ağız
+kelimelerinin çoğu tek bir ilde tanıklanmıştır ve karşılaştırmalı yöntemin
+gerektirdiği bağımsız tanık yoktur.
 
 ## Kurulum
 
@@ -80,6 +196,18 @@ Sözlük, EtimolojiTürkçe (tarihli ilk tanıklamalar), İngilizce Wiktionary
 (kelime sayfası + Proto-Turkic rekonstrüksiyon sayfaları), 14 Türki dilin kendi
 Wiktionary sürümü, Wiktextract/Kaikki, Internet Archive.
 
+**Yerel veri** (`make data`, `make lexicons`) — 5 CLDF veri kümesi
+(savelyevturkic, hruschkaturkic, starostinaltaic, robbeetstriangulation, WOLD)
+ve 19 Türki dilin kaikki dökümü (108.708 madde, SQLite FTS5 indeksi). Her
+indirme sürüm, tarih ve SHA-256 damgası taşır (`data/SOURCES.md`).
+
+⚠️ **Wiktionary türevi veri altın standart DEĞİLDİR.** Häuser & Stamatakis
+(2025) bu verinin uzman ağaçlarıyla tutarsız olduğunu gösteriyor; ayrıca
+Wiktionary'nin Proto-Türkçe rekonstrüksiyonları büyük ölçüde EDAL soyundandır
+ve bu proje EDAL'ı tek kaynak olarak zaten kabul etmiyor. kaikki burada
+**yalnız arama indeksi**dir; akrabalık ve ata biçim kararı uzman verisinden
+(`savelyevturkic`) veya kümeleme katmanından gelir.
+
 **Tohum veri** (`data/seed/`) — Clauson EDPT, Sevortjan ЭСТЯ, Divânu Lugâti't-Türk,
 Kamûs-ı Türkî, Codex Cumanicus, Starling Altaic, Tietze, İSAM, Kubbealtı ve
 donör dil kayıtlarından elle derlenmiş **toplam 59 kelimelik** çekirdek veri.
@@ -92,6 +220,39 @@ değildir ve öyle sunulmaz.
 > Her kaynağın tam künyesi, kullanılan yöntemlerin makale referansları ve
 > bilinçli olarak **kullanılmayan** kaynakların gerekçeleri için bkz.
 > [Bilimsel kaynakça](#bilimsel-kaynakça).
+
+## Mimari: hangi karar kimde
+
+Tek bir ilke: **LLM karar vermez.**
+
+| Katman | Ne yapar | Kim karar verir |
+|---|---|---|
+| Veri toplama | 9 canlı kaynak + 19 dilin yerel sözlük indeksi | — |
+| Çeviri yazısı | Kiril/Arap/Runik → ortak karşılaştırma biçimi | kural |
+| Çoklu hizalama | bütün tanıkları birbirine hizalar (LingPy SCA) | algoritma |
+| Ata ses seçimi | tanısal denklik → tam kapsayan denklik → arkaiklik ağırlıklı oy | **sembolik** |
+| Alıntı tespiti | zincir kanıtı + fonotaktik + ses kanunu + değişimsiz yayılım | **sembolik** |
+| Hipotez sıralaması | rakip kökenler, red gerekçesi, karşıtsal açıklama | **sembolik** |
+| Kalibrasyon | Platt ölçekleme + çekimserlik eşiği | **istatistik** |
+| LLM | sözlük metnini şemaya döker, gerekçe metnini akıcılaştırır | **karar vermez** |
+
+Gerekçe ölçüme dayanır. LLM'ler sözlük metnini şemaya dökmede güçlü
+(F1 %93,6 — Jumashev ve ark. 2024), ama ses kanunu zinciri kurmada zayıf
+(<%5 — PBEBench), alıntı ↔ miras ayrımında yanlı ("borrowing-blind",
+F1 < 0,50 — Sousa Silva & Ahmadi 2026) ve hipotez yargıcı olarak insanla
+ancak ~%66 tutarlı (ICLR 2025).
+
+### Ata düğüm etiketi
+
+Her rekonstrüksiyon hangi düğümü iddia ettiğini söyler:
+
+- **`*PT`** — Proto-Türkçe. Çuvaşça (Oğur) tanığı var, rotasizm/lambdaizm
+  türetilebiliyor.
+- **`*PCT`** — Ana Ortak Türkçe. Oğur tanığı yok; o düğümde `*ŕ`/`*r`/`*z`
+  ayrımı **zaten birleşmiştir**, dolayısıyla `*ŕ` yazmak veriden çıkmayan bir
+  ayrımı iddia etmek olurdu.
+
+Ölçüldü: 400 maddenin yalnız %28,7'sinde Oğur tanığı var.
 
 ## Nasıl çalışır
 
@@ -198,15 +359,84 @@ scripts/                     fixture kaydedici, veritabanı temizliği
 
 ## Bilinen sınırlar
 
+Bunlar gizlenmiş kusurlar değil, **ölçülmüş ve raporlanmış** sınırlardır.
+
+### Bilimsel
+
+- **Motorun trivial taban çizgilerine üstünlüğü kanıtlanmış değil.**
+  Rekonstrüksiyonda dört koşulun hiçbirinde fark istatistiksel olarak anlamlı
+  çıkmıyor. Bu, yayına gitmeden önce kapatılması gereken asıl açıktır.
+- **Alıntı tespiti sözlük etiketine bağımlı.** Ablasyon ölçümü, bağımsız
+  fonolojik sinyallerin ölçülebilir katkı sağlamadığını gösteriyor.
+- **Öngörü sicili üçüncü tarafta kayıtlı değil.** Yerel zaman damgası ön-kayıt
+  yerine geçmez; `external_doi` doldurulmadan sonuçlar "ön-kayıtlı çalışma"
+  olarak sunulamaz.
+- **Uzman değerlendirmesi yapılmadı.** Yeni etimoloji iddialarının en az iki
+  Türkolog tarafından körlemesine puanlanması ve değerlendiriciler arası uyum
+  (Cohen's κ) raporu henüz yok.
+- **Ek soyma katmanının katkısı ölçülemedi** (net sıfır): CLDF biçimleri zaten
+  çıplak köktür, sözlük madde başı değil.
+
+### Veri
+
+- **Altın standart tek okulun ürünü.** `savelyevturkic` Robbeets okulundandır
+  ve kimi akrabalık kararları Clauson/Erdal/Tekin geleneğiyle çelişir.
+  Altın standartlar arası uyuşmazlık oranı henüz ölçülmedi.
+- **Oğur tanığı seyrek.** 400 maddenin yalnız %28,7'sinde Çuvaşça var; geri
+  kalanda iddia edilebilen en derin düğüm Ana Ortak Türkçe'dir (`*PCT`).
+- **Türkmence ünlü uzunluğu eksik.** Birincil uzunluk tanığı sayılan dil,
+  `savelyevturkic`te yalnız 2 uzunluk işaretli biçim taşıyor.
+- **Concepticon'da Türkçe kavram listesi yok.** Semantik köprü kendi
+  verimizden türetildi ve Swadesh düzeyiyle (≈290 kavram) sınırlı; ayrıca
+  yazılışa göre çalıştığı için eşadlılarda yanılır (`yüz` = surat/yüzmek/100).
+- **Sözlük kapsamı sınırlı.** kaikki dökümlerinde Uygurca 4.215, Nogayca 484
+  madde var; Kırım Tatarcası, Karaçay-Balkarca, Şorca, Eski Türkçe ve
+  Osmanlıca için döküm hiç yok.
+- Tohum veri yalnızca 59 kelimeyi kapsar.
+
+### Teknik
+
 - **Alıntı sınıflandırıcı kural tabanlıdır**, eğitilmiş bir ML modeli değildir.
-  Çıktıda `method: "rule_based"` olarak bildirilir. Etiketli Türkçe alıntı veri
-  kümesi (WOLD ingest'i) tamamlanmadan model eğitimi planlanmamıştır.
-- **Semantik aşama** yalnızca `[semantic]` ekstrası kuruluysa kanıt üretir.
 - **Neo4j entegrasyonu yoktur.** `db/graph_database.py` Neo4j *şemasına uygun*
   düğüm/kenar yapısı üretir ama Cytoscape.js JSON'u olarak dışa verir.
 - **Web paneli tek dosyalık statik HTML'dir**, Next.js kullanılmaz.
-- Tohum veri yalnızca 59 kelimeyi kapsar; bu kelimelerin dışında sonuç
-  tamamen canlı kaynaklara bağlıdır.
+- **Sinirsel rekonstrüksiyon yapılmadı** — bilinçli kapsam kararı; mevcut bir
+  yöntemi yeni veriye uygulamak deneydir, katkı değildir.
+
+## Yeniden üretilebilirlik
+
+Her sayı sıfırdan üretilebilir:
+
+```bash
+make install
+make data              # 5 CLDF veri kümesi (sürüm + SHA-256 damgalı)
+make lexicons          # 19 dilin kaikki dökümü (~56 MB)
+make lexicon-index     # SQLite FTS5 arama indeksi
+make gold              # altın standardı kur, böl, test setini MÜHÜRLE
+make correspondences   # ses denkliklerini TRAIN kavramlarından öğren
+make calibrate         # güven kalibratörünü TRAIN'de eğit
+make semantic          # Türkçe kavram köprüsü
+make chains            # alıntı zincirleri ve uyarlama kuralları
+
+make eval-baseline     # motor vs trivial sistemler, 4 koşul, anlamlılık testi
+make eval-cognates     # B-Cubed F
+make eval-prediction   # ileri tahmin
+make eval-calibration  # ECE + risk-coverage
+make eval-borrowing    # WOLD + ablasyon
+make eval-controls     # negatif kontrol bataryası
+make dialect           # ağız kelimeleri toplu analizi
+
+make test && make coverage
+```
+
+**Sızıntı önlemleri.** Test bölümü kavram bazında ayrılır, checksum'la
+mühürlenir (`data/gold/SEAL.json`) ve açık onay verilmeden okunamaz. Bölme
+deterministiktir — rastgele tohum yok, kavram kimliğinin SHA-256'sı kullanılır,
+dolayısıyla her makinede aynıdır. Kalibratör ve denklik tabloları yalnız
+`train` bölümünde öğrenilir; testler bunu denetler.
+
+**Önbellek.** `ENGINE_VERSION` değiştiğinde eski kayıtlar otomatik olarak
+ıskalama sayılır; düzeltilmiş hatalarla üretilmiş sonuçlar geri dönmez.
 
 ## Bilimsel kaynakça
 
