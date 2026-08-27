@@ -10,36 +10,36 @@
   "systems": [
     {
       "system": "engine",
-      "bcubed_f": 0.8131,
-      "precision": 0.9811,
-      "recall": 0.7267,
+      "bcubed_f": 0.8179,
+      "precision": 0.9815,
+      "recall": 0.7323,
       "n_concepts": 46,
       "n_forms": 1507,
       "skipped": 0
     },
     {
       "system": "lexstat_like",
-      "bcubed_f": 0.8183,
-      "precision": 0.741,
-      "recall": 0.9871,
+      "bcubed_f": 0.8241,
+      "precision": 0.7489,
+      "recall": 0.9907,
       "n_concepts": 46,
       "n_forms": 1507,
       "skipped": 0
     },
     {
       "system": "sca_like",
-      "bcubed_f": 0.8586,
-      "precision": 0.8247,
-      "recall": 0.9512,
+      "bcubed_f": 0.8542,
+      "precision": 0.8161,
+      "recall": 0.9585,
       "n_concepts": 46,
       "n_forms": 1507,
       "skipped": 0
     },
     {
       "system": "edit_distance",
-      "bcubed_f": 0.9314,
-      "precision": 0.9432,
-      "recall": 0.9274,
+      "bcubed_f": 0.9338,
+      "precision": 0.9437,
+      "recall": 0.9316,
       "n_concepts": 46,
       "n_forms": 1507,
       "skipped": 0
@@ -64,9 +64,9 @@
     },
     {
       "system": "edit_distance_tuned",
-      "bcubed_f": 0.9314,
-      "precision": 0.9432,
-      "recall": 0.9274,
+      "bcubed_f": 0.9338,
+      "precision": 0.9437,
+      "recall": 0.9316,
       "n_concepts": 46,
       "n_forms": 1507,
       "skipped": 0

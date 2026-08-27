@@ -326,6 +326,26 @@ def main() -> int:
         )
     print(f"\nreferans: LexStat-Infomap B-Cubed F ≈ {REFERENCE_BCUBED_F} (List ve ark. 2017)")
 
+    # Uzman uyuşmazlık bandı — skorların neye göre okunacağı.
+    from engine.evaluation.gold_agreement import measure as measure_agreement
+
+    agreement = measure_agreement()
+    if agreement is not None:
+        print(
+            f"\nuzman uyuşmazlık bandı: iki bağımsız derleme "
+            f"(savelyevturkic × hruschkaturkic) birbiriyle B-Cubed F "
+            f"**{agreement.bcubed['fscore']:.4f}**, ARI {agreement.adjusted_rand:.4f} "
+            f"({agreement.n_items} ortak öğe, {agreement.n_languages} dil)"
+        )
+        print(
+            "⚠️ Bu iki sayı DOĞRUDAN KARŞILAŞTIRILAMAZ: yukarıdaki skorlar\n"
+            "   savelyevturkic'in dev kavramlarında tahmin-vs-altın ölçülüyor,\n"
+            "   uyuşmazlık bandı ise iki AYRI derlemenin kesişiminde\n"
+            "   bölümleme-vs-bölümleme. Kavram listeleri ve küme inceliği\n"
+            "   farklı; band bu yüzden aşağı yanlıdır. Bandın söylediği tek\n"
+            "   şey şudur: **tavan 1,00 değildir.**"
+        )
+
     best = max(rows, key=lambda r: r["bcubed_f"])
     engine_row = next(r for r in rows if r["system"] == "engine")
     if best["system"] != "engine":

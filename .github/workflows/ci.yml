@@ -122,6 +122,9 @@ jobs:
           print("Negatif kontroller temiz.")
           EOF
 
+      - name: Altın standartlar arası uyum (uzman bandı)
+        run: python -m engine.evaluation.gold_agreement
+
       - name: Alıntı tespiti ölçümü
         run: python -m engine.evaluation.borrowing_eval
 

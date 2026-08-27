@@ -192,14 +192,61 @@ tutuyor ve çekimser kalmayı ödüllendiriyordu.
 
 | Sistem | F | kesinlik | duyarlılık |
 |---|---|---|---|
-| ayarlı düzenleme uzaklığı | **0,931** | 0,943 | 0,927 |
-| SCA benzeri (LingPy) | 0,859 | | |
-| **motorun kümeleyicisi** | 0,813 | 0,981 | 0,727 |
-| hepsi tek küme (trivial) | 0,743 | | |
+| ayarlı düzenleme uzaklığı | **0,934** | 0,944 | 0,932 |
+| SCA benzeri (LingPy) | 0,854 | 0,816 | 0,959 |
+| LexStat benzeri | 0,824 | 0,749 | 0,991 |
+| **motorun kümeleyicisi** | 0,818 | 0,982 | 0,732 |
+| hepsi tek küme (trivial) | 0,743 | 0,642 | 1,000 |
 
 Referans: LexStat-Infomap **F ≈ 0,89** (List, Greenhill & Gray 2017).
 ⚠️ Motorun kendi kümeleyicisi aşırı muhafazakâr: kesinlik 0,98 ama
 duyarlılık 0,73.
+
+#### Uzman uyuşmazlık bandı (Faz E1) — tavan 1,00 değildir
+
+⚠️ **Bu ölçüm olmadan yukarıdaki hiçbir sayı yorumlanamaz.** "Motor F 0,82
+aldı" cümlesi, uzmanların birbiriyle ne kadar uyuştuğu bilinmeden
+anlamsızdır. List, Walworth ve ark. (2018, *JLE*) bu boşluğu açıkça ilan
+ediyor — akraba kümesi kararlarında uzmanlar arası uyumu sistematik ölçen
+bir çalışma **yok**.
+
+İki bağımsız uzman derlemesi karşılaştırıldı:
+
+| | değer |
+|---|---|
+| ortak öğe | 1.833 · 26 dil |
+| küme sayısı | 234 (Savelyev) vs 173 (Hruschka) |
+| B-Cubed kesinlik | 0,975 |
+| B-Cubed duyarlılık | 0,861 |
+| **B-Cubed F** | **0,914** |
+| **Ayarlanmış Rand İndeksi** | **0,912** |
+
+⚠️ **Kavram köprüsü kurulamıyor**: `hruschkaturkic`te Concepticon glossu
+**hiç yok** — parametreler `Etymon 2` gibi künye etiketleri. Köprü bu
+yüzden **öğe düzeyinde** kuruldu: bir `(dil, karşılaştırma biçmi)` çifti
+iki derlemede de geçiyorsa ortak öğedir.
+
+Örnek uyuşmazlıklar (Savelyev ayırıyor, Hruschka birleştiriyor):
+
+    alt ak    ~ az ağ    ~ khk ah   ~ slq ah      "ak"
+    alt at    ~ gag at   ~ uz ot                  "at"
+    alt ağaş  ~ az ağaç                           "ağaç"
+
+Kesinlik 0,975 / duyarlılık 0,861 örüntüsü şunu söylüyor: Savelyev'in
+kümeleri **daha ince**; her Savelyev kümesi neredeyse tümüyle bir Hruschka
+kümesinin içinde ama Hruschka kümeleri birden çok Savelyev kümesine
+dağılıyor.
+
+⚠️ **Bu sayı yukarıdaki tabloyla DOĞRUDAN KARŞILAŞTIRILAMAZ.** Tablodaki
+skorlar `savelyevturkic`in dev kavramlarında tahmin-vs-altın; band ise iki
+ayrı derlemenin kesişiminde bölümleme-vs-bölümleme. Kavram listeleri ve
+küme inceliği farklı, dolayısıyla band **aşağı yanlıdır**. Bandın söylediği
+tek şey: tavan 1,00 değil.
+
+⚠️ Bu ölçümün kendi kısıtları: ortak öğe tanımı biçim eşleşmesine dayanır
+(çevriyazı farkları öğeyi düşürür, örneklem uyuşmanın kolay tarafına
+kayabilir); iki derleme aynı kavram listesini kullanmıyor, kesişim rastgele
+değil; küme büyüklüğü dağılımları farklı ve B-Cubed buna duyarlı.
 
 ### İleri akraba tahmini (n=903 çift, tr → 31 dil)
 
@@ -860,6 +907,8 @@ kullanılmıyor veya kısıtlı kullanılıyor.
 ### İstatistiksel geçerlilik, kalibrasyon ve açıklanabilirlik
 
 - **Kessler 2001, *The Significance of Word Lists* (CSLI)** ✅ **uygulandı** — permütasyon testiyle **rastlantısal benzerlik** kontrolü. Verici yakınlığı sinyalinde null model olarak koşuyor: aynı havuza karşı 12 kontrol kelimesi ölçülüyor. Ham mesafe eşiği havuz büyüklüğüne gizlice bağlıdır (Sakha 448.000 madde, Türkçe 1.600.000); null modelsiz aynı eşik iki dilde aynı şeyi ölçmez. Ölçüldü: denetim motorun F'sini **0,584 -> 0,644** çıkardı.
+- **List, Walworth, Greenhill, Tresoldi & Forkel 2018, *Journal of Language Evolution*** ✅ **boşluk dolduruldu** — akraba kümesi kararlarında **uzmanlar arası uyumu sistematik ölçen bir çalışma olmadığını** açıkça ilan ediyor ("no systematic study has been carried out so far"). Bu depo o ölçümü yapıyor: `savelyevturkic` × `hruschkaturkic`, 1.833 ortak öğe, 26 dil → **B-Cubed F 0,914 · ARI 0,912**. ⚠️ Kavram köprüsü kurulamadığı için (`hruschkaturkic`te Concepticon glossu yok) köprü öğe düzeyinde kuruldu; band aşağı yanlıdır. Kod: `engine/evaluation/gold_agreement.py`.
+- Bagga & Baldwin 1998 — B-Cubed · Hubert & Arabie 1985 — Ayarlanmış Rand İndeksi (şansa göre düzeltilmiş bölümleme uyumu; düzeltilmemiş Rand şansla bile 0,9'un üstüne çıkar)
 - Benjamini & Hochberg 1995 — FDR kontrolü (çoklu karşılaştırma)
 - Efron & Tibshirani — bootstrap güven aralığı · McNemar testi
 - Zadrozny & Elkan — izotonik kalibrasyon · Platt scaling · Kull ve ark. — beta kalibrasyon

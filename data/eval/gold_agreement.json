@@ -1,0 +1,118 @@
+{
+  "_schema": "turkic-etymology-gold-agreement/v1",
+  "datasets": [
+    "savelyevturkic",
+    "hruschkaturkic"
+  ],
+  "n_items": 1833,
+  "n_languages": 26,
+  "clusters_a": 234,
+  "clusters_b": 173,
+  "bcubed_precision": 0.9746,
+  "bcubed_recall": 0.8612,
+  "bcubed_fscore": 0.9144,
+  "adjusted_rand_index": 0.9117,
+  "note": "Kavram köprüsü kurulamıyor (hruschkaturkic'te Concepticon glossu yok); köprü öğe düzeyinde, (dil, karşılaştırma biçmi) çiftleriyle kuruldu.",
+  "examples": [
+    {
+      "a": "alt ak",
+      "b": "az ağ",
+      "agrees": "hruschkaturkic"
+    },
+    {
+      "a": "alt ak",
+      "b": "khk ah",
+      "agrees": "hruschkaturkic"
+    },
+    {
+      "a": "alt ak",
+      "b": "slq ah",
+      "agrees": "hruschkaturkic"
+    },
+    {
+      "a": "alt at",
+      "b": "gag at",
+      "agrees": "hruschkaturkic"
+    },
+    {
+      "a": "alt at",
+      "b": "uz ot",
+      "agrees": "hruschkaturkic"
+    },
+    {
+      "a": "alt ağaş",
+      "b": "az ağaç",
+      "agrees": "hruschkaturkic"
+    },
+    {
+      "a": "alt ağaş",
+      "b": "krc ağaç",
+      "agrees": "hruschkaturkic"
+    },
+    {
+      "a": "alt ağaş",
+      "b": "kum ağaç",
+      "agrees": "hruschkaturkic"
+    },
+    {
+      "a": "alt bar",
+      "b": "dlg bar",
+      "agrees": "hruschkaturkic"
+    },
+    {
+      "a": "alt bar",
+      "b": "slq bar",
+      "agrees": "savelyevturkic"
+    },
+    {
+      "a": "alt bar",
+      "b": "ybe par",
+      "agrees": "hruschkaturkic"
+    },
+    {
+      "a": "alt baş",
+      "b": "slq baş",
+      "agrees": "hruschkaturkic"
+    },
+    {
+      "a": "alt bel",
+      "b": "ybe pel",
+      "agrees": "hruschkaturkic"
+    },
+    {
+      "a": "alt ber",
+      "b": "ybe per",
+      "agrees": "hruschkaturkic"
+    },
+    {
+      "a": "alt bil",
+      "b": "dlg bil",
+      "agrees": "hruschkaturkic"
+    },
+    {
+      "a": "alt bil",
+      "b": "kaa bil",
+      "agrees": "hruschkaturkic"
+    },
+    {
+      "a": "alt bil",
+      "b": "khk pıl",
+      "agrees": "hruschkaturkic"
+    },
+    {
+      "a": "alt bil",
+      "b": "krc bil",
+      "agrees": "hruschkaturkic"
+    },
+    {
+      "a": "alt bil",
+      "b": "kum bil",
+      "agrees": "hruschkaturkic"
+    },
+    {
+      "a": "alt bil",
+      "b": "ky bil",
+      "agrees": "hruschkaturkic"
+    }
+  ]
+}

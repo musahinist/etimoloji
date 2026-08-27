@@ -1,5 +1,5 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold donors patterns eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-prediction correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify semantic dialect
+        data gold donors patterns gold-agreement eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-prediction correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify semantic dialect
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -16,6 +16,7 @@ help:
 	@echo "patterns       - Ata ses örüntü tablosunu TRAIN'den öğren (denetimli katman)"
 	@echo "eval           - Rekonstrüksiyon ölçümü (dev bölümü)"
 	@echo "eval-cognates  - Akraba tespiti B-Cubed F (LexStat-Infomap taban çizgisine karşı)"
+	@echo "gold-agreement - Altın standartlar arası uyum: otomatik sistemin GERÇEKÇİ tavanı"
 	@echo "eval-borrowing - Alıntı tespiti P/R/F (verici dile göre ayrıştırılmış)"
 	@echo "eval-calibration - ECE + Brier + risk-coverage"
 	@echo "lexicons       - kaikki.org sözlük dökümlerini indir (19 dil, ~56 MB)"
@@ -70,6 +71,9 @@ eval-baseline: gold patterns
 
 eval: gold
 	.venv/bin/python -m engine.evaluation.harness --split dev
+
+gold-agreement: data
+	.venv/bin/python -m engine.evaluation.gold_agreement
 
 eval-cognates: data
 	.venv/bin/python -m engine.evaluation.cognate_eval
