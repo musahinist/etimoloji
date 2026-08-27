@@ -39,8 +39,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from engine.config import CLDF_DIR  # noqa: E402
 
-RAW = "https://raw.githubusercontent.com/lexibank/{repo}/{ref}/cldf/{name}"
-API = "https://api.github.com/repos/lexibank/{repo}"
+RAW = "https://raw.githubusercontent.com/{org}/{repo}/{ref}/cldf/{name}"
+API = "https://api.github.com/repos/{org}/{repo}"
+
+#: Varsayılan GitHub organizasyonu. ``ronataswestoldturkic`` istisnadır:
+#: ``lexibank`` altındaki depo **boş bir taslaktır** (``cldf/`` dizini yok,
+#: 404 döner); gerçek veri ``loanwordbank`` altındadır. Bu ayrım ölçüldü.
+DEFAULT_ORG = "lexibank"
 
 #: İndirilecek CLDF tabloları. Yıldızlılar zorunludur.
 TABLES = ("forms.csv", "cognates.csv", "languages.csv", "parameters.csv", "borrowings.csv")
@@ -79,6 +84,19 @@ DATASETS: dict[str, dict[str, str]] = {
             "bağımsız uzman derlemesidir ve BİRİNCİL ölçüt olarak kullanılır."
         ),
     },
+    "ronataswestoldturkic": {
+        "org": "loanwordbank",
+        "ref": "main",
+        "role": "Oğur (Bolgar) kolu tanığı",
+        "citation": "Róna-Tas & Berta 2011, West Old Turkic: Turkic Loanwords in Hungarian",
+        "caveat": (
+            "⚠️ WOT biçimleri ATTESTE DEĞİL, Macarcadaki Türki alıntılardan "
+            "GERİYE KURULMUŞ biçimlerdir. Oğur kolunun tek yaşayan tanığı "
+            "Çuvaşça olduğu için bu ikinci-el kanıt Türkolojide standarttır, "
+            "ama tanık sınıfı olarak AYRI etiketlenir ve tek başına *PT "
+            "iddiasını taşımaz."
+        ),
+    },
     "robbeetstriangulation": {
         "ref": "v0.3",
         "role": "yalnız temas çerçevesi",
@@ -100,9 +118,11 @@ def _sha256(path: Path) -> str:
     return h.hexdigest()
 
 
-def _resolve_ref(repo: str, ref: str, session: requests.Session) -> tuple[str, str]:
+def _resolve_ref(
+    repo: str, ref: str, session: requests.Session, *, org: str = DEFAULT_ORG
+) -> tuple[str, str]:
     """Etiketi çözümleyip (ref, commit_sha) döndürür — sürüm damgası için."""
-    url = f"{API.format(repo=repo)}/commits/{ref}"
+    url = f"{API.format(org=org, repo=repo)}/commits/{ref}"
     try:
         resp = session.get(url, timeout=15)
         resp.raise_for_status()
@@ -131,12 +151,13 @@ def download(name: str, *, force: bool = False, session: requests.Session | None
         print(f"[{name}] zaten var (yeniden indirmek için --force)")
         return json.loads(provenance_path.read_text(encoding="utf-8"))
 
-    ref, sha = _resolve_ref(name, spec["ref"], session)
+    org = spec.get("org", DEFAULT_ORG)
+    ref, sha = _resolve_ref(name, spec["ref"], session, org=org)
     print(f"[{name}] ref={ref} sha={sha or '?'}")
 
     files: dict[str, dict[str, Any]] = {}
     for table in (*TABLES, METADATA):
-        url = RAW.format(repo=name, ref=ref, name=table)
+        url = RAW.format(org=org, repo=name, ref=ref, name=table)
         resp = session.get(url, timeout=60)
         if resp.status_code == 404:
             if table in REQUIRED:
@@ -158,7 +179,7 @@ def download(name: str, *, force: bool = False, session: requests.Session | None
     provenance = {
         "_schema": "turkic-etymology-cldf-provenance/v1",
         "dataset": name,
-        "repository": f"https://github.com/lexibank/{name}",
+        "repository": f"https://github.com/{org}/{name}",
         "ref": ref,
         "commit": sha,
         "retrieved_at": datetime.now(UTC).isoformat(timespec="seconds"),

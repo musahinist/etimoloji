@@ -1,0 +1,43 @@
+{
+  "_schema": "turkic-etymology-cldf-provenance/v1",
+  "dataset": "ronataswestoldturkic",
+  "repository": "https://github.com/loanwordbank/ronataswestoldturkic",
+  "ref": "main",
+  "commit": "3f593a1067c4",
+  "retrieved_at": "2026-08-27T08:52:28+00:00",
+  "citation": "Róna-Tas & Berta 2011, West Old Turkic: Turkic Loanwords in Hungarian",
+  "role": "Oğur (Bolgar) kolu tanığı",
+  "caveat": "⚠️ WOT biçimleri ATTESTE DEĞİL, Macarcadaki Türki alıntılardan GERİYE KURULMUŞ biçimlerdir. Oğur kolunun tek yaşayan tanığı Çuvaşça olduğu için bu ikinci-el kanıt Türkolojide standarttır, ama tanık sınıfı olarak AYRI etiketlenir ve tek başına *PT iddiasını taşımaz.",
+  "files": {
+    "forms.csv": {
+      "sha256": "df4e73e7e094021056420842aeaef5f07e0c1a78c6476a19f7e812470b6b5f33",
+      "bytes": 265914,
+      "rows": 1755
+    },
+    "cognates.csv": {
+      "sha256": "85db316cd3c058710abc528975c823deef36af98074522e3dadf8247bb8a15d7",
+      "bytes": 197345,
+      "rows": 1755
+    },
+    "languages.csv": {
+      "sha256": "3fda34e28fead6edabe7798b3c2f183f02f7fccef24cfa7aed7d92a242f58342",
+      "bytes": 316,
+      "rows": 5
+    },
+    "parameters.csv": {
+      "sha256": "59c5a40c0bd123b856fc93a2f7f8f281b64a10da89ce55f4d70b16d5de7b9300",
+      "bytes": 25619,
+      "rows": 430
+    },
+    "borrowings.csv": {
+      "sha256": "e9c4942d4711e25e46cca1d9e8e79f38c65fadd19bccaa42a6336cbdfcb6f4c3",
+      "bytes": 44121,
+      "rows": 463
+    },
+    "cldf-metadata.json": {
+      "sha256": "94c8f9c91086ea42f7440c8e72065dda243b109ecb00e5b3cdc4bcb0c8b7f3fb",
+      "bytes": 16109,
+      "rows": 0
+    }
+  }
+}

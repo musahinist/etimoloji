@@ -10,6 +10,7 @@ indirildiğini ve içerik özetini gösterir.
 |---|---|---|---|---|---|
 | [hruschkaturkic](https://github.com/lexibank/hruschkaturkic) | `v1.0` | `72e8095234f8` | 2026-08-26 | 4,213 biçim | bağımsız çapraz kontrol |
 | [robbeetstriangulation](https://github.com/lexibank/robbeetstriangulation) | `v0.3` | `5f59f1522ed8` | 2026-08-26 | 26,224 biçim | yalnız temas çerçevesi |
+| [ronataswestoldturkic](https://github.com/loanwordbank/ronataswestoldturkic) | `main` | `3f593a1067c4` | 2026-08-27 | 1,755 biçim | Oğur (Bolgar) kolu tanığı |
 | [savelyevturkic](https://github.com/lexibank/savelyevturkic) | `v2.1` | `4a540590580f` | 2026-08-26 | 8,360 biçim | birincil altın standart |
 | [starostinaltaic](https://github.com/lexibank/starostinaltaic) | `main` | `638500a49eda` | 2026-08-26 | 5,756 biçim | yalnız karşılaştırma |
 | [wold](https://github.com/lexibank/wold) | `master` | `1df62b9bdc72` | 2026-08-27 | 64,289 biçim | alıntı değerlendirmesinin UZMAN ölçütü |
@@ -22,6 +23,10 @@ indirildiğini ve içerik özetini gösterir.
 **robbeetstriangulation** — Robbeets & Bouckaert, Triangulation dataset
 > ⚠️ Transeurasian verisi en az EDAL kadar tartışmalıdır (Tian ve ark. 2022). YALNIZCA temas/ödünçleme analizinde kullanılır; akrabalık kanıtına asla katılmaz.
 > `forms.csv` 26,224 kayıt · `cognates.csv` 26,224 kayıt · `languages.csv` 101 kayıt · `parameters.csv` 254 kayıt
+
+**ronataswestoldturkic** — Róna-Tas & Berta 2011, West Old Turkic: Turkic Loanwords in Hungarian
+> ⚠️ ⚠️ WOT biçimleri ATTESTE DEĞİL, Macarcadaki Türki alıntılardan GERİYE KURULMUŞ biçimlerdir. Oğur kolunun tek yaşayan tanığı Çuvaşça olduğu için bu ikinci-el kanıt Türkolojide standarttır, ama tanık sınıfı olarak AYRI etiketlenir ve tek başına *PT iddiasını taşımaz.
+> `forms.csv` 1,755 kayıt · `cognates.csv` 1,755 kayıt · `languages.csv` 5 kayıt · `parameters.csv` 430 kayıt · `borrowings.csv` 463 kayıt
 
 **savelyevturkic** — Savelyev & Robbeets 2020, Journal of Language Evolution
 > `forms.csv` 8,360 kayıt · `cognates.csv` 8,360 kayıt · `languages.csv` 32 kayıt · `parameters.csv` 254 kayıt

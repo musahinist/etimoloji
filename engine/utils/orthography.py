@@ -52,16 +52,22 @@ LATIN_NORMALISATION = {
     "ŋ": "ŋ",
     "ñ": "ŋ",
     "ə": "e",
-    "ä": "a",
+    # ⚠️ ``ä`` Türkolojide ÖN açık ünlüdür (/æ/). Art ``a``ya eşlenmesi ünlü
+    #    uyumunu bozuyordu: ``käbäl`` -> ``kabal``.
+    "ä": "e",
     "ā": "a",
     "ī": "i",
     "ū": "u",
     "ō": "o",
     "ē": "e",
     "ś": "s",
-    "č": "c",
+    # ⚠️ ``č`` = /t͡ʃ/ = Türkçe ``ç``; ``c`` /d͡ʒ/'nin harfidir. Yanlış eşleme
+    #    ``čïk`` ile ``çık``ı hizalanamaz kılıyordu.
+    "č": "ç",
     "ž": "z",
-    "ǰ": "j",
+    # ⚠️ Bu veri kümelerinde ``j`` KAYICIDIR (Türkçe ``y``, bkz.
+    #    PROTO_REFLEXES). /d͡ʒ/ için doğru harf ``c``dir.
+    "ǰ": "c",
     "q": "k",
     "â": "a",
     "î": "i",
@@ -110,7 +116,10 @@ LATIN_NORMALISATION = {
     "ь": "",
     "ъ": "",
     "э": "e",
-    "ә": "ä",
+    # ⚠️ Kiril ``ә`` (Başkurtça/Tatarca/Kazakça ön açık ünlü) ``ä``ya
+    #    eşleniyordu, o da hedef alfabede olmadığı için SİLİNİYORDU:
+    #    ``әсә`` -> ``s``.
+    "ә": "e",
     "ю": "yu",
     "я": "ya",
     "ӑ": "a",
@@ -155,6 +164,8 @@ TRANSCRIPTION_NORMALISATION = {
     "ɔ": "o",
     "ɑ": "a",
     "ɛ": "e",
+    "æ": "e",  # ön açık ünlü — SESSİZCE SİLİNİYORDU (savelyevturkic'te 32 kez)
+    "ä": "e",  # Türkolojik ön açık ünlü; art ``a``ya eşlenmek ünlü uyumunu bozar
     "ẹ": "e",
     "ė": "e",
     "ǝ": "e",
@@ -166,7 +177,10 @@ TRANSCRIPTION_NORMALISATION = {
     "ġ": "g",
     "ɢ": "g",
     "ǧ": "ğ",
-    "ɣ": "ğ",  # gamma — art damaksıl sürtünmeli
+    "ɣ": "ğ",  # LATIN gamma U+0263 — art damaksıl sürtünmeli
+    "γ": "ğ",  # YUNAN gamma U+03B3 — AYRI kod noktası, Türkoloji yazımının
+    #            standardı. Tabloda yokken sessizce siliniyordu: WOT verisinde
+    #            297 kez, ``opuruγ`` -> ``opuru``, ``aγaččï`` -> ``aaccı``.
     "ʁ": "ğ",
     "ǥ": "ğ",
     "ɡ": "g",  # U+0261 SCRIPT G — normal g'den FARKLI kod noktası
@@ -182,10 +196,15 @@ TRANSCRIPTION_NORMALISATION = {
     "ʐ": "j",
     "ʑ": "j",
     "ʨ": "ç",
+    "č": "ç",  # /t͡ʃ/ — ``c`` (/d͡ʒ/) değil. Türkçe ``çık`` ile ``čïk``
+    #            hizalanamıyordu.
+    "ɟ": "j",  # ötümlü damaksıl durak; bu veri kümelerinde ``j`` KAYICIDIR
+    #            (Türkçe ``y``), bkz. PROTO_REFLEXES["j"] = "y".
     "ʧ": "ç",
     "ʥ": "c",
     "ʤ": "c",
     "ǯ": "c",
+    "ǰ": "c",  # /d͡ʒ/ — ``j`` kayıcısıyla karışıyordu
     "ń": "ŋ",
     "ɲ": "n",
     "ṅ": "ŋ",

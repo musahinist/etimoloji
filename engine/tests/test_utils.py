@@ -276,3 +276,41 @@ class TestCognates(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestSilentlyDroppedCharacters(unittest.TestCase):
+    """⚠️ Sessizce silinen harf, kelimeyi tanınmaz kılar.
+
+    Bu sınıf ``ïsïr`` -> ``sr`` hatasının aynı türden tekrarlarını korur:
+    tabloda olmayan bir kod noktası son elemedeki
+    ``[^a-zçğıöşüŋŕĺ]`` süzgecine takılıp **iz bırakmadan** düşüyordu.
+    """
+
+    def test_greek_gamma_is_not_dropped(self):
+        """Türkoloji yazımı YUNAN gammasını (U+03B3) kullanır; tabloda yalnız
+        Latin gamma (U+0263) vardı. WOT verisinde 297 kez siliniyordu."""
+        self.assertEqual(to_comparison_form("opuruγ"), "opuruğ")
+        self.assertEqual(to_comparison_form("aγaččï"), "ağaççı")
+
+    def test_cyrillic_schwa_is_not_dropped(self):
+        """``ә`` -> ``ä`` -> hedef alfabede yok -> silinir: ``әсә`` -> ``s``."""
+        self.assertEqual(to_comparison_form("әсә"), "ese")
+
+    def test_ae_ligature_is_a_front_vowel(self):
+        self.assertEqual(to_comparison_form("æd"), "ed")
+
+
+class TestAffricateMapping(unittest.TestCase):
+    """``j`` bu veri kümelerinde KAYICIDIR (Türkçe ``y``), /ʒ/ değil."""
+
+    def test_c_hacek_is_the_voiceless_affricate(self):
+        """``č`` = /t͡ʃ/ = ``ç``. ``c`` /d͡ʒ/'nin harfidir; yanlış eşleme
+        ``čïk`` ile ``çık``ı hizalanamaz kılıyordu."""
+        self.assertEqual(to_comparison_form("čïk"), "çık")
+
+    def test_j_hacek_is_the_voiced_affricate(self):
+        self.assertEqual(to_comparison_form("ǰemilč"), "cemilç")
+
+    def test_front_a_umlaut_stays_front(self):
+        """``ä`` art ``a``ya eşlenince ünlü uyumu bozuluyordu."""
+        self.assertEqual(to_comparison_form("käbäl"), "kebel")
