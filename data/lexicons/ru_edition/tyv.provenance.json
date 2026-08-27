@@ -1,0 +1,15 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Тувинский",
+  "code": "tyv",
+  "donor": false,
+  "ru_edition": true,
+  "url": "https://kaikki.org/ruwiktionary/%D0%A2%D1%83%D0%B2%D0%B8%D0%BD%D1%81%D0%BA%D0%B8%D0%B9/kaikki.org-dictionary-%D0%A2%D1%83%D0%B2%D0%B8%D0%BD%D1%81%D0%BA%D0%B8%D0%B9.jsonl",
+  "retrieved_at": "2026-08-27T14:09:27+00:00",
+  "raw_bytes": 1253409,
+  "stored_bytes": 95228,
+  "entries": 1347,
+  "compressed": true,
+  "sha256_stored": "19e39b76071f449906870f67504ddefabcac0f19852a080dba2f8624e38fd05e",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

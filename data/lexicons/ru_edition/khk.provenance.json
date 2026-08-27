@@ -1,0 +1,15 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Хакасский",
+  "code": "khk",
+  "donor": false,
+  "ru_edition": true,
+  "url": "https://kaikki.org/ruwiktionary/%D0%A5%D0%B0%D0%BA%D0%B0%D1%81%D1%81%D0%BA%D0%B8%D0%B9/kaikki.org-dictionary-%D0%A5%D0%B0%D0%BA%D0%B0%D1%81%D1%81%D0%BA%D0%B8%D0%B9.jsonl",
+  "retrieved_at": "2026-08-27T14:09:27+00:00",
+  "raw_bytes": 833869,
+  "stored_bytes": 68585,
+  "entries": 691,
+  "compressed": true,
+  "sha256_stored": "2bc5bc7b4b03f7b70c9b6e4461314e43b6f6802c78e99b19ed426607ee7841e2",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

@@ -223,6 +223,78 @@ def load_wold_cases(
     return _attach_witnesses(cases, source_lang="sah") if with_witnesses else cases
 
 
+#: Türkçe altın alıntı kümesi — TDK + Nişanyan (Faz C6).
+TURKISH_GOLD_PATH = CLDF_DIR.parent / "gold" / "turkish_loanwords.json"
+
+
+def load_turkish_gold_cases(*, with_witnesses: bool = True) -> list[BorrowingCase]:
+    """TDK + Nişanyan'dan kurulmuş Türkçe altın küme — **Wiktionary'ye hiç
+    değmeden**.
+
+    ⚠️ Bu ölçüt neden gerekiyor: WOLD'da tek Türki dil Sakha'dır ve Türkçe
+    için elimizdeki tek etiket kaynağı Wiktionary'ydi. Motorun zincir
+    sinyali **zaten o etiketi okuyor**; ona karşı ölçüm döngüseldir. Ayrıca
+    o kümede alıntı oranı %72,9 olduğu için F'yi en yükselten karar
+    "hepsine alıntı de"dir ve sistemler çöküyor.
+
+    ⚠️ **Kanıt kuralı asimetriktir** (bkz.
+    ``scripts/build_turkish_loanword_gold.py``): ``alıntı`` iki kaynağın da
+    onayını ister, ``miras`` Nişanyan'ın açık beyanı + TDK'nın sessizliğiyle
+    verilir. Yanlış-negatif, yanlış-pozitiften daha olasıdır.
+    """
+    if not TURKISH_GOLD_PATH.exists():
+        logger.info(
+            "Türkçe altın küme yok (%s): "
+            "python scripts/build_turkish_loanword_gold.py",
+            TURKISH_GOLD_PATH,
+        )
+        return []
+    try:
+        data = json.loads(TURKISH_GOLD_PATH.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        logger.warning("Türkçe altın küme okunamadı: %s", TURKISH_GOLD_PATH)
+        return []
+
+    # ⚠️ Anlam TDK/Nişanyan'dan gelmiyor (kavram etiketi vermiyorlar);
+    # sözlük indeksinin ``gloss`` alanından okunuyor. Bu bir ETİKET değil,
+    # kelimenin anlamıdır — verici yakınlığı sinyali anlam kısıtlı olduğu
+    # için onsuz hiç ateşlenmez.
+    glosses = _turkish_glosses([row["word"] for row in (data.get("items") or [])])
+    cases = [
+        BorrowingCase(
+            word=row["word"],
+            lang_code="tr",
+            is_borrowed=row["label"] == "alıntı",
+            donor=row.get("nisanyan_source") or row.get("tdk_source") or "",
+            source="tdk+nisanyan",
+            sense=glosses.get(row["word"], ""),
+        )
+        for row in (data.get("items") or [])
+    ]
+    return _attach_witnesses(cases, source_lang="tr") if with_witnesses else cases
+
+
+def _turkish_glosses(words: list[str]) -> dict[str, str]:
+    """Sözlük indeksinden Türkçe anlamlar. İndeks yoksa boş sözlük."""
+    from engine.db.lexicon_index import LexiconIndex
+
+    index = LexiconIndex()
+    if not index.exists or not words:
+        return {}
+    out: dict[str, str] = {}
+    with index.connect() as connection:
+        for chunk in range(0, len(words), 400):
+            batch = words[chunk : chunk + 400]
+            rows = connection.execute(
+                "SELECT word, gloss FROM entries WHERE lang_code = 'tr' AND word IN "
+                f"({','.join('?' * len(batch))}) AND gloss IS NOT NULL AND gloss != ''",
+                batch,
+            ).fetchall()
+            for row in rows:
+                out.setdefault(row["word"], row["gloss"])
+    return out
+
+
 def load_wiktionary_cases(
     *, lang: str = "tr", limit: int = 4000, with_witnesses: bool = True
 ) -> list[BorrowingCase]:
@@ -744,6 +816,47 @@ def main() -> int:
         _print_ablation_verdict(payload["wold"]["vs_phonotactic"])
     else:
         print("WOLD yok — birincil ölçüt atlandı (python scripts/download_cldf.py wold)")
+
+    # --- İKİNCİL ÖLÇÜT: Türkçe altın küme (TDK + Nişanyan) ------------------
+    turkish = load_turkish_gold_cases()
+    if len(turkish) >= 40:
+        scores, turkish_threshold, turkish_combiner, _ = evaluate(
+            turkish, use_chain=False, trained_on="tdk_nisanyan/tr/tune"
+        )
+        _print_block(
+            "İKİNCİL ÖLÇÜT — Türkçe altın küme (TDK + Nişanyan)",
+            (
+                "⚠️ Wiktionary'ye HİÇ DEĞMEDEN kurulmuş bağımsız ölçüt.\n"
+                "Zincir sinyali kapalı: o sinyal Wiktionary etiketini okur.\n"
+                "⚠️ Kanıt kuralı asimetrik: 'alıntı' iki kaynağın onayını\n"
+                "ister, 'miras' Nişanyan beyanı + TDK sessizliğiyle verilir."
+            ),
+            [c for i, c in enumerate(turkish) if i % 2 == 1],
+            scores,
+        )
+        print(f"(eşik ayar yarısında seçildi: {turkish_threshold:.2f})")
+        payload["turkish_gold"] = {
+            "language": "tr",
+            "n": len(turkish) // 2,
+            "tuned_threshold": turkish_threshold,
+            "chain_signal": "disabled",
+            "combiner": turkish_combiner.as_dict(),
+            "systems": {k: v.as_dict() for k, v in scores.items()},
+            "vs_phonotactic": compare_systems(
+                {
+                    "engine": scores["engine"].per_item,
+                    "phonotactic_only": scores["phonotactic_only"].per_item,
+                },
+                reference="phonotactic_only",
+            ),
+        }
+        _print_ablation_verdict(payload["turkish_gold"]["vs_phonotactic"])
+    elif turkish:
+        print(
+            f"\n⚠️ Türkçe altın küme çok küçük (n={len(turkish)}); ölçüm "
+            "atlandı.\n   Büyütmek için: "
+            "python scripts/build_turkish_loanword_gold.py --limit 2000"
+        )
 
     wiktionary = load_wiktionary_cases(limit=args.wiktionary_limit)
     if wiktionary:

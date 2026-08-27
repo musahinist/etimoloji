@@ -1,0 +1,15 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Якутский",
+  "code": "sah",
+  "donor": false,
+  "ru_edition": true,
+  "url": "https://kaikki.org/ruwiktionary/%D0%AF%D0%BA%D1%83%D1%82%D1%81%D0%BA%D0%B8%D0%B9/kaikki.org-dictionary-%D0%AF%D0%BA%D1%83%D1%82%D1%81%D0%BA%D0%B8%D0%B9.jsonl",
+  "retrieved_at": "2026-08-27T14:09:25+00:00",
+  "raw_bytes": 4399198,
+  "stored_bytes": 325976,
+  "entries": 4285,
+  "compressed": true,
+  "sha256_stored": "c16715948ab538c4950af8699d7f9a6645ce6f614bd764966f6e8924a8531a15",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

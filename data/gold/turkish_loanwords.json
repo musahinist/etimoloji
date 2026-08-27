@@ -1,0 +1,290 @@
+{
+  "_schema": "turkic-etymology-turkish-loanword-gold/v1",
+  "built_at": "2026-08-27T13:49:53+00:00",
+  "sources": [
+    "TDK Güncel Türkçe Sözlük",
+    "Nişanyan Sözlük"
+  ],
+  "n_queried": 150,
+  "n_agreed": 38,
+  "n_two_source": 20,
+  "n_disagreed": 0,
+  "n_unknown": 112,
+  "source_agreement_rate": 1.0,
+  "borrowed_rate": 0.5263,
+  "caveats": [
+    "⚠️ KANIT KURALI ASİMETRİKTİR. 'alıntı' etiketi İKİ kaynağın da alıntı demesini gerektirir (güçlü). 'miras' etiketi Nişanyan'ın açıkça `ses evrimi` demesi VE TDK'nın kaynak dil YAZMAMASIYLA verilir (zayıf-orta) — çünkü TDK yalnız alıntı maddelerde `lisan` yazar ve 'Türkçe kökenli' ile 'etimoloji verilmemiş' ayırt edilemez.",
+    "Bu asimetri yüzünden yanlış-pozitif (miras'ı alıntı sanmak) hatası, yanlış-negatiften daha az olasıdır; ölçümde bu yön dikkate alınmalıdır.",
+    "Kelime listesi sözlük indeksinden gelir ama ETİKET oradan gelmez; Wiktionary'ye değilmemiştir.",
+    "Nişanyan Sözlük'ün API lisansı ilan edilmemiştir; veri yalnız iç doğrulama için, atıflı ve sınırlı hacimde çekilmiştir, yeniden dağıtılmaz."
+  ],
+  "items": [
+    {
+      "word": "artmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "ata",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "ağırbaşlı",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "baht",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça baḫt",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "boyatmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "buruşmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "dalalet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḍalālet",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "gerici",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "gönüllü",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "gözlenmek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "hikmet",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḥikmet",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "hususi",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḫuṣūṣī",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "imha",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça imḥāʾ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "izlence",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "kahkaha",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ḳahḳaha",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "kamara",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "İtalyanca camera",
+      "nisanyan_source": "İtalyanca"
+    },
+    {
+      "word": "maymun",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça meymūn",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "mimari",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça miʿmārī",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "muhafız",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça muḥāfiẓ",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "müsamaha",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça musāmaḥa",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "naif",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca naïf",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "oyunculuk",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "paşalık",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "salon",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca salon",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "sermek",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "takunya",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Rumca",
+      "nisanyan_source": "Yunanca"
+    },
+    {
+      "word": "tarikat",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça ṭarīḳat",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "tecrit",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Arapça tecrīd",
+      "nisanyan_source": "Arapça"
+    },
+    {
+      "word": "unutulmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "uyuşturmak",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "vakum",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca vacuum",
+      "nisanyan_source": "Latince"
+    },
+    {
+      "word": "yelkovan",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "çanakçı",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "çerçeve",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça çār + çūbe",
+      "nisanyan_source": "Farsça"
+    },
+    {
+      "word": "çözelti",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Türkiye Türkçesi"
+    },
+    {
+      "word": "ılık",
+      "label": "miras",
+      "evidence": "nişanyan+tdk sessiz",
+      "tdk_source": "",
+      "nisanyan_source": "Eski Türkçe"
+    },
+    {
+      "word": "şapel",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Fransızca chapelle",
+      "nisanyan_source": "Fransızca"
+    },
+    {
+      "word": "şev",
+      "label": "alıntı",
+      "evidence": "iki kaynak",
+      "tdk_source": "Farsça şīb",
+      "nisanyan_source": "Farsça"
+    }
+  ],
+  "disagreements": []
+}

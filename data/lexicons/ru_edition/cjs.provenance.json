@@ -1,0 +1,15 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Шорский",
+  "code": "cjs",
+  "donor": false,
+  "ru_edition": true,
+  "url": "https://kaikki.org/ruwiktionary/%D0%A8%D0%BE%D1%80%D1%81%D0%BA%D0%B8%D0%B9/kaikki.org-dictionary-%D0%A8%D0%BE%D1%80%D1%81%D0%BA%D0%B8%D0%B9.jsonl",
+  "retrieved_at": "2026-08-27T14:09:25+00:00",
+  "raw_bytes": 714395,
+  "stored_bytes": 62419,
+  "entries": 557,
+  "compressed": true,
+  "sha256_stored": "0c38f04648d09417a8fe5b737126a57a378b042b0cf16413a02f693eec665b5e",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

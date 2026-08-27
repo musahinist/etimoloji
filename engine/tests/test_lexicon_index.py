@@ -255,3 +255,64 @@ class TestEntryParsing(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestRussianEditionSchema(unittest.TestCase):
+    """Rusça Wiktionary sürümü (Faz B3) — şema FARKLIDIR.
+
+    ⚠️ İngilizce sürüm bazı Türki dilleri çok zayıf kapsıyor. Rusça sürüm
+    eklenince indeks 108.708 -> 133.494 kayda çıktı; Karayca 0 -> 5.793,
+    Kırım Tatarcası 0 -> 3.497, Çuvaşça 1.068 -> 3.142 (Oğur kolunun tek
+    yaşayan tanığı).
+
+    Ama o maddeler **yalnız tanık ve arama verisidir**: şemada
+    ``etymology_templates`` yok (köken çıkarılamaz) ve anlamlar Rusçadır
+    (anlam kısıtlı verici yakınlığı sinyali çalışmaz).
+    """
+
+    def test_etymology_texts_list_is_read(self):
+        """⚠️ İngilizce sürüm ``etymology_text`` (dizgi), Rusça sürüm
+        ``etymology_texts`` (liste). Yalnız ilkini okumak Rusça sürümün
+        etimolojisini SESSİZCE düşürürdü."""
+        from engine.db.lexicon_index import _etymology_text
+
+        self.assertEqual(
+            _etymology_text({"etymology_texts": ["От тюркск.", "ср. тур. göz"]}),
+            "От тюркск. ср. тур. göz",
+        )
+
+    def test_string_form_still_works(self):
+        from engine.db.lexicon_index import _etymology_text
+
+        self.assertEqual(_etymology_text({"etymology_text": "From Arabic"}), "From Arabic")
+
+    def test_absent_etymology(self):
+        from engine.db.lexicon_index import _etymology_text
+
+        self.assertEqual(_etymology_text({}), "")
+
+    def test_russian_records_are_indexed_without_origin(self):
+        """Şemada `etymology_templates` yok; köken çıkarılamaz ve
+        çıkarılmaya ÇALIŞILMAMALI."""
+        with TemporaryDirectory() as tmp:
+            path = write_dump(
+                Path(tmp),
+                "kdr",
+                [
+                    {
+                        "word": "да",
+                        "lang_code": "kdr",
+                        "pos": "conj",
+                        "senses": [{"glosses": ["и"]}],
+                        "etymology_texts": [],
+                    }
+                ],
+            )
+            entries = list(iter_entries(path, "kdr"))
+        self.assertEqual(len(entries), 1)
+        self.assertIsNone(entries[0].origin)
+
+    def test_ru_edition_discovery_is_safe_when_absent(self):
+        from engine.db.lexicon_index import discover_ru_edition
+
+        self.assertIsInstance(discover_ru_edition(), dict)

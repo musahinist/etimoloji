@@ -1,0 +1,15 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Башкирский",
+  "code": "ba",
+  "donor": false,
+  "ru_edition": true,
+  "url": "https://kaikki.org/ruwiktionary/%D0%91%D0%B0%D1%88%D0%BA%D0%B8%D1%80%D1%81%D0%BA%D0%B8%D0%B9/kaikki.org-dictionary-%D0%91%D0%B0%D1%88%D0%BA%D0%B8%D1%80%D1%81%D0%BA%D0%B8%D0%B9.jsonl",
+  "retrieved_at": "2026-08-27T14:09:26+00:00",
+  "raw_bytes": 7991245,
+  "stored_bytes": 895669,
+  "entries": 4282,
+  "compressed": true,
+  "sha256_stored": "7d4797dcdf58977f346b9765e5fdee5dd4dddfa39cefff9a289a1e0347bba674",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

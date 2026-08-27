@@ -1,0 +1,15 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Кумыкский",
+  "code": "kum",
+  "donor": false,
+  "ru_edition": true,
+  "url": "https://kaikki.org/ruwiktionary/%D0%9A%D1%83%D0%BC%D1%8B%D0%BA%D1%81%D0%BA%D0%B8%D0%B9/kaikki.org-dictionary-%D0%9A%D1%83%D0%BC%D1%8B%D0%BA%D1%81%D0%BA%D0%B8%D0%B9.jsonl",
+  "retrieved_at": "2026-08-27T14:09:27+00:00",
+  "raw_bytes": 1860841,
+  "stored_bytes": 162057,
+  "entries": 1430,
+  "compressed": true,
+  "sha256_stored": "24ae9540e114fc3cb3400a72abd8eab9d8fab7ede360eeb897fb8048084fcb9f",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

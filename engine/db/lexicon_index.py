@@ -231,6 +231,22 @@ class LexiconEntry:
         )
 
 
+def _etymology_text(record: dict[str, Any]) -> str:
+    """Etimoloji metni — iki şemayı da okur.
+
+    ⚠️ İngilizce sürüm ``etymology_text`` (dizgi), Rusça sürüm
+    ``etymology_texts`` (liste) kullanıyor. Yalnız ilkini okumak Rusça
+    sürümün etimolojisini **sessizce** düşürürdü.
+    """
+    single = record.get("etymology_text")
+    if single:
+        return str(single)
+    many = record.get("etymology_texts")
+    if isinstance(many, list) and many:
+        return " ".join(str(x) for x in many if x)
+    return ""
+
+
 def _first_gloss(record: dict[str, Any]) -> str:
     for sense in record.get("senses", []):
         glosses = sense.get("glosses") or []
@@ -331,7 +347,7 @@ def _origin_from_templates(record: dict[str, Any]) -> tuple[str | None, str, str
         if name in BORROWING_TEMPLATES or name in INHERITANCE_TEMPLATES:
             steps.append((name, donor, form))
 
-    text_donor, text_form = donor_from_text(str(record.get("etymology_text", "")))
+    text_donor, text_form = donor_from_text(_etymology_text(record))
 
     if not steps:
         if text_donor:
@@ -388,7 +404,7 @@ def iter_entries(path: Path, lang_code: str) -> Iterator[LexiconEntry]:
                 pos=str(record.get("pos", "")),
                 gloss=_first_gloss(record),
                 ipa=_first_ipa(record),
-                etymology=str(record.get("etymology_text", "")),
+                etymology=_etymology_text(record),
                 long_vowels=extract_long_vowels(_first_ipa(record)),
                 origin=origin,
                 donor_lang=donor_lang,
@@ -413,9 +429,22 @@ class LexiconIndex:
 
     # -- kurulum ------------------------------------------------------------
 
-    def build(self, *, sources: dict[str, Path] | None = None, batch: int = 5000) -> dict[str, Any]:
-        """İndeksi sıfırdan kurar."""
+    def build(
+        self,
+        *,
+        sources: dict[str, Path] | None = None,
+        batch: int = 5000,
+        with_ru_edition: bool = True,
+    ) -> dict[str, Any]:
+        """İndeksi sıfırdan kurar.
+
+        :param with_ru_edition: Rusça Wiktionary sürümü dökümleri de
+            eklensin mi? ⚠️ O maddeler **yalnız tanık ve arama verisidir**;
+            köken çıkarılamaz (şemada ``etymology_templates`` yok) ve
+            anlamlar Rusçadır.
+        """
         files = sources if sources is not None else discover_lexicons()
+        ru_files = discover_ru_edition() if (with_ru_edition and sources is None) else {}
         if not files:
             raise FileNotFoundError(
                 f"{LEXICON_DIR} altında döküm yok. Önce indirin: "
@@ -443,6 +472,25 @@ class LexiconIndex:
                     total += len(rows)
                 counts[lang_code] = total
                 logger.info("indekslendi: %s -> %d kayıt", lang_code, total)
+
+            # Rusça sürüm maddeleri İngilizce sürümün ÜSTÜNE eklenir.
+            # ⚠️ Silme yok: aynı biçim iki sürümde de varsa ikisi de kalır.
+            # İngilizce kayıt köken bilgisi taşır, Rusça kayıt taşımaz;
+            # sorgular köken alanı dolu olanı zaten tercih eder.
+            for lang_code, source in sorted(ru_files.items()):
+                rows = []
+                total = 0
+                for entry in iter_entries(source, lang_code):
+                    rows.append(entry.as_row())
+                    if len(rows) >= batch:
+                        self._insert(connection, rows)
+                        total += len(rows)
+                        rows.clear()
+                if rows:
+                    self._insert(connection, rows)
+                    total += len(rows)
+                counts[lang_code] = counts.get(lang_code, 0) + total
+                logger.info("indekslendi (ru sürümü): %s -> %d kayıt", lang_code, total)
 
             connection.execute(
                 "INSERT INTO entries_fts(entries_fts) VALUES('rebuild')"
@@ -586,6 +634,30 @@ class LexiconIndex:
             "borrowed": borrowed,
             "with_long_vowels": with_length,
         }
+
+
+#: Rusça Wiktionary sürümü dökümleri (Faz B3).
+#:
+#: ⚠️ Bu maddeler **yalnız tanık ve arama verisidir**. Şemada
+#: ``etymology_templates`` yok, dolayısıyla köken (alıntı/miras) çıkarılamaz;
+#: anlamlar Rusçadır, dolayısıyla anlam kısıtlı verici yakınlığı sinyali
+#: bu maddelerde çalışmaz. İngilizce sürümdeki bir madde varsa **o
+#: kazanır**: köken bilgisi taşıyan kayıt tercih edilir.
+RU_EDITION_SUBDIR = "ru_edition"
+
+
+def discover_ru_edition() -> dict[str, Path]:
+    """Rusça sürüm dökümleri — yoksa boş sözlük."""
+    base = LEXICON_DIR / RU_EDITION_SUBDIR
+    if not base.exists():
+        return {}
+    found: dict[str, Path] = {}
+    for path in sorted(base.iterdir()):
+        if path.name.endswith(".jsonl.gz"):
+            found[path.name[: -len(".jsonl.gz")]] = path
+        elif path.suffix == ".jsonl":
+            found[path.stem] = path
+    return found
 
 
 def discover_lexicons() -> dict[str, Path]:

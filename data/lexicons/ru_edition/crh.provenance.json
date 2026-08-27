@@ -1,0 +1,15 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Крымскотатарский",
+  "code": "crh",
+  "donor": false,
+  "ru_edition": true,
+  "url": "https://kaikki.org/ruwiktionary/%D0%9A%D1%80%D1%8B%D0%BC%D1%81%D0%BA%D0%BE%D1%82%D0%B0%D1%82%D0%B0%D1%80%D1%81%D0%BA%D0%B8%D0%B9/kaikki.org-dictionary-%D0%9A%D1%80%D1%8B%D0%BC%D1%81%D0%BA%D0%BE%D1%82%D0%B0%D1%82%D0%B0%D1%80%D1%81%D0%BA%D0%B8%D0%B9.jsonl",
+  "retrieved_at": "2026-08-27T14:09:25+00:00",
+  "raw_bytes": 3564287,
+  "stored_bytes": 275925,
+  "entries": 3497,
+  "compressed": true,
+  "sha256_stored": "0c9ebcd8e0981207481019bb43e5ef9fef59b8a07d880b57d93975ce80d1c5d8",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

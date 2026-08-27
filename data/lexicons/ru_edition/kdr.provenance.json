@@ -1,0 +1,15 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Караимский",
+  "code": "kdr",
+  "donor": false,
+  "ru_edition": true,
+  "url": "https://kaikki.org/ruwiktionary/%D0%9A%D0%B0%D1%80%D0%B0%D0%B8%D0%BC%D1%81%D0%BA%D0%B8%D0%B9/kaikki.org-dictionary-%D0%9A%D0%B0%D1%80%D0%B0%D0%B8%D0%BC%D1%81%D0%BA%D0%B8%D0%B9.jsonl",
+  "retrieved_at": "2026-08-27T14:09:24+00:00",
+  "raw_bytes": 7082640,
+  "stored_bytes": 388524,
+  "entries": 7353,
+  "compressed": true,
+  "sha256_stored": "900b2e9964d2eff62bff9dfeab96b75a0f50d3cedb4145dd264499fea610c60d",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

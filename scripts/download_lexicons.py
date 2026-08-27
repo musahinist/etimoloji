@@ -29,6 +29,7 @@ import sys
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
+from urllib.parse import quote
 
 import requests
 
@@ -68,6 +69,39 @@ LEXICONS: dict[str, str] = {
     "Khalaj": "klj",
     "Dolgan": "dlg",
 }
+
+#: Rusça Wiktionary sürümünden Türki dil dökümleri (Faz B3).
+#:
+#: ⚠️ İngilizce Wiktionary bazı Türki dilleri **çok zayıf** kapsıyor.
+#: Rusça sürüm Sibirya ve Kıpçak dillerinde belirgin biçimde daha zengin.
+#: Boyutlar küçük (toplam ~2,8 MB).
+#:
+#: ⚠️ **Şema FARKLIDIR ve bu ölçümü etkiler:**
+#:
+#: * ``etymology_text`` yerine ``etymology_texts`` (liste)
+#: * ``etymology_templates`` **YOK** -> köken (alıntı/miras) çıkarılamaz
+#: * anlamlar **Rusçadır** -> anlam kısıtlı verici yakınlığı sinyali bu
+#:   maddelerde çalışmaz (verici indeksi İngilizce glosslarla kurulu)
+#:
+#: Bu yüzden Rusça sürüm maddeleri **yalnız tanık ve arama verisi** olarak
+#: kullanılır; köken etiketi olarak ASLA kullanılmaz.
+RU_EDITION = "https://kaikki.org/ruwiktionary/{name}/kaikki.org-dictionary-{name}.jsonl"
+
+RU_LEXICONS: dict[str, str] = {
+    "Караимский": "kdr",            # Karayca — İngilizce sürümde yok denecek kadar az
+    "Шорский": "cjs",               # Şorca
+    "Крымскотатарский": "crh",      # Kırım Tatarcası
+    "Якутский": "sah",              # Yakutça
+    "Башкирский": "ba",             # Başkurtça
+    "Чувашский": "cv",              # Çuvaşça — Oğur kolunun tek yaşayan tanığı
+    "Тувинский": "tyv",             # Tuvaca
+    "Хакасский": "khk",             # Hakasça
+    "Кумыкский": "kum",             # Kumukça
+    "Ногайский": "nog",             # Nogayca
+}
+
+#: Rusça sürüm dökümleri ayrı dizine iner; şema farkı orada işlenir.
+RU_SUBDIR = "ru_edition"
 
 #: **Verici** dil dökümleri. Bunlar Türki DEĞİLDİR ve akraba arama indeksine
 #: ASLA karışmaz — ayrı dizine iner (``data/lexicons/donors/``).
@@ -124,14 +158,19 @@ def download(
     force: bool = False,
     compress: bool = True,
     donor: bool = False,
+    ru_edition: bool = False,
 ) -> dict[str, Any] | None:
     """Tek bir dilin dökümünü indirir ve künyesini döndürür.
 
     :param donor: verici dil mi? Öyleyse ``data/lexicons/donors/`` altına
         iner ve Türki arama indeksine **karışmaz**.
     """
-    code = (DONORS if donor else LEXICONS)[name]
-    directory = LEXICON_DIR / DONOR_SUBDIR if donor else LEXICON_DIR
+    if ru_edition:
+        code = RU_LEXICONS[name]
+        directory = LEXICON_DIR / RU_SUBDIR
+    else:
+        code = (DONORS if donor else LEXICONS)[name]
+        directory = LEXICON_DIR / DONOR_SUBDIR if donor else LEXICON_DIR
     directory.mkdir(parents=True, exist_ok=True)
     suffix = ".jsonl.gz" if compress else ".jsonl"
     target = directory / f"{code}{suffix}"
@@ -141,7 +180,9 @@ def download(
         print(f"[{name}] zaten var (--force ile yeniden indirilir)")
         return json.loads(provenance_path.read_text(encoding="utf-8"))
 
-    url = URL.format(name=name)
+    url = (
+        RU_EDITION.format(name=quote(name)) if ru_edition else URL.format(name=name)
+    )
     print(f"[{name}] indiriliyor -> {target.name}")
     raw_bytes = 0
     lines = 0
@@ -172,6 +213,7 @@ def download(
         "language": name,
         "code": code,
         "donor": donor,
+        "ru_edition": ru_edition,
         "url": url,
         "retrieved_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "raw_bytes": raw_bytes,
@@ -229,6 +271,11 @@ def main() -> int:
     ap.add_argument("languages", nargs="*", help="kaikki dil adları (ör. Turkish Kazakh)")
     ap.add_argument("--all", action="store_true", help="hepsini indir (~761 MB)")
     ap.add_argument(
+        "--ru",
+        action="store_true",
+        help="Rusça Wiktionary sürümünden Türki dil dökümleri (~2,8 MB)",
+    )
+    ap.add_argument(
         "--donors",
         nargs="*",
         metavar="DIL",
@@ -249,6 +296,29 @@ def main() -> int:
             size = remote_size(name, session)
             print(f"{name:22} {LEXICONS[name]:5} {size / (1 << 20):>9.1f} MB")
         return 0
+
+    if args.ru:
+        results = [
+            prov
+            for name in RU_LEXICONS
+            if (
+                prov := download(
+                    name,
+                    session=session,
+                    force=args.force,
+                    compress=not args.no_compress,
+                    ru_edition=True,
+                )
+            )
+        ]
+        total = sum(p["entries"] for p in results)
+        print(f"\nRusça sürüm: {len(results)} dil · {total:,} kayıt")
+        print(
+            "⚠️ Bu maddeler YALNIZ tanık ve arama verisidir. Şemada "
+            "`etymology_templates` yok ve anlamlar Rusça; köken etiketi "
+            "olarak KULLANILMAZ."
+        )
+        return 0 if results else 1
 
     if args.donors is not None:
         # Varsayılan: WOLD/Sakha birincil ölçütünün gerçek vericileri.
