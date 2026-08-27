@@ -206,3 +206,75 @@ class TestCalibrationModelFile(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestConfidenceModelLoading(unittest.TestCase):
+    def test_missing_model_returns_none_and_does_not_crash(self):
+        from pathlib import Path
+        from tempfile import TemporaryDirectory
+        from unittest import mock
+
+        from engine.nlp import confidence
+
+        with TemporaryDirectory() as tmp:
+            with mock.patch.object(confidence, "MODEL_PATH", Path(tmp) / "yok.json"):
+                confidence.reset_model_cache()
+                self.assertIsNone(confidence.load_model())
+        confidence.reset_model_cache()
+
+    def test_corrupt_model_is_reported_not_raised(self):
+        from pathlib import Path
+        from tempfile import TemporaryDirectory
+        from unittest import mock
+
+        from engine.nlp import confidence
+
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "model.json"
+            path.write_text("{bozuk", encoding="utf-8")
+            with mock.patch.object(confidence, "MODEL_PATH", path):
+                confidence.reset_model_cache()
+                self.assertIsNone(confidence.load_model())
+        confidence.reset_model_cache()
+
+    def test_train_and_save_round_trip(self):
+        from pathlib import Path
+        from tempfile import TemporaryDirectory
+        from unittest import mock
+
+        from engine.nlp import confidence
+
+        scores = [0.9] * 100
+        correct = [i % 10 < 3 for i in range(100)]
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "model.json"
+            with mock.patch.object(confidence, "MODEL_PATH", path):
+                with mock.patch.object(confidence, "CALIBRATION_DIR", Path(tmp)):
+                    model = confidence.train_and_save(scores, correct, trained_on="x/train")
+                    loaded = confidence.load_model()
+        self.assertAlmostEqual(model.a, loaded.a, places=6)
+        self.assertLess(model.ece_after, model.ece_before)
+        confidence.reset_model_cache()
+
+    def test_only_platt_can_be_persisted(self):
+        from engine.nlp import confidence
+
+        with self.assertRaises(ValueError):
+            confidence.train_and_save([0.5], [True], trained_on="x", method="isotonic")
+
+    def test_calibration_note_declares_missing_model(self):
+        from pathlib import Path
+        from tempfile import TemporaryDirectory
+        from unittest import mock
+
+        from engine.nlp import confidence
+
+        with TemporaryDirectory() as tmp:
+            with mock.patch.object(confidence, "MODEL_PATH", Path(tmp) / "yok.json"):
+                confidence.reset_model_cache()
+                out = confidence.apply_calibration(
+                    {"confidence": 0.8, "is_reconstructible": True, "reconstructed_root": "*x"}
+                )
+        self.assertFalse(out["calibrated"])
+        self.assertIn("HAM", out["calibration_note"])
+        confidence.reset_model_cache()

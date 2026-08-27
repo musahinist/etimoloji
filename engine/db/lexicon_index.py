@@ -519,13 +519,17 @@ class LexiconIndex:
             borrowed = connection.execute(
                 "SELECT COUNT(*) FROM entries WHERE origin = 'alıntı'"
             ).fetchone()[0]
+        # ⚠️ ``**info`` ÖNCE gelmeli: ``build_info`` tablosunda da
+        # ``total_entries`` anahtarı var ama değeri METİN. Sona konursa
+        # hesaplanan tamsayıyı ezer ve ``stats()["total_entries"]`` bir
+        # dizgi döner.
         return {
+            **info,
             "exists": True,
             "path": str(self.path),
             "total_entries": total,
             "with_origin": with_etymology,
             "borrowed": borrowed,
-            **info,
         }
 
 

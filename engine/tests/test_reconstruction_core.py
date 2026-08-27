@@ -234,3 +234,104 @@ class TestReconstructionEndToEnd(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestCenterStarFallback(unittest.TestCase):
+    """LingPy yoksa hizalama durmaz, merkez-yıldız yedeğine düşer."""
+
+    def test_fallback_produces_columns(self):
+        from unittest import mock
+
+        from engine.nlp import multi_alignment
+
+        with mock.patch.object(multi_alignment, "_lingpy_multiple", lambda: None):
+            columns = multi_alignment.align_forms({"tr": "göz", "kk": "köz", "cv": "kus"})
+        self.assertGreaterEqual(len(columns), 3)
+
+    def test_fallback_handles_different_lengths(self):
+        from unittest import mock
+
+        from engine.nlp import multi_alignment
+
+        with mock.patch.object(multi_alignment, "_lingpy_multiple", lambda: None):
+            columns = multi_alignment.align_forms({"tr": "su", "otk": "sub", "tk": "suv"})
+        self.assertGreaterEqual(len(columns), 3)
+
+    def test_lingpy_failure_falls_back_instead_of_crashing(self):
+        from unittest import mock
+
+        from engine.nlp import multi_alignment
+
+        class Exploding:
+            def __init__(self, *args, **kwargs):
+                raise RuntimeError("patlak")
+
+        with mock.patch.object(multi_alignment, "_lingpy_multiple", lambda: Exploding):
+            columns = multi_alignment.align_forms({"tr": "göz", "kk": "köz"})
+        self.assertGreaterEqual(len(columns), 2)
+
+    def test_needleman_wunsch_aligns_and_gaps(self):
+        from engine.nlp.multi_alignment import _needleman_wunsch
+
+        a, b = _needleman_wunsch("sub", "su")
+        self.assertEqual(len(a), len(b))
+        self.assertIn("-", b)
+
+    def test_empty_forms_are_dropped(self):
+        from engine.nlp.multi_alignment import align_forms
+
+        self.assertEqual(align_forms({"tr": "", "kk": ""}), [])
+
+
+class TestAlignedColumnProperties(unittest.TestCase):
+    def test_gap_ratio_and_distinct(self):
+        from engine.nlp.multi_alignment import GAP, AlignedColumn
+
+        column = AlignedColumn(0, {"a": "k", "b": "k", "c": GAP}, 1)
+        self.assertAlmostEqual(column.gap_ratio, 1 / 3)
+        self.assertEqual(column.distinct, frozenset({"k"}))
+        self.assertEqual(set(column.present), {"a", "b"})
+
+    def test_empty_column(self):
+        from engine.nlp.multi_alignment import AlignedColumn
+
+        column = AlignedColumn(0, {}, 0)
+        self.assertEqual(column.gap_ratio, 1.0)
+        self.assertEqual(column.distinct, frozenset())
+
+
+class TestPlausibilityGuard(unittest.TestCase):
+    """Ata biçmin kendisi Türkçe olabilir mi?"""
+
+    def test_well_formed_roots_pass(self):
+        from engine.nlp.proto_phonology import proto_plausibility
+
+        for form in ("*köŕ", "*teŋiŕ", "*sub", "*kāpuk", "*tūŕ"):
+            with self.subTest(form=form):
+                score, violations = proto_plausibility(form)
+                self.assertEqual(score, 1.0, f"{form}: {violations}")
+
+    def test_vowelless_root_is_rejected(self):
+        from engine.nlp.proto_phonology import proto_plausibility
+
+        score, violations = proto_plausibility("*zzzky")
+        self.assertEqual(score, 0.0)
+        self.assertTrue(any("ünlü" in v for v in violations))
+
+    def test_prohibited_initial_is_penalised(self):
+        from engine.nlp.proto_phonology import proto_plausibility
+
+        score, violations = proto_plausibility("*firak")
+        self.assertLess(score, 1.0)
+        self.assertTrue(any("söz başı" in v for v in violations))
+
+    def test_length_marks_do_not_count_as_missing_vowels(self):
+        """``ā`` bir ünlüdür; normalize edilmezse *kāpuk 'ünlüsüz' sayılıyordu."""
+        from engine.nlp.proto_phonology import proto_plausibility
+
+        self.assertEqual(proto_plausibility("*kāpuk")[0], 1.0)
+
+    def test_empty_form(self):
+        from engine.nlp.proto_phonology import proto_plausibility
+
+        self.assertEqual(proto_plausibility("")[0], 0.0)

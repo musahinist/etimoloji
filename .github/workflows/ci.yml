@@ -33,7 +33,11 @@ jobs:
       - name: Testler ve kapsam
         # Testler ağsız çalışır: conftest.py soket düzeyinde canlı ağı engeller.
         # Canlı kaynak testleri (engine/tests/live) ETY_LIVE=1 olmadan atlanır.
-        run: pytest --cov=engine --cov-report=term-missing --cov-fail-under=90
+        #
+        # Veri gerektiren testler (CLDF, sözlük dökümü, indeks) veri yoksa
+        # ATLANIR — bunlar `data-checks` işinde koşar. Kapsam eşiği bu yüzden
+        # burada değil orada denetlenir.
+        run: pytest -q
 
   test-with-phonology:
     runs-on: ubuntu-latest
@@ -46,6 +50,69 @@ jobs:
       - name: Fonoloji kütüphaneleriyle kur (lingpy, panphon, epitran)
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[dev,phon,pdf]"
+          pip install -e ".[dev,phon,pdf,cldf]"
       - name: Testler
         run: pytest -q
+
+  # Veriyle koşan iş: CLDF ve sözlük dökümlerini indirir, ölçümleri yeniden
+  # üretir. Kapsam eşiği burada denetlenir çünkü veri gerektiren testler
+  # ancak burada koşar.
+  data-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Kur
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev,phon,pdf,cldf]"
+
+      - name: CLDF veri kümeleri
+        run: python scripts/download_cldf.py --all
+
+      - name: Sözlük dökümleri (~56 MB)
+        run: python scripts/download_lexicons.py --all
+
+      - name: Arama indeksi
+        run: python -m engine.db.lexicon_index --build
+
+      - name: Altın standardı kur ve mühürle
+        run: python -m engine.evaluation.gold --freeze
+
+      - name: Ses denkliklerini öğren (TRAIN)
+        run: python -m engine.nlp.cognate_prediction
+
+      - name: Kalibratörü eğit (TRAIN)
+        run: python -m engine.nlp.confidence
+
+      - name: Türkçe kavram köprüsü
+        run: python -m engine.nlp.semantic_plausibility --build-bridge
+
+      - name: Kapsam eşiği (%90)
+        run: pytest --cov=engine --cov-report=term-missing --cov-fail-under=90
+
+      - name: Negatif kontroller — güçlü iddia oranı SIFIR olmalı
+        run: |
+          python -m engine.evaluation.negative_controls
+          python - <<'EOF'
+          import json, sys
+          from pathlib import Path
+          data = json.loads(Path("data/eval/negative_controls.json").read_text("utf-8"))
+          bad = [b for b in data["batteries"] if b["strong_claim_rate"] > 0]
+          if bad:
+              print("HATA: negatif kontrolde güçlü iddia var:", bad)
+              sys.exit(1)
+          print("Negatif kontroller temiz.")
+          EOF
+
+      - name: Taban çizgisi ölçümü
+        run: python -m engine.evaluation.report
+
+      - name: Ölçüm raporunu yükle
+        uses: actions/upload-artifact@v4
+        with:
+          name: baseline-report
+          path: data/eval/
