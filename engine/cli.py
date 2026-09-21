@@ -74,10 +74,23 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
         s4 = stages.get("stage4_cognate_triangulation", {})
 
         s2_reason = s2.get("reason") or s2.get("violation") or ""
-        print(f"  • 1. Fonetik Halka (IPA Kuralları): {_stage_mark(s1, '❌ İHLAL')} -> Eşleşen Ses Kuralları: {', '.join(s1.get('matched_rules', []))}")
-        print(f"  • 2. Kronolojik Zaman Kilidi : {_stage_mark(s2, '❌ ANAKRONİZM')}" + (f" -> {s2_reason}" if s2_reason else ""))
-        print(f"  • 3. Semantik Yörünge Sınırı : {_stage_mark(s3, '❌ İHLAL')} -> {s3.get('reason')}")
-        print(f"  • 4. Akraba Dil Triangulation: {_stage_mark(s4, '❌ İHLAL')} -> Numune Akrabalar: {', '.join(s4.get('sample_cognates', [])[:4])}")
+
+        # ⚠️ AŞAMA SKORU GÖSTERİLMELİ. `✅ GEÇTİ` "ihlal yok" demektir,
+        # "kanıt güçlü" demek DEĞİLDİR; rozet ise skor üzerinden verilir.
+        # Skor gizlenince rozet okunamaz hâle geliyordu — ölçüldü:
+        #     baş   fonetik skor 1.000  -> ✅   (rozet 🟢, stage_score 0.849)
+        #     kalem fonetik skor 0.244  -> ✅   (rozet 🔴, stage_score 0.396)
+        # İkisi ekranda birebir aynı görünüyor, kullanıcı "hepsi geçti ama
+        # neden reddedildi" diye haklı olarak soruyordu.
+        def _score(stage: dict) -> str:
+            value = stage.get("score")
+            return f" [skor {value:.2f}]" if isinstance(value, int | float) else ""
+
+        print(f"  • 1. Fonetik Halka (IPA Kuralları): {_stage_mark(s1, '❌ İHLAL')}{_score(s1)} -> Eşleşen Ses Kuralları: {', '.join(s1.get('matched_rules', []))}")
+        print(f"  • 2. Kronolojik Zaman Kilidi : {_stage_mark(s2, '❌ ANAKRONİZM')}{_score(s2)}" + (f" -> {s2_reason}" if s2_reason else ""))
+        print(f"  • 3. Semantik Yörünge Sınırı : {_stage_mark(s3, '❌ İHLAL')}{_score(s3)} -> {s3.get('reason')}")
+        print(f"  • 4. Akraba Dil Triangulation: {_stage_mark(s4, '❌ İHLAL')}{_score(s4)} -> Numune Akrabalar: {', '.join(s4.get('sample_cognates', [])[:4])}")
+        print(f"  • Ölçülebilen kanıt kalitesi  : {val_report.get('stage_score')} (rozet bu sayıya göre verilir; eşikler 🟢 0.75 / 🟡 0.50)")
         missing = val_report.get("missing_evidence") or []
         if missing:
             print(f"  • Ölçülemeyen aşamalar       : {', '.join(missing)} (kapsam %{val_report.get('evidence_coverage', 0) * 100:.0f})")
