@@ -73,6 +73,144 @@ CLASSIFICATION_LABELS = {
 #: p_native bu değerin üzerindeyse "asli Öz Türkçe" sayılır.
 NATIVE_THRESHOLD = 0.55
 
+#: Sözlükteki `donor_lang` kodu -> kaynak dil ailesi kovası.
+DONOR_CODE_FAMILY: dict[str, str] = {
+    # Doğu
+    "ar": "arabic_persian", "arz": "arabic_persian", "apc": "arabic_persian",
+    "fa": "arabic_persian", "fa-cls": "arabic_persian", "fa-ira": "arabic_persian",
+    "pal": "arabic_persian", "peo": "arabic_persian", "ku": "arabic_persian",
+    "kmr": "arabic_persian", "he": "arabic_persian", "arc": "arabic_persian",
+    "akk": "arabic_persian", "sem-pro": "arabic_persian",
+    # Akdeniz (Grek / Latin / Ermeni)
+    "el": "greek_latin", "grc": "greek_latin", "gkm": "greek_latin",
+    "pnt": "greek_latin", "la": "greek_latin", "la-cla": "greek_latin",
+    "la-vul": "greek_latin", "la-med": "greek_latin", "la-new": "greek_latin",
+    "hy": "greek_latin",
+    # Batı
+    "fr": "western", "fro": "western", "frm": "western", "it": "western",
+    "vec": "western", "scn": "western", "lij": "western", "en": "western",
+    "enm": "western", "ang": "western", "de": "western", "goh": "western",
+    "gmh": "western", "nl": "western", "dum": "western", "es": "western",
+    "pt": "western", "ca": "western", "ro": "western", "ru": "western",
+    "orv": "western", "uk": "western", "pl": "western", "cs": "western",
+    "sk": "western", "bg": "western", "sr": "western", "sh": "western",
+    "cu": "western", "sq": "western", "hu": "western", "sv": "western",
+    "da": "western", "no": "western", "non": "western", "is": "western",
+    "fi": "western",
+}
+
+#: **Sözlükte YÖNÜ TERS kaydedilmiş alıntılar.**
+#:
+#: Wiktionary bu maddeleri `origin='alıntı'` diye işaretliyor ama alıntı
+#: yönü terstir: Macarca ve Sırp-Hırvatça bu sözcükleri TÜRKÇEDEN almıştır
+#: (Macarcadaki Eski Türkçe katmanı iyi bilinir). Tanıklık kapısı bunları
+#: süzmezse çekirdek Türkçe sözvarlığı "Batı Dilleri Alıntısı" damgalanır.
+#:
+#: ⚠️ Bu liste bir KESTİRME DEĞİL, son çaredir. Önce iki ilkeli ayırt edici
+#: denendi ve ÖLÇÜLEREK ÇÜRÜTÜLDÜ:
+#:   1. Türki diller arası yayılım — ayırmıyor: `kitap` 5 Türki dile yayılmış
+#:      (pan-İslamik Arapça alıntı), `okul` yalnız 2. Aralıklar iç içe.
+#:   2. Verici dilin Balkan/Macar olması — ayırmıyor: `hu`+`sh` etiketli 42
+#:      satırın yarısı GERÇEK alıntıdır (`haydut` hajdúk, `soba` szoba,
+#:      `tabur` tábor, `varoş` város, `çete` četa, `voyvoda`). Toptan elemek
+#:      bunları kırardı.
+#: Geriye indirgenemez veri hatası kalıyor; kapsamı dar ve adı adına yazılı.
+KNOWN_REVERSED_LOAN_DIRECTION = frozenset({
+    # Ortak Türkçe çekirdek sözvarlığı — Macarca bunları Türkçeden aldı
+    "yaz", "öküz", "diz", "gece", "buzağı", "kazan", "saz", "sekmek",
+    "ermek", "düş", "yapağı", "dazlak", "kendir",
+    # Sırp-Hırvatça Türkçeden aldı
+    "yastık", "balta", "pınar",
+    # `okul` 1930'lar Türkçe türetmesidir (oku- + -l); Fransızca `école`
+    # benzerliği tartışmalı bir etkidir, alıntı değildir.
+    "okul",
+})
+
+#: Tanıklık süreç ömrü boyunca önbelleklenir (bkz. historical_morphology'deki
+#: aynı desen); aynı kelime birçok kez sınıflandırılabiliyor.
+_ATTEST_CACHE: dict[str, tuple[str | None, str]] = {}
+
+
+def _attested_loan_family(word: str) -> tuple[str | None, str]:
+    """Sözlük bu kelimeyi ALINTI olarak tanıklıyor mu, hangi aileden?
+
+    ⚠️ Bu sınıf tasarımı gereği FONOTAKTİKTİR ve tamamen Türkçeleşmiş
+    alıntıları göremez. Ölçüldü (387 gerçek alıntı, özel adlar elendi,
+    indeksin kendisi `origin='alıntı'` + `donor_lang` diyor):
+
+        çekimser (aile belirlenemedi)  158  %40,8   [meşru]
+        doğru aile                      96  %24,8
+        yanlış aile                      9  %2,3
+        "ASLİ ÖZ TÜRKÇE" dedi          124  %32,0   <- ciddi hata
+
+    `elektrik`, `makas`, `bot`, `ahır`, `maruz`, `tasa` gibi kelimeler
+    fonotaktik olarak kusursuz Türkçedir; ihlal aramak onları bulamaz.
+    Ama sözlük bunların alıntı olduğunu ZATEN SÖYLÜYOR. Tanıklık,
+    üretilmiş tahmini ezmelidir — bu, `borrowing_detector`'daki soy
+    süzgeci ve `cognates`'teki uydurma eleme ile aynı ilkedir.
+
+    Korumalar (hepsi ölçülmüş sorunlardan geliyor):
+      * Özel ad elemesi — küçük harfli cins ad sorgusu için `Aya`, `İhsan`
+        gibi kayıtlar kanıt değildir (bkz. borrowing_detector'daki not).
+      * Türki ata kodları — `trk-eog`, `trk-pro`, `otk`... verici dil
+        değildir; süzülmezse `bardak` yine alıntı olur.
+      * Eşadlılık oranı — `tin` (Türkçe "ruh" / Arapça تين "incir") gibi
+        çiftlerde miras kayıt varsa ve alıntı payı %60'ın altındaysa
+        tanıklık belirsizdir, hüküm fonotaktiğe bırakılır.
+    """
+    key = (word or "").strip().lower()
+    if key in _ATTEST_CACHE:
+        return _ATTEST_CACHE[key]
+    if key in KNOWN_REVERSED_LOAN_DIRECTION:
+        return (None, "")
+
+    result: tuple[str | None, str] = (None, "")
+    try:
+        from engine.db.lexicon_index import LexiconIndex
+        from engine.nlp.borrowing_chain import TURKIC_LINEAGE_CODES, language_name
+
+        index = LexiconIndex()
+        if index.exists:
+            rows = index.lookup(key, languages=["tr"], limit=10) or []
+            rows = [
+                r
+                for r in rows
+                if r.get("pos") != "name"
+                and not str(r.get("word") or "")[:1].isupper()
+            ]
+            borrowed = [
+                r
+                for r in rows
+                if r.get("origin") == "alıntı"
+                and str(r.get("donor_lang") or "") not in TURKIC_LINEAGE_CODES
+            ]
+            # Soy kodlu satır (otk, trk-pro, trk-eog...) VERİCİ değildir ama
+            # MİRAS KANITIDIR. Yalnız süzüp yok saymak, eşadlılarda tek
+            # yabancı satırın hükmü ele geçirmesine yol açıyordu.
+            # Ölçüldü: `tin` -> [otk 𐱅𐰃𐰤 "soul", ar تين "fig"]. Soy satırı
+            # miras sayılınca 1/(1+1)=0.5 < 0.6 ve koruma devreye giriyor,
+            # hüküm fonotaktiğe kalıyor (doğru sonuç: öz Türkçe).
+            inherited = [
+                r
+                for r in rows
+                if r.get("origin") == "miras"
+                or str(r.get("donor_lang") or "") in TURKIC_LINEAGE_CODES
+            ]
+            if borrowed and not (
+                inherited and len(borrowed) / (len(borrowed) + len(inherited)) < 0.6
+            ):
+                donor = str(borrowed[0].get("donor_lang") or "")
+                family = DONOR_CODE_FAMILY.get(donor)
+                result = (
+                    family or "loan_undetermined",
+                    f"sözlükte alıntı olarak tanıklanmış: verici dil {language_name(donor)}",
+                )
+    except Exception:
+        logger.debug("Alıntı tanıklığı okunamadı: %s", key, exc_info=True)
+
+    _ATTEST_CACHE[key] = result
+    return result
+
 
 class LoanwordClassifier:
     @staticmethod
@@ -205,7 +343,33 @@ class LoanwordClassifier:
         # (`kitap`, `kalem`: 1.5 / 1.5 / 1.5). `max()` bu durumda sözlükteki
         # İLK anahtarı -- arabic_persian -- döndürüyordu; rastgele bir seçim
         # "Arapça / Farsça Alıntısı" diye kesin bir hüküm gibi sunuluyordu.
-        if p_native >= NATIVE_THRESHOLD or donor_total <= 0:
+        # --- Tanıklık, fonotaktik tahmini ezer --------------------------------
+        # Sözlük bu kelimeyi alıntı olarak tanıklıyorsa "Asli Öz Türkçe"
+        # hükmü VERİLEMEZ; fonotaktik ihlal bulamamış olması kelimenin
+        # Türkçeleşmiş olduğunu gösterir, öz Türkçe olduğunu değil.
+        attested_family, attest_note = _attested_loan_family(w)
+
+        if attested_family is not None:
+            best = attested_family
+            # Olasılık dağılımı hükümle ÇELİŞMEMELİ: aksi hâlde kullanıcı
+            # "Alıntı" hükmünün yanında "Öz Türkçe: %100" görür. (Aynı sınıf
+            # çelişki d408f06'da başlık/karar arasında düzeltilmişti.)
+            # ⚠️ Burada önce SERT KELEPÇE vardı (`min(p_native, 0.15)`) ve
+            # sıralamayı TERSİNE ÇEVİRİYORDU: geniş lehçe yayılımı p_native'i
+            # eşiğin üstüne çıkarıp kelepçeye sokuyor (0.15), dar yayılım ise
+            # eşiğin altında kalıp dokunulmadan geçiyordu (0.50). Sonuç:
+            # "geniş yayılım öz Türkçe kanıtıdır" varsayımı bozuluyordu.
+            # Oranlı düşürme sıralamayı korur ve hükümle de çelişmez.
+            p_native = round(p_native * 0.3, 3)
+            loan_mass = round(1.0 - p_native, 3)
+            probabilities["native"] = p_native
+            for fam_key in donor_scores:
+                probabilities[fam_key] = (
+                    round(loan_mass if fam_key == best else 0.0, 3)
+                    if best in donor_scores
+                    else round(loan_mass / 3, 3)
+                )
+        elif p_native >= NATIVE_THRESHOLD or donor_total <= 0:
             best = "native"
         else:
             ranked_families = sorted(donor_scores.items(), key=lambda kv: kv[1], reverse=True)
@@ -226,4 +390,5 @@ class LoanwordClassifier:
             },
             "phonotactic_violations": violations,
             "cross_dialect_note": spread_note,
+            "attestation_note": attest_note,
         }

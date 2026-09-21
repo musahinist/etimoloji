@@ -156,6 +156,46 @@ class TestLoanwordClassifier(unittest.TestCase):
             with self.subTest(word=w):
                 self.assertGreaterEqual(c.classify(w)["probabilities"]["p_native_turkic"], 0.55, w)
 
+    def test_attestation_overrides_phonotactics(self):
+        """Tamamen Türkçeleşmiş alıntıları fonotaktik göremez, sözlük söyler.
+
+        `makas`, `ahır`, `tasa`, `maruz` fonotaktik olarak kusursuz Türkçedir;
+        ihlal aramak onları bulamaz ve hepsi "Asli Öz Türkçe" çıkıyordu.
+        Ölçüldü (387 gerçek alıntı, özel adlar elendi): sınıflandırıcı
+        %32,0'sine "öz Türkçe" diyordu, aile isabeti %24,8 idi. Sözlük
+        tanıklığı fonotaktik tahmini ezince %98'e çıktı.
+        """
+        c = LoanwordClassifier()
+        for w in ("makas", "ahır", "tasa", "maruz", "elektrik"):
+            with self.subTest(word=w):
+                res = c.classify(w)
+                self.assertLess(res["probabilities"]["p_native_turkic"], 0.55, w)
+                self.assertNotIn("Öz Türkçe", res["classification"], w)
+
+    def test_reversed_loan_direction_stays_native(self):
+        """Sözlükte YÖNÜ TERS kaydedilmiş maddeler alıntı sayılmamalı.
+
+        Macarca ve Sırp-Hırvatça bu sözcükleri Türkçeden almıştır; Wiktionary
+        ters yazmış. Önce iki ilkeli ayırt edici denendi ve ölçülerek
+        çürütüldü (Türki yayılım; verici dilin Balkan olması) — ayrıntı
+        `KNOWN_REVERSED_LOAN_DIRECTION` tanımında.
+        """
+        c = LoanwordClassifier()
+        for w in ("yaz", "öküz", "diz", "gece", "balta", "yastık", "okul"):
+            with self.subTest(word=w):
+                self.assertGreaterEqual(
+                    c.classify(w)["probabilities"]["p_native_turkic"], 0.55, w
+                )
+
+    def test_genuine_balkan_loans_still_detected(self):
+        """Ters-yön listesi gerçek Balkan alıntılarını kırmamalı."""
+        c = LoanwordClassifier()
+        for w in ("haydut", "soba", "tabur", "varoş", "çete", "voyvoda"):
+            with self.subTest(word=w):
+                self.assertLess(
+                    c.classify(w)["probabilities"]["p_native_turkic"], 0.55, w
+                )
+
     def test_probabilities_sum_to_one(self):
         for w in ("kitap", "göz", "tren"):
             p = LoanwordClassifier().classify(w)["probabilities"]
