@@ -70,14 +70,12 @@ data/lexicons/ru_edition/*.jsonl.gz
 data/borrowing/chains.json
 # Toplu analiz çıktısı — türetilmiş ve büyük.
 data/dialect/analysis.json
-# TDK Derleme Sözlüğü'nden toplanan ağız kayıtları YENİDEN DAĞITILMAZ.
-# TDK'nın açık lisansı yoktur, telif TDK'dadır; veri yalnız yerel araştırma
-# için önbelleğe alınır. Künye (`_provenance.json`) commit edilir ki hangi
-# uçtan, ne zaman, kaç kayıt çekildiği izlenebilsin — veri repoya girmez.
-data/dialect/*.jsonl
-data/dialect/*.jsonl.gz
-data/dialect/derleme/
-!data/dialect/_provenance.json
+# TDK Derleme Sözlüğü'nden toplanan ağız kayıtları BİLEREK commit edilir.
+# Gerekçe ve lisans duruşu: `data/dialect/README.md`. Özet: depo private,
+# çalışma akademik ve ticari değil, veri atıflı ve künyeli. Ölçümlerin
+# yeniden üretilebilmesi için veri depoda durur (TDK içeriği değişirse
+# hasat tekrarlanamaz; mühürlü ölçüm mantığı veriyi yerinde tutmayı gerektirir).
+# Türetilmiş analiz çıktısı yine dışarıda: yeniden üretilebilir ve büyür.
 
 # SIGTYP dışa aktarımı `make sigtyp` ile üretilir (deterministik).
 data/sigtyp/*.tsv
