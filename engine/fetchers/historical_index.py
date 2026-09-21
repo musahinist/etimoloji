@@ -1,0 +1,133 @@
+"""
+Tarihî Katman Fetcher'ı — yerel sözlük indeksinden Eski/Osmanlı/Çağatay tanığı
+
+Neden gerekli
+-------------
+Sözlük indeksi (``data/lexicons/index.db``, 150.458 kayıt) **kullanıcının
+gördüğü arama çıktısına hiç düşmüyordu**: ``engine/search_engine.py`` içinde
+``LexiconIndex`` geçmiyor. İndeksi yalnız alıntı tespiti
+(``nlp/borrowing_detector.py``), ünlü uzunluğu (``nlp/vowel_length.py``) ve
+değerlendirme hattı kullanıyor. Arama çıktısına giren tek yol fetcher'dır.
+
+Ölçüldü: indekste ``𐰚𐰇𐰕 köz "eye"`` ve ``𐰚𐰇𐰼 kör "to see"`` runik tanıkları
+duruyor ama ``search göz`` çıktısında görünmüyorlardı; oradaki Eski Türkçe
+kayıtlar tohum dosyalarından ve Nişanyan'dan geliyordu.
+
+Bu fetcher indeksin **tarihî katmanını** (Eski Türkçe, Osmanlı Türkçesi,
+Çağatayca) aramaya taşır. Motor her fetcher'ı ses varyantlarıyla ayrı ayrı
+çağırdığı için ``göz`` sorgusu ``köz`` varyantı üzerinden runik kaydı bulur;
+``lookup()`` karşılaştırma biçmiyle eşleşir.
+
+⚠️ Bu kaynak ata biçim (``proto_turkic``) ÖNERMEZ. Tanık sunar; ata biçim
+kararı karşılaştırmalı yöntemin işidir. Aksi hâlde köken damgası kaydı
+"tanıklı" diye işaretler ve türetilmiş bir kökü tanık gibi gösterirdi.
+"""
+from __future__ import annotations
+
+from typing import Any
+
+from engine.fetchers.base import BaseFetcher
+from engine.logging_setup import get_logger
+from engine.utils.variant_expander import generate_dynamic_phonetic_variants
+
+logger = get_logger(__name__)
+
+#: Yerel taramada denenecek en çok ses varyantı.
+#:
+#: ⚠️ Motor varyant listesini ``config.MAX_VARIANTS`` (=4) ile kırpar, çünkü
+#: her varyant BÜTÜN fetcher'lara ayrı bir AĞ İSTEĞİ demektir. Ölçüldü: ``göz``
+#: 22 varyant üretiyor ama yalnız ilk dördü kullanılıyor
+#: (``göz, gör, gös, göŕ``) — Oğuz ~ Kıpçak ``g- ~ k-`` denkliğinin karşılığı
+#: olan ``köz`` kesiliyor ve indeksteki runik tanık (``𐰚𐰇𐰕``) hiç bulunamıyordu.
+#: Bu kaynak YEREL bir SQLite sorgusudur; ağ maliyeti yoktur, dolayısıyla o
+#: kırpma burada geçerli değildir.
+MAX_LOCAL_VARIANTS = 24
+
+#: İndeksteki tarihî katmanlar. Çağdaş diller BURAYA GİRMEZ: onlar için zaten
+#: canlı Wiktionary fetcher'ları var ve indeks Wiktionary türevi olduğu için
+#: aynı kanıt iki kez sayılırdı.
+HISTORICAL_LANGUAGES: tuple[str, ...] = ("otk", "ota", "chg")
+
+#: Aynı sözlükbirimin ikinci kaydı: runik maddenin Latin okunuşu. Tanık olarak
+#: saymak aynı kanıtı iki kez saymaktır.
+_SKIPPED_POS = frozenset({"romanization"})
+
+#: Tek bir dil için en çok kaç tanık alınsın.
+MAX_PER_LANGUAGE = 3
+
+
+class HistoricalIndexFetcher(BaseFetcher):
+    """Yerel sözlük indeksinin tarihî katmanını tanık olarak sunar."""
+
+    #: Canlı bir servis değil, yerel veri.
+    is_seed_source = True
+
+    @property
+    def source_name(self) -> str:
+        return "Tarihî Katman (yerel sözlük indeksi: Eski Türkçe, Osmanlıca, Çağatayca)"
+
+    def fetch(self, word: str) -> dict[str, Any]:
+        result = self.empty_result()
+        word_clean = (word or "").strip().lower()
+        if not word_clean:
+            return result
+
+        try:
+            from engine.db.lexicon_index import LexiconIndex
+
+            index = LexiconIndex()
+            if not index.exists:
+                logger.debug("Sözlük indeksi yok; tarihî katman atlandı.")
+                return result
+
+            candidates = list(
+                dict.fromkeys(
+                    [word_clean, *generate_dynamic_phonetic_variants(word_clean)]
+                )
+            )[:MAX_LOCAL_VARIANTS]
+
+            rows: list[dict[str, Any]] = []
+            for candidate in candidates:
+                rows.extend(
+                    index.lookup(
+                        candidate,
+                        languages=list(HISTORICAL_LANGUAGES),
+                        limit=MAX_PER_LANGUAGE * len(HISTORICAL_LANGUAGES),
+                    )
+                )
+
+            seen: dict[str, int] = {}
+            seen_forms: set[tuple[str, str]] = set()
+            attestations: list[str] = []
+            for row in rows:
+                lang_code = str(row.get("lang_code") or "")
+                if str(row.get("pos") or "") in _SKIPPED_POS:
+                    continue
+                if seen.get(lang_code, 0) >= MAX_PER_LANGUAGE:
+                    continue
+                surface = str(row.get("word") or "").strip()
+                if not surface:
+                    continue
+                # Aynı biçim birden çok varyanttan gelebilir (ör. `köz` hem
+                # kendi hem `küz` taramasında) — tanık iki kez sayılmasın.
+                if (lang_code, surface) in seen_forms:
+                    continue
+                seen_forms.add((lang_code, surface))
+                seen[lang_code] = seen.get(lang_code, 0) + 1
+                result["turkic_languages"].append(
+                    self.make_entry(
+                        lang_code,
+                        surface,
+                        str(row.get("gloss") or ""),
+                    )
+                )
+                attestations.append(f"{lang_code}: {surface}")
+
+            if attestations:
+                result["root"]["reconstruction_notes"] = (
+                    "Tarihî tanık (yerel indeks): " + ", ".join(attestations)
+                )
+        except Exception:
+            logger.warning("%s: kaynak işlenemedi", self.source_name, exc_info=True)
+
+        return result

@@ -11,6 +11,7 @@ from engine.fetchers.academic_turkology import AcademicTurkologyFetcher
 from engine.fetchers.archive_org import ArchiveOrgFetcher
 from engine.fetchers.base import TURKIC_LANGUAGES_MAP, BaseFetcher
 from engine.fetchers.etimoloji_turkce import EtimolojiTurkceFetcher
+from engine.fetchers.historical_index import HistoricalIndexFetcher
 from engine.fetchers.historical_modern import HistoricalModernLexiconFetcher
 from engine.fetchers.isam_ansiklopedi import IsamAnsiklopediFetcher
 from engine.fetchers.loanword_donor_etymology import LoanwordDonorEtymologyFetcher
@@ -86,6 +87,7 @@ def default_fetchers() -> list[BaseFetcher]:
     """Üretimde kullanılan varsayılan veri toplayıcı portföyü."""
     return [
         AcademicTurkologyFetcher(),
+        HistoricalIndexFetcher(),
         HistoricalModernLexiconFetcher(),
         IsamAnsiklopediFetcher(),
         ArchiveOrgFetcher(),
