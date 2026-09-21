@@ -284,6 +284,35 @@ class TestHistoricalMorphology(unittest.TestCase):
         self.assertEqual(toplumsal["root"], "toplum")
         self.assertEqual(toplumsal["depth"], 1)
 
+    def test_derivation_formula_opens_strip(self):
+        """Kaynağın kendi türetme formülü soymayı açmalı; formül yoksa açmamalı.
+
+        `pervasız` uzun süre soyulamıyordu: `perva` indekste sözlükbirim olarak
+        tanıklanmıyor. Çözüm için denenen TDK yedeği `bardak -> barda`yı
+        bozduğu için geri alınmıştı (bkz. 1815aea). Wiktionary'nin KAYITLI
+        türetme formülü ikisini ayırıyor:
+
+            pervasız -> "equivalent to perva + -sız"   => formül açar
+            bardak   -> formül yok                     => tanıklık kapısı reddeder
+
+        Gloss örtüşmesi ve CLICS bu çifti ayıramamıştı; formül ayırıyor.
+        """
+        a = HistoricalMorphologyAnalyzer()
+        self.assertEqual(a.build_tree("pervasız")["root"], "perva")
+        self.assertEqual(a.build_tree("bardak")["depth"], 0)
+
+    def test_formula_rule_is_additive_only(self):
+        """Formül BAŞKA kök söylüyorsa soyma reddedilmemeli.
+
+        Formül nihai tabanı yazar ("adalet + -siz + -lik"), soyucu tek katman
+        soyar (`adaletsiz`). "Eşleşmiyorsa reddet" dalı 600 sözlükbirimde
+        ölçüldü: 3 doğru kabul getirirken 5 DOĞRU soymayı kapatıyordu.
+        Kural bu yüzden yalnız ekleyicidir.
+        """
+        a = HistoricalMorphologyAnalyzer()
+        self.assertEqual(a.build_tree("adaletsizlik")["root"], "adaletsiz")
+        self.assertEqual(a.build_tree("eczacı")["root"], "ecza")
+
     def test_bare_root_has_zero_depth(self):
         self.assertEqual(HistoricalMorphologyAnalyzer().build_tree("at")["depth"], 0)
 

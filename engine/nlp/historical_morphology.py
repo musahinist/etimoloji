@@ -75,6 +75,88 @@ MAX_DEPTH = 4
 _ATTESTATION_CACHE: dict[str, bool] = {}
 
 
+#: `_ATTESTATION_CACHE` ile aynı gerekçe: soyma denemesi başına indeks açmak
+#: pahalı. Formül sonucu süreç boyunca değişmez.
+_FORMULA_CACHE: dict[str, str | None] = {}
+
+
+def _formula_stem(word: str) -> str | None:
+    """Kelimenin KAYITLI etimolojisindeki türetme formülünden kökü çıkarır.
+
+    Wiktionary türetmeleri düzenli bir kalıpla yazıyor::
+
+        "equivalent to perva + -sız"
+        "from güzel (“beautiful”) + -lik (“-ness”)"
+        "equivalent to su + -suz"
+
+    Bu, soyma için OLUMLU KANITTIR: kaynağın kendisi kelimenin hangi kökten
+    türediğini söylüyor. Formül yoksa ``None`` döner — "türemiş değil"
+    demek değil, "veri yok" demektir; karar tanıklık kapısına kalır.
+
+    ⚠️ Kapsam ölçüldü: 45.647 Türkçe maddenin %54,5'inde etimoloji metni,
+    yalnız **%10,2**'sinde bu formül var. Bu yüzden tek başına kapı olarak
+    kullanılamaz, yalnız destekleyici kanıttır.
+    """
+    import re
+
+    key = (word or "").strip().lower()
+    if key in _FORMULA_CACHE:
+        return _FORMULA_CACHE[key]
+
+    found: str | None = None
+    try:
+        from engine.db.lexicon_index import LexiconIndex
+
+        index = LexiconIndex()
+        if index.exists:
+            text = ""
+            for row in index.lookup(key, languages=["tr"], limit=5) or []:
+                text = (row.get("etymology") or "").strip()
+                if text:
+                    break
+            if text:
+                match = re.search(
+                    r"(?:equivalent to|from)\s+([a-zçğıöşüâîû\-]{2,})\s*(?:\([^)]*\))?\s*\+",
+                    text,
+                    re.IGNORECASE,
+                )
+                if match:
+                    found = match.group(1).lower().strip()
+    except Exception:
+        logger.debug("Türetme formülü okunamadı: %s", key, exc_info=True)
+
+    _FORMULA_CACHE[key] = found
+    return found
+
+
+def _strip_is_supported(word: str, stem: str) -> bool:
+    """Bu soyma kanıtla destekleniyor mu?
+
+    Kural YALNIZ EKLEYİCİDİR: türetme formülü adayı doğruluyorsa soyma kabul
+    edilir, aksi HER durumda karar eskisi gibi tanıklık kapısına kalır.
+
+    Ölçüldü — formülün çözdüğü, başka hiçbir ucuz yöntemin çözemediği ayrım:
+        pervasız -> "equivalent to perva + -sız"  => formül KABUL ediyor
+        bardak   -> formül yok ("ultimately from Early Old Oghuz برت");
+                    tanıklık kapısına düşer, `barda`nın indeksteki tek anlamı
+                    "locative singular of bar" (çekim) olduğu için REDDEDİLİR.
+    Gloss örtüşmesi ve CLICS bu ikisini ayıramamıştı (bkz. commit günlüğü).
+
+    ⚠️ "Formül BAŞKA kök söylüyorsa reddet" dalı DENENDİ ve GERİ ALINDI.
+    Formül nihai tabanı yazar, soyucu tek katman soyar; granülarite uyuşmaz::
+
+        adaletsizlik -> formül "adalet + -siz + -lik" verir, aday `adaletsiz`
+
+    600 rastgele tr sözlükbiriminde ölçüldü: o dal 3 doğru kabul getirirken
+    5 DOĞRU soymayı kapatıyordu (bıngıldak->bıngılda, dükkâncı->dükkan,
+    adaletsizlik->adaletsiz, İzmirli->izmir, doymuş->doy). Net zarar.
+    """
+    formula = _formula_stem(word)
+    if formula and formula == stem.strip().lower():
+        return True
+    return _stem_is_attested(stem)
+
+
 def _stem_is_attested(stem: str) -> bool:
     """Soyulan kök Türkçede gerçek bir sözlükbirim mi?
 
@@ -165,7 +247,7 @@ class HistoricalMorphologyAnalyzer:
         match = self._strip_one(stem)
         if match is not None:
             new_stem, label, function, layer = match
-            if _stem_is_attested(new_stem):
+            if _strip_is_supported(w, new_stem):
                 layers.append({
                     "surface": stem[len(new_stem):],
                     "suffix": label,
