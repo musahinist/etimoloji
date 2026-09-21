@@ -350,6 +350,24 @@ class BorrowingDetector:
                 "",
             )
         rows = self.index.lookup(word, languages=[lang], limit=10)
+
+        # ⚠️ ÖZEL AD ELEMESİ. Arama `comparison` alanı üzerinden yapılır ve o
+        # alan büyük/küçük harf ayırmaz; böylece özel adlar cins adın
+        # sorgusuna düşer. Ölçüldü: `aya` için indekste doğru kayıt VAR
+        # (miras, Eski Türkçe *hāya "elin iç tarafı") ama büyük harfli `Aya`
+        # (alıntı, Yunanca Αγία "aziz") kayıtları da dönüyordu. Aşağıdaki
+        # eşadlılık koruması bunu yakalayamadı: 2 alıntı / 1 miras = 0,667,
+        # eşik 0,6 — koruma ateşlenmedi ve özel ad, cins adı 1.0 güçle alıntı
+        # ilan edip MİRAS hipotezini reddettirdi.
+        # Küçük harfli bir cins ad sorgusu için özel ad kaydı kanıt DEĞİLDİR.
+        if word == word.lower():
+            rows = [
+                r
+                for r in rows
+                if r.get("pos") != "name"
+                and not str(r.get("word") or "")[:1].isupper()
+            ]
+
         borrowed = [r for r in rows if r.get("origin") == "alıntı"]
         inherited = [r for r in rows if r.get("origin") == "miras"]
 

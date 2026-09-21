@@ -50,6 +50,8 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
     print("═" * 80)
     print(f" 🧩 Morfoloji & Yapı         : {morphology}")
     print(f" 📌 Ana Kök / Rekonstrüksiyon: {root.get('proto_turkic', 'Bilinmiyor')}")
+    if root.get("provenance"):
+        print(f" 🏷️  Kökün Kaynağı           : {root['provenance']}")
     print(f" 📖 Anlam                     : {root.get('meaning', 'Bilinmiyor')}")
     print(f" 📚 Kaynak Portföyü           : {', '.join(sources)}")
 

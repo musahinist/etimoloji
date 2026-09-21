@@ -31,7 +31,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from collections import Counter
+from collections import Counter, defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -50,15 +50,63 @@ SOLVED_THRESHOLD = 0.60
 CANDIDATE_THRESHOLD = 0.35
 
 
+def is_lexeme(word: str) -> bool:
+    """Girdi bir sözlükbirim mi?
+
+    Ek, öbek ve özel ada etimoloji üretmek anlamsızdır. Kapı yokken yedek
+    havuzun ilk beş kaydı ``-acağım``, ``-akalmak``, ``-amaç``, ``-anak``,
+    ``-arak`` (hepsi **ek**) geliyordu ve motor bunların ikisine "güçlü aday"
+    (0,40) dedi. Havuzda ayrıca çekimli biçimler (``ırmağı``, ``yastığı``),
+    özel adlar (``Aydoğan``, ``Kahta``) ve öbekler (``av köpeği``) var.
+    """
+    w = (word or "").strip()
+    if len(w) < 2:
+        return False
+    if w.startswith("-") or w.endswith("-"):
+        return False  # yapım/çekim eki
+    if " " in w or "\t" in w:
+        return False  # çok sözcüklü öbek
+    if w[:1].isupper():
+        return False  # özel ad
+    if any(ch.isdigit() for ch in w):
+        return False  # sayı / sıra sayısı: 1'inci, 10'uncu, 100'üncü
+    if "'" in w or "’" in w:
+        return False  # kesme işaretli çekim: Ay'a
+    return True
+
+
+#: Wiktionary çekim gloss'larının dilbilgisel belirteçleri. Bu glossları
+#: TAŞIYAN satır bir sözlükbirim tanımı değil, başka bir lemmanın çekimidir:
+#: "third-person singular indicative aorist of canlanmak", "verbal noun of
+#: yapılmak", "singular dative of yarak", "inflection of yağ:".
+#: ⚠️ Yalnız " of " aramak yetmez — "palm of hand" gibi GERÇEK tanımlar da
+#: onu içerir; bu yüzden dilbilgisi terimi aranır.
+_INFLECTION_MARKERS: tuple[str, ...] = (
+    "inflection of", "plural of", "singular of", "verbal noun of",
+    "-person", "aorist of", "imperative of", "participle of",
+    "dative of", "accusative of", "genitive of", "ablative of",
+    "locative of", "nominative of", "optative of", "necessitative of",
+    "past of", "present of", "future of", "negative of",
+    "causative of", "passive of", "reflexive of", "reciprocal of",
+)
+
+
+def is_inflection_gloss(gloss: str) -> bool:
+    """Bu gloss bir çekim tanımı mı (yani kelime başka bir lemmanın biçimi mi)?"""
+    g = (gloss or "").lower()
+    return any(marker in g for marker in _INFLECTION_MARKERS)
+
+
 def load_words(source: Path | None, limit: int) -> list[str]:
-    """Analiz edilecek ağız kelimelerini yükler."""
+    """Analiz edilecek kelimeleri yükler; sözlükbirim olmayanları eler."""
     if source and source.exists():
+        # ⚠️ Küçük harfe ÇEVİRMEDEN önce ele: büyük harf özel ad işaretidir.
         words = [
-            line.strip().lower()
+            line.strip()
             for line in source.read_text(encoding="utf-8").splitlines()
             if line.strip() and not line.startswith("#")
         ]
-        return words[:limit]
+        return [w.lower() for w in words if is_lexeme(w)][:limit]
 
     # Kaynak verilmezse yerel sözlük indeksinden Türkçe kelimeler alınır.
     # Bunlar ağız kelimesi DEĞİLDİR; yalnız hattın uçtan uca çalıştığını
@@ -69,13 +117,46 @@ def load_words(source: Path | None, limit: int) -> list[str]:
     if not index.exists:
         return []
     with index.connect() as connection:
+        # Ucuz süzgeçler SQL'de: havuzun alfabetik başı tamamen eklerden
+        # oluştuğu için (tire harflerden önce sıralanır) Python tarafında
+        # elemek fazladan çekimle kapatılamıyordu — 25 satırın 25'i ek çıkıp
+        # sonuç boş kalıyordu. Özel ad denetimi Python'da kalır: SQLite'ın
+        # `lower()` işlevi ASCII'dir, Türkçe büyük harfleri (İ, Ş, Ğ) tanımaz.
         rows = connection.execute(
-            "SELECT DISTINCT word FROM entries "
+            "SELECT word, gloss FROM entries "
             "WHERE lang_code = 'tr' AND origin IS NULL AND length(comparison) BETWEEN 4 AND 9 "
-            "ORDER BY word LIMIT ?",
-            (limit,),
+            "AND word NOT LIKE '-%' AND word NOT LIKE '%-' AND word NOT LIKE '% %' "
+            "AND word NOT GLOB '*[0-9]*' AND word NOT LIKE '%''%' "
+            # SQLite bayt sıralaması yapar: `ORDER BY word` önce BÜTÜN büyük
+            # harfli kayıtları getirir (Aydoğan, Akkın…) ve Python kapısı
+            # hepsini özel ad diye eler — havuz boş kalıyordu. ASCII büyük
+            # harf burada elenir; Türkçeye özgü büyük harfler (İ, Ş, Ğ)
+            # SQLite'ın `lower()` işlevinden geçmediği için onları Python
+            # tarafındaki `is_lexeme` yakalar.
+            "AND word = lower(word) "
+            # Alfabetik sıralama tek kökün çekimli biçimlerini yan yana
+            # topluyordu (abacı, abacıda, abacıdan, abacılar…) — altı kayıtlık
+            # bir hat testi tek lemmayı altı kez ölçüyordu. Rastgele örneklem
+            # hem bunu hem de bayt sıralamasının büyük-harf yanlılığını çözer.
+            "ORDER BY RANDOM() LIMIT ?",
+            (limit * 60,),
         ).fetchall()
-    return [row["word"] for row in rows]
+
+    # Çekimli biçim elemesi KELİME düzeyinde yapılır, satır düzeyinde değil:
+    # `yağı` hem "enemy" hem "inflection of yağ:" satırı taşıyor; en az bir
+    # gerçek anlamı varsa kelime havuzda kalmalı. Ölçüldü: havuzun
+    # 19.240/27.925'i (%69) çekim glossu taşıyor — bu yüzden fazladan çekim
+    # geniş tutulur.
+    senses: dict[str, list[str]] = defaultdict(list)
+    for row in rows:
+        senses[row["word"]].append(row["gloss"] or "")
+
+    picked = [
+        word.lower()
+        for word, glosses in senses.items()
+        if is_lexeme(word) and any(not is_inflection_gloss(g) for g in glosses)
+    ]
+    return picked[:limit]
 
 
 def analyse(word: str, *, predictor: Any, ranker: Any, semantic: Any) -> dict[str, Any]:
@@ -172,7 +253,11 @@ def main() -> int:
     )
     witnesses = [r["n_witnesses_found"] for r in results]
 
-    print(f"\n=== ağız kelimesi analizi · n={len(results)} ===")
+    # Başlık kaynağı YANSITMALI. Yedek havuz kullanıldığında bile koşulsuz
+    # "ağız kelimesi analizi" yazıyordu; JSON'daki `source` alanı dürüsttü ama
+    # terminale bakan onu görmüyordu.
+    source_label = str(args.words) if args.words else "sözlük indeksi (ağız DEĞİL, hat testi)"
+    print(f"\n=== kelime analizi · n={len(results)} · kaynak: {source_label} ===")
     print("\nkanıt gücüne göre:")
     for bucket in ("çözüldü", "güçlü aday", "yetersiz kanıt"):
         count = buckets.get(bucket, 0)
@@ -200,7 +285,7 @@ def main() -> int:
             {
                 "_schema": "turkic-etymology-dialect-analysis/v1",
                 "generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
-                "source": str(args.words) if args.words else "sözlük indeksi (ağız DEĞİL, hat testi)",
+                "source": source_label,
                 "n": len(results),
                 "buckets": dict(buckets),
                 "selected_kinds": dict(kinds),

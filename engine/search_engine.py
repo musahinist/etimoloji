@@ -179,6 +179,11 @@ class SearchEngine:
                 return cached
 
         proto_root = ""
+        # Kökün NEREDEN geldiği: sözlükten alıntılanan bilgi ile motorun kendi
+        # türettiği hipotez aynı alana yazılıyor ve aynı güven hattından
+        # geçiyordu; kullanıcı hangisinin tanık hangisinin tahmin olduğunu
+        # göremiyordu. Her atama noktası bu damgayı da koyar.
+        proto_root_provenance = ""
         root_meaning = ""
         sources = []
         turkic_entries_map = {}
@@ -222,6 +227,7 @@ class SearchEngine:
                         root_info = res.get("root", {})
                         if root_info.get("proto_turkic") and not proto_root:
                             proto_root = root_info.get("proto_turkic")
+                            proto_root_provenance = f"tanıklı — {fetcher.source_name}"
                         if root_info.get("meaning") and not root_meaning:
                             root_meaning = translate_meaning(root_info.get("meaning"))
 
@@ -345,14 +351,34 @@ class SearchEngine:
             hypo_pr = unattested_prover_eval.get("proven_hypothesis")
             if hypo_pr and hypo_pr.get("origin_form"):
                 proto_root = hypo_pr["origin_form"]
+                proto_root_provenance = "türetilmiş — tanıksız kelime kanıtlayıcısı"
                 if not proven_hypothesis_eval.get("hypothesis_available"):
                     proven_hypothesis_eval["proven_hypothesis"] = hypo_pr
                     proven_hypothesis_eval["hypothesis_available"] = True
             elif reconstruction_eval.get("evidence_available"):
                 proto_root = reconstruction_eval.get("reconstructed_root", "")
+                proto_root_provenance = "türetilmiş — karşılaştırmalı yöntem"
 
         lingpy_eval = self.lingpy_aligner.align_sequences(proto_root or word_clean, word_clean)
-        semantic_eval = self.semantic_engine.evaluate_diachronic_trajectory(root_meaning or "", root_meaning or "")
+        # Tarihsel anlam, EN ESKİ TANIĞIN anlamıdır. Eskiden modern anlam iki
+        # kez geçiliyordu — yani bir anlam kendisiyle karşılaştırılıyor ve
+        # sonuç tanımı gereği "kayma yok" çıkıyordu; `diachronic_semantic_drift`
+        # alanı anlamsız veri taşıyordu. `sorted_entries` tarihî katmanı başa
+        # sıraladığı için ilk tarihî tanık buradan alınır. Tanık yoksa boş
+        # geçilir: motor zaten `evidence_available: False` döndürür
+        # (diachronic_semantic_engine.py:152-164), uydurma skor üretmez.
+        historical_meaning = next(
+            (
+                (entry.get("meaning") or "").strip()
+                for entry in sorted_entries
+                if entry.get("lang_code") in ("otk", "ota", "chg")
+                and (entry.get("meaning") or "").strip()
+            ),
+            "",
+        )
+        semantic_eval = self.semantic_engine.evaluate_diachronic_trajectory(
+            historical_meaning, root_meaning or ""
+        )
 
         # Gerçek ses kanunu indüksiyonu: TÜM akraba çiftleri üzerinden.
         # Eskiden tek çiftten sabit 0.95 güven skoru üretiliyordu.
@@ -373,6 +399,7 @@ class SearchEngine:
             origin_form = donor_eval.get("origin_form")
             donor_meaning = donor_eval.get("donor_meaning")
             proto_root = f"[{donor_lang}] {origin_form}"
+            proto_root_provenance = "tanıklı — donör dil etimoloji veritabanı"
             sources.append(f"Donör Dil Etimoloji Veritabanı ({donor_lang})")
             sorted_entries.insert(0, {
                 "lang_code": "donor",
@@ -389,6 +416,19 @@ class SearchEngine:
         if _report.get("status_code") in ("VALIDATED", "NEEDS_REVIEW") and _hypo.get("donor_language"):
             hypo = _hypo
             proto_root = hypo.get("origin_form") or proto_root
+            # ⚠️ Bu dal MİRAS kelimelerde de ateşleniyor: `göz` için
+            # `donor_language` alanı "Proto-Türkçe" geliyor ve Proto-Türkçe
+            # bir verici dil DEĞİLDİR. Ayrım yapılmazsa miras kök "alıntı
+            # kökeni" diye damgalanır (ölçüldü: göz -> yanlış damga).
+            _donor_lang = str(hypo.get("donor_language") or "")
+            if _donor_lang in ("", "Proto-Türkçe", "Ana Türkçe", "Öz Türkçe", "Eski Türkçe"):
+                proto_root_provenance = (
+                    f"türetilmiş — A-HVP doğrulanmış miras kökü ({_donor_lang or 'Türki'})"
+                )
+            else:
+                proto_root_provenance = (
+                    f"tanıklı — A-HVP doğrulanmış alıntı kökeni ({_donor_lang})"
+                )
             root_meaning = hypo.get("historical_meaning", root_meaning)
             sources.append(f"Derin Komşu Diller Etimoloji Veritabanı ({hypo.get('donor_language')})")
             if not any(e.get("lang_code") == "donor" for e in sorted_entries):
@@ -431,6 +471,9 @@ class SearchEngine:
             "root": {
                 "proto_turkic": proto_root or word_clean,
                 "meaning": root_meaning or word_clean,
+                # Kök hiç atanmadıysa sorgu kelimesi yazılıyor; bu bir bulgu
+                # değildir, o yüzden damgası da "yok".
+                "provenance": proto_root_provenance or "yok — kök belirlenemedi",
                 "reconstruction_notes": reconstruction_eval.get("reconstruction_notes", "")
             },
             "nlp_analysis": {
