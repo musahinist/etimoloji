@@ -513,6 +513,46 @@ class SearchEngine:
             cognates=related_cognates
         )
 
+        # ⚠️ BAŞLIK İLE HÜKÜM AYRI KAYNAKLARDAN BESLENİYORDU.
+        #
+        # `proto_root` yukarıda BEŞ ayrı yerde atanıyor (fetcher, tanıksız
+        # kanıtlayıcı, karşılaştırmalı rekonstrüksiyon, donör veritabanı,
+        # A-HVP). Sıralayıcı ise bağımsız çalışıp bir hipotez SEÇİYOR. İkisi
+        # çeliştiğinde kullanıcının İLK GÖRDÜĞÜ satır yanlış olanı
+        # gösterebiliyordu. Ölçüldü:
+        #
+        #   pinti  -> başlık "*pinti" (yıldızlı Proto-Türkçe kök) ama
+        #             sıralayıcı "ALINTI — Ermenice" seçiyor ve MİRAS'ı
+        #             reddediyor; aynı çıktının NLP bölümü de "Proto-Türkçe
+        #             rekonstrüksiyon uygulanmaz" diyor. Üç bölüm birbirini
+        #             yalanlıyordu. (Doğrusu: Ermenice փնթի "pis, murdar".)
+        #   herkil -> başlık Ermenice kökeni kesin gibi veriyor, sıralayıcı
+        #             "Kökeni belirlenemedi" diyor.
+        #
+        # Hüküm sıralayıcınındır; başlık onu İZLER.
+        _selected = (ranked_hypotheses or {}).get("selected") or {}
+        _sel_kind = _selected.get("kind")
+        _sel_detail = _selected.get("detail") or {}
+        _sel_claim = _selected.get("claim") or ""
+        _ranker_root = ""
+        if _sel_kind == "borrowed":
+            # Alıntıda yıldızlı ata biçim göstermek yanlıştır: zincirin son
+            # halkası verici dil + özgün biçimdir (ör. "Ermenice փնթի").
+            _chain = [link for link in (_sel_detail.get("chain") or []) if link]
+            _ranker_root = _chain[-1] if _chain else ""
+        elif _sel_kind == "inherited":
+            _ranker_root = str(_sel_detail.get("reconstructed_root") or "")
+
+        if _ranker_root and _ranker_root != proto_root:
+            proto_root = _ranker_root
+            proto_root_provenance = f"sıralayıcı hükmü — {_sel_claim}"
+        elif _sel_kind not in ("borrowed", "inherited") and proto_root:
+            # Sıralayıcı bir köken seçemediyse başlık kesinlik iddia edemez.
+            proto_root_provenance = (
+                f"{proto_root_provenance or 'kaynak belirsiz'} "
+                f"⚠️ sıralayıcı: {_sel_claim or 'kökeni belirlenemedi'}"
+            )
+
         finding = {
             "query_word": word_clean,
             "morphology": morphology_info,
