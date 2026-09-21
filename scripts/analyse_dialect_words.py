@@ -231,6 +231,14 @@ def main() -> int:
         "   kelimelerinin çoğu tek bir ilde tanıklanmıştır ve karşılaştırmalı\n"
         "   yöntemin gerektirdiği bağımsız tanık yoktur."
     )
+    print(
+        "\n⚠️ KOVA EŞİKLERİ BU DAĞILIMDA DOĞRULANMADI. Kalibratör\n"
+        f"   savelyevturkic/train üzerinde eğitildi (n=223, CLDF ÇIPLAK KÖK);\n"
+        f"   buradaki girdiler ise sözlük madde başıdır. {SOLVED_THRESHOLD:.2f}/"
+        f"{CANDIDATE_THRESHOLD:.2f} eşiklerinin\n"
+        "   bu dağılıma taşınabilirliği GÖSTERİLMİŞ DEĞİLDİR; 'çözüldü' ve\n"
+        "   'güçlü aday' etiketleri ölçülmüş doğruluk iddiası taşımaz."
+    )
 
     args.out.mkdir(parents=True, exist_ok=True)
     out = args.out / "analysis.json"
