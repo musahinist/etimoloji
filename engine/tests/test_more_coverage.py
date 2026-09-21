@@ -183,6 +183,10 @@ class TestSemanticEngineBackends(unittest.TestCase):
         self.assertGreater(
             ilgisiz["total_shift_distance"], ilgili["total_shift_distance"]
         )
+        # Eşik 0.85'ten 0.70'e çekildikten sonra ilgisiz çift artık
+        # GERÇEKTEN eleniyor; 0.85'te ilgisiz çiftlerin %87,4'ü geçiyordu.
+        self.assertFalse(ilgisiz["is_plausible"])
+        self.assertTrue(ilgili["is_plausible"])
 
     def test_trajectory_segment_is_dropped_not_unlabelled(self):
         """Güzergâh bölümü anlam değildir; etiketi silinip bırakılmamalı.

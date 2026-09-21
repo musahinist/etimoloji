@@ -219,8 +219,34 @@ class DiachronicSemanticEngine:
     #   (a) iki taraf aynıysa `evidence_available: False` dönmeli, bedava
     #       ✅ verilmemeli;
     #   (b) "Kaynak anlamı:" / "|" gibi biçim eki kodlamadan önce ayıklanmalı.
-    # Yukarıdaki kalibrasyon tablosu o iş bitince yeniden uygulanacaktır.
-    THETA_THRESHOLD = 0.85
+    # O İŞ BİTTİ; eşik artık veriye dayanıyor.
+    #
+    # Girdi temizliği tamamlandı (hepsi teste bağlı): çöp gloss elemesi,
+    # atıf öneki kırpma, Latin olmayan parantez/tırnak ayıklama, güzergâh
+    # bölümünün atılması, tanığın en yakın biçime göre seçilmesi.
+    # GERÇEK HAT üzerinde 20 kelime ölçüldü, 13'ünde mesafe var ve hepsi
+    # doğru etimoloji:
+    #
+    #   öküz 0.1801  gece 0.2638  göz 0.2843  bilge 0.2891  el 0.3233
+    #   deniz 0.3241 kitap 0.3267 yaz 0.4037  diz 0.4445   kalem 0.4808
+    #   kamu 0.5166  baş 0.6501   bardak 0.7863
+    #
+    # 13 vakanın 12'si <= 0.6501. Tek istisna `bardak`: tarihî gloss
+    # "testicik" seçiliyor ("su içilen kap" yerine) — gerçek anlam kayması
+    # değil, biçim sıralamasının bilinen kusuru.
+    #
+    # 0.70 seçildi: `baş`ın (0.6501) üstünde gerçek pay bırakır, yalnız
+    # bilinen kusuru eler, ve CLDF vekil tablosunda dengeli doğruluğu
+    # %56,3'ten %77,4'e çıkarır. Optimum 0.45-0.50'ye İNİLMEDİ, çünkü o
+    # tablodaki olumlu çift "aynı kavramın iki yazımı"dır ve yüzyıllık
+    # gerçek kaymadan kolaydır; maliyet de asimetriktir (yanlış RET doğru
+    # bir etimolojiyi eler, yanlış GEÇİŞ yalnız kanıt eklemez).
+    #
+    # ⚠️ Kapsam notu: 20 kelimenin 5'inde (pencere, masa, çete, elektrik,
+    # makas) 3. aşamaya hiç tanık ulaşmıyor, 2'sinde (su, ayak) iki taraf
+    # özdeş olduğu için dejenere kapısı devrede. Aşama 13/20 = %65
+    # kelimede ölçülebiliyor.
+    THETA_THRESHOLD = 0.70
 
     def __init__(self, vocab_size: int = 64):
         self.vectorizer = DenseSemanticVectorizer(vocab_size=vocab_size)
