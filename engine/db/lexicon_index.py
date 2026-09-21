@@ -537,6 +537,34 @@ class LexiconIndex:
         with self.connect() as connection:
             return [dict(row) for row in connection.execute(query, params)]
 
+    def is_attested_stem(self, form: str, *, lang: str = "tr") -> bool:
+        """Bu biçim gerçekten bir sözlükbirim mi?
+
+        ⚠️ "İndekste var mı" diye sormak YETMEZ: kayıtların %69'u çekim
+        satırıdır. ``barda`` indekste var ama tek anlamı
+        ``locative singular of bar`` — yani kök değil, ``bar``ın bulunma hâli.
+
+        Üç yollu kural (ölçüldü):
+        1. Çekim olmayan bir anlamı varsa sözlükbirimdir.
+        2. Fiil kökleri sözlükte MASTARLA durur (``taşı`` yok ama ``taşımak``
+           var), o yüzden ``kök+mak/mek`` de kabul edilir.
+        3. Hiçbiri yoksa sözlükbirim sayılmaz.
+
+        ⚠️ ``lang`` varsayılanı ``tr``: Türkçe bir kelimeyi çözümlerken başka
+        dildeki tesadüfi eşleşme tanık değildir. Ölçüldü — aşırı soymanın
+        ürettiği sahte köklerin tamamı böyle eşleşiyordu: ``mene`` [az],
+        ``avs`` [ota], ``köre`` [kdr], ``gara`` [tk].
+        """
+        from engine.utils.morphology import is_inflection_gloss
+
+        rows = self.lookup(form, languages=[lang], limit=5) or []
+        if any(not is_inflection_gloss(row.get("gloss") or "") for row in rows):
+            return True
+        return any(
+            self.lookup(form + suffix, languages=[lang], limit=1)
+            for suffix in ("mak", "mek")
+        )
+
     def fuzzy_lookup(
         self, form: str, *, max_distance: int = 1, languages: list[str] | None = None
     ) -> list[dict[str, Any]]:

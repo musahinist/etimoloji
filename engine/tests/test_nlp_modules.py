@@ -273,7 +273,16 @@ class TestHistoricalMorphology(unittest.TestCase):
         a = HistoricalMorphologyAnalyzer()
         self.assertEqual(a.build_tree("bitig")["root"], "biti")
         self.assertEqual(a.build_tree("susuz")["root"], "su")
-        self.assertGreaterEqual(a.build_tree("toplumsal")["depth"], 2)
+        # ⚠️ Bu satır eskiden `depth >= 2` istiyordu ve analizörün ÇÖP bir ara
+        # biçim üretmesini şart koşuyordu: zincir `toplumsal -> toplum (+sAl)
+        # -> topl (-Im)` idi ve `topl` diye bir kelime yok (indekste bulunmaz,
+        # Türkçe kök değildir). Soymaya tanıklık kapısı eklenince analiz
+        # `toplum` ("society") üzerinde duruyor — doğru davranış budur.
+        # Ölçüldü: kapı `menengiç -> mene`, `avsunlu -> avs`, `köremez -> köre`,
+        # `garametli -> gara` gibi sahte kökleri de eliyor.
+        toplumsal = a.build_tree("toplumsal")
+        self.assertEqual(toplumsal["root"], "toplum")
+        self.assertEqual(toplumsal["depth"], 1)
 
     def test_bare_root_has_zero_depth(self):
         self.assertEqual(HistoricalMorphologyAnalyzer().build_tree("at")["depth"], 0)

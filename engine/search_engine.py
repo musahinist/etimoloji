@@ -342,28 +342,13 @@ class SearchEngine:
                 return True
             try:
                 from engine.db.lexicon_index import LexiconIndex
-                from engine.utils.morphology import is_inflection_gloss
 
+                # Kural tek yerde: `LexiconIndex.is_attested_stem`. Burada
+                # ikinci bir kopya tutmak ikisinin zamanla ayrışması demekti.
                 index = LexiconIndex()
                 if not index.exists:
                     return True  # indeks yoksa eski davranış (yalnız uzunluk)
-
-                # ⚠️ İndekste "bulunmak" YETMEZ: kayıtların %69'u çekim
-                # satırıdır. `barda` indekste var ama tek anlamı "locative
-                # singular of bar" — yani kök değil, `bar`ın bulunma hâli.
-                # Kök sayılması için ya çekim olmayan bir anlamı olmalı...
-                rows = index.lookup(target, languages=["tr"], limit=5) or []
-                if any(not is_inflection_gloss(row.get("gloss") or "") for row in rows):
-                    return True
-
-                # ...ya da bir FİİL LEMMASI bulunmalı. Fiil kökleri sözlükte
-                # mastarla durur (`taşı` yok ama `taşımak` var); ölçüldü:
-                # taşı->taşımak, kavur->kavurmak, giriş->girişmek,
-                # bulaş->bulaşmak var; barda->bardamak YOK.
-                return any(
-                    index.lookup(target + suffix, languages=["tr"], limit=1)
-                    for suffix in ("mak", "mek")
-                )
+                return index.is_attested_stem(target)
             except Exception:
                 logger.debug("Kök tanıklık denetimi yapılamadı: %s", target, exc_info=True)
                 return True

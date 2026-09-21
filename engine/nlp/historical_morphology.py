@@ -68,6 +68,35 @@ MIN_STEM_LENGTH = 2
 MAX_DEPTH = 4
 
 
+#: Tanıklık denetimi süreç ömrü boyunca önbelleklenir; aynı kök defalarca
+#: sorulur (aynı ek zinciri farklı kelimelerde tekrar eder).
+_ATTESTATION_CACHE: dict[str, bool] = {}
+
+
+def _stem_is_attested(stem: str) -> bool:
+    """Soyulan kök Türkçede gerçek bir sözlükbirim mi?
+
+    İndeks yoksa ya da sorgu düşerse **True** döner: kapı, veri eksikliğinde
+    çözümlemeyi büsbütün durdurmamalı (deponun başka yerlerindeki "veri yoksa
+    sessizce devre dışı kal" davranışıyla aynı).
+    """
+    if stem in _ATTESTATION_CACHE:
+        return _ATTESTATION_CACHE[stem]
+
+    verdict = True
+    try:
+        from engine.db.lexicon_index import LexiconIndex
+
+        index = LexiconIndex()
+        if index.exists:
+            verdict = index.is_attested_stem(stem)
+    except Exception:
+        logger.debug("Kök tanıklık denetimi yapılamadı: %s", stem, exc_info=True)
+
+    _ATTESTATION_CACHE[stem] = verdict
+    return verdict
+
+
 class HistoricalMorphologyAnalyzer:
     """Kelimeyi tarihsel yapım eklerine göre katmanlı bir ağaca ayırır."""
 
@@ -96,6 +125,15 @@ class HistoricalMorphologyAnalyzer:
             if match is None:
                 break
             new_stem, label, function, layer = match
+            # ⚠️ TANIKLIK KAPISI. Soyma katman katman zincirlenince kelime
+            # olmayan kökler üretiyordu ve o kısa parçalar başka dillerde
+            # tesadüfen eşleşiyordu. Ölçüldü (400 ağız maddesi):
+            #   menengiç -> mene [az]   avsunlu -> avs [ota]
+            #   köremez  -> köre [kdr]  garametli -> gara [tk]
+            # 102 maddede 2, 14'ünde 3, birinde 4 katman soyuluyordu.
+            # Soyulan kök Türkçede sözlükbirim değilse o katmanda durulur.
+            if not _stem_is_attested(new_stem):
+                break
             layers.append({
                 "surface": stem[len(new_stem):],
                 "suffix": label,
