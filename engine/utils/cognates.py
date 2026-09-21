@@ -5,9 +5,6 @@ yalnızca gerçek sözlük kayıtları ve doğrulanmış diyalekt denkliği üze
 """
 from typing import Any
 
-from engine.utils.morphology import analyze_morphology
-from engine.utils.sound_shifts import generate_turkic_cognate_candidates
-
 
 def get_related_cognates(word: str, entries: list[dict[str, Any]] | None = None) -> list[str]:
     """Herhangi bir kelime için yalnızca GERÇEK sözlük kayıtları ve doğrulanmış Türki dil denklerini toplar."""
@@ -27,17 +24,26 @@ def get_related_cognates(word: str, entries: list[dict[str, Any]] | None = None)
                 seen.add(ew_clean)
                 cognate_set.append(ew)
 
-    # 2. Eğer sözlük kayıtlarından henüz yeterince akraba toplanamadıysa bilinen kök matrisini kontrol et
-    if len(cognate_set) < 3:
-        stem, _ = analyze_morphology(w)
-        base_stem = stem or w
-        candidates = generate_turkic_cognate_candidates(base_stem)
-        for c in candidates:
-            c_clean = c.strip().lower()
-            if c_clean != w and c_clean not in seen:
-                # Sadece gerçek kök haritasından gelen kelimeler
-                seen.add(c_clean)
-                cognate_set.append(c)
-
+    # ⚠️ BURADA BİR YEDEK VARDI VE KANIT UYDURUYORDU.
+    #
+    # "3'ten az akraba toplandıysa" `generate_turkic_cognate_candidates()`
+    # çağrılıp ÜRETİLMİŞ ses varyantları listeye ekleniyordu — yanında
+    # "Sadece gerçek kök haritasından gelen kelimeler" yorumuyla, ki doğru
+    # değildi. Bulunmamış biçimler kullanıcıya "aynı kökten türeyen akraba
+    # kelimeler" diye sunuluyordu.
+    #
+    # Ölçüldü (iki kelimede de %100 uydurma):
+    #   pervasız -> pervasır, pervasıs, pirvasız, первасыз…  12/12 varyant
+    #   herkil   -> herkel, hirkil, härkil, хиркил…          hepsi varyant
+    # Bu biçimler o aramada sorgu adayı olarak üretilip HİÇBİR sözlükte
+    # bulunamamıştı; yani liste, aramanın başarısızlığını başarı gibi
+    # gösteriyordu.
+    #
+    # Aynı hastalık `hypothesis_validation_protocol` içinde bir kez
+    # düzeltilmişti (bkz. oradaki not: "KENDİ ÜRETTİĞİ varyantları
+    # sayıyordu, skor daima 0.95 çıkıyordu"); bu ikinci kopyaydı.
+    #
+    # Akraba listesi artık YALNIZ bulunan tanıklardan gelir. Boş dönmesi
+    # dürüst sonuçtur: akraba bulunamadı demektir.
     return cognate_set[:12]
 
