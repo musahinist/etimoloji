@@ -94,9 +94,28 @@ class TestDataEntrypoints(CliCase):
     def test_correspondence_learning_runs(self):
         from engine.nlp import cognate_prediction
 
+        # ⚠️ ÜÇ YOLUN ÜÇÜ DE YAMALANMALI. Eskiden yalnız
+        # `CORRESPONDENCE_PATH` yamalanıyordu, ama `main()` ayrıca
+        # `INHERITED_CORRESPONDENCE_PATH` (learned_inherited.json) ve
+        # `PROTO_CORRESPONDENCE_PATH` (learned_proto.json) dosyalarına da
+        # yazıyor. Sonuç: test koşusu kullanıcının EĞİTİLMİŞ model
+        # dosyalarının üzerine yazıyordu (ölçüldü: `trained_at` damgası
+        # test koşusunun saatine dönüyordu).
         with TemporaryDirectory() as tmp:
             path = Path(tmp) / "learned.json"
-            with mock.patch.object(cognate_prediction, "CORRESPONDENCE_PATH", path):
+            with (
+                mock.patch.object(cognate_prediction, "CORRESPONDENCE_PATH", path),
+                mock.patch.object(
+                    cognate_prediction,
+                    "INHERITED_CORRESPONDENCE_PATH",
+                    Path(tmp) / "learned_inherited.json",
+                ),
+                mock.patch.object(
+                    cognate_prediction,
+                    "PROTO_CORRESPONDENCE_PATH",
+                    Path(tmp) / "learned_proto.json",
+                ),
+            ):
                 self.run_main(cognate_prediction, ["--split", "train"])
                 data = json.loads(path.read_text(encoding="utf-8"))
         self.assertTrue(str(data["trained_on"]).endswith("/train"))
@@ -178,8 +197,22 @@ class TestBorrowingEvalEntrypoint(CliCase):
     def test_borrowing_eval_runs(self):
         from engine.evaluation import borrowing_eval
 
+        # ⚠️ MODEL YOLLARI DA YAMALANMALI. Bu koşu yalnız rapor yazmıyor:
+        # `train_phonotactic_lm` -> `phonotactic_lm.save()` -> MODEL_DIR ve
+        # `borrowing_combiner.save()` -> MODEL_PATH üzerinden gerçek
+        # `data/models/` dizinine EĞİTİLMİŞ MODEL yazıyor. Yamalanmazsa
+        # test, kullanıcının eğitim koşusunun katsayılarını eziyor
+        # (ölçüldü: `borrowing_combiner.json` katsayıları her test
+        # koşusunda değişiyordu).
         with TemporaryDirectory() as tmp:
-            with mock.patch("engine.evaluation.report.EVAL_DIR", Path(tmp)):
+            with (
+                mock.patch("engine.evaluation.report.EVAL_DIR", Path(tmp)),
+                mock.patch("engine.nlp.phonotactic_lm.MODEL_DIR", Path(tmp)),
+                mock.patch(
+                    "engine.nlp.borrowing_combiner.MODEL_PATH",
+                    Path(tmp) / "borrowing_combiner.json",
+                ),
+            ):
                 self.run_main(borrowing_eval, ["--wiktionary-limit", "200"])
                 data = json.loads((Path(tmp) / "borrowing.json").read_text("utf-8"))
         self.assertIn("wold", data)
