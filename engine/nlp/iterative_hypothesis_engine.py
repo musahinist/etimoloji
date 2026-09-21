@@ -31,6 +31,39 @@ from engine.utils.phonotactics import initial_consonant_violation
 logger = get_logger(__name__)
 
 
+#: Tarihî tanık katmanları. Aynı üçlü `search_engine.py:413` ve
+#: `fetchers/historical_index.py:49`'da da kullanılıyor.
+HISTORICAL_WITNESS_LANGUAGES: tuple[str, ...] = ("otk", "ota", "chg")
+
+
+def _historical_gloss(entries: list[dict[str, Any]] | None) -> str:
+    """Tarihî tanıkların ilk GERÇEK anlamını döndürür; yoksa boş dize.
+
+    ⚠️ Bu yardımcı bir kusuru kapatmak için eklendi: miras dalı (aşağıdaki
+    3. seçenek) `historical_meaning` alanına MODERN anlamın kopyasını
+    yazıyordu. A-HVP 3. aşaması da çiftini buradan aldığı için anlamı
+    kendisiyle karşılaştırıyor, mesafe tanımı gereği 0 çıkıyor ve aşama
+    BEDAVA ✅ veriyordu.
+
+    Ölçüldü (`--json` çıktısında iki düğüm ayrı ayrı okundu):
+        göz    stage3: 'göz, görme organı' ~ 'göz, görme organı'  -> özdeş
+        bardak stage3: TDK tanımı          ~ TDK tanımı           -> özdeş
+    Oysa aynı koşuda `search_engine` yolu sağlıklı çift üretiyordu:
+        göz    'DLT (1074): göz…' ~ 'göz, görme organı'   0.4981
+        bardak 'su içilen kap'    ~ TDK tanımı            0.2202
+    Yani veri MEVCUTTU, yalnızca bu dala taşınmıyordu.
+
+    Tanık yoksa boş döner; motor o zaman dürüstçe "ölçülemedi" der,
+    uydurma kanıt üretmez.
+    """
+    for entry in entries or []:
+        if entry.get("lang_code") in HISTORICAL_WITNESS_LANGUAGES:
+            meaning = (entry.get("meaning") or "").strip()
+            if meaning:
+                return meaning
+    return ""
+
+
 class IterativeHypothesisEngine:
     def __init__(self) -> None:
         self.donor_db = DeepDonorEtymologyDatabase()
@@ -55,7 +88,9 @@ class IterativeHypothesisEngine:
         attestation = self.attestation_verifier.verify_attestation(w, entries, fetcher_results)
         reconstruction = self.reconstructor.reconstruct(w, entries)
 
-        hypothesis = self._select_hypothesis(w, root, neologism, donor_match, reconstruction)
+        hypothesis = self._select_hypothesis(
+            w, root, neologism, donor_match, reconstruction, _historical_gloss(entries)
+        )
 
         if hypothesis is None:
             return {
@@ -89,6 +124,7 @@ class IterativeHypothesisEngine:
         neologism: dict[str, Any] | None,
         donor_match: dict[str, Any] | None,
         reconstruction: dict[str, Any],
+        historical_gloss: str = "",
     ) -> dict[str, Any] | None:
         """Kanıt gücüne göre en iyi hipotezi seçer. Kanıt yoksa ``None``."""
         modern_meaning = root.get("meaning", "") or ""
@@ -125,7 +161,12 @@ class IterativeHypothesisEngine:
                 "donor_language": "Proto-Türkçe",
                 "origin_form": reconstruction["reconstructed_root"],
                 "proof_summary": reconstruction.get("reconstruction_notes", ""),
-                "historical_meaning": modern_meaning,
+                # ⚠️ Burada `modern_meaning` yazıyordu; iki alan aynı olunca
+                # A-HVP 3. aşaması anlamı kendisiyle karşılaştırıyordu.
+                # Gerçek tarihî gloss artık tanıklardan geliyor (bkz.
+                # `_historical_gloss`); tanık yoksa boş kalır ve aşama
+                # dürüstçe "ölçülemedi" der.
+                "historical_meaning": historical_gloss,
                 "modern_meaning": modern_meaning,
                 "evidence_kind": "comparative_method",
                 "witness_count": reconstruction.get("witness_count", 0),

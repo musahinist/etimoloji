@@ -495,6 +495,65 @@ class TestMorphemeSegmenter(unittest.TestCase):
         self.assertGreaterEqual(len(res["stem"]), 2)
 
 
+class TestHistoricalGlossReachesHypothesis(unittest.TestCase):
+    """Miras dalı, tarihî anlama MODERN anlamın kopyasını yazmamalı.
+
+    Kusur: `_select_hypothesis` karşılaştırmalı yöntem dalında
+    `historical_meaning` alanına `modern_meaning`'i yazıyordu. A-HVP
+    3. aşaması çiftini oradan aldığı için anlamı kendisiyle karşılaştırıyor,
+    mesafe tanımı gereği 0 çıkıyor ve aşama BEDAVA ✅ veriyordu.
+
+    Ölçüldü (`--json`, iki düğüm ayrı ayrı):
+        göz    stage3: 'göz, görme organı' ~ 'göz, görme organı'  özdeş
+        bardak stage3: TDK tanımı          ~ TDK tanımı           özdeş
+    Aynı koşuda `search_engine` yolu sağlıklıydı (göz 0.4981,
+    bardak 0.2202) — yani veri MEVCUTTU, bu dala taşınmıyordu.
+    """
+
+    RECONSTRUCTION = {
+        "evidence_available": True,
+        "reconstructed_root": "*köŕ",
+        "reconstruction_notes": "3 dil tanığı",
+        "witness_count": 3,
+    }
+
+    def test_historical_gloss_is_used_not_modern_copy(self):
+        from engine.nlp.iterative_hypothesis_engine import IterativeHypothesisEngine
+
+        hypo = IterativeHypothesisEngine._select_hypothesis(
+            "göz",
+            {"meaning": "göz, görme organı"},
+            None,
+            None,
+            self.RECONSTRUCTION,
+            "göz, görmek",
+        )
+        self.assertEqual(hypo["historical_meaning"], "göz, görmek")
+        self.assertNotEqual(hypo["historical_meaning"], hypo["modern_meaning"])
+
+    def test_missing_witness_leaves_gloss_empty(self):
+        """Tanık yoksa UYDURULMAZ; boş kalır ve aşama 'ölçülemedi' der."""
+        from engine.nlp.iterative_hypothesis_engine import IterativeHypothesisEngine
+
+        hypo = IterativeHypothesisEngine._select_hypothesis(
+            "göz", {"meaning": "göz, görme organı"}, None, None, self.RECONSTRUCTION
+        )
+        self.assertEqual(hypo["historical_meaning"], "")
+
+    def test_gloss_extractor_picks_first_real_witness(self):
+        from engine.nlp.iterative_hypothesis_engine import _historical_gloss
+
+        entries = [
+            {"lang_code": "tr", "meaning": "modern tanım"},
+            {"lang_code": "otk", "meaning": ""},
+            {"lang_code": "otk", "meaning": "su içilen kap"},
+            {"lang_code": "ota", "meaning": "başka"},
+        ]
+        self.assertEqual(_historical_gloss(entries), "su içilen kap")
+        self.assertEqual(_historical_gloss([]), "")
+        self.assertEqual(_historical_gloss(None), "")
+
+
 class TestHypothesisEngine(unittest.TestCase):
     def test_no_hypothesis_without_evidence(self):
         res = IterativeHypothesisEngine().prove_etymological_hypothesis(
