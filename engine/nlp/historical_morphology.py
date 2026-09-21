@@ -65,6 +65,8 @@ HISTORICAL_SUFFIXES: list[tuple[tuple[str, ...], str, str, str]] = [
 #: Bir kökün altına düşmemesi gereken asgari uzunluk.
 MIN_STEM_LENGTH = 2
 #: Azami türetme derinliği (sonsuz döngü koruması).
+#: ⚠️ Çözümleme artık İLK TANIKLI KÖKTE durduğu için bu tavana pratikte
+#: ulaşılmaz; sabit, zincirleme soymaya dönülürse diye korunuyor.
 MAX_DEPTH = 4
 
 
@@ -120,29 +122,39 @@ class HistoricalMorphologyAnalyzer:
 
         layers: list[dict[str, Any]] = []
         stem = w
-        for _ in range(MAX_DEPTH):
-            match = self._strip_one(stem)
-            if match is None:
-                break
+
+        # İki kural birlikte çalışır.
+        #
+        # 1) TANIKLIK KAPISI — soyulan kök Türkçede sözlükbirim değilse
+        #    soyma yapılmaz. Zincirleme soyma kelime OLMAYAN kökler
+        #    üretiyor, o kısa parçalar başka dillerde tesadüfen eşleşiyordu:
+        #      menengiç -> mene [az]   avsunlu   -> avs  [ota]
+        #      köremez  -> köre [kdr]  garametli -> gara [tk]
+        #
+        # 2) EN SIĞ TANIKLI KÖKTE DUR — kapı tek başına yetmedi, çünkü
+        #    zincir gerçek kökü geçip 2-3 harflik parçalara iniyor ve o
+        #    parçalar tesadüfen Türkçe kelime olduğu için kapıyı da geçiyordu:
+        #      kanatlı -> kana   altlık -> al   çıtlık -> çı
+        #      damcı   -> da     değin  -> de   küncü  -> kü
+        #
+        # ⚠️ Ölçüldü (400 ağız maddesi): kapıdan geçen iki+ katmanlı 12
+        # analizin HEPSİ bu türdendi; meşru çok katmanlı türetme ÇIKMADI.
+        # Dolayısıyla ilk tanıklı kökte durmanın ölçülen maliyeti sıfır,
+        # kazancı 12 hatalı analiz. Testlerin dayandığı dört kelime
+        # (güzellik, bitig, susuz, toplumsal) aynen korunur.
+        match = self._strip_one(stem)
+        if match is not None:
             new_stem, label, function, layer = match
-            # ⚠️ TANIKLIK KAPISI. Soyma katman katman zincirlenince kelime
-            # olmayan kökler üretiyordu ve o kısa parçalar başka dillerde
-            # tesadüfen eşleşiyordu. Ölçüldü (400 ağız maddesi):
-            #   menengiç -> mene [az]   avsunlu -> avs [ota]
-            #   köremez  -> köre [kdr]  garametli -> gara [tk]
-            # 102 maddede 2, 14'ünde 3, birinde 4 katman soyuluyordu.
-            # Soyulan kök Türkçede sözlükbirim değilse o katmanda durulur.
-            if not _stem_is_attested(new_stem):
-                break
-            layers.append({
-                "surface": stem[len(new_stem):],
-                "suffix": label,
-                "function": function,
-                "historical_layer": layer,
-                "stem_before": stem,
-                "stem_after": new_stem,
-            })
-            stem = new_stem
+            if _stem_is_attested(new_stem):
+                layers.append({
+                    "surface": stem[len(new_stem):],
+                    "suffix": label,
+                    "function": function,
+                    "historical_layer": layer,
+                    "stem_before": stem,
+                    "stem_after": new_stem,
+                })
+                stem = new_stem
 
         return {
             "word": word,
