@@ -170,12 +170,30 @@ class BatteryResult:
     n: int = 0
     reconstructed: int = 0
     strong_badge: int = 0
+    fallback: int = 0
     details: list[dict[str, Any]] = field(default_factory=list)
 
     @property
     def false_positive_rate(self) -> float:
-        """Motorun "rekonstrükte edilebilir" dediği kontrol maddelerinin oranı."""
+        """Motorun KARŞILAŞTIRMALI YÖNTEMLE kök türettiği maddelerin oranı.
+
+        ⚠️ `anchor_fallback` bu orana GİRMEZ. O yol, motorun "karşılaştırmalı
+        yöntem uygulanamadı, aşağıdaki biçim sorgu kelimesinin kendisidir"
+        dediği etiketli geri-dönüştür: `evidence_available=False`,
+        `confidence=0.0`, rozet ⚪. Bunu yanlış pozitif saymak yanlış şeyi
+        ölçer — motor zaten yapamadığını söylüyor.
+
+        Ölçüldü: `sahte_akraba` bataryasının 4/4'ü bu yoldan geçiyordu
+        (tanıkları en/de/fa, yani Türki tanık sayısı 0) ve oran %100
+        görünüyordu. Yedekler gizlenmiyor, `fallback` alanında ayrıca
+        raporlanıyor.
+        """
         return self.reconstructed / self.n if self.n else 0.0
+
+    @property
+    def fallback_rate(self) -> float:
+        """Etiketli geri-dönüşe düşen maddelerin oranı (kök İDDİA EDİLMEZ)."""
+        return self.fallback / self.n if self.n else 0.0
 
     @property
     def strong_claim_rate(self) -> float:
@@ -189,6 +207,8 @@ class BatteryResult:
             "reconstructed": self.reconstructed,
             "false_positive_rate": round(self.false_positive_rate, 4),
             "strong_claim_rate": round(self.strong_claim_rate, 4),
+            "fallback": self.fallback,
+            "fallback_rate": round(self.fallback_rate, 4),
         }
 
 
@@ -203,15 +223,25 @@ def run_battery(reconstructor, items: tuple[ControlItem, ...], name: str) -> Bat
             logger.warning("Negatif kontrol çöktü: %s", item.query, exc_info=True)
             continue
         result.n += 1
-        reconstructed = bool(output.get("is_reconstructible"))
+        # ⚠️ `anchor_fallback` KÖK İDDİASI DEĞİLDİR: motor "karşılaştırmalı
+        # yöntem uygulanamadı, bu biçim sorgu kelimesinin kendisidir" diyor
+        # (`evidence_available=False`, `confidence=0.0`, rozet ⚪).
+        # Yanlış pozitif sayılırsa yanlış şey ölçülür. Gizlenmiyor: ayrı
+        # `fallback` sayacında raporlanıyor.
+        method = str(output.get("method") or "comparative")
+        is_fallback = method == "anchor_fallback"
+        reconstructed = bool(output.get("is_reconstructible")) and not is_fallback
         badge = str(output.get("confidence_badge", ""))
         strong = reconstructed and ("GÜÇLÜ" in badge or "ORTA" in badge)
         result.reconstructed += reconstructed
+        result.fallback += is_fallback
         result.strong_badge += strong
         result.details.append(
             {
                 "query": item.query,
                 "reconstructed": reconstructed,
+                "method": method,
+                "evidence_available": bool(output.get("evidence_available")),
                 "root": output.get("reconstructed_root") or output.get("withheld_reconstruction", ""),
                 "badge": badge,
                 "calibrated": output.get("calibrated_confidence"),
