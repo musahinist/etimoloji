@@ -47,7 +47,30 @@ _TRAILING_LANGUAGE_NAMES: tuple[str, ...] = (
 )
 
 
-def _historical_gloss(entries: list[dict[str, Any]] | None) -> str:
+def _form_distance(query: str, witness_form: str) -> float:
+    """Sorgu ile tanık biçimi arasındaki normalize düzenleme mesafesi (0=aynı).
+
+    Tanık `word` alanı çok biçimli olabiliyor ("göz / kör-",
+    "bilgi, (bilgü)"); en yakın alt biçim esas alınır.
+    """
+    import re
+
+    from engine.nlp.donor_lexicon import levenshtein
+    from engine.utils.orthography import to_comparison_form
+
+    q = to_comparison_form(query or "")
+    if not q:
+        return 1.0
+    best = 1.0
+    for piece in re.split(r"[/,;]", witness_form or ""):
+        f = to_comparison_form(piece.strip().strip("()*-"))
+        if not f:
+            continue
+        best = min(best, levenshtein(q, f) / max(len(q), len(f), 1))
+    return best
+
+
+def _historical_gloss(entries: list[dict[str, Any]] | None, word: str = "") -> str:
     """Tarihî tanıkların ilk GERÇEK anlamını döndürür; yoksa boş dize.
 
     ⚠️ Bu yardımcı bir kusuru kapatmak için eklendi: miras dalı (aşağıdaki
@@ -74,6 +97,7 @@ def _historical_gloss(entries: list[dict[str, Any]] | None) -> str:
     #: kodlanıyor ve mesafeyi şişiriyor (ölçüldü: `göz` 0.4981, `deniz` 0.8806).
     citation = re.compile(r"^[^:]{3,60}\(\d{3,4}\)\s*:\s*")
 
+    candidates: list[tuple[float, str]] = []
     for entry in entries or []:
         if entry.get("lang_code") not in HISTORICAL_WITNESS_LANGUAGES:
             continue
@@ -118,8 +142,28 @@ def _historical_gloss(entries: list[dict[str, Any]] | None) -> str:
                 break
 
         if cleaned:
-            return cleaned
-    return ""
+            candidates.append((_form_distance(word, str(entry.get("word") or "")), cleaned))
+
+    if not candidates:
+        return ""
+
+    # ⚠️ EŞİK DEĞİL SIRALAMA. Seçici eskiden İLK tanığı alıyordu ve biçime
+    # hiç bakmıyordu; `bilge` için 1. tanık `belgü` "işaret, alamet" —
+    # BAŞKA BİR KELİME (belgü -> belge). Doğru tanık (`bilge` "Âlim, hakim,
+    # bilgin.") hemen arkasındaydı. Mesafe 0.8147 çıkıyordu.
+    #
+    # Biçim mesafesine EŞİK konamaz, ölçüldü: `bilge~belge` oranı 0.20 ve
+    # bu, meşru ses denkliklerinden DAHA İYİ — `göz~köz` 0.33,
+    # `deniz~teŋiz` 0.40, `el~elig` 0.50. Eşik yanlışı eleyemeden
+    # doğruları keserdi.
+    #
+    # En yakın biçimi seçmek ise hiçbir şeyi elemez, yalnız sırayı düzeltir:
+    # `bilge`(0.00) `belgü`(0.40) ve `belge`(0.20)'yi yener; `deniz`de tek
+    # aday `teŋiz` zaten seçilir. `word` verilmezse eski davranış (ilk
+    # tanık) korunur.
+    if not (word or "").strip():
+        return candidates[0][1]
+    return min(candidates, key=lambda c: c[0])[1]
 
 
 class IterativeHypothesisEngine:
@@ -147,7 +191,7 @@ class IterativeHypothesisEngine:
         reconstruction = self.reconstructor.reconstruct(w, entries)
 
         hypothesis = self._select_hypothesis(
-            w, root, neologism, donor_match, reconstruction, _historical_gloss(entries)
+            w, root, neologism, donor_match, reconstruction, _historical_gloss(entries, w)
         )
 
         if hypothesis is None:

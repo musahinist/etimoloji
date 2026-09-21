@@ -415,7 +415,7 @@ class SearchEngine:
         # baş -> "A letter of the Old Turkic runic script…" 0.7996).
         # Süzgeç `_historical_gloss` içinde tek yerde toplandı; A-HVP dalı
         # da aynı yardımcıyı kullanıyor, iki yol ayrışmasın.
-        historical_meaning = _historical_gloss(sorted_entries)
+        historical_meaning = _historical_gloss(sorted_entries, word_clean)
         semantic_eval = self.semantic_engine.evaluate_diachronic_trajectory(
             historical_meaning, root_meaning or ""
         )

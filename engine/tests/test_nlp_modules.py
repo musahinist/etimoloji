@@ -604,6 +604,38 @@ class TestHistoricalGlossReachesHypothesis(unittest.TestCase):
         )
         self.assertEqual(korunan, "kafa, (mecazi) lider, reis")
 
+    def test_closest_form_witness_wins(self):
+        """Tanık seçimi BİÇİME bakmalı; ilk kayıt başka kelime olabilir.
+
+        Ölçüldü: `bilge` için 1. tanık `belgü` "işaret, alamet" — başka bir
+        kelime (belgü -> belge). Doğru tanık (`bilge` "Âlim, hakim, bilgin.")
+        hemen arkasındaydı ve A-HVP mesafesi 0.8147 çıkıyordu; en yakın biçim
+        seçilince 0.2891.
+
+        ⚠️ Bu bir EŞİK DEĞİL SIRALAMADIR. Biçim mesafesine eşik konamaz:
+        `bilge~belge` oranı 0.20 ve bu meşru ses denkliklerinden DAHA İYİ
+        (`göz~köz` 0.33, `deniz~teŋiz` 0.40, `el~elig` 0.50). Eşik yanlışı
+        eleyemeden doğruları keserdi.
+        """
+        from engine.nlp.iterative_hypothesis_engine import _historical_gloss
+
+        entries = [
+            {"lang_code": "otk", "word": "belgü", "meaning": "işaret, alamet"},
+            {"lang_code": "otk", "word": "bilge", "meaning": "Âlim, hakim, bilgin."},
+            {"lang_code": "otk", "word": "belge", "meaning": "işaret, alamet"},
+        ]
+        self.assertEqual(_historical_gloss(entries, "bilge"), "Âlim, hakim, bilgin")
+
+    def test_without_word_first_witness_is_kept(self):
+        """`word` verilmezse eski davranış (ilk tanık) korunmalı."""
+        from engine.nlp.iterative_hypothesis_engine import _historical_gloss
+
+        entries = [
+            {"lang_code": "otk", "word": "belgü", "meaning": "işaret, alamet"},
+            {"lang_code": "otk", "word": "bilge", "meaning": "Âlim, hakim, bilgin."},
+        ]
+        self.assertEqual(_historical_gloss(entries), "işaret, alamet")
+
     def test_gloss_extractor_picks_first_real_witness(self):
         from engine.nlp.iterative_hypothesis_engine import _historical_gloss
 
