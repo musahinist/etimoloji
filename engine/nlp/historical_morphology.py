@@ -92,6 +92,26 @@ def _stem_is_attested(stem: str) -> bool:
         index = LexiconIndex()
         if index.exists:
             verdict = index.is_attested_stem(stem)
+            # ⚠️ TDK YEDEĞİ DENENDİ VE GERİ ALINDI (2026-09-21).
+            #
+            # İndeks yaygın alıntı köklerini kaçırıyor: `perva` TDK'da madde
+            # başı ("lisan: Farsça pervā") ama indekste yok, bu yüzden
+            # `pervasız` soyulamıyor. İndeks "hayır" dediğinde TDK'ya sormak
+            # denendi — ama NET KAZANÇ VERMEDİ:
+            #
+            #   kazanılan : pervasız -> perva   (doğru)
+            #   kaybedilen: bardak   -> barda   (YANLIŞ; `barda` da TDK'da
+            #               madde başı ama `bardak` ile ilgisiz —
+            #               Nişanyan: bardak < Eski Türkçe `bart`)
+            #
+            # Yani "sözlükte var mı" bu iki durumu ayırt edemiyor; ikisi de
+            # var. Yüzey uzunluğu da ayırmıyor: `bardak`(+G, 'k') yanlış ama
+            # `bitig`(+G, 'g') DOĞRU ve teste bağlı.
+            #
+            # Ayrım anlamsal: kök ile kelimenin anlamca ilişkili olması
+            # gerekir. O denetim şu an kapalı (sentence-transformers kurulu
+            # değil, A-HVP 3. aşama hiçbir kelimede ölçülemiyor). Semantik
+            # aşama açıldığında bu yedek yeniden değerlendirilmeli.
     except Exception:
         logger.debug("Kök tanıklık denetimi yapılamadı: %s", stem, exc_info=True)
 
