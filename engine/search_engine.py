@@ -309,6 +309,14 @@ class SearchEngine:
         # ölçüm verisinin doğası: CLDF biçimleri zaten ÇIPLAK KÖK'tür, sözlük
         # madde başı değil. Yani ölçüm bu katmanı sınayamıyor.
         #
+        # 2026-09-21 doğrulaması: `-mA` eki eklenip soyma tanıklığa
+        # bağlandıktan sonra `harness --split dev` yeniden koşuldu —
+        # NED 0,302 · tam 0,3855 · BCFS 0,5951, yani taban çizgisiyle BİREBİR
+        # aynı. Sebebi ölçüldü: dev kümesindeki **83 maddenin 0'ı** soyma için
+        # gereken asgari kelime uzunluğunu (6) bile geçmiyor, dolayısıyla
+        # katman bu veride HİÇ ateşlenmiyor. "İyileşme yok" değil,
+        # "ölçüm sınayamıyor" — bu yüzden katman geri alınmadı.
+        #
         # Gerçek kullanımda girdi TDK madde başıdır (`içmek`, `üzerinde`) ve
         # orada soymak şart. Bu yüzden katman kalıyor ama muhafazakâr bir
         # korumayla: yalnız çok heceli kelimelerde ve makul uzunlukta bir kök
