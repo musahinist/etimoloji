@@ -40,6 +40,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from engine.config import PROJECT_ROOT  # noqa: E402
 from engine.logging_setup import get_logger  # noqa: E402
+from engine.utils.morphology import is_inflection_gloss  # noqa: E402
 
 logger = get_logger(__name__)
 
@@ -73,28 +74,6 @@ def is_lexeme(word: str) -> bool:
     if "'" in w or "’" in w:
         return False  # kesme işaretli çekim: Ay'a
     return True
-
-
-#: Wiktionary çekim gloss'larının dilbilgisel belirteçleri. Bu glossları
-#: TAŞIYAN satır bir sözlükbirim tanımı değil, başka bir lemmanın çekimidir:
-#: "third-person singular indicative aorist of canlanmak", "verbal noun of
-#: yapılmak", "singular dative of yarak", "inflection of yağ:".
-#: ⚠️ Yalnız " of " aramak yetmez — "palm of hand" gibi GERÇEK tanımlar da
-#: onu içerir; bu yüzden dilbilgisi terimi aranır.
-_INFLECTION_MARKERS: tuple[str, ...] = (
-    "inflection of", "plural of", "singular of", "verbal noun of",
-    "-person", "aorist of", "imperative of", "participle of",
-    "dative of", "accusative of", "genitive of", "ablative of",
-    "locative of", "nominative of", "optative of", "necessitative of",
-    "past of", "present of", "future of", "negative of",
-    "causative of", "passive of", "reflexive of", "reciprocal of",
-)
-
-
-def is_inflection_gloss(gloss: str) -> bool:
-    """Bu gloss bir çekim tanımı mı (yani kelime başka bir lemmanın biçimi mi)?"""
-    g = (gloss or "").lower()
-    return any(marker in g for marker in _INFLECTION_MARKERS)
 
 
 def load_words(source: Path | None, limit: int) -> list[str]:

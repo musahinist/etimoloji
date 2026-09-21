@@ -20,6 +20,32 @@ TURKIC_SUFFIXES = [
     "mak", "mek", "ma", "me", "ış", "iş", "uş", "üş"
 ]
 
+#: Wiktionary çekim gloss'larının dilbilgisel belirteçleri. Bu belirteci
+#: TAŞIYAN satır bir sözlükbirim tanımı değil, başka bir lemmanın çekimidir:
+#: "third-person singular indicative aorist of canlanmak", "verbal noun of
+#: yapılmak", "locative singular of bar", "inflection of yağ:".
+#: ⚠️ Yalnız " of " aramak yetmez — "palm of hand" gibi GERÇEK tanımlar da
+#: onu içerir; bu yüzden dilbilgisi terimi aranır.
+INFLECTION_GLOSS_MARKERS: tuple[str, ...] = (
+    "inflection of", "plural of", "singular of", "verbal noun of",
+    "-person", "aorist of", "imperative of", "participle of",
+    "dative of", "accusative of", "genitive of", "ablative of",
+    "locative of", "nominative of", "optative of", "necessitative of",
+    "past of", "present of", "future of", "negative of",
+    "causative of", "passive of", "reflexive of", "reciprocal of",
+)
+
+
+def is_inflection_gloss(gloss: str) -> bool:
+    """Bu gloss bir çekim tanımı mı (kelime başka bir lemmanın biçimi mi)?
+
+    Sözlük indeksinin %69'u çekim satırı taşıdığı için, indekste bir biçimin
+    "bulunması" tek başına o biçimin bir kök olduğunu göstermez.
+    """
+    g = (gloss or "").lower()
+    return any(marker in g for marker in INFLECTION_GLOSS_MARKERS)
+
+
 def analyze_morphology(word: str) -> tuple[str, list[str]]:
     w = word.strip().lower()
 

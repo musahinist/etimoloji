@@ -37,7 +37,21 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from engine.config import LEXICON_DIR  # noqa: E402
 
-URL = "https://kaikki.org/dictionary/{name}/kaikki.org-dictionary-{name}.jsonl"
+#: ⚠️ kaikki DİZİN adında boşluğu korur, DOSYA adında siler:
+#:   dictionary/Ottoman%20Turkish/kaikki.org-dictionary-OttomanTurkish.jsonl
+#: Eski şablon tek `{name}` kullandığı için çok sözcüklü dillerin hepsinde
+#: 404 alınıyordu; tanımlı 27 dilin yalnız 19'unun inmiş olmasının sebebi
+#: buydu (Ottoman_Turkish 25,6 MB, Crimean_Tatar 10,5 MB, Southern_Altai
+#: 11,5 MB, Old_Turkic 1,1 MB sessizce atlanıyordu).
+URL = "https://kaikki.org/dictionary/{dir}/kaikki.org-dictionary-{file}.jsonl"
+
+
+def kaikki_url(name: str) -> str:
+    """kaikki indirme URL'si. Dizin ve dosya adı kuralları FARKLIDIR."""
+    return URL.format(
+        dir=quote(name.replace("_", " ")),
+        file=name.replace("_", "").replace("-", ""),
+    )
 
 #: kaikki adı -> motorun dil kodu. kaikki dil adlarını İngilizce yazar.
 LEXICONS: dict[str, str] = {
@@ -180,9 +194,7 @@ def download(
         print(f"[{name}] zaten var (--force ile yeniden indirilir)")
         return json.loads(provenance_path.read_text(encoding="utf-8"))
 
-    url = (
-        RU_EDITION.format(name=quote(name)) if ru_edition else URL.format(name=name)
-    )
+    url = RU_EDITION.format(name=quote(name)) if ru_edition else kaikki_url(name)
     print(f"[{name}] indiriliyor -> {target.name}")
     raw_bytes = 0
     lines = 0

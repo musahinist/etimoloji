@@ -315,11 +315,55 @@ class SearchEngine:
         MIN_WORD_FOR_STRIPPING = 6
         MIN_ROOT_AFTER_STRIPPING = 4
         morphological_root = str(historical_morphology.get("root") or "")
+        def _root_is_attested(root: str) -> bool:
+            """Soyulan kök gerçekten var mı? Önce tanıklar, sonra sözlük indeksi.
+
+            Uzunluk koruması tek başına yetmiyordu: `bardak` (7 harf) -> `barda`
+            (5 harf) her iki eşiği de geçiyor ama `barda` diye bir kök yok ve
+            rekonstrüksiyon yanlış girdiyle çalışıyordu.
+            """
+            target = root.strip().lower().rstrip("-")
+            if not target:
+                return False
+            if any(
+                (entry.get("word") or "").strip().lower().rstrip("-") == target
+                for entry in sorted_entries
+            ):
+                return True
+            try:
+                from engine.db.lexicon_index import LexiconIndex
+                from engine.utils.morphology import is_inflection_gloss
+
+                index = LexiconIndex()
+                if not index.exists:
+                    return True  # indeks yoksa eski davranış (yalnız uzunluk)
+
+                # ⚠️ İndekste "bulunmak" YETMEZ: kayıtların %69'u çekim
+                # satırıdır. `barda` indekste var ama tek anlamı "locative
+                # singular of bar" — yani kök değil, `bar`ın bulunma hâli.
+                # Kök sayılması için ya çekim olmayan bir anlamı olmalı...
+                rows = index.lookup(target, languages=["tr"], limit=5) or []
+                if any(not is_inflection_gloss(row.get("gloss") or "") for row in rows):
+                    return True
+
+                # ...ya da bir FİİL LEMMASI bulunmalı. Fiil kökleri sözlükte
+                # mastarla durur (`taşı` yok ama `taşımak` var); ölçüldü:
+                # taşı->taşımak, kavur->kavurmak, giriş->girişmek,
+                # bulaş->bulaşmak var; barda->bardamak YOK.
+                return any(
+                    index.lookup(target + suffix, languages=["tr"], limit=1)
+                    for suffix in ("mak", "mek")
+                )
+            except Exception:
+                logger.debug("Kök tanıklık denetimi yapılamadı: %s", target, exc_info=True)
+                return True
+
         strip_ok = (
             morphological_root
             and morphological_root != word_clean
             and len(word_clean) >= MIN_WORD_FOR_STRIPPING
             and len(morphological_root) >= MIN_ROOT_AFTER_STRIPPING
+            and _root_is_attested(morphological_root)
         )
         reconstruction_input = morphological_root if strip_ok else word_clean
         reconstruction_eval = self.reconstructor.reconstruct_proto_form(

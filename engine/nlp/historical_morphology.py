@@ -38,6 +38,12 @@ HISTORICAL_SUFFIXES: list[tuple[tuple[str, ...], str, str, str]] = [
     (("ba", "be", "pa", "pe"), "-bA", "fiilden ad (Eski Türkçe -bA)", "old_turkic"),
     (("gan", "gen", "qan", "ken"), "-gAn", "sıfat-fiil (Eski Türkçe -gAn)", "old_turkic"),
     (("miş", "mış", "muş", "müş"), "-mIş", "geçmiş sıfat-fiil", "old_turkic"),
+    # Fiilden eylem adı: taşı-ma, bulaş-ma, kavur-ma. Tabloda yoktu; `taşıma`
+    # bütün hâliyle aranıyor, akraba tanığı bulunamıyor ve motor çekimser
+    # kalıyordu. ⚠️ `elma`, `yama`, `dolma` gibi yanlış adaylar
+    # `search_engine`'deki asgari kelime uzunluğu (6) ve yeni tanıklık
+    # denetimi tarafından eleniyor.
+    (("ma", "me"), "-mA", "fiilden eylem adı (Eski Türkçe -mA)", "old_turkic"),
     (("m", "im", "ım", "um", "üm"), "-Im", "fiilden eylem adı", "old_turkic"),
     (("t", "it", "ıt", "ut", "üt"), "-It", "fiilden ad", "old_turkic"),
     (("n", "in", "ın", "un", "ün"), "-In", "fiilden ad / dönüşlü", "old_turkic"),
