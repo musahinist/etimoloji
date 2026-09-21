@@ -30,6 +30,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import random
 import sys
 from collections import Counter, defaultdict
 from datetime import UTC, datetime
@@ -50,6 +51,9 @@ OUTPUT_DIR = PROJECT_ROOT / "data" / "dialect"
 SOLVED_THRESHOLD = 0.60
 CANDIDATE_THRESHOLD = 0.35
 
+#: Örneklem tohumu. Sabit tutulur ki koşu yeniden üretilebilsin.
+RANDOM_SEED = 20260921
+
 
 def load_words(source: Path | None, limit: int) -> list[str]:
     """Analiz edilecek kelimeleri yükler; sözlükbirim olmayanları eler."""
@@ -60,7 +64,15 @@ def load_words(source: Path | None, limit: int) -> list[str]:
             for line in source.read_text(encoding="utf-8").splitlines()
             if line.strip() and not line.startswith("#")
         ]
-        return [w.lower() for w in words if is_lexeme(w)][:limit]
+        picked = [w.lower() for w in words if is_lexeme(w)]
+        # ⚠️ Baştan `limit` almak ÖRNEKLEM YANLILIĞI üretir: hasat tohumu
+        # alfabetiktir, dolayısıyla ilk N her zaman "a-b" köşesidir.
+        # Ölçüldü: 400 maddelik koşuda en yüksek skorlu 12 sonucun 11'i
+        # `a` ile başlıyordu. Sabit tohumlu örneklem hem yanlılığı kaldırır
+        # hem de koşuyu yeniden üretilebilir tutar.
+        if len(picked) > limit:
+            picked = random.Random(RANDOM_SEED).sample(picked, limit)
+        return picked
 
     # Kaynak verilmezse yerel sözlük indeksinden Türkçe kelimeler alınır.
     # Bunlar ağız kelimesi DEĞİLDİR; yalnız hattın uçtan uca çalıştığını
