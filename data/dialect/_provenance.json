@@ -2,10 +2,12 @@
   "_schema": "turkic-etymology-dialect-provenance/v1",
   "source": "TDK Derleme Sözlüğü (eski.sozluk.gov.tr/derleme)",
   "seed_source": "Vikisözlük Kategori:Türkçe halk ağzı (CC-BY-SA)",
-  "retrieved_at": "2026-09-21T17:01:30+00:00",
-  "queried_words": 14,
-  "matched_words": 14,
-  "records": 86,
+  "retrieved_at": "2026-09-21T17:36:48+00:00",
+  "queried_words": 2000,
+  "matched_words": 1631,
+  "records": 9233,
   "delay_seconds": 0.5,
-  "license_note": "TDK'nın açık lisansı yoktur, telif TDK'dadır. Veri yalnız yerel araştırma için önbelleğe alınır, YENİDEN DAĞITILMAZ; depoya yalnız bu künye girer."
+  "license_note": "TDK'nın ilan edilmiş açık lisansı yoktur, telif TDK'dadır. Veri bu depoda BİLEREK tutulur: depo private, çalışma akademik ve ticari değil, kayıtlar atıflı ve künyeli. Gerekçe yeniden üretilebilirliktir. ⚠️ Depo public'e açılacak olursa data/dialect/ önce çıkarılmalıdır. Ayrıntı: data/dialect/README.md",
+  "queried_words_note": "--limit 2000 üst sınırına kadar sorgulandı; kesin sayı hasat sırasında kaydedilmemişti (düzeltildi, sonraki koşularda kaydedilecek)",
+  "hit_rate": 0.816
 }

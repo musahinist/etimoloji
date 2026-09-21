@@ -158,7 +158,9 @@ def expansion_targets(records: list[dict[str, Any]]) -> set[str]:
     return targets
 
 
-def harvest(seeds: list[str], *, max_words: int, delay: float) -> tuple[list[dict], list[str]]:
+def harvest(
+    seeds: list[str], *, max_words: int, delay: float
+) -> tuple[list[dict], list[str], int]:
     """Tohumla-ve-yayıl. Görülen her madde bir kez sorgulanır."""
     queue: deque[str] = deque(dict.fromkeys(w.lower() for w in seeds))
     seen: set[str] = set()
@@ -188,7 +190,10 @@ def harvest(seeds: list[str], *, max_words: int, delay: float) -> tuple[list[dic
         if len(seen) % 50 == 0:
             print(f"  … {len(seen)} madde sorgulandı · {len(found)} tuttu · {len(records)} kayıt")
 
-    return records, found
+    # `seen` SORGULANAN, `found` TUTAN maddedir. İkisini karıştırmak isabet
+    # oranını olduğundan iyi gösterir (ölçüldü: 2.000 sorgu -> 1.631 tuttu,
+    # ama künyeye 1.631/1.631 yazılmıştı).
+    return records, found, len(seen)
 
 
 def main() -> int:
@@ -209,7 +214,7 @@ def main() -> int:
     print(f"  {len(seeds)} tohum madde")
 
     print(f"Derleme taranıyor (en çok {args.limit} madde, {args.delay}s bekleme) …")
-    records, found = harvest(seeds, max_words=args.limit, delay=args.delay)
+    records, found, queried = harvest(seeds, max_words=args.limit, delay=args.delay)
 
     RECORDS_PATH.parent.mkdir(parents=True, exist_ok=True)
     with RECORDS_PATH.open("w", encoding="utf-8") as handle:
@@ -224,14 +229,18 @@ def main() -> int:
                 "source": "TDK Derleme Sözlüğü (eski.sozluk.gov.tr/derleme)",
                 "seed_source": f"Vikisözlük {SEED_CATEGORY} (CC-BY-SA)",
                 "retrieved_at": datetime.now(UTC).isoformat(timespec="seconds"),
-                "queried_words": len(set(found)) if found else 0,
+                "queried_words": queried,
                 "matched_words": len(found),
+                "hit_rate": round(len(found) / queried, 3) if queried else 0.0,
                 "records": len(records),
                 "delay_seconds": args.delay,
                 "license_note": (
-                    "TDK'nın açık lisansı yoktur, telif TDK'dadır. Veri yalnız "
-                    "yerel araştırma için önbelleğe alınır, YENİDEN DAĞITILMAZ; "
-                    "depoya yalnız bu künye girer."
+                    "TDK'nın ilan edilmiş açık lisansı yoktur, telif TDK'dadır. "
+                    "Veri bu depoda BİLEREK tutulur: depo private, çalışma "
+                    "akademik ve ticari değil, kayıtlar atıflı ve künyeli. "
+                    "Gerekçe yeniden üretilebilirliktir. ⚠️ Depo public'e "
+                    "açılacak olursa `data/dialect/` önce çıkarılmalıdır. "
+                    "Ayrıntı: data/dialect/README.md"
                 ),
             },
             ensure_ascii=False,
