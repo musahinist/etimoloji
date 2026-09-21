@@ -166,9 +166,19 @@ def analyse(word: str, *, predictor: Any, ranker: Any, semantic: Any) -> dict[st
     else:
         bucket = "yetersiz kanıt"
 
+    # ⚠️ DÖNGÜSELLİK DENETİMİ. Motorun "başarılı" göründüğü yerde sözlüğün
+    # zaten cevabı var mıydı? Ölçüldü (n=400, yansız örneklem): güçlü
+    # adayların %72'sinin kökeni indekste KAYITLI, yetersiz kanıt grubunda
+    # bu oran %9. Bu sütun olmadan katkı ile tekrar ayırt edilemiyor.
+    origin_rows = index.lookup(word, languages=["tr"], limit=5) if index.exists else []
+    dictionary_origin = next(
+        (row["origin"] for row in origin_rows if row.get("origin")), None
+    )
+
     return {
         "word": word,
         "bucket": bucket,
+        "dictionary_origin": dictionary_origin,
         "score": round(score, 3),
         "selected": selected.as_dict() if selected else None,
         "n_witnesses_found": len(witnesses),
@@ -228,7 +238,10 @@ def main() -> int:
     for bucket in ("çözüldü", "güçlü aday", "yetersiz kanıt"):
         count = buckets.get(bucket, 0)
         share = 100 * count / len(results) if results else 0
-        print(f"  {bucket:16} {count:>5} (%{share:.1f})")
+        in_bucket = [r for r in results if r["bucket"] == bucket]
+        known = sum(1 for r in in_bucket if r.get("dictionary_origin"))
+        known_share = f" · kökeni sözlükte kayıtlı: {known}/{count}" if count else ""
+        print(f"  {bucket:16} {count:>5} (%{share:.1f}){known_share}")
     print("\nseçilen hipotez türüne göre:")
     for kind, count in kinds.most_common():
         print(f"  {kind:18} {count:>5}")
