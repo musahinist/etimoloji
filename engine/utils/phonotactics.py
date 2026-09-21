@@ -49,10 +49,19 @@ INITIAL_CONSONANT_CLUSTERS = (
 ARABIC_PATTERNS: tuple[tuple[str, str], ...] = (
     (r"^mu[a-zçğıöşü]{2,}$", "mufa'al / mufa'il vezni"),
     (r"^m[eüu][a-zçğıöşü]{2,}$", "mef'ul / müfa'al vezni"),
-    (r"^te[a-zçğıöşü]{3,}$", "tef'il vezni"),
+    # Üst sınır şart: `{3,}` "te" ile başlayan HER uzun kelimeyi yutuyordu
+    # (televizyon, teleskop, tekerlek, temizlik, telefon). Türkçedeki tef'il
+    # vezni örnekleri kısa ve kapalıdır -- tebliğ, tekrar, tedbir, teklif,
+    # tesir: hepsi EN ÇOK 6 harf. Sınır buna göre; `{3,6}` hâlâ 8 harfe kadar
+    # izin verdiği için `temizlik` (temiz+lik, öz Türkçe) Arapça sayılıyordu.
+    (r"^te[a-zçğıöşü]{3,4}$", "tef'il vezni"),
     (r"^ist[iı][a-zçğıöşü]{2,}$", "istif'al vezni"),
     (r"^in[a-zçğıöşü]{3,}$", "infi'al vezni"),
-    (r"^t[eaı][a-zçğıöşü]*[iı][a-zçğıöşü]$", "tef'îl vezni"),
+    # Ortadaki `*` sınırsızdı ve Türkçe `-lIk` / `-DIk` ekli kelimeleri
+    # yutuyordu: temizlik, tanıdık, tazelik, tekerlik, tatlılık. Gerçek
+    # örnekler 5-6 harfle kapanır (tarih, tebdil, tercih, tertip, takdim,
+    # tahkik, tahlil, tasdik), yanlış pozitiflerin hepsi >= 7 harf.
+    (r"^t[eaı][a-zçğıöşü]{0,2}[iı][a-zçğıöşü]$", "tef'îl vezni"),
     (r"[aeiıouöü]{1}[a-zçğıöşü]*iyet$", "-iyet masdar eki (Arapça)"),
     (r"[a-zçğıöşü]+iye$", "-iye eki (Arapça)"),
 )
@@ -76,6 +85,10 @@ PERSIAN_SUFFIXES: tuple[tuple[str, str], ...] = (
 
 WESTERN_SUFFIXES: tuple[tuple[str, str], ...] = (
     ("syon", "-syon (Fransızca -tion)"),
+    # -zyon eksikti: `televizyon`, `pozisyon`, `revizyon` hiçbir Batı ekiyle
+    # eşleşmiyor, boşluğu Arapça vezin dolduruyordu (ölçüldü: televizyon ->
+    # "Arapça / Farsça Alıntısı", Doğu %70).
+    ("zyon", "-zyon (Fransızca -tion)"),
     ("izm", "-izm (Fransızca -isme)"),
     ("izim", "-izim"),
     ("ist", "-ist"),

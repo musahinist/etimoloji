@@ -52,7 +52,11 @@ class AcademicTurkologyFetcher(BaseFetcher):
         url = f"https://sozluk.gov.tr/terim?ara={urllib.parse.quote(word_clean)}"
         try:
             _body = http_get(url, timeout=config.HTTP_TIMEOUT_MEDIUM)
-            if _body is not None:
+            # TDK bu ucu kaldırdı: HTTP 200 dönüyor ama gövde JSON değil, HTML
+            # sayfası. `json.loads` her aramada JSONDecodeError yığın izi
+            # basıyordu. Uç JSON dönmüyorsa kaynak sessizce atlanır; TDK geri
+            # getirirse kod değişmeden yeniden çalışır.
+            if _body is not None and _body.lstrip()[:1] in ("[", "{"):
                 data = json.loads(_body)
                 if isinstance(data, list) and len(data) > 0:
                     for item in data[:2]:

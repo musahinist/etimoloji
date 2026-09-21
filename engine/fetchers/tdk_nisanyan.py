@@ -50,10 +50,173 @@ class TdkFetcher(BaseFetcher):
         return result
 
 
+# --- Nişanyan düzyazı ayrıştırıcısı ---------------------------------------
+#
+# Nişanyan köken CÜMLESİ şu kalıptadır:
+#
+#     <Kaynak dil> [kök/vezin tarifi] <biçim> [yabancı yazı] “<anlam>”
+#     sözcüğünden <FİİL>
+#
+# ve HÜKMÜ veren şey fiildir: ``alıntıdır`` -> alıntı, ``evrilmiştir`` ->
+# miras, ``türetilmiştir`` -> türetme.
+#
+# Eski ayrıştırıcının iki kırılma noktası vardı (ölçüldü: 12 rastgele
+# kelimenin 9'unda sıfır çıktı, 1'inde uydurma köken):
+#
+# 1. Karakter sınıfı ``[a-zçğıöşüA-ZÇĞİÖŞÜ]`` transkripsiyon harflerini
+#    kapsamıyordu; ``teŋiz``, ``kȫz``, ``tapuġ`` tek harf yüzünden kaçıyordu.
+# 2. ``<Dil> <kelime> “<anlam>”`` bitişikliği varsayılıyordu; Nişanyan araya
+#    "√ˁẓm kökünden gelen faˁlala(t) vezninde ... olan" koyduğu için Arapça
+#    maddelerin tamamı düşüyordu. Kalıp eşleşmeyince metindeki HERHANGİ bir
+#    yabancı dil adı köken sanılıyordu: ``deniz`` için Nişanyan'ın "Anlam
+#    bağı için karş. Latince aequor" BENZETMESİ köken diye kaydediliyordu.
+
+#: Benzetme/gönderme işaretleri. Bunlardan SONRASI köken iddiası değildir.
+_ANALOGY_RE = re.compile(r"(?i)\b(?:karş|krş|bkz)\.")
+
+#: Kaynak dil adları — uzun olan önce gelmeli ki "Eski Farsça", "Farsça"
+#: tarafından yutulmasın.
+_LANGUAGES: tuple[str, ...] = (
+    "Eski Anadolu Türkçesi", "Türkiye Türkçesi", "Proto-Türkçe", "Eski Türkçe",
+    "Orta Türkçe", "Aramice-Süryanice", "Eski Farsça", "Eski Yunanca",
+    "Ermenice", "Fransızca", "İtalyanca", "İngilizce", "Süryanice", "Almanca",
+    "Latince", "Yunanca", "Grekçe", "Arapça", "Farsça", "Rumca", "Rusça",
+    "Moğolca", "Soğdca", "Akatça", "İbranice", "Çince", "Macarca",
+)
+
+#: Türki ata katmanları: bunlar VERİCİ dil değil, mirasın kendisidir.
+_TURKIC_ANCESTORS = {
+    "Eski Türkçe": "otk",
+    "Orta Türkçe": "otk",
+    "Eski Anadolu Türkçesi": "otk",
+    "Türkiye Türkçesi": "tr",
+    "Proto-Türkçe": None,
+}
+
+#: Fiil -> hüküm. Uzun biçimler önce denenmeli ("alıntı olabilir" vs "alıntıdır").
+_VERDICT_BY_VERB: dict[str, str] = {
+    "alıntı olabilir": "alıntı",
+    "alıntıdır": "alıntı",
+    "evrilmiş olabilir": "miras",
+    "evrilmiştir": "miras",
+    "türetilmiş olabilir": "türetme",
+    "türetilmiştir": "türetme",
+}
+
+#: Biçim adayı olamayacak tarif sözcükleri.
+_FILLER_TOKENS = frozenset({
+    "aynı", "anlama", "gelen", "kökünden", "kökünün", "vezninde", "olan",
+    "ve", "veya", "ile", "eş", "tanıksız", "fiil", "fiili", "fiilinden",
+    "masdarı", "sıfat", "sıfatı", "edilgen", "murabba", "dörtlü", "yalnız",
+    "bir", "adı", "özel", "sözcüğü", "sözcük", "biçiminden", "çoğulu",
+})
+
+#: En az bir Latin harfi taşıyan belirteç (Arapça/İbranice yazımı eler).
+_HAS_LATIN_RE = re.compile(r"[A-Za-zÀ-ɏḀ-ỿ]")
+
+_CLAIM_RE = re.compile(
+    r"(?P<lang>" + "|".join(_LANGUAGES) + r")"
+    r"(?P<middle>[^“”.]{0,160}?)"
+    r"(?:“(?P<meaning>[^”]{1,200})”\s*)?"
+    r"(?:sözcüğünden|sözünden|fiilinden|adından|biçiminden)\s+"
+    # Türetme cümlelerinde kaynak biçim ile fiil arasına EK TARİFİ girer:
+    #   "... bulġa- “karıştırmak” fiilinden  Türkiye Türkçesi +Iş- ekiyle
+    #    türetilmiştir"
+    # Bu araya girme olmadan `bulaşmak`, `çığlık`, `taslamak` gibi türemiş
+    # kelimelerin tamamı eşleşmeden düşüyordu.
+    r"(?:[^.“”]{0,90}?ekiyle\s+)?"
+    r"(?P<verb>" + "|".join(_VERDICT_BY_VERB) + r")"
+)
+
+
+def _extract_form(middle: str) -> str | None:
+    """Dil adı ile anlam arasındaki tarif metninden BİÇİMİ ayıklar.
+
+    Nişanyan araya kök ve vezin tarifi koyar; aranan biçim bu tarifin
+    sonundaki son Latin harfli belirteçtir::
+
+        "√ftl kökünden gelen faˁīl vezninde sıfat olan fatīl veya fatīla(t) فتيل"
+        -> "fatīla(t)"
+    """
+    candidates: list[str] = []
+    for raw in middle.split():
+        token = raw.strip(",;:()[]").strip()
+        if not token or token.startswith("√"):
+            continue
+        if token.lower() in _FILLER_TOKENS:
+            continue
+        if not _HAS_LATIN_RE.search(token):  # Arapça/İbranice yazım
+            continue
+        candidates.append(raw.strip(",;:").strip())
+    return candidates[-1] if candidates else None
+
+
+def parse_etymology_claim(text: str) -> dict[str, Any] | None:
+    """Nişanyan metninden İLK köken iddiasını çıkarır.
+
+    ``karş.`` / ``krş.`` / ``bkz.`` işaretlerinden sonrası benzetmedir ve
+    ayrıştırmaya hiç girmez. Köken cümlesi bulunamazsa ``None`` döner —
+    uydurmaktansa boş dönmek yeğdir.
+    """
+    if not text:
+        return None
+    primary = _ANALOGY_RE.split(text, maxsplit=1)[0]
+    match = _CLAIM_RE.search(primary)
+    if not match:
+        return None
+    form = _extract_form(match.group("middle") or "")
+    if not form:
+        return None
+    meaning = (match.group("meaning") or "").strip() or None
+    return {
+        "language": match.group("lang"),
+        "form": form,
+        "meaning": meaning,
+        "verb": match.group("verb"),
+        "verdict": _VERDICT_BY_VERB[match.group("verb")],
+    }
+
+
 class NisanyanFetcher(BaseFetcher):
     @property
     def source_name(self) -> str:
         return "Nişanyan Etimoloji Sözlüğü"
+
+    @staticmethod
+    def _parse_nisanyan_text(text_full: str, result: dict[str, Any]) -> None:
+        """Çıkarılan köken iddiasını fetcher sözleşmesine yazar."""
+        claim = parse_etymology_claim(text_full)
+        if claim is None:
+            result["root"]["reconstruction_notes"] = f"Nişanyan Etimoloji: {text_full[:300]}..."
+            return
+
+        lang, form, meaning = claim["language"], claim["form"], claim["meaning"]
+        if meaning:
+            result["root"]["meaning"] = meaning
+
+        if lang in _TURKIC_ANCESTORS:
+            # Miras: verici dil YOKTUR, biçim ata katmandır.
+            result["root"]["proto_turkic"] = f"*{form}"
+            lang_code = _TURKIC_ANCESTORS[lang]
+            if lang_code:
+                result["turkic_languages"].append({
+                    "lang_code": lang_code,
+                    "lang_name": TURKIC_LANGUAGES_MAP.get(lang_code, lang),
+                    "word": form,
+                    "meaning": meaning or "",
+                    "script": "Latin",
+                })
+            result["root"]["reconstruction_notes"] = (
+                f"Nişanyan: {lang} {form}"
+                f"{f' “{meaning}”' if meaning else ''} — hüküm: {claim['verdict']}"
+                f" ({claim['verb']})"
+            )
+        else:
+            result["root"]["proto_turkic"] = f"[{lang}] {form}"
+            result["root"]["reconstruction_notes"] = (
+                f"Nişanyan Alıntı Kaynağı: {lang} '{form}'"
+                f"{f' ({meaning})' if meaning else ''}"
+            )
 
     def fetch(self, word: str) -> dict[str, Any]:
         word_clean = word.strip().lower()
@@ -66,50 +229,10 @@ class NisanyanFetcher(BaseFetcher):
         try:
             _body = http_get(url, timeout=config.HTTP_TIMEOUT_LONG)
             if _body is not None:
-                html = _body
-                tokens = re.findall(r'text:\"([^\"]+)\"', html)
+                tokens = re.findall(r'text:\"([^\"]+)\"', _body)
                 if not tokens:
                     return result
-
-                text_full = "".join(tokens)
-
-                # Eski Türkçe veya Ana Türkçe kök tespiti
-                etü_match = re.search(r'Eski\s+Türkçe\s+([a-zçğıöşüA-ZÇĞİÖŞÜ\*]+)\s+“([^”]+)”', text_full)
-                if etü_match:
-                    etü_word = etü_match.group(1).strip()
-                    etü_meaning = etü_match.group(2).strip()
-                    result["turkic_languages"].append({
-                        "lang_code": "otk",
-                        "lang_name": TURKIC_LANGUAGES_MAP["otk"],
-                        "word": etü_word,
-                        "meaning": etü_meaning,
-                        "script": "Latin"
-                    })
-                    result["root"]["proto_turkic"] = f"*{etü_word}"
-                    result["root"]["meaning"] = etü_meaning
-
-                # Alıntı köken tespiti (Ermenice, Grekçe, Farsça, Arapça, Fransızca, İtalyanca vb.)
-                donor_match = re.search(r'(Ermenice|Grekçe|Farsça|Arapça|Fransızca|İtalyanca|Rumca|Latince|Eski Farsça|Süryanice)\s+([a-zçğıöşüA-ZÇĞİÖŞÜ\*\'\`\-]+)\s+“([^”]+)”', text_full)
-                if donor_match:
-                    d_lang = donor_match.group(1).strip()
-                    d_word = donor_match.group(2).strip()
-                    d_meaning = donor_match.group(3).strip()
-                    result["root"]["proto_turkic"] = f"[{d_lang}] {d_word}"
-                    if not result["root"]["meaning"]:
-                        result["root"]["meaning"] = d_meaning
-                    result["root"]["reconstruction_notes"] = f"Nişanyan Alıntı Kaynağı: {d_lang} '{d_word}' ({d_meaning})"
-
-                # Ana Türkçe / Proto-Turkic kök tespiti
-                root_match = re.search(r'\*([a-zçğıöşüA-ZÇĞİÖŞÜ\-]+)\s+“([^”]+)”', text_full)
-                if root_match:
-                    proto_w = root_match.group(1).strip()
-                    proto_m = root_match.group(2).strip()
-                    result["root"]["proto_turkic"] = f"*{proto_w}"
-                    if not result["root"]["meaning"]:
-                        result["root"]["meaning"] = proto_m
-
-                if not result["root"]["reconstruction_notes"]:
-                    result["root"]["reconstruction_notes"] = f"Nişanyan Etimoloji: {text_full[:300]}..."
+                self._parse_nisanyan_text("".join(tokens), result)
 
         except Exception:
             logger.warning("%s: kaynak işlenemedi", self.source_name if hasattr(self, "source_name") else __name__, exc_info=True)

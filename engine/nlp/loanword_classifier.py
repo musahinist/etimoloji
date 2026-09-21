@@ -62,6 +62,9 @@ INITIAL_HINTS: dict[str, tuple[str, ...]] = {
 
 CLASSIFICATION_LABELS = {
     "native": "Asli Öz Türkçe (Native Turkic)",
+    # Aile puanları berabereyse hangi ailenin işaret edildiği BİLİNMİYOR
+    # demektir; rastgele bir aile adı vermek uydurma kesinliktir.
+    "loan_undetermined": "Alıntı — verici dil ailesi belirlenemedi",
     "arabic_persian": "Arapça / Farsça Alıntısı (Doğu Alıntısı)",
     "greek_latin": "Grekçe / Bizans / Latince / Ermenice Alıntısı",
     "western": "Batı Dilleri Alıntısı (Fransızca / İngilizce / İtalyanca)",
@@ -197,10 +200,18 @@ class LoanwordClassifier:
             probabilities = dict.fromkeys(donor_scores, round(loan_mass / 3, 3))
         probabilities["native"] = p_native
 
-        if p_native >= NATIVE_THRESHOLD:
+        # Verici aile seçimi BERABERE kalabilir: "ünlü uyumu ihlali" gibi bir
+        # ihlal hangi aileyi işaret ettiğini söylemez, puanı üçe eşit dağıtır
+        # (`kitap`, `kalem`: 1.5 / 1.5 / 1.5). `max()` bu durumda sözlükteki
+        # İLK anahtarı -- arabic_persian -- döndürüyordu; rastgele bir seçim
+        # "Arapça / Farsça Alıntısı" diye kesin bir hüküm gibi sunuluyordu.
+        if p_native >= NATIVE_THRESHOLD or donor_total <= 0:
             best = "native"
         else:
-            best = max(donor_scores, key=lambda k: donor_scores[k]) if donor_total > 0 else "native"
+            ranked_families = sorted(donor_scores.items(), key=lambda kv: kv[1], reverse=True)
+            best = ranked_families[0][0]
+            if len(ranked_families) > 1 and abs(ranked_families[0][1] - ranked_families[1][1]) < 1e-9:
+                best = "loan_undetermined"
 
         return {
             "word": w,

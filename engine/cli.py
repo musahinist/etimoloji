@@ -14,6 +14,23 @@ from engine.search_engine import SearchEngine
 logger = get_logger(__name__)
 
 
+def _stage_mark(stage: dict[str, Any], fail_label: str) -> str:
+    """A-HVP aşama durumunu üç halli basar.
+
+    ``is_valid`` ÜÇ durumludur: ``True`` geçti, ``False`` ölçüldü ve ihlal
+    etti, ``None`` ölçülemedi (kanıt yok). Eskiden üçü de
+    ``if stage.get("is_valid")`` ile ikiye indiriliyordu; bu yüzden
+    ölçülemeyen aşama ihlal gibi raporlanıyordu (``bardak``: tarihli
+    tanıklama yok -> ``is_valid`` None -> "❌ ANAKRONİZM"). Protokolün
+    kendisi doğru davranıyordu — ``rejection_reasons`` boş, rozet
+    🟢 DOĞRULANDI. Çelişki yalnızca bu gösterimdeydi.
+    """
+    is_valid = stage.get("is_valid")
+    if is_valid is None:
+        return "➖ ÖLÇÜLEMEDİ"
+    return "✅ GEÇTİ" if is_valid else fail_label
+
+
 def print_finding_formatted(finding: dict[str, Any]) -> None:
     query_word = finding.get("query_word", "")
     morphology = finding.get("morphology", "Yalın Kök")
@@ -54,10 +71,14 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
         s3 = stages.get("stage3_semantic_drift", {})
         s4 = stages.get("stage4_cognate_triangulation", {})
 
-        print(f"  • 1. Fonetik Halka (IPA Kuralları): {'✅ GEÇTİ' if s1.get('is_valid') else '❌ İHLAL'} -> Eşleşen Ses Kuralları: {', '.join(s1.get('matched_rules', []))}")
-        print(f"  • 2. Kronolojik Zaman Kilidi : {'✅ GEÇTİ' if s2.get('is_valid') else '❌ ANAKRONİZM'}")
-        print(f"  • 3. Semantik Yörünge Sınırı : {'✅ GEÇTİ' if s3.get('is_valid') else '⚠️ UYARI'} -> {s3.get('reason')}")
-        print(f"  • 4. Akraba Dil Triangulation: {'✅ GEÇTİ' if s4.get('is_valid') else '⚠️ EKSİK'} -> Numune Akrabalar: {', '.join(s4.get('sample_cognates', [])[:4])}")
+        s2_reason = s2.get("reason") or s2.get("violation") or ""
+        print(f"  • 1. Fonetik Halka (IPA Kuralları): {_stage_mark(s1, '❌ İHLAL')} -> Eşleşen Ses Kuralları: {', '.join(s1.get('matched_rules', []))}")
+        print(f"  • 2. Kronolojik Zaman Kilidi : {_stage_mark(s2, '❌ ANAKRONİZM')}" + (f" -> {s2_reason}" if s2_reason else ""))
+        print(f"  • 3. Semantik Yörünge Sınırı : {_stage_mark(s3, '❌ İHLAL')} -> {s3.get('reason')}")
+        print(f"  • 4. Akraba Dil Triangulation: {_stage_mark(s4, '❌ İHLAL')} -> Numune Akrabalar: {', '.join(s4.get('sample_cognates', [])[:4])}")
+        missing = val_report.get("missing_evidence") or []
+        if missing:
+            print(f"  • Ölçülemeyen aşamalar       : {', '.join(missing)} (kapsam %{val_report.get('evidence_coverage', 0) * 100:.0f})")
 
         rejections = val_report.get("rejection_reasons", [])
         if rejections:
@@ -130,7 +151,79 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
         p_west = probs.get('p_western', 0) * 100
         print(f"  • Olasılık Dağılımı         : Öz Türkçe: %{p_native:.1f} | Doğu (Arap/Fars): %{p_east:.1f} | Akdeniz (Grek/Erm): %{p_med:.1f} | Batı: %{p_west:.1f}")
         print(f"  • 25 Lehçe Yayılımı Skorlama : %{cog_eval.get('spreading_ratio', 0)*100:.0f} ({cog_eval.get('assessment')})")
-        print(f"  • Rekonstrüksiyon Değerlend: {recon_eval.get('reconstruction_notes')}")
+        # Alıntı durumunda `reconstruction_notes` ÇOK SATIRLI gelir (alıntı
+        # detektörünün `explain()` dökümü) ve biçimsiz bir blok hâlinde
+        # akıyordu. Ayrıntı artık aşağıdaki "RAKİP KÖKEN HİPOTEZLERİ" bloğunda
+        # yapılandırılmış olarak basılıyor; burada ilk satır yeter. JSON yükü
+        # değişmez — API ve web paneli tam metni almaya devam eder.
+        recon_note = str(recon_eval.get("reconstruction_notes") or "").strip()
+        print(f"  • Rekonstrüksiyon Değerlend: {recon_note.splitlines()[0] if recon_note else '—'}")
+
+        # Kullanıcıya giden sayı HAM skor değil kalibre skordur (ham skorun
+        # ECE'si 0,43 ölçüldü). Motor bunu zaten hesaplıyordu ama CLI basmıyor,
+        # yalnızca kalibre edilmemiş ara skorlar görünüyordu.
+        calibrated = recon_eval.get("calibrated_confidence")
+        if calibrated is not None:
+            print(f"  • Kalibre Güven              : {calibrated:.2f}  {recon_eval.get('confidence_badge', '')}")
+            if recon_eval.get("calibration_note"):
+                print(f"       ↳ {recon_eval['calibration_note']}")
+
+        # Morfolojik soyma sessiz kalmamalı: rekonstrüksiyon sorulan kelime
+        # üzerinden değil, soyulmuş kök üzerinden yapıldıysa rapor iki farklı
+        # girdi biçimi gösteriyor (`bardak` başlıkta, `barda` alt satırda).
+        if recon_eval.get("stripped_from"):
+            suffixes = ", ".join(s for s in (recon_eval.get("stripped_suffixes") or []) if s)
+            print(
+                f"  ⚠️  Soyulmuş kök kullanıldı  : '{recon_eval.get('word')}' "
+                f"(<- '{recon_eval['stripped_from']}', soyulan ek: {suffixes or '—'})"
+            )
+
+    # 6b. RAKİP KÖKEN HİPOTEZLERİ VE RED GEREKÇELERİ
+    ranked = nlp_analysis.get("ranked_hypotheses") or {}
+    hypotheses = ranked.get("hypotheses") or []
+    if hypotheses:
+        selected_claim = (ranked.get("selected") or {}).get("claim", "")
+        print("\n" + "─" * 80)
+        print(" ⚖️  RAKİP KÖKEN HİPOTEZLERİ (sıralı — reddedilenler gerekçesiyle kalır)")
+        print("─" * 80)
+        for i, hypo in enumerate(hypotheses, 1):
+            claim = hypo.get("claim") or hypo.get("label", "")
+            mark = "✓" if claim == selected_claim else " "
+            state = " ❌ REDDEDİLDİ" if hypo.get("rejected") else ""
+            print(f"  {i}. {mark} {claim}  [skor {hypo.get('score', 0):.3f}]{state}")
+            for support in (hypo.get("supporting") or [])[:3]:
+                print(f"       + {support}")
+            for against in (hypo.get("against") or [])[:2]:
+                print(f"       − {against}")
+            if hypo.get("rejected_because"):
+                print(f"       ❌ gerekçe: {hypo['rejected_because']}")
+        margin = ranked.get("margin")
+        if margin is not None:
+            contested = "  ⚠️ ÇEKİŞMELİ" if ranked.get("is_contested") else ""
+            print(f"\n  • Birinci ile ikinci hipotez arası fark: {margin:.3f}{contested}")
+
+    # 6c. KAYNAK VERİMİ — hangi kaynak gerçekten kanıt üretti?
+    # Motor her kaynağın sonucunu `diagnostics.sources` altında zaten
+    # tutuyordu ama hiçbir yerde göstermiyordu. Sessiz bozulma bu yüzden
+    # görünmezdi: ölü bir uç nokta ya da kırık bir ayrıştırıcı, "kaynak
+    # portföyü" satırında adı geçmediği için fark edilmiyordu.
+    source_diag = (finding.get("diagnostics") or {}).get("sources") or {}
+    if source_diag:
+        produced = [n for n, d in source_diag.items() if d.get("status") == "ok"]
+        silent = [n for n, d in source_diag.items() if d.get("status") == "empty"]
+        failed = [n for n, d in source_diag.items() if d.get("status") == "error"]
+        print("\n" + "─" * 80)
+        print(" 📡 KAYNAK VERİMİ")
+        print("─" * 80)
+        print(
+            f"  • Kanıt üreten: {len(produced)}/{len(source_diag)}"
+            f"  |  sessiz (veri yok): {len(silent)}  |  hata: {len(failed)}"
+        )
+        for name in silent:
+            print(f"     ➖ {name}")
+        for name in failed:
+            errs = (source_diag[name].get("errors") or [""])[0]
+            print(f"     ❌ {name} -> {errs[:90]}")
 
     # 7. EN ALTA FİNAL SENTEZİ OLARAK: Qwen2.5 Otonom Yapay Zeka Ajanı Analizi
     if ai_enrichment:
@@ -242,10 +335,14 @@ def main():
         s4 = stages.get("stage4_cognate_triangulation", {})
 
         print("\n  📌 5 KADEMELİ HAKEM AŞAMA DETAYLARI:")
-        print(f"   1. Fonetik Halka (IPA Evrimi): {'✅ GEÇTİ' if s1.get('is_valid') else '❌ İHLAL'} -> {', '.join(s1.get('matched_rules', []))}")
-        print(f"   2. Kronolojik Zaman Kilidi  : {'✅ GEÇTİ' if s2.get('is_valid') else '❌ ANAKRONİZM'}")
-        print(f"   3. Diyakronik Semantik Sınır: {'✅ GEÇTİ' if s3.get('is_valid') else '⚠️ UYARI'} -> {s3.get('reason')}")
-        print(f"   4. Akraba Dil Triangulation : {'✅ GEÇTİ' if s4.get('is_valid') else '⚠️ EKSİK'} -> Numune: {', '.join(s4.get('sample_cognates', [])[:4])}")
+        v_s2_reason = s2.get("reason") or s2.get("violation") or ""
+        print(f"   1. Fonetik Halka (IPA Evrimi): {_stage_mark(s1, '❌ İHLAL')} -> {', '.join(s1.get('matched_rules', []))}")
+        print(f"   2. Kronolojik Zaman Kilidi  : {_stage_mark(s2, '❌ ANAKRONİZM')}" + (f" -> {v_s2_reason}" if v_s2_reason else ""))
+        print(f"   3. Diyakronik Semantik Sınır: {_stage_mark(s3, '❌ İHLAL')} -> {s3.get('reason')}")
+        print(f"   4. Akraba Dil Triangulation : {_stage_mark(s4, '❌ İHLAL')} -> Numune: {', '.join(s4.get('sample_cognates', [])[:4])}")
+        v_missing = report.get("missing_evidence") or []
+        if v_missing:
+            print(f"   Ölçülemeyen aşamalar       : {', '.join(v_missing)} (kapsam %{report.get('evidence_coverage', 0) * 100:.0f})")
 
         rejections = report.get("rejection_reasons", [])
         if rejections:
