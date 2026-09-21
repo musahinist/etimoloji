@@ -662,8 +662,9 @@ Wiktionary sürümü, Wiktextract/Kaikki, Internet Archive.
 
 **Yerel veri** (`make data`, `make lexicons`) — 5 CLDF veri kümesi
 (savelyevturkic, hruschkaturkic, starostinaltaic, robbeetstriangulation, WOLD)
-ve 19 Türki dilin kaikki dökümü (108.708 madde, SQLite FTS5 indeksi). Her
-indirme sürüm, tarih ve SHA-256 damgası taşır (`data/SOURCES.md`).
+ve 23 Türki dilin kaikki dökümü (125.879 madde). Rusça Wiktionary sürümü de
+katıldığında SQLite FTS5 arama indeksi **25 dil kodu / 150.458 kayıt** taşır.
+Her indirme sürüm, tarih ve SHA-256 damgası taşır (`data/SOURCES.md`).
 
 ⚠️ **Wiktionary türevi veri altın standart DEĞİLDİR.** Häuser & Stamatakis
 (2025) bu verinin uzman ağaçlarıyla tutarsız olduğunu gösteriyor; ayrıca
@@ -691,7 +692,7 @@ Tek bir ilke: **LLM karar vermez.**
 
 | Katman | Ne yapar | Kim karar verir |
 |---|---|---|
-| Veri toplama | 9 canlı kaynak + 19 dilin yerel sözlük indeksi | — |
+| Veri toplama | 9 canlı kaynak + 23 dilin yerel sözlük indeksi | — |
 | Çeviri yazısı | Kiril/Arap/Runik → ortak karşılaştırma biçimi | kural |
 | Çoklu hizalama | bütün tanıkları birbirine hizalar (LingPy SCA) | algoritma |
 | Ata ses seçimi | tanısal denklik → tam kapsayan denklik → arkaiklik ağırlıklı oy | **sembolik** |
@@ -881,7 +882,7 @@ Her sayı sıfırdan üretilebilir:
 ```bash
 make install
 make data              # 5 CLDF veri kümesi (sürüm + SHA-256 damgalı)
-make lexicons          # 19 dilin kaikki dökümü (~56 MB)
+make lexicons          # 23 dilin kaikki dökümü (~60 MB)
 make lexicon-index     # SQLite FTS5 arama indeksi
 make gold              # altın standardı kur, böl, test setini MÜHÜRLE
 make correspondences   # ses denkliklerini TRAIN kavramlarından öğren
@@ -998,7 +999,8 @@ türetmek.
 | Starostin, Dybo & Mudrak, *Altaic Etymological Dictionary* — `starostinaltaic` | 5.756 biçim · 55 dil | ⚠️ yalnız karşılaştırma; Vovin 2005 eleştirisiyle birlikte anılır, tek kaynak olarak kullanılmaz |
 | Robbeets & Bouckaert — `robbeetstriangulation` | 26.224 biçim · 102 dil | ⚠️ yalnız **temas** çerçevesinde; akrabalık kanıtına katılmaz (Tian ve ark. 2022 eleştirileri) |
 | Róna-Tas & Berta 2011, *West Old Turkic: Turkic Loanwords in Hungarian* — `ronataswestoldturkic` ([loanwordbank](https://github.com/loanwordbank/ronataswestoldturkic), CC-BY) | 1.755 biçim · 430 kavram · 480 Oğur (Bolgar, `bolg1249`) biçimi | ⚠️ **atteste değil**, Macarcadaki alıntılardan geri kurulmuş; ayrı tanık kodu (`wot`), tek başına `*PT` taşımaz. Ölçüldü: kazanç yok, **varsayılan kapalı** |
-| [kaikki.org](https://kaikki.org) — Wiktionary makine-okunur dökümleri | 18 Türki dil, ~761 MB | ✅ arama indeksi · ⚠️ **altın standart değil** (bkz. Häuser & Stamatakis 2025) |
+| [kaikki.org](https://kaikki.org) — Wiktionary makine-okunur dökümleri | 23 Türki dil · 125.879 madde · ~856 MB ham (diskte 60 MB) | ✅ arama indeksi · ⚠️ **altın standart değil** (bkz. Häuser & Stamatakis 2025) |
+| kaikki.org — **tarihî katman** (URL kalıbı düzeltilince erişilebildi) | Osmanlı Türkçesi 9.806 · Kırım Tatarcası 4.780 · Güney Altayca 1.914 · **Eski Türkçe 470** (Orhun runik) | ✅ arama indeksi · ⚠️ Eski Türkçe dökümü küçüktür; runik biçimler `transliterate_to_latin` ile Latin karşılaştırma biçimine çevrilir |
 | kaikki.org — **Rusça Wiktionary sürümü** (10 Türki dil, ~2,8 MB) | Karayca 5.793 · Kırım Tatarcası 3.497 · Çuvaşça 2.074 · Başkurtça 4.282 · Yakutça 4.285 · Şorca 557 | ✅ tanık ve arama verisi · ⚠️ şemada `etymology_templates` **yok** (köken çıkarılamaz), anlamlar Rusça (anlam kısıtlı verici sinyali çalışmaz) |
 | TDK Güncel Türkçe Sözlük + Nişanyan Sözlük | Türkçe altın alıntı kümesi | ✅ **Wiktionary'den bağımsız** ikinci alıntı ölçütü · ⚠️ kanıt kuralı asimetrik (bkz. Alıntı tespiti) |
 | [NorthEuraLex](https://northeuralex.org) | Türki + İrani + Slav + Ural + Moğol + Yunanca tek çatıda | 🚧 komşu aile taraması |
