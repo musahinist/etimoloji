@@ -199,6 +199,43 @@ class TestLoanwordDetector(unittest.TestCase):
         self.assertFalse(LoanwordDetector().detect("")["evidence_available"])
 
 
+class TestBorrowingLineageFilter(unittest.TestCase):
+    """Türkçenin ATA katmanı verici dil sayılmamalıdır.
+
+    Sözlük `donor_lang` alanını ata biçimi kaydetmek için de kullanıyor:
+    `bardak` satırı ('bardak', 'alıntı', 'trk-eog', 'برت') ve trk-eog =
+    Eski Oğuzca, yani Türkçenin atası. Süzülmediğinde öz Türkçe kelime
+    1.0 güçle "alıntı" ilan ediliyor ve DOĞRU miras hipotezi bu gerekçeyle
+    reddediliyordu (ölçüldü: `bardak` -> "ALINTI — trk-eog" seçiliyordu).
+    """
+
+    def test_ancestor_code_is_not_loan_evidence(self):
+        from engine.nlp.borrowing_detector import BorrowingDetector
+
+        d = BorrowingDetector()
+        for w in ("bardak", "bilge", "betik", "kamu", "sav"):
+            verdict = d.detect(w)
+            fired = {s.name for s in verdict.signals if s.fired}
+            self.assertNotIn("zincir_kanıtı", fired, w)
+            self.assertFalse(verdict.donor_language, w)
+
+    def test_real_loans_still_detected(self):
+        """Süzgeç gerçek alıntıyı öldürmemeli.
+
+        `ota` (Osmanlıca) bilerek süzülmüyor: hem doğrudan atadır hem de
+        Arapça/Farsça alıntıların geçiş katmanıdır. `reis` ve `ziyaret`
+        gerçek Arapça alıntılardır ve Osmanlıca üzerinden gelmişlerdir.
+        """
+        from engine.nlp.borrowing_detector import BorrowingDetector
+
+        d = BorrowingDetector()
+        for w, donor in (("kitap", "ar"), ("reis", "ota"), ("ziyaret", "ota")):
+            verdict = d.detect(w)
+            fired = {s.name for s in verdict.signals if s.fired}
+            self.assertIn("zincir_kanıtı", fired, w)
+            self.assertEqual(verdict.donor_language, donor, w)
+
+
 class TestDonorLexicon(unittest.TestCase):
     def test_levenshtein(self):
         self.assertEqual(levenshtein("abc", "abc"), 0)

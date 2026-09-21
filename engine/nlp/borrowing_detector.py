@@ -341,7 +341,7 @@ class BorrowingDetector:
         En güçlü sinyal, çünkü dolaylı gösterge değil doğrudan tanıklamadır.
         Zincir çok halkalı olabilir: Türkçe ← Osmanlıca ← Arapça.
         """
-        from engine.nlp.borrowing_chain import language_name
+        from engine.nlp.borrowing_chain import TURKIC_LINEAGE_CODES, language_name
 
         if not getattr(self.index, "exists", False):
             return (
@@ -368,7 +368,28 @@ class BorrowingDetector:
                 and not str(r.get("word") or "")[:1].isupper()
             ]
 
-        borrowed = [r for r in rows if r.get("origin") == "alıntı"]
+        # ⚠️ ATA KATMANI VERİCİ DEĞİLDİR. Sözlük `donor_lang` alanını ata
+        # biçimi kaydetmek için de kullanıyor; `bardak` satırı
+        # ('bardak', 'alıntı', 'trk-eog', 'برت') diyor ve trk-eog =
+        # Eski Oğuzca, yani Türkçenin ATASI. Süzülmezse öz Türkçe kelime
+        # 1.0 güçle "alıntı" ilan edilir ve DOĞRU miras hipotezi bu
+        # gerekçeyle reddedilir — `bardak` çıktısında ölçülen tam buydu.
+        #
+        # Aynı koruma `search_engine.py`'de vardı (bkz. oradaki not:
+        # "Proto-Türkçe bir verici dil DEĞİLDİR... ölçüldü: göz -> yanlış
+        # damga") ama sıralayıcıyı besleyen bu yola konmamıştı.
+        #
+        # Ölçüldü (indeks, tr): `origin='alıntı'` + soy kodu = 39 kayıt,
+        # hepsi öz Türkçe (bilge, betik <- *bitig, kamu, sav, başkan,
+        # anlamak, karınca, küsmek, evren, keçe, tin, bardak...).
+        # `ota` ve kardeş Türki diller bilerek süzülmüyor — gerekçe
+        # `TURKIC_LINEAGE_CODES` tanımında.
+        borrowed = [
+            r
+            for r in rows
+            if r.get("origin") == "alıntı"
+            and str(r.get("donor_lang") or "") not in TURKIC_LINEAGE_CODES
+        ]
         inherited = [r for r in rows if r.get("origin") == "miras"]
 
         # ⚠️ EŞADLILIK. Aynı yazılışta hem miras hem alıntı madde olabilir:

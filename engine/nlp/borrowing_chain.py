@@ -109,6 +109,98 @@ DONOR_LANGUAGE_NAMES: dict[str, str] = {
     "es": "İspanyolca",
     "pt": "Portekizce",
     "nl": "Felemenkçe",
+    # --- Türki soy katmanları ve kardeş diller ---------------------------
+    # ⚠️ Bunlar haritada YOKTU ve `language_name()` eşleşmeyeni ham kod
+    # olarak bastığı için kullanıcıya "ALINTI — trk-eog" diye çıkıyordu
+    # (ölçüldü: `bardak` çıktısı). Kod adı dil adı değildir.
+    "trk-eog": "Eski Oğuzca",
+    "trk-oat": "Eski Anadolu Türkçesi",
+    "trk-ogz-pro": "Ana Oğuzca",
+    "trk-cmn-pro": "Ana Ortak Türkçe",
+    "xqa": "Karahanlı Türkçesi",
+    "qwm": "Kıpçakça (Memlûk)",
+    "chg": "Çağatayca",
+    "crh": "Kırım Tatarcası",
+    "gag": "Gagavuzca",
+    "kk": "Kazakça",
+    "ky": "Kırgızca",
+    "tk": "Türkmence",
+    "uz": "Özbekçe",
+    "ug": "Uygurca",
+    "tt": "Tatarca",
+    "ba": "Başkurtça",
+    "cv": "Çuvaşça",
+    "sah": "Sahaca (Yakutça)",
+    "alt": "Altayca",
+    "krc": "Karaçay-Balkarca",
+    "kaa": "Karakalpakça",
+    "tyv": "Tuvaca",
+    # --- Kafkas / İran / Sami ---------------------------------------------
+    "ab": "Abhazca",
+    "kbd": "Kabardeyce",
+    "kmr": "Kurmanci Kürtçe",
+    "peo": "Eski Farsça",
+    "fa-ira": "İran Farsçası",
+    "akk": "Akkadca",
+    "arz": "Mısır Arapçası",
+    "apc": "Şam Arapçası",
+    # --- Tarihî Avrupa katmanları -----------------------------------------
+    "la-cla": "Klasik Latince",
+    "la-vul": "Halk Latincesi",
+    "la-med": "Orta Çağ Latincesi",
+    "la-new": "Yeni Latince",
+    "gkm": "Orta Yunanca",
+    "pnt": "Pontus Rumcası",
+    "fro": "Eski Fransızca",
+    "frm": "Orta Fransızca",
+    "ang": "Eski İngilizce",
+    "enm": "Orta İngilizce",
+    "goh": "Eski Yüksek Almanca",
+    "gmh": "Orta Yüksek Almanca",
+    "dum": "Orta Felemenkçe",
+    "odt": "Eski Felemenkçe",
+    "non": "Eski İskandinavca",
+    "orv": "Eski Doğu Slavcası",
+    "cu": "Kilise Slavcası",
+    # --- Modern Avrupa -----------------------------------------------------
+    "pl": "Lehçe",
+    "cs": "Çekçe",
+    "sk": "Slovakça",
+    "uk": "Ukraynaca",
+    "sh": "Sırp-Hırvatça",
+    "sq": "Arnavutça",
+    "sv": "İsveççe",
+    "da": "Danca",
+    "no": "Norveççe",
+    "is": "İzlandaca",
+    "fi": "Fince",
+    "ca": "Katalanca",
+    "vec": "Venedikçe",
+    "scn": "Sicilyaca",
+    "lij": "Ligurca",
+    "lad": "Ladino",
+    "ga": "İrlandaca",
+    # --- Diğer -------------------------------------------------------------
+    "ms": "Malayca",
+    "vi": "Vietnamca",
+    "sw": "Svahili",
+    "af": "Afrikaanca",
+    # --- Rekonstrüksiyonlar (ata diller) -----------------------------------
+    "ine-pro": "Ana Hint-Avrupa",
+    "gem-pro": "Ana Cermence",
+    "gmw-pro": "Ana Batı Cermencesi",
+    "sla-pro": "Ana Slavca",
+    "itc-pro": "Ana İtalikçe",
+    "cel-pro": "Ana Keltçe",
+    "grk-pro": "Ana Helence",
+    "ira-pro": "Ana İranca",
+    "inc-pro": "Ana Hint-Aryanca",
+    "iir-pro": "Ana Hint-İranca",
+    "sem-pro": "Ana Samice",
+    "sem-wes-pro": "Ana Batı Samicesi",
+    "afa-pro": "Ana Afro-Asyatik",
+    "urj-fin-pro": "Ana Fin-Ugorca",
+    "xgn-pro": "Ana Moğolca",
 }
 
 
@@ -121,6 +213,29 @@ DONOR_LANGUAGE_NAMES: dict[str, str] = {
 #: oradaydı, yalnız YAZILMAMIŞTI. Bu tür kurallar ses değişimi değil,
 #: **yazı sistemi artefaktıdır** ve ayrı işaretlenir.
 ABJAD_LANGUAGES = frozenset({"ar", "fa", "fa-cls", "pal", "ota", "chg", "he", "arc", "ug"})
+
+
+#: **Türkçenin doğrudan ata katmanları.** Bunlar VERİCİ DİL DEĞİLDİR:
+#: "Türkçe Ana Türkçeden alıntılamıştır" tanımı gereği tutarsızdır. Sözlük
+#: bu kodları `donor_lang` alanında ata biçimi kaydetmek için kullanır;
+#: alıntı kanıtı sayılırsa miras kelime "alıntı" damgası yer.
+#:
+#: Ölçüldü (indeks, tr): `origin='alıntı'` + bu kodlardan biri = **39 kayıt**,
+#: hepsi tartışmasız öz Türkçe — `bardak`, `bilge`, `betik` (<- *bitig),
+#: `kamu`, `sav`, `başkan`, `anlamak`, `karınca`, `küsmek`, `evren`, `keçe`,
+#: `tin`. `bardak` çıktısında bu kayıt doğru MİRAS hipotezini reddettiriyordu.
+#:
+#: ⚠️ `ota` (Osmanlıca) BİLEREK DIŞARIDA. Osmanlıca hem doğrudan atadır hem de
+#: Arapça/Farsça alıntıların geçiş katmanıdır. Ölçüldü: `origin='alıntı'` +
+#: `ota` yalnız 4 kayıt — `reis`, `ziyaret` (gerçek Arapça alıntı) ve `orun`,
+#: `yığınak` (öz Türkçe). Elemek 2 doğru sinyali öldürüp 2 hatayı düzeltirdi:
+#: net sıfır, risk boşuna.
+#:
+#: ⚠️ Kardeş Türki diller de DIŞARIDA (`chg`, `xqa`, `qwm`, `crh`, `gag`…):
+#: Türki diller arası alıntı gerçektir ve kanıt sayılmalıdır.
+TURKIC_LINEAGE_CODES = frozenset({
+    "trk", "trk-pro", "trk-cmn-pro", "trk-ogz-pro", "trk-oat", "trk-eog", "otk",
+})
 
 
 def language_name(code: str) -> str:
