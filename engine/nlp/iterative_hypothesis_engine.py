@@ -36,6 +36,17 @@ logger = get_logger(__name__)
 HISTORICAL_WITNESS_LANGUAGES: tuple[str, ...] = ("otk", "ota", "chg")
 
 
+#: Gloss'un SONUNA yapışan dil adları. Anlamın parçası değil, kaynak
+#: notunun artığıdır (ölçüldü: `kalem` -> "Yazı kamışı, yontulmuş kamış
+#: Eski Grekçe"). Yalnız dizenin sonunda ve boşlukla ayrılmışsa atılır;
+#: "Eski Grekçe kamışı" gibi anlam içi kullanımlar korunur.
+_TRAILING_LANGUAGE_NAMES: tuple[str, ...] = (
+    "Eski Grekçe", "Eski Yunanca", "Orta Farsça", "Klasik Farsça",
+    "Osmanlı Türkçesi", "Eski Türkçe", "Ana Türkçe", "Arapça", "Farsça",
+    "Yunanca", "Latince", "Ermenice", "Moğolca", "Soğdca", "Çince",
+)
+
+
 def _historical_gloss(entries: list[dict[str, Any]] | None) -> str:
     """Tarihî tanıkların ilk GERÇEK anlamını döndürür; yoksa boş dize.
 
@@ -88,6 +99,24 @@ def _historical_gloss(entries: list[dict[str, Any]] | None) -> str:
         # 3. Atıf öneki yalnız KIRPILIR, kayıt atılmaz: gloss önekten sonra
         #    gerçekten duruyor.
         cleaned = citation.sub("", meaning).strip()
+
+        # 4. İkinci kademe gürültü (ölçüldü):
+        #      deniz -> "teŋiz (تِںِزْ) 'deniz, ulu göl'."  parantezde Arap
+        #               harfli biçim + tırnak
+        #      kalem -> "Yazı kamışı, yontulmuş kamış Eski Grekçe"  sona
+        #               yapışmış DİL ADI
+        #    Latin harfi içermeyen parantezli ekler ve sondaki dil adı
+        #    anlam değildir; kodlanırsa mesafeyi şişirirler.
+        cleaned = re.sub(
+            r"\(\s*[^)a-zçğıöşüâîûA-ZÇĞİÖŞÜ]{1,40}\s*\)", " ", cleaned
+        )
+        cleaned = cleaned.strip().strip("\"'“”‘’ .,;")
+        cleaned = re.sub(r"\s{2,}", " ", cleaned).strip()
+        for name in _TRAILING_LANGUAGE_NAMES:
+            if cleaned.endswith(" " + name):
+                cleaned = cleaned[: -len(name)].strip().strip(",;")
+                break
+
         if cleaned:
             return cleaned
     return ""

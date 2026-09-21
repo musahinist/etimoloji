@@ -581,6 +581,29 @@ class TestHistoricalGlossReachesHypothesis(unittest.TestCase):
             "göz, görme organı",
         )
 
+    def test_non_latin_parenthetical_and_quotes_are_stripped(self):
+        """Parantez içi yabancı yazı ve tırnaklar anlam değildir.
+
+        Ölçüldü: `deniz` tarihî glossu "teŋiz (تِںِزْ) 'deniz, ulu göl'."
+        idi; Arap harfli biçim kodlanınca mesafe şişiyordu.
+        A-HVP 3. aşama mesafesi 0.6725 -> 0.3241.
+
+        ⚠️ LATİN parantezler KORUNUR: "(mecazi)" gibi açıklamalar anlamın
+        parçasıdır.
+        """
+        from engine.nlp.iterative_hypothesis_engine import _historical_gloss
+
+        temiz = _historical_gloss(
+            [{"lang_code": "otk", "meaning": "teŋiz (تِںِزْ) 'deniz, ulu göl'."}]
+        )
+        self.assertNotIn("تِںِزْ", temiz)
+        self.assertIn("deniz", temiz)
+
+        korunan = _historical_gloss(
+            [{"lang_code": "otk", "meaning": "kafa, (mecazi) lider, reis"}]
+        )
+        self.assertEqual(korunan, "kafa, (mecazi) lider, reis")
+
     def test_gloss_extractor_picks_first_real_witness(self):
         from engine.nlp.iterative_hypothesis_engine import _historical_gloss
 
