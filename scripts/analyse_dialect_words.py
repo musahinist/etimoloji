@@ -34,6 +34,7 @@ import random
 import sys
 from collections import Counter, defaultdict
 from datetime import UTC, datetime
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -53,6 +54,33 @@ CANDIDATE_THRESHOLD = 0.35
 
 #: Örneklem tohumu. Sabit tutulur ki koşu yeniden üretilebilsin.
 RANDOM_SEED = 20260921
+
+
+LEHCELER_PATH = OUTPUT_DIR / "derleme" / "lehceler.jsonl"
+
+
+@lru_cache(maxsize=1)
+def _lehce_witnesses() -> dict[str, list[dict[str, str]]]:
+    """Hasatta toplanmış lehçe karşılıkları: kelime -> süzülmüş tanıklar.
+
+    Dosya yoksa boş sözlük döner ve katman sessizce devre dışı kalır —
+    deponun başka yerlerindeki `exists` denetimleriyle aynı felsefe.
+    """
+    if not LEHCELER_PATH.exists():
+        return {}
+    out: dict[str, list[dict[str, str]]] = {}
+    with LEHCELER_PATH.open(encoding="utf-8") as handle:
+        for line in handle:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                entry = json.loads(line)
+            except ValueError:
+                continue
+            if entry.get("word") and entry.get("witnesses"):
+                out[entry["word"]] = entry["witnesses"]
+    return out
 
 
 def load_words(source: Path | None, limit: int) -> list[str]:
@@ -153,6 +181,21 @@ def analyse(word: str, *, predictor: Any, ranker: Any, semantic: Any) -> dict[st
         )
         if hits:
             witnesses.append({"lang_code": prediction.language, "word": hits[0]["word"]})
+
+    # 1b — Lehçe karşılıkları (varsa) ek tanık olarak katılır.
+    #
+    # Gerekçe ölçüldü: 400 ağız maddesinin 109'u HİÇ tanık bulamıyor,
+    # ortalama tanık 2,79. Karşılaştırmalı yöntem bağımsız tanık ister.
+    #
+    # ⚠️ `lehceler` ucu AKRABA değil ÇEVİRİ KARŞILIĞI verir: `gaga` için
+    # `tumşuk/tomşok` döner — doğru çeviri, farklı kök. Bu yüzden hasat
+    # sırasında biçimce uzak karşılıklar elenmiştir; buraya gelenler akraba
+    # ADAYIDIR. Akrabalık kararı yine sıralayıcının düzenlilik denetiminde.
+    lehce = _lehce_witnesses().get(word, [])
+    known_pairs = {(w["lang_code"], w["word"]) for w in witnesses}
+    for candidate in lehce:
+        if (candidate["lang_code"], candidate["word"]) not in known_pairs:
+            witnesses.append(candidate)
 
     # 2 — Rakip hipotezler (rekonstrüksiyon ve alıntı denetimi içinde).
     ranked = ranker.rank(word, witnesses)

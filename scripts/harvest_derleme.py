@@ -64,9 +64,30 @@ logger = get_logger(__name__)
 OUTPUT_DIR = PROJECT_ROOT / "data" / "dialect"
 RECORDS_PATH = OUTPUT_DIR / "derleme" / "records.jsonl"
 WORDLIST_PATH = OUTPUT_DIR / "derleme" / "words.txt"
+LEHCELER_PATH = OUTPUT_DIR / "derleme" / "lehceler.jsonl"
 PROVENANCE_PATH = OUTPUT_DIR / "_provenance.json"
 
 DERLEME_URL = "https://eski.sozluk.gov.tr/derleme?ara={word}"
+LEHCELER_URL = "https://eski.sozluk.gov.tr/lehceler?ara={word}"
+
+#: Karşılaştırmalı Türk Lehçeleri Sözlüğü alan adı -> motor dil kodu.
+#: Her lehçe için 1-4 arası varyant alanı var (`azerice1`..`azerice4`).
+#: ⚠️ `rusca*` BİLEREK dışarıda: Rusça Türki tanık değildir, verici dildir.
+LEHCE_FIELD_TO_CODE: dict[str, str] = {
+    "azerice": "az", "baskurtca": "ba", "kazakca": "kk", "kirgizca": "ky",
+    "ozbekce": "uz", "tatarca": "tt", "turkmence": "tk", "uygurca": "ug",
+}
+
+#: Lehçe karşılığının aynı sözcük sayılması için izin verilen azami
+#: normalize düzenleme uzaklığı.
+#:
+#: ⚠️ ŞART. `lehceler` satırı Türkçe madde başına göre kurulu ama dönen
+#: karşılıklar FARKLI ANLAMLARA kayabiliyor. Ölçüldü: `yalak` sorgusunda
+#: `azerice: yalag`, `kazakca: suvaruv astavı` (yalak) ile birlikte
+#: `turkmence: yãkūt`, `uygurca: yakut`, `rusca: rubin` (**yakut taşı**)
+#: dönüyor. Süzgeçsiz alınsa alakasız biçimler akraba tanığı sayılır ve
+#: skor şişer.
+LEHCE_MAX_DISTANCE_RATIO = 0.45
 WIKTIONARY_API = "https://tr.wiktionary.org/w/api.php"
 SEED_CATEGORY = "Kategori:Türkçe halk ağzı"
 
@@ -147,6 +168,58 @@ def fetch_derleme(word: str) -> list[dict[str, Any]]:
     return payload if isinstance(payload, list) else []
 
 
+def fetch_lehceler(word: str) -> dict[str, Any] | None:
+    """Karşılaştırmalı Türk Lehçeleri Sözlüğü kaydı (tek satır) ya da ``None``."""
+    payload = http_json(LEHCELER_URL.format(word=urllib.parse.quote(word)))
+    if not isinstance(payload, list) or not payload:
+        return None
+    return payload[0]
+
+
+def lehce_witnesses(word: str, row: dict[str, Any]) -> list[dict[str, str]]:
+    """Lehçe karşılıklarından SÜZÜLMÜŞ akraba tanığı listesi.
+
+    İki süzgeç uygulanır, ikisi de ölçümle gerekçeli:
+
+    1. **Çok sözcüklü karşılıklar elenir.** Sözlük bazı hücrelere karşılık
+       yerine açıklama koyuyor (``kazakca1: "suvaruv astavı"``,
+       ``kirgizca1: "sū içme nō"``). Bunlar sözcük değil tanım.
+    2. **Biçimce uzak karşılıklar elenir.** Satır Türkçe madde başına göre
+       kurulu ama farklı anlamlara kayabiliyor: ``yalak`` sorgusunda
+       ``azerice: yalag`` ile birlikte ``turkmence: yãkūt``,
+       ``uygurca: yakut``, ``rusca: rubin`` (**yakut taşı**) dönüyor.
+       Süzgeçsiz bunlar akraba tanığı sayılır ve skoru şişirirdi.
+
+    ⚠️ Bu ikinci süzgeç akrabalığı VARSAYMAZ, yalnız apaçık farklı sözcükleri
+    eler; akrabalık kararı yine sıralayıcının düzenlilik denetimindedir.
+    """
+    from engine.evaluation.metrics import edit_distance
+    from engine.utils.orthography import to_comparison_form
+
+    base = to_comparison_form(word)
+    if not base:
+        return []
+
+    out: list[dict[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+    for field, code in LEHCE_FIELD_TO_CODE.items():
+        for index in range(1, 5):
+            raw = str(row.get(f"{field}{index}") or "").strip()
+            if not raw or " " in raw:
+                continue
+            form = to_comparison_form(raw)
+            if not form:
+                continue
+            budget = max(1, round(LEHCE_MAX_DISTANCE_RATIO * max(len(base), len(form))))
+            if edit_distance(base, form) > budget:
+                continue
+            if (code, form) in seen:
+                continue
+            seen.add((code, form))
+            out.append({"lang_code": code, "word": raw})
+    return out
+
+
 def expansion_targets(records: list[dict[str, Any]]) -> set[str]:
     """Kayıtlardaki çapraz göndermelerden yeni sorgu adayları."""
     targets: set[str] = set()
@@ -222,6 +295,30 @@ def main() -> int:
             handle.write(json.dumps(record, ensure_ascii=False) + "\n")
     WORDLIST_PATH.write_text("\n".join(found) + "\n", encoding="utf-8")
 
+    # --- Lehçe karşılıkları: tanık kıtlığının doğrudan çaresi ---------------
+    # Ölçüldü: 400 ağız maddesinin 109'u HİÇ akraba tanığı bulamıyor ve
+    # ortalama tanık 2,79. Karşılaştırmalı yöntem bağımsız tanık ister;
+    # tanık yoksa motor haklı olarak çekimser kalıyor. `lehceler` ucu 8 Türk
+    # lehçesinde karşılık veriyor — eksik olan tam buydu.
+    print(f"Lehçe karşılıkları çekiliyor ({len(found)} madde) …")
+    lehce_rows: list[dict[str, Any]] = []
+    for index, word in enumerate(found, start=1):
+        row = fetch_lehceler(word)
+        time.sleep(args.delay)
+        if not row:
+            continue
+        witnesses = lehce_witnesses(word, row)
+        if not witnesses:
+            continue
+        lehce_rows.append({"word": word, "witnesses": witnesses, "raw": row})
+        if index % 100 == 0:
+            print(f"  … {index}/{len(found)} · {len(lehce_rows)} maddede karşılık")
+
+    with LEHCELER_PATH.open("w", encoding="utf-8") as handle:
+        for entry in lehce_rows:
+            handle.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    extra_witnesses = sum(len(e["witnesses"]) for e in lehce_rows)
+
     PROVENANCE_PATH.write_text(
         json.dumps(
             {
@@ -233,6 +330,14 @@ def main() -> int:
                 "matched_words": len(found),
                 "hit_rate": round(len(found) / queried, 3) if queried else 0.0,
                 "records": len(records),
+                "lehce_matched_words": len(lehce_rows),
+                "lehce_witnesses": extra_witnesses,
+                "lehce_note": (
+                    "`lehceler` ucu AKRABA değil ÇEVİRİ KARŞILIĞI verir "
+                    "(gaga -> tumşuk: doğru çeviri, farklı kök). Biçimce uzak "
+                    "karşılıklar elenir; kalanlar akraba ADAYIDIR, akrabalık "
+                    "kararı sıralayıcının düzenlilik denetimindedir."
+                ),
                 "delay_seconds": args.delay,
                 "license_note": (
                     "TDK'nın ilan edilmiş açık lisansı yoktur, telif TDK'dadır. "
