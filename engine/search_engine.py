@@ -34,7 +34,10 @@ from engine.nlp.derivation_network import DerivationNetworkBuilder
 from engine.nlp.diachronic_semantic_engine import DiachronicSemanticEngine
 from engine.nlp.donor_search import DonorSearchEngine
 from engine.nlp.historical_morphology import HistoricalMorphologyAnalyzer
-from engine.nlp.iterative_hypothesis_engine import IterativeHypothesisEngine
+from engine.nlp.iterative_hypothesis_engine import (
+    IterativeHypothesisEngine,
+    _historical_gloss,
+)
 from engine.nlp.iterative_hypothesis_prover import IterativeHypothesisProver
 from engine.nlp.loanword_classifier import LoanwordClassifier
 from engine.nlp.loanword_detector import LoanwordDetector
@@ -406,15 +409,13 @@ class SearchEngine:
         # sıraladığı için ilk tarihî tanık buradan alınır. Tanık yoksa boş
         # geçilir: motor zaten `evidence_available: False` döndürür
         # (diachronic_semantic_engine.py:152-164), uydurma skor üretmez.
-        historical_meaning = next(
-            (
-                (entry.get("meaning") or "").strip()
-                for entry in sorted_entries
-                if entry.get("lang_code") in ("otk", "ota", "chg")
-                and (entry.get("meaning") or "").strip()
-            ),
-            "",
-        )
+        # ⚠️ Burada seçim KALİTE SÜZGECİSİZDİ ve "ilk boş olmayan anlam"ı
+        # alıyordu; kitap tarama artıkları ile runik harf adları tarihî
+        # anlam diye geçiyordu (su -> "Kitap: 3 Bogatyr bikers…" 0.9523,
+        # baş -> "A letter of the Old Turkic runic script…" 0.7996).
+        # Süzgeç `_historical_gloss` içinde tek yerde toplandı; A-HVP dalı
+        # da aynı yardımcıyı kullanıyor, iki yol ayrışmasın.
+        historical_meaning = _historical_gloss(sorted_entries)
         semantic_eval = self.semantic_engine.evaluate_diachronic_trajectory(
             historical_meaning, root_meaning or ""
         )

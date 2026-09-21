@@ -56,11 +56,40 @@ def _historical_gloss(entries: list[dict[str, Any]] | None) -> str:
     Tanık yoksa boş döner; motor o zaman dürüstçe "ölçülemedi" der,
     uydurma kanıt üretmez.
     """
+    import re
+
+    #: Atıf öneki: "Divanü Lugati't-Türk (1074): göz…" -> gloss iki nokta
+    #: sonrasıdır. Önek atılmazsa kaynak adı ve yıl anlamla birlikte
+    #: kodlanıyor ve mesafeyi şişiriyor (ölçüldü: `göz` 0.4981, `deniz` 0.8806).
+    citation = re.compile(r"^[^:]{3,60}\(\d{3,4}\)\s*:\s*")
+
     for entry in entries or []:
-        if entry.get("lang_code") in HISTORICAL_WITNESS_LANGUAGES:
-            meaning = (entry.get("meaning") or "").strip()
-            if meaning:
-                return meaning
+        if entry.get("lang_code") not in HISTORICAL_WITNESS_LANGUAGES:
+            continue
+        meaning = (entry.get("meaning") or "").strip()
+        if not meaning:
+            continue
+
+        # ⚠️ ÇÖP GLOSS ELEMESİ — üçü de ölçülmüş gerçek vakalar.
+        #
+        # 1. Kitap tarama artığı. `archive_org.py:42` bir tam-metin arama
+        #    isabetini `lang_code="otk"` diye işaretleyip anlam alanına
+        #    KİTAP BAŞLIĞI yazıyor; `local_pdf_books.py:128,144` aynısını
+        #    yapıyor. Kelimenin taranmış bir kitapta geçmesi onu Eski Türkçe
+        #    tanığı yapmaz. Ölçüldü:
+        #      su -> "Kitap: 3 Bogatyr bikers For CNC…"  mesafe 0.9523
+        #      el -> "Kitap: The Land Created from Light…" mesafe 0.7098
+        # 2. Runik HARF adı. Alfabe maddesidir, sözlükbirim değil; indekste
+        #    otk'nin 73/470'i (%15,5) ve ota'da 33 kayıt böyle. Ölçüldü:
+        #      baş -> "A letter of the Old Turkic runic script…" mesafe 0.7996
+        if meaning.startswith("Kitap:") or "letter of the" in meaning.lower():
+            continue
+
+        # 3. Atıf öneki yalnız KIRPILIR, kayıt atılmaz: gloss önekten sonra
+        #    gerçekten duruyor.
+        cleaned = citation.sub("", meaning).strip()
+        if cleaned:
+            return cleaned
     return ""
 
 

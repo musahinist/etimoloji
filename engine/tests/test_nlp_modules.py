@@ -540,6 +540,47 @@ class TestHistoricalGlossReachesHypothesis(unittest.TestCase):
         )
         self.assertEqual(hypo["historical_meaning"], "")
 
+    def test_junk_glosses_are_skipped(self):
+        """Kitap tarama artığı ve runik HARF adı tarihî anlam sayılmamalı.
+
+        `archive_org.py:42` bir tam-metin arama isabetini `lang_code="otk"`
+        diye işaretleyip anlam alanına KİTAP BAŞLIĞI yazıyor; indeksteki
+        otk kayıtlarının 73/470'i (%15,5) ise alfabe maddesi.
+        Ölçülen mesafeler (süzgeçten önce -> sonra):
+            su  0.9523 -> 0.5345   'Kitap: 3 Bogatyr…'  -> 'su, akarsu'
+            el  0.7098 -> 0.1921   'Kitap: The Land…'   -> 'el'
+            baş 0.7996 -> 0.6501   runik harf adı       -> 'kafa, … reis'
+        """
+        from engine.nlp.iterative_hypothesis_engine import _historical_gloss
+
+        self.assertEqual(
+            _historical_gloss([
+                {"lang_code": "otk", "meaning": "Kitap: 3 Bogatyr bikers (Yazar: X)"},
+                {"lang_code": "otk", "meaning": "su, akarsu"},
+            ]),
+            "su, akarsu",
+        )
+        self.assertEqual(
+            _historical_gloss([
+                {"lang_code": "otk",
+                 "meaning": "A letter of the Old Turkic runic script, representing /bɑʃ/"},
+                {"lang_code": "otk", "meaning": "kafa, lider"},
+            ]),
+            "kafa, lider",
+        )
+
+    def test_citation_prefix_is_stripped_not_rejected(self):
+        """Atıf öneki kırpılmalı; gloss önekten sonra gerçekten duruyor."""
+        from engine.nlp.iterative_hypothesis_engine import _historical_gloss
+
+        self.assertEqual(
+            _historical_gloss([
+                {"lang_code": "otk",
+                 "meaning": "Divanü Lugati't-Türk (1074): göz, görme organı"}
+            ]),
+            "göz, görme organı",
+        )
+
     def test_gloss_extractor_picks_first_real_witness(self):
         from engine.nlp.iterative_hypothesis_engine import _historical_gloss
 
