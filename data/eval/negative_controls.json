@@ -9,7 +9,9 @@
       "false_positive_rate": 1.0,
       "strong_claim_rate": 0.0,
       "fallback": 0,
-      "fallback_rate": 0.0
+      "fallback_rate": 0.0,
+      "unattested": 7,
+      "unattested_rate": 0.875
     },
     {
       "battery": "bariz_sahte",
@@ -18,7 +20,9 @@
       "false_positive_rate": 0.0,
       "strong_claim_rate": 0.0,
       "fallback": 0,
-      "fallback_rate": 0.0
+      "fallback_rate": 0.0,
+      "unattested": 0,
+      "unattested_rate": 0.0
     },
     {
       "battery": "sahte_akraba",
@@ -27,16 +31,20 @@
       "false_positive_rate": 0.0,
       "strong_claim_rate": 0.0,
       "fallback": 4,
-      "fallback_rate": 1.0
+      "fallback_rate": 1.0,
+      "unattested": 0,
+      "unattested_rate": 0.0
     },
     {
       "battery": "alinti_tuzagi",
       "n": 5,
-      "reconstructed": 4,
-      "false_positive_rate": 0.8,
+      "reconstructed": 0,
+      "false_positive_rate": 0.0,
       "strong_claim_rate": 0.0,
       "fallback": 0,
-      "fallback_rate": 0.0
+      "fallback_rate": 0.0,
+      "unattested": 0,
+      "unattested_rate": 0.0
     },
     {
       "battery": "eşadlı",
@@ -45,7 +53,9 @@
       "false_positive_rate": 1.0,
       "strong_claim_rate": 0.0,
       "fallback": 0,
-      "fallback_rate": 0.0
+      "fallback_rate": 0.0,
+      "unattested": 0,
+      "unattested_rate": 0.0
     }
   ],
   "details": {
@@ -228,42 +238,42 @@
       },
       {
         "query": "duvar",
-        "reconstructed": true,
+        "reconstructed": false,
         "method": "comparative",
-        "evidence_available": true,
-        "root": "*divar",
-        "badge": "🟠 ZAYIF KANIT",
-        "calibrated": 0.1899,
+        "evidence_available": false,
+        "root": "",
+        "badge": "⚪ YETERSİZ KANIT",
+        "calibrated": null,
         "reason": "Farsça dīwār"
       },
       {
         "query": "çorap",
-        "reconstructed": true,
+        "reconstructed": false,
         "method": "comparative",
-        "evidence_available": true,
-        "root": "*jorap",
-        "badge": "🟠 ZAYIF KANIT",
-        "calibrated": 0.2023,
+        "evidence_available": false,
+        "root": "",
+        "badge": "⚪ YETERSİZ KANIT",
+        "calibrated": null,
         "reason": "Farsça/Arapça ǧurāb"
       },
       {
         "query": "pencere",
-        "reconstructed": true,
+        "reconstructed": false,
         "method": "comparative",
-        "evidence_available": true,
-        "root": "*penjere",
-        "badge": "🟠 ZAYIF KANIT",
-        "calibrated": 0.1994,
+        "evidence_available": false,
+        "root": "",
+        "badge": "⚪ YETERSİZ KANIT",
+        "calibrated": null,
         "reason": "Farsça panǧara"
       },
       {
         "query": "sabun",
-        "reconstructed": true,
+        "reconstructed": false,
         "method": "comparative",
-        "evidence_available": true,
-        "root": "*sabın",
-        "badge": "🟠 ZAYIF KANIT",
-        "calibrated": 0.202,
+        "evidence_available": false,
+        "root": "",
+        "badge": "⚪ YETERSİZ KANIT",
+        "calibrated": null,
         "reason": "Arapça ṣābūn (nihayetinde Latince)"
       }
     ],

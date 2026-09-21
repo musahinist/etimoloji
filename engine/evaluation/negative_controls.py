@@ -171,6 +171,7 @@ class BatteryResult:
     reconstructed: int = 0
     strong_badge: int = 0
     fallback: int = 0
+    unattested: int = 0
     details: list[dict[str, Any]] = field(default_factory=list)
 
     @property
@@ -196,6 +197,30 @@ class BatteryResult:
         return self.fallback / self.n if self.n else 0.0
 
     @property
+    def unattested_rate(self) -> float:
+        """TANIKSIZ rekonstrüksiyon oranı — bataryalar arası asıl ayırt edici.
+
+        Bir kök, tanıkların yalnız birbiriyle uyumundan doğmuşsa ve o
+        tanıkların HİÇBİRİ sözlük indeksinde yoksa, ortada tanıklı bir
+        dayanak yoktur. Ölçüldü::
+
+            fonotaktik_gecerli_sahte  8 rekons, 7'si TANIKSIZ  <- gerçek kusur
+            eşadlı                    3 rekons, 0'ı tanıksız   (çay 4, yaş 4,
+                                                                kat 1 tanıklı)
+            alinti_tuzagi             0 rekons
+            bariz_sahte               0 rekons
+
+        Bu, `yanlış-poz` oranının ayıramadığı şeyi ayırır: `eşadlı` ve
+        `fonotaktik_gecerli_sahte` ikisi de 1.000 yanlış-poz verir, ama
+        biri tanıklı gerçek kelimelerdir, öbürü uydurma köklerdir.
+
+        ⚠️ `verdict` alanı bu iş için DENENDİ VE ÇÜRÜTÜLDÜ: `kalgır` ve
+        `sötüm` de tıpkı `çay`/`kat` gibi "belirsiz" dönüyor.
+        ⚠️ Dürüst kayıt: `kañtar` 1 tanıkla bu ölçütten kaçıyor (7/8).
+        """
+        return self.unattested / self.n if self.n else 0.0
+
+    @property
     def strong_claim_rate(self) -> float:
         """Üstüne bir de GÜÇLÜ/ORTA rozet verdiklerinin oranı — asıl tehlike."""
         return self.strong_badge / self.n if self.n else 0.0
@@ -209,6 +234,8 @@ class BatteryResult:
             "strong_claim_rate": round(self.strong_claim_rate, 4),
             "fallback": self.fallback,
             "fallback_rate": round(self.fallback_rate, 4),
+            "unattested": self.unattested,
+            "unattested_rate": round(self.unattested_rate, 4),
         }
 
 
@@ -233,8 +260,12 @@ def run_battery(reconstructor, items: tuple[ControlItem, ...], name: str) -> Bat
         reconstructed = bool(output.get("is_reconstructible")) and not is_fallback
         badge = str(output.get("confidence_badge", ""))
         strong = reconstructed and ("GÜÇLÜ" in badge or "ORTA" in badge)
+        # `attested_witness_count is None` = ÖLÇÜLEMEDİ (yedek/alıntı yolu),
+        # 0 = ölçüldü ve hiçbir tanık sözlükte yok. İkisi karıştırılmamalı.
+        attested = output.get("attested_witness_count")
         result.reconstructed += reconstructed
         result.fallback += is_fallback
+        result.unattested += reconstructed and attested == 0
         result.strong_badge += strong
         result.details.append(
             {
@@ -271,14 +302,14 @@ def main() -> int:
     # sorgu biçimi" dediği maddeler burada açıkça durur.
     print(
         f"\n{'batarya':30} {'n':>4} {'rekonstrükte':>13} {'yanlış-poz':>11} "
-        f"{'güçlü iddia':>12} {'yedek':>7}"
+        f"{'güçlü iddia':>12} {'yedek':>7} {'tanıksız':>9}"
     )
-    print("-" * 82)
+    print("-" * 92)
     for result in results:
         print(
             f"{result.battery:30} {result.n:>4} {result.reconstructed:>13} "
             f"{result.false_positive_rate:>11.3f} {result.strong_claim_rate:>12.3f} "
-            f"{result.fallback:>7}"
+            f"{result.fallback:>7} {result.unattested:>9}"
         )
 
     if args.verbose:
