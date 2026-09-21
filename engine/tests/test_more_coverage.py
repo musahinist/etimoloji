@@ -117,9 +117,72 @@ class TestSemanticEngineBackends(unittest.TestCase):
         self.assertIsInstance(has_semantic_model(), bool)
 
     def test_vectoriser_reports_backend(self):
+        """Boy, kullanılan arka uca göre değişir.
+
+        ⚠️ Bu satır eskiden koşulsuz `len(vec) == 64` istiyordu ve böylece
+        BİR HATAYI kayda geçiriyordu: transformer yolu 384 boyutluk
+        embedding'i tam boy normalize edip `[:64]` ile kırpıyordu, dönen
+        vektör birim OLMUYORDU. `cosine_distance` birim vektör varsaydığı
+        için özdeş iki anlamda bile mesafe ~0.83 çıkıyor ve A-HVP 3. aşama
+        her kelimeyi reddediyordu. Kırpma kaldırıldı; 64 yalnız ortografik
+        yedek yolun (`vocab_size`) boyudur.
+        """
         vec, used_model = DenseSemanticVectorizer().vectorise("deniz")
-        self.assertEqual(len(vec), 64)
         self.assertIsInstance(used_model, bool)
+        if used_model:
+            self.assertGreater(len(vec), 64)
+            norm = sum(x * x for x in vec) ** 0.5
+            self.assertAlmostEqual(norm, 1.0, places=3)
+        else:
+            self.assertEqual(len(vec), 64)
+
+    def test_identical_meaning_has_zero_distance(self):
+        """Özdeş iki anlamın mesafesi 0 olmalı — kırpma hatası regresyonu.
+
+        Transformer vektörü tam boy normalize edilip 64 boyuta kırpılıyordu;
+        dönen vektör birim olmadığı için ULAŞILABİLİR AZAMİ benzerlik ~0.17
+        idi ve özdeş anlamlar bile ~0.83 mesafe veriyordu. Sonuç: A-HVP
+        3. aşaması her kelimeyi reddediyordu (`göz` 0.8544, `bardak` 0.8661).
+        Model kurulu değilse ortografik yedek yol da özdeş metinde 0 verir,
+        dolayısıyla bu iddia her iki arka uçta da geçerlidir.
+        """
+        e = DiachronicSemanticEngine()
+        v1, _ = e.vectorizer.vectorise("su içilen kap")
+        v2, _ = e.vectorizer.vectorise("su içilen kap")
+        self.assertAlmostEqual(e.cosine_distance(v1, v2), 0.0, places=3)
+
+    def test_identical_inputs_are_not_free_evidence(self):
+        """İki taraf aynı metinse aşama BEDAVA ✅ vermemeli.
+
+        Ölçüldü (12 kelime): 9'unda tarihî ve modern anlam birebir aynı
+        dizeydi, çünkü çoğu tarihî tanığın `meaning` alanı modern TDK
+        tanımının kopyası. Mesafe 0 çıkıp aşama otomatik geçiyordu; bu
+        ölçüm değil kendini doğrulamadır.
+        """
+        res = DiachronicSemanticEngine().evaluate_diachronic_trajectory(
+            "su içilen kap", "su içilen kap"
+        )
+        self.assertFalse(res["evidence_available"])
+        self.assertIsNone(res["is_plausible"])
+
+    def test_unrelated_meanings_exceed_theta(self):
+        """İlgisiz anlamlar eşiği aşmalı; aksi hâlde aşama lastik damgadır.
+
+        theta 0.85 iken ilgisiz çiftlerin %87,4'ü de geçiyordu (254 CLDF
+        kavramı üzerinde ölçüldü); 0.60'a çekilince %19,7'ye indi.
+        """
+        e = DiachronicSemanticEngine()
+        if not has_semantic_model():
+            self.skipTest("semantik model yok; ortografik yedek anlam ölçmez")
+        # ⚠️ İddia THETA'DAN BAĞIMSIZ tutuldu. Eşik şu an 0.85 ve bilerek
+        # gevşek (gerekçe THETA_THRESHOLD notunda); "ilgisiz çift eşiği aşar"
+        # demek eşiğe bağımlı ve kırılgan olurdu. Ölçülebilir ve kalıcı olan
+        # şey SIRALAMADIR: ilgisiz anlamlar, ilgili anlamlardan uzaktır.
+        ilgili = e.evaluate_diachronic_trajectory("book", "kitap")
+        ilgisiz = e.evaluate_diachronic_trajectory("book", "mountain range")
+        self.assertGreater(
+            ilgisiz["total_shift_distance"], ilgili["total_shift_distance"]
+        )
 
     def test_vectoriser_empty_text(self):
         vec, used = DenseSemanticVectorizer().vectorise("")

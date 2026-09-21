@@ -33,6 +33,14 @@ def _isolate_network(monkeypatch):
     Ağ gerektiren testler ya ``responses`` ile mock'lar ya da
     ``engine/tests/live/`` altında ``@skipUnless`` ile işaretlenir.
     """
+    # HuggingFace hub, model zaten yerel önbellekte olsa bile sürüm denetimi
+    # için soket açar ve aşağıdaki engele takılır. Semantik modeli kullanan
+    # testler bu yüzden "canlı ağa çıktı" diye düşüyordu. Çevrimdışı modda
+    # model önbellekten okunur; önbellek yoksa yükleme sessizce başarısız olur
+    # ve motor zaten ortografik yedek yola düşer (test buna göre yazılmalı).
+    monkeypatch.setenv("HF_HUB_OFFLINE", "1")
+    monkeypatch.setenv("TRANSFORMERS_OFFLINE", "1")
+
     if os.environ.get("ETY_LIVE") == "1":
         return
 

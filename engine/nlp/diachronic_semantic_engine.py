@@ -32,7 +32,13 @@ logger = get_logger(__name__)
 
 _ST_MODEL = None
 _ST_TRIED = False
-_ST_MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L6-v2"
+#: ⚠️ Eskiden burada `paraphrase-multilingual-MiniLM-L6-v2` yazıyordu ve
+#: BÖYLE BİR MODEL YOK: HuggingFace 401/RepositoryNotFound döndürüyor, yükleme
+#: sessizce başarısız oluyor ve semantik aşama paket KURULU OLSA BİLE
+#: "sentence-transformers kurulu değil" diyordu. Çok dilli paraphrase
+#: modelinin gerçek sürümü L12'dir (L6 yalnız İngilizce `all-MiniLM-L6-v2`
+#: olarak vardır ve Türkçe için uygun değildir).
+_ST_MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 
 
 def get_sentence_transformer():
@@ -91,12 +97,34 @@ class DenseSemanticVectorizer:
         İkinci değer ``False`` ise vektör yalnızca ortografik (karakter n-gram)
         bir temsildir; semantik kanıt sayılmaz.
         """
+        # Boş metnin ANLAMI yoktur; modele sormak anlamsız bir embedding
+        # üretir ve `used_model=True` diyerek bunu semantik kanıt gibi
+        # gösterir. Sıfır vektör, "kanıt yok" demenin dürüst yoludur.
+        if not (text or "").strip():
+            return [0.0] * self.vocab_size, False
+
         model = get_sentence_transformer()
         if model is not None:
             try:
+                # ⚠️ Burada vektör TAM boy üzerinden normalize edilip sonra
+                # `emb[:64]` ile KIRPILIYORDU. Sonuç birim vektör değildi:
+                # MiniLM 384 boyut üretir, 64 boyutluk dilimin normu
+                # √(64/384) ≈ 0.41 olur. `cosine_distance` ise "iki birim
+                # vektör" varsayıp `1 - dot` hesapladığı için ÖZDEŞ iki
+                # anlamda bile dot ≈ 0.41² ≈ 0.167, mesafe ≈ 0.83 çıkıyordu.
+                #
+                # Ölçüldü: `göz` 0.8544, `bardak` 0.8661 — ikisi de theta
+                # 0.85'in hemen üstünde. Yani model kurulu olsa bile 3. aşama
+                # HER kelimeyi reddediyordu; theta'yı değiştirmek çözmezdi,
+                # ulaşılabilir azami benzerlik zaten ~0.17 idi.
+                #
+                # Kırpma, ortografik yedek yolun `vocab_size=64` sabitinden
+                # sızmış. Transformer yolunda boyut indirgemenin anlamı yok:
+                # iki taraf da aynı yoldan geçtiği için boylar eşittir.
                 emb = model.encode(text or "", convert_to_numpy=True)
-                norm = math.sqrt(sum(float(x) * float(x) for x in emb)) or 1.0
-                return [round(float(x) / norm, 4) for x in emb[:64]], True
+                vec = [float(x) for x in emb]
+                norm = math.sqrt(sum(v * v for v in vec)) or 1.0
+                return [round(v / norm, 6) for v in vec], True
             except Exception:
                 logger.warning("Semantik kodlama başarısız, ortografik temsile düşülüyor", exc_info=True)
 
@@ -113,10 +141,68 @@ class DenseSemanticVectorizer:
         return [round(x / norm, 4) for x in vec], False
 
 
+#: Anlam alanına karışan BİÇİM etiketleri. Bunlar anlam değil, veri
+#: birleştirme artığıdır (`donor_etymology_database.py:87-88` bu dizeyi
+#: `"Kaynak anlamı: X | Geçiş yörüngesi: Y"` diye kuruyor). Kodlanırsa
+#: mesafeyi şişirirler: ölçüldü, `kitap` 0.7064 / `kalem` 0.7254 —
+#: ikisi de DOĞRU etimoloji, iki gloss da "kitap"/"kalem" demek.
+_GLOSS_LABEL = re.compile(
+    r"(kaynak\s+anlam[ıi]|geçiş\s+yörüngesi|orijinal\s+imla|"
+    r"kendi\s+içi\s+etimoloji)\s*:\s*",
+    re.IGNORECASE,
+)
+
+
+def _clean_gloss(text: str) -> str:
+    """Anlam metnini kodlamadan önce biçim artıklarından arındırır."""
+    t = _GLOSS_LABEL.sub(" ", text or "")
+    t = t.replace("|", " ")
+    return " ".join(t.split()).strip()
+
+
 class DiachronicSemanticEngine:
     """Tarihsel ve modern anlam arasındaki semantik mesafeyi değerlendirir."""
 
     # Bu eşiğin üzerindeki mesafe, anlamların birbirinden kopuk olduğunu gösterir.
+    #
+    # ⚠️ Eskiden 0.85 idi ve HİÇ ÖLÇÜLMEMİŞTİ: model adı yanlış olduğu için
+    # (bkz. _ST_MODEL_NAME notu) bu aşama hiç gerçek bir mesafe üretmemişti,
+    # eşik tahminle konmuştu.
+    #
+    # Kalibrasyon — CLDF `savelyevturkic/parameters.csv`, 254 kavram.
+    # OLUMLU çift = aynı kavramın iki yazımı ("(finger)nail (n.)" ~
+    # "FINGERNAIL"); OLUMSUZ çift = farklı kavramların çaprazı (tohum
+    # 20260921). Eşyazım bulaşması yok.
+    #
+    #   theta   olumlu geçer   ilgisiz YANLIŞ geçer   dengeli doğruluk
+    #   0.45       %83,5             %2,8                  %90,4
+    #   0.50       %86,6             %5,9                  %90,4
+    #   0.60       %94,1            %19,7                  %87,2
+    #   0.85       %100             %87,4                  %56,3   <- eski
+    #
+    # 0.85 pratikte LASTİK DAMGADIR: ilgisiz çiftlerin %87'sini de geçirir.
+    #
+    # ⚠️ BUNA RAĞMEN EŞİK 0.85'TE BIRAKILDI. Sıkılaştırma denendi (0.60) ve
+    # GERİ ALINDI, çünkü asıl kusur eşikte değil GİRDİDE:
+    #
+    #   12 kelimede ölçüldü — aşamaya giden iki metin
+    #     9/12  DEJENERE: iki taraf birebir AYNI dize (göz, bardak, su,
+    #           deniz, ayak, baş, pencere, yastık, öküz) -> mesafe 0.0,
+    #           bedava ✅. Çoğu tarihî tanığın `meaning` alanı modern TDK
+    #           tanımının kopyası olduğu için aşama kendini kendisiyle
+    #           karşılaştırıyor (search_engine.py:404'ün düzelttiğini
+    #           sandığı hatanın aynısı).
+    #     3/12  gerçek çift — ama üçünde de biçim gürültüsü var
+    #           ("Kaynak anlamı:", "|"): kitap 0.7064, kalem 0.7254,
+    #           televizyon 0.5991. Üçü de DOĞRU etimoloji.
+    #
+    # theta=0.60 bu üç doğru vakanın ikisini (kitap, kalem) sırf gürültü
+    # yüzünden reddediyordu. Kalibrasyonu bozuk girdiye uygulamak sahte
+    # kesinlik üretir; önce girdiler temizlenmeli:
+    #   (a) iki taraf aynıysa `evidence_available: False` dönmeli, bedava
+    #       ✅ verilmemeli;
+    #   (b) "Kaynak anlamı:" / "|" gibi biçim eki kodlamadan önce ayıklanmalı.
+    # Yukarıdaki kalibrasyon tablosu o iş bitince yeniden uygulanacaktır.
     THETA_THRESHOLD = 0.85
 
     def __init__(self, vocab_size: int = 64):
@@ -145,9 +231,32 @@ class DiachronicSemanticEngine:
         :param timeline: Tarihsel katman etiketleri. Şu an yalnızca çıktıda
             raporlanır; çok noktalı yörünge hesabı için ayrılmıştır.
         """
-        s_m = (origin_meaning or "").strip()
-        m_m = (modern_meaning or "").strip()
+        s_m = _clean_gloss(origin_meaning)
+        m_m = _clean_gloss(modern_meaning)
         layers = list(timeline or [])
+
+        # ⚠️ DEJENERE GİRDİ: iki taraf aynıysa mesafe tanımı gereği 0 çıkar ve
+        # aşama BEDAVA ✅ verir. Ölçüldü (12 kelime): 9'unda iki metin birebir
+        # aynıydı (göz, bardak, su, deniz, ayak, baş, pencere, yastık, öküz),
+        # çünkü çoğu tarihî tanığın `meaning` alanı modern TDK tanımının
+        # kopyasıdır. Bu, ölçüm değil kendini doğrulamadır; `search_engine`
+        # tarafında bir kez düzeltildiği sanılan hatanın aynısı.
+        if s_m and m_m and s_m.casefold() == m_m.casefold():
+            return {
+                "origin_meaning": s_m,
+                "modern_meaning": m_m,
+                "total_shift_distance": None,
+                "theta_threshold": self.THETA_THRESHOLD,
+                "is_plausible": None,
+                "evidence_available": False,
+                "trajectory_status": "Kanıt Yok",
+                "reason": (
+                    "Tarihsel ve modern anlam AYNI metin; tarihî tanığın anlamı "
+                    "modern tanımın kopyası. Anlam kayması ölçülemedi."
+                ),
+                "transformer_active": False,
+                "timeline_layers": layers,
+            }
 
         if not s_m or not m_m:
             return {
