@@ -266,19 +266,31 @@ def main() -> int:
         run_battery(reconstructor, items, name) for name, items in ALL_BATTERIES.items()
     ]
 
-    print(f"\n{'batarya':30} {'n':>4} {'rekonstrükte':>13} {'yanlış-poz':>11} {'güçlü iddia':>12}")
-    print("-" * 74)
+    # `yedek` sütunu ŞART: `anchor_fallback` yanlış pozitif sayılmıyor,
+    # ama sayılmıyor diye görünmez de olmamalı. Motorun "yapamadım, işte
+    # sorgu biçimi" dediği maddeler burada açıkça durur.
+    print(
+        f"\n{'batarya':30} {'n':>4} {'rekonstrükte':>13} {'yanlış-poz':>11} "
+        f"{'güçlü iddia':>12} {'yedek':>7}"
+    )
+    print("-" * 82)
     for result in results:
         print(
             f"{result.battery:30} {result.n:>4} {result.reconstructed:>13} "
-            f"{result.false_positive_rate:>11.3f} {result.strong_claim_rate:>12.3f}"
+            f"{result.false_positive_rate:>11.3f} {result.strong_claim_rate:>12.3f} "
+            f"{result.fallback:>7}"
         )
 
     if args.verbose:
         for result in results:
             print(f"\n--- {result.battery}")
             for detail in result.details:
-                mark = "!!" if detail["reconstructed"] else "ok"
+                if detail["reconstructed"]:
+                    mark = "!!"
+                elif detail.get("method") == "anchor_fallback":
+                    mark = "~~"  # kök iddia edilmedi, etiketli geri-dönüş
+                else:
+                    mark = "ok"
                 print(
                     f"  {mark} {detail['query']:10} {str(detail['root']):14} "
                     f"{detail['badge']:20} {detail['calibrated']}"
