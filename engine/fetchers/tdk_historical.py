@@ -1,4 +1,5 @@
 import json
+import re
 import urllib.parse
 import urllib.request
 from typing import Any
@@ -9,6 +10,17 @@ from engine.logging_setup import get_logger
 from engine.utils.network import fetch as http_get
 
 logger = get_logger(__name__)
+
+#: TDK'nın `sehir` alanı HTML taşır:
+#: ``Çiftlik, Başmakçı *Dinar -<b>Afyon</b><br>*Eşme -<b>Uşak</b>``
+#: Temizlenmezse etiketler kullanıcıya giden DİL ADINA sızıyor — ölçüldü:
+#: `herkil` çıktısında ham ``<b>``/``<br>`` görünüyordu.
+_HTML_TAG = re.compile(r"<[^>]+>")
+
+
+def _clean_region(value: str) -> str:
+    """Yöre alanındaki HTML etiketlerini ayıklar."""
+    return " ".join(_HTML_TAG.sub(" ", value or "").split()).strip(" ,-")
 
 
 class TdkTaramaFetcher(BaseFetcher):
@@ -83,7 +95,7 @@ class TdkDerlemeFetcher(BaseFetcher):
                     for item in data[:3]:
                         m_word = item.get("madde", word_clean)
                         meaning = item.get("anlam", "")
-                        city = item.get("sehir", "")
+                        city = _clean_region(item.get("sehir", ""))
                         if meaning:
                             result["turkic_languages"].append({
                                 "lang_code": "tr",
