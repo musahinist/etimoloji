@@ -161,6 +161,25 @@ def is_url_allowed(url: str, *, trusted_only: bool = False, allow_private: bool 
 
 # --- İstek ----------------------------------------------------------------
 
+def _retry_after_seconds(resp: requests.Response, *, cap: float = 5.0) -> float | None:
+    """``Retry-After`` başlığını saniyeye çevirir; yoksa/saçmaysa ``None``.
+
+    Üst sınır şart: sunucu dakikalarca bekleme isteyebilir, ama tek bir
+    kelime araması onlarca kaynağa paralel gidiyor — orada beklemek bütün
+    aramayı kilitler. Bu durumda beklemek yerine o isteği bırakmak doğrudur.
+    """
+    raw = (resp.headers.get("Retry-After") or "").strip()
+    if not raw:
+        return None
+    try:
+        seconds = float(raw)
+    except ValueError:
+        return None  # HTTP-date biçimi: bu hat için beklemeye değmez
+    if seconds <= 0 or seconds > cap:
+        return None
+    return seconds
+
+
 def fetch(
     url: str,
     *,
@@ -199,9 +218,22 @@ def fetch(
                 if diagnostics is not None:
                     diagnostics.add(RequestRecord(url=url, status="ok", duration_ms=elapsed, http_status=200))
                 return _decode_body(resp)
-            # 429/503 gibi geçici durumlarda tekrar dene, 4xx'te deneme
             last_error = f"HTTP {resp.status_code}"
-            if resp.status_code not in (429, 500, 502, 503, 504):
+            # ⚠️ 429 "yavaşla" demektir; körlemesine yeniden denemek yükü
+            # ARTIRIR. Eskiden 429 geçici hata sayılıp 0,3s ve 0,6s arayla iki
+            # kez daha deneniyordu, yani her reddedilen istek ÜÇE katlanıyordu.
+            # Ölçüldü (`herkil`): 4 varyant × 14 Wiktionary sürümü ≈ 60 istek,
+            # yeniden denemelerle ~180'e çıkıp Wikimedia tarafından toptan
+            # reddedildi ve terminal uyarıya boğuldu.
+            # Sunucu makul bir `Retry-After` verirse bir kez beklenir;
+            # vermezse bu istek için pes edilir.
+            if resp.status_code == 429:
+                wait = _retry_after_seconds(resp)
+                if wait is None or attempt >= max_retries:
+                    break
+                time.sleep(wait)
+                continue
+            if resp.status_code not in (500, 502, 503, 504):
                 break
         except requests.RequestException as exc:
             last_error = f"{type(exc).__name__}: {exc}"
@@ -211,7 +243,15 @@ def fetch(
 
     elapsed = int((time.perf_counter() - started) * 1000)
     status = "http_error" if http_status else "network_error"
-    logger.warning("İstek başarısız (%s) %s — %s", last_error, url, f"{elapsed}ms")
+    # 404 ve 429 bu hatta BEKLENEN durumlardır: aranan kelime o sözlükte
+    # gerçekten olmayabilir (404), ya da tek bir arama onlarca kaynağa
+    # paralel gittiği için hız sınırına çarpılabilir (429). Bunları WARNING
+    # basmak terminali dolduruyor ve GERÇEK arızayı görünmez kılıyor —
+    # ölçüldü: tek bir `herkil` aramasında 180'den fazla uyarı satırı.
+    _expected = http_status in (404, 429)
+    (logger.debug if _expected else logger.warning)(
+        "İstek başarısız (%s) %s — %s", last_error, url, f"{elapsed}ms"
+    )
     if diagnostics is not None:
         diagnostics.add(
             RequestRecord(url=url, status=status, duration_ms=elapsed, http_status=http_status, error=last_error)

@@ -92,11 +92,35 @@ class TestNetworkClient(unittest.TestCase):
         self.assertEqual(diag.records[0].http_status, 404)
 
     @responses.activate
-    def test_retries_on_transient_status(self):
-        """429/503 gibi geçici durumlarda YENİDEN denenmeli."""
-        responses.add(responses.GET, "https://sozluk.gov.tr/x", status=429)
+    def test_retries_on_transient_server_error(self):
+        """5xx geçici SUNUCU hatalarında yeniden denenmeli."""
+        responses.add(responses.GET, "https://sozluk.gov.tr/x", status=503)
         responses.add(responses.GET, "https://sozluk.gov.tr/x", body="ok", status=200)
         self.assertEqual(fetch("https://sozluk.gov.tr/x", max_retries=2), "ok")
+
+    @responses.activate
+    def test_rate_limit_retried_when_server_says_how_long(self):
+        """429 + makul `Retry-After` -> o kadar beklenip yeniden denenir."""
+        responses.add(
+            responses.GET, "https://sozluk.gov.tr/x", status=429,
+            headers={"Retry-After": "0.1"},
+        )
+        responses.add(responses.GET, "https://sozluk.gov.tr/x", body="ok", status=200)
+        self.assertEqual(fetch("https://sozluk.gov.tr/x", max_retries=2), "ok")
+
+    @responses.activate
+    def test_bare_rate_limit_is_not_retried(self):
+        """⚠️ `Retry-After` YOKSA 429 yeniden denenmez.
+
+        429 "yavaşla" demektir; körlemesine yeniden deneme hız sınırına
+        çarpan isteği ÜÇE katlar. Ölçüldü (`herkil` araması): 4 varyant ×
+        14 Wiktionary sürümü ≈ 60 istek, yeniden denemelerle ~180 uyarı
+        satırı. Düzeltmeden sonra 0.
+        """
+        responses.add(responses.GET, "https://sozluk.gov.tr/x", status=429)
+        responses.add(responses.GET, "https://sozluk.gov.tr/x", body="ok", status=200)
+        self.assertIsNone(fetch("https://sozluk.gov.tr/x", max_retries=2))
+        self.assertEqual(len(responses.calls), 1)
 
     @responses.activate
     def test_no_retry_on_client_error(self):
