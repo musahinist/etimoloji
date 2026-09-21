@@ -438,7 +438,17 @@ class SearchEngine:
             origin_form = donor_eval.get("origin_form")
             donor_meaning = donor_eval.get("donor_meaning")
             proto_root = f"[{donor_lang}] {origin_form}"
-            proto_root_provenance = "tanıklı — donör dil etimoloji veritabanı"
+            # ⚠️ Tohum dosyası TANIKLIK DEĞİLDİR. `data/seed/donor/
+            # donor_etymology.json` elle yazılmış 10 kayıtlık bir çekirdek
+            # (herkil, herkel, harkil, efendi, rüzgar, kitap, kalem, dünya,
+            # sümen, televizyon). Ölçüldü: `herkil` bu dosyanın ilk maddesi ve
+            # rapor onu "tanıklı — donör dil etimoloji veritabanı" diye,
+            # sözlük tanıklığıymış gibi gösteriyordu.
+            _donor_source = str(donor_eval.get("evidence_source") or "donör veritabanı")
+            _donor_is_seed = "tohum" in _donor_source.lower()
+            proto_root_provenance = (
+                f"{'tohum verisi' if _donor_is_seed else 'tanıklı'} — {_donor_source}"
+            )
             sources.append(f"Donör Dil Etimoloji Veritabanı ({donor_lang})")
             sorted_entries.insert(0, {
                 "lang_code": "donor",

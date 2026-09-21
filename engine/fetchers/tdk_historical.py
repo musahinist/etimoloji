@@ -23,7 +23,9 @@ class TdkTaramaFetcher(BaseFetcher):
             "turkic_languages": []
         }
 
-        url = f"https://sozluk.gov.tr/tarama?ara={urllib.parse.quote(word_clean)}"
+        # ⚠️ Yeni arayüz (`sozluk.gov.tr`) JSON DEĞİL, SPA HTML kabuğu
+        # döndürüyor; eski uç ayakta ve JSON veriyor. Ölçüldü.
+        url = f"https://eski.sozluk.gov.tr/tarama?ara={urllib.parse.quote(word_clean)}"
         try:
             _body = http_get(url, timeout=config.HTTP_TIMEOUT_MEDIUM)
             # TDK bu ucu kaldırdı: HTTP 200 dönüyor ama gövde JSON değil, HTML
@@ -63,7 +65,12 @@ class TdkDerlemeFetcher(BaseFetcher):
             "turkic_languages": []
         }
 
-        url = f"https://sozluk.gov.tr/derleme?ara={urllib.parse.quote(word_clean)}"
+        # ⚠️ Yeni arayüz (`sozluk.gov.tr/derleme`) SPA HTML kabuğu döndürüyor;
+        # eski uç JSON veriyor ve `scripts/harvest_derleme.py` zaten onu
+        # kullanıyordu — canlı fetcher geride kalmıştı. Ölçüldü: `herkil`
+        # eski uçta iki kayıt ("Erzak sandığı", "Erzak ambarı" — İstanbul,
+        # Zonguldak, Kastamonu, Kocaeli, Bolu) verirken fetcher boş dönüyordu.
+        url = f"https://eski.sozluk.gov.tr/derleme?ara={urllib.parse.quote(word_clean)}"
         try:
             _body = http_get(url, timeout=config.HTTP_TIMEOUT_MEDIUM)
             # TDK bu ucu kaldırdı: HTTP 200 dönüyor ama gövde JSON değil, HTML
