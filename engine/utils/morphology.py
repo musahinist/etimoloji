@@ -36,6 +36,33 @@ INFLECTION_GLOSS_MARKERS: tuple[str, ...] = (
 )
 
 
+def is_lexeme(word: str) -> bool:
+    """Girdi bir sözlükbirim mi? Ek, sayı, öbek ve özel ad değilse evet.
+
+    Etimoloji üretilecek girdinin sözlükbirim olması gerekir. Kapı yokken
+    ağız havuzunun ilk beş kaydı ``-acağım``, ``-akalmak``, ``-amaç``,
+    ``-anak``, ``-arak`` (hepsi **ek**) geliyordu ve motor bunların ikisine
+    "güçlü aday" (0,40) dedi. Havuzda ayrıca sıra sayıları (``1'inci``),
+    özel adlar (``Aydoğan``) ve öbekler (``av köpeği``) var.
+
+    ⚠️ Büyük harf denetimi, kelime küçük harfe ÇEVRİLMEDEN uygulanmalıdır.
+    """
+    w = (word or "").strip()
+    if len(w) < 2:
+        return False
+    if w.startswith("-") or w.endswith("-"):
+        return False  # yapım/çekim eki
+    if " " in w or "\t" in w:
+        return False  # çok sözcüklü öbek
+    if w[:1].isupper():
+        return False  # özel ad
+    if any(ch.isdigit() for ch in w):
+        return False  # sayı / sıra sayısı
+    if "'" in w or "’" in w:
+        return False  # kesme işaretli çekim
+    return True
+
+
 def is_inflection_gloss(gloss: str) -> bool:
     """Bu gloss bir çekim tanımı mı (kelime başka bir lemmanın biçimi mi)?
 

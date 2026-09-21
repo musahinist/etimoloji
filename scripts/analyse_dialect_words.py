@@ -40,7 +40,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from engine.config import PROJECT_ROOT  # noqa: E402
 from engine.logging_setup import get_logger  # noqa: E402
-from engine.utils.morphology import is_inflection_gloss  # noqa: E402
+from engine.utils.morphology import is_inflection_gloss, is_lexeme  # noqa: E402
 
 logger = get_logger(__name__)
 
@@ -49,31 +49,6 @@ OUTPUT_DIR = PROJECT_ROOT / "data" / "dialect"
 #: Kanıt gücü kovaları.
 SOLVED_THRESHOLD = 0.60
 CANDIDATE_THRESHOLD = 0.35
-
-
-def is_lexeme(word: str) -> bool:
-    """Girdi bir sözlükbirim mi?
-
-    Ek, öbek ve özel ada etimoloji üretmek anlamsızdır. Kapı yokken yedek
-    havuzun ilk beş kaydı ``-acağım``, ``-akalmak``, ``-amaç``, ``-anak``,
-    ``-arak`` (hepsi **ek**) geliyordu ve motor bunların ikisine "güçlü aday"
-    (0,40) dedi. Havuzda ayrıca çekimli biçimler (``ırmağı``, ``yastığı``),
-    özel adlar (``Aydoğan``, ``Kahta``) ve öbekler (``av köpeği``) var.
-    """
-    w = (word or "").strip()
-    if len(w) < 2:
-        return False
-    if w.startswith("-") or w.endswith("-"):
-        return False  # yapım/çekim eki
-    if " " in w or "\t" in w:
-        return False  # çok sözcüklü öbek
-    if w[:1].isupper():
-        return False  # özel ad
-    if any(ch.isdigit() for ch in w):
-        return False  # sayı / sıra sayısı: 1'inci, 10'uncu, 100'üncü
-    if "'" in w or "’" in w:
-        return False  # kesme işaretli çekim: Ay'a
-    return True
 
 
 def load_words(source: Path | None, limit: int) -> list[str]:

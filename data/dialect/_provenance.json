@@ -1,0 +1,11 @@
+{
+  "_schema": "turkic-etymology-dialect-provenance/v1",
+  "source": "TDK Derleme Sözlüğü (eski.sozluk.gov.tr/derleme)",
+  "seed_source": "Vikisözlük Kategori:Türkçe halk ağzı (CC-BY-SA)",
+  "retrieved_at": "2026-09-21T17:01:30+00:00",
+  "queried_words": 14,
+  "matched_words": 14,
+  "records": 86,
+  "delay_seconds": 0.5,
+  "license_note": "TDK'nın açık lisansı yoktur, telif TDK'dadır. Veri yalnız yerel araştırma için önbelleğe alınır, YENİDEN DAĞITILMAZ; depoya yalnız bu künye girer."
+}
