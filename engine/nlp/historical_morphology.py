@@ -152,8 +152,33 @@ def _strip_is_supported(word: str, stem: str) -> bool:
     adaletsizlik->adaletsiz, İzmirli->izmir, doymuş->doy). Net zarar.
     """
     formula = _formula_stem(word)
-    if formula and formula == stem.strip().lower():
+    # Wiktionary fiil köklerini TİRELİ yazar ("equivalent to um- + -ut"),
+    # soyucu ise tiresiz aday üretir; tire atılmazsa eşleşme kaçar.
+    if formula and formula.rstrip("-") == stem.strip().lower():
         return True
+
+    # ⚠️ "FİİLDEN TÜRETEN EK FİİL KÖK İSTER" KAPISI DENENDİ VE GERİ ALINDI.
+    #
+    # `-It` sistematik olarak fazla soyuyor ve sorun gerçek:
+    #     umut -> um      ✅   çaput -> çap  ❌ ('çap' Ermenice "diameter")
+    #     yoğurt -> yoğur ✅   tabut -> tab  ❌ (Arapça تابوت)
+    #     kanıt -> kan    ✅   kavut -> kav  ❌
+    #                          bulut -> bul  ❌ (Ortak Türkçe *bulıt)
+    #
+    # Kökün mastarı var mı (`kök+mak/mek`) diye bakan kapı `tabut` ve
+    # `kavut`u düzeltti, isimden türeyenlerin hiçbirini bozmadı — ama
+    # `bitig -> biti`yi KIRDI ve bu, deponun önemsediği Eski Türkçe
+    # katmanı. Ölçüldü, kurtarılamıyor:
+    #     `biti` indekste TEK satır: [tr] pos=noun "book"; `bitig` 0 satır.
+    #     `pos='verb'` alanı dolu (tr %13,4, otk %16,6) ama bu köklerin
+    #     hiçbirinde yok; `"to ..."` gloss sezgisi 8 kökte 0 isabet.
+    #     Mastarı diğer Türki dillere yaymak ZARARLI: `tabmaq` [crh],
+    #     `çapmaq` [az/crh] var; `tab` "fiil" olup `tabut` yine kırılırdı.
+    #
+    # Yani ayrımı yapan şey mantık değil VERİ BOŞLUĞU: `biti-` gerçek bir
+    # Eski Türkçe fiil, indeks onu fiil olarak kaydetmiyor. Çözüm kural
+    # değil veri (otk fiil kayıtları). `-It` fazla-soyması AÇIK KUSUR
+    # olarak duruyor.
     return _stem_is_attested(stem)
 
 
