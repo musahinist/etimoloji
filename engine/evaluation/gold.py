@@ -194,33 +194,79 @@ class GoldStandard:
     # -- mühürleme ----------------------------------------------------------
 
     def freeze(self, directory: Path | None = None) -> dict[str, str]:
-        """Bölümleri diske yazar ve test setini checksum'la mühürler."""
+        """Bölümleri diske yazar ve test setini checksum'la mühürler.
+
+        ⚠️ BU İŞLEM ETKİSİZ (idempotent) OLMALIDIR. Eskiden her çağrıda
+        ``frozen_at``/``sealed_at`` alanlarına ``now()`` yazılıyordu; payload
+        değiştiği için checksum da değişiyordu. ``eval-calibration: gold``
+        gibi bağımlılıklar yüzünden HER ölçüm koşusu dondurulmuş test
+        kümesini yeniden mühürlüyordu.
+
+        Bu, mührün varlık sebebini ortadan kaldırıyordu: aşağıdaki kendi
+        notu checksum değişikliğinin "veri kümesi sürümü ya da bölme tuzu
+        değişti" anlamına geldiğini söylüyor, ama her koşuda değişirse
+        hiçbir anlama gelmez — içerik gerçekten bozulsa aynı kod yolu yeni
+        sağlamayı sessizce yazar ve kimse fark etmez.
+
+        Ölçüldü: tek bir ``make eval-calibration`` çağrısı train/dev/
+        test.frozen + SEAL dosyalarının dördünü de kirletiyordu, oysa
+        ``items`` içeriği birebir aynıydı (237/83/80).
+
+        Artık içerik aynıysa mevcut damga korunur, payload bit düzeyinde
+        aynı kalır ve dosya hiç yazılmaz.
+        """
         out_dir = directory or GOLD_DIR
         out_dir.mkdir(parents=True, exist_ok=True)
         checksums: dict[str, str] = {}
+        now = datetime.now(UTC).isoformat(timespec="seconds")
 
         for name in SPLIT_RATIOS:
             items = [i for i in self.items if i.split == name]
             filename = "test.frozen.json" if name == "test" else f"{name}.json"
+            path = out_dir / filename
+            body = {
+                "_schema": "turkic-etymology-gold/v1",
+                "split": name,
+                "source": self.source,
+                "source_ref": self.source_ref,
+                "count": len(items),
+                "items": [asdict(i) for i in items],
+            }
+            # Damga yalnız İÇERİK değiştiyse tazelenir.
+            #
+            # ⚠️ Karşılaştırma JSON-NORMALİZE edilmiş biçimde yapılmalı.
+            # `asdict()` dataclass alanlarını Python tipiyle verir (tuple,
+            # vb.); diskten okunan JSON ise listeye dönüşmüştür ve
+            # `tuple != list` olduğu için eşitlik HİÇBİR ZAMAN tutmaz.
+            # İlk denemede bu yüzden damga koruma hiç ateşlenmedi ve
+            # dosyalar yine her koşuda yazıldı (ölçüldü: `make gold` iki
+            # kez, dört dosya da kirli).
+            canonical = json.loads(json.dumps(body, ensure_ascii=False, sort_keys=True))
+            stamp = now
+            try:
+                existing = json.loads(path.read_text(encoding="utf-8"))
+                if all(existing.get(k) == v for k, v in canonical.items()):
+                    stamp = existing.get("frozen_at") or now
+            except (OSError, ValueError):
+                pass
+
             payload = json.dumps(
-                {
-                    "_schema": "turkic-etymology-gold/v1",
-                    "split": name,
-                    "source": self.source,
-                    "source_ref": self.source_ref,
-                    "frozen_at": datetime.now(UTC).isoformat(timespec="seconds"),
-                    "count": len(items),
-                    "items": [asdict(i) for i in items],
-                },
+                {**body, "frozen_at": stamp},
                 ensure_ascii=False,
                 indent=2,
                 sort_keys=True,
             )
-            path = out_dir / filename
-            path.write_text(payload, encoding="utf-8")
             checksums[name] = hashlib.sha256(payload.encode("utf-8")).hexdigest()
+            if not path.exists() or path.read_text(encoding="utf-8") != payload:
+                path.write_text(payload, encoding="utf-8")
 
-        seal = {
+        note = (
+            "test.frozen.json geliştirme boyunca açılmaz. Checksum değişmişse "
+            "ya veri kümesi sürümü ya bölme tuzu değişmiştir; her iki durumda "
+            "da önceki ölçümler karşılaştırılabilir değildir."
+        )
+        seal_path = out_dir / "SEAL.json"
+        seal_fields = {
             "_schema": "turkic-etymology-gold-seal/v1",
             "source": self.source,
             "source_ref": self.source_ref,
@@ -228,14 +274,37 @@ class GoldStandard:
             "ratios": SPLIT_RATIOS,
             "counts": self.counts(),
             "checksums": checksums,
-            "sealed_at": datetime.now(UTC).isoformat(timespec="seconds"),
-            "note": (
-                "test.frozen.json geliştirme boyunca açılmaz. Checksum değişmişse "
-                "ya veri kümesi sürümü ya bölme tuzu değişmiştir; her iki durumda "
-                "da önceki ölçümler karşılaştırılabilir değildir."
-            ),
+            "note": note,
         }
-        (out_dir / "SEAL.json").write_text(json.dumps(seal, ensure_ascii=False, indent=2), encoding="utf-8")
+        # Bölüm dosyalarıyla aynı gerekçe: karşılaştırma JSON-normalize
+        # edilmiş biçimde yapılır. SEAL alanlarının hepsi bugün JSON-uyumlu
+        # tipte, ama biri ileride tuple/set olursa sessizce her koşuda
+        # yeniden mühürlemeye dönerdi.
+        canonical_seal = json.loads(json.dumps(seal_fields, ensure_ascii=False, sort_keys=True))
+        seal_stamp = now
+        try:
+            existing_seal = json.loads(seal_path.read_text(encoding="utf-8"))
+            if all(existing_seal.get(k) == v for k, v in canonical_seal.items()):
+                seal_stamp = existing_seal.get("sealed_at") or now
+        except (OSError, ValueError):
+            pass
+
+        # ⚠️ Anahtar SIRASI korunuyor (`sealed_at` nottan ÖNCE): dosyanın
+        # baytları değişmesin, yoksa etkisizlik bozulur.
+        seal = {
+            "_schema": seal_fields["_schema"],
+            "source": seal_fields["source"],
+            "source_ref": seal_fields["source_ref"],
+            "salt": seal_fields["salt"],
+            "ratios": seal_fields["ratios"],
+            "counts": seal_fields["counts"],
+            "checksums": checksums,
+            "sealed_at": seal_stamp,
+            "note": note,
+        }
+        seal_text = json.dumps(seal, ensure_ascii=False, indent=2)
+        if not seal_path.exists() or seal_path.read_text(encoding="utf-8") != seal_text:
+            seal_path.write_text(seal_text, encoding="utf-8")
         logger.info("Altın standart mühürlendi: %s", out_dir)
         return checksums
 

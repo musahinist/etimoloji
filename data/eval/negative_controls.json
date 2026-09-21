@@ -51,9 +51,9 @@
       {
         "query": "sötüm",
         "reconstructed": true,
-        "root": "*sötem",
+        "root": "*sötüm",
         "badge": "🟠 ZAYIF KANIT",
-        "calibrated": 0.1807,
+        "calibrated": 0.1949,
         "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
       },
       {
@@ -99,7 +99,7 @@
       {
         "query": "dolgaş",
         "reconstructed": true,
-        "root": "*dolgaş",
+        "root": "*dolgaĺ",
         "badge": "🟠 ZAYIF KANIT",
         "calibrated": 0.2114,
         "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
@@ -117,7 +117,7 @@
       {
         "query": "ftrxq",
         "reconstructed": false,
-        "root": "*ftrhk",
+        "root": "*ftrhp",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
         "reason": "Türkçenin ses dizimini ihlal ediyor"
@@ -133,7 +133,7 @@
       {
         "query": "psxth",
         "reconstructed": false,
-        "root": "*pshth",
+        "root": "*pshtl",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1474,
         "reason": "Türkçenin ses dizimini ihlal ediyor"
@@ -176,18 +176,18 @@
     "alinti_tuzagi": [
       {
         "query": "kitap",
-        "reconstructed": true,
-        "root": "*kitap",
-        "badge": "🟠 ZAYIF KANIT",
-        "calibrated": 0.1913,
-        "reason": "Arapça kitāb — bütün Türki dillerde var ama MİRAS DEĞİL"
-      },
-      {
-        "query": "duvar",
         "reconstructed": false,
         "root": "",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": null,
+        "reason": "Arapça kitāb — bütün Türki dillerde var ama MİRAS DEĞİL"
+      },
+      {
+        "query": "duvar",
+        "reconstructed": true,
+        "root": "*divar",
+        "badge": "🟠 ZAYIF KANIT",
+        "calibrated": 0.1899,
         "reason": "Farsça dīwār"
       },
       {
@@ -201,7 +201,7 @@
       {
         "query": "pencere",
         "reconstructed": true,
-        "root": "*penjire",
+        "root": "*penjere",
         "badge": "🟠 ZAYIF KANIT",
         "calibrated": 0.1994,
         "reason": "Farsça panǧara"
@@ -227,7 +227,7 @@
       {
         "query": "yaş",
         "reconstructed": true,
-        "root": "*jaş",
+        "root": "*jaĺ",
         "badge": "🟠 ZAYIF KANIT",
         "calibrated": 0.1859,
         "reason": "'age' ve 'wet/tear' ayrı köklerdir"
