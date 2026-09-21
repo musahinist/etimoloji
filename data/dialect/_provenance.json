@@ -9,5 +9,9 @@
   "delay_seconds": 0.5,
   "license_note": "TDK'nın ilan edilmiş açık lisansı yoktur, telif TDK'dadır. Veri bu depoda BİLEREK tutulur: depo private, çalışma akademik ve ticari değil, kayıtlar atıflı ve künyeli. Gerekçe yeniden üretilebilirliktir. ⚠️ Depo public'e açılacak olursa data/dialect/ önce çıkarılmalıdır. Ayrıntı: data/dialect/README.md",
   "queried_words_note": "--limit 2000 üst sınırına kadar sorgulandı; kesin sayı hasat sırasında kaydedilmemişti (düzeltildi, sonraki koşularda kaydedilecek)",
-  "hit_rate": 0.816
+  "hit_rate": 0.816,
+  "lehce_records_found": 144,
+  "lehce_matched_words": 114,
+  "lehce_witnesses": 452,
+  "lehce_note": "lehceler ucu AKRABA degil CEVIRI KARSILIGI verir (gaga -> tumsuk: dogru ceviri, farkli kok). Bicimce uzak karsiliklar elenir. OLCULDU: 1631 agiz maddesinin yalniz 144u (%8,8) bu sozlukte var; suzgeci 114u gecti. n=400 ornekte etki: ortalama tanik 2,792 -> 3,013; sifir tanikli 109 -> 106; guclu aday 40 -> 40 (DEGISMEDI)."
 }
