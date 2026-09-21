@@ -175,10 +175,16 @@ def _strip_is_supported(word: str, stem: str) -> bool:
     #     Mastarı diğer Türki dillere yaymak ZARARLI: `tabmaq` [crh],
     #     `çapmaq` [az/crh] var; `tab` "fiil" olup `tabut` yine kırılırdı.
     #
-    # Yani ayrımı yapan şey mantık değil VERİ BOŞLUĞU: `biti-` gerçek bir
-    # Eski Türkçe fiil, indeks onu fiil olarak kaydetmiyor. Çözüm kural
-    # değil veri (otk fiil kayıtları). `-It` fazla-soyması AÇIK KUSUR
-    # olarak duruyor.
+    # Yani ayrımı yapan şey mantık değil VERİ BOŞLUĞU. Sonradan daha
+    # keskin ölçüldü: otk fiil kayıtları indekste ASLINDA VAR (78 adet,
+    # `𐰋𐰃𐱅𐰃` = "to write, to inscribe" dahil) ama Latin kökle ARANAMAZ,
+    # çünkü çeviriyazı `biti` değil `bıtı` üretiyor. Sebep kaynak yazıdır:
+    # `ORKHON I` işareti i/ı ayrımı yapmaz, ünsüzler (`AEB`, `AEK`, `AES`…)
+    # ön/art uyumu taşımaz, ve gerçek otk kayıtlarının %38'i ünlüsüzdür
+    # (`tg` = tağ, `lg` = elig, `sç` = saç). Uyum-duyarlı çeviriyazı da
+    # denendi ve çürütüldü — ayrıntı `utils/transliteration.py` notunda.
+    # Çözüm kural değil veri: küratörlü Latin okuma. `-It` fazla-soyması
+    # AÇIK KUSUR olarak duruyor.
     return _stem_is_attested(stem)
 
 

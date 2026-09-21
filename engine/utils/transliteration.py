@@ -53,6 +53,32 @@ ARABIC_TO_LATIN = {
 #: ⚠️ Çıktı `to_comparison_form`'un hedef alfabesinde kalmalıdır
 #: (`a-zçğıöşüŋŕĺ`): geniz n'si için `ñ` DEĞİL `ŋ` kullanılır — `ñ` o
 #: süzgeçte silinir ve ses tamamen kaybolurdu.
+#: ⚠️ BU TABLO SÖZLÜKSEL ARAMA İÇİN YETERLİ DEĞİLDİR — ölçüldü, kurtarılamaz.
+#:
+#: Çeviriyazı runik kayıtları indekslenebilir yapar (1/470 -> 470/470) ama
+#: üretilen biçimler Latin köklerle EŞLEŞMEZ::
+#:
+#:     𐰋𐰃𐱅𐰃 -> 'bıtı'   (biti- "yazmak")     𐰋𐰃𐰼 -> 'bır'  (bir)
+#:     𐱅𐰭𐰼𐰃 -> 'tŋrı'   (teŋri)              𐰚𐰃𐰾𐰃 -> 'kısı' (kişi)
+#:
+#: Sebep tabloda değil KAYNAK YAZIDA:
+#:   * `U+10C03 ORKHON I` tek işaret olarak hem `i` hem `ı` içindir; tabloda
+#:     `i` ve `u`/`ü` hiç yoktur. Ölçüldü: otk'nin 470 kaydında `ı` geçen 92,
+#:     `i` geçen 1 — bir dil için imkânsız bir oran.
+#:   * Ünsüz işaretleri `AEB`, `AET`, `AER`, `AEY`, `AEK`, `AES` diye
+#:     adlandırılmıştır: "AE" hem A hem E bağlamı demektir, yani ön/art
+#:     uyumunu TAŞIMAZLAR. Ünsüz niteliği de kaybolur (`kısı` <- `kişi`,
+#:     AES işareti `ş` sesini de karşılıyor).
+#:   * Orhun yazısı ünlülerin çoğunu hiç yazmaz: alfabe dışı 397 otk
+#:     kaydının 150'si (%38) iki harf veya daha kısa — `tg` (tağ "dağ"),
+#:     `lg` (elig "el"), `sç` (saç), `dg` (adıg "ayı"), `bş` (beş).
+#:
+#: **Uyum-duyarlı çeviriyazı DENENDİ ve ÖLÇÜLEREK ÇÜRÜTÜLDÜ**: ünsüz
+#: serisinden ünlü niteliği türetilebilseydi iş görürdü, ama yukarıdaki
+#: Unicode adları o bilginin kod noktalarında bulunmadığını gösteriyor.
+#: Tek gerçek çözüm bilimsel bir edisyondan KÜRATÖRLÜ LATİN OKUMA eklemek,
+#: yani yeni veri. Bu yüzden Eski Türkçe fiil kökleri (`biti-` gibi) Latin
+#: kökle aranamaz; bkz. `nlp/historical_morphology.py` fiil kapısı notu.
 OLD_TURKIC_TO_LATIN = {
     # --- Ünlüler ---
     "\U00010C00": "a", "\U00010C01": "a", "\U00010C02": "e",
