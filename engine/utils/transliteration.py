@@ -37,9 +37,64 @@ ARABIC_TO_LATIN = {
     "\u0650": "i", "\u0651": "", "\u0652": "", "\u0653": "", "\u0670": "a",
 }
 
+#: Orhun–Yenisey (Eski Türk) yazısı — Unicode bloğu U+10C00–U+10C48.
+#:
+#: ⚠️ Bu tablo YOKTU. Modül başlığı "Orhun Göktürk Alfabesini çevirir" diyor,
+#: README "Kiril/Arap/Runik" diyor, `lexicon_index.py:393` yorumu "Arap veya
+#: Orhun yazısı" diyordu — ama runik metin aşağıdaki "zaten Latin mi" testini
+#: geçemediği için dokunulmadan geri dönüyordu. Sonuç: `to_comparison_form`
+#: boş dönüyor ve kayıt indekse HİÇ girmiyordu. Ölçüldü: Eski Türkçe
+#: dökümünün 470 kaydından yalnız 1'i (Latin harfli bir "romanization"
+#: satırı) indekslenebilmişti.
+#:
+#: Harf adları sesi kodlar: "ORKHON AB" ile "ORKHON AEB" aynı /b/ sesinin
+#: art/ön ünlü değişkeleridir, ikisi de `b`'ye çöker; Yenisey değişkeleri de
+#: Orhun karşılıklarıyla birleşir.
+#: ⚠️ Çıktı `to_comparison_form`'un hedef alfabesinde kalmalıdır
+#: (`a-zçğıöşüŋŕĺ`): geniz n'si için `ñ` DEĞİL `ŋ` kullanılır — `ñ` o
+#: süzgeçte silinir ve ses tamamen kaybolurdu.
+OLD_TURKIC_TO_LATIN = {
+    # --- Ünlüler ---
+    "\U00010C00": "a", "\U00010C01": "a", "\U00010C02": "e",
+    "\U00010C03": "ı", "\U00010C04": "ı", "\U00010C05": "e",
+    "\U00010C06": "o", "\U00010C07": "ö", "\U00010C08": "ö",
+    # --- Ünsüzler: art/ön değişkeler aynı sese çöker ---
+    "\U00010C09": "b", "\U00010C0A": "b", "\U00010C0B": "b", "\U00010C0C": "b",
+    "\U00010C0D": "g", "\U00010C0E": "g", "\U00010C0F": "g", "\U00010C10": "g",
+    "\U00010C11": "d", "\U00010C12": "d", "\U00010C13": "d",
+    "\U00010C14": "z", "\U00010C15": "z",
+    "\U00010C16": "y", "\U00010C17": "y", "\U00010C18": "y", "\U00010C19": "y",
+    "\U00010C1A": "k", "\U00010C1B": "k", "\U00010C1C": "k", "\U00010C1D": "k",
+    "\U00010C1E": "l", "\U00010C1F": "l", "\U00010C20": "l",
+    "\U00010C22": "m",
+    "\U00010C23": "n", "\U00010C24": "n", "\U00010C25": "n",
+    "\U00010C2C": "ŋ", "\U00010C2D": "ŋ", "\U00010C2E": "ŋ",
+    "\U00010C2F": "p", "\U00010C30": "p",
+    "\U00010C31": "ç", "\U00010C32": "ç", "\U00010C33": "ç",
+    "\U00010C34": "q", "\U00010C35": "q", "\U00010C36": "q",
+    "\U00010C37": "q", "\U00010C38": "q", "\U00010C39": "q",
+    "\U00010C3A": "r", "\U00010C3B": "r", "\U00010C3C": "r",
+    "\U00010C3D": "s", "\U00010C3E": "s",
+    "\U00010C3F": "ş", "\U00010C40": "ş", "\U00010C41": "ş", "\U00010C42": "ş",
+    "\U00010C43": "t", "\U00010C44": "t", "\U00010C45": "t",
+    "\U00010C46": "t", "\U00010C47": "t",
+    # --- Küme harfleri: tek işaret, birden çok ses ---
+    "\U00010C21": "lt",                        # ORKHON ELT
+    "\U00010C26": "nt", "\U00010C27": "nt",    # ENT
+    "\U00010C28": "nç", "\U00010C29": "nç",    # ENC
+    "\U00010C2A": "ny", "\U00010C2B": "ny",    # ENY
+    "\U00010C48": "baş",                       # ORKHON BASH (hece işareti)
+}
+
+
 def transliterate_to_latin(text: str) -> str:
     if not text:
         return text
+
+    # Runik metin aşağıdaki Kiril/Arap testinden geçemez ve "zaten Latin"
+    # sayılıp değişmeden dönerdi; bu yüzden ÖNCE burada ele alınır.
+    if any(ch in OLD_TURKIC_TO_LATIN for ch in text):
+        return "".join(OLD_TURKIC_TO_LATIN.get(ch, ch) for ch in text)
 
     # Eğer zaten Latin harfleri ağırlıklıysa dokunma
     if not re.search(r'[\u0400-\u04FF\u0600-\u06FF]', text):
@@ -53,6 +108,9 @@ def transliterate_to_latin(text: str) -> str:
             res.append(trans.upper() if ch.isupper() else trans)
         elif ch_lower in ARABIC_TO_LATIN:
             res.append(ARABIC_TO_LATIN[ch_lower])
+        elif ch in OLD_TURKIC_TO_LATIN:
+            # Karışık yazılı metinler için (ör. runik + Kiril açıklama).
+            res.append(OLD_TURKIC_TO_LATIN[ch])
         else:
             res.append(ch)
 

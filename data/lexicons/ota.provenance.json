@@ -1,0 +1,15 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Ottoman_Turkish",
+  "code": "ota",
+  "donor": false,
+  "ru_edition": false,
+  "url": "https://kaikki.org/dictionary/Ottoman%20Turkish/kaikki.org-dictionary-OttomanTurkish.jsonl",
+  "retrieved_at": "2026-09-21T16:23:10+00:00",
+  "raw_bytes": 25591366,
+  "stored_bytes": 3669916,
+  "entries": 9904,
+  "compressed": true,
+  "sha256_stored": "bef7d3e63dc45834ee386dbdae3b0daea3c7fe436d21956ce536e41514acf41c",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

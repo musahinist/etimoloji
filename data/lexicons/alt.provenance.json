@@ -1,0 +1,15 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Southern_Altai",
+  "code": "alt",
+  "donor": false,
+  "ru_edition": false,
+  "url": "https://kaikki.org/dictionary/Southern%20Altai/kaikki.org-dictionary-SouthernAltai.jsonl",
+  "retrieved_at": "2026-09-21T16:23:12+00:00",
+  "raw_bytes": 11517084,
+  "stored_bytes": 1066077,
+  "entries": 1914,
+  "compressed": true,
+  "sha256_stored": "6691d19e41d3a800c5ba70f6ada2c7c030cd4c691f8b365d6e5e0f7cfcf6e880",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

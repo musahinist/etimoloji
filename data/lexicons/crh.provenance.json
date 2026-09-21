@@ -1,0 +1,15 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Crimean_Tatar",
+  "code": "crh",
+  "donor": false,
+  "ru_edition": false,
+  "url": "https://kaikki.org/dictionary/Crimean%20Tatar/kaikki.org-dictionary-CrimeanTatar.jsonl",
+  "retrieved_at": "2026-09-21T16:23:11+00:00",
+  "raw_bytes": 10497697,
+  "stored_bytes": 884659,
+  "entries": 4780,
+  "compressed": true,
+  "sha256_stored": "58f97925c9fa0896d77349222094c031acac1085fd252900488f82fd203049e7",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}
