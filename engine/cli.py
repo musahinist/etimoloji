@@ -173,6 +173,17 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
         # değişmez — API ve web paneli tam metni almaya devam eder.
         recon_note = str(recon_eval.get("reconstruction_notes") or "").strip()
         print(f"  • Rekonstrüksiyon Değerlend: {recon_note.splitlines()[0] if recon_note else '—'}")
+        # Tanık tanıklığı ENGELLEYİCİ değil, görünür: sütun uyumu tanıkların
+        # birbiriyle uyuşmasını ölçer, gerçek olup olmadıklarını değil.
+        # Uydurma bir kökün uydurulmuş tanıkları da kusursuz uyumludur.
+        _attested = recon_eval.get("attested_witness_count")
+        if _attested == 0:
+            print(
+                "  ⚠️  Tanık Tanıklığı        : hiçbir tanık biçimi sözlükte "
+                "bulunamadı — kökün tanıkların kendi uyumundan başka dayanağı yok"
+            )
+        elif isinstance(_attested, int) and _attested > 0:
+            print(f"  • Tanık Tanıklığı          : {_attested} tanık biçimi sözlükte doğrulandı")
 
         # Kullanıcıya giden sayı HAM skor değil kalibre skordur (ham skorun
         # ECE'si 0,43 ölçüldü). Motor bunu zaten hesaplıyordu ama CLI basmıyor,

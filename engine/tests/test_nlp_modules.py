@@ -38,6 +38,62 @@ GOZ = entries([("tr", "göz"), ("az", "göz"), ("kk", "көз"), ("tt", "күз"
                ("cv", "куҫ"), ("otk", "köz"), ("ky", "көз"), ("ba", "күҙ")])
 
 
+class TestWitnessAttestationDiagnostic(unittest.TestCase):
+    """Tanık tanıklığı RAPORLANIR, soymayı engellemez.
+
+    Sütun uyumu tanıkların birbiriyle uyuşmasını ölçer, gerçek olup
+    olmadıklarını değil: uydurma bir kökün uydurulmuş tanıkları da
+    kusursuz uyumludur.
+
+    ⚠️ Sert kapı (en az bir tanık indekste olsun) ölçülerek REDDEDİLDİ —
+    sahtelerin 7/8'ini elerken GERÇEK altın maddelerin %12'sini de elerdi
+    (73/83 maddede tanık indekste). Gerekçe `comparative_reconstruction`
+    içindeki notta.
+    """
+
+    def test_fabricated_witnesses_report_zero(self):
+        from engine.nlp.comparative_reconstruction import ComparativeReconstructor
+
+        entries = [
+            {"lang_code": "kk", "word": "kalgır"},
+            {"lang_code": "tt", "word": "qalğır"},
+            {"lang_code": "ky", "word": "kalgır"},
+        ]
+        res = ComparativeReconstructor().reconstruct("kalgır", entries)
+        self.assertEqual(res.get("attested_witness_count"), 0)
+        self.assertIn("bulunamadı", res.get("attestation_note", ""))
+        # Engellemez: kök yine üretilir, yalnız dayanaksızlığı görünür olur.
+        self.assertTrue(res.get("reconstructed_root"))
+
+    def test_real_witnesses_report_positive(self):
+        from engine.nlp.comparative_reconstruction import ComparativeReconstructor
+
+        entries = [
+            {"lang_code": "az", "word": "göz"},
+            {"lang_code": "tt", "word": "küz"},
+            {"lang_code": "ky", "word": "köz"},
+        ]
+        res = ComparativeReconstructor().reconstruct("göz", entries)
+        count = res.get("attested_witness_count")
+        self.assertIsNotNone(count)
+        self.assertGreater(count, 0)
+
+    def test_missing_index_is_none_not_zero(self):
+        """"Sıfır doğrulandı" ile "ölçemedim" karıştırılmamalı."""
+        from unittest import mock
+
+        from engine.nlp.comparative_reconstruction import ComparativeReconstructor
+
+        with mock.patch(
+            "engine.db.lexicon_index.LexiconIndex.exists",
+            new_callable=mock.PropertyMock,
+            return_value=False,
+        ):
+            self.assertIsNone(
+                ComparativeReconstructor._attested_witness_count(["göz", "köz"])
+            )
+
+
 class TestComparativeReconstruction(unittest.TestCase):
     def test_produces_correct_proto_forms(self):
         """Karşılaştırmalı yöntem bilinen ata biçimleri üretmelidir."""

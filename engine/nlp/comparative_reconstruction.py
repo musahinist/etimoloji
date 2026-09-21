@@ -301,6 +301,29 @@ class ComparativeReconstructor:
         # bu yüzden yüksek güven alıyordu.
         plausibility, plausibility_notes = proto_plausibility(proto_form)
 
+        # ⚠️ TANIK TANIKLIĞI — ENGELLEYİCİ DEĞİL, GÖRÜNÜR.
+        #
+        # Sütun uyumu tanıkların birbiriyle uyuşmasını ölçer; tanıkların
+        # GERÇEK olup olmadığını ölçmez. Uydurma bir kök için uydurulmuş
+        # tanıklar da kusursuz uyumludur.
+        #
+        # Sert kapı (en az bir tanık indekste olsun) denendi ve ÖLÇÜLEREK
+        # REDDEDİLDİ:
+        #     fonotaktik_gecerli_sahte  1/8 maddede tanık indekste  -> 7'si elenirdi
+        #     bariz_sahte               0/4
+        #     alinti_tuzagi             5/5  (gerçek kelimeler, dokunulmamalı)
+        #     eşadlı                    3/3  (gerçek kelimeler, dokunulmamalı)
+        #     GERÇEK altın dev          73/83 = %88,0
+        # Yani kapı sahtelerin çoğunu elerken gerçek maddelerin %12'sini de
+        # elerdi (*ḳap, *ḳatḳïr, *dïŋla, *jalpï, *ïrgï...). Kapsam 0.988'den
+        # ~0.88'e düşer ve çekimser madde NED 1.0 aldığı için ortalama
+        # bozulurdu. Üstelik bataryanın asıl güvenlik ölçütü
+        # `strong_claim_rate` zaten 0.0 — motor bu köklere ⚪/🟠 diyor.
+        #
+        # Bu yüzden sayı yalnızca RAPORLANIR: kullanıcı "hiçbir tanık
+        # sözlükte bulunamadı" ibaresini görür, kapsam kaybı olmaz.
+        attested = self._attested_witness_count([*by_lang.values(), anchor])
+
         result: dict[str, Any] = {
             "word": word,
             "reconstructed_root": proto_form,
@@ -330,6 +353,17 @@ class ComparativeReconstructor:
                 )
             ),
             "method": "comparative",
+            "attested_witness_count": attested,
+            "attestation_note": (
+                ""
+                if attested is None
+                else (
+                    "Tanık biçimlerinden hiçbiri sözlük indeksinde bulunamadı; "
+                    "bu kök tanıkların kendi uyumundan başka bir dayanağa sahip değil."
+                    if attested == 0
+                    else f"{attested} tanık biçimi sözlük indeksinde doğrulandı."
+                )
+            ),
             "witness_count": len(by_lang),
             "witness_languages": sorted(by_lang),
             "branch_count": len(branches),
@@ -367,6 +401,25 @@ class ComparativeReconstructor:
             return BorrowingDetector().detect(word, entries or [])
         except Exception:
             logger.warning("Alıntı denetimi başarısız: %s", word, exc_info=True)
+            return None
+
+    @staticmethod
+    def _attested_witness_count(forms: list[str]) -> int | None:
+        """Tanık biçimlerinden kaçı sözlük indeksinde bulunuyor?
+
+        İndeks yoksa ``None`` döner — "sıfır tanık doğrulandı" ile "ölçemedim"
+        karıştırılmamalı.
+        """
+        try:
+            from engine.db.lexicon_index import LexiconIndex
+
+            index = LexiconIndex()
+            if not index.exists:
+                return None
+            unique = {f.strip() for f in forms if f and f.strip()}
+            return sum(1 for f in unique if index.lookup(f, limit=1))
+        except Exception:
+            logger.debug("Tanık tanıklığı ölçülemedi", exc_info=True)
             return None
 
     @staticmethod
