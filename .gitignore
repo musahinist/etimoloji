@@ -80,6 +80,12 @@ data/dialect/analysis.json
 # SIGTYP dışa aktarımı `make sigtyp` ile üretilir (deterministik).
 data/sigtyp/*.tsv
 
-# TDK/Nişanyan'dan çekilen Türkçe altın küme yeniden dağıtılmaz
-# (Nişanyan API lisansı ilan edilmemiş); `make turkish-gold` ile kurulur.
-data/gold/
+# Altın standart kümeleri BİLEREK izlenir (5 dosya zaten commit'li; kural
+# onlar eklendikten sonra yazılmış ve hiçbir zaman etkili olmamıştı — git
+# yalnız izlenmeyen dosyaları yok sayar, bu yüzden satır yanıltıcıydı).
+# Duruş `data/dialect/README.md` ile aynı: depo private, çalışma akademik ve
+# ticari değil, veri atıflı. Mühürlü test kümesinin (`test.frozen.json`,
+# `SEAL.json`) anlamı zaten depoda durmasına bağlıdır.
+# ⚠️ Depo public'e açılacak olursa `data/gold/turkish_loanwords.json`
+# (TDK + Nişanyan türevi) önce çıkarılmalıdır; train/dev/test savelyevturkic
+# (CC-BY-4.0) türevidir ve dağıtılabilir.
