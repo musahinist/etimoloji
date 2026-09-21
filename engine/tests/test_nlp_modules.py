@@ -38,6 +38,78 @@ GOZ = entries([("tr", "göz"), ("az", "göz"), ("kk", "көз"), ("tt", "күз"
                ("cv", "куҫ"), ("otk", "köz"), ("ky", "көз"), ("ba", "күҙ")])
 
 
+class TestAttestedLoanBlocksReconstruction(unittest.TestCase):
+    """Sözlüğün DOĞRUDAN tanıklığı miras rekonstrüksiyonunu engellemeli.
+
+    Alıntı tuzaklarında `zincir_kanıtı` ateşleniyor ama toplam skor tam
+    0.50'de kalıp muhafazakâr eşiğin (0.55) kılpayı altında kalıyordu;
+    yalnız `kitap` (0.59) engelleniyordu. Ölçüldü: batarya
+    `alinti_tuzagi` oranı 0.800 -> 0.000.
+    """
+
+    TRAPS = ("kitap", "duvar", "çorap", "pencere", "sabun")
+    #: Engellenmemesi gerekenler. Üçü ölçülmüş risk vakası:
+    #: `gül` (miras kanıtı `gülmek` mastarında), `yaz`/`öküz` (indekste
+    #: ters yönlü "alıntı" kaydı var, çekirdek Ortak Türkçe).
+    PROTECTED = ("gül", "yaz", "öküz", "göz", "bardak", "deniz", "su", "çay", "kat")
+
+    def test_traps_are_blocked(self):
+        from engine.nlp.borrowing_detector import BorrowingDetector
+
+        d = BorrowingDetector()
+        for w in self.TRAPS:
+            with self.subTest(word=w):
+                self.assertTrue(d.detect(w).blocks_inherited_reconstruction, w)
+
+    def test_native_words_are_not_blocked(self):
+        from engine.nlp.borrowing_detector import BorrowingDetector
+
+        d = BorrowingDetector()
+        for w in self.PROTECTED:
+            with self.subTest(word=w):
+                self.assertFalse(d.detect(w).blocks_inherited_reconstruction, w)
+
+    def test_blocked_trap_yields_no_root(self):
+        """Engellenen kelimeye ata biçim ÜRETİLMEMELİ."""
+        from engine.nlp.comparative_reconstruction import ComparativeReconstructor
+
+        entries = [
+            {"lang_code": "az", "word": "divar"},
+            {"lang_code": "tk", "word": "diwar"},
+            {"lang_code": "uz", "word": "devor"},
+        ]
+        res = ComparativeReconstructor().reconstruct("duvar", entries)
+        self.assertFalse(res.get("is_reconstructible"))
+        self.assertEqual(res.get("reconstructed_root"), "")
+
+    def test_infinitive_evidence_rescues_homonym(self):
+        """`gül` indekste yalnız alıntı görünür; miras kanıtı `gülmek`tedir."""
+        from engine.nlp.borrowing_detector import _index_attests_loan
+
+        self.assertFalse(_index_attests_loan("gül"))
+        self.assertTrue(_index_attests_loan("duvar"))
+
+    def test_cldf_forms_do_not_collide_with_turkish_headwords(self):
+        """Tam eşleşme şartı — normalleştirme çarpışması regresyonu.
+
+        `index.lookup` karşılaştırma biçimi üzerinden arar ve CLDF
+        işaretlerini normalleştirir (`š`->`ş`, `ï`->`ı`, uzunluk `:` düşer).
+        Ölçüm hattı proto/tanık biçimleri beslediği için alakasız Türkçe
+        maddelere çarpıyordu:
+
+            keš     -> 'keş'   (fa "drug addict")
+            kïrba:  -> 'kırba' (ar "waterskin")
+
+        Bu iki çarpışma altın dev kümesinde 2 maddeyi çekimser bırakıp
+        NED'i 0.302 -> 0.3261 bozuyordu.
+        """
+        from engine.nlp.borrowing_detector import _index_attests_loan
+
+        for form in ("keš", "kïrba:"):
+            with self.subTest(form=form):
+                self.assertFalse(_index_attests_loan(form), form)
+
+
 class TestWitnessAttestationDiagnostic(unittest.TestCase):
     """Tanık tanıklığı RAPORLANIR, soymayı engellemez.
 

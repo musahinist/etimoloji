@@ -129,6 +129,104 @@ BORROWING_THRESHOLD = 0.45
 #: miras hipotezini kurar ve kullanıcı iki okumayı da görür.
 BLOCK_THRESHOLD = 0.55
 
+
+def _index_attests_loan(word: str) -> bool:
+    """Sözlük bu kelimeyi DOĞRUDAN alıntı olarak tanıklıyor mu?
+
+    Toplam skor muhafazakâr eşiğin (0.55) altında kalsa bile, indeksin
+    doğrudan tanıklığı miras rekonstrüksiyonunu engellemeye yeter — bu,
+    mümkün olan en güçlü kanıttır.
+
+    Ölçüldü (negatif kontrol, alıntı tuzakları): dördünde de `zincir_kanıtı`
+    ateşleniyor ama skor tam 0.50'de kalıp eşiğin kılpayı altında kalıyordu::
+
+        kitap   0.59  engellenirdi        duvar   0.50  engellenmiyordu (fa-cls)
+        çorap   0.50  engellenmiyordu     pencere 0.50  engellenmiyordu (fa-cls)
+        sabun   0.50  engellenmiyordu (ar)
+
+    Eşiği düşürmek yerine tanıklığa bakılıyor; eşik muhafazakâr kalıyor.
+
+    Üç koruma — üçü de ÖLÇÜLMÜŞ vakalardan:
+      * Soy kodları (`trk-pro`, `otk`…) verici değildir.
+      * Ters yönlü kayıtlar (`KNOWN_REVERSED_LOAN_DIRECTION`): `öküz`
+        indekste `hu` vericili "alıntı" görünür ama çekirdek Ortak
+        Türkçedir; süzülmezse miras rekonstrüksiyonu engellenirdi.
+      * Eşadlılık — MASTAR KANIDI DAHİL. `gül` indekste yalnız alıntı
+        (fa-cls "rose") görünür, miras kanıtı `gülmek`tedir. Mastar
+        sayılmazsa altın kümedeki `gül=*kül` (LAUGH) engellenirdi.
+
+    Etki alanı ölçüldü: 5 tuzağın 5'i engellenir; `göz`, `bardak`, `deniz`,
+    `su`, `yaş`, `kat`, `çay`, `gül`, `yaz`, `öküz` engellenmez; altın dev
+    kümesinde engellenen madde sayısı 0.
+    """
+    key = (word or "").strip().lower()
+    if not key:
+        return False
+    try:
+        from engine.db.lexicon_index import LexiconIndex
+        from engine.nlp.borrowing_chain import TURKIC_LINEAGE_CODES
+        from engine.nlp.loanword_classifier import KNOWN_REVERSED_LOAN_DIRECTION
+
+        if key in KNOWN_REVERSED_LOAN_DIRECTION:
+            return False
+
+        index = LexiconIndex()
+        if not index.exists:
+            return False
+
+        # ⚠️ TAM EŞLEŞME ŞART. `index.lookup` karşılaştırma biçmi üzerinden
+        # arıyor ve CLDF işaretlerini normalleştiriyor (`š`->`ş`, `ï`->`ı`,
+        # uzunluk `:` düşüyor). Ölçüm hattı proto/tanık biçimleri besliyor
+        # ve bu yüzden alakasız Türkçe maddelere çarpıyordu::
+        #
+        #     keš     -> 'keş'   (fa "drug addict")
+        #     kïrba:  -> 'kırba' (ar "waterskin")
+        #
+        # Bu iki çarpışma altın dev kümesinde 2 maddeyi çekimser bırakıp
+        # NED'i 0.302'den 0.3261'e bozuyordu. Tuzak kelimelerin hepsi zaten
+        # tam eşleşiyor (duvar, kitap, çorap, sabun, pencere), yani şart
+        # onları etkilemiyor.
+        def _same_headword(row: dict[str, Any]) -> bool:
+            return str(row.get("word") or "").strip().casefold() == key
+
+        rows = [
+            r
+            for r in (index.lookup(key, languages=["tr"], limit=10) or [])
+            if _same_headword(r)
+            and r.get("pos") != "name"
+            and not str(r.get("word") or "")[:1].isupper()
+        ]
+        loans = [
+            r
+            for r in rows
+            if r.get("origin") == "alıntı"
+            and str(r.get("donor_lang") or "")
+            and str(r.get("donor_lang") or "") not in TURKIC_LINEAGE_CODES
+        ]
+        if not loans:
+            return False
+
+        inherited = [
+            r
+            for r in rows
+            if r.get("origin") == "miras"
+            or str(r.get("donor_lang") or "") in TURKIC_LINEAGE_CODES
+        ]
+        for suffix in ("mak", "mek"):
+            for r in index.lookup(key + suffix, languages=["tr"], limit=3) or []:
+                if r.get("origin") == "miras" or str(
+                    r.get("donor_lang") or ""
+                ) in TURKIC_LINEAGE_CODES:
+                    inherited.append(r)
+                    break
+
+        if inherited and len(loans) / (len(loans) + len(inherited)) < 0.6:
+            return False
+        return True
+    except Exception:
+        logger.debug("Alıntı tanıklığı okunamadı: %s", key, exc_info=True)
+        return False
+
 #: Bu benzerlik oranının üstündeki yayılım şüphelidir. Miras kelimeler
 #: bin yılda düzenli ses farkları biriktirir; birikmemişse yayılım yenidir.
 UNIFORMITY_SUSPICION = 0.85
@@ -200,7 +298,10 @@ class BorrowingVerdict:
         eşikle rekonstrüksiyonu engellemek miras kelimeleri susturur.
         Engelleme daha muhafazakâr bir karardır ve muhafazakâr eşikte kalır.
         """
-        return self.score >= BLOCK_THRESHOLD
+        # Skor eşiği muhafazakâr kalır; ama sözlüğün DOĞRUDAN tanıklığı
+        # tek başına yeter (bkz. `_index_attests_loan`). Eşiği düşürmek
+        # miras kelimeleri susturacaktı, tanıklığa bakmak susturmuyor.
+        return self.score >= BLOCK_THRESHOLD or _index_attests_loan(self.word)
 
     @property
     def verdict(self) -> str:
