@@ -184,6 +184,28 @@ class TestSemanticEngineBackends(unittest.TestCase):
             ilgisiz["total_shift_distance"], ilgili["total_shift_distance"]
         )
 
+    def test_trajectory_segment_is_dropped_not_unlabelled(self):
+        """Güzergâh bölümü anlam değildir; etiketi silinip bırakılmamalı.
+
+        `donor_etymology_database` alıntıların tarihî anlamını
+        "Kaynak anlamı: X | Geçiş yörüngesi: A -> B -> C" diye kuruyor.
+        İlk bölüm gerçek gloss, ikincisi bir YOL (dil adları ve oklar).
+        Yalnız etiketi silmek güzergâhı anlammış gibi kodluyordu:
+            kalem 0.7589 -> 0.4808      kitap 0.6485 -> 0.3267
+        """
+        from engine.nlp.diachronic_semantic_engine import _clean_gloss
+
+        temiz = _clean_gloss(
+            "Kaynak anlamı: Yazı kamışı, yontulmuş kamış | "
+            "Geçiş yörüngesi: Eski Grekçe (kálamos) -> Arapça (qalam)"
+        )
+        self.assertEqual(temiz, "Yazı kamışı, yontulmuş kamış")
+        self.assertNotIn("Grekçe", temiz)
+        # Sıradan gloss'a dokunulmaz.
+        self.assertEqual(
+            _clean_gloss("kafa, (mecazi) lider, reis"), "kafa, (mecazi) lider, reis"
+        )
+
     def test_vectoriser_empty_text(self):
         vec, used = DenseSemanticVectorizer().vectorise("")
         self.assertEqual(vec, [0.0] * 64)

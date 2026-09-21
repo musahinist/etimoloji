@@ -136,6 +136,13 @@ def _historical_gloss(entries: list[dict[str, Any]] | None, word: str = "") -> s
         )
         cleaned = cleaned.strip().strip("\"'“”‘’ .,;")
         cleaned = re.sub(r"\s{2,}", " ", cleaned).strip()
+        # ⚠️ Bu kuralı `kalem` için dize ORTASINDAKİ dil adını da kesecek
+        # şekilde genelletmeyi denedim; birim testte çalıştı ama gerçek
+        # vakayı hiç etkilemedi (0.7589 -> 0.7589). Sebebi katman hatasıydı:
+        # `kalem` bir ALINTI, `_select_hypothesis`'in donor_lexicon dalından
+        # geçiyor ve tarihî anlamı `donor_etymology_database`'den geliyor —
+        # bu fonksiyona hiç uğramıyor. Doğru yer tek boğaz noktası olan
+        # `diachronic_semantic_engine._clean_gloss`; genelleme geri alındı.
         for name in _TRAILING_LANGUAGE_NAMES:
             if cleaned.endswith(" " + name):
                 cleaned = cleaned[: -len(name)].strip().strip(",;")

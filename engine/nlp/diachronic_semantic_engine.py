@@ -153,9 +153,26 @@ _GLOSS_LABEL = re.compile(
 )
 
 
+#: **Güzergâh bölümü ANLAM DEĞİLDİR, atılır.** `donor_etymology_database`
+#: alıntıların tarihî anlamını şöyle kuruyor::
+#:
+#:     "Kaynak anlamı: Yazı kamışı, yontulmuş kamış |
+#:      Geçiş yörüngesi: Eski Grekçe (kálamos) -> Arapça (qalam) -> …"
+#:
+#: İlk bölüm gerçek gloss'tur; ikincisi bir YOLdur (dil adları ve oklar).
+#: Yalnız etiketi silip metni bırakmak, güzergâhı anlammış gibi kodlar ve
+#: mesafeyi şişirir — ölçüldü: `kalem` 0.7589, `kitap` 0.6485; ikisi de
+#: DOĞRU etimoloji. Bu yüzden etiketten itibaren SONUNA KADAR kesilir.
+_TRAJECTORY_CUT = re.compile(
+    r"\s*\|?\s*(geçiş\s+yörüngesi|kendi\s+içi\s+etimoloji|orijinal\s+imla)\s*:.*$",
+    re.IGNORECASE | re.DOTALL,
+)
+
+
 def _clean_gloss(text: str) -> str:
     """Anlam metnini kodlamadan önce biçim artıklarından arındırır."""
-    t = _GLOSS_LABEL.sub(" ", text or "")
+    t = _TRAJECTORY_CUT.sub("", text or "")
+    t = _GLOSS_LABEL.sub(" ", t)
     t = t.replace("|", " ")
     return " ".join(t.split()).strip()
 
