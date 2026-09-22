@@ -41,6 +41,66 @@ from engine.utils.phonetic_rules import verify_phonetic_chain
 logger = get_logger(__name__)
 
 
+#: Ata biçim dizesine karışan DİL ADLARI — biçim değil, açıklama.
+_ORIGIN_LANGUAGE_WORDS = (
+    "Grekçe", "Arapça", "Farsça", "Latince", "Fransızca", "Yunanca",
+    "İtalyanca", "Moğolca", "Macarca", "Ermenice",
+)
+
+
+def _comparable_origin_form(raw: str) -> str:
+    """Bileşik ata-biçim açıklamasından KARŞILAŞTIRILABİLİR tek biçim ayıklar.
+
+    ⚠️ `origin_form` bir BİÇİM DEĞİL, insan okuması için kurulmuş bileşik
+    bir açıklamadır: yazı varyantı, parantezli çeviriyazı, eğik çizgiyle
+    ikinci etimon, hatta dil adı taşır::
+
+        kalem  -> 'قلم (qalam) / Grekçe κάλαμος (kálamos)'
+        herkil -> 'յարգել / յարգիլ (harkil / hargel)'
+        sümen  -> 'sous-main / Macarca sujtás'
+
+    Bunu dizi hizalamasına vermek bir cümleyi bir kelimeyle karşılaştırmak
+    olur. Ölçüldü: `kalem` 1. aşama skoru 0.244'te kalıyor ve rozet 🔴
+    çıkıyordu, oysa 2.-4. aşamaların üçü de geçiyordu.
+
+    ⚠️ ALAN DEĞİŞTİRİLMEZ, yalnız burada ayıklanır: `origin_form`
+    `search_engine`'de proto_root olarak kullanılıyor ve CLI'da
+    "Kaynak Form / Ata Biçim" diye gösteriliyor.
+
+    Sıra önemli — ölçülerek bulundu: ÖNCE parantez, SONRA alternatif.
+    Tersi `herkil`i kırıyordu (`split('/')[0]` Ermeni harfli parçayı alıp
+    Latin çeviriyazıyı kaçırıyor). "Tamamı Latin mi" testi de regex
+    karakter sınıfıyla değil Unicode ADIYLA yapılır; aksi hâlde makronlu
+    `dunyā`, `kitāb`, `rūzgār` eleniyor ve kanıt kayboluyordu.
+
+    Ayıklama başarısızsa HAM biçim döner: kanıt asla kaybedilmez.
+    Ölçüm (10 tohum donör kaydı): 4 iyileşme, 0 gerileme —
+    kalem 0.348->0.800, herkil 0.556->0.833, sümen 0.231->0.462,
+    efendi 0.250->0.267.
+    """
+    import re
+    import unicodedata
+
+    def _all_latin(text: str) -> bool:
+        letters = [c for c in text if c.isalpha()]
+        return bool(letters) and all("LATIN" in unicodedata.name(c, "") for c in letters)
+
+    s = (raw or "").strip()
+    if not s:
+        return ""
+    for word in _ORIGIN_LANGUAGE_WORDS:
+        s = s.replace(word, " ")
+
+    for inner in re.findall(r"\(([^)]*)\)", s):
+        first = inner.split("/")[0].strip()
+        if first and _all_latin(first):
+            return first
+
+    outside = re.sub(r"\([^)]*\)", " ", s)
+    first = outside.split("/")[0].strip()
+    return first if _all_latin(first) else (raw or "").strip()
+
+
 class PhoneticChainVerifier:
     """Aşama 1 — Ata biçim ile modern biçim arasında geçerli ses evrimi var mı?"""
 
@@ -48,7 +108,7 @@ class PhoneticChainVerifier:
         self.lingpy_aligner = aligner or CldfLingPyAligner()
 
     def verify(self, origin_form: str, word: str) -> dict[str, Any]:
-        clean_origin = (origin_form or "").strip().lstrip("*")
+        clean_origin = _comparable_origin_form(origin_form).strip().lstrip("*")
         target = (word or "").strip()
 
         if not clean_origin or not target:

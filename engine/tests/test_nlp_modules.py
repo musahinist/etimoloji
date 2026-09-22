@@ -623,6 +623,49 @@ class TestMorphemeSegmenter(unittest.TestCase):
         self.assertGreaterEqual(len(res["stem"]), 2)
 
 
+class TestComparableOriginForm(unittest.TestCase):
+    """`origin_form` bir biçim değil, bileşik bir açıklamadır.
+
+    Hizalamaya ham hâliyle verilince `kalem` 1. aşamada 0.244 alıyor ve
+    rozet 🔴 çıkıyordu; oysa 2.-4. aşamaların üçü de geçiyordu.
+    Ölçüm (10 tohum kaydı): 4 iyileşme, 0 gerileme.
+    """
+
+    def test_parenthetical_transliteration_wins(self):
+        from engine.nlp.hypothesis_validation_protocol import _comparable_origin_form
+
+        self.assertEqual(
+            _comparable_origin_form("قلم (qalam) / Grekçe κάλαμος (kálamos)"), "qalam"
+        )
+
+    def test_parenthesis_before_alternative(self):
+        """Sıra ters olursa `herkil` kırılır: `/` ile bölmek Ermeni parçayı alır."""
+        from engine.nlp.hypothesis_validation_protocol import _comparable_origin_form
+
+        self.assertEqual(
+            _comparable_origin_form("յարգել / յարգիլ (harkil / hargel)"), "harkil"
+        )
+
+    def test_macrons_are_kept(self):
+        """Unicode ADIYLA test şart: regex sınıfı `ā`/`ū`yu eleyip kanıtı yok ediyordu."""
+        from engine.nlp.hypothesis_validation_protocol import _comparable_origin_form
+
+        self.assertEqual(_comparable_origin_form("كتاب (kitāb)"), "kitāb")
+        self.assertEqual(_comparable_origin_form("روزگار (rūzgār)"), "rūzgār")
+
+    def test_plain_latin_untouched(self):
+        from engine.nlp.hypothesis_validation_protocol import _comparable_origin_form
+
+        self.assertEqual(_comparable_origin_form("télévision"), "télévision")
+
+    def test_unextractable_falls_back_to_raw(self):
+        """Kanıt asla kaybedilmez."""
+        from engine.nlp.hypothesis_validation_protocol import _comparable_origin_form
+
+        self.assertEqual(_comparable_origin_form("كتاب"), "كتاب")
+        self.assertEqual(_comparable_origin_form(""), "")
+
+
 class TestBestWitnessSemanticDrift(unittest.TestCase):
     """3. aşama, tanıklanmış anlamların EN YAKININA karşı ölçülmeli.
 
