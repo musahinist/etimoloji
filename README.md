@@ -273,8 +273,11 @@ tutuyor ve çekimser kalmayı ödüllendiriyordu.
 | hepsi tek küme (trivial) | 0,743 | 0,642 | 1,000 |
 
 Referans: LexStat-Infomap **F ≈ 0,89** (List, Greenhill & Gray 2017).
-⚠️ Motorun kendi kümeleyicisi aşırı muhafazakâr: kesinlik 0,98 ama
-duyarlılık 0,73.
+⚠️ Motorun kendi kümeleyicisi aşırı muhafazakâr: kesinlik 0,954 ama
+duyarlılık 0,765. Eşik (`COGNATE_THRESHOLD = 0,62`) train'de tarandı:
+0,40 F'yi maksimize ediyor (0,857) ama kesinliği 0,858'e düşürüyor.
+0,62 **bilerek** korunuyor — bu kümeler kullanıcıya gösteriliyor ve
+yanlış akraba göstermek eksik göstermekten kötüdür.
 
 #### Uzman uyuşmazlık bandı (Faz E1) — tavan 1,00 değildir
 
