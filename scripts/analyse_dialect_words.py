@@ -202,7 +202,18 @@ def analyse(word: str, *, predictor: Any, ranker: Any, semantic: Any) -> dict[st
     selected = ranked.selected
     score = float(selected.score) if selected else 0.0
 
-    if score >= SOLVED_THRESHOLD:
+    # ⚠️ TANIK KAPISI. Puan tek başına kova belirleyemez: `neologism_detector`
+    # zayıf ek eşleşmesine sabit 0,40 verir (`is_neologism: False`,
+    # `evidence_strength: "weak"`) ve bu, 0,35 eşiğini geçip "güçlü aday"
+    # olarak basılıyordu. Ölçüldü (n=1631): 162 "güçlü adayın" 28'i SIFIR
+    # tanıklıydı, 16'sı da "sözlükte kaydı yok" listesindeydi — yani motorun
+    # en çok keşif gibi görünen çıktısı en zayıf kanıta dayanıyordu.
+    # Karşılaştırmalı yöntem bağımsız tanık ister; sıfır tanıkla hiçbir sonuç
+    # "güçlü" sayılamaz. Aynı ilke negatif kontrol bataryasında da uygulanır
+    # (`attested_witness_count == 0` -> `unattested`).
+    if not witnesses:
+        bucket = "yetersiz kanıt"
+    elif score >= SOLVED_THRESHOLD:
         bucket = "çözüldü"
     elif score >= CANDIDATE_THRESHOLD:
         bucket = "güçlü aday"
