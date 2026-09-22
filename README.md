@@ -690,17 +690,35 @@ En kritik sütun sonuncusu: motor hiçbir negatif kontrolde 🟢/🟡 rozet
 vermiyor. Uydurma bir köke düşük güvenle aday üretmesi kabul edilebilir; onu
 güçlü bir iddia olarak sunması kabul edilemez.
 
-### Ağız kelimeleri (Faz 10, n=100)
+### Ağız kelimeleri (Faz 10, TDK Derleme, n=1631)
 
-| | |
-|---|---|
-| çözüldü | %1 |
-| güçlü aday | %13 |
-| **yetersiz kanıt** | **%86** |
+| | bulanık tanıklarla | **birebir tanıkla** |
+|---|---|---|
+| çözüldü | 1 | **0** |
+| güçlü aday | 133 (%8,2) | **54 (%3,3)** |
+| yetersiz kanıt | 1497 (%91,8) | **1577 (%96,7)** |
+| kelime başına tanık | 3,30 | **0,36** |
+
+⚠️ **Sağdaki sütun geçerli olandır.** Soldaki, tanık bulunamayınca bulanık
+aramaya (düzenleme uzaklığı 1) düşüp dönen ilk isabeti **anlamına
+bakmadan** tanık sayan sürümün sayılarıdır. Ölçüldü: tanık sayılanların
+yalnız %5,8'i öngörülen biçmi gerçekten buluyordu; `çaman` için 10 "tanık"
+заман (zaman), çaň (toz), yaman (kötü), qâan (kan), Саян (Akrep burcu)
+idi. 662 bulanık isabetin **1'i** kelimenin Derleme anlamıyla ortak sözcük
+taşıyor. Sahte tanıklar raporu değil **hipotezi** de etkiliyordu:
+`inherited` 997 → 98, `unknown` 458 → 1355.
+
+⚠️ **Katma değer ölçüldü ve pratikte sıfırdır.** Kalan 54 güçlü adayın
+**51'inin kökeni sözlükte zaten kayıtlı** (döngüsellik %94,4). Geriye kalan
+3 kelime — `engeç`, `görüm`, `küşüm` — üçü de `modern_coinage`, üçü de
+sabit 0,40 skorunda, üçü de **tek tanıklı**; tek bir gerçek rekonstrüksiyon
+yok. Yani motor 1.631 ağız kelimesinde sözlüğün üstüne ölçülebilir bir şey
+koymuyor.
 
 ⚠️ "Yetersiz kanıt" bir başarısızlık değil, **dürüst sonuçtur**. Ağız
 kelimelerinin çoğu tek bir ilde tanıklanmıştır ve karşılaştırmalı yöntemin
-gerektirdiği bağımsız tanık yoktur.
+gerektirdiği bağımsız tanık yoktur. Buradaki asıl bulgu yüksek "yetersiz
+kanıt" oranı değil, **onu düşürmek için sahte kanıt üretilmiş olmasıdır**.
 
 ## Kurulum
 
@@ -1132,7 +1150,7 @@ türetmek.
 | CLICS⁴ | 3.447 dilde eş-adlandırma | 🚧 semantik makullük |
 | [Concepticon](https://concepticon.clld.org) · [Glottolog](https://glottolog.org) · [Lexibank](https://lexibank.clld.org) · [CLTS](https://clts.clld.org) | kavram kimliği, dil kimliği, sözvarlığı, fonetik gösterim | 🚧 standart katman |
 | [SIGTYP ST2022](https://github.com/sigtyp/ST2022) (refleks tahmini) · [ST2023](https://github.com/sigtyp/ST2023) (akraba/türev tespiti) | shared task verisi ve metrikleri | 🚧 Türki verisi eklenecek (kaynak katkısı) |
-| TDK Güncel Türkçe Sözlük · Tarama · **Derleme** | çağdaş, tarihî ve **ağız** sözvarlığı | ✅ canlı kaynak; Derleme asıl hedef sözvarlığı |
+| TDK Güncel Türkçe Sözlük · Tarama · **Derleme** | çağdaş, tarihî ve **ağız** sözvarlığı | ✅ canlı kaynak · ⚠️ Derleme hedef sözvarlığıdır ama motorun ölçülen katma değeri orada **pratikte sıfırdır** (bkz. «Ağız kelimeleri») |
 | Etymological Wordnet (de Melo, LREC 2014) · [EtymDB-2.0](https://github.com/clefourrier/EtymDB) (Fourrier & Sagot, LREC 2020) | 1,8M sözlükbirim · 2.536 dil | ⚠️ zinciri *saklıyor*, çıkarsamıyor — karşılaştırma noktası |
 
 ### Standartlar ve kütüphaneler
