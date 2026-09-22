@@ -391,6 +391,16 @@ Kimlik taban çizgisine karşı fark **+%13,1**, permütasyon p = 0,0001 →
 Ham skor sistematik olarak **+0,41 aşırı güvenli**ydi (ortalama %64,6 güven,
 gerçek doğruluk %23,9). Kullanıcıya gösterilen skor artık kalibre skordur.
 
+⚠️ **Kalibrasyon AUC'yi düşürüyor (0,648 → 0,621) ve bu beklenen bir
+bedeldir, tutarsızlık değil.** Platt monoton bir dönüşümdür; tek bir
+kalibratör uygulansa AUC'yi *değiştirmemesi* gerekirdi. Düşüşün sebebi
+`cross_validated_calibration`: her madde **kendisinin katılmadığı**
+katmanlarda eğitilen kalibratörle dönüştürülür (aynı veride hem kalibre
+edip hem ölçmek ECE'yi yapay olarak sıfıra yaklaştırırdı). Beş ayrı
+kalibratör beş ayrı altkümeye uygulanınca küresel eşleme monoton olmaktan
+çıkar ve sıralama bilgisinin bir kısmı silinir. Takas bilinçlidir:
+ECE 0,406 → 0,037 karşılığında AUC'den ~0,03 verilmiştir.
+
 ### Alıntı tespiti
 
 **Birincil ölçüt — WOLD** (uzman derlemesi, Wiktionary'den bağımsız), Sakha, n=769:
