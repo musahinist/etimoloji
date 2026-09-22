@@ -460,6 +460,44 @@ class ComparativeReconstructor:
 
         Ham skor kalibre EDİLMEMİŞTİR; kullanıcıya gösterilecek skor için
         :mod:`engine.evaluation.calibration` kullanılır.
+
+        ⚠️ **BASİTLEŞTİRME DENENDİ VE İSTATİSTİKSEL OLARAK ÇÜRÜTÜLDÜ.**
+
+        Bileşik skorun ayırt etme gücü tek başına uyumdan düşük görünüyor,
+        yani formül iyi sinyali seyreltiyor gibi duruyor::
+
+            aday                    TRAIN (n=237)   DEV (n=83)
+            mevcut confidence          0.6055         0.5687
+            yalnız uyum                0.6836         0.5993
+            0.9*uyum+0.1*tanık         0.7021         0.5950
+            0.8*uyum+0.2*tanık         0.6930         0.5760
+            uyum × makullük            0.6775         0.5901
+
+        Ama fark GÜRÜLTÜDEN AYIRT EDİLEMİYOR (eşleşmiş bootstrap, 2000
+        örnek, tohum 20260922)::
+
+            train  ΔAUC=+0.0781  %95GA=[-0.0256,+0.1879]  P(Δ<=0)=0.066
+            dev    ΔAUC=+0.0305  %95GA=[-0.1033,+0.1714]  P(Δ<=0)=0.327
+
+        İki aralık da sıfırı içeriyor; dev'de örneklerin üçte birinde
+        MEVCUT formül daha iyi. Ayrıca train'in en iyisi (0.9/0.1) dev'in
+        en iyisi değil — yedi aday arasından seçmenin getirdiği aşırı uyum.
+
+        Dilbilimsel itiraz da ölçüldü: uyum >= 0.999 olan 22 maddenin
+        14'ünün tanık sayısı <= 2. İki tanıkla sütun uyumu önemsizce
+        mükemmel çıkar; "yalnız uyum" bu en zayıf kanıtları tepeye
+        koyardı. Tanık terimi tam olarak bunu bastırmak içindir.
+
+        Gerçek ipucu şu: doğruluk tanık sayısında TEKDÜZE DEĞİL
+        (1-2: 0.196, 3-5: 0.413, 6-11: 0.182, 12+: 0.291), yani doğrusal
+        bir tanık terimi zaten yanlış biçimde. Bu formülü elle oynamak
+        yerine `borrowing_combiner` gibi ÖĞRENİLMİŞ bir birleştirici
+        gerekir; o da iç içe çapraz doğrulama ve daha çok altın veri ister.
+
+        NOT: `ABSTENTION_THRESHOLD = 0.0` olduğu için bu skor hangi köklerin
+        üretildiğini ETKİLEMEZ (ölçüldü: formül değiştirildiğinde dev'de
+        NED 0.306, kapsam 0.9759, doğruluk 0.3855 — üçü de birebir aynı).
+        Yalnız sıralamayı, rozeti ve kalibre güveni etkiler.
         """
         witness_factor = min(1.0, witnesses / 6.0)
         branch_factor = min(1.0, branches / 4.0)
