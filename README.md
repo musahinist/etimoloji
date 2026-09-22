@@ -494,6 +494,29 @@ kuruldu: TDK Güncel Türkçe Sözlük (`lisan` alanı) ve Nişanyan Sözlük
 motor vs `always_borrowed` **+0,255**, %95 GA [+0,192, +0,318], p=0,0001.
 Motor vs yalnız fonotaktik **+0,097**, %95 GA [+0,054, +0,143], p=0,0001.
 
+⚠️ **Verici dil eklemek (İngilizce/Almanca/Latince) ölçülerek REDDEDİLDİ.**
+Verici indeksinde 9 dil var (it 622.831 · ru 440.919 · fr 401.061 ·
+el 84.722 · ar 77.118 · hy 21.748 · fa 19.694 · mn 6.480 · evn 599) ve
+İngilizce/Almanca/Latince hiç yok. "Modern alıntıların çoğu tespit
+edilemiyor" gerekçesiyle eklenmesi planlanmıştı; **bu altın küme için
+gerekçe yanlış çıktı**:
+
+| | madde |
+|---|---|
+| alıntı maddesi | 420 |
+| kökeninde indekste bulunan bir verici geçen | **407 (%96,9)** |
+| *yalnızca* İngilizce/Almanca/Latince kökenli | **9 (%2,1)** |
+
+O 9 madde: `brifing, feribot, galon, geyşa, jet, lobelya, master, pikap,
+trol` — `geyşa` Japonca, `lobelya` Yeni Latince. Almanca'nın toplam katkısı
+**1 madde**. Buna karşılık kaikki dökümleri İngilizce 3.246 MB · Latince
+1.220 MB · Almanca 1.077 MB (≈5,5 GB ham). Küme ayar/test diye ikiye
+bölündüğü için (n=349) ölçüme yansıyacak kısım ~4-5 maddedir.
+
+⚠️ Sınır: bu altın küme `alıntı` için **iki kaynağın onayını** istiyor ve
+modern İngilizce alıntıları yapısal olarak az temsil ediyor olabilir.
+Gerçek kullanıcı sorgularında aynı oran ölçülmedi; ret bu küme içindir.
+
 ⚠️ **Kanıt kuralı asimetriktir ve bu gizlenemez.** `alıntı` etiketi iki
 kaynağın da alıntı demesini gerektirir (güçlü). `miras` etiketi Nişanyan'ın
 açıkça `ses evrimi` demesi **ve** TDK'nın kaynak dil yazmamasıyla verilir
