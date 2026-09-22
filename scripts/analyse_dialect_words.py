@@ -179,7 +179,22 @@ def analyse(word: str, *, predictor: Any, ranker: Any, semantic: Any) -> dict[st
                 "gloss": hits[0].get("gloss", "") if hits else "",
             }
         )
-        if hits:
+        # ⚠️ YALNIZ BİREBİR isabet tanıktır. Bulanık arama (düzenleme
+        # uzaklığı 1) teşhis izinde kalır ama tanık SAYILMAZ.
+        #
+        # Ölçüldü: güçlü adayların 1.608 arama satırında yalnız 41'i (%2,5)
+        # öngörülen biçmi gerçekten buluyor; 662'si (%41,2) bulanık eşleşmeyle
+        # BAŞKA bir kelime getiriyor ve anlamı hiç denetlenmiyordu. `çaman`
+        # için 10 "tanık" böyle oluşuyordu: заман (zaman), çaň (toz), yaman
+        # (kötü), qâan (kan), Саян (Akrep burcu). Anlam uyumu da ölçüldü:
+        # 662 bulanık isabetin **1'i** (%0,2) kelimenin Derleme anlamıyla
+        # ortak sözcük taşıyor, o da sahte (adam ~ Адам).
+        #
+        # Etkisi: raporlanan "ortalama 3,30 akraba tanığı" birebir sayımda
+        # 0,09'a iniyor; 134 güçlü adayın 103'ü yalnız bulanık eşleşmeyle
+        # ayaktaydı. Sahte tanık `ranker.rank()`e de giriyordu, yani
+        # hipotezin kendisini etkiliyordu.
+        if hits and hits[0]["word"] == prediction.form:
             witnesses.append({"lang_code": prediction.language, "word": hits[0]["word"]})
 
     # 1b — Lehçe karşılıkları (varsa) ek tanık olarak katılır.
