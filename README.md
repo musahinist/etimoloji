@@ -35,8 +35,8 @@ saklanır.
 |---|---|---|---|
 | Alıntı F — **Türkçe** (TDK+Nişanyan, n=349) | **0,877** | 0,749 hepsi-alıntı | ✅ **anlamlı** (+0,255, p=0,0001) |
 | Alıntı F — WOLD/Sakha (n=769) | **0,651** | 0,464 hepsi-alıntı | ⚠️ fonotaktiğe karşı anlamlı **değil** (p=0,251) |
-| Rekonstrüksiyon NED (dev, n=83) | **0,302** | 0,341 `majority_character` | ⚠️ anlamlı **değil** (GA [−0,079, +0,002]) |
-| Rekonstrüksiyon tam (dev) | **0,386** | 0,325 | — |
+| Rekonstrüksiyon NED (dev, n=83, çapa hariç) | **0,304** | 0,339 `majority_character` | ⚠️ anlamlı **değil** (GA [−0,075, +0,007]) |
+| Rekonstrüksiyon tam (dev, çapa hariç) | **0,398** | 0,337 | ⚠️ anlamlı **değil** (p=0,188) |
 | Akraba tespiti B-Cubed F (dev) | 0,818 | 0,934 düzenleme uzaklığı | ⚠️ motorun kümeleyicisi **geride** |
 | Uzman uyuşmazlık bandı | **0,914** | — | otomatik sistemin gerçekçi tavanı |
 | Denklik düzenliliği (CoPaR, TRAIN) | **0,713** | — | kural tabanlı doğruluğun üst sınırı |
@@ -46,7 +46,7 @@ bağlam kodlaması (D3), N-best yeniden sıralama (D5), Batı Eski Türkçe
 entegrasyonu (B2), ağaç-uyumsuz dağılım (C3), ses kanunu sinyalinin miras
 tablosuyla kurtarılamaması (C4).
 
-### Rekonstrüksiyon (dev bölümü, n=83)
+### Rekonstrüksiyon (dev bölümü, n=83, **çapa hariç**)
 
 **Birincil metrikler NED ve B-Cubed F'tir.** Bu, keyfî bir tercih değil alan
 standardı: SIGTYP 2022'nin resmi metrikleri ED, NED, B-Cubed F ve BLEU'dur ve
@@ -63,14 +63,14 @@ kendi tespit edip uyarı basıyor ve künyeye yazıyor.
 
 | Sistem | **NED**↓ | **BCFS**↑ | ED↓ | tam |
 |---|---|---|---|---|
-| **motor** | **0,302** | **0,595** | **1,45** | **0,386** |
-| `majority_character` (trivial) | 0,341 | 0,571 | 1,60 | 0,325 |
-| `copy_anchor` (hiçbir şey yapma) | 0,392 | 0,643 | 1,88 | 0,217 |
-| `copy_random_daughter` | 0,403 | 0,628 | 1,86 | 0,229 |
-| `copy_longest` | 0,502 | 0,564 | 2,58 | 0,145 |
+| **motor** | **0,304** | **0,600** | **1,47** | **0,398** |
+| `majority_character` (trivial) | 0,339 | 0,571 | 1,59 | 0,337 |
+| `copy_anchor` (hiçbir şey yapma) | 0,390 | 0,529 | 1,87 | 0,229 |
+| `copy_random_daughter` | 0,401 | 0,520 | 1,84 | 0,241 |
+| `copy_longest` | 0,500 | 0,429 | 2,57 | 0,157 |
 
-Birincil metrikte fark **−0,0387** (motor lehine), %95 GA [−0,0786,
-+0,0017] → **anlamlı DEĞİL**; aralık sıfırı kılpayı içeriyor. n=83'te daha
+Birincil metrikte fark **−0,0347** (motor lehine), %95 GA [−0,0753,
++0,0065] → **anlamlı DEĞİL**; aralık sıfırı kılpayı içeriyor. n=83'te daha
 fazlası gösterilemiyor. `test` bölümü **dondurulmuş** durumda ve Faz D
 bitene kadar açılmayacak.
 
@@ -854,6 +854,26 @@ Bunlar gizlenmiş kusurlar değil, **ölçülmüş ve raporlanmış** sınırlar
 - **Altın standart tek okulun ürünü.** `savelyevturkic` Robbeets okulundandır
   ve kimi akrabalık kararları Clauson/Erdal/Tekin geleneğiyle çelişir.
   Altın standartlar arası uyuşmazlık oranı henüz ölçülmedi.
+- **Altın kümeyi `robbeetstriangulation` ile büyütmek denendi ve geri
+  alındı.** Deponun duran kararı (`scripts/download_cldf.py`: "YALNIZCA
+  temas/ödünçleme analizinde kullanılır; akrabalık kanıtına asla katılmaz")
+  ölçümle **doğrulandı**. Türki altküme (≥2 Türki tanık) süzülüp 236 madde
+  eklenebiliyordu, ama veri altın standart olacak nitelikte değil:
+  - `Root` alanına **alıntı işareti karışmış**: 190 farklı kök `… bor` ile
+    bitiyor (`*adam bor`, `*ism bor`, `*kenar bor`) ve bunlar Arapça/Farsça
+    alıntı. İşaret `Doubt`/`Source` sütunlarından ayırt edilemiyor.
+  - **İşaretsiz alıntılar** da var: `*ḳïrmïzï`, `*šāχ` (Farsça). Motor
+    `*ḳïrmïzï`yı "doğru" rekonstrüksiyon olarak tutturdu — yani alıntılar
+    skoru düşürmüyor, **şişiriyor**.
+  - Yazım gelenekleri karışık: aynı küme hem `ĺ/ŕ` hem `š/z` yazıyor,
+    kökler `*ḳalï-` gibi biçimbirim tiresi taşıyor (139/293 madde).
+  - `forms.csv`'deki `Loan` sütunu **boş** (26.224 biçimin tamamında), yani
+    alıntılar veriden süzülemiyor.
+
+  Ayrıca kazanç da gösterilemedi: yeni maddelerle mevcut maddeler arasındaki
+  tam doğruluk farkı (0,398 vs 0,282) %95 GA [−0,064, +0,289] ile **anlamlı
+  değil** ve bu farkı %80 güçle saptamak grup başına 263 madde isterdi —
+  eklenebilecek toplam madde 236.
 - **Oğur tanığı seyrek.** 400 maddenin yalnız %28,7'sinde Çuvaşça var; geri
   kalanda iddia edilebilen en derin düğüm Ana Ortak Türkçe'dir (`*PCT`).
 - **Türkmence ünlü uzunluğu eksik.** Birincil uzunluk tanığı sayılan dil,
@@ -997,7 +1017,7 @@ türetmek.
 | Savelyev & Robbeets 2020, *Journal of Language Evolution* — `savelyevturkic` | 8.360 biçim · 32 Türki dil · 8.360 uzman akrabalık kararı · 905 küme · 519 ata biçim · 478 uzun ünlülü biçim | 🚧 birincil altın standart |
 | Hruschka ve ark. 2015, *Current Biology* — `hruschkaturkic` | 4.213 biçim · 27 dil | 🚧 bağımsız çapraz kontrol |
 | Starostin, Dybo & Mudrak, *Altaic Etymological Dictionary* — `starostinaltaic` | 5.756 biçim · 55 dil | ⚠️ yalnız karşılaştırma; Vovin 2005 eleştirisiyle birlikte anılır, tek kaynak olarak kullanılmaz |
-| Robbeets & Bouckaert — `robbeetstriangulation` | 26.224 biçim · 102 dil | ⚠️ yalnız **temas** çerçevesinde; akrabalık kanıtına katılmaz (Tian ve ark. 2022 eleştirileri) |
+| Robbeets & Bouckaert — `robbeetstriangulation` | 26.224 biçim · 102 dil | ⚠️ yalnız **temas** çerçevesinde; akrabalık kanıtına katılmaz (Tian ve ark. 2022 eleştirileri). **Ölçümle doğrulandı**: altın kümeye alınması denendi ve geri alındı — gerekçe «Bilinen sınırlar → Veri» bölümünde |
 | Róna-Tas & Berta 2011, *West Old Turkic: Turkic Loanwords in Hungarian* — `ronataswestoldturkic` ([loanwordbank](https://github.com/loanwordbank/ronataswestoldturkic), CC-BY) | 1.755 biçim · 430 kavram · 480 Oğur (Bolgar, `bolg1249`) biçimi | ⚠️ **atteste değil**, Macarcadaki alıntılardan geri kurulmuş; ayrı tanık kodu (`wot`), tek başına `*PT` taşımaz. Ölçüldü: kazanç yok, **varsayılan kapalı** |
 | [kaikki.org](https://kaikki.org) — Wiktionary makine-okunur dökümleri | 23 Türki dil · 125.879 madde · ~856 MB ham (diskte 60 MB) | ✅ arama indeksi · ⚠️ **altın standart değil** (bkz. Häuser & Stamatakis 2025) |
 | kaikki.org — **tarihî katman** (URL kalıbı düzeltilince erişilebildi) | Osmanlı Türkçesi 9.806 · Kırım Tatarcası 4.780 · Güney Altayca 1.914 · **Eski Türkçe 470** (Orhun runik) | ✅ arama indeksi · ⚠️ Eski Türkçe dökümü küçüktür; runik biçimler `transliterate_to_latin` ile Latin karşılaştırma biçimine çevrilir |
