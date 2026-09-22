@@ -190,7 +190,7 @@ düzensizliğin doğrudan ölçüsüdür.
 kalır. Blum & List'in budamayla düzenliliği artırma bulgusu bizde de
 tutarlı: budama rekonstrüksiyon doğruluğunu 0,361 → 0,386 çıkardı.
 
-#### ⚠️ Denenmiş ve KAZANÇ VERMEYEN iki şey
+#### ⚠️ Denenmiş ve KAZANÇ VERMEYEN üç şey
 
 **Bağlam kodlaması (Faz D3).** List ve ark. 2022 Pos/Str/Ini kodlamasının
 CorPaR'ın ED'sini %11 düşürdüğünü ölçüyor. Tablo anahtarı
@@ -224,6 +224,38 @@ biçmi üretiliyor — bu 0,313 → 0,361 yaptı ama yetmedi.
 
 **Karar:** adaylar üretiliyor ve çıktıda **rakip hipotez** olarak
 gösteriliyor (`alternative_forms`), ama seçilen biçim değişmiyor.
+
+**Hata profili ayrıştırıldı — mekanik hedef çıkmadı.** "Motor tabanı neden
+anlamlı geçemiyor" sorusu hata kovalarına inilerek arandı. dev'de cevaplanan
+81 maddenin dağılımı: doğru 33 · `ses_hatasi` 19 · `soz_basi_yanlis` 12 ·
+`ek_soyulmamis` 11 · `unlu_uzunlugu` 3 · `capa_kisa` 2 · rotasizm 1.
+Üç büyük kovanın üçü de hedef vermedi:
+
+- **`ek_soyulmamis` (11).** Yaklaşık 6-7'si motorun hatası DEĞİL, altın
+  gelenek farkı: ANT kümesinde 17 tanığın **hepsi** `-sḳa` taşıyor
+  (`ḳumursḳa`, `χomursɣa`…) ama altın çıplak `*Kumïr` istiyor. Tanıkların
+  tamamı eki taşıyorsa karşılaştırmalı yöntem ekli biçmi kurmakta haklıdır.
+  Kalan vakalarda (`al`/`*alın`, `ör`/`*örle`) daha kısa tanık gerçekten
+  vardı; iki kural **train'de** ölçüldü ve ikisi de net zararlı:
+
+  | kural | aday | iyi | kötü | eşit | net |
+  |---|---|---|---|---|---|
+  | en kısa tanığı al | 53 | 14 | 35 | 4 | **−21** |
+  | ≥2 dilde tanıklı çıplak biçmi al | 14 | 4 | 7 | 3 | **−3** |
+
+- **`soz_basi_yanlis` (12).** 4'ü zaten `is_acceptable` sayılıyor
+  (`DISPUTED_INITIAL`: *t-/d-*, *k-/g-*). dev'de "kabul ama tam değil" olan
+  **tüm** maddeler yalnız 7 tanedir (4 söz başı + 3 ünlü uzunluğu), yani
+  tam doğrulukla kabul arasındaki fark bütünüyle bu iki bilinen sınıftır.
+
+- **`ses_hatasi` (train'de 77).** Yalnız **23'ü** aynı uzunlukta tek
+  karakterlik fark; kalan %70 çok karakterli. O 23 de 14 ayrı ikame tipine
+  dağılıyor, en sığı `v → b` ile 3 vaka. Sistematik bir denklik boşluğu yok.
+
+⚠️ **Sonuç:** tabana olan açık düzeltilebilir bir kusurdan değil, paradigma
+tavanından geliyor — yukarıdaki Rom-phon tablosu da aynı şeyi söylüyor
+(kural/örüntü %22-25, denetimli %52-54). Buradan kazanç, kural katmanına
+yama atarak değil **yöntem değiştirerek** gelir.
 
 ⚠️ **Çekimserlik bedava değildir.** Cevaplanmayan madde ortalamaya mümkün
 olan en kötü NED'i (1,0) katar. Bir dönem yalnızca cevaplanan maddeler
