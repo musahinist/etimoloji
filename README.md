@@ -37,7 +37,7 @@ saklanır.
 | Alıntı F — WOLD/Sakha (n=769) | **0,651** | 0,464 hepsi-alıntı | ⚠️ fonotaktiğe karşı anlamlı **değil** (p=0,251) |
 | Rekonstrüksiyon NED (dev, n=83, çapa hariç) | **0,304** | 0,339 `majority_character` | ⚠️ anlamlı **değil** (GA [−0,075, +0,007]) |
 | Rekonstrüksiyon tam (dev, çapa hariç) | **0,398** | 0,337 | ⚠️ anlamlı **değil** (p=0,188) |
-| Akraba tespiti B-Cubed F (dev) | 0,818 | 0,934 düzenleme uzaklığı | ⚠️ motorun kümeleyicisi **geride** |
+| Akraba tespiti B-Cubed F (dev) | 0,833 | 0,934 düzenleme uzaklığı | ⚠️ motorun kümeleyicisi **geride** (yüksek kesinlik/düşük duyarlılık) |
 | Uzman uyuşmazlık bandı | **0,914** | — | otomatik sistemin gerçekçi tavanı |
 | Denklik düzenliliği (CoPaR, TRAIN) | **0,713** | — | kural tabanlı doğruluğun üst sınırı |
 
@@ -269,7 +269,7 @@ tutuyor ve çekimser kalmayı ödüllendiriyordu.
 | ayarlı düzenleme uzaklığı | **0,934** | 0,944 | 0,932 |
 | SCA benzeri (LingPy) | 0,854 | 0,816 | 0,959 |
 | LexStat benzeri | 0,824 | 0,749 | 0,991 |
-| **motorun kümeleyicisi** | 0,818 | 0,982 | 0,732 |
+| **motorun kümeleyicisi** | 0,833 | 0,954 | 0,765 |
 | hepsi tek küme (trivial) | 0,743 | 0,642 | 1,000 |
 
 Referans: LexStat-Infomap **F ≈ 0,89** (List, Greenhill & Gray 2017).

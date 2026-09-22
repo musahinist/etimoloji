@@ -13,6 +13,7 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from unittest import mock
 
 from engine.config import CLDF_DIR
 from engine.evaluation import cognate_eval, prediction_eval
@@ -226,6 +227,58 @@ class TestCognateEvalClusterers(unittest.TestCase):
         threshold, score = cognate_eval.tune_edit_distance_threshold([self._task()])
         self.assertGreater(threshold, 0.0)
         self.assertGreaterEqual(score, 0.0)
+
+
+@unittest.skipUnless(HAS_CLDF, "CLDF verisi indirilmemiş")
+class TestEngineClustererIsActuallyMeasured(unittest.TestCase):
+    """``engine`` satırı GERÇEKTEN motorun kümeleyicisini ölçmeli.
+
+    ⚠️ Bu testler yaşanmış bir kusuru sabitliyor. ``cluster_engine`` bir
+    dönem ``engine.similarity(a, b)`` çağırıp ``AttributeError``ı yakalıyor
+    ve sessizce ``1 - normalize_düzenleme_uzaklığı``na düşüyordu.
+    ``CognateClusterEngine`` böyle bir metot sunmuyor, dolayısıyla geri
+    düşüş **her çağrıda** ateşleniyordu: raporlanan "motorun kümeleyicisi"
+    aslında 0,62 eşikli düzenleme uzaklığıydı ve "taban çizgisi motoru
+    geçiyor" hükmü aynı algoritmanın iki eşiğini karşılaştırıyordu.
+    Ölçülen fark: F 0,8179 -> 0,8334, kesinlik 0,9815 -> 0,9542.
+
+    Sayı yanlıştı ama asıl sorun şu: **başka bir sistemin cevabı motorun
+    cevabı diye raporlandı ve kimse fark etmedi.** Aşağıdaki iki değişmez
+    o sessiz ikamenin geri gelmesini engeller.
+    """
+
+    def _task(self):
+        return cognate_eval.ConceptTask(
+            concept="x",
+            forms={"Turkish-x-1": "göz", "Kazakh-x-1": "köz", "Turkish-x-2": "kitap"},
+            gold={"Turkish-x-1": "1", "Kazakh-x-1": "1", "Turkish-x-2": "2"},
+        )
+
+    def test_engine_clusterer_is_really_invoked(self):
+        """Motorun kümeleyicisi çağrılmazsa ölçüm motoru ölçmüyordur."""
+        from engine.nlp import cognate_clustering
+
+        with mock.patch.object(
+            cognate_clustering.CognateClusterEngine,
+            "cluster",
+            return_value={"evidence_available": True, "clusters": []},
+        ) as spy:
+            cognate_eval.cluster_engine(self._task())
+        self.assertEqual(spy.call_count, 1)
+
+    def test_engine_failure_is_not_silently_swallowed(self):
+        """Kümeleyici patlarsa BAŞKA bir sistemin cevabı döndürülmemeli.
+
+        Sessiz geri düşüş tam da kusurun kaynağıydı; hata yüzeye çıkmalı.
+        """
+        from engine.nlp import cognate_clustering
+
+        with mock.patch.object(
+            cognate_clustering.CognateClusterEngine,
+            "cluster",
+            side_effect=RuntimeError("kümeleyici bozuk"),
+        ), self.assertRaises(RuntimeError):
+            cognate_eval.cluster_engine(self._task())
 
 
 class TestPredictionEvalSystems(unittest.TestCase):

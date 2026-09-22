@@ -36,9 +36,11 @@ import io
 import json
 from collections.abc import Callable
 from dataclasses import dataclass
+from functools import lru_cache
 from typing import Any
 
 from engine.db.cldf_wordlist import CldfWordlist
+from engine.db.language_mapping import build_mapping
 from engine.evaluation.metrics import bcubed_fscore, edit_distance
 from engine.logging_setup import get_logger
 from engine.utils.orthography import to_comparison_form
@@ -150,21 +152,56 @@ def cluster_edit_distance(task: ConceptTask, *, threshold: float = 0.5) -> dict[
     return _connected_components(keys, linked)
 
 
-def cluster_engine(task: ConceptTask) -> dict[str, str]:
-    """Motorun kendi akraba kümeleyicisi."""
+@lru_cache(maxsize=4)
+def _cldf_to_engine_code(dataset: str) -> dict[str, str]:
+    """CLDF dil adı -> motor dil kodu. Kümeleyici motor kodlarıyla çalışır."""
+    return build_mapping(CldfWordlist.load(dataset))
+
+
+def cluster_engine(task: ConceptTask, *, dataset: str = "savelyevturkic") -> dict[str, str]:
+    """Motorun kendi akraba kümeleyicisi — ``cognate_clustering.CognateClusterEngine``.
+
+    ⚠️ **Bu fonksiyon bir dönem motoru HİÇ ölçmüyordu.** Eski sürüm
+    ``engine.similarity(a, b)`` çağırıp ``AttributeError``ı yakalıyor ve
+    sessizce ``1 - normalize_düzenleme_uzaklığı``na düşüyordu.
+    ``CognateClusterEngine`` böyle bir metot **sunmuyor** (ölçüldü:
+    ``hasattr(engine, "similarity") is False``), dolayısıyla geri düşüş
+    HER çağrıda ateşleniyordu: raporlanan "motorun kümeleyicisi" satırı
+    aslında 0,62 eşikli düzenleme uzaklığıydı ve "taban çizgisi motoru
+    geçiyor" hükmü aynı algoritmanın iki eşiğini karşılaştırıyordu.
+
+    Sessiz geri düşüş bu yüzden kaldırıldı: motor kümeleyemezse madde
+    tekil kümelere düşer, başka bir sistemin cevabı motorun cevabı gibi
+    raporlanmaz.
+    """
     from engine.nlp.cognate_clustering import CognateClusterEngine
 
-    engine = CognateClusterEngine()
-    keys = list(task.forms)
+    mapping = _cldf_to_engine_code(dataset)
+    entries = []
+    for key, form in task.forms.items():
+        code = mapping.get(key.split("-")[0])
+        if code:
+            entries.append({"lang_code": code, "word": form, "_key": key})
 
-    def linked(a: str, b: str) -> bool:
-        try:
-            similarity = engine.similarity(task.forms[a], task.forms[b])
-        except AttributeError:
-            similarity = 1.0 - _normalised_edit(task.forms[a], task.forms[b])
-        return similarity >= getattr(engine, "threshold", 0.62)
+    result = CognateClusterEngine().cluster(entries)
 
-    return _connected_components(keys, linked)
+    # ``cluster()`` ``(lang_code, karşılaştırma biçmi)`` üzerinden yineleneni
+    # eler ve 2 harften kısa biçmi atar; dönen kümelerde yalnız HAM biçim
+    # bulunur. Geri eşleme bu yüzden ``(kod, ham biçim)`` ikilisiyle yapılır.
+    by_pair: dict[tuple[str, str], str] = {}
+    for index, cluster in enumerate(result.get("clusters") or []):
+        for member in cluster.get("forms") or []:
+            by_pair[(member.get("lang_code"), member.get("word"))] = f"c{index}"
+
+    out: dict[str, str] = {}
+    for position, entry in enumerate(entries):
+        pair = (entry["lang_code"], entry["word"])
+        # Kümeye girmeyen biçim (elenmiş ya da kanıt yetersiz) kendi tekil
+        # kümesine düşer — atlanırsa payda kayar ve skor şişerdi.
+        out[entry["_key"]] = by_pair.get(pair) or f"tek{position}"
+    for key in task.forms:
+        out.setdefault(key, f"esleme_yok_{key}")
+    return out
 
 
 def _normalised_edit(a: str, b: str) -> float:
@@ -311,6 +348,8 @@ def main() -> int:
     print(f"\ndüzenleme uzaklığı eşiği TRAIN'de seçildi: {threshold} (F={train_score:.4f})")
 
     systems = dict(SYSTEMS)
+    # Kümeleyici motor dil kodlarıyla çalışır; eşleme veri kümesine bağlıdır.
+    systems["engine"] = lambda task: cluster_engine(task, dataset=args.dataset)
     systems["edit_distance_tuned"] = lambda task: cluster_edit_distance(
         task, threshold=threshold
     )
