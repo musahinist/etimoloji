@@ -314,3 +314,18 @@ class TestAffricateMapping(unittest.TestCase):
     def test_front_a_umlaut_stays_front(self):
         """``ä`` art ``a``ya eşlenince ünlü uyumu bozuluyordu."""
         self.assertEqual(to_comparison_form("käbäl"), "kebel")
+
+
+class TestCrossReference(unittest.TestCase):
+    def test_bare_references(self):
+        from engine.utils.reference_resolver import extract_cross_references, is_cross_reference
+
+        for text in ("bk. derlik", "bkz. herkil", "-> herkil", "(bk. derlik)"):
+            self.assertTrue(is_cross_reference(text), text)
+        self.assertEqual(extract_cross_references("bk. derlik"), ["derlik"])
+
+    def test_real_glosses_are_not_references(self):
+        from engine.utils.reference_resolver import is_cross_reference
+
+        for text in ("Üstten giyilen ince elbise.", "Ev, bk. oda ile karş.", ""):
+            self.assertFalse(is_cross_reference(text), text)

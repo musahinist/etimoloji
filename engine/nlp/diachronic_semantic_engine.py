@@ -55,6 +55,24 @@ def get_sentence_transformer():
             "Etkinleştirmek için: pip install -e \".[semantic]\""
         )
         return None
+    # Önce YALNIZ yerel önbellek. Model diskte olsa bile kütüphane her
+    # açılışta Hub'a ~30 HEAD isteği atıp "güncel mi" diye soruyordu
+    # (her aramada ~5 sn ve "unauthenticated requests" uyarısı). Önbellekte
+    # yoksa (ilk kurulum) eskisi gibi indirilir.
+    try:
+        # Yerel diskten ağırlık okuma çubuğu ("Loading weights") her aramada
+        # CLI çıktısını kirletiyordu; bilgi taşımıyor.
+        from transformers.utils import logging as hf_logging
+
+        hf_logging.disable_progress_bar()
+    except Exception:
+        pass
+    try:
+        _ST_MODEL = SentenceTransformer(_ST_MODEL_NAME, local_files_only=True)
+        logger.info("Semantik model yerel önbellekten yüklendi: %s", _ST_MODEL_NAME)
+        return _ST_MODEL
+    except Exception:
+        logger.info("Semantik model önbellekte yok; indiriliyor: %s", _ST_MODEL_NAME)
     try:
         _ST_MODEL = SentenceTransformer(_ST_MODEL_NAME)
         logger.info("Semantik model yüklendi: %s", _ST_MODEL_NAME)
@@ -121,7 +139,7 @@ class DenseSemanticVectorizer:
                 # Kırpma, ortografik yedek yolun `vocab_size=64` sabitinden
                 # sızmış. Transformer yolunda boyut indirgemenin anlamı yok:
                 # iki taraf da aynı yoldan geçtiği için boylar eşittir.
-                emb = model.encode(text or "", convert_to_numpy=True)
+                emb = model.encode(text or "", convert_to_numpy=True, show_progress_bar=False)
                 vec = [float(x) for x in emb]
                 norm = math.sqrt(sum(v * v for v in vec)) or 1.0
                 return [round(v / norm, 6) for v in vec], True

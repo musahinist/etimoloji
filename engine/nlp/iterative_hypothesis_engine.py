@@ -27,6 +27,7 @@ from engine.nlp.historical_attestation_verifier import HistoricalAttestationVeri
 from engine.nlp.hypothesis_validation_protocol import HypothesisValidationProtocol
 from engine.nlp.neologism_detector import NeologismDetector
 from engine.utils.phonotactics import initial_consonant_violation
+from engine.utils.reference_resolver import is_cross_reference
 
 logger = get_logger(__name__)
 
@@ -62,7 +63,9 @@ def _form_distance(query: str, witness_form: str) -> float:
     if not q:
         return 1.0
     best = 1.0
-    for piece in re.split(r"[/,;]", witness_form or ""):
+    # Parantez de ayırıcıdır: Tarama "derlik (terlik)" yazar, ikinci biçim
+    # sorgunun kendisidir ve parantez yüzünden hiç karşılaştırılmıyordu.
+    for piece in re.split(r"[/,;()]", witness_form or ""):
         f = to_comparison_form(piece.strip().strip("()*-"))
         if not f:
             continue
@@ -131,6 +134,12 @@ def _historical_gloss(
         #    otk'nin 73/470'i (%15,5) ve ota'da 33 kayıt böyle. Ölçüldü:
         #      baş -> "A letter of the Old Turkic runic script…" mesafe 0.7996
         if meaning.startswith("Kitap:") or "letter of the" in meaning.lower():
+            continue
+        # 5. Gönderme: "bk. derlik" anlam değil, başka maddeye yönlendirme.
+        #    Ölçüldü: `terlik` için biçimce en yakın tanık (mesafe 0.0) bu
+        #    göndermeydi ve `derlik (terlik)` "Üstten giyilen ince elbise"
+        #    tanımını yeniyordu; başlığa "bk. derlik" basılıyordu.
+        if is_cross_reference(meaning):
             continue
 
         # 3. Atıf öneki yalnız KIRPILIR, kayıt atılmaz: gloss önekten sonra

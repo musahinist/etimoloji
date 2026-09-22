@@ -10,6 +10,8 @@ REFERENCE_PATTERNS = [
     r'\[\s*->\s*([a-zA-ZçğıöşuüÇĞİÖŞÜ]+)\s*\]',
     r'bkz\.\s*([a-zA-ZçğıöşuüÇĞİÖŞÜ]+)',
     r'bknz\.\s*([a-zA-ZçğıöşuüÇĞİÖŞÜ]+)',
+    # TDK Tarama/Derleme kısaltması: "bk. derlik"
+    r'\bbk\.\s*([a-zA-ZçğıöşuüÇĞİÖŞÜ]+)',
     r'->\s*([a-zA-ZçğıöşuüÇĞİÖŞÜ]+)'
 ]
 
@@ -26,3 +28,15 @@ def extract_cross_references(definition: str) -> list[str]:
                 found_refs.append(ref_word)
 
     return found_refs
+
+
+#: Tanımın TAMAMI bir göndermeden ibaret mi: "bk. derlik", "bkz. herkil",
+#: "-> herkil". Böyle bir tanım anlam taşımaz, yalnız başka maddeyi işaret eder.
+_BARE_REFERENCE = re.compile(
+    r'^\s*(?:\(?\s*(?:bk|bkz|bknz|bak)\.|->)\s*[\w\s,;()-]{1,60}\.?\s*$',
+    re.IGNORECASE,
+)
+
+
+def is_cross_reference(definition: str) -> bool:
+    return bool(definition) and bool(_BARE_REFERENCE.match(definition))

@@ -102,7 +102,11 @@ class TdkDerlemeFetcher(BaseFetcher):
                                 "lang_name": f"Türk Ağızları ({city})" if city else "Türk Ağızları",
                                 "word": m_word,
                                 "meaning": meaning,
-                                "script": "Latin"
+                                "script": "Latin",
+                                # Ağız kaydı ölçünlü dil kaydıyla aynı `tr` kodunu
+                                # taşıyor (Oğuz kolu sayımı için doğru); birleştirmede
+                                # TDK sözlük maddesinin yerini kapmasın diye işaretli.
+                                "dialect": True,
                             })
         except Exception:
             logger.warning("%s: kaynak işlenemedi", self.source_name if hasattr(self, "source_name") else __name__, exc_info=True)

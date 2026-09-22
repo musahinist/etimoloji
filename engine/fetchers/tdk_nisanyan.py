@@ -43,6 +43,8 @@ class TdkFetcher(BaseFetcher):
                         "script": "Latin"
                     })
                     result["root"]["meaning"] = meaning_str
+                    # Raporda maddenin TÜM anlamları ayrı ayrı gösterilir.
+                    result["root"]["meanings"] = meanings
                     if lisan:
                         result["root"]["reconstruction_notes"] = f"TDK Köken Bilgisi: {lisan}"
         except Exception:

@@ -24,6 +24,7 @@ kararı karşılaştırmalı yöntemin işidir. Aksi hâlde köken damgası kayd
 """
 from __future__ import annotations
 
+import json
 from typing import Any
 
 from engine.fetchers.base import BaseFetcher
@@ -114,13 +115,34 @@ class HistoricalIndexFetcher(BaseFetcher):
                     continue
                 seen_forms.add((lang_code, surface))
                 seen[lang_code] = seen.get(lang_code, 0) + 1
-                result["turkic_languages"].append(
-                    self.make_entry(
-                        lang_code,
-                        surface,
-                        str(row.get("gloss") or ""),
-                    )
-                )
+                entry = self.make_entry(lang_code, surface, str(row.get("gloss") or ""))
+                # Runik/Arap yazılı biçimin indeksteki Latin anahtarı (𐰋𐰃𐱅𐰏 ->
+                # `bitig`); motor kaydın sorguyu adlandırıp adlandırmadığını
+                # buna bakarak anlar.
+                if row.get("comparison"):
+                    entry["comparison"] = str(row["comparison"])
+                # Sözlüğün KENDİ etimoloji notu. İndekste duruyordu ama kayda
+                # taşınmıyordu; `bitig` için "biti- + -g, Orta Çince 筆 (pit)"
+                # bilgisi rapora hiç ulaşmıyordu.
+                if row.get("etymology"):
+                    entry["etymology"] = str(row["etymology"])
+                # Sözlüğün verdiği yapı ("biti- + -g") ve andığı akrabalar.
+                # Bilgi olarak taşınır; tanık sayımına girmez.
+                if row.get("formation"):
+                    entry["formation"] = str(row["formation"])
+                # Sözlük kaydının köken sınıfı ve verici (varsa). `origin`
+                # alanı fetcher sözleşmesinde seed/live anlamında kullanıldığı
+                # için ayrı adla taşınır.
+                if row.get("origin"):
+                    entry["lexicon_origin"] = str(row["origin"])
+                    entry["donor_lang"] = str(row.get("donor_lang") or "")
+                    entry["donor_form"] = str(row.get("donor_form") or "")
+                if row.get("cognates"):
+                    try:
+                        entry["source_cognates"] = json.loads(row["cognates"])
+                    except ValueError:
+                        pass
+                result["turkic_languages"].append(entry)
                 attestations.append(f"{lang_code}: {surface}")
 
             if attestations:

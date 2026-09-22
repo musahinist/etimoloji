@@ -521,7 +521,10 @@ class BorrowingDetector:
                     "zincir_kanıtı",
                     False,
                     0.0,
-                    "sözlükte alıntı kaydı yok",
+                    # Yalnız `lang` sözlüğüne bakıldı; "sözlükte" demek, başka
+                    # katmanda alıntı kaydı olan kelimede (bitig: otk kaydı
+                    # Orta Çince 筆 der) düpedüz yanlış bir cümleydi.
+                    f"{language_name(lang)} sözlüğünde alıntı kaydı yok",
                     {"checked_entries": len(rows)},
                 ),
                 [],

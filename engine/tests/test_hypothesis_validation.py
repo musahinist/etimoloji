@@ -180,3 +180,16 @@ class TestHypothesisValidationProtocol(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestHistoricalGlossCrossReference(unittest.TestCase):
+    def test_reference_skipped_and_parenthesised_form_matched(self):
+        """terlik: "bk. derlik" (mesafe 0) değil, "derlik (terlik)" tanımı seçilmeli."""
+        from engine.nlp.iterative_hypothesis_engine import _historical_gloss
+
+        entries = [
+            {"lang_code": "otk", "word": "ter", "meaning": "ter"},
+            {"lang_code": "otk", "word": "terlik", "meaning": "bk. derlik"},
+            {"lang_code": "otk", "word": "derlik (terlik)", "meaning": "Üstten giyilen ince elbise."},
+        ]
+        self.assertEqual(_historical_gloss(entries, "terlik"), "Üstten giyilen ince elbise")

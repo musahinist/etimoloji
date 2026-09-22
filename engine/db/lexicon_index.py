@@ -175,7 +175,9 @@ CREATE TABLE IF NOT EXISTS entries (
     long_vowels   TEXT,          -- IPA'dan çıkarılmış uzun ünlüler
     origin        TEXT,          -- 'alıntı' | 'miras' | NULL
     donor_lang    TEXT,
-    donor_form    TEXT
+    donor_form    TEXT,
+    formation     TEXT,          -- kendi dilindeki yapım: "biti- + -g"
+    cognates      TEXT           -- JSON: sözlüğün andığı akrabalar (cog şablonu)
 );
 CREATE INDEX IF NOT EXISTS idx_comparison ON entries(comparison);
 CREATE INDEX IF NOT EXISTS idx_lang ON entries(lang_code);
@@ -214,6 +216,8 @@ class LexiconEntry:
     origin: str | None = None
     donor_lang: str = ""
     donor_form: str = ""
+    formation: str = ""
+    cognates: str = ""
 
     def as_row(self) -> tuple:
         return (
@@ -228,6 +232,8 @@ class LexiconEntry:
             self.origin,
             self.donor_lang,
             self.donor_form,
+            self.formation,
+            self.cognates,
         )
 
 
@@ -373,6 +379,168 @@ def _origin_from_templates(record: dict[str, Any]) -> tuple[str | None, str, str
     return "miras", final_lang, final_form
 
 
+#: Kelimenin KENDİ dilinde nasıl yapıldığını anlatan şablonlar.
+FORMATION_TEMPLATES = frozenset({
+    "suf", "suffix", "af", "affix", "pre", "prefix", "com", "compound",
+    "con", "confix", "inf", "infix", "blend", "univerbation",
+})
+
+#: Satır içi değiştirici: ``𐰋𐰃𐱅𐰃<ts:biti-><t:to write>``.
+_INLINE_MODIFIER = re.compile(r"<(\w+):([^<>]*)>")
+
+
+def _template_part(raw: str, args: dict[str, Any], index: int) -> str:
+    """Yapım şablonunun bir parçasının OKUNABİLİR biçimi.
+
+    Runik/Arap yazılı parça okunmaz; okunuşu satır içi (``<ts:…>``) ya da
+    ``ts2``/``tr2`` argümanında durur.
+    """
+    modifiers = dict(_INLINE_MODIFIER.findall(raw))
+    bare = _INLINE_MODIFIER.sub("", raw).strip()
+    reading = (
+        modifiers.get("ts") or modifiers.get("tr")
+        or str(args.get(f"ts{index}") or args.get(f"tr{index}") or "")
+    ).strip()
+    return reading or bare
+
+
+def _formation_from_templates(record: dict[str, Any], lang_code: str) -> str:
+    """Kelimenin kendi dilindeki yapımı: ``{{suf|otk|biti-|-g}}`` -> ``biti- + -g``.
+
+    ⚠️ Bu bilgi ``origin`` sütununu DEĞİŞTİRMEZ — ölçülerek karar verildi.
+    "Yapım şablonu varsa alıntı değil türetmedir" kuralı denendi: tr'de
+    192 kaydı alıntıdan çıkarıyordu ve rastgele 40 örneğin ancak yarısı
+    gerçekten Türkçe içi yapımdı (*yayın*, *tören*, *merhametli*); öbür
+    yarısı BÜTÜN OLARAK alınmış Arapça/Farsça yapılardı (*kırtasiye*,
+    *hükümdar*, *velhasıl*), Wiktionary onlara da Türkçe `af` koyuyor.
+    `origin` alıntı değerlendirmesinin altın etiketidir; yarı yanlış kural
+    oraya giremez. Yapı yalnız bilgi olarak taşınır.
+
+    Şablonun dil argümanı kelimenin kendi dili olmalı: ``tsunami``nin
+    ``compound`` şablonu Japoncadaki yapıyı anlatır, Türkçedekini değil.
+    """
+    for template in record.get("etymology_templates", []) or []:
+        if str(template.get("name", "")).lower() not in FORMATION_TEMPLATES:
+            continue
+        args = template.get("args", {}) or {}
+        if str(args.get("1", "")) != lang_code:
+            continue
+        parts = []
+        for i in range(2, 12):
+            raw = str(args.get(str(i), "") or "").strip()
+            if not raw:
+                continue
+            part = _template_part(raw, args, i - 1)
+            if part:
+                parts.append(part)
+        if len(parts) >= 2:
+            return " + ".join(parts)
+    return ""
+
+
+def _cognates_from_templates(record: dict[str, Any]) -> str:
+    """Sözlüğün kendisinin andığı akrabalar (``cog`` şablonu), JSON dizisi."""
+    out: list[dict[str, str]] = []
+    for template in record.get("etymology_templates", []) or []:
+        if str(template.get("name", "")).lower() not in ("cog", "cognate"):
+            continue
+        args = template.get("args", {}) or {}
+        lang = str(args.get("1", "") or "").strip()
+        raw = str(args.get("2", "") or "").strip()
+        form = _INLINE_MODIFIER.sub("", raw).strip()
+        reading = str(args.get("ts") or args.get("tr") or "").strip()
+        gloss = str(args.get("t") or args.get("gloss") or args.get("4") or "").strip()
+        if lang and (form or reading):
+            out.append({"lang": lang, "form": form, "reading": reading, "gloss": gloss})
+    return json.dumps(out, ensure_ascii=False) if out else ""
+
+
+#: Bilimsel çeviriyazının seri işaretleri ve gırtlaksılları — arama anahtarı
+#: olarak taşınmazlar.
+_ROMANISATION_NOISE = str.maketrans("", "", "¹²³⁴ʾʿ")
+
+
+def _best_romanisation(record: dict[str, Any]) -> str:
+    """kaikki'nin kendi çevriyazısı; birden çoksa EN OKUNAKLI olanı.
+
+    ⚠️ Bir kayıtta birden çok romanizasyon olabilir ve ilkini almak yanlış::
+
+        𐰚𐰃𐰾𐰃  forms = ["k²is²i", "kişi"]   -> ilki alınırsa 'kisi', ş kaybolur
+        𐱅𐰭𐰼𐰃  forms = ["t²ŋr²i", "Teŋri"]  -> ilki alınırsa 'tŋri'
+
+    Üst simgeli rakamlar (¹²³⁴) Orhun yazısının ön/art ünsüz serisini
+    işaretleyen BİLİMSEL çeviriyazı kuralıdır, okunabilir bir biçim değil.
+    Bu yüzden üst simge taşımayan aday tercih edilir. Ölçüldü: otk'de
+    370 kayıt çok romanizasyonlu; "en iyi" seçimi "ilk" seçimine göre
+    kullanılabilir kayıt sayısını 302'den 312'ye çıkarıyor.
+    """
+    candidates: list[str] = []
+    # `ts` (transcription) ünlüleri yazılmış okunuştur ve en güvenilir adaydır.
+    # Ölçüldü: 𐰋𐰃𐱅𐰏 kaydında ne `romanization` etiketli biçim ne `tr` var,
+    # yalnız ``ts: "bitig"``; bu alan okunmayınca anahtar runik çeviriyazıdan
+    # ``bıtg`` kalıyor ve `bitig` araması 19 kaynakta da boş dönüyordu.
+    # otk'de 470 kaydın 139'u `ts` taşıyor.
+    #
+    # `ts` bazen birden çok okunuş verir: "qaġan, xaġan", "bädiz, bediz",
+    # "tögültün/ or /tügültün". Bölünmezse noktalama atılıp okunuşlar
+    # BİRLEŞİYORDU (ölçüldü: `kaganhagan`, `bedizbediz`, `eşideşit`).
+    # İlk okunuş alınır.
+    for template in record.get("head_templates") or []:
+        text = str((template.get("args") or {}).get("ts") or "").strip()
+        first = next((p for p in re.split(r"\s*(?:,|/|\bor\b)\s*", text) if p.strip()), "")
+        if first:
+            candidates.append(first.strip())
+    for form in record.get("forms") or []:
+        if "romanization" in (form.get("tags") or []):
+            text = (form.get("form") or "").strip()
+            if text:
+                candidates.append(text)
+    for template in record.get("head_templates") or []:
+        text = str((template.get("args") or {}).get("tr") or "").strip()
+        if text:
+            candidates.append(text)
+    if not candidates:
+        return ""
+    clean = [c for c in candidates if not any(ch in c for ch in "¹²³⁴")]
+    return (clean or candidates)[0]
+
+
+def _romanised_comparison(record: dict[str, Any]) -> str:
+    """Romanizasyondan türetilmiş karşılaştırma biçimi.
+
+    ⚠️ KİRİL YAZILI KAYITLARDA KULLANILMAZ — ölçülerek karar verildi.
+    Kısıtsız kural 24.280 kaydın karşılaştırma biçimini değiştiriyordu ve
+    Kiril blokları İYİLEŞME DEĞİL, SÖZLEŞME DEĞİŞİKLİĞİ getiriyordu::
+
+        ky  'çıçırkanak' -> 'cıcırkanak'   (ç -> c; Türkçe `ç` ile eşleşme bozulur)
+        sah 'harıs'      -> 'karıs'
+        ba  'yazmış'     -> 'yadmış'
+        kk  'kivi'       -> 'kıyviy'
+
+    Bizim Kiril tablomuz zaten Türkolojik karşılaştırma biçimi üretiyor;
+    kaikki romanizasyonu ise dil-içi ya da İngilizce sözleşme izliyor.
+    Abjad ve runik yazılarda ise durum tersi — oralarda BİZİM çeviriyazımız
+    ünlü/ses kaybediyor (``эҥин`` -> ``ein`` gibi bir kayıp Kiril'de de
+    görülüyor ama azınlıkta; Arap/Orhun yazısında kural).
+
+    Kısıt sonrası etki (24.280 -> 12.855): ota 9029, ug 2278, klj 654,
+    otk 345, chg 244 korunur; kk 6065->86, ba 2377->0, sah 1116->0,
+    ky 593->16, alt 366->0, kum/nog/khk -> 0.
+    """
+    import re
+    import unicodedata
+
+    if re.search(r"[Ѐ-ӿ]", str(record.get("word") or "")):
+        return ""
+
+    raw = _best_romanisation(record)
+    if not raw:
+        return ""
+    # Fiil kökleri sözlükte tireyle yazılır (``bil-``); tire arama anahtarı değil.
+    text = unicodedata.normalize("NFC", raw.strip().strip("-").translate(_ROMANISATION_NOISE))
+    return to_comparison_form(text)
+
+
 def iter_entries(path: Path, lang_code: str) -> Iterator[LexiconEntry]:
     """Bir kaikki JSONL dökümünü satır satır okur (bellekte tutmadan)."""
     opener = gzip.open if path.suffix == ".gz" else open
@@ -394,6 +562,28 @@ def iter_entries(path: Path, lang_code: str) -> Iterator[LexiconEntry]:
                 # Ölçüldü: bu adım olmadan 4.215 Uygurca kaydın yalnız 114'ü
                 # indekslenebiliyordu, Çağatayca'nın tamamı düşüyordu.
                 comparison = to_comparison_form(transliterate_to_latin(word))
+
+            # ⚠️ KENDİ ÇEVİRİYAZIMIZ KAYIPLI; kaynağınki otoriter.
+            # Wiktionary editörlerinin yazdığı romanizasyon aynı kayıtta
+            # duruyordu ve atılıyordu. Orhun yazısı ünlü niteliğini
+            # kodlamadığı için bizim tablomuz `bıtı`, `tŋrı`, `kısı`
+            # üretiyor; kaynak ise `biti`, `teŋri`, `kişi` diyor.
+            #
+            # Kural (ölçülerek sadeleşti): romanizasyon en az mevcut biçim
+            # kadar uzunsa onu kullan, değilse mevcut kal. "Her zaman
+            # romanizasyon" YANLIŞ olurdu — Çağataycada bazı okumalar
+            # ünsüz iskeletidir (``ʾslʾm`` -> ``slm``, ``mn``) ve mevcut
+            # Arap çeviriyazısından kötüdür.
+            #
+            # Ölçüm (>=3 harfli, yani aranabilir kayıt sayısı):
+            #     otk   248 -> 312      chg   565 -> 575
+            #     ota  9530 -> 9723
+            # Nitelik düzeltmeleri: 'chad'->'cihad', 'amam'->'imam',
+            # 'allh'->'allah', 'kgnlg'->'kağanlığ', 'myvh'->'meve'.
+            romanised = _romanised_comparison(record)
+            if len(romanised) >= len(comparison):
+                comparison = romanised
+
             if not comparison:
                 continue
             origin, donor_lang, donor_form = _origin_from_templates(record)
@@ -409,6 +599,8 @@ def iter_entries(path: Path, lang_code: str) -> Iterator[LexiconEntry]:
                 origin=origin,
                 donor_lang=donor_lang,
                 donor_form=donor_form,
+                formation=_formation_from_templates(record, lang_code),
+                cognates=_cognates_from_templates(record),
             )
 
 
@@ -513,8 +705,8 @@ class LexiconIndex:
     def _insert(connection: sqlite3.Connection, rows: list[tuple]) -> None:
         connection.executemany(
             "INSERT INTO entries(lang_code, word, comparison, pos, gloss, ipa, "
-            "etymology, long_vowels, origin, donor_lang, donor_form) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "etymology, long_vowels, origin, donor_lang, donor_form, formation, cognates) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             rows,
         )
 

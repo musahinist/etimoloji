@@ -94,6 +94,10 @@ DONOR_LANGUAGE_NAMES: dict[str, str] = {
     "zhx": "Çince (lehçe)",
     "zh": "Çince",
     "cmn": "Mandarin Çincesi",
+    # Eski Türkçe alıntılarının Çince katmanları (ölçüldü: otk'deki 133
+    # alıntı kaydının 23'ünün vericisi `ltc`; kod adsız basılıyordu).
+    "ltc": "Orta Çince",
+    "och": "Eski Çince",
     "mn": "Moğolca",
     "xng": "Orta Moğolca",
     "sog": "Soğdca",

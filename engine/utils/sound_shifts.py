@@ -36,6 +36,13 @@ SOUND_SHIFT_RULES: list[tuple[str, str, bool]] = [
     (r"^b", "m", True), (r"^b", "p", True), (r"^b", "v", True),
     (r"^g", "k", True), (r"^k", "g", True),
     (r"^y", "c", True), (r"^y", "j", True), (r"^y", "ç", True),
+    # ⚠️ Söz sonu -g ~ -k (bitig ~ bitik) BİLEREK YOK — denendi ve geri alındı.
+    # Denklik gerçek ama varyantla bulunan tanıkların ANLAMI denetlenmiyor;
+    # kural eş sesli kelimeleri akraba diye içeri aldı. Ölçüldü (`bitig`):
+    # TDK *bitik* "gücü kalmamış" (bit- "sona ermek"), Derleme *bitik*
+    # "azıcık", Eski Türkçe *büt-* "tamamlanmak" tanık sayıldı ve motor
+    # anlamsız bir *bütik kurup A-HVP'den 🟡 aldı. Anlam süzgeci olmadan
+    # eklenmemeli.
     # Söz sonu z ~ s ~ ş ~ r (Oğur/Çuvaş rotasizmi dâhil)
     (r"z$", "s", True), (r"z$", "ş", True), (r"z$", "r", True),
     # Ünlü denklikleri — yalnızca İLK eşleşme değişir

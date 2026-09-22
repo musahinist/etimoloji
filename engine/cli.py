@@ -52,7 +52,28 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
     print(f" 📌 Ana Kök / Rekonstrüksiyon: {root.get('proto_turkic', 'Bilinmiyor')}")
     if root.get("provenance"):
         print(f" 🏷️  Kökün Kaynağı           : {root['provenance']}")
+    protos = root.get("source_proto_forms") or []
+    if protos:
+        listed = ", ".join(f"{p['form']} ({p['count']} kayıt)" for p in protos)
+        engine_root = str(root.get("proto_turkic") or "").strip("*-")
+        # En sık verilen biçimle karşılaştır: `bitig` için bir kayıt fiil
+        # kökünü (*biti-) de anıyor; "herhangi biriyle eşleşiyor" demek
+        # asıl ayrışmayı (*bitig ~ *biti) gizliyordu.
+        differs = bool(engine_root) and protos[0]["form"].strip("*-") != engine_root
+        print(f" 📚 Kaynaklardaki Ata Biçim  : {listed}"
+              + (f"  ⚠️ motorun rekonstrüksiyonu ({root.get('proto_turkic')}) bununla ayrışıyor" if differs else ""))
+    for layer in root.get("origin_layers") or []:
+        print(f" 🧭 Köken Katmanı            : {layer}")
+    if root.get("root_note"):
+        note = root["root_note"]
+        print(f" 🌱 Kök Notu                 : {note[:300]}{'…' if len(note) > 300 else ''}")
     print(f" 📖 Anlam                     : {root.get('meaning', 'Bilinmiyor')}")
+    if root.get("historical_meaning"):
+        print(f" 📜 Tarihî Anlam              : {root['historical_meaning']}")
+    for group in root.get("meanings") or []:
+        print(f"    • {group['source']}")
+        for m in group["meanings"]:
+            print(f"        – {m}")
     print(f" 📚 Kaynak Portföyü           : {', '.join(sources)}")
 
     # 2. A-HVP (YAPAY ZEKA HİPOTEZ DOĞRULAMA VE HAKEMLİK PROTOKOLÜ) ÇIKTISI
@@ -119,7 +140,38 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
                 continue
 
             shift_info = f" [Ses Değişimi: {shift}]" if shift and shift != "Standart Lehçe Ses Uyumu" else ""
+            # Runik/Arap yazılı biçimin yanında okunuşu (𐰋𐰃𐱅𐰏 bitig)
+            if entry.get("comparison") and entry.get("script") not in (None, "Latin"):
+                word = f"{word} {entry['comparison']}"
             print(f"  • {lang_name:<30} : {word:<24} [{'Anlam: ' + meaning if meaning else 'N/A'}]{shift_info}")
+            if entry.get("formation"):
+                print(f"      ↳ Yapı: {entry['formation']}")
+            if entry.get("etymology"):
+                note = entry["etymology"]
+                print(f"      ↳ Kaynak notu: {note[:300]}{'…' if len(note) > 300 else ''}")
+            if entry.get("source_cognates"):
+                cogs = ", ".join(
+                    f"{c['lang']} {c.get('reading') or c.get('form')}"
+                    + (f" “{c['gloss']}”" if c.get("gloss") else "")
+                    for c in entry["source_cognates"][:8]
+                )
+                print(f"      ↳ Kaynağın andığı akrabalar: {cogs}")
+
+    mentions = finding.get("etymology_mentions") or {}
+    if mentions.get("items"):
+        print("\n" + "─" * 80)
+        print(f" 🔁 ETİMOLOJİSİNDE BU KELİME GEÇEN KAYITLAR ({mentions['total']} kayıt; tanık sayılmaz)")
+        print("─" * 80)
+        for m in mentions["items"][:12]:
+            form = m["word"] if m["comparison"] == m["word"] else f"{m['word']} {m['comparison']}"
+            print(f"  • {m['lang_name']:<30} : {form:<24} [{m['gloss'] or 'N/A'}]")
+            print(f"      ↳ {m['etymology']}")
+            for source, text in (m.get("live") or {}).items():
+                print(f"      ↳ {source}: {text[:200]}")
+        for h in mentions.get("homonym_cognates") or []:
+            print(f"  ⚠️  eşsesli, tanık sayılmadı: {h['lang_name']} {h['word']} “{h['meaning']}” (anlam benzerliği {h['similarity']})")
+        if mentions["total"] > 12:
+            print(f"  … ve {mentions['total'] - 12} kayıt daha (--json)")
 
     # 4. CANLI KEŞFEDİLEN WEB KAYNAKLARI VE MAKALE BAĞLANTILARI
     if web_sources:

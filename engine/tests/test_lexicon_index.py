@@ -316,3 +316,70 @@ class TestRussianEditionSchema(unittest.TestCase):
         from engine.db.lexicon_index import discover_ru_edition
 
         self.assertIsInstance(discover_ru_edition(), dict)
+
+
+class TestTranscriptionKey(unittest.TestCase):
+    """bitig regresyonu: okunuş yalnız `ts` alanındaydı, anahtar `bıtg` kalıyordu."""
+
+    def _record(self, ts: str) -> dict:
+        return {"word": "𐰋𐰃𐱅𐰏", "head_templates": [{"name": "head", "args": {"1": "otk", "ts": ts}}]}
+
+    def test_ts_is_used(self):
+        from engine.db.lexicon_index import _romanised_comparison
+
+        self.assertEqual(_romanised_comparison(self._record("bitig")), "bitig")
+
+    def test_multiple_readings_are_not_glued(self):
+        from engine.db.lexicon_index import _romanised_comparison
+
+        self.assertEqual(_romanised_comparison(self._record("bädiz, bediz")), "bediz")
+        self.assertEqual(_romanised_comparison(self._record("tögültün/ or /tügültün")), "tögültün")
+
+
+class TestFormationAndCognates(unittest.TestCase):
+    """bitig: yapı (`suf`) ve akraba (`cog`) şablonları indekse giriyordu ama atılıyordu."""
+
+    BITIG = {
+        "name": "suf",
+        "args": {"1": "otk", "2": "𐰋𐰃𐱅𐰃<ts:biti-><t:to write>", "3": "-𐰏<ts:-g><pos:deverbal noun suffix>"},
+    }
+
+    def test_formation_uses_readings(self):
+        from engine.db.lexicon_index import _formation_from_templates
+
+        rec = record("𐰋𐰃𐱅𐰏", [self.BITIG], lang="otk")
+        self.assertEqual(_formation_from_templates(rec, "otk"), "biti- + -g")
+
+    def test_formation_in_source_language_is_ignored(self):
+        """tsunami'nin `compound` şablonu Japoncadaki yapıyı anlatır."""
+        from engine.db.lexicon_index import _formation_from_templates
+
+        rec = record("tsunami", [{"name": "compound", "args": {"1": "ja", "2": "津", "3": "波"}}])
+        self.assertEqual(_formation_from_templates(rec, "tr"), "")
+
+    def test_formation_does_not_change_origin(self):
+        """Yapım şablonu alıntı etiketini DEĞİŞTİRMEZ (altın etiket)."""
+        from engine.db.lexicon_index import _origin_from_templates
+
+        rec = record("𐰋𐰃𐱅𐰏", [self.BITIG, {"name": "der", "args": {"1": "otk", "2": "ltc", "3": "筆"}}], lang="otk")
+        self.assertEqual(_origin_from_templates(rec)[0], "alıntı")
+
+    def test_cognates_are_parsed(self):
+        from engine.db.lexicon_index import _cognates_from_templates
+
+        rec = record("𐰋𐰃𐱅𐰃", [
+            {"name": "cog", "args": {"1": "oui", "2": "𐽼𐽶𐾀𐽶", "ts": "biti-", "t": "to write"}},
+            {"name": "cog", "args": {"1": "atv", "2": "битиерге", "t": "to write"}},
+        ], lang="otk")
+        cogs = json.loads(_cognates_from_templates(rec))
+        self.assertEqual([(c["lang"], c["reading"] or c["form"]) for c in cogs],
+                         [("oui", "biti-"), ("atv", "битиерге")])
+
+    def test_columns_reach_the_index(self):
+        with TemporaryDirectory() as tmp:
+            d = Path(tmp)
+            write_dump(d, "otk", [record("bitig", [self.BITIG], lang="otk", gloss="inscription")])
+            index = LexiconIndex(d / "index.db")
+            index.build(sources={"otk": d / "otk.jsonl.gz"})
+            row = index.lookup("bitig")[0]
+        self.assertEqual(row["formation"], "biti- + -g")

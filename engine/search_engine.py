@@ -45,10 +45,11 @@ from engine.nlp.reconstruction import ProtoTurkicReconstructor
 from engine.nlp.sound_law_induction import SoundLawInductionEngine
 from engine.utils.cognates import get_related_cognates
 from engine.utils.geo_tagger import tag_geographical_region
-from engine.utils.morphology import analyze_morphology
+from engine.utils.morphology import analyze_morphology, is_inflection_gloss
 from engine.utils.network import Diagnostics
+from engine.utils.orthography import to_comparison_form
 from engine.utils.phonetic_rules import analyze_phonetic_shifts
-from engine.utils.reference_resolver import extract_cross_references
+from engine.utils.reference_resolver import extract_cross_references, is_cross_reference
 from engine.utils.seed import load_seed_entries
 from engine.utils.transliteration import transliterate_to_latin
 from engine.utils.variant_expander import generate_dynamic_phonetic_variants
@@ -75,15 +76,276 @@ def translate_meaning(meaning: str) -> str:
     m_clean = re.sub(r"\{\{.*?\}\}", "", m).strip()
     m_clean = re.sub(r"\[\[(.*?)\]\]", r"\1", m_clean).strip()
 
-    lowered = m_clean.lower()
-    for eng, tr in _meaning_translations().items():
-        # Tam kelime (veya tam ifade) sınırı
-        if re.search(rf"(?<![\w-]){re.escape(eng)}(?![\w-])", lowered):
-            return tr
+    # ⚠️ YALNIZ anlamın TAMAMI ya da İLK öbeği sözlük maddesiyse çevrilir.
+    # Eskiden metnin HERHANGİ bir yerindeki ilk eşleşme bütün anlamın yerine
+    # geçiyordu. Ölçüldü: Osmanlıca `ekmek` "bread, a foodstuff prepared from
+    # a dough of flour and water" -> "su, sıvı"; bu yanlış anlam hem sözlük
+    # listesine hem A-HVP'nin tarihî anlam girdisine giriyordu.
+    translations = _meaning_translations()
+    lowered = m_clean.lower().strip()
+    first = re.split(r"[,;]", lowered, maxsplit=1)[0].strip()
+    for candidate in (lowered, first):
+        candidate = re.sub(r"^(?:the|a|an|to)\s+", "", candidate).strip(" .")
+        if candidate in translations:
+            return translations[candidate]
 
     return m_clean or meaning
 
 logger = get_logger(__name__)
+
+
+#: Ana (başlık) anlamının öncelikli kaynağı: ölçünlü Türkçe sözlük.
+_PRIMARY_MEANING_SOURCE = "TDK (Türk Dil Kurumu)"
+
+
+def _add_meaning(bucket: list[str], meaning: str) -> None:
+    """Anlamı kaynak listesine ekler; boş, yer tutucu ve göndermeleri atlar.
+
+    "bk. derlik" bir anlam değil, sözlüğün başka maddeye yönlendirmesidir;
+    anlam diye basılırsa okuru yanıltır (ölçüldü: `terlik` başlığı).
+    """
+    m = (meaning or "").strip()
+    if (
+        not m
+        or m.startswith("Online")
+        or m.endswith("madde mevcut")  # çok dilli Wiktionary yer tutucusu
+        or is_cross_reference(m)
+        or m in bucket
+    ):
+        return
+    bucket.append(m)
+
+
+def _names_word(form: str, word: str) -> bool:
+    """Kayıt biçimi sorgu kelimesini adlandırıyor mu.
+
+    Tarama çift biçim yazar: "derlik (terlik)" — ikinci biçim sorgunun kendisidir.
+    """
+    return any(p.strip().strip("*-").lower() == word for p in re.split(r"[/,;()]", form))
+
+
+def _snippet(text: str, term: str, width: int = 160) -> str:
+    """Metnin terimi içeren kısmı."""
+    text = re.sub(r"\s+", " ", text)
+    at = text.lower().find(term.lower())
+    if at < 0 or len(text) <= width:
+        return text[:width]
+    start = max(0, at - width // 2)
+    return ("…" if start else "") + text[start:start + width] + ("…" if start + width < len(text) else "")
+
+
+def _root_note(form: str, lang_code: str) -> str:
+    """Kökün aynı dildeki sözlük maddesinden anlamı ve etimoloji notu."""
+    try:
+        from engine.db.lexicon_index import LexiconIndex
+
+        index = LexiconIndex()
+        if not index.exists or not lang_code:
+            return ""
+        rows = index.lookup(form.strip("-"), languages=[lang_code], limit=3)
+    except Exception:
+        logger.warning("Kök notu okunamadı: %s", form, exc_info=True)
+        return ""
+    for row in rows:
+        gloss, etymology = str(row.get("gloss") or ""), str(row.get("etymology") or "")
+        if gloss or etymology:
+            return f"“{gloss}” — {etymology}" if gloss else etymology
+    return ""
+
+
+def _origin_layers(
+    entries: list[dict[str, Any]], word: str, formation_entry: dict[str, Any] | None
+) -> list[str]:
+    """Kelime düzeyi ile kök düzeyi kökeni AYRI satırlarda.
+
+    `bitig` Türkçe içinde yapılmıştır (biti- + -g), yalnız kökünün Orta
+    Çince 筆'den geldiği düşünülür. Tek bir "alıntı / öz Türkçe" etiketi
+    bunu anlatamaz: rapor hem "Asli Öz Türkçe" hem Çince kök notu basıyor
+    ve okur hangisinin neyi söylediğini göremiyordu.
+
+    ⚠️ Yalnız rapordur; alıntı sınıflayıcılarının kararını değiştirmez.
+    """
+    from engine.nlp.borrowing_chain import TURKIC_LINEAGE_CODES, language_name
+
+    own = to_comparison_form(word)
+    layers: list[str] = []
+    if formation_entry:
+        layers.append(
+            f"Kelime: Türki içi yapım — {formation_entry['formation']} "
+            f"({formation_entry.get('lang_name') or formation_entry.get('lang_code')} sözlük maddesi)"
+        )
+    for entry in entries:
+        if not (_names_word(entry.get("word") or "", word) or entry.get("comparison") == own):
+            continue
+        donor = str(entry.get("donor_lang") or "")
+        if entry.get("lexicon_origin") != "alıntı" or not donor or donor in TURKIC_LINEAGE_CODES:
+            continue
+        form = re.sub(r"<[^<>]*>", "", str(entry.get("donor_form") or "")).strip()
+        where = entry.get("lang_name") or entry.get("lang_code")
+        if formation_entry:
+            layers.append(f"Kökün uzak kaynağı: {language_name(donor)} {form} ({where} sözlük kaydına göre)")
+        else:
+            layers.append(f"Sözlük kaydı: alıntı — {language_name(donor)} {form} ({where})")
+        break
+    return layers
+
+
+ASSERTED_COGNATE_SOURCE = "Sözlük indeksi — etimoloji notundaki akrabalık beyanı"
+
+#: Akrabalık ipucu: not kaydın MİRAS/akraba olduğunu söylüyor.
+_KINSHIP_CUE = re.compile(
+    r"\binherited\b|\bfrom proto-turkic\b|\bcognate|\bcompare\b|родствен|восход|пратюрк",
+    re.IGNORECASE,
+)
+
+#: Kaydın herhangi bir yerinde geçerse kayıt alıntı/ikizlemedir, tanık değil.
+#: Cümle düzeyinde bakmak yetmedi — ölçüldü: Azerice `kitab` "Borrowed from
+#: Arabic كِتَاب. Compare Turkish kitap." ikinci cümle yüzünden geçiyordu.
+#: Aynı kalıpla `betik` ("Learned borrowing from Old Turkic bitig") ve
+#: Sahaca `бичик` ("Borrowed from Mongolian бичиг, from Proto-Turkic *bitig")
+#: elenir.
+_NOT_KINSHIP = re.compile(r"borrow|doublet|calque|заимств", re.IGNORECASE)
+
+#: Sorgu kelimesi Türkçe / Eski Türkçe / Proto-Türkçe biçim olarak ANILMALI.
+#: ⚠️ Yalnız "kelime geçiyor" yetmez — ölçüldü: `el` araması "Uyghur ئەل (el)"
+#: üzerinden "el = halk, ülke" maddelerini getiriyordu; Türkçe `el` "el
+#: organı" ile eşsesli. `{q}` sorgu kelimesiyle doldurulur.
+#: Uzunluk işaretleri bilerek normalleştirilmez: *ēl "ülke" `el`e eşlenirse
+#: aynı eşseslilik geri gelir.
+_ATTRIBUTED_FORM = (
+    r"(?:turkish|old turkic|proto-turkic|др\.-тюрк\.?|турецк\w*|тур\.)"
+    # Ara boşluk cümle sınırını (nokta) geçmez: "Proto-Turkic *ēl. Cognate
+    # with Uyghur ئەل (el)" Uygurca biçimi Proto-Türkçeye bağlamamalı.
+    r"[^,;.]{{0,40}}?(?<![\w-])\*?{q}(?![\w-])"
+)
+
+
+#: Semantik benzerlik alt sınırı: altındaki "akraba", sorgunun EŞSESLİSİNİN
+#: akrabasıdır. Ölçüldü (paraphrase-multilingual-MiniLM, tanığın gloss'u ile
+#: sorgunun sözlük anlamları arasındaki en yüksek kosinüs):
+#:     eşsesli : ekmek~"to sow" 0.22/0.16, el~"fifty" 0.26, su~"healthy" 0.13,
+#:               su~"to milk" 0.16, el~"eyləmək" 0.27
+#:     gerçek  : su~"вода" 0.385 (en düşük), bitig~"amulet" 0.539,
+#:               baş~"голова" 0.485, deniz~"sea" 0.447, ekmek~"bread" 0.588
+#: Pay dar (0.27 ile 0.385) ve örnek 22 çift; eşik gözden geçirilmeli.
+#: Türevler (göz~"mirror" 0.47, göz~"to see" 0.41) geçer — eşsesli değil,
+#: anlamca bağlı kelimelerdir.
+HOMONYM_SIMILARITY_FLOOR = 0.30
+
+
+def _first_sentence_loan(text: str) -> bool:
+    """İlk cümle aile dışı bir dilden "From X" diyor mu (ҡәләм: "From Arabic قَلَم")."""
+    from engine.db.lexicon_index import ETYMOLOGY_TEXT_DONORS
+
+    first = re.split(r"(?<=[.;])\s+", text.strip(), maxsplit=1)[0]
+    names = [*ETYMOLOGY_TEXT_DONORS, "Middle Chinese", "Old Chinese"]
+    return any(re.search(rf"\bfrom {re.escape(n)}\b", first, re.IGNORECASE) for n in names)
+
+
+def _homonym_filter(
+    candidates: list[dict[str, Any]], query_meanings: list[str]
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Anlamca sorgunun HİÇBİR anlamına yakın olmayan adayları ayırır.
+
+    Model yoksa ya da karşılaştırılacak anlam yoksa süzgeç uygulanmaz
+    (n-gram yedek vektörleri anlam ayırmaz; yanlış eleme yapmasın).
+    """
+    glossed = [c for c in candidates if c.get("meaning")]
+    if not glossed or not query_meanings:
+        return candidates, []
+    try:
+        from engine.nlp.diachronic_semantic_engine import get_sentence_transformer, has_semantic_model
+
+        if not has_semantic_model():
+            return candidates, []
+        from sentence_transformers.util import cos_sim
+
+        model = get_sentence_transformer()
+        q = model.encode(query_meanings[:12], show_progress_bar=False)
+        g = model.encode([c["meaning"] for c in glossed], show_progress_bar=False)
+        sims = cos_sim(g, q).max(dim=1).values.tolist()
+    except Exception:
+        logger.warning("Eşsesli süzgeci çalışmadı; adaylar süzülmeden alındı", exc_info=True)
+        return candidates, []
+    kept, dropped = [c for c in candidates if not c.get("meaning")], []
+    for cand, sim in zip(glossed, sims, strict=True):
+        cand["meaning_similarity"] = round(float(sim), 3)
+        (kept if sim >= HOMONYM_SIMILARITY_FLOOR else dropped).append(cand)
+    return kept, dropped
+
+
+def _asserted_cognates(word: str, mentions: dict[str, Any]) -> list[dict[str, Any]]:
+    """Etimoloji notu sorgu kelimesiyle akrabalık İDDİA EDEN Türki kayıtlar.
+
+    `bitig` tek tanıkla kalıyor ve rapor "dar/lokal yayılım (ağız terimi
+    veya son dönem alıntı)" diyordu; oysa sözlüğün kendisi Çuvaşça *пӗтӳ*
+    ("From Proto-Turkic *bitig"), Başkurtça *бетеү* ("Родственно др.-тюрк.
+    bitig") ve Türkçe *biti* ("Inherited from Proto-Turkic *bitig") için
+    akrabalığı AÇIKÇA söylüyor.
+
+    ⚠️ Bunlara ANLAM SÜZGECİ UYGULANMAZ, bilerek: *пӗтӳ* "amulet" anlamca
+    "inscription"dan uzaktır ama gerçek akrabadır (Başkurtça kayıt da
+    «письмо, надпись; амулет» der). Kaynağın açık iddiası anlam
+    benzerliğinden güçlü kanıttır. Anlam süzgeci, ses varyantıyla BULUNAN
+    (kimsenin akraba demediği) tanıklar için gereklidir.
+
+    Birleşik ve türemiş kelimeler (*göz yaşı*, *gözyaşı*, *baş burmaq*)
+    akraba değil, sorgu kelimesinin türevidir; elenir.
+    """
+    from engine.fetchers.base import detect_script
+
+    own = to_comparison_form(word)
+    attributed = re.compile(_ATTRIBUTED_FORM.format(q=re.escape(word.lower())), re.IGNORECASE)
+    out: list[dict[str, Any]] = []
+    for item in mentions.get("items", []):
+        if item["lang_code"] not in TURKIC_LANGUAGES_MAP:
+            continue
+        form = str(item.get("comparison") or "")
+        if " " in str(item["word"]).strip() or (form != own and own and own in form):
+            continue
+        # Anlamı başka biçime gönderme olan kayıt ("dated form of eləmək",
+        # "plural of …") anlam taşımaz; akraba adayı değildir.
+        gloss = str(item.get("gloss") or "")
+        if is_inflection_gloss(gloss) or re.search(r"\bform of\b", gloss, re.IGNORECASE):
+            continue
+        text = str(item.get("etymology_full") or item.get("etymology") or "")
+        if _NOT_KINSHIP.search(text) or not _KINSHIP_CUE.search(text) or _first_sentence_loan(text):
+            continue
+        if not attributed.search(text):
+            continue
+        out.append({
+            "lang_code": item["lang_code"],
+            "lang_name": item["lang_name"],
+            "word": item["word"],
+            "meaning": item.get("gloss") or "",
+            "script": detect_script(item["word"]),
+            "origin": "seed",
+            "source": ASSERTED_COGNATE_SOURCE,
+            "comparison": form,
+            "etymology": text,
+            "asserted_cognate": True,
+        })
+    return out
+
+
+def _source_proto_forms(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Kaynakların AÇIKÇA verdiği Proto-Türkçe biçimler, kaç kayıtta geçtiğiyle.
+
+    Motorun rekonstrüksiyonu ile kaynağın iddiası ayrışabilir (ölçüldü:
+    `bitig` için motor *biti kuruyor — söz sonu -g'nin Kıpçak/Çuvaş
+    kollarındaki düşüşünü modellemiyor — ama üç kayıt "Proto-Turkic
+    *bitig" diyor). İkisi yan yana gösterilir; okur tahmini iddiayla
+    karıştırmasın.
+    """
+    from collections import Counter
+
+    counts: Counter[str] = Counter()
+    for entry in entries:
+        if not (entry.get("asserted_cognate") or entry.get("formation")):
+            continue
+        for form in set(re.findall(r"Proto-Turkic \*([^\s,.;()“”\"]+)", str(entry.get("etymology") or ""))):
+            counts[form.rstrip("-")] += 1
+    return [{"form": f"*{form}", "count": n} for form, n in counts.most_common(3)]
 
 
 def default_fetchers() -> list[BaseFetcher]:
@@ -143,7 +405,99 @@ class SearchEngine:
         self.derivation_builder = DerivationNetworkBuilder()
 
         self.fetchers: list[BaseFetcher] = fetchers if fetchers is not None else default_fetchers()
+        # Yerel sözlük indeksi bir KAYNAKTIR: ters bağlantı araması ve kök notu
+        # da ona sorar, bu yüzden yalnız portföyde onun fetcher'ı varsa
+        # çalışırlar (sahte fetcher'lı testler gerçek indekse sızmasın).
+        self.uses_lexicon_index = any(isinstance(f, HistoricalIndexFetcher) for f in self.fetchers)
 
+
+    @staticmethod
+    def _etymology_mentions(word: str, limit: int = 0) -> dict[str, Any]:
+        """Etimoloji metninde sorgu kelimesi geçen sözlük kayıtları (ters bağlantı).
+
+        `bitig` araması `bitig` biçimini arar; oysa Türkçe `betik`in maddesi
+        "Learned borrowing from Old Turkic bitig" der. Bu bağ ancak etimoloji
+        METNİNDE aranarak bulunur. İndeks bu sütunu FTS5'e açıyordu ama
+        arama hattı hiç sormuyordu.
+
+        ⚠️ Bunlar TANIK DEĞİLDİR ve `turkic_languages`a girmez: `betik` bir
+        dil devrimi türetmesidir, akraba gibi sayılırsa rekonstrüksiyonu
+        bozar. Yalnız raporlanır.
+        """
+        try:
+            from engine.db.lexicon_index import LexiconIndex
+
+            index = LexiconIndex()
+            if not index.exists:
+                return {"total": 0, "items": []}
+            term = word.replace('"', "")
+            rows = index.search(f'etymology : "{term}"', limit=200)
+        except Exception:
+            logger.warning("Etimoloji metni araması başarısız: %s", word, exc_info=True)
+            return {"total": 0, "items": []}
+
+        own = to_comparison_form(word)
+        # FTS büyük/küçük harf ayırmaz. Büyük harfle geçiş özel addır, biçim
+        # atfı değil (ölçüldü: `bitig` araması "Irk Bitig" kitap adını anan
+        # 7 alakasız maddeyi getiriyordu: jana "again", köznök "window"…).
+        # Başında tire olan geçiş EKTİR, kelime değil: "pamuk + -su" (ölçüldü:
+        # `su` araması *pamuksu*, *otsu*, *odunsu* getiriyordu).
+        cited = re.compile(rf"(?<![\w-]){re.escape(term.lower())}(?![\w])")
+        items: list[dict[str, Any]] = []
+        seen: set[tuple[str, str]] = set()
+        for row in rows:
+            key = (str(row.get("lang_code")), str(row.get("word")))
+            if row.get("comparison") == own or key in seen:
+                continue
+            if not cited.search(str(row.get("etymology") or "")):
+                continue
+            seen.add(key)
+            items.append({
+                "lang_code": key[0],
+                "lang_name": TURKIC_LANGUAGES_MAP.get(key[0], key[0]),
+                "word": key[1],
+                "comparison": row.get("comparison") or "",
+                "gloss": row.get("gloss") or "",
+                "etymology": _snippet(str(row.get("etymology") or ""), term),
+                "etymology_full": str(row.get("etymology") or ""),
+            })
+        # Tümü döner: akrabalık beyanları bütün listede aranır. Ekrana
+        # basılan kısım CLI'da kırpılır.
+        return {"total": len(items), "items": items[:limit] if limit else items}
+
+    def _consult_descendants(
+        self, word: str, mentions: dict[str, Any], limit: int = 2
+    ) -> list[tuple[str, str]]:
+        """Ters bağlantılı Türkçe maddeleri (bitig -> betik) canlı kaynaklara sorar.
+
+        Nişanyan'da `bitig` maddesi yok ama `betik` maddesi "Eski Türkçe
+        bitig “yazı”" der; sorgu yalnız `bitig` diye yapıldığı için bu bilgi
+        hiç okunmuyordu. Her maddenin canlı sonucu `mentions` kaydına eklenir;
+        madde açıkça SORGU KELİMESİNDEN söz ediyorsa verdiği anlam döner.
+        """
+        by_type = {type(f): f for f in self.fetchers}
+        tdk, nisanyan = by_type.get(TdkFetcher), by_type.get(NisanyanFetcher)
+        if not (tdk or nisanyan):
+            return []
+        own = to_comparison_form(word)
+        found: list[tuple[str, str]] = []
+        for item in [m for m in mentions.get("items", []) if m.get("lang_code") == "tr"][:limit]:
+            live: dict[str, str] = {}
+            if tdk:
+                t = tdk.fetch(item["word"])
+                if t["root"].get("meaning"):
+                    live[tdk.source_name] = t["root"]["meaning"]
+            if nisanyan:
+                n = nisanyan.fetch(item["word"])
+                note = n["root"].get("reconstruction_notes") or ""
+                if note:
+                    live[nisanyan.source_name] = note
+                named = to_comparison_form((n["root"].get("proto_turkic") or "").strip("*"))
+                if named == own and n["root"].get("meaning"):
+                    found.append((f"{nisanyan.source_name} ({item['word']} maddesi)", n["root"]["meaning"]))
+            if live:
+                item["live"] = live
+        return found
 
     def _rank_hypotheses(self, word: str, entries: list[dict[str, Any]]) -> dict[str, Any] | None:
         """Rakip köken hipotezlerini sıralar; başarısız olursa hattı durdurmaz."""
@@ -190,6 +544,17 @@ class SearchEngine:
         # göremiyordu. Her atama noktası bu damgayı da koyar.
         proto_root_provenance = ""
         root_meaning = ""
+        # Kaynak başına anlamlar. Eskiden tek bir anlam seçiliyordu ve seçim
+        # fetcher'ların BİTİŞ SIRASINA bağlıydı (`as_completed`): aynı
+        # kelime koşudan koşuya farklı anlamla çıkıyordu, `terlik` TDK'nın
+        # "ayak giysisi" tanımı yerine Tarama'nın "bk. derlik" göndermesini
+        # basıyordu. Artık her sözlüğün anlamı ayrı ayrı raporlanır.
+        meanings_by_source: dict[str, list[str]] = {}
+        # Kaynağın kendi ANA anlam alanı (TDK: ilk iki anlamın birleşimi).
+        # Ana anlam buradan seçilir, liste ise bütün anlamları gösterir.
+        # İkisi ayrı tutulmazsa gösterim değişikliği A-HVP 3. aşamasının
+        # girdisini sessizce değiştiriyordu (ölçüldü: 14 kelimenin 14'ünde).
+        primary_by_source: dict[str, str] = {}
         sources = []
         turkic_entries_map = {}
         raw_fetcher_results: list[dict[str, Any]] = []
@@ -208,9 +573,14 @@ class SearchEngine:
                     errors.append(f"{type(exc).__name__}: {exc}")
                     continue
                 if res and (res.get("turkic_languages") or res.get("proto_turkic")):
-                    results.append(res)
+                    # Hangi varyantla bulunduğu anlam listesi için gerekli:
+                    # kök varyantının ("terlik" -> "ter") anlamı sorgunun anlamı değildir.
+                    results.append((var, res))
             elapsed = int((time.perf_counter() - started) * 1000)
             return fetcher, results, elapsed, errors
+
+        fetcher_order = {f.source_name: i for i, f in enumerate(self.fetchers)}
+        hypothesis_historical_meaning = ""
 
         stage_start = time.perf_counter()
         with concurrent.futures.ThreadPoolExecutor(max_workers=config.MAX_WORKERS) as executor:
@@ -227,14 +597,20 @@ class SearchEngine:
                     }
                     if not results:
                         logger.debug("Kaynak veri döndürmedi: %s (%d ms)", fetcher.source_name, elapsed_ms)
-                    for res in results:
+                    for variant, res in results:
                         raw_fetcher_results.append(res)
                         root_info = res.get("root", {})
                         if root_info.get("proto_turkic") and not proto_root:
                             proto_root = root_info.get("proto_turkic")
                             proto_root_provenance = f"tanıklı — {fetcher.source_name}"
-                        if root_info.get("meaning") and not root_meaning:
-                            root_meaning = translate_meaning(root_info.get("meaning"))
+                        source_meanings = meanings_by_source.setdefault(fetcher.source_name, [])
+                        if variant == word_clean:
+                            primary = translate_meaning(root_info.get("meaning") or "")
+                            if primary and not is_cross_reference(primary):
+                                primary_by_source.setdefault(fetcher.source_name, primary)
+                            # Kaynak anlamları tek tek verdiyse (TDK) onlar, yoksa tek alan.
+                            for m in root_info.get("meanings") or [root_info.get("meaning") or ""]:
+                                _add_meaning(source_meanings, translate_meaning(m))
 
                         for entry in res.get("turkic_languages", []):
                             entry["meaning"] = translate_meaning(entry.get("meaning", ""))
@@ -256,7 +632,14 @@ class SearchEngine:
                             refs = extract_cross_references(entry.get("meaning") or "")
                             if refs:
                                 entry["cross_references"] = refs
-                            key = (entry["lang_code"], entry["word"])
+                            if _names_word(entry.get("word") or "", word_clean) or (
+                                entry.get("comparison") and entry["comparison"] == to_comparison_form(word_clean)
+                            ):
+                                _add_meaning(source_meanings, entry.get("meaning") or "")
+                            # Ağız kaydı ile ölçünlü dil kaydı aynı (dil, kelime)
+                            # çiftini taşıyabiliyor; ayrı tutulmazsa hangisinin
+                            # kalacağını bitiş sırası belirliyordu.
+                            key = (entry["lang_code"], entry["word"], bool(entry.get("dialect")))
                             if key not in turkic_entries_map:
                                 turkic_entries_map[key] = entry
                             elif turkic_entries_map[key].get("meaning") in ["", f"Online {TURKIC_LANGUAGES_MAP.get(entry['lang_code'], '')} Sözlük kaydı"]:
@@ -275,6 +658,60 @@ class SearchEngine:
                     }
         stage_timings["fetch"] = int((time.perf_counter() - stage_start) * 1000)
 
+        # Ana anlam SABİT bir öncelikle seçilir: ölçünlü TDK sözlüğü önce,
+        # sonra fetcher portföyünün sırası. Bitiş sırası artık belirleyici değil.
+        meanings_by_source = {k: v for k, v in meanings_by_source.items() if v}
+        primary_source = ""
+        for source_name in sorted(
+            meanings_by_source,
+            key=lambda n: (n != _PRIMARY_MEANING_SOURCE, fetcher_order.get(n, len(fetcher_order))),
+        ):
+            candidate = next(
+                (m for m in [primary_by_source.get(source_name, ""), *meanings_by_source[source_name]]
+                 if m and m != word_clean),
+                "",
+            )
+            if candidate:
+                root_meaning = candidate
+                primary_source = source_name
+                break
+
+        # Kaynağın AÇIKÇA akraba dediği kayıtlar tanık olur (bkz.
+        # `_asserted_cognates`). Ters bağlantı araması burada bir kez yapılır.
+        etymology_mentions = (
+            self._etymology_mentions(word_clean) if self.uses_lexicon_index else {"total": 0, "items": []}
+        )
+        # Eşsesli akrabaları ayırmak için sorgunun ANA anlamı (başlıktaki
+        # sözlükbirim). ⚠️ Bütün anlamlar kullanılamaz: sorgunun kendisi
+        # eşsesli olabilir — Tarama/Derleme `ekmek` için "tohum atmak"
+        # anlamını da veriyor ve Gagavuzca *ekmää* "to sow" bu yüzden
+        # süzgeçten geçiyordu (ölçüldü).
+        # Ana kaynağın İLK anlamı: TDK'nın birleşik alanı ikinci anlamları da
+        # taşıyor ("İnsanı geçindirecek iş; kazanç") ve süzgeci gevşetiyordu
+        # (ölçüldü: *eyləmək* "yapmak" `el` için 0.443, *ekmää* 0.398).
+        query_meanings = meanings_by_source.get(primary_source, [])[:1] or [
+            m for group in meanings_by_source.values() for m in group
+        ]
+        asserted, homonyms = _homonym_filter(
+            _asserted_cognates(word_clean, etymology_mentions), query_meanings
+        )
+        etymology_mentions["homonym_cognates"] = [
+            {"lang_name": h["lang_name"], "word": h["word"], "meaning": h["meaning"],
+             "similarity": h.get("meaning_similarity")}
+            for h in homonyms
+        ]
+        for entry in asserted:
+            key = (entry["lang_code"], entry["word"], False)
+            if key not in turkic_entries_map:
+                entry["phonetic_shift"] = analyze_phonetic_shifts(
+                    word_clean, entry["word"], entry["lang_name"]
+                )
+                if entry.get("script") in ("Cyrillic", "Arabic", "Runic"):
+                    entry["latin_transliteration"] = transliterate_to_latin(entry["word"])
+                turkic_entries_map[key] = entry
+                if ASSERTED_COGNATE_SOURCE not in sources:
+                    sources.append(ASSERTED_COGNATE_SOURCE)
+
         sorted_entries = sorted(
             list(turkic_entries_map.values()),
             key=lambda x: (0 if x["lang_code"] == "otk" else (0.3 if x["lang_code"] == "ai" else (0.5 if x["lang_code"] == "donor" else 1)), x["lang_name"])
@@ -285,7 +722,7 @@ class SearchEngine:
         if not root_meaning or root_meaning == word_clean:
             for entry in sorted_entries:
                 m = entry.get("meaning", "").strip()
-                if m and not m.startswith("Online") and m != word_clean:
+                if m and not m.startswith("Online") and m != word_clean and not is_cross_reference(m):
                     root_meaning = m
                     break
 
@@ -479,7 +916,10 @@ class SearchEngine:
                 proto_root_provenance = (
                     f"tanıklı — A-HVP doğrulanmış alıntı kökeni ({_donor_lang})"
                 )
-            root_meaning = hypo.get("historical_meaning", root_meaning)
+            # ⚠️ Eskiden burada `root_meaning` EZİLİYORDU: başlıktaki anlam
+            # modern sözlük tanımı yerine hipotezin tarihî anlamı oluyordu
+            # (`terlik` -> "bk. derlik"). Tarihî anlam ayrı alanda taşınır.
+            hypothesis_historical_meaning = hypo.get("historical_meaning") or ""
             sources.append(f"Derin Komşu Diller Etimoloji Veritabanı ({hypo.get('donor_language')})")
             if not any(e.get("lang_code") == "donor" for e in sorted_entries):
                 sorted_entries.insert(0, {
@@ -503,6 +943,17 @@ class SearchEngine:
         stage_timings["nlp"] = int((time.perf_counter() - stage_start) * 1000)
 
         morphology_info = f"Kök: {stem} + Ekler: {', '.join(suffixes)}" if suffixes else "Yalın Kök"
+        # Sorgu kelimesinin yapısını açıkça veren sözlük maddesi ("biti- + -g").
+        formation_entry = next(
+            (e for e in sorted_entries
+             if e.get("formation") and (_names_word(e.get("word") or "", word_clean)
+                                        or e.get("comparison") == to_comparison_form(word_clean))),
+            None,
+        )
+        if not suffixes and formation_entry:
+            # Kural tabanlı çözümleyici Eski Türkçe eklerini tanımıyor (`bitig`
+            # -> "Yalın Kök"); sözlük maddesi yapıyı açıkça veriyorsa o yazılır.
+            morphology_info = f"{formation_entry['formation']} (sözlük maddesine göre)"
         related_cognates = get_related_cognates(word_clean, sorted_entries)
 
         # 5. Neo4j Uyumlu Graf Veritabanı Düğüm Şeması Oluşturma
@@ -554,16 +1005,66 @@ class SearchEngine:
                 f"⚠️ sıralayıcı: {_sel_claim or 'kökeni belirlenemedi'}"
             )
 
+        # Motor hiçbir yöntemle kök bulamadıysa ama sözlük maddesi yapıyı
+        # veriyorsa, kök o yapının ilk parçasıdır (`bitig` -> `biti-`).
+        # ⚠️ Skorlar hesaplandıktan SONRA atanır: yalnız rapor içindir,
+        # A-HVP ve sıralayıcının girdisini değiştirmez.
+        root_note = ""
+        if not proto_root and formation_entry:
+            base = formation_entry["formation"].split(" + ")[0].strip()
+            if base and not base.startswith("-"):
+                proto_root = base
+                proto_root_provenance = (
+                    f"tanıklı — sözlük maddesinin yapısı ({formation_entry['formation']}; "
+                    f"{formation_entry.get('lang_name') or formation_entry.get('lang_code')})"
+                )
+                root_note = (
+                    _root_note(base, str(formation_entry.get("lang_code") or ""))
+                    if self.uses_lexicon_index else ""
+                )
+                # Rekonstrüksiyon notu "aşağıdaki biçim sorgu kelimesinin
+                # kendisidir" diyordu; başlık artık başka bir kök gösterdiği
+                # için iki satır birbirini yalanlıyordu.
+                reconstruction_eval["reconstruction_notes"] = (
+                    "Karşılaştırmalı yöntem uygulanamadı (yeterli bağımsız tanık yok). "
+                    f"Başlıktaki kök ({base}) karşılaştırmalı yöntemle TÜRETİLMEDİ; "
+                    f"sözlük maddesinin verdiği yapıdan alındı: {formation_entry['formation']}."
+                )
+
+        origin_layers = _origin_layers(sorted_entries, word_clean, formation_entry)
+        source_proto = _source_proto_forms(sorted_entries)
+
+        # (Sorgu TDK'da yoksa) ters bağlantılı maddelerin canlı sonuçları.
+        # ⚠️ Anlam seçiminden ve skorlardan SONRA: yalnız rapor.
+        if _PRIMARY_MEANING_SOURCE not in meanings_by_source:
+            for source_name, meaning in self._consult_descendants(word_clean, etymology_mentions):
+                bucket = meanings_by_source.setdefault(source_name, [])
+                _add_meaning(bucket, meaning)
+
         finding = {
             "query_word": word_clean,
             "morphology": morphology_info,
             "turkic_languages": sorted_entries,
+            "etymology_mentions": etymology_mentions,
             "root": {
                 "proto_turkic": proto_root or word_clean,
                 "meaning": root_meaning or word_clean,
+                # Tek anlam seçmek bilgi kaybıydı; her sözlüğün anlamı kendi
+                # adıyla, portföy sırasıyla (TDK önce).
+                "meanings": [
+                    {"source": name, "meanings": meanings_by_source[name]}
+                    for name in sorted(
+                        meanings_by_source,
+                        key=lambda n: (n != _PRIMARY_MEANING_SOURCE, fetcher_order.get(n, len(fetcher_order))),
+                    )
+                ],
+                "historical_meaning": hypothesis_historical_meaning or historical_meaning or "",
                 # Kök hiç atanmadıysa sorgu kelimesi yazılıyor; bu bir bulgu
                 # değildir, o yüzden damgası da "yok".
                 "provenance": proto_root_provenance or "yok — kök belirlenemedi",
+                "root_note": root_note,
+                "origin_layers": origin_layers,
+                "source_proto_forms": source_proto,
                 "reconstruction_notes": reconstruction_eval.get("reconstruction_notes", "")
             },
             "nlp_analysis": {
