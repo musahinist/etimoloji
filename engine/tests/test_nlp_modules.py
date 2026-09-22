@@ -623,6 +623,51 @@ class TestMorphemeSegmenter(unittest.TestCase):
         self.assertGreaterEqual(len(res["stem"]), 2)
 
 
+class TestBestWitnessSemanticDrift(unittest.TestCase):
+    """3. aşama, tanıklanmış anlamların EN YAKININA karşı ölçülmeli.
+
+    Tek bir önceden seçilmiş tanığa bakmak `bardak`ı yanlış reddettiriyordu:
+    biçim sıralaması tam eşleşen `bardak` tanığını seçiyor, glossu dar
+    anlamlı "testicik"; oysa `bart` tanığı "su içilen kap" diyor.
+    Ölçüldü: bardak 0.7863 -> 0.2202, göz 0.2843 -> 0.0311,
+    el 0.4066 -> 0.1921; deniz/su/ayak kanıt kazandı; gerileme yok.
+    """
+
+    MODERN = "Su vb. şeyleri içmek için kullanılan, camdan yapılan kap"
+
+    def _distance(self, res):
+        return (res.get("trajectory_details") or {}).get("total_shift_distance")
+
+    def test_candidates_never_worsen_the_distance(self):
+        """Değişmez kural: aday havuzu eklemek mesafeyi ARTIRAMAZ.
+
+        Bu iddia gömme modelinden bağımsızdır — min bir üst kümede alınıyor.
+        """
+        from engine.nlp.hypothesis_validation_protocol import SemanticDriftEvaluator
+
+        ev = SemanticDriftEvaluator()
+        tek = self._distance(ev.verify("testicik", self.MODERN))
+        cok = self._distance(ev.verify("testicik", self.MODERN, ["su içilen kap"]))
+        self.assertIsNotNone(tek)
+        self.assertIsNotNone(cok)
+        self.assertLessEqual(cok, tek)
+
+    def test_no_candidates_keeps_old_behaviour(self):
+        from engine.nlp.hypothesis_validation_protocol import SemanticDriftEvaluator
+
+        ev = SemanticDriftEvaluator()
+        a = self._distance(ev.verify("su içilen kap", self.MODERN))
+        b = self._distance(ev.verify("su içilen kap", self.MODERN, None))
+        self.assertEqual(a, b)
+
+    def test_empty_candidates_are_skipped(self):
+        from engine.nlp.hypothesis_validation_protocol import SemanticDriftEvaluator
+
+        ev = SemanticDriftEvaluator()
+        res = ev.verify("su içilen kap", self.MODERN, ["", "   ", None])  # type: ignore[list-item]
+        self.assertIsNotNone(self._distance(res))
+
+
 class TestHistoricalGlossReachesHypothesis(unittest.TestCase):
     """Miras dalı, tarihî anlama MODERN anlamın kopyasını yazmamalı.
 

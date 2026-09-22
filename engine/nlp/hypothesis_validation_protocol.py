@@ -199,8 +199,47 @@ class SemanticDriftEvaluator:
     def __init__(self, engine: DiachronicSemanticEngine | None = None):
         self.engine = engine or DiachronicSemanticEngine()
 
-    def verify(self, historical_meaning: str, modern_meaning: str) -> dict[str, Any]:
-        res = self.engine.evaluate_diachronic_trajectory(historical_meaning, modern_meaning)
+    def verify(
+        self,
+        historical_meaning: str,
+        modern_meaning: str,
+        candidates: list[str] | None = None,
+    ) -> dict[str, Any]:
+        """Tanıklanmış anlamların EN YAKININA karşı ölçer.
+
+        ⚠️ Tek bir önceden seçilmiş tanığa bakmak `bardak`ı yanlış
+        reddettiriyordu: biçim sıralaması tam eşleşen `bardak` tanığını
+        seçiyor, onun glossu ise dar anlamlı "testicik"; oysa `bart`
+        tanığı "su içilen kap" diyor. Ölçüldü::
+
+            bardak 0.7863 -> 0.2202     göz  0.2843 -> 0.0311
+            el     0.4066 -> 0.1921     baş  0.6501 -> 0.5350
+            deniz/su/ayak: kanıt YOKken kanıt kazandı
+            kitap/kalem/bilge/gece/öküz: değişmedi     GERİLEME YOK
+
+        Güvenlik ölçüldü: sahte köklerin (`kalgır`, `sötüm`, `tirbek`,
+        `zzzqx`) tarihî tanık glossu SIFIR — seçecek aday yok, bu yüzden
+        geçirgenlikten faydalanamıyorlar.
+
+        Alternatifler ölçülüp elendi: 2. en iyi, medyan ve asgari gloss
+        uzunluğu süzgeci düşmanca vakalarda başa baş (5/6) ama gerçek
+        kazançları eritiyor (`el` 0.192->0.407, `ayak` 0.073->0.15,
+        `bardak` 0.118->0.508).
+        """
+        pool = [historical_meaning, *(candidates or [])]
+        best, res = None, None
+        for text in pool:
+            if not (text or "").strip():
+                continue
+            candidate_res = self.engine.evaluate_diachronic_trajectory(text, modern_meaning)
+            distance = candidate_res.get("total_shift_distance")
+            if not isinstance(distance, (int, float)):
+                res = res or candidate_res
+                continue
+            if best is None or distance < best:
+                best, res = distance, candidate_res
+        if res is None:
+            res = self.engine.evaluate_diachronic_trajectory(historical_meaning, modern_meaning)
         if not res.get("evidence_available"):
             return {
                 "evidence_available": False,
@@ -294,7 +333,9 @@ class HypothesisValidationProtocol:
         phonetic_res = self.phonetic_verifier.verify(origin_form, word)
         time_res = self.time_lock.verify(donor_lang, attestation_record)
         semantic_res = self.semantic_evaluator.verify(
-            hypothesis.get("historical_meaning", ""), hypothesis.get("modern_meaning", "")
+            hypothesis.get("historical_meaning", ""),
+            hypothesis.get("modern_meaning", ""),
+            hypothesis.get("historical_meaning_candidates"),
         )
         cognate_res = self.cognate_triangulator.verify(word, turkic_entries)
 

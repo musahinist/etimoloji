@@ -70,7 +70,20 @@ def _form_distance(query: str, witness_form: str) -> float:
     return best
 
 
-def _historical_gloss(entries: list[dict[str, Any]] | None, word: str = "") -> str:
+def _historical_gloss_candidates(entries: list[dict[str, Any]] | None) -> list[str]:
+    """Temizlenmiş TÜM tarihî gloss adayları (sıralamasız).
+
+    3. aşama tek bir tanığa değil, tanıklanmış anlamların EN YAKININA karşı
+    ölçülür: "tanıklanmış hiçbir tarihsel anlam modern anlama yakın değil
+    mi?" sorusu filolojik olarak meşrudur ve bir kelimenin birden çok
+    tarihsel anlamı olabilir.
+    """
+    return _historical_gloss(entries, return_all=True)  # type: ignore[return-value]
+
+
+def _historical_gloss(
+    entries: list[dict[str, Any]] | None, word: str = "", *, return_all: bool = False
+) -> str | list[str]:
     """Tarihî tanıkların ilk GERÇEK anlamını döndürür; yoksa boş dize.
 
     ⚠️ Bu yardımcı bir kusuru kapatmak için eklendi: miras dalı (aşağıdaki
@@ -151,6 +164,15 @@ def _historical_gloss(entries: list[dict[str, Any]] | None, word: str = "") -> s
         if cleaned:
             candidates.append((_form_distance(word, str(entry.get("word") or "")), cleaned))
 
+    if return_all:
+        seen: set[str] = set()
+        out: list[str] = []
+        for _, text in candidates:
+            if text not in seen:
+                seen.add(text)
+                out.append(text)
+        return out
+
     if not candidates:
         return ""
 
@@ -198,7 +220,13 @@ class IterativeHypothesisEngine:
         reconstruction = self.reconstructor.reconstruct(w, entries)
 
         hypothesis = self._select_hypothesis(
-            w, root, neologism, donor_match, reconstruction, _historical_gloss(entries, w)
+            w,
+            root,
+            neologism,
+            donor_match,
+            reconstruction,
+            str(_historical_gloss(entries, w)),
+            _historical_gloss_candidates(entries),
         )
 
         if hypothesis is None:
@@ -234,6 +262,7 @@ class IterativeHypothesisEngine:
         donor_match: dict[str, Any] | None,
         reconstruction: dict[str, Any],
         historical_gloss: str = "",
+        historical_candidates: list[str] | None = None,
     ) -> dict[str, Any] | None:
         """Kanıt gücüne göre en iyi hipotezi seçer. Kanıt yoksa ``None``."""
         modern_meaning = root.get("meaning", "") or ""
@@ -276,6 +305,7 @@ class IterativeHypothesisEngine:
                 # `_historical_gloss`); tanık yoksa boş kalır ve aşama
                 # dürüstçe "ölçülemedi" der.
                 "historical_meaning": historical_gloss,
+                "historical_meaning_candidates": historical_candidates,
                 "modern_meaning": modern_meaning,
                 "evidence_kind": "comparative_method",
                 "witness_count": reconstruction.get("witness_count", 0),
