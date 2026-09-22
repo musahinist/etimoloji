@@ -483,12 +483,26 @@ class TestWitnessAttachment(unittest.TestCase):
 
     def test_witness_dependent_signals_actually_fire(self):
         """Tanıklı maddede ses kanunu / yayılım sinyalleri ateşlenebilmeli."""
+        from engine.db.lexicon_index import LexiconIndex
         from engine.evaluation.borrowing_eval import find_witnesses
         from engine.nlp.borrowing_detector import BorrowingDetector
 
-        witnesses = find_witnesses("kitap")
-        if len(witnesses) < 3:
-            self.skipTest("yeterli tanık bulunamadı (sözlük indeksi eksik olabilir)")
+        if not LexiconIndex().exists:
+            self.skipTest("sözlük indeksi yok (make lexicon-index)")
+
+        # ⚠️ `sense` ZORUNLUDUR: bulanık isabetler anlam örtüşmesiyle süzülür.
+        # Bu çağrı bir dönem sense'siz yapılıyordu; bütün bulanık isabetler
+        # eleniyor, `kitap` 7 tanık yerine 1 tanık buluyor ve test KENDİNİ
+        # ATLIYORDU — yani iki tanık-bağımlı sinyalin devre dışı kalmasını
+        # gizliyordu. Atlama artık yalnız indeks gerçekten yoksa olur; indeks
+        # varken az tanık BAŞARISIZLIKTIR.
+        witnesses = find_witnesses("kitap", sense="book")
+        self.assertGreaterEqual(
+            len(witnesses),
+            3,
+            "kitap Türki dillerde yaygındır (crh/ba/ug/nog/kk/uz/kum); 3'ten az "
+            "tanık, tanık bulmanın bozulduğunu gösterir",
+        )
         entries = [{"lang_code": c, "word": w} for c, w in witnesses]
         verdict = BorrowingDetector().detect("kitap", entries)
         names = {s.name for s in verdict.signals}

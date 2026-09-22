@@ -33,7 +33,7 @@ saklanır.
 
 | Ölçüm | Değer | Taban çizgi | Hüküm |
 |---|---|---|---|
-| Alıntı F — **Türkçe** (TDK+Nişanyan, n=349) | **0,887** | 0,749 hepsi-alıntı | ✅ **anlamlı** (+0,269 doğruluk, p=0,0001) |
+| Alıntı F — **Türkçe** (TDK+Nişanyan, n=349) | **0,885** | 0,749 hepsi-alıntı | ✅ **anlamlı** (+0,267 doğruluk, p=0,0001) |
 | Alıntı F — WOLD/Sakha (n=769) | **0,651** | 0,464 hepsi-alıntı | ⚠️ fonotaktiğe karşı anlamlı **değil** (p=0,251) |
 | Rekonstrüksiyon NED (dev, n=83, çapa hariç) | **0,304** | 0,339 `majority_character` | ⚠️ anlamlı **değil** (GA [−0,075, +0,007]) |
 | Rekonstrüksiyon tam (dev, çapa hariç) | **0,398** | 0,337 | ⚠️ anlamlı **değil** (p=0,188) |
@@ -572,7 +572,7 @@ kuruldu: TDK Güncel Türkçe Sözlük (`lisan` alanı) ve Nişanyan Sözlük
 
 | Sistem | F | kesinlik | duyarlılık | doğruluk |
 |---|---|---|---|---|
-| **motor (eğitilmiş)** | **0,887** | 0,910 | 0,866 | 0,868 |
+| **motor (eğitilmiş)** | **0,885** | 0,909 | 0,861 | 0,865 |
 | motor (doğrusal yedek) | 0,801 | 0,793 | 0,809 | 0,759 |
 | yalnız dizilim modeli | 0,800 | 0,669 | 0,995 | 0,702 |
 | yalnız fonotaktik kural | 0,758 | 0,937 | 0,636 | 0,756 |
@@ -581,22 +581,34 @@ kuruldu: TDK Güncel Türkçe Sözlük (`lisan` alanı) ve Nişanyan Sözlük
 
 ⚠️ **Tanık bulma düzeltildi ve yalnız motorun kendi satırları oynadı.**
 Eskiden biçim bulunamayınca bulanık aramaya düşülüp dönen ilk isabet —
-anlamına bakılmadan — tanık sayılıyordu (bkz. `find_witnesses`). Üç yol
-ölçüldü: tüm bulanık F 0,8775 · **yalnız birebir 0,8873** · bulanık+gloss
-örtüşmesi 0,8845. Bulanık isabetlerin %10,1'i anlamca gerçekti
-(`Sovyet`~`sovet`, `arzu`~`arzuw`) ama ölçüm gloss süzgecini de geçti:
-birebir kural hepsinden iyi. Tanık kullanmayan üç satır (dizilim modeli,
-fonotaktik, hepsi-alıntı) **birebir aynı kaldı** — düzeltmenin doğru yeri
-vurduğunun sağlaması budur.
+anlamına bakılmadan — tanık sayılıyordu (bkz. `find_witnesses`). Tanık
+kullanmayan üç satır (dizilim modeli, fonotaktik, hepsi-alıntı) **birebir
+aynı kaldı**; düzeltmenin doğru yeri vurduğunun sağlaması budur.
+
+| tanık kuralı | ort. tanık | F | `ses_kanunu` | `yayılım` |
+|---|---|---|---|---|
+| tüm bulanık (eski) | 2,29 | 0,8775 | 125 (%62) | 88 (%44) |
+| yalnız birebir | 0,15 | **0,8873** | 32 (%16) | 9 (%4) |
+| **bulanık + gloss örtüşmesi** | 0,37 | 0,8845 | **47 (%24)** | **17 (%8)** |
+
+⚠️ **F'si en yüksek olan seçilmedi ve sebebi ölçülmüştür.** Bulanık
+isabetlerin %10,1'i anlamca gerçek (`Sovyet`~`sovet`, `arzu`~`arzuw`);
+`kitap` için birebir kural 1 tanık bulurken gloss süzgeci 7 buluyor
+(`китап`, `кітап`, `kitob` — aynı kelimenin Kiril/Latin yazımları, birebir
+eşleşmenin asla yakalayamayacağı kanıt). Birebir kural F'de ~1 madde önde
+ama **tanık gerektiren iki sinyalin değerlendirilebilirliğini yarıya
+indiriyor**; bu, düzeltilen hatanın ta kendisidir (sinyal sessizce devre
+dışı kalır, ablasyon "katkı sağlamıyor" der). F farkı gürültü, sinyal
+kaybı yapısaldır.
 
 ⚠️ Farklar n=349'da ~3 madde mertebesindedir; bu bir kazanç değil,
-**denetimsiz kanıtın kaldırılmasıdır**. Kelime başına tanık 2,29 → 0,15.
+**denetimsiz kanıtın kaldırılmasıdır**.
 
 ✅ **İlk kez trivial taban çizgiye karşı anlamlı üstünlük:**
-motor vs `always_borrowed` **+0,269**, %95 GA [+0,206, +0,332], p=0,0001.
-Motor vs yalnız fonotaktik **+0,112**, %95 GA [+0,072, +0,155], p=0,0001.
+motor vs `always_borrowed` **+0,267**, %95 GA [+0,203, +0,330], p=0,0001.
+Motor vs yalnız fonotaktik **+0,109**, %95 GA [+0,069, +0,149], p=0,0001.
 (Fark **madde düzeyi doğruluk** farkıdır, F farkı değil; F cinsinden
-hepsi-alıntıya karşı üstünlük +0,138'dir.)
+hepsi-alıntıya karşı üstünlük +0,135'tir.)
 
 ⚠️ **Verici dil eklemek (İngilizce/Almanca/Latince) ölçülerek REDDEDİLDİ.**
 Verici indeksinde 9 dil var (it 622.831 · ru 440.919 · fr 401.061 ·

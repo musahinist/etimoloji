@@ -34,6 +34,7 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 from collections.abc import Callable
 from dataclasses import dataclass, field, replace
 from typing import Any
@@ -109,9 +110,22 @@ class PRF:
 # --- Tanık bulma ------------------------------------------------------------
 
 
+def _gloss_tokens(text: str) -> set[str]:
+    """Anlam örtüşmesi için içerik sözcükleri.
+
+    ⚠️ ``engine.nlp.vowel_length._tokens`` ile bilerek AYNI DEĞİL: orada
+    uzunluk süzgeci yok. Burada 3 harften kısa belirteçler atılır, yoksa
+    ``the``/``and``/``for`` gibi sözcükler örtüşme üretip süzgeci etkisiz
+    kılar — ölçümler (bulanık isabetlerin %10,1'i anlamca uyumlu) bu
+    süzgeçle yapılmıştır.
+    """
+    return {t for t in re.findall(r"[a-zçğıöşü]+", (text or "").lower()) if len(t) > 3}
+
+
 def find_witnesses(
     word: str,
     *,
+    sense: str,
     source_lang: str = "tr",
     max_languages: int = 12,
 ) -> tuple[tuple[str, str], ...]:
@@ -138,8 +152,21 @@ def find_witnesses(
     ``akide``~``aqide``, ``arzu``~``arzuw``), yani körlemesine atmak gerçek
     kanıt kaybettirir. İki yol bu yüzden ayrıştı.
 
-    Ölçülen tanık yoğunluğu (Türkçe altın küme, n=699): bulanık dahil
-    **2,29**, yalnız birebir **0,43**.
+    Ölçülen (Türkçe altın küme, n=699 · sinyaller n=200):
+
+    ========================  =========  ======  ============  ==========
+    tanık kuralı              ort.tanık       F  ses_kanunu    yayılım
+    ========================  =========  ======  ============  ==========
+    tüm bulanık (eski)             2,29  0,8775  125 (%62)     88 (%44)
+    yalnız birebir                 0,15  0,8873   32 (%16)      9 (%4)
+    **bulanık + gloss**            0,37  0,8845   47 (%24)     17 (%8)
+    ========================  =========  ======  ============  ==========
+
+    ⚠️ **F en yüksek olanı seçmedik.** Birebir kural F'de ~1 madde önde ama
+    tanık gerektiren iki sinyalin değerlendirilebilirliğini yarıya indiriyor
+    (%24 -> %16, %8 -> %4). Bu, yukarıda anlatılan hatanın aynısıdır:
+    sinyal sessizce devre dışı kalır ve ablasyon "katkı sağlamıyor" der.
+    F farkı gürültü mertebesinde, sinyal kaybı yapısaldır.
     """
     from engine.db.lexicon_index import LexiconIndex
 
@@ -152,27 +179,28 @@ def find_witnesses(
     for prediction in predictor.predict_all(word, source_lang)[:max_languages]:
         if not prediction.form or prediction.confidence <= 0:
             continue
-        # ⚠️ YALNIZ BİREBİR isabet tanıktır; bulanık arama KALDIRILDI.
-        #
-        # Eskiden biçim bulunamayınca `fuzzy_lookup(max_distance=1)`e düşülüp
-        # dönen ilk isabet — anlamına bakılmadan — tanık sayılıyordu. Üç yol
-        # ölçüldü (Türkçe altın küme, rapor yarısı n=349):
-        #
-        #     yol                        ort.tanık   F       kesinlik  duyarlılık
-        #     tüm bulanık (eski)           2,29    0,8775    0,8995    0,8565
-        #     **yalnız birebir**           0,15    0,8873    0,9095    0,8660
-        #     bulanık + gloss örtüşmesi    0,37    0,8845    0,9091    0,8612
-        #
-        # Bulanık isabetlerin %10,1'i sorgunun anlamıyla örtüşüyordu
-        # (`Sovyet`~`sovet`, `akide`~`aqide`, `arzu`~`arzuw`), bu yüzden
-        # gloss süzgeçli yolun kazanması bekleniyordu — ölçüm çürüttü:
-        # o gerçek isabetler hiçbir şey kazandırmıyor.
-        #
-        # ⚠️ Farklar n=349'da ~3 madde mertebesindedir; bu bir KAZANÇ değil,
-        # denetimsiz kanıtın kaldırılmasıdır. Seçim, ölçülen eşitlikte daha
-        # basit ve `scripts/analyse_dialect_words.py` ile tutarlı olandır.
+        # Birebir isabet koşulsuz tanıktır.
         hits = index.lookup(prediction.form, languages=[prediction.language], limit=1)
         if hits and hits[0]["word"] == prediction.form:
+            found.append((prediction.language, hits[0]["word"]))
+            continue
+        # ⚠️ Bulanık isabet YALNIZ anlamı örtüşüyorsa tanıktır.
+        #
+        # Eskiden bulanık isabet anlamına bakılmadan sayılıyordu; ölçüldü,
+        # tanık sayılanların yalnız %12,7'si öngörülen biçmi gerçekten
+        # buluyordu. Ama körlemesine atmak da yanlış: burada bulanık
+        # isabetlerin **%10,1'i** sorgunun anlamıyla örtüşüyor
+        # (``Sovyet``~``sovet``, ``akide``~``aqide``, ``arzu``~``arzuw``).
+        # Ağız hattında bu oran %0,2 olduğu için orada bulanık arama
+        # tamamen kaldırıldı; iki hattın kararı bu yüzden farklıdır.
+        if not hits:
+            hits = index.fuzzy_lookup(
+                prediction.form, max_distance=1, languages=[prediction.language]
+            )[:1]
+        if not hits:
+            continue
+        query_tokens = _gloss_tokens(sense)
+        if query_tokens and query_tokens & _gloss_tokens(hits[0].get("gloss", "")):
             found.append((prediction.language, hits[0]["word"]))
     return tuple(found)
 
@@ -370,7 +398,16 @@ def _attach_witnesses(
     sınıfına yapısal olarak kapalıdır.
     """
     out = [
-        replace(case, witnesses=find_witnesses(case.word, source_lang=source_lang))
+        # ⚠️ `sense` GEÇİLMEK ZORUNDA: bulanık isabetler anlam örtüşmesiyle
+        # süzülüyor; boş bırakılırsa hepsi elenir ve iki tanık-bağımlı sinyal
+        # (ses_kanunu_ihlali, değişimsiz_yayılım) yapısal olarak devre dışı
+        # kalır. Ölçüldü (n=200): değerlendirilebilirlik %24/%8 -> %16/%4.
+        replace(
+            case,
+            witnesses=find_witnesses(
+                case.word, source_lang=source_lang, sense=case.sense
+            ),
+        )
         for case in cases
     ]
     counts = [len(c.witnesses) for c in out]
