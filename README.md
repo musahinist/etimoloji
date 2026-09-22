@@ -190,7 +190,7 @@ düzensizliğin doğrudan ölçüsüdür.
 kalır. Blum & List'in budamayla düzenliliği artırma bulgusu bizde de
 tutarlı: budama rekonstrüksiyon doğruluğunu 0,361 → 0,386 çıkardı.
 
-#### ⚠️ Denenmiş ve KAZANÇ VERMEYEN üç şey
+#### ⚠️ Denenmiş ve KAZANÇ VERMEYEN dört şey
 
 **Bağlam kodlaması (Faz D3).** List ve ark. 2022 Pos/Str/Ini kodlamasının
 CorPaR'ın ED'sini %11 düşürdüğünü ölçüyor. Tablo anahtarı
@@ -256,6 +256,50 @@ anlamlı geçemiyor" sorusu hata kovalarına inilerek arandı. dev'de cevaplanan
 tavanından geliyor — yukarıdaki Rom-phon tablosu da aynı şeyi söylüyor
 (kural/örüntü %22-25, denetimli %52-54). Buradan kazanç, kural katmanına
 yama atarak değil **yöntem değiştirerek** gelir.
+
+**Sütun düzeyine inildi — tavan orada da yok.** Kelime doğruluğunu sütun
+kararları belirlediği için ölçüm sütun düzeyine taşındı (`learn()` ile aynı
+hizalama sözleşmesi; dev'in **%70'i** hizalanabiliyor, 58 madde / 206 sütun
+— kayıtlı `n=206` ile birebir tuttu):
+
+| karar yolu | sütun | doğruluk | yük |
+|---|---|---|---|
+| `tek_ses` | 86 | 0,907 | %41,7 |
+| `ogrenilmis_oruntu` | 78 | 0,833 | %37,9 |
+| `arkaik_agirlik` | 21 | **0,571** | %10,2 |
+| `denklik` | 19 | 0,789 | %9,2 |
+| `tanisal` | 2 | 1,000 | %1,0 |
+
+Sütun top-1 **0,835**, aynı 58 maddede kelime **0,586**. Bu altküme tüm
+dev'den (0,398) kolaydır; buradaki kazanç raporlanan ölçüte birebir geçmez.
+
+⚠️ Öğrenilmiş tablo, "en çok kullanılan ama en zayıf" diye bilinen
+`arkaik_agirlik` yolunun yükünü **devralmış**: 426 sütundan 21'e inmiş.
+Onu tümüyle düzeltmek bile en çok 9 sütun kazandırır.
+
+Üç müdahale denendi, üçü de kazanç vermedi:
+
+- **`VOWEL_ARCHAISM_WEIGHTS` hak etmiyor.** Elle bakımı yapılan 14 dillik
+  ayrı ünlü tablosu ablasyonla kaldırıldı: train +1 sütun (0,8386 /
+  0,8341), dev **tam sıfır** (65/82 birebir aynı). Docstring'indeki "tek
+  tablo kullanmak ölçülen bir hata kaynağıydı" iddiası artık ölçümle
+  desteklenmiyor — öğrenilmiş tablo o sütunları devraldı.
+- **Ünlü uyumu kısıtı ölü doğdu.** Ünlüler sütunların %40'ı ama hataların
+  %50'si (ünlü 0,793 / ünsüz 0,863) ve ünlü oracle açığı 13,4 puan; kısıt
+  cazip görünüyordu. Ama motorun **kendi çıktısı çok ünlülü kelimelerin
+  %99,0'ında zaten uyumlu**, altın biçimler ise yalnız %90,3. Kısıt yapı
+  gereği sağlanıyor (tanıklar uyuma uyduğu için oylar da uyuyor), sonda 144
+  maddenin **1'inde** ateşleniyor. Dahası motor altından DAHA uyumlu: sert
+  kural olarak dayatmak, altının uyumsuz %9,7'sinden (`*kȫpek`, `*tīĺla`,
+  `*iagïr`) uzaklaştırır.
+- **Sütun adaylarını yeniden sıralamanın tavanı yok denecek kadar dar.**
+  Yanlış sütunlarda altın cevap **train'de %58, dev'de %53 oranında aday
+  listesinde HİÇ YOK** — yani hataların yarıdan fazlası sıralama değil
+  **üretim** başarısızlığı ve hiçbir sıralayıcı onlara dokunamaz. Listede
+  olanlarda da 1. adayla altın arasındaki puan farkı medyan 0,53 (train) /
+  0,38 (dev): kıl payı değil, skorlayıcı emin biçimde yanılıyor. Mükemmel
+  bir sıralayıcının dev tavanı 34 sütunun 16'sı (%7,8 oracle açığıyla
+  tutarlı) ve bu, kelimede +2-4 maddedir — n=83'te gösterilemez.
 
 ⚠️ **Çekimserlik bedava değildir.** Cevaplanmayan madde ortalamaya mümkün
 olan en kötü NED'i (1,0) katar. Bir dönem yalnızca cevaplanan maddeler
