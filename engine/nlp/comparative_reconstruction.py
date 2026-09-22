@@ -22,7 +22,6 @@ Artık ata biçim gerçekten akraba biçimlerden türetilir ve güven skoru kan�
 """
 from __future__ import annotations
 
-from collections import Counter
 from typing import Any
 
 from engine.fetchers.base import TURKIC_LANGUAGES_MAP
@@ -68,64 +67,6 @@ LANGUAGE_BRANCHES: dict[str, str] = {
     # koldur (Doerfer). Ayrı kol sayılması güven skorunu doğru etkiler.
     "klj": "arghu",
 }
-
-#: Bilinen Proto-Türkçe denklik kümeleri.
-#: Her giriş: (sesler, ata_ses, açıklama, konum).
-#: Konum: "initial" (söz başı), "final" (söz sonu), "any" (her yer).
-#: Bunlar Türkolojide yerleşik denkliklerdir (Lir-Şaz / rotasizm-lambdaizm).
-CORRESPONDENCE_SETS: list[tuple[frozenset[str], str, str, str]] = [
-    # --- Söz sonu (Lir-Şaz) ---
-    (frozenset({"z", "r"}), "ŕ", "Lir-Şaz rotasizmi: Ortak Türkçe -z ~ Çuvaşça -r < Proto-Türkçe *-ŕ", "final"),
-    (frozenset({"z", "r", "s"}), "ŕ", "Ortak Türkçe -z/-s ~ Çuvaşça -r < Proto-Türkçe *-ŕ", "final"),
-    (frozenset({"ş", "l"}), "ĺ", "Lambdaizm: Ortak Türkçe -ş ~ Çuvaşça -l < Proto-Türkçe *-ĺ", "final"),
-    (frozenset({"s", "ş", "l"}), "ĺ", "Ortak Türkçe -s/-ş ~ Çuvaşça -l < Proto-Türkçe *-ĺ", "final"),
-    # --- Söz başı ---
-    # Oğuz kolu söz başı ötümsüzleri ötümlüleştirdi (t->d, k->g); ata biçim ötümsüzdür.
-    (frozenset({"d", "t"}), "t", "Söz başı ötümlüleşme: Oğuz d- ~ diğer t- < Proto-Türkçe *t-", "initial"),
-    (frozenset({"g", "k"}), "k", "Söz başı ötümlüleşme: Oğuz g- ~ diğer k- < Proto-Türkçe *k-", "initial"),
-    (frozenset({"y", "c", "j", "ç"}), "j", "Söz başı akıcı: y- ~ c- ~ j- < Proto-Türkçe *j-", "initial"),
-    (frozenset({"b", "m"}), "b", "Genizsilleşme: b- ~ m- < Proto-Türkçe *b-", "initial"),
-    (frozenset({"h", "k", "q"}), "k", "Söz başı h- ~ k- denkliği", "initial"),
-    # --- Konumdan bağımsız ---
-    (frozenset({"d", "y", "z", "t", "r"}), "d", "Klasik *d̮ denkliği: d ~ y ~ z ~ t ~ r", "any"),
-    (frozenset({"b", "v", "w", "u"}), "b", "Ünsüz yumuşaması: b ~ v ~ w ~ u < Proto-Türkçe *b", "any"),
-    (frozenset({"g", "ğ", "v", "w"}), "g", "Ünlü arası yumuşama: g ~ ğ ~ v ~ w < Proto-Türkçe *g", "any"),
-    (frozenset({"n", "ŋ"}), "ŋ", "Genizsil denkliği: -n- ~ -ŋ- < Proto-Türkçe *-ŋ-", "any"),
-]
-
-
-def _pick_proto_phoneme(sounds: list[str], position: str) -> tuple[str, str | None]:
-    """
-    Bir konumdaki seslerden ata sesi seçer.
-
-    Denklikler KONUMA DUYARLIDIR: söz başı ``d ~ t`` denkliği Proto-Türkçe
-    ``*t-`` verirken, söz içi ``d ~ y ~ z`` denkliği ``*d̮`` verir. Konumu
-    yok saymak yanlış ata biçim üretir.
-
-    :param position: "initial" | "medial" | "final"
-    :returns: (ata_ses, açıklama)
-    """
-    present = {s for s in sounds if s}
-    if not present:
-        return "", None
-    if len(present) == 1:
-        return next(iter(present)), None
-
-    best: tuple[int, int, str, str] | None = None
-    for members, proto, note, applies_to in CORRESPONDENCE_SETS:
-        if applies_to != "any" and applies_to != position:
-            continue
-        overlap = present & members
-        if len(overlap) >= 2:
-            # Konuma özgü kural, genel kurala tercih edilir.
-            specificity = 1 if applies_to == "any" else 2
-            cand = (specificity, len(overlap), proto, note)
-            if best is None or cand[:2] > best[:2]:
-                best = cand
-    if best:
-        return best[2], best[3]
-
-    return Counter(s for s in sounds if s).most_common(1)[0][0], None
 
 
 class ComparativeReconstructor:
