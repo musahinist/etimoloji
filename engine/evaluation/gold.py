@@ -185,10 +185,17 @@ class GoldStandard:
         return counts
 
     def concept_leakage(self) -> list[str]:
-        """Birden çok bölüme düşen kavram var mı? Boş liste dönmeli."""
+        """Birden çok bölüme düşen kavram var mı? Boş liste dönmeli.
+
+        Gruplama ``concept`` (veri kümesine ÖZGÜ kimlik) değil
+        ``concepticon_gloss`` üzerinden yapılır: ölçüldü, savelyev'in 400
+        maddesinde ikisi de sızıntı 0 verir, ama gloss ikinci bir kaynak
+        eklenirse de anlamını korur, veri kümesine özgü kimlik korumaz.
+        """
         seen: dict[str, set[str]] = {}
         for item in self.items:
-            seen.setdefault(item.concept, set()).add(item.split)
+            key = item.concepticon_gloss or item.concept
+            seen.setdefault(key, set()).add(item.split)
         return sorted(c for c, splits in seen.items() if len(splits) > 1)
 
     # -- mühürleme ----------------------------------------------------------

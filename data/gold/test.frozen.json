@@ -1,7 +1,7 @@
 {
   "_schema": "turkic-etymology-gold/v1",
   "count": 80,
-  "frozen_at": "2026-08-27T00:27:59+00:00",
+  "frozen_at": "2026-09-22T16:17:56+00:00",
   "items": [
     {
       "concept": "135_mouthn",
@@ -298,9 +298,10 @@
       "concept": "32_carryv",
       "concepticon_gloss": "CARRY",
       "gold_candidates": [
-        "*üt = *it"
+        "*üt",
+        "*it"
       ],
-      "gold_form": "*üt = *it",
+      "gold_form": "*üt",
       "has_length_witness": false,
       "proto_level": "PT",
       "set_id": "195",
@@ -458,9 +459,10 @@
       "concept": "45_cryweepv",
       "concepticon_gloss": "CRY",
       "gold_candidates": [
-        "*sɨgɨt ~ sïḳta"
+        "*sɨgɨt",
+        "*sïḳta"
       ],
-      "gold_form": "*sɨgɨt ~ sïḳta",
+      "gold_form": "*sɨgɨt",
       "has_length_witness": true,
       "proto_level": "PCT",
       "set_id": "254",
@@ -719,9 +721,10 @@
       "concept": "144_nosen",
       "concepticon_gloss": "NOSE",
       "gold_candidates": [
-        "*burun = *burɨn"
+        "*burun",
+        "*burɨn"
       ],
-      "gold_form": "*burun = *burɨn",
+      "gold_form": "*burun",
       "has_length_witness": true,
       "proto_level": "PCT",
       "set_id": "3",

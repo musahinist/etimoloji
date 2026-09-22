@@ -14,10 +14,10 @@
     "test": 80
   },
   "checksums": {
-    "train": "1c553edc9b509808820b84719b2fcd422268c91e89d9adc5f1bbb56b44eb861d",
-    "dev": "45ed6ffbdb05b2e90aa3a318aeeb780d7104b56b5f648f9b70279f5ccce793bd",
-    "test": "1557369cbf30678e1b71dc2e600627b36d6f42fbeb89dc66a7c541f26982cef6"
+    "train": "cb84bf96bdc61b8c2009786192feab75e8cb92ea54fe3ebcc356e04971b25b80",
+    "dev": "13ac21d8cc29d17bcb2cf3baf75933f3149e7084ff57af8ae53e786e9d24ef55",
+    "test": "76c6b442d40523a3a95008fcf97f47f847032b1527268e47f4e0ea1c7edc4176"
   },
-  "sealed_at": "2026-08-27T00:27:59+00:00",
+  "sealed_at": "2026-09-22T16:17:56+00:00",
   "note": "test.frozen.json geliştirme boyunca açılmaz. Checksum değişmişse ya veri kümesi sürümü ya bölme tuzu değişmiştir; her iki durumda da önceki ölçümler karşılaştırılabilir değildir."
 }

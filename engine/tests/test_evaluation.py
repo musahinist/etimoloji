@@ -106,6 +106,30 @@ class TestGoldFormParsing(unittest.TestCase):
     def test_explicit_starred_alternative_kept(self):
         self.assertEqual(parse_gold_form("*ti:ŕ, *tü:ŕ"), ["*tīŕ", "*tǖŕ"])
 
+    def test_tilde_and_equals_are_alternatives(self):
+        """``~`` ve ``=`` de ``/`` gibi almaşık ayırıcıdır.
+
+        robbeets 13, savelyev 7 kökte kullanıyor. Bölünmezse altın cevap
+        ``'*burun ~ *burïn'`` gibi tek bir sahte biçim olur ve hiçbir
+        rekonstrüksiyon onu tutturamaz.
+        """
+        self.assertEqual(parse_gold_form("*burun ~ *burïn"), ["*burun", "*burïn"])
+        self.assertEqual(parse_gold_form("*kendir = *kentir"), ["*kendir", "*kentir"])
+        self.assertEqual(parse_gold_form("ata = ete"), ["*ata", "*ete"])
+
+    def test_spaceless_equals_is_a_compound_not_an_alternative(self):
+        """``*uŕɨn=Kūrt`` bileşiktir; bölünürse iki yarım biçim üretir."""
+        self.assertEqual(parse_gold_form("*uŕɨn=Ku:rt"), ["*uŕɨn=Kūrt"])
+
+    def test_prose_residue_is_not_split_on_equals(self):
+        """Kapanmamış parantez ``_PAREN_PATTERN``e takılmaz; kalan düzyazı
+        ``=`` üzerinden bölünürse ``*'arrow'`` gibi sahte aday doğar.
+        """
+        self.assertEqual(
+            parse_gold_form("*okla (< 'to shoot' = 'arrow'"),
+            ["*okla (< 'to shoot' = 'arrow'"],
+        )
+
 
 class TestBestMatch(unittest.TestCase):
     def test_any_equivalent_counts_as_correct(self):

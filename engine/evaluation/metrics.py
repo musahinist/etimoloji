@@ -37,7 +37,17 @@ from dataclasses import dataclass, field
 #: Rekonstrüksiyon karşılaştırmasında yok sayılan işaretler. Ata biçim
 #: gösteriminde ``*`` yalnızca "bu bir rekonstrüksiyondur" demektir, sesin
 #: parçası değildir; parantez ise belirsizlik/isteğe bağlılık işaretidir.
-_STRIP_CHARS = "*()[]{}?"
+#: ⚠️ Tire de atılır. Kaynaklar biçimbirim sınırını tireyle işaretler
+#: (``*ḳalï-``, ``*āt-la-``), motor ise hiçbir zaman tire üretmez; tire
+#: fonolojik içerik değil **yazım kuralıdır** ve karşılaştırmada kalırsa
+#: doğru bir rekonstrüksiyonu yapısı gereği tutturulamaz kılar.
+#:
+#: Etkisi ölçüldü (savelyevturkic, dev, n=83): NED 0,306 -> 0,304,
+#: ED 1,4819 -> 1,4699, FER 0,2627 -> 0,2606, tam 0,3855 -> 0,3976.
+#: Hiçbir ölçüt kötüleşmiyor. Küçük ama GERÇEK bir taban değişikliğidir:
+#: savelyev'de tire içeren altın madde yalnız 1/400 olduğu için etki
+#: tek maddeliktir.
+_STRIP_CHARS = "*()[]{}?-"
 
 #: Cevaplanmayan bir madde ED ortalamasına ne kadar katkı yapsın?
 #: Altın biçimlerin ortalama uzunluğu ~5; boş cevabın ED'si o uzunluktur.
@@ -428,6 +438,8 @@ _TRAILING_GLOSS = re.compile(r":\s*[A-ZŠČŊĹŔ]{2,}\s*$")
 _COLON_LENGTH = re.compile(r"([aeıioöuüäɨėẹAEIOUÄ]):")
 #: ``*sV: sẹ`` — arşifonemli biçim, iki nokta, sonra somut biçim.
 _CONCRETE_AFTER_COLON = re.compile(r"^\s*(\*?[^\s:]+)\s*:\s+([^\s:]+)\s*$")
+#: ``*burun ~ *burïn`` / ``*kendir = *kentir`` — almaşık rekonstrüksiyonlar.
+_ALT_SEPARATOR = re.compile(r"\s+[~=]\s+")
 
 
 def parse_gold_form(raw: str) -> list[str]:
@@ -448,6 +460,17 @@ def parse_gold_form(raw: str) -> list[str]:
         text = f"{concrete.group(1)} / {concrete.group(2)}"
     text = _COLON_LENGTH.sub(lambda m: m.group(1) + "̄", text)
     text = unicodedata.normalize("NFC", text).strip()
+
+    # ``~`` ve ``=`` de ``/`` gibi almaşık ayırıcıdır (robbeets 13, savelyev 7
+    # kökte kullanıyor). AMA yalnız iki yan da biçim görünümlüyse: kapanmamış
+    # parantezli düzyazı artığı (``*okla (< 'to shoot' = 'arrow'``) bölünürse
+    # ``*'arrow'`` gibi sahte bir aday üretir. Boşluksuz ``=`` ise almaşık
+    # değil bileşiktir (``*uŕɨn=Kūrt``) ve bölünmemelidir.
+    pieces = _ALT_SEPARATOR.split(text)
+    if len(pieces) > 1 and all(
+        piece.strip() and not set(piece) & set(" '()") for piece in pieces
+    ):
+        text = "/".join(pieces)
 
     candidates: list[str] = []
     for chunk in text.replace(" / ", "/").split("/"):

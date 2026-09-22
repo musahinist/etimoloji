@@ -1,7 +1,7 @@
 {
   "_schema": "turkic-etymology-gold/v1",
   "count": 237,
-  "frozen_at": "2026-08-27T00:27:59+00:00",
+  "frozen_at": "2026-09-22T16:17:56+00:00",
   "items": [
     {
       "concept": "71_firen",
@@ -1402,9 +1402,10 @@
       "concept": "164_rootn",
       "concepticon_gloss": "ROOT",
       "gold_candidates": [
-        "*taŕɨl = *tasɨl"
+        "*taŕɨl",
+        "*tasɨl"
       ],
-      "gold_form": "*taŕɨl = *tasɨl",
+      "gold_form": "*taŕɨl",
       "has_length_witness": false,
       "proto_level": "PCT",
       "set_id": "20",
@@ -2165,9 +2166,10 @@
       "concept": "165_ropen",
       "concepticon_gloss": "ROPE",
       "gold_candidates": [
-        "*kendir = *kentir"
+        "*kendir",
+        "*kentir"
       ],
-      "gold_form": "*kendir = *kentir",
+      "gold_form": "*kendir",
       "has_length_witness": false,
       "proto_level": "PT",
       "set_id": "268",
