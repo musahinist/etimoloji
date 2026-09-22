@@ -128,8 +128,18 @@ def find_witnesses(
     Doğrulandı — tanıklar doldurulunca (n=150): ``ses_kanunu_ihlali`` 0 → 15
     kez (%10,0), ``değişimsiz_yayılım`` 0 → 6 kez (%4,0).
 
-    Akış ``scripts/analyse_dialect_words.py``dekiyle aynıdır: ileri tahminle
-    aday üret, sözlükte tam ve bulanık ara. Kelime başına ortalama 2,6 tanık.
+    Akış: ileri tahminle aday üret, sözlükte tam ve bulanık ara.
+
+    ⚠️ ``scripts/analyse_dialect_words.py`` ile **artık aynı değildir**. O
+    betik yalnız BİREBİR isabeti tanık sayar; orada bulanık eşleşmenin
+    ölçülen anlam uyumu %0,2 idi (662 isabetin 1'i) ve sahte tanıklar
+    hipotezi bozuyordu. Burada ölçüm farklı çıktı: bulanık isabetlerin
+    **%10,1'i** sorgunun anlamıyla örtüşüyor (``Sovyet``~``sovet``,
+    ``akide``~``aqide``, ``arzu``~``arzuw``), yani körlemesine atmak gerçek
+    kanıt kaybettirir. İki yol bu yüzden ayrıştı.
+
+    Ölçülen tanık yoğunluğu (Türkçe altın küme, n=699): bulanık dahil
+    **2,29**, yalnız birebir **0,43**.
     """
     from engine.db.lexicon_index import LexiconIndex
 
