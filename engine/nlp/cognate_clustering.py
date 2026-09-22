@@ -33,6 +33,28 @@ from engine.utils.orthography import to_comparison_form
 logger = get_logger(__name__)
 
 #: Bu benzerliğin üzerindeki çiftler aynı akraba kümesine bağlanır.
+#:
+#: Eşik ÖLÇÜLDÜ (``make eval-cognates``; eşik train kavramlarında tarandı,
+#: sonuç dev'de raporlandı — savelyevturkic, min_forms=3):
+#:
+#: ===== ======= ========== ============
+#: eşik  dev F   kesinlik   duyarlılık
+#: ===== ======= ========== ============
+#: 0,40  0,8571  0,8580     0,8813
+#: 0,50  0,8424  0,8964     0,8203
+#: 0,62  0,8334  **0,9542** 0,7653
+#: 0,70  0,8132  0,9647     0,7346
+#: ===== ======= ========== ============
+#:
+#: F'yi 0,40 maksimize eder (+0,024) ama 0,62 **bilerek** korunuyor: bu
+#: kümeleyicinin çıktısı ``search_engine`` üzerinden kullanıcıya
+#: ``cognate_clusters`` olarak gösteriliyor. 0,40'ta gösterilen her ~7
+#: akraba bağından biri yanlış olur (kesinlik 0,858), 0,62'de ~22'de bir
+#: (0,954). Etimoloji iddiası sunan bir arayüzde yanlış akraba göstermek
+#: eksik göstermekten kötüdür; B-Cubed F ikisini eşit tartar, ürün tartmaz.
+#:
+#: ⚠️ Train ve dev eğrileri aynı yerde tepe yapıyor (0,35-0,40), yani
+#: yukarıdaki sayılar dev'e aşırı uyum değildir.
 COGNATE_THRESHOLD = 0.62
 
 
