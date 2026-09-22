@@ -518,6 +518,42 @@ class TestHistoricalMorphology(unittest.TestCase):
         self.assertEqual(a.build_tree("adaletsizlik")["root"], "adaletsiz")
         self.assertEqual(a.build_tree("eczacı")["root"], "ecza")
 
+    def test_deverbal_gate_blocks_nonverb_stems(self):
+        """Fiilden türeten ek FİİL kök ister.
+
+        ⚠️ Bu kapı bir kez konup GERİ ALINMIŞTI (a670fd4): `bitig -> biti`yi
+        kırıyordu, çünkü `biti`nin Türkçe mastarı yok ve otk kayıtları o
+        sırada runik çeviriyazıyla `bıtı` diye indeksleniyordu. Sözlük
+        indeksi kaynaktaki romanizasyonu kullanmaya başlayınca `𐰋𐰃𐱅𐰃`
+        artık `biti` olarak bulunuyor ve kapı yeniden mümkün oldu.
+        """
+        a = HistoricalMorphologyAnalyzer()
+        # Kapının hedefi: fiil olmayan köke soyma engellenir.
+        self.assertEqual(a.build_tree("tabut")["depth"], 0)
+        self.assertEqual(a.build_tree("kavut")["depth"], 0)
+        # Kapıyı bir kez öldüren vaka — tarihî fiil kaydı sayesinde korunur.
+        self.assertEqual(a.build_tree("bitig")["root"], "biti")
+        # Mastarı olan gerçek fiil kökleri etkilenmez.
+        for word, root in (("umut", "um"), ("yoğurt", "yoğur"), ("kanıt", "kan")):
+            with self.subTest(word=word):
+                self.assertEqual(a.build_tree(word)["root"], root)
+
+    def test_inflection_lookalike_suffixes_are_exempt(self):
+        """`-Im`/`-In` tabloda "fiilden ad" ama Türkçede İYELİK/İLGİ ekidir.
+
+        Kapı bunlara da uygulanınca 600 kelimelik örneklemde 27 yeni ret
+        çıkıyordu ve 20'si tam bu iki ekten geliyordu — hepsi çekim.
+        Muafiyetle yeni ret 27 -> 7'ye indi.
+        """
+        a = HistoricalMorphologyAnalyzer()
+        for word, root in (
+            ("düşmanım", "düşman"),
+            ("kontum", "kont"),
+            ("altıgenin", "altıgen"),
+        ):
+            with self.subTest(word=word):
+                self.assertEqual(a.build_tree(word)["root"], root)
+
     def test_bare_root_has_zero_depth(self):
         self.assertEqual(HistoricalMorphologyAnalyzer().build_tree("at")["depth"], 0)
 

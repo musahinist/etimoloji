@@ -129,7 +129,74 @@ def _formula_stem(word: str) -> str | None:
     return found
 
 
-def _strip_is_supported(word: str, stem: str) -> bool:
+#: Fiil denetimi süreç ömrü boyunca önbelleklenir.
+_VERB_CACHE: dict[str, bool] = {}
+
+#: ⚠️ Bu iki ek tabloda "fiilden ad" diye geçer ama Türkçede İYELİK ve İLGİ
+#: ekleriyle ÇAKIŞIR: `düşmanım`, `kontum`, `altıgenin`, `ligin`, `misin`,
+#: `ortam`. Fiil kapısı bunlara uygulanınca 600 kelimelik örneklemde 27 yeni
+#: ret çıkıyordu ve 20'si tam bu iki ekten geliyordu — hepsi çekim, hiçbiri
+#: türetme. Muafiyetle yeni ret 27 -> 7'ye iniyor.
+_INFLECTION_LOOKALIKE_SUFFIXES = frozenset({"-Im", "-In"})
+
+
+def _is_deverbal(function: str) -> bool:
+    """Bu ek FİİLDEN mi türetiyor? (`HISTORICAL_SUFFIXES` işlev metninden)"""
+    f = (function or "").lower()
+    return "fiilden" in f or "sıfat-fiil" in f
+
+
+def _stem_is_verb(stem: str) -> bool:
+    """Kök bir FİİL mi?
+
+    İki kanıt kabul edilir:
+      * Türkçe mastar (``kök+mak/mek``) — fiiller sözlükte mastarla durur.
+      * TARİHÎ fiil kaydı (otk/ota/chg): ``pos='verb'`` ya da ``to …`` glossu.
+
+    ⚠️ İkinci kanıt bu kapıyı yeniden mümkün kıldı. Kapı bir kez denenip
+    geri alınmıştı (a670fd4) çünkü `bitig -> biti`yi kırıyordu: `biti`nin
+    Türkçe mastarı yok. O sırada otk kayıtları runik çeviriyazıyla `bıtı`
+    diye indeksleniyordu ve Latin kökle aranamıyordu. Kaynaktaki
+    romanizasyon kullanılmaya başlanınca (`lexicon_index._romanised_comparison`)
+    `𐰋𐰃𐱅𐰃` artık `biti` olarak bulunuyor ve engel ortadan kalktı.
+
+    Veri okunamazsa **True** döner: kapı, eksik veride çözümlemeyi
+    büsbütün durdurmamalı (`_stem_is_attested` ile aynı tavır).
+    """
+    key = (stem or "").strip().lower()
+    if not key:
+        return False
+    if key in _VERB_CACHE:
+        return _VERB_CACHE[key]
+
+    verdict = True
+    try:
+        from engine.db.lexicon_index import LexiconIndex
+
+        index = LexiconIndex()
+        if not index.exists:
+            return True
+        verdict = any(
+            index.lookup(key + suffix, languages=["tr"], limit=1)
+            for suffix in ("mak", "mek")
+        )
+        if not verdict:
+            verdict = any(
+                row.get("pos") == "verb"
+                or str(row.get("gloss") or "").lower().startswith("to ")
+                for row in (index.lookup(key, languages=["otk", "ota", "chg"], limit=8) or [])
+            )
+    except Exception:
+        logger.debug("Fiil denetimi yapılamadı: %s", key, exc_info=True)
+        return True
+
+    _VERB_CACHE[key] = verdict
+    return verdict
+
+
+def _strip_is_supported(
+    word: str, stem: str, label: str = "", function: str = ""
+) -> bool:
     """Bu soyma kanıtla destekleniyor mu?
 
     Kural YALNIZ EKLEYİCİDİR: türetme formülü adayı doğruluyorsa soyma kabul
@@ -157,7 +224,7 @@ def _strip_is_supported(word: str, stem: str) -> bool:
     if formula and formula.rstrip("-") == stem.strip().lower():
         return True
 
-    # ⚠️ "FİİLDEN TÜRETEN EK FİİL KÖK İSTER" KAPISI DENENDİ VE GERİ ALINDI.
+    # ⚠️ FİİLDEN TÜRETEN EK FİİL KÖK İSTER.
     #
     # `-It` sistematik olarak fazla soyuyor ve sorun gerçek:
     #     umut -> um      ✅   çaput -> çap  ❌ ('çap' Ermenice "diameter")
@@ -175,16 +242,31 @@ def _strip_is_supported(word: str, stem: str) -> bool:
     #     Mastarı diğer Türki dillere yaymak ZARARLI: `tabmaq` [crh],
     #     `çapmaq` [az/crh] var; `tab` "fiil" olup `tabut` yine kırılırdı.
     #
-    # Yani ayrımı yapan şey mantık değil VERİ BOŞLUĞU. Sonradan daha
-    # keskin ölçüldü: otk fiil kayıtları indekste ASLINDA VAR (78 adet,
-    # `𐰋𐰃𐱅𐰃` = "to write, to inscribe" dahil) ama Latin kökle ARANAMAZ,
-    # çünkü çeviriyazı `biti` değil `bıtı` üretiyor. Sebep kaynak yazıdır:
-    # `ORKHON I` işareti i/ı ayrımı yapmaz, ünsüzler (`AEB`, `AEK`, `AES`…)
-    # ön/art uyumu taşımaz, ve gerçek otk kayıtlarının %38'i ünlüsüzdür
-    # (`tg` = tağ, `lg` = elig, `sç` = saç). Uyum-duyarlı çeviriyazı da
-    # denendi ve çürütüldü — ayrıntı `utils/transliteration.py` notunda.
-    # Çözüm kural değil veri: küratörlü Latin okuma. `-It` fazla-soyması
-    # AÇIK KUSUR olarak duruyor.
+    # Kapı bir kez denenip GERİ ALINMIŞTI (a670fd4): `bitig -> biti`yi
+    # kırıyordu, çünkü `biti`nin Türkçe mastarı yok ve otk kayıtları o
+    # sırada runik çeviriyazıyla `bıtı` diye indeksleniyordu. Kaynaktaki
+    # romanizasyon kullanılmaya başlanınca `𐰋𐰃𐱅𐰃` artık `biti` olarak
+    # bulunuyor; engel kalktı ve kapı geri kondu.
+    #
+    # Ölçüm (600 rastgele tr sözlükbirim, `-Im`/`-In` muaf):
+    #     yeni ret 7, yeni kabul 0 — 5'i DOĞRU engelleme:
+    #       köşek->köşe   "young camel" (miras) vs "corner" (Farsça)
+    #       sahibe->sahi  Arapça *sahip*'in dişili vs "really"
+    #       sadme->sad    "blow" vs Arap harfi ص
+    #       direkt->direk Fr. *direct* vs miras "pillar"
+    #       kuruluğu->kurulu  zaten yanlış köke soyuyordu (`kuruluk` olmalı)
+    #     2'si kayıp: hijyenik->hijyen (doğru soymaydı), bütçeme->bütçe (çekim)
+    #
+    # Hedef kümede: `tabut->tab` ve `kavut->kav` düzeldi; `bitig`, `umut`,
+    # `yoğurt`, `kanıt` korundu. `çaput->çap` ve `bulut->bul` HÂLÂ AÇIK —
+    # `çapmak` ve `bulmak` gerçek fiiller, sorun morfolojik değil semantik.
+    if (
+        _is_deverbal(function)
+        and label not in _INFLECTION_LOOKALIKE_SUFFIXES
+        and not _stem_is_verb(stem)
+    ):
+        return False
+
     return _stem_is_attested(stem)
 
 
@@ -278,7 +360,7 @@ class HistoricalMorphologyAnalyzer:
         match = self._strip_one(stem)
         if match is not None:
             new_stem, label, function, layer = match
-            if _strip_is_supported(w, new_stem):
+            if _strip_is_supported(w, new_stem, label, function):
                 layers.append({
                     "surface": stem[len(new_stem):],
                     "suffix": label,
