@@ -33,7 +33,7 @@ saklanır.
 
 | Ölçüm | Değer | Taban çizgi | Hüküm |
 |---|---|---|---|
-| Alıntı F — **Türkçe** (TDK+Nişanyan, n=349) | **0,877** | 0,749 hepsi-alıntı | ✅ **anlamlı** (+0,255, p=0,0001) |
+| Alıntı F — **Türkçe** (TDK+Nişanyan, n=349) | **0,887** | 0,749 hepsi-alıntı | ✅ **anlamlı** (+0,269 doğruluk, p=0,0001) |
 | Alıntı F — WOLD/Sakha (n=769) | **0,651** | 0,464 hepsi-alıntı | ⚠️ fonotaktiğe karşı anlamlı **değil** (p=0,251) |
 | Rekonstrüksiyon NED (dev, n=83, çapa hariç) | **0,304** | 0,339 `majority_character` | ⚠️ anlamlı **değil** (GA [−0,075, +0,007]) |
 | Rekonstrüksiyon tam (dev, çapa hariç) | **0,398** | 0,337 | ⚠️ anlamlı **değil** (p=0,188) |
@@ -572,16 +572,31 @@ kuruldu: TDK Güncel Türkçe Sözlük (`lisan` alanı) ve Nişanyan Sözlük
 
 | Sistem | F | kesinlik | duyarlılık | doğruluk |
 |---|---|---|---|---|
-| **motor (eğitilmiş)** | **0,877** | 0,884 | 0,871 | 0,854 |
+| **motor (eğitilmiş)** | **0,887** | 0,910 | 0,866 | 0,868 |
+| motor (doğrusal yedek) | 0,801 | 0,793 | 0,809 | 0,759 |
 | yalnız dizilim modeli | 0,800 | 0,669 | 0,995 | 0,702 |
-| motor (doğrusal yedek) | 0,796 | 0,789 | 0,804 | 0,754 |
 | yalnız fonotaktik kural | 0,758 | 0,937 | 0,636 | 0,756 |
-| yalnız verici yakınlığı | 0,755 | 0,841 | 0,684 | 0,734 |
+| yalnız verici yakınlığı | 0,757 | 0,846 | 0,684 | 0,736 |
 | hepsi alıntı (trivial) | 0,749 | 0,599 | 1,000 | 0,599 |
 
+⚠️ **Tanık bulma düzeltildi ve yalnız motorun kendi satırları oynadı.**
+Eskiden biçim bulunamayınca bulanık aramaya düşülüp dönen ilk isabet —
+anlamına bakılmadan — tanık sayılıyordu (bkz. `find_witnesses`). Üç yol
+ölçüldü: tüm bulanık F 0,8775 · **yalnız birebir 0,8873** · bulanık+gloss
+örtüşmesi 0,8845. Bulanık isabetlerin %10,1'i anlamca gerçekti
+(`Sovyet`~`sovet`, `arzu`~`arzuw`) ama ölçüm gloss süzgecini de geçti:
+birebir kural hepsinden iyi. Tanık kullanmayan üç satır (dizilim modeli,
+fonotaktik, hepsi-alıntı) **birebir aynı kaldı** — düzeltmenin doğru yeri
+vurduğunun sağlaması budur.
+
+⚠️ Farklar n=349'da ~3 madde mertebesindedir; bu bir kazanç değil,
+**denetimsiz kanıtın kaldırılmasıdır**. Kelime başına tanık 2,29 → 0,15.
+
 ✅ **İlk kez trivial taban çizgiye karşı anlamlı üstünlük:**
-motor vs `always_borrowed` **+0,255**, %95 GA [+0,192, +0,318], p=0,0001.
-Motor vs yalnız fonotaktik **+0,097**, %95 GA [+0,054, +0,143], p=0,0001.
+motor vs `always_borrowed` **+0,269**, %95 GA [+0,206, +0,332], p=0,0001.
+Motor vs yalnız fonotaktik **+0,112**, %95 GA [+0,072, +0,155], p=0,0001.
+(Fark **madde düzeyi doğruluk** farkıdır, F farkı değil; F cinsinden
+hepsi-alıntıya karşı üstünlük +0,138'dir.)
 
 ⚠️ **Verici dil eklemek (İngilizce/Almanca/Latince) ölçülerek REDDEDİLDİ.**
 Verici indeksinde 9 dil var (it 622.831 · ru 440.919 · fr 401.061 ·

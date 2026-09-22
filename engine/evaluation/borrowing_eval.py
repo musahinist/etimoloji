@@ -152,12 +152,27 @@ def find_witnesses(
     for prediction in predictor.predict_all(word, source_lang)[:max_languages]:
         if not prediction.form or prediction.confidence <= 0:
             continue
+        # ⚠️ YALNIZ BİREBİR isabet tanıktır; bulanık arama KALDIRILDI.
+        #
+        # Eskiden biçim bulunamayınca `fuzzy_lookup(max_distance=1)`e düşülüp
+        # dönen ilk isabet — anlamına bakılmadan — tanık sayılıyordu. Üç yol
+        # ölçüldü (Türkçe altın küme, rapor yarısı n=349):
+        #
+        #     yol                        ort.tanık   F       kesinlik  duyarlılık
+        #     tüm bulanık (eski)           2,29    0,8775    0,8995    0,8565
+        #     **yalnız birebir**           0,15    0,8873    0,9095    0,8660
+        #     bulanık + gloss örtüşmesi    0,37    0,8845    0,9091    0,8612
+        #
+        # Bulanık isabetlerin %10,1'i sorgunun anlamıyla örtüşüyordu
+        # (`Sovyet`~`sovet`, `akide`~`aqide`, `arzu`~`arzuw`), bu yüzden
+        # gloss süzgeçli yolun kazanması bekleniyordu — ölçüm çürüttü:
+        # o gerçek isabetler hiçbir şey kazandırmıyor.
+        #
+        # ⚠️ Farklar n=349'da ~3 madde mertebesindedir; bu bir KAZANÇ değil,
+        # denetimsiz kanıtın kaldırılmasıdır. Seçim, ölçülen eşitlikte daha
+        # basit ve `scripts/analyse_dialect_words.py` ile tutarlı olandır.
         hits = index.lookup(prediction.form, languages=[prediction.language], limit=1)
-        if not hits:
-            hits = index.fuzzy_lookup(
-                prediction.form, max_distance=1, languages=[prediction.language]
-            )[:1]
-        if hits:
+        if hits and hits[0]["word"] == prediction.form:
             found.append((prediction.language, hits[0]["word"]))
     return tuple(found)
 
