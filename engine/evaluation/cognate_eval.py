@@ -390,8 +390,7 @@ def main() -> int:
     if best["system"] != "engine":
         print(
             f"\n⚠️ Motorun kendi kümeleyicisi ({engine_row['bcubed_f']:.4f}) en iyi\n"
-            f"   sistemin ({best['system']}, {best['bcubed_f']:.4f}) gerisinde.\n"
-            f"   Motor yüksek kesinlik / düşük duyarlılıkta çalışıyor:\n"
+            f"   sistemin ({best['system']}, {best['bcubed_f']:.4f}) gerisinde:\n"
             f"   P={engine_row.get('precision', 0):.3f} R={engine_row.get('recall', 0):.3f}"
         )
 

@@ -37,7 +37,7 @@ saklanır.
 | Alıntı F — WOLD/Sakha (n=769) | **0,651** | 0,464 hepsi-alıntı | ⚠️ fonotaktiğe karşı anlamlı **değil** (p=0,251) |
 | Rekonstrüksiyon NED (dev, n=83, çapa hariç) | **0,304** | 0,339 `majority_character` | ⚠️ anlamlı **değil** (GA [−0,075, +0,007]) |
 | Rekonstrüksiyon tam (dev, çapa hariç) | **0,398** | 0,337 | ⚠️ anlamlı **değil** (p=0,188) |
-| Akraba tespiti B-Cubed F (dev) | 0,833 | 0,934 düzenleme uzaklığı | ⚠️ motorun kümeleyicisi **geride** (yüksek kesinlik/düşük duyarlılık) |
+| Akraba tespiti B-Cubed F (dev) | 0,931 | 0,934 düzenleme uzaklığı | ⚠️ taban çizgisine **eşit** (kümeleyici artık aynı ölçüyü kullanıyor) |
 | Uzman uyuşmazlık bandı | **0,914** | — | otomatik sistemin gerçekçi tavanı |
 | Denklik düzenliliği (CoPaR, TRAIN) | **0,713** | — | kural tabanlı doğruluğun üst sınırı |
 
@@ -313,15 +313,22 @@ tutuyor ve çekimser kalmayı ödüllendiriyordu.
 | ayarlı düzenleme uzaklığı | **0,934** | 0,944 | 0,932 |
 | SCA benzeri (LingPy) | 0,854 | 0,816 | 0,959 |
 | LexStat benzeri | 0,824 | 0,749 | 0,991 |
-| **motorun kümeleyicisi** | 0,833 | 0,954 | 0,765 |
+| **motorun kümeleyicisi** | 0,931 | 0,944 | 0,927 |
+| motorun eski kümeleyicisi (LingPy hizalayıcı ≥ 0,62) | 0,833 | 0,954 | 0,765 |
 | hepsi tek küme (trivial) | 0,743 | 0,642 | 1,000 |
 
 Referans: LexStat-Infomap **F ≈ 0,89** (List, Greenhill & Gray 2017).
-⚠️ Motorun kendi kümeleyicisi aşırı muhafazakâr: kesinlik 0,954 ama
-duyarlılık 0,765. Eşik (`COGNATE_THRESHOLD = 0,62`) train'de tarandı:
-0,40 F'yi maksimize ediyor (0,857) ama kesinliği 0,858'e düşürüyor.
-0,62 **bilerek** korunuyor — bu kümeler kullanıcıya gösteriliyor ve
-yanlış akraba göstermek eksik göstermekten kötüdür.
+⚠️ Motorun kümeleyicisi eskiden LingPy hizalayıcısının fonetik
+benzerliğini kullanıyordu ve düz düzenleme uzaklığının gerisindeydi.
+Hizalayıcı hiçbir eşikte (en iyisi 0,40: F 0,857) ve hiçbir karışımda
+(en iyisi 0,3·hizalayıcı + 0,7·düzenleme: F 0,923) düzenleme uzaklığını
+geçemedi. Kümeleyici bu yüzden düzenleme benzerliğine geçti
+(`COGNATE_THRESHOLD = 0,50`, train'de F'yi maksimize eden eşik). Bedeli
+train kesinliğinin 0,934'ten 0,883'e inmesi; karşılığında dev
+duyarlılığı 0,765'ten 0,927'ye çıktı. Motor artık taban çizgisinin
+altında değil, ama onu geçmiyor da: **ikisi aynı algoritma.** Kalan
+0,003'lük fark, motorun 2 harften kısa ve yinelenen biçimleri elemesinden.
+Çuvaşça (tek Ogur tanığı) duyarlılığı da arttı: dev 0,594 → 0,692.
 
 #### Uzman uyuşmazlık bandı (Faz E1) — tavan 1,00 değildir
 

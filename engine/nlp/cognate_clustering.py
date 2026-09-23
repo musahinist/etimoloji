@@ -12,13 +12,34 @@ arası çoklu hizalama ve kümeleme hiç yoktu.
 
 Yöntem
 ------
-1. Tüm biçimler ikişerli hizalanır (fonetik benzerlik matrisi)
+1. Tüm biçimler ikişerli karşılaştırılır (normalize düzenleme benzerliği)
 2. Eşiğin üzerindeki benzerlikler bir grafın kenarları olur
 3. Bağlantılı bileşenler (connected components) akraba kümelerini verir
 4. Her küme için ata biçim ve kol dağılımı raporlanır
 
-Bu, LingPy'nin ``LexStat``/``Partial`` kümeleme yaklaşımının hafif bir
-uyarlamasıdır; harici veri kümesi gerektirmez.
+Benzerlik ölçüsü neden LingPy hizalaması değil
+-----------------------------------------------
+Kümeleyici bir dönem ``CldfLingPyAligner.phonetic_similarity`` kullanıyordu.
+``make eval-cognates`` ile ölçüldü (savelyevturkic; eşik train'de seçildi,
+sonuç dev'de):
+
+===================================== ======= ======= ======= =======
+benzerlik                             train F dev F   dev P   dev R
+===================================== ======= ======= ======= =======
+hizalayıcı ≥ 0,62 (eski)              0,7948  0,8334  0,9542  0,7653
+hizalayıcı ≥ 0,40 (hizalayıcının en   0,8392  0,8571  0,8580  0,8814
+iyisi)
+0,3·hizalayıcı + 0,7·düzenleme ≥ 0,45 0,8845  0,9230  0,9449  0,9106
+**düzenleme ≥ 0,50**                  0,8889  0,9338  0,9437  0,9316
+===================================== ======= ======= ======= =======
+
+Hizalayıcı hiçbir eşikte ve hiçbir karışımda ham düzenleme uzaklığını
+geçemedi; eşit kesinlikte bile (düzenleme ≥ 0,55: train P 0,924, F 0,853)
+geride. Bu yüzden kümeleyici artık düzenleme benzerliği kullanıyor.
+
+⚠️ Sonuç: ``make eval-cognates``'te ``engine`` ile ``edit_distance``
+satırları artık **aynı algoritmadır**. Motor taban çizgisinin altında
+değil, ama taban çizgisini de geçmiyor; ona eşittir.
 """
 from __future__ import annotations
 
@@ -26,43 +47,37 @@ from typing import Any
 
 from engine.fetchers.base import TURKIC_LANGUAGES_MAP
 from engine.logging_setup import get_logger
-from engine.nlp.cldf_lingpy_aligner import CldfLingPyAligner
 from engine.nlp.comparative_reconstruction import LANGUAGE_BRANCHES
+from engine.nlp.donor_lexicon import levenshtein
 from engine.utils.orthography import to_comparison_form
 
 logger = get_logger(__name__)
 
-#: Bu benzerliğin üzerindeki çiftler aynı akraba kümesine bağlanır.
+#: Bu düzenleme benzerliğinin (``1 - uzaklık / uzun biçim``) üzerindeki
+#: çiftler aynı akraba kümesine bağlanır.
 #:
-#: Eşik ÖLÇÜLDÜ (``make eval-cognates``; eşik train kavramlarında tarandı,
+#: Eşik ÖLÇÜLDÜ (``make eval-cognates``; train kavramlarında tarandı,
 #: sonuç dev'de raporlandı — savelyevturkic, min_forms=3):
 #:
-#: ===== ======= ========== ============
-#: eşik  dev F   kesinlik   duyarlılık
-#: ===== ======= ========== ============
-#: 0,40  0,8571  0,8580     0,8813
-#: 0,50  0,8424  0,8964     0,8203
-#: 0,62  0,8334  **0,9542** 0,7653
-#: 0,70  0,8132  0,9647     0,7346
-#: ===== ======= ========== ============
+#: ===== ======= ======= ======= =======
+#: eşik  train F train P dev F   dev P
+#: ===== ======= ======= ======= =======
+#: 0,45  0,8889  0,8827  0,9338  0,9437
+#: 0,50  0,8889  0,8827  0,9338  0,9437
+#: 0,55  0,8533  0,9244  0,8572  0,9695
+#: ===== ======= ======= ======= =======
 #:
-#: F'yi 0,40 maksimize eder (+0,024) ama 0,62 **bilerek** korunuyor: bu
-#: kümeleyicinin çıktısı ``search_engine`` üzerinden kullanıcıya
-#: ``cognate_clusters`` olarak gösteriliyor. 0,40'ta gösterilen her ~7
-#: akraba bağından biri yanlış olur (kesinlik 0,858), 0,62'de ~22'de bir
-#: (0,954). Etimoloji iddiası sunan bir arayüzde yanlış akraba göstermek
-#: eksik göstermekten kötüdür; B-Cubed F ikisini eşit tartar, ürün tartmaz.
-#:
-#: ⚠️ Train ve dev eğrileri aynı yerde tepe yapıyor (0,35-0,40), yani
-#: yukarıdaki sayılar dev'e aşırı uyum değildir.
-COGNATE_THRESHOLD = 0.62
+#: 0,50 F'yi maksimize eden eşik (kullanıcı kararı). Eski hizalayıcı
+#: 0,62'de train kesinliği 0,934'tü; 0,50'de 0,883'e iniyor, yani
+#: gösterilen akraba bağlarının yaklaşık 8-9'da biri yanlış olabilir.
+#: Karşılığında duyarlılık dev'de 0,765 -> 0,932.
+COGNATE_THRESHOLD = 0.50
 
 
 class CognateClusterEngine:
     """Türki dil biçimlerini akraba kümelerine ayırır."""
 
-    def __init__(self, aligner: CldfLingPyAligner | None = None, threshold: float | None = None):
-        self.aligner = aligner or CldfLingPyAligner()
+    def __init__(self, threshold: float | None = None):
         self.threshold = COGNATE_THRESHOLD if threshold is None else threshold
 
     def cluster(self, entries: list[dict[str, Any]]) -> dict[str, Any]:
@@ -101,9 +116,8 @@ class CognateClusterEngine:
         similarity: dict[tuple[int, int], float] = {}
         for i in range(n):
             for j in range(i + 1, n):
-                res = self.aligner.align_sequences(forms[i][2], forms[j][2])
-                sim = res.get("phonetic_similarity")
-                similarity[(i, j)] = float(sim) if sim is not None else 0.0
+                a, b = forms[i][2], forms[j][2]
+                similarity[(i, j)] = 1 - levenshtein(a, b) / max(len(a), len(b))
 
         # 2. Eşik üstü kenarlarla birleştirme (union-find)
         parent = list(range(n))

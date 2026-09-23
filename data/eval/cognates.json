@@ -10,9 +10,9 @@
   "systems": [
     {
       "system": "engine",
-      "bcubed_f": 0.8334,
-      "precision": 0.9542,
-      "recall": 0.7653,
+      "bcubed_f": 0.9312,
+      "precision": 0.9437,
+      "recall": 0.9267,
       "n_concepts": 46,
       "n_forms": 1507,
       "skipped": 0
