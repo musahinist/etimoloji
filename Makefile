@@ -3,7 +3,8 @@
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
-	@echo "test        - Ağsız test paketi"
+	@echo "test        - Ağsız test paketi (yavaş uç nokta testleri hariç, paralel)"
+	@echo "test-all    - Yavaş testler dahil hepsi (commit öncesi)"
 	@echo "test-live   - Canlı kaynak testleri (ağ gerektirir)"
 	@echo "lint        - ruff denetimi"
 	@echo "fix         - ruff otomatik düzeltme"
@@ -48,7 +49,11 @@ install:
 		uv pip install --python .venv/bin/python -e ".[dev,phon,pdf,cldf]"
 
 test:
-	.venv/bin/pytest -q
+	.venv/bin/pytest -q -n 4
+
+# Commit öncesi: yavaş uç nokta testleri dahil hepsi.
+test-all:
+	.venv/bin/pytest -q -n 4 -m "slow or not slow"
 
 test-live:
 	ETY_LIVE=1 .venv/bin/pytest engine/tests/live -v

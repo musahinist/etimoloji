@@ -58,6 +58,9 @@ include = ["engine*"]
 [tool.pytest.ini_options]
 testpaths = ["engine/tests"]
 filterwarnings = ["ignore::ResourceWarning"]
+markers = ["slow: uç nokta betiğini baştan sona koşan uzun test (make test-all)"]
+# Varsayılan koşu yavaş testleri atlar; `make test-all` hepsini koşar.
+addopts = "-m 'not slow'"
 
 [tool.coverage.run]
 source = ["engine"]

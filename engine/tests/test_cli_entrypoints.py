@@ -17,6 +17,8 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest import mock
 
+import pytest
+
 from engine.config import CLDF_DIR, LEXICON_DIR
 
 HAS_CLDF = (CLDF_DIR / "savelyevturkic" / "forms.csv").exists()
@@ -84,6 +86,7 @@ class TestDataEntrypoints(CliCase):
             with self.assertRaises(PermissionError):
                 harness.main()
 
+    @pytest.mark.slow  # ~37 sn
     def test_calibration_eval_runs(self):
         from engine.evaluation import calibration
 
@@ -186,6 +189,7 @@ class TestLexiconEntrypoints(CliCase):
 
 @unittest.skipUnless(HAS_LEXICON, "sözlük dökümü indirilmemiş")
 class TestBorrowingChainEntrypoint(CliCase):
+    @pytest.mark.slow  # ~13 sn
     def test_chain_extraction_runs(self):
         from engine.nlp import borrowing_chain
 
@@ -193,6 +197,7 @@ class TestBorrowingChainEntrypoint(CliCase):
 
 
 @unittest.skipUnless(HAS_CLDF and HAS_WOLD and HAS_INDEX, "veri eksik")
+@pytest.mark.slow  # ~8 dk, tam pakette bellek yetmeyebiliyor
 class TestBorrowingEvalEntrypoint(CliCase):
     def test_borrowing_eval_runs(self):
         from engine.evaluation import borrowing_eval
@@ -221,6 +226,7 @@ class TestBorrowingEvalEntrypoint(CliCase):
 
 @unittest.skipUnless(HAS_CLDF and HAS_INDEX, "veri eksik")
 class TestPredictionTestEntrypoint(CliCase):
+    @pytest.mark.slow  # ~17 sn
     def test_generate_then_verify(self):
         from engine.evaluation import prediction_test
 
@@ -236,6 +242,7 @@ class TestPredictionTestEntrypoint(CliCase):
 
 @unittest.skipUnless(HAS_CLDF, "CLDF verisi indirilmemiş")
 class TestReportEntrypoint(CliCase):
+    @pytest.mark.slow  # ~129 sn
     def test_baseline_report_runs_and_includes_controls(self):
         from engine.evaluation import report
 
