@@ -122,7 +122,20 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
             for rej in rejections:
                 print(f"     ❌ {rej}")
 
-    # 3. TÜRKİ DİLLERDEKİ ANLAMLARI VE KARŞILIKLARI
+    # 3. KÖKEN ZİNCİRİ ve TÜRKİ DİLLERDEKİ KARŞILIKLAR
+    # Kaynak dil kayıtları (`donor`: Latince facies, İtalyanca faccia) Türki
+    # dil değildir; eskiden "Türki dillerdeki karşılıklar" başlığı altında,
+    # anlamsız bir "Ses Değişimi" etiketiyle basılıyordu.
+    donor_entries = [e for e in turkic_languages if e.get("lang_code") == "donor"]
+    turkic_languages = [e for e in turkic_languages if e.get("lang_code") not in ("donor", "ai")]
+    if donor_entries:
+        print("\n" + "─" * 80)
+        print(f" 🧭 KÖKEN ZİNCİRİ — KAYNAK DİLLER ({len(donor_entries)} kayıt)")
+        print("─" * 80)
+        for entry in donor_entries:
+            meaning = entry.get("meaning", "")
+            print(f"  • {entry.get('lang_name', ''):<30} : {entry.get('word', ''):<24} [{'Anlam: ' + meaning if meaning else 'N/A'}]")
+
     print("\n" + "─" * 80)
     print(f" 🌍 TÜRKİ DİLLERDEKİ ANLAMLARI VE KARŞILIKLARI ({len(turkic_languages)} Dil/Katman)")
     print("─" * 80)
@@ -135,9 +148,6 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
             word = entry.get("word", "")
             meaning = entry.get("meaning", "")
             shift = entry.get("phonetic_shift", "")
-
-            if entry.get("lang_code") == "ai":
-                continue
 
             shift_info = f" [Ses Değişimi: {shift}]" if shift and shift != "Standart Lehçe Ses Uyumu" else ""
             # Runik/Arap yazılı biçimin yanında okunuşu (𐰋𐰃𐱅𐰏 bitig)
@@ -211,13 +221,15 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
         print(" 🧬 HESAPLAMALI NLP ALINTI & REKONSTRÜKSİYON ANALİZİ")
         print("─" * 80)
         print(f"  • Sınıflandırma              : {loan_eval.get('classification')}")
+        if loan_eval.get("source_override"):
+            print(f"       ↳ {loan_eval['source_override']}")
         probs = loan_eval.get('probabilities', {})
         p_native = probs.get('p_native_turkic', 0) * 100
         p_east = probs.get('p_arabic_persian', 0) * 100
         p_med = probs.get('p_greek_latin', 0) * 100
         p_west = probs.get('p_western', 0) * 100
         print(f"  • Olasılık Dağılımı         : Öz Türkçe: %{p_native:.1f} | Doğu (Arap/Fars): %{p_east:.1f} | Akdeniz (Grek/Erm): %{p_med:.1f} | Batı: %{p_west:.1f}")
-        print(f"  • 25 Lehçe Yayılımı Skorlama : %{cog_eval.get('spreading_ratio', 0)*100:.0f} ({cog_eval.get('assessment')})")
+        print(f"  • Lehçe Yayılımı Skorlama   : %{cog_eval.get('spreading_ratio', 0)*100:.0f} ({cog_eval.get('assessment')})")
         # Alıntı durumunda `reconstruction_notes` ÇOK SATIRLI gelir (alıntı
         # detektörünün `explain()` dökümü) ve biçimsiz bir blok hâlinde
         # akıyordu. Ayrıntı artık aşağıdaki "RAKİP KÖKEN HİPOTEZLERİ" bloğunda
@@ -273,6 +285,9 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
                 print(f"       + {support}")
             for against in (hypo.get("against") or [])[:2]:
                 print(f"       − {against}")
+            # Veri olmadığı için çalışamayan sinyaller karşı kanıt değildir.
+            if hypo.get("not_evaluated"):
+                print(f"       · ölçülemedi: {'; '.join(hypo['not_evaluated'][:3])}")
             if hypo.get("rejected_because"):
                 print(f"       ❌ gerekçe: {hypo['rejected_because']}")
         margin = ranked.get("margin")

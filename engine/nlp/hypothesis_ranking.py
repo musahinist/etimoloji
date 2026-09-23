@@ -58,6 +58,10 @@ class Hypothesis:
     score: float
     supporting: list[str] = field(default_factory=list)
     against: list[str] = field(default_factory=list)
+    #: Veri olmadığı için ÇALIŞAMAYAN sinyaller. Karşı kanıt değildir:
+    #: "yeterli tanık yok" alıntıya karşı bir bulgu değil, bulgu yokluğudur
+    #: (üstelik Türki akrabası olmayan kelime alıntıyla uyumludur).
+    not_evaluated: list[str] = field(default_factory=list)
     rejected_because: str = ""
     counterfactual: str = ""
     detail: dict[str, Any] = field(default_factory=dict)
@@ -78,6 +82,7 @@ class Hypothesis:
             "score": round(self.score, 3),
             "supporting": self.supporting,
             "against": self.against,
+            "not_evaluated": self.not_evaluated,
             "rejected": self.is_rejected,
             "rejected_because": self.rejected_because,
             "counterfactual": self.counterfactual,
@@ -182,8 +187,11 @@ class HypothesisRanker:
         borrowing = self.borrowing.detect(word, entries)
         reconstruction = self.reconstructor.reconstruct(word, entries, check_borrowing=False)
 
+        borrowed = self._borrowed_hypothesis(borrowing)
+        if not borrowing.donor_language:
+            borrowed = self._with_source_loan(borrowed, borrowing, entries)
         hypotheses = [
-            self._borrowed_hypothesis(borrowing),
+            borrowed,
             self._inherited_hypothesis(reconstruction, borrowing),
             self._modern_hypothesis(word, attested_before, borrowing),
         ]
@@ -211,17 +219,51 @@ class HypothesisRanker:
 
         donor = language_name(borrowing.donor_language) if borrowing.donor_language else "?"
         supporting = [s.explanation for s in borrowing.signals if s.fired]
-        against = [s.explanation for s in borrowing.signals if not s.fired]
+        against = [s.explanation for s in borrowing.signals
+                   if not s.fired and not s.evidence.get("no_data")]
+        not_evaluated = [s.explanation for s in borrowing.signals
+                         if not s.fired and s.evidence.get("no_data")]
         return Hypothesis(
             kind="borrowed",
             claim=f"ALINTI — {donor}" if borrowing.donor_language else "ALINTI",
             score=borrowing.score,
             supporting=supporting,
             against=against,
+            not_evaluated=not_evaluated,
             detail={
                 "chain": borrowing.chain,
                 "donor": borrowing.donor_language,
                 "expected_if_inherited": borrowing.expected_if_inherited,
+            },
+        )
+
+    @staticmethod
+    def _with_source_loan(hypothesis: Hypothesis, borrowing: Any, entries: list[dict[str, Any]]) -> Hypothesis:
+        """Kaynağın açık alıntı zincirini, sözlük alıntı kaydıyla AYNI ağırlıkla ekler.
+
+        Sözlük indeksindeki alıntı kaydı skora ``SIGNAL_WEIGHTS["zincir_kanıtı"]``
+        × 1,0 katar; kaynağın "Alıntı" adımı aynı türden doğrudan tanıklamadır.
+        """
+        from engine.nlp.borrowing_chain import source_loan_step
+        from engine.nlp.borrowing_detector import SIGNAL_WEIGHTS
+
+        step = source_loan_step(entries)
+        if step is None:
+            return hypothesis
+        donor_name = str(step.get("lang_name") or "?")
+        evidence = f"kaynağın alıntı zinciri: {donor_name} {step.get('word')} ({step.get('source') or 'kaynak'})"
+        return Hypothesis(
+            kind="borrowed",
+            claim=f"ALINTI — {donor_name}",
+            score=round(min(1.0, borrowing.score + SIGNAL_WEIGHTS["zincir_kanıtı"]), 3),
+            supporting=[evidence, *hypothesis.supporting],
+            against=[a for a in hypothesis.against if "alıntı kaydı yok" not in a],
+            not_evaluated=hypothesis.not_evaluated,
+            detail={
+                **hypothesis.detail,
+                "chain": [f"Türkçe {borrowing.word}", f"{donor_name} {step.get('word')}"],
+                "donor": donor_name,
+                "source_chain": True,
             },
         )
 

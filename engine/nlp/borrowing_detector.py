@@ -446,7 +446,7 @@ class BorrowingDetector:
 
         if not getattr(self.index, "exists", False):
             return (
-                Signal("zincir_kanıtı", False, 0.0, "sözlük indeksi yok"),
+                Signal("zincir_kanıtı", False, 0.0, "sözlük indeksi yok", {"no_data": True}),
                 [],
                 "",
             )
@@ -554,7 +554,7 @@ class BorrowingDetector:
         form = to_comparison_form(word)
         violations: list[str] = []
         if not form:
-            return Signal("fonotaktik_ihlal", False, 0.0, "biçim çözümlenemedi")
+            return Signal("fonotaktik_ihlal", False, 0.0, "biçim çözümlenemedi", {"no_data": True})
 
         if form[0] in PROHIBITED_INITIALS:
             violations.append(f"Proto-Türkçe'de söz başı *{form[0]}- bulunmaz")
@@ -591,7 +591,7 @@ class BorrowingDetector:
         actual = to_comparison_form(word)
         if not actual or len(witnesses) < 2:
             return (
-                Signal("ses_kanunu_ihlali", False, 0.0, "yeterli tanık yok"),
+                Signal("ses_kanunu_ihlali", False, 0.0, "yeterli tanık yok", {"no_data": True}),
                 "",
             )
 
@@ -604,7 +604,7 @@ class BorrowingDetector:
                 expectations.append(prediction.form)
         if not expectations:
             return (
-                Signal("ses_kanunu_ihlali", False, 0.0, "denklik tablosu tahmin üretmedi"),
+                Signal("ses_kanunu_ihlali", False, 0.0, "denklik tablosu tahmin üretmedi", {"no_data": True}),
                 "",
             )
 
@@ -652,7 +652,7 @@ class BorrowingDetector:
         forms = [to_comparison_form(f) for f in witnesses.values() if f]
         forms = [f for f in forms if f]
         if len(forms) < 3:
-            return Signal("değişimsiz_yayılım", False, 0.0, "yeterli tanık yok")
+            return Signal("değişimsiz_yayılım", False, 0.0, "yeterli tanık yok", {"no_data": True})
 
         from engine.evaluation.metrics import normalized_edit_distance
 
@@ -702,6 +702,7 @@ class BorrowingDetector:
                 False,
                 0.0,
                 f"{lang} için eğitilmiş dizilim modeli yok",
+                {"no_data": True},
             )
         strength = classifier.strength(word)
         if strength <= 0.0:

@@ -225,6 +225,22 @@ class IterativeHypothesisEngine:
 
         neologism = self.neologism_detector.detect(w)
         donor_match = self.donor_db.lookup(w)
+        if not donor_match:
+            # Tohum veritabanı 10 kelimelik; kaynağın açık "Alıntı" adımı
+            # varsa verici o. Yoksa A-HVP "kaynak dil belirlenemedi" diyordu
+            # (`faça`: EtimolojiTürkçe İtalyanca faccia veriyordu).
+            from engine.nlp.borrowing_chain import source_loan_step
+
+            step = source_loan_step(entries)
+            if step:
+                donor_match = {
+                    "donor_language": step.get("lang_name") or "",
+                    "origin_form": step.get("word") or "",
+                    "etymology": f"Kaynağın alıntı zinciri ({step.get('source') or 'kaynak'}): "
+                                 f"{step.get('lang_name')} {step.get('word')}",
+                    "historical_meaning": step.get("meaning") or "",
+                    "hypothesis_type": "Kaynakta alıntı olarak kayıtlı",
+                }
         attestation = self.attestation_verifier.verify_attestation(w, entries, fetcher_results)
         reconstruction = self.reconstructor.reconstruct(w, entries)
 
@@ -279,7 +295,7 @@ class IterativeHypothesisEngine:
         # 1. Donör sözlük eşleşmesi — en güçlü doğrudan kanıt
         if donor_match:
             return {
-                "hypothesis_type": "Doğrulanmış alıntı kökeni",
+                "hypothesis_type": donor_match.get("hypothesis_type") or "Doğrulanmış alıntı kökeni",
                 "donor_language": donor_match["donor_language"],
                 "origin_form": donor_match["origin_form"],
                 "proof_summary": donor_match.get("etymology", ""),

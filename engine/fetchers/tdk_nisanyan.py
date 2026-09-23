@@ -192,7 +192,14 @@ class NisanyanFetcher(BaseFetcher):
             result["root"]["reconstruction_notes"] = f"Nişanyan Etimoloji: {text_full[:300]}..."
             return
 
-        lang, form, meaning = claim["language"], claim["form"], claim["meaning"]
+        lang, meaning = claim["language"], claim["meaning"]
+        # Nişanyan biçimlerde görünmez sözcük birleştirici (U+2060) kullanıyor;
+        # temizlenmezse `*\u2060bonçuk` başka hiçbir biçimle eşleşmez.
+        form = re.sub(r"[\u200b-\u200d\u2060\ufeff]", "", claim["form"])
+        # Yıldızlı biçim Nişanyan'ın yeniden kurduğu, TANIKLANMAMIŞ biçimdir;
+        # tanıklı Eski Türkçe kaydı gibi tanık listesine girmemeli.
+        reconstructed = form.startswith("*")
+        form = form.lstrip("*")
         if meaning:
             result["root"]["meaning"] = meaning
 
@@ -200,7 +207,7 @@ class NisanyanFetcher(BaseFetcher):
             # Miras: verici dil YOKTUR, biçim ata katmandır.
             result["root"]["proto_turkic"] = f"*{form}"
             lang_code = _TURKIC_ANCESTORS[lang]
-            if lang_code:
+            if lang_code and not reconstructed:
                 result["turkic_languages"].append({
                     "lang_code": lang_code,
                     "lang_name": TURKIC_LANGUAGES_MAP.get(lang_code, lang),

@@ -246,6 +246,25 @@ def language_name(code: str) -> str:
     return DONOR_LANGUAGE_NAMES.get(code, code)
 
 
+def source_loan_step(entries: list[dict[str, Any]] | None) -> dict[str, Any] | None:
+    """Kaynağın türeme zincirinde AÇIKÇA "Alıntı" diye işaretlenen verici adım.
+
+    `faça` için EtimolojiTürkçe "Alıntı: İtalyanca faccia ← Latince facies"
+    diyor; bu zincir raporda basılıyordu ama sıralayıcı ve A-HVP yalnız yerel
+    sözlük indeksine bakıyordu. Sonuç: aynı çıktıda köken zinciri İtalyanca
+    gösterirken hüküm "Kökeni belirlenemedi", A-HVP "kaynak dil
+    belirlenemedi" diyordu.
+
+    ⚠️ Yalnız arama çıktısı için. `BorrowingDetector` bunu OKUMAZ: Türkçe
+    altın küme TDK + Nişanyan'dan kuruldu ve EtimolojiTürkçe Nişanyan
+    türevidir; dedektöre girerse `make eval-borrowing` döngüsel olur.
+    """
+    for entry in entries or []:
+        if entry.get("lang_code") == "donor" and str(entry.get("relation") or "").startswith("Alıntı"):
+            return entry
+    return None
+
+
 @dataclass(frozen=True)
 class ChainLink:
     """Zincirin tek bir halkası: bir dilden bir dile geçiş."""

@@ -18,6 +18,10 @@ def get_related_cognates(word: str, entries: list[dict[str, Any]] | None = None)
     # 1. Sözlük kayıtlarından (20+ fetcher çıktısı) gerçek kelimeleri topla
     if entries:
         for entry in entries:
+            # Kaynak dil kayıtları (Latince facies, İtalyanca faccia) alıntı
+            # zinciridir; "aynı kökten türeyen Türki akraba" değildir.
+            if entry.get("lang_code") in ("donor", "ai"):
+                continue
             ew = (entry.get("word") or "").strip()
             ew_clean = ew.lower().lstrip("*")
             if ew_clean and ew_clean != w and ew_clean not in seen:

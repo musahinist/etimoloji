@@ -56,15 +56,27 @@ LANG_ABBREV: dict[str, tuple[str, str]] = {
 
 _STEP_RE = re.compile(
     r'<span class="ety1">\s*'
-    r'<span[^>]*class="ety1"[^>]*>.*?</span>\s*'
+    r'<span(?P<rel>[^>]*)class="ety1"[^>]*>.*?</span>\s*'
     r'<span[^>]*class="ety2"[^>]*>(?P<lang>.*?)</span>\s*'
     r'<span class="ety4">(?P<form>.*?)</span>'
     r'(?P<rest>.*?)</span>',
     re.S,
 )
+#: Adımın biçimi kelimenin KENDİSİNİN eski/akraba biçimiyse tanıktır.
+#: "Türeme (derivation)" adımının biçimi ise türetmenin TABANIDIR (`boncuk`
+#: için ETü `boyun`, `nice` için `ne`) ve tanık sayılamaz. Ölçüldü: 50
+#: kelimelik örneklemde taban biçimi 2 kelimede tanık yapılıyordu; `deniz`
+#: için başlık kökü zincirin ilk ETü adımı olan `*teŋ` oluyordu (doğrusu
+#: "Ses evrimi" adımındaki `teŋiz`).
+_WITNESS_RELATIONS = ("Ses evrimi", "Eşkökenlilik")
+_TITLE_RE = re.compile(r'title="([^"]*)"')
+
 _MEANING_RE = re.compile(r'<span class="ety3">(.*?)(?:</span>|\Z)', re.S)
+#: Biçim ve anlam İSTEĞE BAĞLI: sitenin bir kısmı yalnız kaynağı yazar
+#: ("[ Atebet-ül Hakayık (1300 yılından önce) ]"). Eskiden ikisi zorunluydu
+#: ve bu satırlar hiç okunmuyordu (ölçüldü: `kitap`, `uçmak`).
 _ATTEST_RE = re.compile(
-    r"<i>(?P<form>[^<]+)</i>\s*(?:&quot;|\")(?P<meaning>[^\"&]*)(?:&quot;|\")\s*"
+    r"(?:<i>(?P<form>[^<]+)</i>\s*)?(?:(?:&quot;|\")(?P<meaning>[^\"&]*)(?:&quot;|\")\s*)?"
     r"\[\s*(?P<source>[^\]]*?)\s*\]",
     re.S,
 )
@@ -114,12 +126,20 @@ class EtimolojiTurkceFetcher(BaseFetcher):
                 continue
 
             code, name = LANG_ABBREV.get(abbrev, ("donor", abbrev or "Bilinmeyen kaynak"))
+            title = _TITLE_RE.search(m.group("rel") or "")
+            relation = html_module.unescape(title.group(1)) if title else ""
+            if code != "donor" and not relation.startswith(_WITNESS_RELATIONS):
+                continue
             key = (code, form)
             if key in seen:
                 continue
             seen.add(key)
 
             entry = self.make_entry(code, form, meaning, lang_name=name, script=detect_script(form))
+            # "Alıntı (loan)" adımı kaynağın açık alıntı hükmüdür; sıralayıcı ve
+            # A-HVP bunu okur (bkz. `borrowing_chain.source_loan_step`).
+            if relation:
+                entry["relation"] = relation
             result["turkic_languages"].append(entry)
 
             # Eski Türkçe biçim varsa proto kök adayı olarak kaydet.
@@ -139,9 +159,13 @@ class EtimolojiTurkceFetcher(BaseFetcher):
             return
 
         source = _text(m.group("source"))
-        form = _text(m.group("form"))
-        meaning = _text(m.group("meaning"))
-        year_m = re.search(r"\((\d{3,4})\)", source)
+        form = _text(m.group("form") or "")
+        meaning = _text(m.group("meaning") or "")
+        # "(1070)" kadar "(1300 yılından önce)" da yaygın; ikincisi eskiden
+        # hiç okunmuyordu ve A-HVP kronoloji aşaması "tarihli tanıklama yok"
+        # diyordu (ölçüldü: 12 kelimenin 8'inde, `boncuk` dahil). "önce"
+        # bir üst sınırdır; yıl yine tanıklamanın en geç tarihi olarak alınır.
+        year_m = re.search(r"\((?:[^()]*?\D)?(\d{3,4})(?:\D[^()]*)?\)", source)
 
         result["first_attestation"] = {
             "form": form,
@@ -149,7 +173,7 @@ class EtimolojiTurkceFetcher(BaseFetcher):
             "source": source,
             "year": int(year_m.group(1)) if year_m else None,
         }
-        note = f"İlk tanıklama: {form}" + (f' "{meaning}"' if meaning else "") + f" [{source}]"
+        note = f"İlk tanıklama: {form or '(biçim verilmemiş)'}" + (f' "{meaning}"' if meaning else "") + f" [{source}]"
         result["root"]["reconstruction_notes"] = note
         if meaning and not result["root"]["meaning"]:
             result["root"]["meaning"] = meaning

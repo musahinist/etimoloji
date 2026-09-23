@@ -196,7 +196,10 @@ class ChronologicalTimeLock:
         return None
 
     def donor_contact_year(self, donor_language: str) -> int | None:
-        d = (donor_language or "").strip().lower()
+        # Türkçe küçük harf: Python'un `"İtalyanca".lower()` sonucu
+        # "i̇talyanca" (i + birleşik nokta) olur ve "italyanca" ile eşleşmez;
+        # İtalyanca ve İngilizce vericilerde kronoloji hiç ölçülmüyordu.
+        d = (donor_language or "").strip().replace("İ", "i").replace("I", "ı").lower()
         for name, year in self.DONOR_CONTACT_PERIODS.items():
             if name in d:
                 return year

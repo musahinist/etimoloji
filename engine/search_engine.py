@@ -328,6 +328,151 @@ def _asserted_cognates(word: str, mentions: dict[str, Any]) -> list[dict[str, An
     return out
 
 
+CITED_COGNATE_SOURCE = "Sözlük indeksi — kaynak kaydının akraba listesi"
+
+
+def _own_lexicon_entries(word: str, entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Sorgu kelimesinin KENDİ sözlük indeksi kayıtları (köken sınıfı taşıyanlar)."""
+    own = to_comparison_form(word)
+    return [
+        e for e in entries
+        if e.get("lexicon_origin") is not None
+        and (_names_word(e.get("word") or "", word) or e.get("comparison") == own)
+    ]
+
+
+def _cited_cognates(word: str, entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Sorgunun kendi MİRAS kaydının akraba listesindeki Türki biçimler.
+
+    `boncuk`un Osmanlıca kaydı "Cognate with Azerbaijani muncuq, Kazakh
+    моншақ, Kyrgyz мончок, Turkmen monjuk, Uyghur مونچاق and Uzbek munchoq"
+    diyor; bu liste yalnız not olarak basılıyor, tanık sayılmıyordu ve rapor
+    ortak Türkçe bir kelime için "%12 dar/lokal yayılım" veriyordu. Ölçüldü:
+    akraba listesi olan 8 kelimenin 7'sinde listedeki diller tanıkta yoktu.
+
+    ⚠️ Yalnız MİRAS kayıtları: alıntı bir kelimenin "akrabaları" paralel
+    alıntılardır (Azerice kitab ~ Türkçe kitap) ve tanık sayılırsa yayılım
+    sinyali alıntıyı yerli gösterir. Anlam süzgeci uygulanmaz; kaynağın
+    açık akrabalık iddiası anlam benzerliğinden güçlüdür (bkz.
+    `_asserted_cognates`).
+    """
+    from engine.fetchers.base import detect_script
+
+    out: list[dict[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+    for entry in _own_lexicon_entries(word, entries):
+        if entry.get("lexicon_origin") != "miras":
+            continue
+        for cognate in entry.get("source_cognates") or []:
+            lang = str(cognate.get("lang") or "")
+            form = str(cognate.get("form") or "").strip()
+            if lang not in TURKIC_LANGUAGES_MAP or not form or " " in form:
+                continue
+            # Arap yazılı Uygurca biçim (مونچاق) karşılaştırma biçimine
+            # çevrilemiyor ve boş kalıyordu; ölçüldü: Uygurca 4 kelimede
+            # listeden düşüyordu. Kaba harf çevirisi, biçimi kaybetmekten iyidir.
+            comparison = to_comparison_form(str(cognate.get("reading") or "") or form) or (
+                to_comparison_form(transliterate_to_latin(form))
+            )
+            if not comparison or (lang, comparison) in seen:
+                continue
+            seen.add((lang, comparison))
+            out.append({
+                "lang_code": lang,
+                "lang_name": TURKIC_LANGUAGES_MAP[lang],
+                "word": form,
+                "meaning": str(cognate.get("gloss") or ""),
+                "script": detect_script(form),
+                "origin": "seed",
+                "source": CITED_COGNATE_SOURCE,
+                "comparison": comparison,
+                "etymology": f"{entry.get('lang_name') or entry.get('lang_code')} "
+                             f"{entry.get('word')} kaydının akraba listesi",
+                "asserted_cognate": True,
+            })
+    return out
+
+
+def _query_source_proto(word: str, entries: list[dict[str, Any]]) -> tuple[str, str]:
+    """Sorgunun kendi miras kaydının verdiği Proto-Türkçe biçim ve kaydın dili.
+
+    Ölçüldü: kaynakta Proto-Türkçe biçim bulunan 12 kelimenin yaklaşık
+    5'inde başlık motorun kendi, farklı rekonstrüksiyonunu gösteriyordu
+    (`uçmak` *uça ↔ kaynak *uč-, `kırkmak` *kırko ↔ *kïrk, `boncuk`
+    *bonjuk ↔ *bōnčuk).
+    """
+    from collections import Counter
+
+    counts: Counter[tuple[str, str]] = Counter()
+    for entry in _own_lexicon_entries(word, entries):
+        form = re.sub(r"<[^<>]*>", "", str(entry.get("donor_form") or "")).strip()
+        if entry.get("lexicon_origin") == "miras" and entry.get("donor_lang") == "trk-pro" and form:
+            counts[(form if form.startswith("*") else f"*{form}",
+                    str(entry.get("lang_name") or entry.get("lang_code")))] += 1
+    if not counts:
+        return "", ""
+    return counts.most_common(1)[0][0]
+
+
+def _english_query_gloss(word: str, entries: list[dict[str, Any]]) -> str:
+    """Sorgunun kendi Türkçe/Osmanlıca sözlük kaydının İLK İngilizce anlamı.
+
+    Eşsesli süzgeci tanığın İngilizce anlamını ("bead") TDK'nın uzun
+    Türkçe tanımıyla ("Cam, taş, sedef… süs tanesi") karşılaştırıyor ve
+    gerçek akrabaları eliyordu (ölçüldü: `boncuk`~Uygurca "bead" 0,219;
+    `bağlamak`~Kırgızca "tie" 0,269; `gerek`~Hakasça 0,249). Yalnız İLK
+    kaydın ilk anlamı alınır: bütün anlamlar eklenirse sorgunun kendi
+    eşseslisi (`ekmek` "to sow") süzgeci yeniden gevşetir.
+    """
+    own = to_comparison_form(word)
+    for entry in entries:
+        # Köken sınıfı şart değil: `bağlamak`ın Osmanlıca kaydı sınıfsız.
+        if not (_names_word(entry.get("word") or "", word) or entry.get("comparison") == own):
+            continue
+        meaning = str(entry.get("meaning") or "")
+        # "alternative spelling of كوپوك" anlam değil yönlendirmedir.
+        if is_inflection_gloss(meaning) or re.search(r"\b(?:form|spelling) of\b", meaning, re.IGNORECASE):
+            continue
+        if entry.get("lang_code") in ("tr", "ota") and meaning:
+            return re.split(r"[;(]", meaning)[0].strip()
+    return ""
+
+
+#: Kaynak zincirindeki verici dil adı -> sınıflandırıcının aile anahtarı.
+_SOURCE_DONOR_FAMILY = {
+    "Arapça": "arabic_persian", "Farsça": "arabic_persian",
+    "Yunanca": "greek_latin", "Eski Yunanca": "greek_latin",
+    "Latince": "greek_latin", "Ermenice": "greek_latin",
+    "Fransızca": "western", "İngilizce": "western", "İtalyanca": "western",
+    "Rusça": "western", "Almanca": "western",
+}
+
+
+def _apply_source_loan_family(loan_eval: dict[str, Any], entries: list[dict[str, Any]]) -> None:
+    """Kaynak açık bir alıntı adımı veriyorsa sınıflandırmayı ona göre düzeltir.
+
+    `LoanwordClassifier` yalnız kelimenin ses yapısına bakar; `faça` için
+    "verici dil ailesi belirlenemedi" (Doğu %32,3 = Batı %32,3) diyordu,
+    aynı çıktıda kaynak "Alıntı: İtalyanca faccia" derken. Olasılık dağılımı
+    DEĞİŞTİRİLMEZ; o hâlâ yalnız ses yapısının söylediğidir.
+    """
+    from engine.nlp.borrowing_chain import source_loan_step
+    from engine.nlp.loanword_classifier import CLASSIFICATION_LABELS
+
+    step = source_loan_step(entries)
+    family = _SOURCE_DONOR_FAMILY.get(str((step or {}).get("lang_name") or ""))
+    if not step or not family or loan_eval.get("classification_key") == family:
+        return
+    loan_eval["phonotactic_classification"] = loan_eval.get("classification")
+    loan_eval["classification"] = CLASSIFICATION_LABELS[family]
+    loan_eval["classification_key"] = family
+    loan_eval["source_override"] = (
+        f"kaynağın alıntı zinciri: {step.get('lang_name')} {step.get('word')} "
+        f"({step.get('source') or 'kaynak'}); ses yapısına göre sınıf: "
+        f"{loan_eval['phonotactic_classification']} — aşağıdaki dağılım yalnız ses yapısıdır"
+    )
+
+
 def _source_proto_forms(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Kaynakların AÇIKÇA verdiği Proto-Türkçe biçimler, kaç kayıtta geçtiğiyle.
 
@@ -692,6 +837,9 @@ class SearchEngine:
         query_meanings = meanings_by_source.get(primary_source, [])[:1] or [
             m for group in meanings_by_source.values() for m in group
         ]
+        english_gloss = _english_query_gloss(word_clean, list(turkic_entries_map.values()))
+        if english_gloss and english_gloss not in query_meanings:
+            query_meanings = [*query_meanings, english_gloss]
         asserted, homonyms = _homonym_filter(
             _asserted_cognates(word_clean, etymology_mentions), query_meanings
         )
@@ -711,6 +859,19 @@ class SearchEngine:
                 turkic_entries_map[key] = entry
                 if ASSERTED_COGNATE_SOURCE not in sources:
                     sources.append(ASSERTED_COGNATE_SOURCE)
+
+        present = {(e["lang_code"], e.get("comparison") or to_comparison_form(e.get("word") or ""))
+                   for e in turkic_entries_map.values()}
+        for entry in _cited_cognates(word_clean, list(turkic_entries_map.values())):
+            if (entry["lang_code"], entry["comparison"]) in present:
+                continue
+            present.add((entry["lang_code"], entry["comparison"]))
+            entry["phonetic_shift"] = analyze_phonetic_shifts(word_clean, entry["word"], entry["lang_name"])
+            if entry.get("script") in ("Cyrillic", "Arabic", "Runic"):
+                entry["latin_transliteration"] = transliterate_to_latin(entry["word"])
+            turkic_entries_map[(entry["lang_code"], entry["word"], False)] = entry
+            if CITED_COGNATE_SOURCE not in sources:
+                sources.append(CITED_COGNATE_SOURCE)
 
         sorted_entries = sorted(
             list(turkic_entries_map.values()),
@@ -733,6 +894,7 @@ class SearchEngine:
         loan_eval = self.loanword_classifier.classify(
             word_clean, spreading_ratio=cognate_eval.get("spreading_ratio")
         )
+        _apply_source_loan_family(loan_eval, sorted_entries)
         # 4 katmanlı alıntı keşif hattı (master plan Katman 1-4)
         loanword_detection = self.loanword_detector.detect(word_clean, sorted_entries)
         # Çoklu dizi hizalama ile akraba kümeleri (plan §2.1'in asıl hedefi)
@@ -1003,6 +1165,19 @@ class SearchEngine:
             proto_root_provenance = (
                 f"{proto_root_provenance or 'kaynak belirsiz'} "
                 f"⚠️ sıralayıcı: {_sel_claim or 'kökeni belirlenemedi'}"
+            )
+
+        # Kaynağın kendi miras kaydı Proto-Türkçe biçimi AÇIKÇA veriyorsa
+        # başlık onu gösterir; motorun rekonstrüksiyonu NLP bölümünde kalır.
+        # Sıralayıcı alıntı dediyse dokunulmaz. Yalnız rapordur: skorlar
+        # yukarıda hesaplandı.
+        source_root, source_root_lang = _query_source_proto(word_clean, sorted_entries)
+        if source_root and _sel_kind != "borrowed" and source_root != proto_root:
+            engine_root = proto_root
+            proto_root = source_root
+            proto_root_provenance = (
+                f"tanıklı — {source_root_lang} sözlük kaydı (Proto-Türkçe {source_root})"
+                + (f"; motorun rekonstrüksiyonu: {engine_root}" if engine_root else "")
             )
 
         # Motor hiçbir yöntemle kök bulamadıysa ama sözlük maddesi yapıyı

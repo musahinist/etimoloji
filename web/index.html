@@ -260,6 +260,7 @@
                     </div>
                     <span class="text-xs text-teal-400 font-mono" id="turkicSpreadRatio">%0 Lehçe Yayılımı</span>
                 </div>
+                <p id="donorChain" class="hidden text-xs text-slate-300 mb-4"></p>
                 <div id="turkicGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
             </div>
 
@@ -401,7 +402,10 @@
 
             document.getElementById('cacheBadge').textContent = data.from_cache ? "Önbellek Kaydı" : "Canlı Araştırma";
 
-            const turkicList = data.turkic_languages || [];
+            // Kaynak dil kayıtları (lang_code "donor") Türki dil değildir; ayrı gösterilir.
+            const allEntries = data.turkic_languages || [];
+            const donorList = allEntries.filter(e => e.lang_code === "donor");
+            const turkicList = allEntries.filter(e => e.lang_code !== "donor" && e.lang_code !== "ai");
             document.getElementById('langCountBadge').textContent = `${turkicList.length} Dil/Katman`;
 
             // 2. A-HVP
@@ -522,6 +526,15 @@
             const cogEval = nlp.cognate_distribution || {};
             const ratioPercent = Math.round((cogEval.spreading_ratio || 0) * 100);
             document.getElementById('turkicSpreadRatio').textContent = `%${ratioPercent} Lehçe Yayılımı`;
+
+            const donorEl = document.getElementById('donorChain');
+            if (donorList.length) {
+                donorEl.classList.remove('hidden');
+                donorEl.innerHTML = `<span class="font-bold text-amber-300">🧭 Köken zinciri (kaynak diller):</span> ` +
+                    donorList.map(d => `${esc(d.lang_name)} <b class="text-white">${esc(d.word)}</b>${d.meaning ? ` “${esc(d.meaning)}”` : ""}`).join(" · ");
+            } else {
+                donorEl.classList.add('hidden');
+            }
 
             const grid = document.getElementById('turkicGrid');
             if (turkicList.length === 0) {
