@@ -17,6 +17,48 @@ from engine.utils.network import fetch as http_get
 logger = get_logger(__name__)
 
 
+
+#: Sayfanın ``==Turkish==`` bölümü (bir sonraki 2. düzey başlığa kadar).
+_TURKISH_SECTION = re.compile(r"^==Turkish==\s*$(.*?)(?=^==[^=]|\Z)", re.M | re.S)
+_TURKISH_INHERITED = re.compile(r"\{\{inh\|tr\|trk-pro\|([^}]*)\}\}")
+_TURKISH_BORROWED = re.compile(r"\{\{(?:bor|bor\+|lbor|slbor)\|tr\||Borrowed from", re.I)
+
+
+def _turkish_proto_link(wikitext: str) -> tuple[str, str] | None:
+    """Türkçe bölümündeki Proto-Türkçe MİRAS bağlantısı; alıntıysa ``None``.
+
+    ⚠️ Eskiden sayfanın herhangi bir yerindeki ilk ``trk-pro`` bağlantısı
+    (``inh``/``der``/``cog``, herhangi bir dil bölümü) alınıyor ve o kökün
+    BÜTÜN torunları tanık yapılıyordu: Farsça alıntı `parça` için 25 dilde
+    *bar "var olmak" biçimleri raporlandı.
+    """
+    section = _TURKISH_SECTION.search(wikitext)
+    if not section or _TURKISH_BORROWED.search(section.group(1)):
+        return None
+    link = _TURKISH_INHERITED.search(section.group(1))
+    if not link:
+        return None
+    args = link.group(1).split("|")
+    positional = [a.strip() for a in args if "=" not in a]
+    named = dict(a.split("=", 1) for a in args if "=" in a)
+    root = positional[0].lstrip("*") if positional else ""
+    # Anlam `t=` ya da 3. konumsal argüman ({{inh|tr|trk-pro|*köŕ||eye}}).
+    meaning = named.get("t", "") or (positional[2] if len(positional) > 2 else "")
+    return (root, meaning.strip()) if root else None
+
+
+def _desc_parts(raw_args: str) -> tuple[str, str]:
+    """``{{desc|kk|бар|tr=bar}}`` argümanlarından (biçim, okunuş).
+
+    Adlandırılmış argümanlar (``tr=``, ``der=1``, ``bor=1``) biçim DEĞİLDİR;
+    eskiden "tr=bar", "- (der=1)" diye tanık listesine basılıyordu.
+    """
+    positional = [a.strip() for a in raw_args.split("|") if "=" not in a]
+    named = dict(a.split("=", 1) for a in raw_args.split("|") if "=" in a)
+    form = positional[0] if positional else ""
+    return ("" if form in ("", "-") else form), named.get("tr", "").strip()
+
+
 class WiktionaryFetcher(BaseFetcher):
     @property
     def source_name(self) -> str:
@@ -56,11 +98,9 @@ class WiktionaryFetcher(BaseFetcher):
         proto_page_title = None
 
         if wt:
-            # Proto-Turkic kök bağlantısını ara (örn. {{inh|tr|trk-pro|*sub|t=water}})
-            proto_match = re.search(r'\{\{(?:inh|der|cog)\|[a-z\-]+\|trk-pro\|\*?([^|\}]+)(?:\|t=([^|\}]+))?', wt)
+            proto_match = _turkish_proto_link(wt)
             if proto_match:
-                proto_root = proto_match.group(1).strip()
-                proto_meaning = proto_match.group(2).strip() if proto_match.group(2) else ""
+                proto_root, proto_meaning = proto_match
                 result["root"]["proto_turkic"] = f"*{proto_root}"
                 result["root"]["meaning"] = proto_meaning
                 proto_page_title = f"Reconstruction:Proto-Turkic/{proto_root}"
@@ -86,23 +126,19 @@ class WiktionaryFetcher(BaseFetcher):
 
         # Türki diller türevlerini parsing
         # Template format: {{desc|code|word|...}} veya {{desctree|code|word|...}}
-        desc_pattern = r'\{\{desc(?:tree)?\|([a-z0-9\-]+)\|([^|\}]+)(?:\|([^|\}]+))?(?:\|ts=([^|\}]+))?'
+        desc_pattern = r'\{\{desc(?:tree)?\|([a-z0-9\-]+)\|([^}]*)\}\}'
 
         seen_langs = {item["lang_code"]: item for item in result["turkic_languages"]}
 
         for match in re.finditer(desc_pattern, wt):
             lang_code = match.group(1).strip()
-            entry_word = match.group(2).strip()
-            extra_word = match.group(3) or ""
-            ts_trans = match.group(4) or ""
+            entry_word, reading = _desc_parts(match.group(2))
+            if not entry_word:
+                continue
 
             # Türki diller haritasında var mı?
             if lang_code in TURKIC_LANGUAGES_MAP:
-                display_word = entry_word
-                if ts_trans and not ts_trans.startswith("t="):
-                    display_word = f"{entry_word} ({ts_trans})"
-                elif extra_word and not extra_word.startswith("t=") and not extra_word.startswith("bor="):
-                    display_word = f"{entry_word} ({extra_word})"
+                display_word = f"{entry_word} ({reading})" if reading and reading != entry_word else entry_word
 
                 if lang_code not in seen_langs:
                     item = {

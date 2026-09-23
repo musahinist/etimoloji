@@ -71,3 +71,34 @@ class TestSourceEvidence(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestWiktionaryProtoLink(unittest.TestCase):
+    """Proto-Türkçe kök yalnız Türkçe bölümündeki MİRAS bağlantısından alınır."""
+
+    def test_loanword_takes_no_proto_root(self):
+        from engine.fetchers.wiktionary import _turkish_proto_link
+
+        page = "==Kumyk==\n{{inh|kum|trk-pro|*bar}}\n==Turkish==\n{{bor+|tr|fa|پارچه}}\n"
+        self.assertIsNone(_turkish_proto_link(page))
+
+    def test_inherited_root_and_meaning(self):
+        from engine.fetchers.wiktionary import _turkish_proto_link
+
+        page = "==Turkish==\nFrom {{inh|tr|trk-pro|*sub|t=water}}\n==Uzbek==\n{{inh|uz|trk-pro|*x}}"
+        self.assertEqual(_turkish_proto_link(page), ("sub", "water"))
+
+    def test_named_desc_args_are_not_forms(self):
+        from engine.fetchers.wiktionary import _desc_parts
+
+        self.assertEqual(_desc_parts("бар|tr=bar"), ("бар", "bar"))
+        self.assertEqual(_desc_parts("-|der=1"), ("", ""))
+
+
+class TestTextDonor(unittest.TestCase):
+    def test_cognate_list_is_not_a_donor(self):
+        from engine.db.lexicon_index import donor_from_text
+
+        text = "Inherited from Ottoman Turkish گرك.\nCognates\nNorthern Kurdish gerek\nUzbek kerak"
+        self.assertEqual(donor_from_text(text), ("", ""))
+        self.assertEqual(donor_from_text("From Persian پارچه (pârče). Cognate with Kurdish x.")[0], "fa")

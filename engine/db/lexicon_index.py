@@ -148,10 +148,24 @@ ETYMOLOGY_TEXT_DONORS: dict[str, str] = {
 _DONOR_NAMES_BY_LENGTH = sorted(ETYMOLOGY_TEXT_DONORS, key=len, reverse=True)
 
 
+#: Köken zinciri burada biter; sonrası akraba/karşılaştırma listesidir.
+_COGNATE_SECTION = re.compile(r"(?im)^\s*(?:cognates?|compare|see also|descendants|related terms)\b")
+#: Zincir içindeki "Cognate with Kurdish gerek." / "Compare Persian …" cümleleri.
+_COGNATE_SENTENCE = re.compile(r"(?i)[^.]*\b(?:cognate|compare|cf\.)\b[^.]*\.?")
+
+
 def donor_from_text(etymology_text: str) -> tuple[str, str]:
-    """Etimoloji metninden verici dili çıkarır. Bulamazsa ``("", "")``."""
+    """Etimoloji metninden verici dili çıkarır. Bulamazsa ``("", "")``.
+
+    ⚠️ Akraba listesi verici DEĞİLDİR. Metnin tamamı taranıyordu ve
+    `gerek`in "Cognates … Northern Kurdish gerek" satırı kelimeyi Kürtçe
+    alıntı yapıyordu. Ölçüldü: yalnız Türkçede 139 madde yanlışlıkla
+    "alıntı" idi — `o` (Çince), `ben`, `bin`, `buz` (Moğolca), `don`.
+    """
     if not etymology_text:
         return "", ""
+    etymology_text = _COGNATE_SECTION.split(etymology_text, maxsplit=1)[0]
+    etymology_text = _COGNATE_SENTENCE.sub(" ", etymology_text)
     for name in _DONOR_NAMES_BY_LENGTH:
         index = etymology_text.find(name + " ")
         if index < 0:
