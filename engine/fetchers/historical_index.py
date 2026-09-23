@@ -27,7 +27,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from engine.fetchers.base import BaseFetcher
+from engine.fetchers.base import TURKIC_LANGUAGES_MAP, BaseFetcher
 from engine.logging_setup import get_logger
 from engine.utils.variant_expander import generate_dynamic_phonetic_variants
 
@@ -62,6 +62,8 @@ class HistoricalIndexFetcher(BaseFetcher):
 
     #: Canlı bir servis değil, yerel veri.
     is_seed_source = True
+    #: Sorgulanan diller (alt sınıf değiştirir).
+    languages: tuple[str, ...] = HISTORICAL_LANGUAGES
 
     @property
     def source_name(self) -> str:
@@ -92,8 +94,8 @@ class HistoricalIndexFetcher(BaseFetcher):
                 rows.extend(
                     index.lookup(
                         candidate,
-                        languages=list(HISTORICAL_LANGUAGES),
-                        limit=MAX_PER_LANGUAGE * len(HISTORICAL_LANGUAGES),
+                        languages=list(self.languages),
+                        limit=MAX_PER_LANGUAGE * len(self.languages),
                     )
                 )
 
@@ -152,4 +154,43 @@ class HistoricalIndexFetcher(BaseFetcher):
         except Exception:
             logger.warning("%s: kaynak işlenemedi", self.source_name, exc_info=True)
 
+        return result
+
+
+class ModernIndexFetcher(HistoricalIndexFetcher):
+    """Çağdaş Türk dillerinin yerel sözlük kayıtları (İngilizce, Rusça ve Türkçe
+    Wiktionary dökümleri), canlı 14 Wiktionary sorgusunun yerel karşılığı.
+
+    ⚠️ Yazılış eşleşmesi akrabalık değildir: başka dilde aynı yazılan kelime
+    sahte akraba olabilir. Bu yüzden her kayıt ``meaning_check`` ile işaretlenir
+    ve arama motoru onu sorgunun anlamıyla karşılaştırır (eşsesli süzgeci);
+    anlamı olmayan kayıt doğrulanamaz ve elenir.
+    """
+
+    languages = tuple(
+        code for code in TURKIC_LANGUAGES_MAP
+        if code not in HISTORICAL_LANGUAGES and code not in ("tr", "wot")
+    )
+
+    @property
+    def source_name(self) -> str:
+        return "Çağdaş Türk Dilleri (yerel sözlük indeksi: İngilizce/Rusça/Türkçe Wiktionary dökümleri)"
+
+    def fetch(self, word: str) -> dict[str, Any]:
+        import re
+
+        result = super().fetch(word)
+        result["root"] = self.empty_result()["root"]  # tarihî not bu kaynağa ait değil
+        kept = []
+        for entry in result["turkic_languages"]:
+            gloss = str(entry.get("meaning") or "")
+            # Özel ad (Kazakça `Дәнеш` "a male given name" `deniz`e 0,42 ile
+            # geçiyordu) ve yönlendirme ("Arabic spelling of …") tanık değildir.
+            if str(entry.get("word") or "")[:1].isupper() or re.search(
+                r"given name|surname|\b(?:form|spelling) of\b", gloss, re.IGNORECASE
+            ):
+                continue
+            entry["meaning_check"] = True
+            kept.append(entry)
+        result["turkic_languages"] = kept
         return result

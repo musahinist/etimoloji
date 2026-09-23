@@ -11,7 +11,7 @@ from engine.fetchers.academic_turkology import AcademicTurkologyFetcher
 from engine.fetchers.archive_org import ArchiveOrgFetcher
 from engine.fetchers.base import TURKIC_LANGUAGES_MAP, BaseFetcher
 from engine.fetchers.etimoloji_turkce import EtimolojiTurkceFetcher
-from engine.fetchers.historical_index import HistoricalIndexFetcher
+from engine.fetchers.historical_index import HistoricalIndexFetcher, ModernIndexFetcher
 from engine.fetchers.historical_modern import HistoricalModernLexiconFetcher
 from engine.fetchers.isam_ansiklopedi import IsamAnsiklopediFetcher
 from engine.fetchers.loanword_donor_etymology import LoanwordDonorEtymologyFetcher
@@ -232,6 +232,18 @@ _ATTRIBUTED_FORM = (
 #: anlamca bağlı kelimelerdir.
 HOMONYM_SIMILARITY_FLOOR = 0.30
 
+#: Yerel çağdaş dil adayları (yazılışla bulunur) için ANLAM alt sınırı.
+#: Eşsesli süzgecinin 0,30'u burada yetmiyor. 50 kelimede elle sayıldı
+#: (rastgele 25'er kayıt): 0,50 altında ~%24 sahte akraba (`tozmak` ~ туз
+#: "tuz", `gerek` ~ кӗрӗк "kürk", `kırkmak` ~ кырк "kırk"), üstünde ~%4
+#: (`çığlık` ~ çığ). Bedel: 225 adaydan 73'ü kalır; `deniz`in 0,46-0,49'daki
+#: doğru Karayca/Kırım Tatarca biçimleri de elenir.
+LOCAL_WITNESS_FLOOR = 0.50
+
+#: Yerel çağdaş dil adayı, en iyi eşleşen adayın bu kadar altındaysa elenir
+#: (başka anlamın, yani eşseslinin kaydıdır).
+LOCAL_WITNESS_MARGIN = 0.35
+
 
 def _first_sentence_loan(text: str) -> bool:
     """İlk cümle aile dışı bir dilden "From X" diyor mu (ҡәләм: "From Arabic قَلَم")."""
@@ -393,7 +405,53 @@ def _cited_cognates(word: str, entries: list[dict[str, Any]]) -> list[dict[str, 
     return out
 
 
-def _query_source_proto(word: str, entries: list[dict[str, Any]]) -> tuple[str, str]:
+_REDIRECT_GLOSS = re.compile(r"\b(?:form|spelling) of\b", re.IGNORECASE)
+
+
+def _rank_own_by_meaning(word: str, entries: list[dict[str, Any]], primary: str) -> list[tuple[float, dict[str, Any]]]:
+    """Sorgunun KENDİ kayıtları, anlamlarının sorgunun ana anlamına benzerliğiyle.
+
+    Eşsesli kelimede ilk kayıt yanlış anlamın kaydı olabilir: `el` için
+    Osmanlıca "people" (*ēl) kaydı "hand" kaydından önce geliyordu ve başlık
+    *ēl, eşsesli süzgeci "halk" anlamlı akrabaları geçiriyordu (ölçüldü).
+    Mutlak eşik yok: 'bead' ~ TDK'nın uzun Türkçe tanımı zaten 0,22; kayıtlar
+    birbirine göre sıralanır. Model ya da ana anlam yoksa sıra korunur (1,0).
+    """
+    own = to_comparison_form(word)
+    # Yalnız sözlük indeksi kayıtları: TDK kaydı ana anlamın KENDİSİDİR
+    # (benzerliği 1,0 çıkar), yerel çağdaş dil adayları ise başka dildir.
+    candidates = [
+        e for e in entries
+        if "yerel sözlük indeksi" in str(e.get("source") or "") and not e.get("meaning_check")
+        and (_names_word(e.get("word") or "", word) or e.get("comparison") == own)
+        and e.get("meaning") and not is_inflection_gloss(str(e["meaning"]))
+        and not _REDIRECT_GLOSS.search(str(e["meaning"]))
+    ]
+    if not primary or len(candidates) < 2:
+        return [(1.0, e) for e in candidates]
+    try:
+        from engine.nlp.diachronic_semantic_engine import get_sentence_transformer, has_semantic_model
+
+        if not has_semantic_model():
+            return [(1.0, e) for e in candidates]
+        from sentence_transformers.util import cos_sim
+
+        model = get_sentence_transformer()
+        sims = cos_sim(
+            model.encode([str(e["meaning"]) for e in candidates], show_progress_bar=False),
+            model.encode([primary], show_progress_bar=False),
+        )[:, 0].tolist()
+    except Exception:
+        logger.warning("Kendi kayıtları anlamca sıralanamadı", exc_info=True)
+        return [(1.0, e) for e in candidates]
+    return sorted(zip(sims, candidates, strict=True), key=lambda pair: -pair[0])
+
+
+#: En iyi anlamla "aynı anlam grubu" sayılan benzerlik farkı.
+_SAME_SENSE_MARGIN = 0.10
+
+
+def _query_source_proto(word: str, entries: list[dict[str, Any]], primary: str = "") -> tuple[str, str]:
     """Sorgunun kendi miras kaydının verdiği Proto-Türkçe biçim ve kaydın dili.
 
     Ölçüldü: kaynakta Proto-Türkçe biçim bulunan 12 kelimenin yaklaşık
@@ -401,20 +459,21 @@ def _query_source_proto(word: str, entries: list[dict[str, Any]]) -> tuple[str, 
     (`uçmak` *uça ↔ kaynak *uč-, `kırkmak` *kırko ↔ *kïrk, `boncuk`
     *bonjuk ↔ *bōnčuk).
     """
-    from collections import Counter
-
-    counts: Counter[tuple[str, str]] = Counter()
-    for entry in _own_lexicon_entries(word, entries):
+    ranked = _rank_own_by_meaning(word, entries, primary)
+    if not ranked:
+        return "", ""
+    best = ranked[0][0]
+    for similarity, entry in ranked:
+        if best - similarity > _SAME_SENSE_MARGIN:
+            break  # buradan sonrası başka bir anlamın (eşseslinin) kaydı
         form = re.sub(r"<[^<>]*>", "", str(entry.get("donor_form") or "")).strip()
         if entry.get("lexicon_origin") == "miras" and entry.get("donor_lang") == "trk-pro" and form:
-            counts[(form if form.startswith("*") else f"*{form}",
-                    str(entry.get("lang_name") or entry.get("lang_code")))] += 1
-    if not counts:
-        return "", ""
-    return counts.most_common(1)[0][0]
+            return (form if form.startswith("*") else f"*{form}",
+                    str(entry.get("lang_name") or entry.get("lang_code")))
+    return "", ""
 
 
-def _english_query_gloss(word: str, entries: list[dict[str, Any]]) -> str:
+def _english_query_gloss(word: str, entries: list[dict[str, Any]], primary: str = "") -> str:
     """Sorgunun kendi Türkçe/Osmanlıca sözlük kaydının İLK İngilizce anlamı.
 
     Eşsesli süzgeci tanığın İngilizce anlamını ("bead") TDK'nın uzun
@@ -424,19 +483,10 @@ def _english_query_gloss(word: str, entries: list[dict[str, Any]]) -> str:
     kaydın ilk anlamı alınır: bütün anlamlar eklenirse sorgunun kendi
     eşseslisi (`ekmek` "to sow") süzgeci yeniden gevşetir.
     """
-    own = to_comparison_form(word)
-    for entry in entries:
-        # Köken sınıfı şart değil: `bağlamak`ın Osmanlıca kaydı sınıfsız.
-        if not (_names_word(entry.get("word") or "", word) or entry.get("comparison") == own):
-            continue
-        meaning = str(entry.get("meaning") or "")
-        # "alternative spelling of كوپوك" anlam değil yönlendirmedir.
-        if is_inflection_gloss(meaning) or re.search(r"\b(?:form|spelling) of\b", meaning, re.IGNORECASE):
-            continue
-        if entry.get("lang_code") in ("tr", "ota") and meaning:
-            return re.split(r"[;(]", meaning)[0].strip()
+    for _similarity, entry in _rank_own_by_meaning(word, entries, primary):
+        if entry.get("lang_code") in ("tr", "ota"):
+            return re.split(r"[;(]", str(entry["meaning"]))[0].strip()
     return ""
-
 
 #: Kaynak zincirindeki verici dil adı -> sınıflandırıcının aile anahtarı.
 _SOURCE_DONOR_FAMILY = {
@@ -498,6 +548,7 @@ def default_fetchers() -> list[BaseFetcher]:
     return [
         AcademicTurkologyFetcher(),
         HistoricalIndexFetcher(),
+        ModernIndexFetcher(),
         HistoricalModernLexiconFetcher(),
         IsamAnsiklopediFetcher(),
         ArchiveOrgFetcher(),
@@ -848,9 +899,33 @@ class SearchEngine:
         query_meanings = meanings_by_source.get(primary_source, [])[:1] or [
             m for group in meanings_by_source.values() for m in group
         ]
-        english_gloss = _english_query_gloss(word_clean, list(turkic_entries_map.values()))
+        english_gloss = _english_query_gloss(
+            word_clean, list(turkic_entries_map.values()),
+            primary=(meanings_by_source.get(primary_source) or [""])[0],
+        )
         if english_gloss and english_gloss not in query_meanings:
             query_meanings = [*query_meanings, english_gloss]
+
+        # Yerel çağdaş dil kayıtları yazılışla bulundu; akraba oldukları ancak
+        # ANLAMLA doğrulanır (bkz. `ModernIndexFetcher`). Doğrulanamayan
+        # (anlamsız kayıt, model ya da sorgu anlamı yok) tanık OLMAZ.
+        unverified = [e for e in turkic_entries_map.values() if e.get("meaning_check")]
+        if unverified:
+            glossed = [e for e in unverified if e.get("meaning")]
+            kept, _ = _homonym_filter(glossed, query_meanings) if glossed else ([], [])
+            scored = [e for e in kept if "meaning_similarity" in e]
+            # İki kesim: mutlak alt sınır (0,50) ve en iyi eşleşmeye göre göreli
+            # kesim (`el`: "hand" adayları 1,0, "people" eşseslileri 0,43).
+            best = max((e["meaning_similarity"] for e in scored), default=0.0)
+            floor = max(LOCAL_WITNESS_FLOOR, best - LOCAL_WITNESS_MARGIN)
+            verified = {id(e) for e in scored if e["meaning_similarity"] >= floor}
+            turkic_entries_map = {
+                k: v for k, v in turkic_entries_map.items()
+                if not v.get("meaning_check") or id(v) in verified
+            }
+            etymology_mentions["local_witnesses"] = {
+                "found": len(unverified), "verified": len(verified),
+            }
         asserted, homonyms = _homonym_filter(
             _asserted_cognates(word_clean, etymology_mentions), query_meanings
         )
@@ -1182,7 +1257,9 @@ class SearchEngine:
         # başlık onu gösterir; motorun rekonstrüksiyonu NLP bölümünde kalır.
         # Sıralayıcı alıntı dediyse dokunulmaz. Yalnız rapordur: skorlar
         # yukarıda hesaplandı.
-        source_root, source_root_lang = _query_source_proto(word_clean, sorted_entries)
+        source_root, source_root_lang = _query_source_proto(
+            word_clean, sorted_entries, primary=(meanings_by_source.get(primary_source) or [""])[0]
+        )
         source_label = f"{source_root_lang} sözlük kaydı"
         if not source_root and starling_root:
             source_root, source_label = starling_root, "Starling (Dybo & Starostin 2005)"

@@ -34,6 +34,9 @@ class TestStarlingDecode(unittest.TestCase):
         self.assertEqual(etym.earliest_dated_source(), (732, "Orkh."))
 
 
+INDEX_SOURCE = "Tarihî Katman (yerel sözlük indeksi: Eski Türkçe, Osmanlıca, Çağatayca)"
+
+
 class TestSourceEvidence(unittest.TestCase):
     def test_source_loan_step_requires_loan_relation(self):
         derived = {"lang_code": "donor", "word": "facies", "relation": "Ses evrimi (evolution)"}
@@ -43,7 +46,7 @@ class TestSourceEvidence(unittest.TestCase):
 
     def _own(self, origin, cognates=None, **extra):
         return {"lang_code": "ota", "lang_name": "Osmanlı Türkçesi", "word": "بونجق",
-                "comparison": "boncuk", "lexicon_origin": origin,
+                "comparison": "boncuk", "lexicon_origin": origin, "source": INDEX_SOURCE,
                 "source_cognates": cognates or [], **extra}
 
     def test_cited_cognates_only_from_inherited_record(self):
@@ -54,13 +57,14 @@ class TestSourceEvidence(unittest.TestCase):
         self.assertEqual(_cited_cognates("boncuk", [self._own("alıntı", cognates)]), [])
 
     def test_query_source_proto(self):
-        entry = self._own("miras", donor_lang="trk-pro", donor_form="*bōnčuk")
+        entry = self._own("miras", donor_lang="trk-pro", donor_form="*bōnčuk", meaning="bead")
         self.assertEqual(_query_source_proto("boncuk", [entry])[0], "*bōnčuk")
 
     def test_english_gloss_skips_redirects(self):
         entries = [
-            {"lang_code": "ota", "word": "x", "comparison": "köpük", "meaning": "alternative spelling of كوپوك"},
-            {"lang_code": "ota", "word": "y", "comparison": "köpük", "meaning": "foam, froth"},
+            {"lang_code": "ota", "word": "x", "comparison": "köpük", "meaning": "alternative spelling of كوپوك",
+             "source": INDEX_SOURCE},
+            {"lang_code": "ota", "word": "y", "comparison": "köpük", "meaning": "foam, froth", "source": INDEX_SOURCE},
         ]
         self.assertEqual(_english_query_gloss("köpük", entries), "foam, froth")
 

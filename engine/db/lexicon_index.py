@@ -541,8 +541,13 @@ def _romanised_comparison(record: dict[str, Any]) -> str:
     return to_comparison_form(text)
 
 
-def iter_entries(path: Path, lang_code: str) -> Iterator[LexiconEntry]:
-    """Bir kaikki JSONL dökümünü satır satır okur (bellekte tutmadan)."""
+def iter_entries(path: Path, lang_code: str, *, skip_form_of: bool = False) -> Iterator[LexiconEntry]:
+    """Bir kaikki JSONL dökümünü satır satır okur (bellekte tutmadan).
+
+    :param skip_form_of: bütün anlamları çekim/biçim göndermesi olan maddeleri
+        atla. Türkçe sürümde 325 bin Türkçe kaydın 114 bini (`boncuğu`,
+        `boncuklar`) böyledir; indekse girerse arama gürültüsüdür.
+    """
     opener = gzip.open if path.suffix == ".gz" else open
     with opener(path, "rt", encoding="utf-8") as handle:  # type: ignore[operator]
         for line in handle:
@@ -555,6 +560,11 @@ def iter_entries(path: Path, lang_code: str) -> Iterator[LexiconEntry]:
                 continue
             word = str(record.get("word", "")).strip()
             if not word:
+                continue
+            senses = record.get("senses") or []
+            if skip_form_of and senses and all(
+                s.get("form_of") or "form-of" in (s.get("tags") or []) for s in senses
+            ):
                 continue
             comparison = to_comparison_form(word)
             if not comparison:
@@ -678,7 +688,7 @@ class LexiconIndex:
             for lang_code, source, edition in edition_files:
                 rows = []
                 total = 0
-                for entry in iter_entries(source, lang_code):
+                for entry in iter_entries(source, lang_code, skip_form_of=edition == "tr"):
                     rows.append(entry.as_row())
                     if len(rows) >= batch:
                         self._insert(connection, rows)

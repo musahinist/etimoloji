@@ -94,3 +94,5 @@ data/sigtyp/*.tsv
 # Ham dBase dosyaları repoya alınmaz; `make starling` ile indirilir.
 data/starling/*
 !data/starling/_provenance.json
+# Türkçe Wiktionary sürümü (~22 MB) repoya alınmaz; `download_lexicons.py --tr`.
+data/lexicons/tr_edition/*.jsonl.gz
