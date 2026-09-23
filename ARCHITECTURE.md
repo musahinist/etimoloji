@@ -113,8 +113,10 @@ sequenceDiagram
         N-->>SE: ata biçim + kanıta dayalı güven
         SE->>N: alıntı keşif hattı (4 katman)
         SE->>N: akraba kümeleme + tarihsel ek ağacı + ses kanunu indüksiyonu
-        SE->>A: hipotez doğrulama
-        A-->>SE: rozet + skor + evidence_coverage + eksik aşamalar
+        opt Hipotez üretildiyse (nlp/iterative_hypothesis_engine.py)
+            SE->>A: hipotez doğrulama
+            A-->>SE: rozet + skor + evidence_coverage + eksik aşamalar
+        end
         SE->>DB: save_finding
         SE-->>U: bulgu + diagnostics (gerçek aşama süreleri)
     end
