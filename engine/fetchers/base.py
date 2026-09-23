@@ -37,6 +37,9 @@ TURKIC_LANGUAGES_MAP: dict[str, str] = {
     "khk": "Hakasça",
     "cjs": "Şorca",
     "slq": "Salarca",
+    # --- Tarihî katmanlar (kaikki): tarihli örnek künyeleri taşırlar -------
+    "oui": "Eski Uygurca",
+    "trk-oat": "Eski Anadolu Türkçesi",
     # --- Faz 3'te eklendi: ünlü uzunluğu tanıkları --------------------------
     # `savelyevturkic` üzerinde ölçüldü: 478 uzun ünlülü biçimin **231'i**
     # (%48) aşağıdaki diller haritada olmadığı için rekonstrüktör tarafından
@@ -69,7 +72,16 @@ TURKIC_LANGUAGES_MAP: dict[str, str] = {
 #: sessizce düşerdi (ölçüldü: 8 kognatlı ``göz`` 0,500 -> 0,498).
 RECONSTRUCTED_CORPORA = frozenset({"wot"})
 
-TURKIC_LANGUAGE_COUNT = len(set(TURKIC_LANGUAGES_MAP) - RECONSTRUCTED_CORPORA)
+#: Küçük tarihî külliyatlar: tanık sayılırlar ama yayılım paydasına girmezler.
+#: Eski Uygurca (446 madde) ve Eski Anadolu Türkçesi (593) sözlükleri o kadar
+#: küçük ki modern kelimelerin neredeyse hiçbiri onlarda görünemez; paydaya
+#: katılsalar her kelimenin yayılım oranı sessizce düşerdi (ölçüldü: 8
+#: tanıklı üçgenleme skoru 0,5+ -> 0,489).
+SMALL_HISTORICAL_CORPORA = frozenset({"oui", "trk-oat"})
+
+TURKIC_LANGUAGE_COUNT = len(
+    set(TURKIC_LANGUAGES_MAP) - RECONSTRUCTED_CORPORA - SMALL_HISTORICAL_CORPORA
+)
 
 # --- Wiktionary başlık eşlemesi -------------------------------------------
 # Wiktionary bölüm başlıkları İNGİLİZCEDİR ("==Turkish==").
@@ -79,6 +91,8 @@ TURKIC_LANGUAGE_COUNT = len(set(TURKIC_LANGUAGES_MAP) - RECONSTRUCTED_CORPORA)
 WIKTIONARY_LANG_HEADERS: dict[str, str] = {
     "old turkic": "otk",
     "old turkish": "otk",
+    "old uyghur": "oui",
+    "old anatolian turkish": "trk-oat",
     "ottoman turkish": "ota",
     "chagatai": "chg",
     "turkish": "tr",

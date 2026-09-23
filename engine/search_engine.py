@@ -513,7 +513,7 @@ def default_fetchers() -> list[BaseFetcher]:
         TdkTaramaFetcher(),
         TdkDerlemeFetcher(),
         WiktionaryFetcher(),
-        MultiLangWiktionaryFetcher(),
+        *([MultiLangWiktionaryFetcher()] if config.LIVE_WIKTIONARY_EDITIONS else []),
         WiktextractFetcher(),
     ]
 
@@ -717,7 +717,13 @@ class SearchEngine:
                     )
                     errors.append(f"{type(exc).__name__}: {exc}")
                     continue
-                if res and (res.get("turkic_languages") or res.get("proto_turkic")):
+                # ⚠️ Kök `res["root"]["proto_turkic"]` içindedir; eskiden en üst
+                # düzeyde aranıyordu ve tanık üretmeyen her sonuç atılıyordu:
+                # alıntı kelimede Nişanyan'ın kökü, Starling'in kökü ve yalnız
+                # tanıklama tarihi döndüren sonuçlar hiç işlenmiyordu.
+                root = (res or {}).get("root") or {}
+                if res and (res.get("turkic_languages") or root.get("proto_turkic")
+                            or res.get("first_attestation")):
                     # Hangi varyantla bulunduğu anlam listesi için gerekli:
                     # kök varyantının ("terlik" -> "ter") anlamı sorgunun anlamı değildir.
                     results.append((var, res))
@@ -726,6 +732,9 @@ class SearchEngine:
 
         fetcher_order = {f.source_name: i for i, f in enumerate(self.fetchers)}
         hypothesis_historical_meaning = ""
+        # Starling'in Proto-Türkçe biçimi (kelimenin kendi sözlük kaydı biçim
+        # vermiyorsa başlıkta gösterilir; bkz. aşağıdaki kaynak kökü adımı).
+        starling_root = ""
 
         stage_start = time.perf_counter()
         with concurrent.futures.ThreadPoolExecutor(max_workers=config.MAX_WORKERS) as executor:
@@ -745,6 +754,8 @@ class SearchEngine:
                     for variant, res in results:
                         raw_fetcher_results.append(res)
                         root_info = res.get("root", {})
+                        if root_info.get("starling_proto") and not starling_root:
+                            starling_root = str(root_info.get("proto_turkic") or "")
                         if root_info.get("proto_turkic") and not proto_root:
                             proto_root = root_info.get("proto_turkic")
                             proto_root_provenance = f"tanıklı — {fetcher.source_name}"
@@ -1172,11 +1183,14 @@ class SearchEngine:
         # Sıralayıcı alıntı dediyse dokunulmaz. Yalnız rapordur: skorlar
         # yukarıda hesaplandı.
         source_root, source_root_lang = _query_source_proto(word_clean, sorted_entries)
+        source_label = f"{source_root_lang} sözlük kaydı"
+        if not source_root and starling_root:
+            source_root, source_label = starling_root, "Starling (Dybo & Starostin 2005)"
         if source_root and _sel_kind != "borrowed" and source_root != proto_root:
             engine_root = proto_root
             proto_root = source_root
             proto_root_provenance = (
-                f"tanıklı — {source_root_lang} sözlük kaydı (Proto-Türkçe {source_root})"
+                f"tanıklı — {source_label} (Proto-Türkçe {source_root})"
                 + (f"; motorun rekonstrüksiyonu: {engine_root}" if engine_root else "")
             )
 

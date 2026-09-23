@@ -1,5 +1,5 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-llm eval-prediction correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify semantic dialect
+        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-llm eval-prediction starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify semantic dialect
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -35,6 +35,7 @@ help:
 	@echo "predict-verify - Kilitli öngörüleri doğrula (NAME=... gerekli)"
 	@echo "eval-controls  - Negatif kontrol bataryası (sahte kök, alıntı tuzağı)"
 	@echo "eval-llm       - Yalnız-LLM alıntı taban çizgisi (PROVIDER=ollama|claude)"
+	@echo "starling       - Starling Türk/Moğol etimoloji tablolarını indir (Dybo & Starostin 2005)"
 	@echo "calibrate      - Güven kalibratörünü TRAIN bölümünde eğit"
 	@echo ""
 	@echo "serve       - REST API sunucusu"
@@ -108,6 +109,9 @@ donors:
 	.venv/bin/python scripts/download_lexicons.py --donors \
 		Russian Mongolian Evenki Arabic Persian Greek Armenian French Italian
 	.venv/bin/python -m engine.db.donor_index --build
+
+starling:
+	.venv/bin/python scripts/download_starling.py
 
 lexicon-index: lexicons
 	.venv/bin/python -m engine.db.lexicon_index --build

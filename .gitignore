@@ -89,3 +89,8 @@ data/sigtyp/*.tsv
 # ⚠️ Depo public'e açılacak olursa `data/gold/turkish_loanwords.json`
 # (TDK + Nişanyan türevi) önce çıkarılmalıdır; train/dev/test savelyevturkic
 # (CC-BY-4.0) türevidir ve dağıtılabilir.
+
+# --- Starling etimoloji tabloları --------------------------------------------
+# Ham dBase dosyaları repoya alınmaz; `make starling` ile indirilir.
+data/starling/*
+!data/starling/_provenance.json

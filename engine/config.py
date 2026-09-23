@@ -80,6 +80,12 @@ MAX_WORKERS = _env_int("MAX_WORKERS", 10)
 # Varyant patlamasını sınırlar: 21 fetcher × N varyant = N×21 dış istek.
 MAX_VARIANTS = _env_int("MAX_VARIANTS", 4)
 CACHE_ENABLED = _env_bool("CACHE_ENABLED", True)
+# Türki dillerin KENDİ Wiktionary'lerine canlı sorgu (14 site × aday biçim,
+# arama başına ~28 istek). Varsayılan KAPALI. Ölçüldü (50 kelime): yalnız
+# 2 kelimede kayıt getirdi, sık sık HTTP 503 / zaman aşımı; ayrıca sayfanın
+# hangi dil bölümünden geldiğine bakmıyordu. Aynı dillerin çoğu yerel
+# Türkçe/Rusça Wiktionary dökümlerinde doğru dil etiketiyle var.
+LIVE_WIKTIONARY_EDITIONS = _env_bool("LIVE_WIKTIONARY_EDITIONS", False)
 CACHE_TTL_SECONDS = _env_int("CACHE_TTL_SECONDS", 7 * 24 * 3600)
 MAX_QUERY_LENGTH = _env_int("MAX_QUERY_LENGTH", 64)
 

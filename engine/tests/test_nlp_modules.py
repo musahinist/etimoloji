@@ -222,15 +222,21 @@ class TestCognateAlignment(unittest.TestCase):
         tanıkları eklendi) bu testin de büyümesi gerekir, yoksa harita
         genişletildiğinde yanlış yere kırmızı yanar.
         """
-        from engine.fetchers.base import RECONSTRUCTED_CORPORA, TURKIC_LANGUAGES_MAP
+        from engine.fetchers.base import (
+            RECONSTRUCTED_CORPORA,
+            SMALL_HISTORICAL_CORPORA,
+            TURKIC_LANGUAGES_MAP,
+        )
 
         res = CognateAlignmentEngine().evaluate_cognate_distribution("göz", GOZ)
         # ⚠️ Payda ATTESTE dillerin sayısıdır. Geri kurulmuş külliyatlar
         # (``wot``) tanık olarak sayılır ama hiçbir getirici onlardan kayıt
         # üretemez; paydaya katılsalardı her yayılım oranı sessizce düşerdi.
+        # Küçük tarihî külliyatlar (Eski Uygurca, Eski Anadolu Türkçesi) da
+        # aynı gerekçeyle paydaya girmez.
         self.assertEqual(
             res["total_language_count"],
-            len(set(TURKIC_LANGUAGES_MAP) - RECONSTRUCTED_CORPORA),
+            len(set(TURKIC_LANGUAGES_MAP) - RECONSTRUCTED_CORPORA - SMALL_HISTORICAL_CORPORA),
         )
         self.assertEqual(res["present_dialects_count"], 8)
 

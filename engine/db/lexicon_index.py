@@ -637,6 +637,12 @@ class LexiconIndex:
         """
         files = sources if sources is not None else discover_lexicons()
         ru_files = discover_ru_edition() if (with_ru_edition and sources is None) else {}
+        # Türkçe sürüm Rusça sürümle aynı kurala tabidir (yalnız tanık/arama).
+        edition_files = [(code, path, "ru") for code, path in sorted(ru_files.items())]
+        if with_ru_edition and sources is None:
+            edition_files += [
+                (code, path, "tr") for code, path in sorted(discover_edition(TR_EDITION_SUBDIR).items())
+            ]
         if not files:
             raise FileNotFoundError(
                 f"{LEXICON_DIR} altında döküm yok. Önce indirin: "
@@ -669,7 +675,7 @@ class LexiconIndex:
             # ⚠️ Silme yok: aynı biçim iki sürümde de varsa ikisi de kalır.
             # İngilizce kayıt köken bilgisi taşır, Rusça kayıt taşımaz;
             # sorgular köken alanı dolu olanı zaten tercih eder.
-            for lang_code, source in sorted(ru_files.items()):
+            for lang_code, source, edition in edition_files:
                 rows = []
                 total = 0
                 for entry in iter_entries(source, lang_code):
@@ -682,7 +688,7 @@ class LexiconIndex:
                     self._insert(connection, rows)
                     total += len(rows)
                 counts[lang_code] = counts.get(lang_code, 0) + total
-                logger.info("indekslendi (ru sürümü): %s -> %d kayıt", lang_code, total)
+                logger.info("indekslendi (%s sürümü): %s -> %d kayıt", edition, lang_code, total)
 
             connection.execute(
                 "INSERT INTO entries_fts(entries_fts) VALUES('rebuild')"
@@ -866,9 +872,18 @@ class LexiconIndex:
 RU_EDITION_SUBDIR = "ru_edition"
 
 
+#: Türkçe Wiktionary sürümü; Rusça sürümle AYNI kural: yalnız tanık ve arama.
+TR_EDITION_SUBDIR = "tr_edition"
+
+
 def discover_ru_edition() -> dict[str, Path]:
     """Rusça sürüm dökümleri — yoksa boş sözlük."""
-    base = LEXICON_DIR / RU_EDITION_SUBDIR
+    return discover_edition(RU_EDITION_SUBDIR)
+
+
+def discover_edition(subdir: str) -> dict[str, Path]:
+    """İngilizce dışı bir Wiktionary sürümünün dökümleri — yoksa boş sözlük."""
+    base = LEXICON_DIR / subdir
     if not base.exists():
         return {}
     found: dict[str, Path] = {}
@@ -885,8 +900,15 @@ def discover_lexicons() -> dict[str, Path]:
     found: dict[str, Path] = {}
     if not LEXICON_DIR.exists():
         return found
+    from engine.fetchers.base import TURKIC_LANGUAGES_MAP
+
     for path in sorted(LEXICON_DIR.glob("*.jsonl*")):
         code = path.name.split(".")[0]
+        # ⚠️ Yalnız TANIK dilleri: `trk-pro` (Wiktionary Proto-Türkçe
+        # sayfaları) rekonstrüksiyondur; indekse girerse arama onu bir dil
+        # kaydı gibi tanık listesine taşır.
+        if code not in TURKIC_LANGUAGES_MAP:
+            continue
         found[code] = path
     return found
 

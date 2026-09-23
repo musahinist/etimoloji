@@ -184,7 +184,7 @@ class TestOfflineFetchers(unittest.TestCase):
                 self.assertIn("tohum", fetcher.source_name.lower(), cls.__name__)
 
     def test_known_seed_words_return_data(self):
-        self.assertTrue(StarlingFetcher().fetch("göz")["turkic_languages"])
+        self.assertTrue(StarlingFetcher(use_database=False).fetch("göz")["turkic_languages"])
         self.assertTrue(AcademicTurkologyFetcher().fetch("deniz")["turkic_languages"])
 
     def test_unknown_word_returns_empty(self):

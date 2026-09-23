@@ -54,6 +54,8 @@ LANGUAGE_BRANCHES: dict[str, str] = {
     "cv": "oghur",
     "wot": "oghur",  # Batı Eski Türkçe — Oğur kolu, GERİ KURULMUŞ
     "otk": "old_turkic",
+    "oui": "old_turkic",     # Eski Uygurca — Eski Türkçe ile aynı yazı dili katmanı
+    "trk-oat": "oguz",       # Eski Anadolu Türkçesi — Türkiye Türkçesinin atası
     # Faz 3'te eklenen ünlü uzunluğu tanıkları (bkz. fetchers/base.py notu).
     "dlg": "siberian",   # Dolganca — Yakutça ile birlikte
     "clw": "siberian",   # Orta Çulım

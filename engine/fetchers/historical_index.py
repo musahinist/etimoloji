@@ -47,7 +47,7 @@ MAX_LOCAL_VARIANTS = 24
 #: İndeksteki tarihî katmanlar. Çağdaş diller BURAYA GİRMEZ: onlar için zaten
 #: canlı Wiktionary fetcher'ları var ve indeks Wiktionary türevi olduğu için
 #: aynı kanıt iki kez sayılırdı.
-HISTORICAL_LANGUAGES: tuple[str, ...] = ("otk", "ota", "chg")
+HISTORICAL_LANGUAGES: tuple[str, ...] = ("otk", "ota", "chg", "oui", "trk-oat")
 
 #: Aynı sözlükbirimin ikinci kaydı: runik maddenin Latin okunuşu. Tanık olarak
 #: saymak aynı kanıtı iki kez saymaktır.

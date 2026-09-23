@@ -6,7 +6,7 @@
 buradan verilmez; Wiktionary türevi akraba kümeleri altın standart
 ağaçlarla tutarsız çıkıyor (Häuser & Stamatakis 2025).
 
-Toplam: **23 dil · 125,879 kayıt**
+Toplam: **26 dil · 128,068 kayıt**
 
 | Dil | Kod | Kayıt | Ham boyut | İndirilme |
 |---|---|---|---|---|
@@ -25,10 +25,13 @@ Toplam: **23 dil · 125,879 kayıt**
 | [Nogai](https://kaikki.org/dictionary/Nogai/kaikki.org-dictionary-Nogai.jsonl) | `nog` | 484 | 0.5 MB | 2026-08-27 |
 | [Ottoman_Turkish](https://kaikki.org/dictionary/Ottoman%20Turkish/kaikki.org-dictionary-OttomanTurkish.jsonl) | `ota` | 9,904 | 24.4 MB | 2026-09-21 |
 | [Old_Turkic](https://kaikki.org/dictionary/Old%20Turkic/kaikki.org-dictionary-OldTurkic.jsonl) | `otk` | 470 | 1.1 MB | 2026-09-21 |
+| [Old_Uyghur](https://kaikki.org/dictionary/Old%20Uyghur/kaikki.org-dictionary-OldUyghur.jsonl) | `oui` | 446 | 1.8 MB | 2026-09-23 |
 | [Yakut](https://kaikki.org/dictionary/Yakut/kaikki.org-dictionary-Yakut.jsonl) | `sah` | 3,551 | 5.8 MB | 2026-08-27 |
 | [Salar](https://kaikki.org/dictionary/Salar/kaikki.org-dictionary-Salar.jsonl) | `slq` | 1,298 | 8.3 MB | 2026-08-27 |
 | [Turkmen](https://kaikki.org/dictionary/Turkmen/kaikki.org-dictionary-Turkmen.jsonl) | `tk` | 2,053 | 5.1 MB | 2026-08-27 |
 | [Turkish](https://kaikki.org/dictionary/Turkish/kaikki.org-dictionary-Turkish.jsonl) | `tr` | 45,666 | 410.9 MB | 2026-08-27 |
+| [Old_Anatolian_Turkish](https://kaikki.org/dictionary/Old%20Anatolian%20Turkish/kaikki.org-dictionary-OldAnatolianTurkish.jsonl) | `trk-oat` | 593 | 1.4 MB | 2026-09-23 |
+| [Proto-Turkic](https://kaikki.org/dictionary/Proto-Turkic/kaikki.org-dictionary-ProtoTurkic.jsonl) | `trk-pro` | 1,150 | 7.3 MB | 2026-09-23 |
 | [Tatar](https://kaikki.org/dictionary/Tatar/kaikki.org-dictionary-Tatar.jsonl) | `tt` | 2,044 | 3.0 MB | 2026-08-27 |
 | [Tuvan](https://kaikki.org/dictionary/Tuvan/kaikki.org-dictionary-Tuvan.jsonl) | `tyv` | 907 | 2.2 MB | 2026-08-27 |
 | [Uyghur](https://kaikki.org/dictionary/Uyghur/kaikki.org-dictionary-Uyghur.jsonl) | `ug` | 4,215 | 33.9 MB | 2026-08-27 |

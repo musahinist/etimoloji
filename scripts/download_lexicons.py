@@ -82,6 +82,12 @@ LEXICONS: dict[str, str] = {
     "Chagatai": "chg",
     "Khalaj": "klj",
     "Dolgan": "dlg",
+    # Tarihî katmanlar: tarihli örnek referansları taşır (A-HVP kronoloji).
+    "Old_Uyghur": "oui",
+    "Old_Anatolian_Turkish": "trk-oat",
+    # ⚠️ Rekonstrüksiyon sayfaları, TANIK DEĞİL: Wiktionary'nin kendi
+    # Proto-Türkçe biçimleri ve `descendants` listeleri.
+    "Proto-Turkic": "trk-pro",
 }
 
 #: Rusça Wiktionary sürümünden Türki dil dökümleri (Faz B3).
@@ -116,6 +122,19 @@ RU_LEXICONS: dict[str, str] = {
 
 #: Rusça sürüm dökümleri ayrı dizine iner; şema farkı orada işlenir.
 RU_SUBDIR = "ru_edition"
+
+#: Türkçe Wiktionary sürümü (kaikki): tek dosyada bütün diller.
+#:
+#: Türkçe için 325 bin kayıt (İngilizce sürümde 45 bin), ayrıca Osmanlıca,
+#: Azerice, Tatarca, Özbekçe, Kırım Tatarcası, Türkmence, Kazakça.
+#:
+#: ⚠️ Rusça sürüm gibi YALNIZ tanık ve arama verisidir: şemada
+#: ``etymology_templates`` yok, köken alanı boş kalır. Kategorilerdeki
+#: "Arapça kökenli" etiketi BİLEREK okunmaz: Türkçe Wiktionary köken
+#: bilgisini sık sık Nişanyan/TDK'dan alır ve Türkçe altın küme bu iki
+#: kaynaktan kuruldu; okunursa `make eval-borrowing` döngüsel olur.
+TR_EDITION = "https://kaikki.org/trwiktionary/raw-wiktextract-data.jsonl.gz"
+TR_SUBDIR = "tr_edition"
 
 #: **Verici** dil dökümleri. Bunlar Türki DEĞİLDİR ve akraba arama indeksine
 #: ASLA karışmaz — ayrı dizine iner (``data/lexicons/donors/``).
@@ -278,6 +297,57 @@ def write_index_note(provenances: list[dict[str, Any]]) -> Path:
     return out
 
 
+def download_tr_edition(*, session: requests.Session, force: bool = False) -> dict[str, int]:
+    """Türkçe sürümü indirir ve Türki dillere göre ayrı dosyalara böler."""
+    from engine.fetchers.base import TURKIC_LANGUAGES_MAP
+
+    directory = LEXICON_DIR / TR_SUBDIR
+    provenance_path = directory / "_provenance.json"
+    if provenance_path.exists() and not force:
+        print("[tr sürümü] zaten var (--force ile yeniden indirilir)")
+        return json.loads(provenance_path.read_text(encoding="utf-8"))["entries"]
+    directory.mkdir(parents=True, exist_ok=True)
+    raw = directory / "_raw.jsonl.gz"
+    print(f"[tr sürümü] indiriliyor -> {raw}")
+    with session.get(TR_EDITION, stream=True, timeout=600) as response:
+        response.raise_for_status()
+        with raw.open("wb") as out:
+            for chunk in response.iter_content(chunk_size=1 << 20):
+                out.write(chunk)
+    archive_sha = _sha256(raw)
+
+    writers: dict[str, Any] = {}
+    counts: dict[str, int] = {}
+    with gzip.open(raw, "rt", encoding="utf-8") as lines:
+        for line in lines:
+            code = json.loads(line).get("lang_code")
+            if code not in TURKIC_LANGUAGES_MAP:
+                continue
+            if code not in writers:
+                writers[code] = gzip.open(directory / f"{code}.jsonl.gz", "wt", encoding="utf-8")
+            writers[code].write(line)
+            counts[code] = counts.get(code, 0) + 1
+    for writer in writers.values():
+        writer.close()
+    raw.unlink()
+
+    provenance = {
+        "_schema": "turkic-etymology-lexicon-provenance/v1",
+        "edition": "trwiktionary",
+        "url": TR_EDITION,
+        "retrieved_at": datetime.now(UTC).isoformat(timespec="seconds"),
+        "archive_sha256": archive_sha,
+        "entries": counts,
+        "files": {code: _sha256(directory / f"{code}.jsonl.gz") for code in counts},
+        "note": (
+            "Türkçe Wiktionary sürümü: YALNIZ tanık ve arama verisi. Köken "
+            "kategorileri okunmaz (Nişanyan/TDK kaynaklı; altın kümeyle döngüsellik)."
+        ),
+    }
+    provenance_path.write_text(json.dumps(provenance, ensure_ascii=False, indent=2), encoding="utf-8")
+    return counts
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="kaikki.org sözlük dökümü indirici")
     ap.add_argument("languages", nargs="*", help="kaikki dil adları (ör. Turkish Kazakh)")
@@ -293,6 +363,7 @@ def main() -> int:
         metavar="DIL",
         help="verici dil dökümleri (ad verilmezse Sakha ölçütü için Russian Mongolian Evenki)",
     )
+    ap.add_argument("--tr", action="store_true", help="Türkçe Wiktionary sürümü (~44 MB, Türki dillere bölünür)")
     ap.add_argument("--small", action="store_true", help=f"{SMALL_LIMIT >> 20} MB altındakiler")
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--no-compress", action="store_true", help="gzip'lemeden sakla")
@@ -308,6 +379,11 @@ def main() -> int:
             size = remote_size(name, session)
             print(f"{name:22} {LEXICONS[name]:5} {size / (1 << 20):>9.1f} MB")
         return 0
+
+    if args.tr:
+        counts = download_tr_edition(session=session, force=args.force)
+        print(f"Türkçe sürüm: {counts}")
+        return 0 if counts else 1
 
     if args.ru:
         results = [

@@ -6,7 +6,7 @@ from engine.fetchers.wiktionary import WiktionaryFetcher
 
 class TestFetchers(unittest.TestCase):
     def test_starling_offline_lexicon(self):
-        fetcher = StarlingFetcher()
+        fetcher = StarlingFetcher(use_database=False)
         result = fetcher.fetch("su")
         self.assertEqual(result["root"]["proto_turkic"], "*sub")
         self.assertTrue(len(result["turkic_languages"]) > 5)

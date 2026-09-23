@@ -1,0 +1,28 @@
+{
+  "_schema": "turkic-etymology-starling-provenance/v1",
+  "url": "https://starlingdb.org/download/ALTAIC.exe",
+  "retrieved_at": "2026-09-23T17:19:57+00:00",
+  "archive_sha256": "855e82a67a8f7b1c6a9c50e6f7098b229228446210712049969f5cffd3e1d048",
+  "citation": "Dybo, A. & Starostin, S. (2005). Turkic etymology. Starling / Tower of Babel.",
+  "role": "Proto-Türkçe kök ve tarihli Eski Türkçe tanık (ikinci görüş)",
+  "caveat": "Altay hipotezi okulundandır: Proto-Türkçe biçimler ve Türk içi tanıklar kullanılır, Altay karşılaştırması akrabalık kanıtı sayılmaz. Tablo tüm Türk söz varlığını kapsamaz (ör. deniz, bağla- yok).",
+  "turkic_roots": 2017,
+  "files": {
+    "turcet.dbf": {
+      "sha256": "e75fcbe6d360daf87b096646c04047fa18cf3eeafb7b003bbdc60aa0c1e35522",
+      "bytes": 418673
+    },
+    "turcet.var": {
+      "sha256": "fbf4e47524dad7365ee80842305fc937fa44ecc863be18d20cee85890463eeb8",
+      "bytes": 836722
+    },
+    "monget.dbf": {
+      "sha256": "0ad8b05d447dd2453213e96851ee23547b67ad8bea70d04ba2c657d16f4e7df7",
+      "bytes": 228880
+    },
+    "monget.var": {
+      "sha256": "9c2da9ad3c09d635ae8ea3823bf55e941ecaa111925fbc81990c9a87def08cce",
+      "bytes": 546897
+    }
+  }
+}
