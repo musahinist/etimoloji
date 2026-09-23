@@ -1,0 +1,15 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Киргизский",
+  "code": "ky",
+  "donor": false,
+  "ru_edition": true,
+  "url": "https://kaikki.org/ruwiktionary/%D0%9A%D0%B8%D1%80%D0%B3%D0%B8%D0%B7%D1%81%D0%BA%D0%B8%D0%B9/kaikki.org-dictionary-%D0%9A%D0%B8%D1%80%D0%B3%D0%B8%D0%B7%D1%81%D0%BA%D0%B8%D0%B9.jsonl",
+  "retrieved_at": "2026-09-23T20:15:51+00:00",
+  "raw_bytes": 5213240,
+  "stored_bytes": 451285,
+  "entries": 3677,
+  "compressed": true,
+  "sha256_stored": "b082f48eb96cc31b84d4163a3195d20840976161f871014e289538f0160fd241",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

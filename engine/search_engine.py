@@ -17,6 +17,7 @@ from engine.fetchers.isam_ansiklopedi import IsamAnsiklopediFetcher
 from engine.fetchers.loanword_donor_etymology import LoanwordDonorEtymologyFetcher
 from engine.fetchers.local_pdf_books import LocalPdfBooksFetcher
 from engine.fetchers.multilang_wiktionary import MultiLangWiktionaryFetcher
+from engine.fetchers.northeuralex import NorthEuraLexFetcher
 from engine.fetchers.osmanlica_lugat import OsmanlicaLugatFetcher
 from engine.fetchers.starling import StarlingFetcher
 from engine.fetchers.tdk_historical import TdkDerlemeFetcher, TdkTaramaFetcher
@@ -549,6 +550,7 @@ def default_fetchers() -> list[BaseFetcher]:
         AcademicTurkologyFetcher(),
         HistoricalIndexFetcher(),
         ModernIndexFetcher(),
+        NorthEuraLexFetcher(),
         HistoricalModernLexiconFetcher(),
         IsamAnsiklopediFetcher(),
         ArchiveOrgFetcher(),
@@ -759,7 +761,8 @@ class SearchEngine:
             results = []
             started = time.perf_counter()
             errors: list[str] = []
-            for var in search_variants:
+            variants = search_variants[:1] if getattr(fetcher, "exact_query_only", False) else search_variants
+            for var in variants:
                 try:
                     res = fetcher.fetch(var)
                 except Exception as exc:  # fetcher sözleşmesi istisna atmamalı; atarsa görünür olsun

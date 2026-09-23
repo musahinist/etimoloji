@@ -1,0 +1,33 @@
+{
+  "_schema": "turkic-etymology-cldf-provenance/v1",
+  "dataset": "northeuralex",
+  "repository": "https://github.com/lexibank/northeuralex",
+  "ref": "v4.1",
+  "commit": "e9a8119f25cf",
+  "retrieved_at": "2026-09-23T20:16:41+00:00",
+  "citation": "Dellert ve ark. 2020, NorthEuraLex, Language Resources and Evaluation",
+  "role": "kavram hizalı çağdaş tanık (Çuvaşça dahil 8 Türk + 3 Moğol dili)",
+  "caveat": "Akrabalık yargısı İÇERMEZ (cognate set yok): yalnız aynı kavramın biçimleri. Tanık olarak kullanılır; akraba kümesi altın standardı değildir.",
+  "files": {
+    "forms.csv": {
+      "sha256": "30601828761662c5bf8a3f1e4d8f07aa7de485a48ce2e165dd5e8f4017f21565",
+      "bytes": 13373712,
+      "rows": 121611
+    },
+    "languages.csv": {
+      "sha256": "47f2b7190b3ebe5d978805474a65c7b63707190eb1a2ac400234a64cb7c20df0",
+      "bytes": 8523,
+      "rows": 107
+    },
+    "parameters.csv": {
+      "sha256": "b32bacf932a08b511e762d0fb14093314cb43d791626737a53a90f8a7213206b",
+      "bytes": 39643,
+      "rows": 1016
+    },
+    "cldf-metadata.json": {
+      "sha256": "3b9991a52fc29fda5341f47b7f6ebb7e0580562a3067e90d60d6b31f9d464c20",
+      "bytes": 10336,
+      "rows": 0
+    }
+  }
+}

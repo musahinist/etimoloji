@@ -96,3 +96,13 @@ data/starling/*
 !data/starling/_provenance.json
 # Türkçe Wiktionary sürümü (~22 MB) repoya alınmaz; `download_lexicons.py --tr`.
 data/lexicons/tr_edition/*.jsonl.gz
+# Rusça sürümün 2026-09-23'te eklenen büyük dökümleri (~8 MB) repoya alınmaz;
+# `download_lexicons.py --ru` ile iner. Önceden commit edilmiş 10 dil takipte kalır.
+data/lexicons/ru_edition/kk.jsonl.gz
+data/lexicons/ru_edition/tt.jsonl.gz
+data/lexicons/ru_edition/az.jsonl.gz
+data/lexicons/ru_edition/uz.jsonl.gz
+data/lexicons/ru_edition/ky.jsonl.gz
+data/lexicons/ru_edition/tk.jsonl.gz
+data/lexicons/ru_edition/ug.jsonl.gz
+data/lexicons/ru_edition/gag.jsonl.gz

@@ -1,0 +1,15 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Гагаузский",
+  "code": "gag",
+  "donor": false,
+  "ru_edition": true,
+  "url": "https://kaikki.org/ruwiktionary/%D0%93%D0%B0%D0%B3%D0%B0%D1%83%D0%B7%D1%81%D0%BA%D0%B8%D0%B9/kaikki.org-dictionary-%D0%93%D0%B0%D0%B3%D0%B0%D1%83%D0%B7%D1%81%D0%BA%D0%B8%D0%B9.jsonl",
+  "retrieved_at": "2026-09-23T20:15:51+00:00",
+  "raw_bytes": 1104348,
+  "stored_bytes": 85453,
+  "entries": 1161,
+  "compressed": true,
+  "sha256_stored": "ca8db587f2691d47e557f4458aaf86c5b82fdb0124bc63a7c0b99977de3a7abe",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

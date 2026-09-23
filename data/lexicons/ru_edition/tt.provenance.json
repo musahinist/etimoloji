@@ -1,0 +1,15 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Татарский",
+  "code": "tt",
+  "donor": false,
+  "ru_edition": true,
+  "url": "https://kaikki.org/ruwiktionary/%D0%A2%D0%B0%D1%82%D0%B0%D1%80%D1%81%D0%BA%D0%B8%D0%B9/kaikki.org-dictionary-%D0%A2%D0%B0%D1%82%D0%B0%D1%80%D1%81%D0%BA%D0%B8%D0%B9.jsonl",
+  "retrieved_at": "2026-09-23T20:15:48+00:00",
+  "raw_bytes": 51134125,
+  "stored_bytes": 2929977,
+  "entries": 12165,
+  "compressed": true,
+  "sha256_stored": "2c536715c7a488d7b0ec11b44e9d9efb5ab138811617631c75df8449777460e2",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

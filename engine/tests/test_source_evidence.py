@@ -102,3 +102,23 @@ class TestTextDonor(unittest.TestCase):
         text = "Inherited from Ottoman Turkish گرك.\nCognates\nNorthern Kurdish gerek\nUzbek kerak"
         self.assertEqual(donor_from_text(text), ("", ""))
         self.assertEqual(donor_from_text("From Persian پارچه (pârče). Cognate with Kurdish x.")[0], "fa")
+
+
+class TestNewLocalSources(unittest.TestCase):
+    def test_northeuralex_has_no_mongolic_khk(self):
+        """NorthEuraLex `khk` = Halha Moğolcası; motorda `khk` = Hakasça."""
+        from engine.fetchers.northeuralex import LANGUAGES
+
+        self.assertNotIn("khk", LANGUAGES)
+        self.assertNotIn("khk", LANGUAGES.values())
+
+    def test_same_concept_other_root_is_dropped(self):
+        from unittest import mock
+
+        from engine.fetchers import northeuralex
+
+        data = ({"pencere": {"window"}}, {"window": [("tr", "pencere"), ("kk", "терезе"), ("az", "pəncərə")]},
+                {"window": "WINDOW"})
+        with mock.patch.object(northeuralex, "_load", return_value=data):
+            words = [e["word"] for e in northeuralex.NorthEuraLexFetcher().fetch("pencere")["turkic_languages"]]
+        self.assertEqual(words, ["pəncərə"])

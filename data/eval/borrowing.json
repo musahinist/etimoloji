@@ -29,7 +29,7 @@
       "objective": "fscore",
       "trained_on": "wold/sah/tune",
       "n": 385,
-      "trained_at": "2026-09-23T20:06:16+00:00"
+      "trained_at": "2026-09-23T21:21:50+00:00"
     },
     "systems": {
       "always_inherited": {
@@ -409,18 +409,18 @@
       ],
       "weights": {
         "zincir_kanıtı": 0.0,
-        "verici_yakınlığı": 1.162344,
-        "fonotaktik_model": 1.590444,
+        "verici_yakınlığı": 1.154815,
+        "fonotaktik_model": 1.58687,
         "ses_kanunu_ihlali": 0.0,
-        "fonotaktik_ihlal": 2.782547,
-        "değişimsiz_yayılım": 0.026585
+        "fonotaktik_ihlal": 2.78309,
+        "değişimsiz_yayılım": 0.168505
       },
-      "bias": -2.36077,
+      "bias": -2.358345,
       "threshold": 0.59,
       "objective": "fscore",
       "trained_on": "tdk_nisanyan/tr/tune",
       "n": 175,
-      "trained_at": "2026-09-23T20:11:28+00:00"
+      "trained_at": "2026-09-23T21:27:51+00:00"
     },
     "systems": {
       "always_inherited": {
@@ -484,34 +484,34 @@
         "tn": 96
       },
       "engine_trained": {
-        "precision": 0.9095,
+        "precision": 0.9141,
         "recall": 0.866,
-        "fscore": 0.8873,
-        "accuracy": 0.8682,
+        "fscore": 0.8894,
+        "accuracy": 0.8711,
         "tp": 181,
-        "fp": 18,
+        "fp": 17,
         "fn": 28,
-        "tn": 122
+        "tn": 123
       },
       "engine_trained_acc": {
-        "precision": 0.9095,
+        "precision": 0.9141,
         "recall": 0.866,
-        "fscore": 0.8873,
-        "accuracy": 0.8682,
+        "fscore": 0.8894,
+        "accuracy": 0.8711,
         "tp": 181,
-        "fp": 18,
+        "fp": 17,
         "fn": 28,
-        "tn": 122
+        "tn": 123
       }
     },
     "vs_phonotactic": [
       {
         "system": "engine_trained",
         "vs": "phonotactic_only",
-        "difference": 0.1117,
+        "difference": 0.1146,
         "ci95": [
-          0.0716,
-          0.1547
+          0.0745,
+          0.1576
         ],
         "permutation_p": 0.0001,
         "mcnemar_p": 0.0,
@@ -523,10 +523,10 @@
       {
         "system": "engine_trained",
         "vs": "always_borrowed",
-        "difference": 0.2693,
+        "difference": 0.2722,
         "ci95": [
-          0.2063,
-          0.3324
+          0.2092,
+          0.3352
         ],
         "permutation_p": 0.0001,
         "mcnemar_p": 0.0,
@@ -602,24 +602,24 @@
         "tn": 91
       },
       "engine_trained": {
-        "precision": 0.7831,
+        "precision": 0.7838,
         "recall": 0.8806,
-        "fscore": 0.829,
-        "accuracy": 0.7607,
+        "fscore": 0.8294,
+        "accuracy": 0.7613,
         "tp": 870,
-        "fp": 241,
+        "fp": 240,
         "fn": 118,
-        "tn": 271
+        "tn": 272
       },
       "engine_trained_acc": {
-        "precision": 0.7831,
+        "precision": 0.7838,
         "recall": 0.8806,
-        "fscore": 0.829,
-        "accuracy": 0.7607,
+        "fscore": 0.8294,
+        "accuracy": 0.7613,
         "tp": 870,
-        "fp": 241,
+        "fp": 240,
         "fn": 118,
-        "tn": 271
+        "tn": 272
       }
     },
     "significance": [
@@ -691,10 +691,10 @@
       {
         "system": "engine_trained",
         "vs": "always_inherited",
-        "difference": 0.4193,
+        "difference": 0.42,
         "ci95": [
-          0.382,
-          0.4573
+          0.3833,
+          0.458
         ],
         "permutation_p": 0.0001,
         "mcnemar_p": 0.0,
@@ -704,10 +704,10 @@
       {
         "system": "engine_trained_acc",
         "vs": "always_inherited",
-        "difference": 0.4193,
+        "difference": 0.42,
         "ci95": [
-          0.382,
-          0.4573
+          0.3833,
+          0.458
         ],
         "permutation_p": 0.0001,
         "mcnemar_p": 0.0,
@@ -719,10 +719,10 @@
       {
         "system": "engine_trained",
         "vs": "phonotactic_only",
-        "difference": 0.1287,
+        "difference": 0.1293,
         "ci95": [
-          0.1027,
-          0.154
+          0.104,
+          0.1547
         ],
         "permutation_p": 0.0001,
         "mcnemar_p": 0.0,

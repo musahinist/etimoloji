@@ -97,6 +97,15 @@ DATASETS: dict[str, dict[str, str]] = {
             "iddiasını taşımaz."
         ),
     },
+    "northeuralex": {
+        "ref": "v4.1",
+        "role": "kavram hizalı çağdaş tanık (Çuvaşça dahil 8 Türk + 3 Moğol dili)",
+        "citation": "Dellert ve ark. 2020, NorthEuraLex, Language Resources and Evaluation",
+        "caveat": (
+            "Akrabalık yargısı İÇERMEZ (cognate set yok): yalnız aynı kavramın "
+            "biçimleri. Tanık olarak kullanılır; akraba kümesi altın standardı değildir."
+        ),
+    },
     "robbeetstriangulation": {
         "ref": "v0.3",
         "role": "yalnız temas çerçevesi",

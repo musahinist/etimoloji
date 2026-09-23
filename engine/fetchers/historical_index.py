@@ -167,6 +167,10 @@ class ModernIndexFetcher(HistoricalIndexFetcher):
     anlamı olmayan kayıt doğrulanamaz ve elenir.
     """
 
+    #: Kök varyantı almaz (bkz. `NorthEuraLexFetcher`); kendi ses
+    #: varyantlarını (`göz` -> `köz`) üst sınıf zaten üretir.
+    exact_query_only = True
+
     languages = tuple(
         code for code in TURKIC_LANGUAGES_MAP
         if code not in HISTORICAL_LANGUAGES and code not in ("tr", "wot")

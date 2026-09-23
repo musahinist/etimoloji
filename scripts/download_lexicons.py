@@ -118,6 +118,18 @@ RU_LEXICONS: dict[str, str] = {
     "Хакасский": "khk",             # Hakasça
     "Кумыкский": "kum",             # Kumukça
     "Ногайский": "nog",             # Nogayca
+    # İngilizce sürümde de var ama Rusça sürüm Kıpçak/Karluk dillerinde daha
+    # zengin (anlam sayısı, 2026-09): Kazakça 19.908, Tatarca 18.051,
+    # Azerice 9.317, Özbekçe 5.913, Kırgızca 3.983, Türkmence 3.434.
+    "Казахский": "kk",
+    "Татарский": "tt",
+    "Азербайджанский": "az",
+    "Узбекский": "uz",
+    "Киргизский": "ky",
+    "Туркменский": "tk",
+    "Уйгурский": "ug",
+    "Гагаузский": "gag",
+    # Карачаево-балкарский: kaikki'de bu adla döküm yok (404, 2026-09-23).
 }
 
 #: Rusça sürüm dökümleri ayrı dizine iner; şema farkı orada işlenir.

@@ -9,6 +9,7 @@ indirildiğini ve içerik özetini gösterir.
 | Veri kümesi | Sürüm | Commit | İndirilme | Kayıt | Rol |
 |---|---|---|---|---|---|
 | [hruschkaturkic](https://github.com/lexibank/hruschkaturkic) | `v1.0` | `72e8095234f8` | 2026-08-26 | 4,213 biçim | bağımsız çapraz kontrol |
+| [northeuralex](https://github.com/lexibank/northeuralex) | `v4.1` | `e9a8119f25cf` | 2026-09-23 | 121,611 biçim | kavram hizalı çağdaş tanık (Çuvaşça dahil 8 Türk + 3 Moğol dili) |
 | [robbeetstriangulation](https://github.com/lexibank/robbeetstriangulation) | `v0.3` | `5f59f1522ed8` | 2026-08-26 | 26,224 biçim | yalnız temas çerçevesi |
 | [ronataswestoldturkic](https://github.com/loanwordbank/ronataswestoldturkic) | `main` | `3f593a1067c4` | 2026-08-27 | 1,755 biçim | Oğur (Bolgar) kolu tanığı |
 | [savelyevturkic](https://github.com/lexibank/savelyevturkic) | `v2.1` | `4a540590580f` | 2026-08-26 | 8,360 biçim | birincil altın standart |
@@ -19,6 +20,10 @@ indirildiğini ve içerik özetini gösterir.
 
 **hruschkaturkic** — Hruschka ve ark. 2015, Current Biology
 > `forms.csv` 4,213 kayıt · `cognates.csv` 4,213 kayıt · `languages.csv` 26 kayıt · `parameters.csv` 222 kayıt
+
+**northeuralex** — Dellert ve ark. 2020, NorthEuraLex, Language Resources and Evaluation
+> ⚠️ Akrabalık yargısı İÇERMEZ (cognate set yok): yalnız aynı kavramın biçimleri. Tanık olarak kullanılır; akraba kümesi altın standardı değildir.
+> `forms.csv` 121,611 kayıt · `languages.csv` 107 kayıt · `parameters.csv` 1,016 kayıt
 
 **robbeetstriangulation** — Robbeets & Bouckaert, Triangulation dataset
 > ⚠️ Transeurasian verisi en az EDAL kadar tartışmalıdır (Tian ve ark. 2022). YALNIZCA temas/ödünçleme analizinde kullanılır; akrabalık kanıtına asla katılmaz.
