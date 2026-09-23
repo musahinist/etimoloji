@@ -37,6 +37,8 @@ sem = [
     "cltoolkit>=0.2",
 ]
 pdf = ["pdfminer.six>=20221105"]
+# Yalnız-LLM taban çizgisi, Claude sağlayıcısı (`make eval-llm PROVIDER=claude`).
+llm = ["anthropic>=1.0"]
 # Ağır (torch ~2-3 GB). Bilinçli olarak varsayılan DIŞINDA tutulur.
 semantic = ["sentence-transformers>=2.2"]
 dev = [

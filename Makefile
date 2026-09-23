@@ -1,5 +1,5 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-prediction correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify semantic dialect
+        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-llm eval-prediction correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify semantic dialect
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -34,6 +34,7 @@ help:
 	@echo "predict-lock   - Öngörü üret ve kilitle (NAME=... gerekli)"
 	@echo "predict-verify - Kilitli öngörüleri doğrula (NAME=... gerekli)"
 	@echo "eval-controls  - Negatif kontrol bataryası (sahte kök, alıntı tuzağı)"
+	@echo "eval-llm       - Yalnız-LLM alıntı taban çizgisi (PROVIDER=ollama|claude)"
 	@echo "calibrate      - Güven kalibratörünü TRAIN bölümünde eğit"
 	@echo ""
 	@echo "serve       - REST API sunucusu"
@@ -137,6 +138,10 @@ predict-verify:
 
 eval-controls:
 	.venv/bin/python -m engine.evaluation.negative_controls --verbose
+
+PROVIDER ?= ollama
+eval-llm:
+	.venv/bin/python -m engine.evaluation.llm_borrowing_baseline --provider $(PROVIDER)
 
 eval-calibration: gold
 	.venv/bin/python -m engine.evaluation.calibration --split all

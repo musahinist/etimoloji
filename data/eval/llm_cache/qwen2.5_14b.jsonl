@@ -1,0 +1,1118 @@
+{"key": "tr\tMarksizm\tMarxism", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 19}
+{"key": "tr\tTem\tabbreviation of Temmuz (“July”)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "tr\tabes\tuseless, pointless", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 20}
+{"key": "tr\tagnostisizm\tagnosticism (view that the existence of a God or gods is unknown, unknowable, unproven, or unprovable)", "borrowed": true, "donor_language": "English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 151, "output_tokens": 19}
+{"key": "tr\takciğer\tlung", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 17}
+{"key": "sah\tsir\tLAND", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "sah\tbɨːl\tDUST", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tbadaraːn\tMUD", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tkumaχ\tSAND", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tsɨːr\tMOUNTAIN OR HILL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 17}
+{"key": "tr\takran\tpeer, equal, coeval, age-mate", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "tr\taktör\tactor (man who performs in a theatrical play or film)", "borrowed": true, "donor_language": "French/Italian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 21}
+{"key": "tr\talageyik\tfallow deer, a ruminant mammal of the genus Dama", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 137, "output_tokens": 19}
+{"key": "tr\taldırmak\tcausative of almak (transitive)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "tr\talperen\tfighter, freedom fighter, mujahid", "borrowed": true, "donor_language": "Persian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 20}
+{"key": "tr\tamca\tpaternal uncle, one's father's brother", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "tr\tamonyak\tammonia", "borrowed": true, "donor_language": "French/Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 22}
+{"key": "tr\tanason\tanise, an umbelliferous plant of the species Pimpinella anisum and the liqueur made from its seeds", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 147, "output_tokens": 19}
+{"key": "tr\tanjiyografi\tangiography", "borrowed": true, "donor_language": "English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 19}
+{"key": "tr\tanlayışsız\tout of touch", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "tr\tantagonist\tantagonist", "borrowed": true, "donor_language": "English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 120, "output_tokens": 19}
+{"key": "tr\tapandisit\tappendicitis (inflammation of the vermiform appendix)", "borrowed": true, "donor_language": "French/ancient Greek via French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 25}
+{"key": "tr\tarkalık\tbackrest, the back piece of a chair, armchair or sofa", "borrowed": true, "donor_language": "Persian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 20}
+{"key": "tr\tarzu\twish, desire", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 20}
+{"key": "tr\tasansör\tlift, elevator", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 19}
+{"key": "tr\tasker\tsoldier (any member of a military, regardless of specialty or rank)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "tr\tasuman\tsky", "borrowed": true, "donor_language": "Persian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 20}
+{"key": "tr\tatışma\tverbal noun of atışmak", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "tr\tavurt\tcheek pouch, the inside of the cheek", "borrowed": true, "donor_language": "Persian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 20}
+{"key": "tr\tazamet\tgrandness, hauteur, haughtiness, greatness", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 20}
+{"key": "tr\taçıkgöz\tclever, smart, shrewd", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "tr\tağustos\tAugust", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 19}
+{"key": "tr\taşırtma\tverbal noun of aşırtmak", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "tr\tbadire\ta dangerous situation that arises suddenly, an unexpected peril, calamity, affliction", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 136, "output_tokens": 20}
+{"key": "tr\tbakşı\tsynonym of şaman", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 17}
+{"key": "tr\tballıbaba\tdeadnettle, any plant in the genus Lamium, which closely resembles the nettle", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 140, "output_tokens": 17}
+{"key": "tr\tbarışmak\tto stop war or battle, to make peace, to make up", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "tr\tbasur\themorrhoids, piles", "borrowed": true, "donor_language": "Persian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 20}
+{"key": "tr\tbatı\twest", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\tbaza\tdative singular of baz", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "tr\tbağlılık\tconnection, dependency", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 17}
+{"key": "tr\tbeceri\tskill", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 17}
+{"key": "tr\tbeklemek\tTo wait for, to await.", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "tr\tbelirginleşmek\tto become clear, apparent, pronounced, distinctive etc.", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 20}
+{"key": "tr\tbenzin\tgasoline", "borrowed": true, "donor_language": "German", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\tbetimlemek\tto describe, delineate, portray", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 20}
+{"key": "tr\tbeğendirmek\tcausative of beğenmek", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "tr\tbijuteri\tbijouterie", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 19}
+{"key": "tr\tbitkisel\tRelating to or of plants; vegetable, herbal.", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 20}
+{"key": "tr\tbizon\tbison", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 19}
+{"key": "tr\tboks\tboxing", "borrowed": true, "donor_language": "English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\tbordro\tellipsis of maaş bordrosu (“payslip, pay stub”)", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 137, "output_tokens": 19}
+{"key": "tr\tbozmak\tto blemish, to blight, to spoil or ruin", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "tr\tboşamak\tto divorce", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 17}
+{"key": "tr\tbulak\tspring, source, fount, a body of water springing from the ground", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 136, "output_tokens": 17}
+{"key": "tr\tbuzağı\tunweaned calf", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "tr\tbölgesel\tregional; of or relating to a region or district.", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "tr\tbüyükşehir\tmetropolis, big city", "borrowed": true, "donor_language": "Turkish (formation within the language from inherited material)", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 28}
+{"key": "tr\tbıçak\tknife", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 17}
+{"key": "tr\tcenaze\tfuneral", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 20}
+{"key": "tr\tcezve\tjezve, a Turkish coffee pot with a long handle", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 20}
+{"key": "tr\tcila\tA mixture used to give shine to wooden, metallic, leather etc. objects; polish, luster.", "borrowed": true, "donor_language": "Persian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 141, "output_tokens": 20}
+{"key": "tr\tciro\tendorsement (writing one's signature on the back of a cheque, or other negotiable instrument, when transferring it to a third party)", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 147, "output_tokens": 19}
+{"key": "tr\tcumhuriyet\trepublic", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 19}
+{"key": "tr\tdalaşmak\tto fight, quarrel, scuffle", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "tr\tdaniska\tthe best, the finest (of something)", "borrowed": true, "donor_language": "Serbo-Croatian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 23}
+{"key": "tr\tdarp\tbeating", "borrowed": true, "donor_language": "Persian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 20}
+{"key": "tr\tdağ\tmountain, mount, an elevation of land of considerable dimensions rising more or less abruptly, usually higher than a hill", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 142, "output_tokens": 17}
+{"key": "tr\tdeizm\tdeism", "borrowed": true, "donor_language": "French/English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 21}
+{"key": "tr\tdemek\tto say", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 17}
+{"key": "tr\tdenizaltı\tsubmarine", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 19}
+{"key": "tr\tdevetabanı\tphilodendron, any of several climbing plants, of the genus Philodendron, native to America and the West Indies that are often grown as house plants.", "borrowed": true, "donor_language": "Latin or Greek via another European language", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 156, "output_tokens": 25}
+{"key": "tr\tdevran\tworld", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 20}
+{"key": "tr\tdezenfektan\tdisinfectant", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 19}
+{"key": "tr\tdikey\tperpendicular", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 20}
+{"key": "tr\tdilmaç\tinterpreter, translator", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 19}
+{"key": "tr\tdiyakronik\tdiachronic", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 19}
+{"key": "tr\tdolap\tcloset (furniture)", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 19}
+{"key": "tr\tdon\tunderpants", "borrowed": true, "donor_language": "English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\tdoğmak\tto be born", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 17}
+{"key": "tr\tduyar\tawareness, consciousness", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 17}
+{"key": "tr\tdönüştürmek\t[with accusative and dative] to convert (transform (something) into another form, substance, state, or product)", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 149, "output_tokens": 20}
+{"key": "tr\tdüzenlemek\tto organize", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 20}
+{"key": "tr\tebcet\tabjad, a writing system for Arabic in which there is one glyph for each consonant, but vowels are not specified", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 145, "output_tokens": 20}
+{"key": "tr\tedilgen\tThe passive voice.", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 19}
+{"key": "tr\tehliyet\tcompetence", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 19}
+{"key": "tr\tela\tOf hazel color.", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 17}
+{"key": "tr\temperyalizm\timperialism (the policy of extending power, by force)", "borrowed": true, "donor_language": "French/English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 21}
+{"key": "tr\tereksiyon\terection", "borrowed": true, "donor_language": "French/English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 21}
+{"key": "tr\teviye\tsink, basin", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 17}
+{"key": "tr\teğilmek\tto bend over, to stoop", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "tr\teşkıya\tbandit, brigand; bandits, brigands", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "tr\tfani\tmortal", "borrowed": true, "donor_language": "Persian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 20}
+{"key": "tr\tfayton\thorse-drawn carriage", "borrowed": true, "donor_language": "English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 19}
+{"key": "tr\tferibot\tcar ferry", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 19}
+{"key": "tr\tfiligran\twatermark", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 19}
+{"key": "tr\tfraksiyon\tfraction", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 19}
+{"key": "tr\tgaga\tbill, beak", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 17}
+{"key": "tr\tgaranti\tguarantee", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\tgayri\tother than, besides", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 20}
+{"key": "tr\tgazap\tanger, fury", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 20}
+{"key": "tr\tgelenekçi\ta traditional, traditionalist", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 20}
+{"key": "tr\tgenleşmek\tto expand", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 19}
+{"key": "tr\tgerici\tbackward, undeveloped", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 19}
+{"key": "tr\tgerçekçi\trealistic", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\tgeyşa\tgeisha", "borrowed": true, "donor_language": "Japanese", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 19}
+{"key": "tr\tgeçersiz\tinvalid, illegitimate, null, void", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 20}
+{"key": "tr\tgidermek\tto remove; to eliminate", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "tr\tgrandük\tgrand duke (male ruler of a grand duchy)", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 19}
+{"key": "tr\tgömüt\tgrave, tomb", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 17}
+{"key": "tr\tgörünüm\tlook, appearance", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 20}
+{"key": "tr\tgöynümek\tto grieve, feel sorrow, be distressed", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "tr\tgöçüşme\tmetathesis", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "tr\tgülüş\tsmile", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 17}
+{"key": "tr\tgündelik\tdaily, quotidian, diurnal", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "tr\tgüveyi\tson-in-law", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 17}
+{"key": "tr\thacim\tvolume, bulk", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 20}
+{"key": "tr\thalife\tcaliph", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 20}
+{"key": "tr\thamız\tacid", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 17}
+{"key": "tr\thapishane\tprison", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 19}
+{"key": "tr\tharf\tletter (symbol)", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 19}
+{"key": "tr\thasıla\tproduct, result, yield", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 20}
+{"key": "tr\thavi\tcontaining, including", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 20}
+{"key": "tr\thayvanat\tArabic plural of hayvan (“animal”)", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 20}
+{"key": "tr\thedik\tBoiled wheat, bulgur, corn, chickpeas etc.", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 17}
+{"key": "tr\themze\thamza, a sign used in the written Arabic language and appearing as ء (ʔ)", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 139, "output_tokens": 20}
+{"key": "tr\theteroseksüel\theterosexual", "borrowed": true, "donor_language": "English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 19}
+{"key": "tr\thilafet\tcaliphate", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 20}
+{"key": "tr\thususi\tspecial, particular", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 20}
+{"key": "tr\thüner\tcraft, dexterity, ingenuity, adroitness", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 20}
+{"key": "tr\thırka\tcardigan", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 20}
+{"key": "tr\tidam\texecution (the act of killing as punishment)", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 20}
+{"key": "tr\tilgeç\tparticle", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 17}
+{"key": "tr\tiltihak\tjoining with, attaching to", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 20}
+{"key": "tr\timla\tspelling, orthography", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 20}
+{"key": "tr\tindifa\tsynonym of püskürme (“erruption”)", "borrowed": true, "donor_language": "Persian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 20}
+{"key": "tr\tinsani\thumane", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 20}
+{"key": "tr\tistasyon\tstation (place where a vehicle may stop)", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "tr\tistemli\tvoluntary, intentional, happening with conscious control", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 20}
+{"key": "tr\tistimlak\texpropriation; condemnation", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "tr\titmam\tsynonym of tamamlama", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "tr\tizmarit\tpicarel (Spicara smaris)", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "tr\tiğneci\tmaker or seller of needles", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "tr\tjakoben\tJacobin (politically radical)", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "tr\tjet\tjet", "borrowed": true, "donor_language": "English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 120, "output_tokens": 19}
+{"key": "tr\tkabahat\tfault, offense; sin", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 20}
+{"key": "tr\tkakmak\tto beetle, tack down, mall", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "tr\tkamaşmak\tFor tongue, palate or teeth to become numb or tingle because of something sour.", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 139, "output_tokens": 17}
+{"key": "tr\tkapan\ttrap", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 17}
+{"key": "tr\tkapsam\tcoverage", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 120, "output_tokens": 20}
+{"key": "tr\tkarafatma\tground beetle, carabid, any of numerous beetles in the genus Carabus", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 139, "output_tokens": 19}
+{"key": "tr\tkardiyoloji\tcardiology", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 19}
+{"key": "tr\tkarlı\tsnowy (all senses)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "tr\tkask\thelmet", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\tkatlamak\tto fold", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 17}
+{"key": "tr\tkazma\tverbal noun of kazmak", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "tr\tkefil\tguarantor", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 20}
+{"key": "tr\tkemirgen\trodent", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 17}
+{"key": "tr\tkerevit\tcrayfish", "borrowed": true, "donor_language": "Persian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 20}
+{"key": "tr\tkobalt\tcobalt (chemical element)", "borrowed": true, "donor_language": "German", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 19}
+{"key": "tr\tkola\tcola (plant)", "borrowed": true, "donor_language": "English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 19}
+{"key": "tr\tkolonyalist\tcolonialist", "borrowed": true, "donor_language": "French/English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 21}
+{"key": "tr\tkonstrüksiyon\tconstruction", "borrowed": true, "donor_language": "French/Italian/Latin", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 23}
+{"key": "tr\tkopya\timitative", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 19}
+{"key": "tr\tkoruma\tverbal noun of korumak: protection", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "tr\tkrizantem\tsynonym of kasımpatı (“chrysanthemum”)", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 136, "output_tokens": 19}
+{"key": "tr\tkullanmak\tto use, to utilize, to employ", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "tr\tkumul\tdune", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 17}
+{"key": "tr\tkurmay\tgeneral staff", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 19}
+{"key": "tr\tkuskus\tcouscous", "borrowed": true, "donor_language": "French/Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 22}
+{"key": "tr\tkuşçu\tfowler, birdcatcher, someone who catches or ensnares birds", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 136, "output_tokens": 17}
+{"key": "tr\tköpük\tscum, foam, bubble", "borrowed": true, "donor_language": "Germanic (generally assumed to be from German or a similar language during the Middle Ages)", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 36}
+{"key": "tr\tküffar\tplural of kâfir", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 20}
+{"key": "tr\tküsur\tremainder", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 20}
+{"key": "tr\tkırba\twaterskin, a container for water made of tanned skin", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 17}
+{"key": "tr\tkısa\tshort", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 120, "output_tokens": 17}
+{"key": "tr\tkıvrım\tcurve, twist", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 17}
+{"key": "tr\tlaakal\tat least", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 20}
+{"key": "tr\tlaterna\tA kind of organ in the shape of a chest, played by spinning its small handle.", "borrowed": true, "donor_language": "Italian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 138, "output_tokens": 19}
+{"key": "tr\tlağım\tsewer", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 19}
+{"key": "tr\tletafet\tdelicacy, elegance", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 19}
+{"key": "tr\tlobelya\tlobelia, any flowering plant of the genus Lobelia", "borrowed": true, "donor_language": "Latin", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 19}
+{"key": "tr\tlüle\tthe place where tobacco is placed in smoking tools such as hookah, pipe", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 136, "output_tokens": 19}
+{"key": "tr\tmahbup\tbeloved", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 20}
+{"key": "tr\tmajör\tmajor (big, important)", "borrowed": true, "donor_language": "French/Italian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 21}
+{"key": "tr\tmalul\tsick, diseased", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 20}
+{"key": "tr\tmanti\tYoung top (dominant partner in a BDSM relationship) (generally between ages 15 and 20).", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 144, "output_tokens": 14}
+{"key": "tr\tmarul\tlettuce, any edible plant in the genus Lactuca and its leaves, eaten as a vegetable", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 140, "output_tokens": 19}
+{"key": "tr\tmasum\tinnocent", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 20}
+{"key": "tr\tmebus\tdeputy (member of parliament)", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 19}
+{"key": "tr\tmelun\tcursed; damned", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 19}
+{"key": "tr\tmenfaat\tadvantage to oneself", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 20}
+{"key": "tr\tmerhale\tsynonym of evre", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 20}
+{"key": "tr\tmesuliyet\tresponsibility", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 20}
+{"key": "tr\tmetro\tsubway", "borrowed": true, "donor_language": "French/Italian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 120, "output_tokens": 21}
+{"key": "tr\tmeşum\tominous, inauspicious", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 20}
+{"key": "tr\tmilis\tmilitia", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\tmisafir\tleucoma, a white, opaque area or scar on the cornea of an eye", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 139, "output_tokens": 20}
+{"key": "tr\tmobilya\tfurniture", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 20}
+{"key": "tr\tmonden\tfashionable", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\tmuayene\texamination (particularly, an inspection by a medical professional to establish the extent and nature of any sickness or injury)", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 143, "output_tokens": 20}
+{"key": "tr\tmuhalefet\topposition (action, political)", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 20}
+{"key": "tr\tmurdar\tdirty, unclean", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 17}
+{"key": "tr\tmutlu\thappy", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 17}
+{"key": "tr\tmuzip\tteasing, mischievous", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "tr\tmüeddep\tpolite, well-mannered", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 20}
+{"key": "tr\tmühendis\tengineer", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 19}
+{"key": "tr\tmümtaz\tdistinguished, selected", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 20}
+{"key": "tr\tmüptela\taddicted to, passionate for", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 20}
+{"key": "tr\tmüstensih\tsynonym of çoğaltıcı (“copyist”)", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 20}
+{"key": "tr\tmütekebbir\tarrogant", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 20}
+{"key": "tr\tmüzmin\tsynonym of kronik", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 20}
+{"key": "tr\tmızrap\tplectrum", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 17}
+{"key": "tr\tnakdi\tinflection of nakit:", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 20}
+{"key": "tr\tnarin\tthin, slender", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 17}
+{"key": "tr\tnebi\tprophet", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 20}
+{"key": "tr\tnezif\tsynonym of kanama (“bleeding”)", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 20}
+{"key": "tr\tnilüfer\twater lily", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 19}
+{"key": "tr\tnota\tnote", "borrowed": true, "donor_language": "Italian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 120, "output_tokens": 19}
+{"key": "tr\toba\tclan, tribe, village", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "tr\todacı\tservant", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 17}
+{"key": "tr\toftalmolojik\tophthalmological", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 19}
+{"key": "tr\tokutmak\tcausative of okumak", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "tr\tonarılmak\tpassive of onarmak: to be repaired", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "tr\totlanmak\tsynonym of otlamak", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "tr\totçul\therbivorous", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 17}
+{"key": "tr\tpanayır\tfair, market, kirmess", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "tr\tparalel\tparallel", "borrowed": true, "donor_language": "French/ancient Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 23}
+{"key": "tr\tparti\tparty (social gathering)", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 19}
+{"key": "tr\tpatrikhane\tpatriarchate", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 19}
+{"key": "tr\tpaşalık\tpashalik", "borrowed": true, "donor_language": "Ottoman Turkish (from Arabic)", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 25}
+{"key": "tr\tpeyk\tterm used to indicate messengers, guards, and later officials who participated in certain ceremonies in elaborate attire", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 140, "output_tokens": 17}
+{"key": "tr\tpişman\tregretful, remorseful, sorry", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "tr\tpolarizasyon\tpolarization", "borrowed": true, "donor_language": "French/English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 21}
+{"key": "tr\tpozitron\tpositron", "borrowed": true, "donor_language": "English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 19}
+{"key": "tr\tprostat\tprostate", "borrowed": true, "donor_language": "French/Arabic/Greek (via those languages from Latin or Ancient Greek)", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 33}
+{"key": "tr\tpuma\tcougar, puma, mountain lion, any wild felid of the species Puma concolor, native to the Americas", "borrowed": true, "donor_language": "English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 144, "output_tokens": 19}
+{"key": "tr\tradyum\tradium", "borrowed": true, "donor_language": "French/English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 21}
+{"key": "tr\traks\tdance", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 20}
+{"key": "tr\trayiha\tperfume, scent, aroma, fragrance, any pleasant smell or odour", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 20}
+{"key": "tr\tregülatör\tregulator", "borrowed": true, "donor_language": "French/English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 21}
+{"key": "tr\trestoran\trestaurant", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\treçete\trecipe", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 20}
+{"key": "tr\trögar\tmanhole", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 19}
+{"key": "tr\tsahih\tauthentic: said of a hadith that has been preserved and transmitted accurately", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 20}
+{"key": "tr\tsakat\tdisabled", "borrowed": true, "donor_language": "Indonesian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 21}
+{"key": "tr\tsalamanje\tdining room", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 19}
+{"key": "tr\tsallanmak\tFor something to move regularly back and forth while suspended or on an axis; to swing, to oscillate, to sway.", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 147, "output_tokens": 17}
+{"key": "tr\tsanal\tvirtual", "borrowed": true, "donor_language": "English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\tsantur\tsantur (type of hammered dulcimer played in Persian music)", "borrowed": true, "donor_language": "Persian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 20}
+{"key": "tr\tsarmaşık\tivy; any climbing or trailing evergreen plants of the genus Hedera", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 136, "output_tokens": 19}
+{"key": "tr\tsaymak\tto count, carry out counting", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "tr\tsağaltma\tverbal noun of sağaltmak", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "tr\tsekte\tpause, interruption, stoppage, recess, a temporary stop or rest, an intermission of an action", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 141, "output_tokens": 19}
+{"key": "tr\tsepet\tbasket", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\tserseri\tvagrant", "borrowed": true, "donor_language": "Persian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 20}
+{"key": "tr\tsevk\tThe act of sending, consignment, dispatch.", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 20}
+{"key": "tr\tsezinlemek\tto sense, to feel", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 20}
+{"key": "tr\tsirk\tcircus", "borrowed": true, "donor_language": "Italian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\tsite\tgated community", "borrowed": true, "donor_language": "English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\tsofa\tAn area in the house where all rooms open into; hall, hallway.", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 20}
+{"key": "tr\tsomutlaşmak\tto become tangible", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 20}
+{"key": "tr\tsosyete\tsociety", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 19}
+{"key": "tr\tspazm\tspasm", "borrowed": true, "donor_language": "French/Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 21}
+{"key": "tr\tstrüktüralizm\tstructuralism", "borrowed": true, "donor_language": "English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "tr\tsuna\tdrake", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 17}
+{"key": "tr\tsömürü\texploitation", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 19}
+{"key": "tr\tsöyleşi\tchat, conversation, discussion", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 20}
+{"key": "tr\tsülün\tpheasant", "borrowed": true, "donor_language": "Persian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 20}
+{"key": "tr\tsüpürmek\tto sweep (with a broom or a vacuum cleaner)", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 19}
+{"key": "tr\tsüzülmek\tpassive of süzmek", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "tr\tsırtlan\thyena, any of the medium-sized to large carnivores in the genus Hyaena", "borrowed": true, "donor_language": "Persian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 139, "output_tokens": 20}
+{"key": "tr\tsığdırmak\t[with dative] to fit (something) into (a container or place)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 140, "output_tokens": 17}
+{"key": "tr\ttadım\tan act of tasting", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 17}
+{"key": "tr\ttahmis\tIn Divan literature, the situation of adding three lines to each couplet of a ghazal, pentameter.", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 145, "output_tokens": 20}
+{"key": "tr\ttahvilat\tArabic plural of tahvil; debentures, bonds, securities, obligations, drafts", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 138, "output_tokens": 20}
+{"key": "tr\ttantal\ttantalum", "borrowed": true, "donor_language": "English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\ttapınmak\tto worship", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 20}
+{"key": "tr\ttasarruf\tuse", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 20}
+{"key": "tr\ttat\ttaste", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 120, "output_tokens": 20}
+{"key": "tr\ttaverna\ttaverna, a small Greek restaurant", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "tr\ttaşıma\tverbal noun of taşımak: transportation, carrying", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "tr\ttecrit\tinsularity", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 20}
+{"key": "tr\tteftiş\tinspection (the act of examining something, often closely)", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 19}
+{"key": "tr\ttekrar\tagain", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 20}
+{"key": "tr\ttenis\ttennis", "borrowed": true, "donor_language": "English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\tterakki\tprogress", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 20}
+{"key": "tr\ttere\tcress, garden cress, any fast-growing, edible herb of the species Lepidium sativum", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 143, "output_tokens": 19}
+{"key": "tr\tterminoloji\tterminology", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 19}
+{"key": "tr\ttesti\tinflection of test:", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "tr\ttevekkül\tsubmission to God", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 20}
+{"key": "tr\tteşekkür\ta thanking", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 20}
+{"key": "tr\tticari\tcommercial", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\ttoptan\twholesale (of or relating to sale in large quantities, for resale)", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 19}
+{"key": "tr\ttren\ttrain", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 120, "output_tokens": 19}
+{"key": "tr\ttrol\ttroll", "borrowed": true, "donor_language": "English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\tturist\ttourist", "borrowed": true, "donor_language": "French/English", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 21}
+{"key": "tr\ttutulmak\tpassive of tutmak; to be held, hired, etc.", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "tr\ttüketmek\tto exhaust, consume", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 19}
+{"key": "tr\ttüp\ttube", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\ttılsım\tcharm, talisman", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 20}
+{"key": "tr\ttırpan\tscythe (farm tool)", "borrowed": true, "donor_language": "Persian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 20}
+{"key": "tr\tunlamak\tto flour, to cover with, sprinkle, or apply flour to something", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 17}
+{"key": "tr\tusanmak\tto get tired of, become disgusted with", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "tr\tuydu\tmoon", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 17}
+{"key": "tr\tuzak\tfar, distant, remote", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "tr\tuzuv\tmember, organ, body part", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "tr\tuçurtma\tkite (flying toy on string)", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "tr\tvahşi\tturbulent, lawless, wild, truculent, barbarian, vitriolic, savage, fierce, ferocious", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 145, "output_tokens": 20}
+{"key": "tr\tvasi\twide", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 20}
+{"key": "tr\tvelinimet\tSomeone who does a favor of immesurable importance for someone.", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 20}
+{"key": "tr\tvirgül\tcomma (punctuation mark)", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "tr\tvuzuh\tsynonym of açıklık", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "tr\tyalan\tfalse, fabricated, fake", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "tr\tyanılmak\tto err, to be mistaken, to be wrong", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "tr\tyapışmak\tto stick (to), adhere (to); to cling to", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 17}
+{"key": "tr\tyayık\tchurn, a vessel used for churning, especially for converting cream into butter", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 17}
+{"key": "tr\tyazışmak\tto write to each other", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "tr\tyaş\tfresh, wet, moist", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 17}
+{"key": "tr\tyitirmek\tto lose", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 17}
+{"key": "tr\tyolsuzluk\tcorruption", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 17}
+{"key": "tr\tyontulmak\tto be chiseled", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "tr\tyumurcak\tnaughty child", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 17}
+{"key": "tr\työnelik\tturned towards; aimed at; targeting", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 19}
+{"key": "tr\tyürütmek\tcausative of yürümek: to conduct", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "tr\tyılmaz\tfearless, intrepid", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "tr\tzangoç\tsexton (church official who looks after a church and act as a bell-ringer)", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 139, "output_tokens": 19}
+{"key": "tr\tzeytin\tolive", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 19}
+{"key": "tr\tzirve\tmountaintop, peak, summit, head, pinnacle, the highest point of a mountain, hill, or similar geographical feature", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 146, "output_tokens": 20}
+{"key": "tr\tzulüm\ttyranny, cruelty", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 20}
+{"key": "tr\tzımpara\temery", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 19}
+{"key": "tr\tâmâ\tblind", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 20}
+{"key": "tr\tçelişki\tcontradiction, paradox", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 20}
+{"key": "tr\tçevirim\tcycle", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\tçifte\tdative singular of çift", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "tr\tçiroz\tskinny person", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 123, "output_tokens": 17}
+{"key": "tr\tçolak\tone-armed", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 17}
+{"key": "tr\tçıkar\tadvantage to oneself", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 20}
+{"key": "tr\tçığlık\tscream", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 17}
+{"key": "tr\tölçüm\tmeasurement", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 19}
+{"key": "tr\tönderlik\tleadership", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 122, "output_tokens": 17}
+{"key": "tr\törneğin\tgenitive singular of örnek", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "tr\tözne\tsubject", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 20}
+{"key": "tr\tüfürük\texhalation, puff", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "tr\tüniversite\tuniversity", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 120, "output_tokens": 19}
+{"key": "tr\türpermek\tTo tremble, to shudder, to have goose bumps due to fear, loathing or cold.", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 143, "output_tokens": 17}
+{"key": "tr\tüzerlik\tharmal, wild rue, any perennial flowering plant of the species Peganum harmala", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 138, "output_tokens": 20}
+{"key": "tr\tılık\tBetween hot and cold; warm, tepid, mild.", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 17}
+{"key": "tr\tşahane\troyal, regal, kingly, befitting of a monarch", "borrowed": true, "donor_language": "Persian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 20}
+{"key": "tr\tşamandıra\tbuoy", "borrowed": true, "donor_language": "Greek", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 124, "output_tokens": 19}
+{"key": "tr\tşarküteri\tcharcuterie (all senses)", "borrowed": true, "donor_language": "French", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "tr\tşayan\tfitting, suitable, worthy", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 20}
+{"key": "tr\tşehadetname\tdiploma, degree", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 20}
+{"key": "tr\tşirk\tshirk", "borrowed": true, "donor_language": "Arabic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 121, "output_tokens": 20}
+{"key": "sah\tsɨːr\tPRECIPICE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tsɨhɨː\tPLAIN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tarɨː\tISLAND", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tkɨtɨl\tSHORE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tuː\tWATER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tbayɣal\tSEA", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tküöl\tLAKE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\ttumus\tCAPE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\türeχ\tFLOWING BODY OF WATER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tʤüːkte\tSPRING OR WELL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tkuta\tSWAMP", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tkürülgen\tWATERFALL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tmas\tWOOD", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 19}
+{"key": "sah\tsir_χamsaːhɨna\tEARTHQUAKE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 136, "output_tokens": 19}
+{"key": "sah\tkün\tSUN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tsulus\tSTAR", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tetiŋ\tTHUNDER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tbuːrɣa\tSTORM", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tkustuk\tRAINBOW", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\tsɨrdɨk\tLIGHT (RADIATION)", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 19}
+{"key": "sah\tkülük\tSHADE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\ttɨal\tWIND", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\ttuman\tFOG", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tsamɨːr\tRAIN (PRECIPITATION)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 17}
+{"key": "sah\tmuːs\tICE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tuot\tFIRE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tburuo\tSMOKE (EXHAUST)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 17}
+{"key": "sah\tčoχ\tEMBERS", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tumay\tBURNING", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\totun\tLIGHT (IGNITE)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tispiːske\tMATCH", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tčoχ\tCHARCOAL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\ter_kihi\tMAN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tuol\tBOY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tuol\tYOUNG MAN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tkɨːs\tGIRL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tkɨːs\tYOUNG WOMAN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tkergen\tHUSBAND", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\ter\tHUSBAND", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\temeːχsin\tWIFE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tkergennen\tMARRY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\terge_bar\tMARRY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tsɨbaːyba\tWEDDING", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 19}
+{"key": "sah\turuː\tWEDDING", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\taɣa\tFATHER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\ttöröppütter\tPARENTS", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tkɨːs\tDAUGHTER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tbiː\tOLDER BROTHER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tini\tYOUNGER BROTHER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tbɨraːt\tYOUNGER BROTHER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "sah\taɣas\tOLDER SISTER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tbiːrge_töröːbütter\tSIBLING", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 137, "output_tokens": 17}
+{"key": "sah\tehe\tGRANDFATHER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tebe\tGRANDMOTHER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tsien\tGRANDSON", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tubay\tUNCLE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\teʤiːy\tAUNT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tbɨraːt\tNEPHEW", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tbɨraːt\tCOUSIN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\töbügeler\tANCESTORS", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tɨččat\tDESCENDANTS", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\taɣa_kɨlɨn\tFATHER-IN-LAW (OF MAN)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 140, "output_tokens": 17}
+{"key": "sah\tiỹe_kɨlɨn\tMOTHER-IN-LAW (OF MAN)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 140, "output_tokens": 17}
+{"key": "sah\tkütüöt\tSON-IN-LAW (OF WOMAN)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 136, "output_tokens": 17}
+{"key": "sah\tkiỹiːt\tDAUGHTER-IN-LAW (OF WOMAN)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 139, "output_tokens": 17}
+{"key": "sah\tmaːčaχa_iỹe\tSTEPMOTHER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 17}
+{"key": "sah\tiːppit_uol\tSTEPSON", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\ttulaːyaχ\tORPHAN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\togdoːbo\tWIDOWER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\taymaχtar\tRELATIVES", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tʤon\tFAMILY", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\ten\tTHOU", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tbihigi\tWE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tehigi\tYOU", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tkɨːl\tANIMAL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\ttɨhɨ\tFEMALE (OF ANIMAL)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "sah\tmeččireŋ\tPASTURE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tmanɨːhɨt\tHERDSMAN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tsɨlgɨhɨt\tHERDSMAN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 17}
+{"key": "sah\tɨnaχ_süöhü\tCATTLE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 17}
+{"key": "sah\tat_oɣus\tOX", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tɲirey\tCALF", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tsibinɲe\tPIG", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tsɨlgɨ\tHORSE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tatɨːr\tSTALLION", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tkulun\tFOAL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\ttɨy\tFOAL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tbötüːk\tROOSTER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tčopuːska\tCHICKEN", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 19}
+{"key": "sah\tkus\tDUCK", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tkötör\tBIRD", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tχopto\tSEAGULL", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\tχotoy\tEAGLE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tsarɨː_kɨnat\tBAT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tχoluːp\tDOVE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tχaχχan\tOWL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\txoruoluk\tRABBIT", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\tkutuyaχ\tMUROID (MOUSE OR RAT)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "sah\tlapčaːn\tFIN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tχaỹɨː\tGILL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tχaχay\tLION", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\tkɨrʤaɣas_tɨataːɣɨ\tBEAR", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 138, "output_tokens": 17}
+{"key": "sah\tkɨrsa\tFOX", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\ttebien\tCAMEL", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tüön-köyüːr\tINSECT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 17}
+{"key": "sah\tbɨt_saːɣa\tNIT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\ttarakaːn\tCOCKROACH", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "sah\toːɣuy\tSPIDER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tɨŋɨrɨa\tBEE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\ttɨgaːyɨ\tWASP", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\toŋoːyu\tSANDFLY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tbɨrdaχ\tMOSQUITO", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tčierbe\tWORM", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\terien_üön\tSNAKE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tahɨŋa\tGRASSHOPPER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tbaɣa\tFROG", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tet\tBODY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "sah\tet\tFLESH", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tas\tHAIR (HEAD)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\ttüː\tHAIR (BODY)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tχoɣoho\tDANDRUFF", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\ttɨmɨr\tBLOOD VESSEL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 17}
+{"key": "sah\toyoɣos_uŋuoɣa\tRIB", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "sah\tkuturuk\tTAIL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tuorɣa\tSPINE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tbas\tHEAD", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "sah\tčečegey\tTEMPLES", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tčabɨrɣay\tTEMPLES", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tmeyiː\tBRAIN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tsüːs\tFOREHEAD", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tiedes\tCHEEK", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tχaraχ\tEYE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tχaltaha\tEYELID", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tčapčɨlɨy\tBLINK", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tkulgaːχ_eminɲeɣe\tEARLOBE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 136, "output_tokens": 17}
+{"key": "sah\tmurun\tNOSE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tmurun_χayaɣaha\tNOSTRIL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "sah\ttumus\tBEAK", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\ttɨl\tTONGUE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tmiːle\tGUMS", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tmoːy\tNECK", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tsürün\tNAPE (OF NECK)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tsarɨn\tSHOULDER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tχomurɣan\tCOLLARBONE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tχonnoχ\tARMPIT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tbegečček\tWRIST", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tɨtɨs\tPALM OF HAND", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\terbeχ\tTHUMB", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\ttɨŋɨraχ\tCLAW", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tbuːt\tUPPER LEG (THIGH)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\ttobuk\tKNEE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tataχ\tFOOT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\ttileχ\tHEEL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\ttarbaχ\tTOE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tkuorsun\tFEATHER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\temiːy\tBREAST", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\temiːy\tUDDER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tsüreχ\tHEART", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tbɨar\tLIVER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\ttaːl\tSPLEEN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tohoɣostor\tINTESTINES", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\töttük\tHIP", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\temehe\tBUTTOCKS", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tbuom\tWOMB", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\ttahaːχ\tTESTICLES", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tübüs\tPENIS", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tʤaːhɨy\tYAWN", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 19}
+{"key": "sah\tsötölün\tCOUGH", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\ttirit\tSWEAT (PERSPIRE)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "sah\tχotuolaː\tVOMIT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tsalaː\tLICK", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tutuy\tSLEEP", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\ttüheː\tDREAM (SOMETHING)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "sah\tuturuktaː\tFART", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tsaːχtaː\tSHIT (DEFECATE)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 17}
+{"key": "sah\tkɨn\tCOPULATE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tsuːn\tBATHE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\toŋor\tBEGET", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tisteːχ\tPREGNANT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tɨaraχan\tPREGNANT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tisteːχ_buol\tCONCEIVE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 17}
+{"key": "sah\ttɨːnnaːχ\tBE ALIVE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 17}
+{"key": "sah\tuːga_tüs\tDROWN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tölük\tCORPSE", "borrowed": true, "donor_language": "Korean", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 20}
+{"key": "sah\tkihi_uŋuoɣa\tGRAVE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tküːsteːχ\tSTRONG", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tɨalʤar\tSICK", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tsoɣuo\tGOITER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\ttɨmnɨyɨː\tCOMMON COLD (DISEASE)", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 138, "output_tokens": 19}
+{"key": "sah\tköɣörüː\tBRUISE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tkuturguya\tSWELLING", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tbɨha_aːllarbɨt\tBLISTER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "sah\tkuturguya\tBOIL (OF SKIN)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 17}
+{"key": "sah\tčer\tSCAR", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tbɨraːs\tPHYSICIAN", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "sah\temp\tMEDICINE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tsülühün\tPOISON", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tsɨnɲan\tREST", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\ttaraɣay\tBALD", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tʤüley\tDEAF", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tbalay\tBLIND", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\titirik\tDRUNK", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tsie\tEAT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tas\tFOOD", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 19}
+{"key": "sah\tbusput\tCOOKED", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tbusput\tRIPE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tsiːkey\tUNRIPE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tsɨtɨybɨt\tROTTEN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 17}
+{"key": "sah\taččɨktaː\tBE HUNGRY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 17}
+{"key": "sah\tχorguyuː\tFAMINE", "borrowed": true, "donor_language": "Mongolic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 21}
+{"key": "sah\tem\tSUCK", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tɨỹɨhɨn\tSWALLOW", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tčačay\tCHOKE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tbuhar\tCOOK (SOMETHING)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 17}
+{"key": "sah\tɨhaːrɨlaː\tROAST OR FRY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 136, "output_tokens": 17}
+{"key": "sah\tüt\tROAST OR FRY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tohoχ\tOVEN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tolguy\tPOT", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tköstörüːle\tPOT", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tčaːnɲɨk\tKETTLE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 19}
+{"key": "sah\tbülüːde\tDISH", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tmiːske\tBOWL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tkupsuːn\tJUG", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tbülüːhe\tSAUCER", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\tbɨhaχ\tKNIFE (FOR EATING)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "sah\tbiːlke\tFORK", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tasaːhɨn\tMEAL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tebiet\tLUNCH", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tčeydeː\tDINNER (SUPPER)", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 19}
+{"key": "sah\tχaχtaː\tPEEL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\taːl\tSCRAPE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tkiliep\tBREAD", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tmehiy\tKNEAD", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\ttart\tGRIND", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tmieliŋse\tMILL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tet\tMEAT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tsasiska\tSAUSAGE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tχortuoska\tPOTATO", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\terieχe\tNUT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tsɨa\tFAT (ORGANIC SUBSTANCE)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "sah\tbieres\tPEPPER", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tsaːχar\tSUGAR", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\tɨa\tDRAW MILK", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tarɨː\tBUTTER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tarɨgɨ\tWINE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tbɨraːga\tALCOHOL (FERMENTED DRINK)", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 139, "output_tokens": 19}
+{"key": "sah\tsɨmɨːt_uoɣaha\tYOLK", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 136, "output_tokens": 17}
+{"key": "sah\tket\tPUT ON", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\ttaŋas\tCLOTHES", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\ttaŋas\tCLOTH", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tsiːdes\tCOTTON", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tboːlʤoχ\tFELT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\ttiriː\tLEATHER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tχat\tSPIN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tiːsten\tSEW", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tbürges\tAWL", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tkirilies\tLADDER", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tɨrbaːχɨ\tDRESS", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tboltuo\tCOAT", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tɨrbaːχɨ\tSHIRT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tsaɣa\tCOLLAR", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tɨstaːn\tTROUSERS", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 19}
+{"key": "sah\tčulku\tSTOCKING", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\ttüːppüle\tSHOE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tsappɨkɨ\tBOOT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\teterbes\tBOOT", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tseleːppe\tHEADGEAR", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tkur\tBELT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tsiep\tPOCKET", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tbulaːpka\tPIN", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tkündü_taːs\tJEWEL", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 19}
+{"key": "sah\tkülüːske\tRING", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\tböɣöχ\tBRACELET", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\toɣuruo\tNECKLACE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tχoruoŋka\tBEAD", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tbɨlaːt\tHEADBAND OR HEADDRESS", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "sah\tbɨlaːt\tRAG", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\ttaraːχ\tCOMB", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tbiriːppe\tRAZOR", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\tmaːs\tOINTMENT", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tsierkele\tMIRROR", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tʤie\tHOUSE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tbalaːkka\tTENT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\ttiergen\tYARD", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tχospoχ\tCOOKHOUSE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tsugulaːn\tMEETING HOUSE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\taːn\tDOOR", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tχoluoda\tDOORPOST", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tkülüːs\tLOCK", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tkülüːs_tɨla\tKEY", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "sah\tmuosta\tFLOOR", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\terkin\tWALL (OF HOUSE)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tkömülüök\tFIREPLACE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tturba\tCHIMNEY", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\toron\tBED", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tsuorɣan\tBLANKET", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tustuːl\tCHAIR", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tsandalɨ\tTABLE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tbanaːr\tTORCH OR LAMP", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 19}
+{"key": "sah\tdolbuːr\tSHELF", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tkɨrɨːsa\tROOF", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tsis\tRIDGEPOLE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\töhüö\tBEAM", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tbaɣana\tPOST", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tkirpiːčče\tBRICK", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\tbaːhɨnay\tFARMER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\toɣuruot\tGARDEN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tkürüo\tFENCE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tχoruː\tDITCH", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tχorutuː\tFURROW", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tkürʤeχ\tSPADE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tbahɨmɲɨ\tHOE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tkɨraːbɨl\tRAKE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 19}
+{"key": "sah\tsieme\tSEED", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tχotuːr\tSICKLE OR SCYTHE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 136, "output_tokens": 17}
+{"key": "sah\tastaː\tTHRESH", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tüːnüː\tHARVEST OR HARVEST SEASON", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "sah\tseliehiney\tWHEAT", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "sah\toruos\tRYE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tkukuruza\tMAIZE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tot\tGRASS", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tüːneːyi\tPLANT (VEGETATION)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 17}
+{"key": "sah\tsilis\tROOT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tmutuk\tBRANCH OR TWIG", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tsibekki\tFLOWER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tluːk\tOAK", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tbes\tPINE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\ttabaχ\tTOBACCO", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\ttart\tSMOKE (INHALE)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\ttöŋürges\tTREE STUMP", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tumnas\tTREE TRUNK", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tačaːχ\tFORKED BRANCH", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 17}
+{"key": "sah\tsime\tSAP", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tɨtɨrɨːk_ot\tNETTLE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 17}
+{"key": "sah\tkunaːχ\tMUSHROOM", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tüle\tWORK (LABOUR)", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\tieχ\tBEND", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tbaːy\tTIE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tsüör\tUNTIE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tbɨa\tROPE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\toɣus\tSTRIKE OR BEAT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tsɨs\tSTRIKE OR BEAT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tbɨs\tCUT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tχayɨt\tCHOP", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tbɨhaχ\tKNIFE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tsüge\tAXE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tültürüt\tBREAK (DESTROY OR GET DESTROYED)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 136, "output_tokens": 17}
+{"key": "sah\tültürüybüt\tBROKEN (NOT WORKING)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 17}
+{"key": "sah\tχaya_tart\tTEAR (SHRED)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "sah\taːl\tRUB", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\ttenit\tSTRETCH", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\ttelget\tSPREAD OUT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tbattaː\tPRESS", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tkut\tPOUR", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tχarbaː\tSWEEP", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tsep\tTOOL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "sah\ttut\tBUILD", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 19}
+{"key": "sah\tχas\tHOLLOW OUT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tötüye\tHAMMER", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tsilim\tGLUE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\ttaptay\tFORGE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tkut\tCAST", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "sah\türüŋ_kömüs\tSILVER", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "sah\ttimir\tIRON", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tɲaːlbaːn\tTIN OR TINPLATE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 138, "output_tokens": 19}
+{"key": "sah\toŋor\tMOLD", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\töstüöküle\tGLASS", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "sah\tör\tBRAID (VERB) OR WEAVE (BASKET)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 138, "output_tokens": 17}
+{"key": "sah\ttɨmtay\tBASKET", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tsörüːketer\tFAN (OBJECT)", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 19}
+{"key": "sah\tbɨs\tCARVE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tkɨraːska\tPAINT (PIGMENTS)", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 136, "output_tokens": 19}
+{"key": "sah\tkɨraːskalaː\tPAINTING", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 19}
+{"key": "sah\tχamsaː\tMOVE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tχaỹɨs\tto turn", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tsuːlaː\tWRAP", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\teriy\tTWIST (AROUND)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\ttur\tRISE (MOVE UPWARDS)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tkötöχ\tLIFT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\ttüs\tFALL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tbɨraχ\tTHROW", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tχap\tCATCH", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tuhun\tFLOW", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tχarbaː\tSWIM", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tumus\tDIVE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tčalɨmnaː\tSPLASH", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tür\tBLOW (OF WIND)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\ttobuktan\tKNEEL", "borrowed": true, "donor_language": "Buddhist Mongolian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 23}
+{"key": "sah\tχaltarɨy\tSLIP", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\toy\tJUMP", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tüŋküːleː\tDANCE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "sah\tdoɣoloŋnoː\tLIMP", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tsɨrɨt\tGO", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tdabay\tGO UP (ASCEND)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\ttüs\tGO DOWN (DESCEND)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tkel\tCOME", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tbar\tLEAVE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tkuot\tFLEE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tsoyuolaː\tPURSUE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tčugahaː\tAPPROACH", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tilt\tCARRY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tsük\tCARRY ON SHOULDER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\taɣal\tBRING", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tsiet\tLEAD (GUIDE)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tmiːn\tRIDE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tsuol\tROAD", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 19}
+{"key": "sah\tmuosta\tBRIDGE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tteliege\tCART", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tkiːn\tAXLE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tuos\tAXLE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tχaraːbɨl\tSHIP", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 19}
+{"key": "sah\ttɨː\tBOAT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\taːl\tRAFT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tert\tROW", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tmačta\tMAST", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tʤaːkɨr\tANCHOR", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 19}
+{"key": "sah\ttüs\tLAND (DESCEND)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\ttut\tSEIZE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\ttut\tGET", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "sah\tmal\tTHING", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\ttönnör\tGIVE BACK", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tbɨːhaː\tRESCUE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tabɨraː\tRESCUE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\talʤat\tINJURE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tbul\tFIND", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "sah\tɨːt\tLET GO OR SET FREE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tbaːy\tRICH", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tumnahɨt\tBEGGAR", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\tkeččegey\tSTINGY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tularɨs\tLEND", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tularɨs\tBORROW", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\ties\tDEBT", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tsuot\tBILL", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 19}
+{"key": "sah\tnaymɨlaː\tHIRE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "sah\tölör\tEARN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tɨl\tBUY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tatastas\tTRADE OR BARTER", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "sah\tɨrɨːnak\tMARKET", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "sah\tlaːppɨ\tSTORE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tɨaraχan\tEXPENSIVE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "sah\tberis\tSHARE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tkennitten\tAFTER", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 19}
+{"key": "sah\ttahɨgar\tBESIDE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tallaraː\tDOWN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tinniger\tIN FRONT OF", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\ttahɨrʤa\tOUTSIDE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tüöhe\tUP", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tuːr\tPUT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tsɨt\tLIE DOWN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tχaːl\tREMAIN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tχomuy\tGATHER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tɨl\tPICK UP", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tχolboː\tJOIN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tüller\tDIVIDE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tarɨy\tOPEN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tsap\tCOVER", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 19}
+{"key": "sah\tkisteː\tHIDE (CONCEAL)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 17}
+{"key": "sah\tnamɨhaχ\tLOW", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\toroy\tTOP", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\ttügeχ\tBOTTOM", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tuhuk\tEND (OF SPACE)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tkɨtɨː\tEDGE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\torto\tMIDDLE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tuŋa\tRIGHT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tɨraːχ\tFAR", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tarɣaː\tWEST", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tsoɣuruː\tSOUTH", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tkemneː\tMEASURE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tbödöŋ\tBIG", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tbɨčɨkaːn\tSMALL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\türdük\tTALL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tkieŋ\tWIDE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tkɨaraɣas\tNARROW", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tχalɨŋ\tTHICK", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tχaptaɣay\tFLAT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\ttokur\tCROOKED", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tmunnuk\tCORNER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\ttüört_munnuk\tSQUARE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\ttögürük\tCIRCLE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tχayaɣas\tHOLE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tteheɣes\tHOLE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tularɨy\tCHANGE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tɲuːl\tZERO", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tikki\tTWO", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\ttüört\tFOUR", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\talta\tSIX", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "sah\taɣɨs\tEIGHT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tuon\tTEN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tuon_ikki\tTWELVE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\tsüːrbe\tTWENTY", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\ttɨhɨːnča\tTHOUSAND", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 19}
+{"key": "sah\tsuottaː\tCOUNT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\telbeχ\tMANY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\taɣɨyaχ\tFEW", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tsoroχ\tSOME", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tʤon\tCROWD", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tiččiteχ\tEMPTY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tireːt\tPART", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\taŋar\tHALF", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tmaŋnaygɨ\tFIRST", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tbütehik\tLAST (FINAL)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tikkis\tSECOND", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tikki_tögül\tTWICE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tühüs\tTHIRD", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tüste\tTHREE TIMES", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tkem\tTIME", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 19}
+{"key": "sah\tsaŋa\tNEW", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\terge\tOLD", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\terde\tEARLY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tbiligin\tNOW", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\ttürgennik\tFAST", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tɨksaː\tHURRY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tχoyutaː\tBE LATE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tbütehik\tEND (OF TIME)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tbüter\tFINISH", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\ttoχtot\tCEASE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tnaːr\tALWAYS", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tmelʤi\tALWAYS", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tnaːr\tOFTEN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tardɨgar\tSOMETIMES", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\tör\tFOR A LONG TIME", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\temie\tAGAIN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\ttüːn\tNIGHT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tsarsɨarda\tMORNING", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tebiet_kennitten\tAFTERNOON", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tbügün\tTODAY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\töyüːn\tDAY AFTER TOMORROW", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tillereː_kün\tDAY BEFORE YESTERDAY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "sah\tčahɨ\tCLOCK", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\töröbül\tSUNDAY", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\toptuorunɲuk\tTUESDAY", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 19}
+{"key": "sah\tčeppier\tTHURSDAY", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "sah\tsubuota\tSATURDAY", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tsɨl\tYEAR", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tkɨhɨn\tWINTER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tsayɨn\tSUMMER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tʤɨl\tSEASON", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tsɨttan\tSMELL (STINK)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 17}
+{"key": "sah\tmɨrčɨstaɣas\tWRINKLED", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "sah\tsɨtɨ_bil\tSMELL (PERCEIVE)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 136, "output_tokens": 17}
+{"key": "sah\tminɲiges_sɨttaːχ\tFRAGRANT", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 19}
+{"key": "sah\tkuhaɣan_sɨttaːχ\tSTINKING", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 136, "output_tokens": 17}
+{"key": "sah\ttuːstaːχ\tSALTY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tahɨː\tSOUR", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tihit\tHEAR", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\ttɨas\tSOUND OR NOISE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tkör\tSEE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tkördör\tSHOW", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tčaɣɨlχay\tBRIGHT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tsɨrdɨk\tLIGHT (COLOR)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\türüŋ\tWHITE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tkɨhɨl\tRED", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tot_küöχ\tGREEN", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 21}
+{"key": "sah\taraɣas\tYELLOW", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tkɨmaːχtaː\tPINCH", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tbil\tFEEL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tsɨmnaɣas\tSOFT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tdeχsi\tSMOOTH", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tsɨtɨː\tSHARP", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tɨaraχan\tHEAVY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tsɨtɨybɨt\tWET", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\titiː\tHOT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tsɨlaːs\tWARM", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\ttɨmnɨː\tCOLD", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tkirdeːχ\tDIRTY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tsohuybut\tSURPRISED", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tʤol\tGOOD LUCK", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tüörbüt\tHAPPY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tmičeːrde\tSMILE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\ttaptaː\tLOVE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tsɨllaː\tKISS", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tɨarɨː\tPAIN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tsanaː\tGRIEF", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\ttürülüön\tANXIETY", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\tkemsin\tREGRET", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tahɨnɨː\tPITY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tsoŋoː\tCRY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tɨnčɨktaː\tGROAN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "sah\tuor\tANGER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tɨmsɨːrɨː\tENVY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 17}
+{"key": "sah\tkien_tut\tPROUD", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\terdiy\tDARE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tkuttal\tFEAR (FRIGHT)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tbaɣar\tWANT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\teren\tHOPE (SOMETHING)", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 19}
+{"key": "sah\tʤiŋneːχ\tTRUE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tsɨmɨya\tDECEIT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tüčügey\tGOOD", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tkuhaɣan\tBAD", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tsɨːha\tWRONG", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tsɨːha\tMISTAKE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tχayɣal\tPRAISE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tkere\tBEAUTIFUL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tkeččegey\tGREEDY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tɨmsɨː\tGREEDY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\töy\tMIND", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\titeɣey\tBELIEVE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tbil\tKNOW (SOMETHING)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tütügün\tIMITATE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tsanaː\tIDEA", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tmuːdaray\tWISE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tiːreːki\tMAD", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tüören\tSTUDY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tüöreneːčči\tPUPIL (STUDENT)", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 137, "output_tokens": 19}
+{"key": "sah\tüöreteːčči\tTEACHER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\töydöː\tREMEMBER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tčuolkay\tCLEAR", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tkisteleŋ\tSECRET", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tbɨhaːr\tEXPLAIN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\ttörüöt\tCAUSE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tmunaːχsɨyɨː\tDOUBT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 17}
+{"key": "sah\tuorbalaː\tSUSPECT", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\ttaŋnar\tBETRAY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tčepčeki\tEASY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 14}
+{"key": "sah\t-A_sataː\tTRY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 14}
+{"key": "sah\tuonna\tAND", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tduː..._duː\tOR", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tsuoχ\tNO", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tχas\tHOW MANY PIECES", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\ttuoχ\tWHAT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 15}
+{"key": "sah\tχanna\tWHERE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tkim\tWHO", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "sah\tsaŋa\tVOICE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tχahɨːtaː\tSHOUT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tbotuguraː\tMUMBLE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tuluy\tHOWL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tkepset\tSPEAK", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\ttardɨalat\tSTUTTER", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\tdie\tSAY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "sah\ttɨl_et\tSPEECH", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\ttɨl\tLANGUAGE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\taːt\tNAME", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\teppietteː\tANSWER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tbilin\tADMIT", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tkördöː\tASK (REQUEST)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\takkaːstaː\tREFUSE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tbuoy\tFORBID", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tɨŋɨr\tCALL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tbiller\tANNOUNCE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tkihirgeː\tBOAST", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\taːχ\tREAD", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\turuːčka\tPEN", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tbarabaːn\tDRUM", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tdoydu\tCOUNTRY", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tkuorat\tTOWN", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tderiebine\tVILLAGE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tbɨːs\tBOUNDARY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tʤon\tPEOPLE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\ttoyon\tCHIEFTAIN", "borrowed": true, "donor_language": "Mongolian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 21}
+{"key": "sah\ttayaχ\tWALKING STICK", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tɨraːχtaːɣɨ\tKING", "borrowed": true, "donor_language": "Mongolic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 21}
+{"key": "sah\ttoyon\tMASTER", "borrowed": true, "donor_language": "Mongolian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 21}
+{"key": "sah\tχamnaččɨt\tSERVANT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "sah\tihit\tOBEY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tköŋülleː\tPERMIT", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\tatas\tFRIEND", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 19}
+{"key": "sah\tɨal\tNEIGHBOUR", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tɨalʤɨt\tGUEST", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tkömölös\tHELP", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tχargɨstaː\tPREVENT", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "sah\tetihiː\tQUARREL", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tkörsüs\tMEET", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\toχsus\tFIGHT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tseriː\tBATTLE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tseriː\tARMY", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tseriː_sebe\tWEAPONS", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\toχ\tARROW", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tbolot\tSWORD", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tkuỹaχ\tARMOUR", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tkɨayɨː\tVICTORY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tataːka\tATTACK", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tčuguy\tRETREAT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tbilienney\tPRISONER", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\ttohuːr\tAMBUSH", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tküögü\tFISHHOOK", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\ttuː\tFISH TRAP", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tbultaː\tHUNT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tsɨːs\tMISS (A TARGET)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tčaːrkaːn\tTRAP (PITFALL)", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 138, "output_tokens": 19}
+{"key": "sah\tχapkaːnnaː\tTRAP (CATCH)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 137, "output_tokens": 17}
+{"key": "sah\ttuhaχtaː\tTRAP (CATCH)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 17}
+{"key": "sah\tsokuon\tLAW", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tuːr\tADJUDICATE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "sah\tsuʤuya\tJUDGE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\teppietteːčči\tDEFENDANT", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 19}
+{"key": "sah\tkerehit\tWITNESS", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tburuydaː\tACCUSE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tuːr\tCONVICT", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tburuydaːχ\tGUILTY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tɨstaraːp\tFINE (PENALTY)", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 137, "output_tokens": 19}
+{"key": "sah\tölörüː\tMURDER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 14}
+{"key": "sah\tküːhüleː\tRAPE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "sah\tsɨmɨya_tuohu\tPERJURY", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 19}
+{"key": "sah\tuoruyaχ\tTHIEF", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\ttaŋara\tDEITY", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tüŋ\tWORSHIP", "borrowed": true, "donor_language": "Buddhism-related terminology, possibly Mongolian or Tungusic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 32}
+{"key": "sah\taɣabɨt\tPRIEST", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\talɣaː\tBLESS", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tkuraːnaχ_künnen\tABSTAIN FROM FOOD", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 136, "output_tokens": 19}
+{"key": "sah\tüöhe_doydu\tHEAVEN", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tallara_doydu\tHELL", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\tχomuhun\tMAGIC", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tsibien\tGHOST", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tbelie\tOMEN", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 19}
+{"key": "sah\ttelebiːzer\tTELEVISION", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tmatassɨkɨl\tMOTORCYCLE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 19}
+{"key": "sah\tavtobus\tBUS", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tʤarapɨlaːn\tAIRPLANE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 134, "output_tokens": 19}
+{"key": "sah\tbatareya\tBATTERY", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tsiestere\tNURSE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tukuol\tINJECTION", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\trakovina\tSINK (BASIN)", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 19}
+{"key": "sah\ttaχsan_kiːrer_sir\tTOILET", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 135, "output_tokens": 19}
+{"key": "sah\tpravitelstva\tGOVERNMENT", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "sah\tministr\tMINISTER", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tköŋül\tDRIVER'S LICENSE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tbɨːbar\tELECTION", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tmaːrka\tPOSTAGE STAMP", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "sah\tbank\tBANK", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 19}
+{"key": "sah\tbiːnte\tSCREW", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tbɨtɨːlka\tBOTTLE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 19}
+{"key": "sah\tačɨkɨ\tSPECTACLES", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 19}
+{"key": "sah\tbuomba\tBOMB", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tböppürüöske\tCIGARETTE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 133, "output_tokens": 19}
+{"key": "sah\tkiːne\tMOVIE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tɨrɨa\tSONG", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\taːdɨrɨs\tADDRESS", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 19}
+{"key": "sah\tbuoyas\tTRAIN", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 19}
+{"key": "sah\ttuormastaː\tBRAKE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tmotuor\tMOTOR", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 19}
+{"key": "sah\tbelasiped\tBICYCLE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tuːlussa\tSTREET", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tbɨːhaː\tLIBERATE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tnüömer\tLICENSE PLATE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\te\tBE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "sah\tbuol\tBECOME", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tbu\tTHIS", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "sah\tol\tTHAT", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 125, "output_tokens": 17}
+{"key": "sah\tonno\tTHERE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\tabas\tVAGINA", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 19}
+{"key": "sah\tkofe\tCOFFEE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tkuobaχ\tHARE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\ttaba\tREINDEER", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tbuobura\tBEAVER", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tmamɨkta\tLASSO", "borrowed": true, "donor_language": "Mongolic", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 21}
+{"key": "sah\tmutukča\tNEEDLE TREE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 19}
+{"key": "sah\tiŋiːr\tTENDON", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\tχayɨhar\tSNOWSHOE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\tbɨt\tBODY LOUSE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tburuːs\tWHETSTONE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 130, "output_tokens": 17}
+{"key": "sah\tbas\tDRAW (WATER)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tpaːr\tSTEAM", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tsien\tGRANDCHILD", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tkini\tSHE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 17}
+{"key": "sah\toloχ\tLIFE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tɨarɨː\tDISEASE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\talʤan\tDAMAGE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
+{"key": "sah\tkɨrbas\tPIECE", "borrowed": true, "donor_language": "Russian", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 19}
+{"key": "sah\tsoɣotoχ\tALONE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 129, "output_tokens": 17}
+{"key": "sah\tχonuk\tDAY (NOT NIGHT)", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 132, "output_tokens": 17}
+{"key": "sah\ttuoχ_da_(suoχ)\tNOTHING", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 131, "output_tokens": 17}
+{"key": "sah\ttarbaː\tSCRATCH", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 128, "output_tokens": 17}
+{"key": "sah\tis\tBELLY", "borrowed": true, "donor_language": "Buryat", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 126, "output_tokens": 21}
+{"key": "sah\ttoŋ\tFREEZE", "borrowed": false, "donor_language": "", "model": "qwen2.5:14b", "stop_reason": "stop", "input_tokens": 127, "output_tokens": 17}
