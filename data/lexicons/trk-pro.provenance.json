@@ -1,0 +1,15 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Proto-Turkic",
+  "code": "trk-pro",
+  "donor": false,
+  "ru_edition": false,
+  "url": "https://kaikki.org/dictionary/Proto-Turkic/kaikki.org-dictionary-ProtoTurkic.jsonl",
+  "retrieved_at": "2026-09-23T17:11:43+00:00",
+  "raw_bytes": 7606451,
+  "stored_bytes": 789193,
+  "entries": 1150,
+  "compressed": true,
+  "sha256_stored": "f9b85dca927b89a8d6dac3bd915d9abcad46dda9a6ae8329d48da54ec0acc4f6",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

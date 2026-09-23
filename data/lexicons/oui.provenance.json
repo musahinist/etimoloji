@@ -1,0 +1,15 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Old_Uyghur",
+  "code": "oui",
+  "donor": false,
+  "ru_edition": false,
+  "url": "https://kaikki.org/dictionary/Old%20Uyghur/kaikki.org-dictionary-OldUyghur.jsonl",
+  "retrieved_at": "2026-09-23T17:11:42+00:00",
+  "raw_bytes": 1868799,
+  "stored_bytes": 294794,
+  "entries": 446,
+  "compressed": true,
+  "sha256_stored": "8d1a30db726afdd17eaafe6339fa22f7171e9624df231ab9ad2612afbf35fcdd",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

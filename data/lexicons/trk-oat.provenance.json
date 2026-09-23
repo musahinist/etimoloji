@@ -1,0 +1,15 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Old_Anatolian_Turkish",
+  "code": "trk-oat",
+  "donor": false,
+  "ru_edition": false,
+  "url": "https://kaikki.org/dictionary/Old%20Anatolian%20Turkish/kaikki.org-dictionary-OldAnatolianTurkish.jsonl",
+  "retrieved_at": "2026-09-23T17:11:42+00:00",
+  "raw_bytes": 1520366,
+  "stored_bytes": 214871,
+  "entries": 593,
+  "compressed": true,
+  "sha256_stored": "9905e8bd7a5bf2338d9f9053f612164004181dd8ee024f3b4858961b52aff9e6",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}
