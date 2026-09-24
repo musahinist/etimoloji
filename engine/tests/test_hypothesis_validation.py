@@ -243,3 +243,40 @@ class TestAuditConsistency(unittest.TestCase):
             # Kök varyantının (`kulluk` -> `kul`) Starling kökü sorgunun değildir.
             kul = {"root": {"proto_turkic": "*Kul", "starling_proto": "*Kul"}}
             self.assertEqual(_attested_proto_root("kulluk", {}, [], [kul]), "")
+
+
+class TestAttestedRootReachesTimeLock(unittest.TestCase):
+    """B1: kaynağın verdiği kök, karşılaştırmalı yöntem için tanık yetmese de
+    A-HVP'de sınanır; tarihli tanık 2. aşamaya (zaman kilidi) ulaşır."""
+
+    def test_attested_root_without_reconstruction_forms_hypothesis(self):
+        from engine.nlp.iterative_hypothesis_engine import IterativeHypothesisEngine
+
+        recon = {"evidence_available": False, "reconstructed_root": "*bak", "witness_count": 0}
+        hyp = IterativeHypothesisEngine._select_hypothesis(
+            "bak", {}, None, None, recon, attested_root="*bạk-"
+        )
+        self.assertIsNotNone(hyp)
+        self.assertEqual(hyp["origin_form"], "*bạk-")
+        self.assertEqual(hyp["donor_language"], "Proto-Türkçe")
+        self.assertEqual(hyp["evidence_kind"], "attested_root")
+        # Kaynak kökü de yoksa hipotez UYDURULMAZ.
+        self.assertIsNone(IterativeHypothesisEngine._select_hypothesis("bak", {}, None, None, recon))
+
+    def test_starling_year_reaches_stage2(self):
+        from engine.nlp.iterative_hypothesis_engine import IterativeHypothesisEngine
+
+        starling = {
+            "root": {"proto_turkic": "*bạk-", "starling_proto": "*bạk-"},
+            "first_attestation": {"form": "baq-", "source": "KB (Starling #890)", "year": 1069},
+            "turkic_languages": [],
+        }
+        entries = [{"lang_code": "tr", "word": "bak", "source": "Yerel", "origin": "local"}]
+        from unittest import mock
+
+        with mock.patch("engine.fetchers.starling.StarlingFetcher.fetch", return_value=starling):
+            out = IterativeHypothesisEngine().prove_etymological_hypothesis(
+                "bak", {"root": {}}, entries, [starling]
+            )
+        stage2 = out["validation_report"]["stage_breakdown"]["stage2_time_lock"]
+        self.assertEqual(stage2["attestation_year"], 1069)

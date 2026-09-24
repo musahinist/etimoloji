@@ -399,6 +399,28 @@ class IterativeHypothesisEngine:
                 "applied_correspondences": reconstruction.get("applied_correspondences", []),
             }
 
+        # 3b. Kaynağın verdiği Proto-Türkçe kök, karşılaştırmalı yöntem için
+        # yeterli tanık yokken. ⚠️ Eskiden hipotez yalnız motorun kendi
+        # rekonstrüksiyonu (≥2 bağımsız tanık) varsa kuruluyordu; Starling kökü
+        # başlıkta dururken A-HVP hiç koşmuyor, Starling'in tarihli tanığı da
+        # 2. aşamaya (zaman kilidi) ulaşmıyordu. Ölçüldü (`eval-chronology`,
+        # Starling açık): 200 kelimenin 57'sinde yıl yok, 56'sında Starling
+        # yıl döndürüyordu (bak *bạk-, sun *sūn-, kapa *Kap-: tek tanık).
+        if attested_root:
+            return {
+                "hypothesis_type": "Asli Proto-Türkçe kök (tanıklı kök; karşılaştırmalı yöntem için yeterli tanık yok)",
+                "donor_language": "Proto-Türkçe",
+                "origin_form": attested_root,
+                "engine_reconstruction": str(reconstruction.get("reconstructed_root") or ""),
+                "origin_form_attested": True,
+                "proof_summary": reconstruction.get("reconstruction_notes", ""),
+                "historical_meaning": historical_gloss,
+                "historical_meaning_candidates": historical_candidates,
+                "modern_meaning": modern_meaning,
+                "evidence_kind": "attested_root",
+                "witness_count": reconstruction.get("witness_count", 0),
+            }
+
         # 4. Fonotaktik ihlal — alıntı adayı, kaynak dil belirsiz
         violated, reason = initial_consonant_violation(w)
         if violated:

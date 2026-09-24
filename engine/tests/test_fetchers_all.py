@@ -356,7 +356,8 @@ class TestEtimolojiTurkceFetcher(unittest.TestCase):
         assert_contract(self, res, "EtimolojiTurkce")
         att = res.get("first_attestation")
         self.assertIsNotNone(att, "tanıklama çıkarılamadı")
-        self.assertEqual(att["year"], 1070)
+        # Site "(1070)" yazar; eserin yılı tek tanımdan (utils.attestation_dates).
+        self.assertEqual(att["year"], 1074)
         self.assertIn("Divan", att["source"])
 
     @responses.activate

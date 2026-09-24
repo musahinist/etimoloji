@@ -6,7 +6,8 @@ A-HVP'nin 2. aşaması kelimenin ilk tanıklama yılını kullanır
 Bu yılın **var olup olmadığı** ve **doğru olup olmadığı** hiç ölçülmemişti.
 
 Başvuru: Starling turcet tanıklarının kaynak etiketleri (Orkh. 732, KB 1069,
-MK 1072, IM 1245, AH 1300) — ``StarlingEtymology.earliest_dated_source``.
+MK 1074, IM 1245, AH 1300; yıllar ``engine.utils.attestation_dates``, motorla
+aynı tek tanım) — ``StarlingEtymology.earliest_dated_source``.
 Nişanyan ve EtimolojiTürkçe **kullanılmaz** (ikisi de ağ kaynağıdır ve bu
 ölçümde kapalıdır; EtimolojiTürkçe Nişanyan türevidir).
 
@@ -23,7 +24,7 @@ Türkçe altın küme (TDK+Nişanyan) kullanılmaz.
 * ``starling_yok`` — Starling motorda okunmaz. Motorun yılı yalnız yerel
   kayıtlardaki eser adlarından (Orhun, Divânu Lugâti't-Türk, Kutadgu Bilig…;
   ``DATED_SOURCES``) gelir. Başvurudan bağımsızdır; ortak olan yalnız eserin
-  kendisidir (DLT 1074 ~ MK 1072), bu da ölçülmek istenen şeydir.
+  kendisidir (DLT = MK, aynı harita), bu da ölçülmek istenen şeydir.
 
 Üretimde EtimolojiTürkçe de yıl verir; ağ kapalı olduğundan o katkı burada
 ÖLÇÜLMEZ (ve ölçülse Nişanyan'a döngüsel olurdu).
@@ -46,8 +47,9 @@ from engine.logging_setup import get_logger
 logger = get_logger(__name__)
 
 SAMPLE = 200
-#: Aynı eserin iki geleneksel tarihi arasındaki pay (MK 1072 ~ DLT 1074,
-#: Orkh. 732 ~ Orhun 735).
+#: Aynı eserin iki geleneksel tarihi arasındaki pay. Yıllar artık tek
+#: haritadan geliyor (``utils.attestation_dates``); pay, haritada olmayan
+#: kaynak yıllarına (EtimolojiTürkçe serbest yıl) karşı korunuyor.
 SAME_SOURCE_TOLERANCE = 5
 CENTURY = 100
 

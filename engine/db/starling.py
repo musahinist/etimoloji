@@ -33,6 +33,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from engine.config import PROJECT_ROOT
+from engine.utils.attestation_dates import STARLING_SOURCE_DATES
 
 STARLING_DIR = PROJECT_ROOT / "data" / "starling"
 
@@ -120,17 +121,10 @@ FIELD_LANGUAGES = {
     "KRMX": "crh", "KLPX": "kaa", "SAL": "slq", "QUM": "kum",
 }
 
-#: Tanık etiketlerinin yaklaşık tarihi (yalnız TARİHİ bilinen eserler).
+#: Tanık etiketlerinin tarihi (yalnız TARİHİ bilinen eserler).
 #: Starling tanığın yanına kaynağını yazar: "mončuq (Orkh., OUygh.)".
-SOURCE_DATES = {
-    "Orkh.": 732,       # Orhun yazıtları (Köl Tigin 732, Bilge Kağan 735)
-    "MK": 1072,         # Kâşgarlı Mahmud, Dîvânu Lugâti't-Türk
-    "KB": 1069,         # Kutadgu Bilig
-    "IM": 1245,         # İbn Mühennâ (yaklaşık)
-    "AH": 1300,         # Atebetü'l-Hakayık (yaklaşık)
-    "Sangl.": 1760,     # Sanglax
-    "Abush.": 1500,     # Abuşka (16. yy)
-}
+#: Yıllar ve gerekçeleri tek yerde: ``engine.utils.attestation_dates``.
+SOURCE_DATES = STARLING_SOURCE_DATES
 
 
 @dataclass(frozen=True)

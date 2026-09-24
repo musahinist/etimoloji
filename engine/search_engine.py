@@ -1391,7 +1391,11 @@ class SearchEngine:
         _report = _hypo.get("validation_report") or {}
         # Eskiden sabit 0.95 eşiği vardı ve pratikte hiç tetiklenmiyordu.
         # Artık A-HVP rozetine bakılır.
-        if _report.get("status_code") in ("VALIDATED", "NEEDS_REVIEW") and _hypo.get("donor_language"):
+        # Kaynağın verdiği kök (`attested_root`) A-HVP'de yalnız SINANIR:
+        # başlık zaten o kök ve damgası kaynağın kendisidir; "türetilmiş — A-HVP"
+        # damgasıyla ezilmez.
+        if (_report.get("status_code") in ("VALIDATED", "NEEDS_REVIEW") and _hypo.get("donor_language")
+                and _hypo.get("evidence_kind") != "attested_root"):
             hypo = _hypo
             proto_root = hypo.get("origin_form") or proto_root
             # ⚠️ Bu dal MİRAS kelimelerde de ateşleniyor: `göz` için

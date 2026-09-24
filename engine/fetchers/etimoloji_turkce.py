@@ -26,6 +26,7 @@ from typing import Any
 from engine import config
 from engine.fetchers.base import BaseFetcher, detect_script
 from engine.logging_setup import get_logger
+from engine.utils.attestation_dates import canonical_year
 from engine.utils.network import fetch as http_get
 
 logger = get_logger(__name__)
@@ -215,7 +216,9 @@ class EtimolojiTurkceFetcher(BaseFetcher):
             "form": form,
             "meaning": meaning,
             "source": source,
-            "year": int(year_m.group(1)) if year_m else None,
+            # Eser tanınıyorsa yıl haritadan (site DLT'ye 1070 diyor; eser
+            # 1072'de başlayıp 1074'te bitti — bkz. utils.attestation_dates).
+            "year": canonical_year(source, int(year_m.group(1)) if year_m else None),
         }
         note = f"İlk tanıklama: {form or '(biçim verilmemiş)'}" + (f' "{meaning}"' if meaning else "") + f" [{source}]"
         result["root"]["reconstruction_notes"] = note

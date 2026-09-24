@@ -664,12 +664,21 @@ class TestAttestationVerifier(unittest.TestCase):
             {"lang_name": "Kamus-ı Türkî"},
             {"lang_name": "Orhun Yazıtları"},
         ])
-        self.assertEqual(res["first_attestation_year"], 735)
+        self.assertEqual(res["first_attestation_year"], 732)
 
     def test_fetcher_attestation_is_used(self):
         v = HistoricalAttestationVerifier()
-        res = v.verify_attestation("deniz", [], [{"first_attestation": {"year": 1070, "source": "DLT"}}])
-        self.assertEqual(res["first_attestation_year"], 1070)
+        res = v.verify_attestation("deniz", [], [{"first_attestation": {"year": 1245, "source": "X yazması"}}])
+        self.assertEqual(res["first_attestation_year"], 1245)
+
+    def test_known_work_gets_single_year(self):
+        """Aynı eserin tek yılı var: EtimolojiTürkçe DLT'ye 1070, Starling MK
+        1072, yerel kayıtlar 1074 diyordu (``utils.attestation_dates``)."""
+        v = HistoricalAttestationVerifier()
+        from_fetcher = v.verify_attestation(
+            "deniz", [], [{"first_attestation": {"year": 1070, "source": "Divan-i Lugat-it Türk (1070)"}}])
+        from_corpus = v.verify_attestation("deniz", [{"lang_name": "Divanü Lugati't-Türk (1074)"}])
+        self.assertEqual(from_fetcher["first_attestation_year"], from_corpus["first_attestation_year"])
 
 
 class TestMorphemeSegmenter(unittest.TestCase):

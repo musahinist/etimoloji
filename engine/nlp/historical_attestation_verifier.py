@@ -24,20 +24,16 @@ import re
 from typing import Any
 
 from engine.logging_setup import get_logger
+from engine.utils.attestation_dates import POINT_WORKS, canonical_year
 
 logger = get_logger(__name__)
 
-#: Bilinen tarihî kaynaklar ve kesin tarihleri.
-#: Bunlar kelime değil KAYNAK bilgisidir; kelime bazlı hardcode değildir.
+#: Bilinen tarihî kaynaklar ve yılları. Bunlar kelime değil KAYNAK
+#: bilgisidir. Yıllar ve gerekçeleri tek yerde:
+#: ``engine.utils.attestation_dates`` (eskiden burada DLT 1074 / Orhun 735 /
+#: Atebet 1150 yazıyordu, Starling'de 1072 / 732 / 1300).
 DATED_SOURCES: list[tuple[re.Pattern[str], int, str]] = [
-    (re.compile(r"orhun|köktürk|kül\s*tigin|bilge\s*kağan", re.I), 735, "735 Orhun Yazıtları"),
-    (re.compile(r"divan.?[uı]?\s*lugat|kaşgarl|dlt\b|divan-i lugat", re.I), 1074, "1074 Divânu Lugâti't-Türk (Kâşgarlı Mahmud)"),
-    (re.compile(r"kutadgu\s*bilig", re.I), 1069, "1069 Kutadgu Bilig (Yusuf Has Hacib)"),
-    (re.compile(r"codex\s*cumanicus", re.I), 1303, "1303 Codex Cumanicus"),
-    (re.compile(r"atebet.?ül.?hakayık|atabet", re.I), 1150, "yak. 1150 Atebetü'l-Hakayık"),
-    (re.compile(r"kamus-?ı\s*türkî|şemsettin\s*sami", re.I), 1901, "1901 Kamûs-ı Türkî (Şemseddin Sâmi)"),
-    (re.compile(r"lehçe-?i\s*osman", re.I), 1876, "1876 Lehce-i Osmânî"),
-    (re.compile(r"tarama\s*sözlü", re.I), 1300, "13.-19. yy TDK Tarama Sözlüğü"),
+    (w.pattern, w.year, f"{w.year} {w.label}") for w in POINT_WORKS
 ]
 
 _YEAR_RE = re.compile(r"\b(1[0-9]{3}|20[0-2][0-9]|[6-9][0-9]{2})\b")
@@ -71,7 +67,10 @@ class HistoricalAttestationVerifier:
                 if att.get("precision") == "period":
                     periods.append(att)
                     continue
-                candidates.append((int(att["year"]), att.get("source", ""), "fetcher"))
+                # Eser tanınıyorsa kaynağın yazdığı değil haritanın yılı
+                # (EtimolojiTürkçe DLT'ye 1070 diyor, Starling MK 1072).
+                year = canonical_year(str(att.get("source") or ""), int(att["year"]))
+                candidates.append((year, att.get("source", ""), "fetcher"))
 
         # 2. Dil kayıtlarının kaynak/ad alanlarında geçen bilinen tarihî eserler
         for entry in live_entries or []:
