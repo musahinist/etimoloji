@@ -378,6 +378,44 @@ class TestEtimolojiTurkceFetcher(unittest.TestCase):
         self.assertNotIn("Å", blob)
         self.assertNotIn("Ã¼", blob)
 
+    def test_chain_has_no_raw_abbreviations(self):
+        """bant: `bande 1`, `Ger`, `HAvr`, anlam `a.a.` rapora ham basılıyordu."""
+        step = (
+            '<span class="ety1"><span style="cursor:pointer" title="{rel}" class="ety1">~&nbsp;</span>'
+            '<span style="cursor:pointer" class="ety2"><span title="{title}">{abbr} </span></span>'
+            '<span class="ety4">{form} </span><span class="ety3">{meaning} </span></span>'
+        )
+        same = '<span style="cursor:pointer" title="Aynı anlamda">a.a.</span>'
+        html = "".join([
+            step.format(rel="Alıntı (loan)", title="Fransızca", abbr="Fr", form="bande<sup>1</sup>",
+                        meaning="şerit, kurdele"),
+            step.format(rel="Alıntı (loan)", title="Germence", abbr="Ger", form="*bandam", meaning=same),
+            step.format(rel="Ses evrimi (evolution)", title="Hintavrupa Anadili", abbr="HAvr",
+                        form="*bhendh-", meaning=same),
+            step.format(rel="Türeme (derivation)", title="her çeşit Türkçe (nihai kaynağı yabancı da olabilir)",
+                        abbr="Tü", form="bağ", meaning=""),
+            step.format(rel="Alıntı (loan)", title="Orta Farsça > 10. yy", abbr="OFa", form="x", meaning=""),
+        ])
+        result = EtimolojiTurkceFetcher().empty_result()
+        EtimolojiTurkceFetcher()._parse_chain(html, result)
+        got = [(e["lang_code"], e["lang_name"], e["word"], e["meaning"]) for e in result["turkic_languages"]]
+        self.assertEqual(got, [
+            ("donor", "Fransızca", "bande", "şerit, kurdele"),
+            ("donor", "Germence", "*bandam", "şerit, kurdele"),
+            ("donor", "Hintavrupa Anadili", "*bhendh-", "şerit, kurdele"),
+            ("donor", "Orta Farsça", "x", ""),
+        ])
+
+
+class TestAcademicTurkologyReading(unittest.TestCase):
+    def test_reading_is_split_from_form(self):
+        """kutlu: tanık adı "кут (kut)" basılıyordu; okunuş ayrı alanda."""
+        from engine.fetchers.academic_turkology import _split_reading
+
+        self.assertEqual(_split_reading("құт (qut)"), ("құт", "qut"))
+        self.assertEqual(_split_reading("𐰸𐰆 (kut)"), ("𐰸𐰆", "kut"))
+        self.assertEqual(_split_reading("kut"), ("kut", ""))
+
 
 class TestFetcherPortfolio(unittest.TestCase):
     def test_default_portfolio_is_healthy(self):

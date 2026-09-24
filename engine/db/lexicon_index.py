@@ -315,6 +315,52 @@ def _etymology_text(record: dict[str, Any]) -> str:
     return ""
 
 
+#: Rusça Wiktionary'nin "etimoloji bilinmiyor" yer tutucusu ve şablon
+#: artıkları. Dökümde 58 bin maddenin notu YALNIZ bundan ibaret
+#: ("Происходит от ??" 32.798, "От ??" 16.507, "Из ??" 8.687) ve rapora
+#: "Kaynak notu: Происходит от ??" diye basılıyordu.
+_RU_PLACEHOLDER_NOTE = re.compile(r"^\s*(?:Происходит\s+)?(?:от|из)?\s*\?\?\s*\.?\s*$", re.IGNORECASE)
+_RU_PLACEHOLDER_CLAUSE = re.compile(r",?\s*(?:далее\s+)?(?:от|из)\s+\?\?\s*\.?|\.?\?\?\.?", re.IGNORECASE)
+_RU_BOILERPLATE = re.compile(
+    r"Это болванка статьи[^\n]*|Это незаконченная статья[^\n]*|Статья нуждается в доработке\.?"
+    r"|\(См\.\s*[Оо]бщепринятые правила\)\.?"
+)
+_LINE_END_PUNCT = (".", ":", ";", ",", "!", "?")
+
+
+def _clean_note(text: str) -> str:
+    """Sözlük notunu rapora basılabilir TEK satıra indirir.
+
+    - "Etymology tree" bloğu atılır (aynı zincir düzyazıda tekrar ediyor,
+      ağaç kökten başlayan ham satırlardır);
+    - Rusça sürümün ``??`` yer tutucusu ve şablon cümleleri silinir;
+    - satır sonları birleştirilir: noktalama ile biten satırdan sonra boşluk,
+      liste satırlarında ("list of cognates / Azerbaijani körpü") " / ".
+
+    ⚠️ Yalnız saklanan NOTU temizler; köken/verici çıkarımı ham metinden
+    (``donor_from_text``) yapılır.
+    """
+    if not text:
+        return ""
+    tree_lines, prose = _split_tree_block(text)
+    if tree_lines and not prose.strip():
+        prose = "\n".join(tree_lines)
+    prose = _RU_BOILERPLATE.sub(" ", prose)
+    if _RU_PLACEHOLDER_NOTE.match(prose):
+        return ""
+    prose = _RU_PLACEHOLDER_CLAUSE.sub("", prose)
+    out = ""
+    for line in (x.strip() for x in prose.split("\n")):
+        if not line:
+            continue
+        if out:
+            # "; " DEĞİL: `;` ve `,` akrabalık beyanı desenlerinde cümle
+            # sınırıdır; satır sonu eskiden sınır sayılmıyordu, sayılmaz.
+            out += " " if out.endswith(_LINE_END_PUNCT) else " / "
+        out += re.sub(r"\s+", " ", line)
+    return out.strip()
+
+
 def _first_gloss(record: dict[str, Any]) -> str:
     for sense in record.get("senses", []):
         glosses = sense.get("glosses") or []
@@ -676,7 +722,7 @@ def iter_entries(path: Path, lang_code: str, *, skip_form_of: bool = False) -> I
                 pos=str(record.get("pos", "")),
                 gloss=_first_gloss(record),
                 ipa=_first_ipa(record),
-                etymology=_etymology_text(record),
+                etymology=_clean_note(_etymology_text(record)),
                 long_vowels=extract_long_vowels(_first_ipa(record)),
                 origin=origin,
                 donor_lang=donor_lang,

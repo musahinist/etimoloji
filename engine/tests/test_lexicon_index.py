@@ -383,3 +383,29 @@ class TestFormationAndCognates(unittest.TestCase):
             index.build(sources={"otk": d / "otk.jsonl.gz"})
             row = index.lookup("bitig")[0]
         self.assertEqual(row["formation"], "biti- + -g")
+
+
+class TestCleanNote(unittest.TestCase):
+    """Saklanan sözlük notu rapora ham döküm olarak basılmamalı."""
+
+    def test_russian_placeholder_is_dropped(self):
+        from engine.db.lexicon_index import _clean_note
+
+        for raw in ("Происходит от ??", "От ??", "Из ??.", "Из ??\n\nСтатья нуждается в доработке."):
+            self.assertEqual(_clean_note(raw), "", raw)
+        self.assertEqual(_clean_note("Из русск. флюгер, далее из ??"), "Из русск. флюгер")
+
+    def test_no_line_breaks_and_no_tree_block(self):
+        from engine.db.lexicon_index import _clean_note
+
+        raw = (
+            "Etymology tree\nArabic قُرْبَان (qurbān)bor.\nOttoman Turkish قربان (kurban)\nTurkish kurban\n"
+            "Inherited from Ottoman Turkish قربان (kurban), borrowed from Arabic قُرْبَان (qurbān)."
+        )
+        self.assertEqual(
+            _clean_note(raw),
+            "Inherited from Ottoman Turkish قربان (kurban), borrowed from Arabic قُرْبَان (qurbān).",
+        )
+        joined = _clean_note("From Proto-Turkic *āka.\nCognate with\nKazakh ағай")
+        self.assertNotIn("\n", joined)
+        self.assertEqual(joined, "From Proto-Turkic *āka. Cognate with / Kazakh ағай")

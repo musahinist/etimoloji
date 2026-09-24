@@ -16,6 +16,23 @@ logger = get_logger(__name__)
 SEED_PATH = "lexicon/clauson_estja.json"
 ACADEMIC_TURKOLOGY_LEXICON = load_seed_entries(SEED_PATH)
 
+#: Tohum dosyası okunuşu biçimin yanına yazıyor: "құт (qut)", "𐰸𐰆 (kut)".
+_READING = re.compile(r"^(?P<form>[^()]+?)\s*\((?P<reading>[^()]+)\)\s*$")
+
+
+def _split_reading(raw: str) -> tuple[str, str]:
+    """``"құт (qut)"`` -> ``("құт", "qut")``.
+
+    ⚠️ Parantezli okunuş biçimin parçası sayılıyordu: tanık adı "кут (kut)"
+    basılıyor, karşılaştırma biçmi parantezle bozuluyordu (105 kelimelik
+    denetim: `kutlu`da 5 tanık).
+    """
+    match = _READING.match(raw or "")
+    if not match:
+        return raw, ""
+    return match.group("form").strip(), match.group("reading").strip()
+
+
 class AcademicTurkologyFetcher(BaseFetcher):
     #: Bu kaynak yerel tohum veriden beslenir, canlı bir servis DEĞİLDİR.
     is_seed_source = True
@@ -40,14 +57,17 @@ class AcademicTurkologyFetcher(BaseFetcher):
 
             for lang_code, cognate in entry.get("cognates", {}).items():
                 if lang_code in TURKIC_LANGUAGES_MAP:
-                    display_word = cognate["word"]
-                    result["turkic_languages"].append({
+                    display_word, reading = _split_reading(cognate["word"])
+                    record = {
                         "lang_code": lang_code,
                         "lang_name": TURKIC_LANGUAGES_MAP[lang_code],
                         "word": display_word,
                         "meaning": cognate["meaning"],
                         "script": "Cyrillic" if re.search(r'[\u0400-\u04FF]', display_word) else ("Arabic" if re.search(r'[\u0600-\u06FF]', display_word) else "Latin")
-                    })
+                    }
+                    if reading:
+                        record["latin_transliteration"] = reading
+                    result["turkic_languages"].append(record)
 
         url = f"https://sozluk.gov.tr/terim?ara={urllib.parse.quote(word_clean)}"
         try:

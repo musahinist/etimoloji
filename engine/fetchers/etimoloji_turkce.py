@@ -39,6 +39,11 @@ LANG_ABBREV: dict[str, tuple[str, str]] = {
     "YTü": ("tr", "Yeni Türkçe"),
     "OsmTü": ("ota", "Osmanlı Türkçesi"),
     "KTü": ("krc", "Kıpçak Türkçesi"),
+    # "her çeşit Türkçe" / "Eski Batı Türkçesi (<13. yy)": Türki adımlar
+    # verici DEĞİLDİR; tabloda yokken "donor" sayılıp köken zincirine
+    # "Tü dil", "BTü yüzerlik" diye basılıyordu.
+    "Tü": ("tr", "Türkçe"),
+    "BTü": ("trk-oat", "Eski Batı Türkçesi"),
     "Moğ": ("donor", "Moğolca"),
     "Ar": ("donor", "Arapça"),
     "Fa": ("donor", "Farsça"),
@@ -87,6 +92,27 @@ _ATTEST_RE = re.compile(
 _TAG_RE = re.compile(r"""<(?:[^>"']|"[^"]*"|'[^']*')*>""")
 
 
+#: Eşsesli sıra numarası: ``bande<sup>1</sup>`` biçimin parçası DEĞİLDİR
+#: (düz metne "bande 1" olarak geçiyor ve A-HVP ata biçimi oluyordu).
+_SUP_RE = re.compile(r"<sup>.*?</sup>", re.S)
+#: "a.a." = "Aynı anlamda": bir önceki (daha genç) adımın anlamı.
+_SAME_SENSE = "a.a."
+
+
+def _language_name(fragment: str, abbrev: str) -> str:
+    """Kısaltmanın görünen adı: sitenin kendi ``title`` özniteliği.
+
+    ⚠️ Kısaltma tablosu eksik kalır (EFr, OFa, Ger, HAvr, Akad, YLat…) ve
+    tabloda olmayan kısaltma rapora HAM basılıyordu (105 kelimelik denetim:
+    16 kelime). Site her kısaltmanın tam adını ``title`` özniteliğinde verir
+    ("Hintavrupa Anadili", "Orta Farsça > 10. yy"); dönem eki atılır.
+    """
+    title = _TITLE_RE.search(fragment or "")
+    name = html_module.unescape(title.group(1)).strip() if title else ""
+    name = re.split(r"\s*(?:>|\()", name, maxsplit=1)[0].strip()
+    return name or abbrev or "Bilinmeyen kaynak"
+
+
 def _text(html_fragment: str) -> str:
     """HTML parçasından düz metin çıkarır (tüm HTML varlıkları çözülür)."""
     t = _TAG_RE.sub(" ", html_fragment or "")
@@ -127,15 +153,23 @@ class EtimolojiTurkceFetcher(BaseFetcher):
     def _parse_chain(self, html: str, result: dict[str, Any]) -> None:
         """Türeme zincirindeki her adımı bir dil kaydına çevirir."""
         seen: set[tuple[str, str]] = set()
+        previous_meaning = ""
         for m in _STEP_RE.finditer(html):
             abbrev = _text(m.group("lang"))
-            form = _text(m.group("form"))
+            form = _text(_SUP_RE.sub("", m.group("form")))
             meaning_m = _MEANING_RE.search(m.group("rest"))
             meaning = _text(meaning_m.group(1)) if meaning_m else ""
+            # "a.a." kısaltması anlam değildir: önceki adımın anlamı yazılır.
+            if meaning.strip() == _SAME_SENSE:
+                meaning = previous_meaning or "aynı anlamda"
+            elif _SAME_SENSE in meaning:
+                meaning = meaning.replace(_SAME_SENSE, "aynı anlamda")
+            if meaning:
+                previous_meaning = meaning
             if not form:
                 continue
 
-            code, name = LANG_ABBREV.get(abbrev, ("donor", abbrev or "Bilinmeyen kaynak"))
+            code, name = LANG_ABBREV.get(abbrev, ("donor", _language_name(m.group("lang"), abbrev)))
             title = _TITLE_RE.search(m.group("rel") or "")
             relation = html_module.unescape(title.group(1)) if title else ""
             if code != "donor" and not relation.startswith(_WITNESS_RELATIONS):
