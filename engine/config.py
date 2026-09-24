@@ -69,6 +69,12 @@ HTTP_TIMEOUT_LONG = _env_float("HTTP_TIMEOUT_LONG", 12.0)     # büyük sayfalar
 
 HTTP_MAX_RETRIES = _env_int("HTTP_MAX_RETRIES", 2)
 HTTP_BACKOFF_BASE = _env_float("HTTP_BACKOFF_BASE", 0.3)
+# Devre kesici: bir sunucu art arda bu kadar ağ hatası / 5xx verirse
+# CIRCUIT_COOLDOWN saniye boyunca ona istek atılmaz. Ölçüldü (2026-09-24):
+# TDK erişilemezken her istek ~19 sn bekliyor, arama başına 4-6 istek;
+# 60 kelimelik tarama 10 dakikada yalnız 4 kelime ilerledi.
+CIRCUIT_FAILURES = _env_int("CIRCUIT_FAILURES", 3)
+CIRCUIT_COOLDOWN = _env_float("CIRCUIT_COOLDOWN", 300.0)
 USER_AGENT = _env_str(
     "USER_AGENT",
     "TurkicEtymologyEngine/3.0 (academic research; +https://github.com/)",

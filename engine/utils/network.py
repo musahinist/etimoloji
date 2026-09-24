@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import ipaddress
 import socket
+import threading
 import time
 from dataclasses import dataclass, field
 from typing import Any
@@ -25,6 +26,8 @@ from urllib.parse import urlparse
 import requests
 
 from engine.config import (
+    CIRCUIT_COOLDOWN,
+    CIRCUIT_FAILURES,
     HTTP_BACKOFF_BASE,
     HTTP_MAX_RETRIES,
     HTTP_TIMEOUT_MEDIUM,
@@ -113,6 +116,41 @@ def reset_session() -> None:
     if _session is not None:
         _session.close()
     _session = None
+    reset_circuits()
+
+
+# --- Devre kesici ----------------------------------------------------------
+# Sunucu başına ardışık hata sayısı ve devrenin açık kalacağı an.
+_circuits: dict[str, tuple[int, float]] = {}
+_circuit_lock = threading.Lock()
+
+
+def reset_circuits() -> None:
+    with _circuit_lock:
+        _circuits.clear()
+
+
+def _circuit_open(host: str) -> bool:
+    with _circuit_lock:
+        _, open_until = _circuits.get(host, (0, 0.0))
+        return open_until > time.monotonic()
+
+
+def _record(host: str, *, failed: bool) -> None:
+    with _circuit_lock:
+        if not failed:
+            _circuits.pop(host, None)
+            return
+        failures = _circuits.get(host, (0, 0.0))[0] + 1
+        open_until = 0.0
+        if failures >= CIRCUIT_FAILURES:
+            open_until = time.monotonic() + CIRCUIT_COOLDOWN
+            logger.warning(
+                "Devre açıldı: %s art arda %d kez başarısız; %.0f sn istek atılmayacak",
+                host, failures, CIRCUIT_COOLDOWN,
+            )
+            failures = 0
+        _circuits[host] = (failures, open_until)
 
 
 # --- Güvenlik --------------------------------------------------------------
@@ -204,6 +242,13 @@ def fetch(
             diagnostics.add(RequestRecord(url=url, status="blocked", duration_ms=0, error=reason))
         return None
 
+    host = urlparse(url).hostname or ""
+    if _circuit_open(host):
+        logger.debug("Devre açık, istek atlanıyor: %s", url)
+        if diagnostics is not None:
+            diagnostics.add(RequestRecord(url=url, status="circuit_open", duration_ms=0, error="devre açık"))
+        return None
+
     session = get_session()
     started = time.perf_counter()
     last_error: str | None = None
@@ -214,6 +259,7 @@ def fetch(
             resp = session.get(url, timeout=timeout, headers=headers, params=params)
             http_status = resp.status_code
             if resp.status_code == 200:
+                _record(host, failed=False)
                 elapsed = int((time.perf_counter() - started) * 1000)
                 if diagnostics is not None:
                     diagnostics.add(RequestRecord(url=url, status="ok", duration_ms=elapsed, http_status=200))
@@ -243,6 +289,12 @@ def fetch(
 
     elapsed = int((time.perf_counter() - started) * 1000)
     status = "http_error" if http_status else "network_error"
+    # Yalnız sunucunun ULAŞILAMAZ olduğunu gösteren hatalar devreyi besler;
+    # 404 "kelime yok", 429 ise hız sınırıdır.
+    if http_status is None or http_status >= 500:
+        _record(host, failed=True)
+    elif http_status == 404:
+        _record(host, failed=False)
     # 404 ve 429 bu hatta BEKLENEN durumlardır: aranan kelime o sözlükte
     # gerçekten olmayabilir (404), ya da tek bir arama onlarca kaynağa
     # paralel gittiği için hız sınırına çarpılabilir (429). Bunları WARNING

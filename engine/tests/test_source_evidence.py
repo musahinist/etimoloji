@@ -136,3 +136,31 @@ class TestWithinOne(unittest.TestCase):
             a = "".join(rng.choice("abç") for _ in range(rng.randint(0, 5)))
             b = "".join(rng.choice("abç") for _ in range(rng.randint(0, 5)))
             self.assertEqual(_within_one(a, b), min(edit_distance(a, b), 2), (a, b))
+
+
+class TestCircuitBreaker(unittest.TestCase):
+    def tearDown(self):
+        from engine.utils.network import reset_circuits
+
+        reset_circuits()
+
+    def test_opens_after_consecutive_failures(self):
+        from unittest import mock
+
+        import requests
+
+        from engine.utils import network
+
+        network.reset_circuits()
+        session = mock.Mock()
+        session.get.side_effect = requests.Timeout("yavaş")
+        with mock.patch.object(network, "get_session", return_value=session), \
+             mock.patch.object(network.time, "sleep"):
+            for _ in range(network.CIRCUIT_FAILURES):
+                self.assertIsNone(network.fetch("https://sozluk.gov.tr/gts?ara=x", max_retries=0))
+            calls = session.get.call_count
+            self.assertIsNone(network.fetch("https://sozluk.gov.tr/gts?ara=y", max_retries=0))
+            self.assertEqual(session.get.call_count, calls, "devre açıkken istek atılmamalı")
+            # Başka sunucu etkilenmez.
+            network.fetch("https://example.org/", max_retries=0)
+            self.assertEqual(session.get.call_count, calls + 1)
