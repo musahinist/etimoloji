@@ -32,14 +32,14 @@
     },
     {
       "n": 903,
-      "accuracy": 0.485,
-      "within_one_edit": 0.7586,
-      "ED": 1.0055,
-      "NED": 0.2402,
+      "accuracy": 0.4939,
+      "within_one_edit": 0.7597,
+      "ED": 0.9934,
+      "NED": 0.2371,
       "system": "learned",
       "accuracy_ci": [
-        0.4529,
-        0.5172
+        0.4629,
+        0.526
       ]
     }
   ],
@@ -60,10 +60,10 @@
     {
       "system": "learned",
       "vs": "identity",
-      "difference": 0.1307,
+      "difference": 0.1395,
       "ci95": [
-        0.1019,
-        0.1606
+        0.1096,
+        0.1694
       ],
       "permutation_p": 0.0001,
       "mcnemar_p": 0.0,
@@ -95,31 +95,31 @@
     },
     "ba": {
       "n": 30,
-      "accuracy": 0.6,
+      "accuracy": 0.6333,
       "within_one_edit": 0.8,
-      "ED": 0.8,
-      "NED": 0.197
+      "ED": 0.7667,
+      "NED": 0.1903
     },
     "bay": {
       "n": 25,
-      "accuracy": 0.4,
-      "within_one_edit": 0.64,
-      "ED": 1.08,
-      "NED": 0.292
+      "accuracy": 0.44,
+      "within_one_edit": 0.68,
+      "ED": 0.96,
+      "NED": 0.2693
     },
     "cjs": {
       "n": 25,
       "accuracy": 0.4,
-      "within_one_edit": 0.68,
-      "ED": 1.24,
-      "NED": 0.3098
+      "within_one_edit": 0.72,
+      "ED": 1.2,
+      "NED": 0.2965
     },
     "clw": {
       "n": 25,
       "accuracy": 0.36,
       "within_one_edit": 0.72,
-      "ED": 1.44,
-      "NED": 0.3215
+      "ED": 1.48,
+      "NED": 0.3281
     },
     "crh": {
       "n": 39,
@@ -130,10 +130,10 @@
     },
     "cv": {
       "n": 23,
-      "accuracy": 0.087,
+      "accuracy": 0.1739,
       "within_one_edit": 0.4348,
-      "ED": 2.0,
-      "NED": 0.497
+      "ED": 1.8696,
+      "NED": 0.4655
     },
     "dlg": {
       "n": 19,
@@ -151,10 +151,10 @@
     },
     "kaa": {
       "n": 35,
-      "accuracy": 0.4857,
-      "within_one_edit": 0.7714,
-      "ED": 1.0286,
-      "NED": 0.2333
+      "accuracy": 0.5429,
+      "within_one_edit": 0.8,
+      "ED": 0.9429,
+      "NED": 0.2123
     },
     "kdr": {
       "n": 31,
@@ -174,15 +174,15 @@
       "n": 22,
       "accuracy": 0.3182,
       "within_one_edit": 0.6818,
-      "ED": 1.3636,
+      "ED": 1.3182,
       "NED": 0.3331
     },
     "kk": {
       "n": 32,
-      "accuracy": 0.4062,
+      "accuracy": 0.4375,
       "within_one_edit": 0.7812,
-      "ED": 1.125,
-      "NED": 0.2518
+      "ED": 1.0625,
+      "NED": 0.2404
     },
     "klj": {
       "n": 23,
@@ -200,24 +200,24 @@
     },
     "kum": {
       "n": 33,
-      "accuracy": 0.5758,
+      "accuracy": 0.5152,
       "within_one_edit": 0.7576,
-      "ED": 0.8485,
-      "NED": 0.2118
+      "ED": 0.9091,
+      "NED": 0.2239
     },
     "ky": {
       "n": 34,
-      "accuracy": 0.5882,
+      "accuracy": 0.5294,
       "within_one_edit": 0.7647,
-      "ED": 0.8824,
-      "NED": 0.2013
+      "ED": 0.9412,
+      "NED": 0.213
     },
     "nog": {
       "n": 33,
-      "accuracy": 0.5455,
+      "accuracy": 0.6061,
       "within_one_edit": 0.7879,
-      "ED": 0.9091,
-      "NED": 0.2001
+      "ED": 0.8788,
+      "NED": 0.1882
     },
     "otk": {
       "n": 28,
@@ -249,17 +249,17 @@
     },
     "tk": {
       "n": 34,
-      "accuracy": 0.5294,
-      "within_one_edit": 0.9118,
-      "ED": 0.5882,
-      "NED": 0.1581
+      "accuracy": 0.5,
+      "within_one_edit": 0.8529,
+      "ED": 0.6765,
+      "NED": 0.1748
     },
     "tt": {
       "n": 33,
-      "accuracy": 0.4242,
+      "accuracy": 0.5152,
       "within_one_edit": 0.7576,
-      "ED": 1.0606,
-      "NED": 0.2688
+      "ED": 0.9697,
+      "NED": 0.2465
     },
     "tyv": {
       "n": 18,
@@ -284,10 +284,10 @@
     },
     "ybe": {
       "n": 27,
-      "accuracy": 0.3704,
+      "accuracy": 0.4074,
       "within_one_edit": 0.7407,
-      "ED": 1.1852,
-      "NED": 0.3195
+      "ED": 1.1481,
+      "NED": 0.3071
     }
   }
 }

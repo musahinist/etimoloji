@@ -69,6 +69,28 @@ MIN_SUPPORT = 2
 #: Konum etiketleri — ses kanunları konuma duyarlıdır.
 POSITIONS = ("initial", "medial", "final")
 
+#: Karşılaştırma biçimindeki ünlüler (``y`` ünsüzdür).
+VOWELS = frozenset("aeıioöuüäəâîûåë")
+
+#: ⚠️ **Hece bağlamı: ilk hece ünlüsü mü, sonraki mi?**
+#:
+#: Çuvaşçada (Oğur) ünlü refleksi hecenin yerine bağlıdır: ilk hecedeki
+#: ``*a`` çoğunlukla ``u`` olur (``kara ~ hura``, ``yan ~ sun``), sonraki
+#: hecelerdeki ``a`` ise ``e``/``ı``/``a``. Bağlamsız tabloda ``tr -> cv``
+#: iç ``a`` için ``u`` ile ``e`` 9'a 9 berabere kalıyordu ve seçim sözlük
+#: sırasına bırakılmıştı. Bağlam da veriden (TRAIN) sayılır, elle yazılmaz.
+#:
+#: Bağlamlı kayıt, bağlamsızdan daha seyrektir; bu yüzden daha yüksek bir
+#: destek ister, yetmezse bağlamsız kayda düşülür. Ölçüldü (dev, tr -> 31
+#: dil): eşik 2 genel isabeti düşürüyordu (0,4895), 3 ve 4 artırıyordu
+#: (0,498 / 0,503) — ⚠️ eşik dev üzerinde seçildi; fark GA içinde.
+CONTEXT_MIN_SUPPORT = 3
+
+
+def syllable_context(vowels_before: int) -> str:
+    """Ünlünün hece bağlamı etiketi: ``σ1`` (ilk hece) ya da ``σ2`` (sonrası)."""
+    return "σ1" if vowels_before == 0 else "σ2"
+
 
 def position_of(index: int, length: int) -> str:
     if index == 0:
@@ -86,16 +108,35 @@ class CorrespondenceTable:
     target: str
     #: ``(konum, kaynak_ses) -> {hedef_ses: sayım}``
     counts: dict[tuple[str, str], Counter] = field(default_factory=lambda: defaultdict(Counter))
+    #: ``(konum, kaynak_ses, bağlam) -> {hedef_ses: sayım}`` — bkz.
+    #: :data:`CONTEXT_MIN_SUPPORT`.
+    context_counts: dict[tuple[str, str, str], Counter] = field(
+        default_factory=lambda: defaultdict(Counter)
+    )
 
-    def observe(self, position: str, source_sound: str, target_sound: str) -> None:
+    def observe(
+        self, position: str, source_sound: str, target_sound: str, context: str | None = None
+    ) -> None:
         self.counts[(position, source_sound)][target_sound] += 1
+        if context:
+            self.context_counts[(position, source_sound, context)][target_sound] += 1
 
-    def predict(self, position: str, sound: str) -> tuple[str, float]:
+    def predict(self, position: str, sound: str, context: str | None = None) -> tuple[str, float]:
         """En olası hedef sesi ve olasılığını döndürür.
 
-        Konuma özgü kayıt yoksa konumdan bağımsız toplama düşülür; o da
-        yoksa ses **olduğu gibi** bırakılır (en muhafazakâr tahmin).
+        Sıra: bağlamlı kayıt (yeterli destekle) -> konuma özgü kayıt ->
+        konumdan bağımsız toplam -> ses **olduğu gibi** (en muhafazakâr).
+
+        ⚠️ İç/son konum için toplamaya **baş** konum katılmaz: baş ses
+        kanunları (``b- ~ p-``, ``y- ~ ś-``) iç seslere taşınıyordu —
+        ``kabuk ~ hube`` için ``hupe`` üretiliyordu.
         """
+        if context:
+            contextual = self.context_counts.get((position, sound, context))
+            if contextual and sum(contextual.values()) >= CONTEXT_MIN_SUPPORT:
+                best, count = contextual.most_common(1)[0]
+                return best, count / sum(contextual.values())
+
         specific = self.counts.get((position, sound))
         if specific and sum(specific.values()) >= MIN_SUPPORT:
             best, count = specific.most_common(1)[0]
@@ -103,6 +144,8 @@ class CorrespondenceTable:
 
         pooled: Counter = Counter()
         for pos in POSITIONS:
+            if position != "initial" and pos == "initial":
+                continue
             pooled.update(self.counts.get((pos, sound), Counter()))
         if pooled and sum(pooled.values()) >= MIN_SUPPORT:
             best, count = pooled.most_common(1)[0]
@@ -118,6 +161,11 @@ class CorrespondenceTable:
                 for (position, sound), targets in sorted(self.counts.items())
                 if sum(targets.values()) >= MIN_SUPPORT
             },
+            "context_rules": {
+                f"{position}|{sound}|{context}": dict(targets.most_common())
+                for (position, sound, context), targets in sorted(self.context_counts.items())
+                if sum(targets.values()) >= CONTEXT_MIN_SUPPORT
+            },
         }
 
     @classmethod
@@ -126,6 +174,9 @@ class CorrespondenceTable:
         for key, targets in data.get("rules", {}).items():
             position, sound = key.split("|", 1)
             table.counts[(position, sound)] = Counter(targets)
+        for key, targets in data.get("context_rules", {}).items():
+            position, sound, context = key.split("|", 2)
+            table.context_counts[(position, sound, context)] = Counter(targets)
         return table
 
 
@@ -170,9 +221,13 @@ class CognatePredictor:
         chars: list[str] = []
         probabilities: list[float] = []
         steps: list[dict[str, object]] = []
+        vowels_before = 0
         for index, sound in enumerate(form):
             position = position_of(index, len(form))
-            predicted, probability = table.predict(position, sound)
+            context = syllable_context(vowels_before) if sound in VOWELS else None
+            if sound in VOWELS:
+                vowels_before += 1
+            predicted, probability = table.predict(position, sound, context)
             if predicted != GAP:
                 chars.append(predicted)
             probabilities.append(probability)
@@ -276,20 +331,38 @@ def learn_tables(
             continue
         used_sets += 1
 
-        width = len(columns)
+        # ⚠️ Konum ve hece bağlamı KAYNAK dilin kendi ses dizisine göre
+        # hesaplanır, hizalama genişliğine göre değil. Tahmin sırasında
+        # elimizde yalnız kaynak biçim vardır; öğrenme de aynı ölçüyü
+        # kullanmalı. (Eskiden başka bir tanığın fazladan sesi, kaynağın
+        # son sesini "iç" konuma itiyordu.)
+        source_context: dict[tuple[str, int], tuple[str, str | None]] = {}
+        for language in forms:
+            sequence = [
+                (index, column.sounds.get(language))
+                for index, column in enumerate(columns)
+                if column.sounds.get(language) and column.sounds.get(language) != GAP
+            ]
+            vowels_before = 0
+            for order, (index, sound) in enumerate(sequence):
+                context = syllable_context(vowels_before) if sound in VOWELS else None
+                source_context[(language, index)] = (position_of(order, len(sequence)), context)
+                if sound in VOWELS:
+                    vowels_before += 1
+
         for index, column in enumerate(columns):
-            position = position_of(index, width)
             present = column.sounds
             for source, source_sound in present.items():
                 if not source_sound or source_sound == GAP:
                     continue
+                position, context = source_context[(source, index)]
                 for target, target_sound in present.items():
                     if source == target or not target_sound:
                         continue
                     key = (source, target)
                     if key not in tables:
                         tables[key] = CorrespondenceTable(source=source, target=target)
-                    tables[key].observe(position, source_sound, target_sound)
+                    tables[key].observe(position, source_sound, target_sound, context)
 
     logger.info(
         "Denklik tabloları öğrenildi: %d dil çifti, %d akraba kümesinden (%s)",
@@ -315,6 +388,7 @@ def save_tables(
                 "trained_on": trained_on,
                 "trained_at": datetime.now(UTC).isoformat(timespec="seconds"),
                 "min_support": MIN_SUPPORT,
+                "context_min_support": CONTEXT_MIN_SUPPORT,
                 "n_pairs": len(tables),
                 "note": (
                     "Yalnız TRAIN kavramlarından öğrenilmiştir. Kurallar elle "

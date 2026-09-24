@@ -11,6 +11,7 @@ import unittest
 
 from engine.config import CLDF_DIR
 from engine.nlp.cognate_prediction import (
+    CONTEXT_MIN_SUPPORT,
     MIN_SUPPORT,
     CognatePredictor,
     CorrespondenceTable,
@@ -70,6 +71,40 @@ class TestCorrespondenceTable(unittest.TestCase):
         restored = CorrespondenceTable.from_dict(table.as_dict())
         self.assertEqual(restored.predict("final", "z"), table.predict("final", "z"))
 
+    def test_syllable_context_beats_plain_rule_when_supported(self):
+        """Çuvaşça ilk hece ``a ~ u``, sonraki hece ``a ~ e``: bağlam ayırır."""
+        table = CorrespondenceTable("tr", "cv")
+        for _ in range(CONTEXT_MIN_SUPPORT):
+            table.observe("medial", "a", "u", "σ1")
+        for _ in range(CONTEXT_MIN_SUPPORT + 1):
+            table.observe("medial", "a", "e", "σ2")
+        self.assertEqual(table.predict("medial", "a", "σ1")[0], "u")
+        self.assertEqual(table.predict("medial", "a", "σ2")[0], "e")
+        self.assertEqual(table.predict("medial", "a")[0], "e")
+
+    def test_sparse_context_falls_back_to_plain_rule(self):
+        table = CorrespondenceTable("tr", "cv")
+        for _ in range(CONTEXT_MIN_SUPPORT - 1):
+            table.observe("medial", "a", "u", "σ1")
+        for _ in range(CONTEXT_MIN_SUPPORT + 2):
+            table.observe("medial", "a", "e", "σ2")
+        self.assertEqual(table.predict("medial", "a", "σ1")[0], "e")
+
+    def test_initial_rules_do_not_leak_into_medial_pool(self):
+        """``b- ~ p-`` baş kuralı iç ``b``ye taşınmamalı (``kabuk ~ hube``)."""
+        table = CorrespondenceTable("tr", "cv")
+        for _ in range(10):
+            table.observe("initial", "b", "p")
+        self.assertEqual(table.predict("medial", "b"), ("b", 0.0))
+        self.assertEqual(table.predict("initial", "b")[0], "p")
+
+    def test_context_rules_round_trip(self):
+        table = CorrespondenceTable("tr", "cv")
+        for _ in range(CONTEXT_MIN_SUPPORT):
+            table.observe("medial", "a", "u", "σ1")
+        restored = CorrespondenceTable.from_dict(table.as_dict())
+        self.assertEqual(restored.predict("medial", "a", "σ1"), ("u", 1.0))
+
     def test_low_support_rules_are_not_serialised(self):
         table = CorrespondenceTable("tr", "kk")
         table.observe("final", "x", "y")
@@ -106,6 +141,12 @@ class TestLearnedPredictions(unittest.TestCase):
 
     def test_front_vowel_correspondence(self):
         self.assertEqual(self.predictor.predict("göz", "tr", "kk").form, "köz")
+
+    def test_oghur_first_syllable_vowel_was_learned(self):
+        """TRAIN'den öğrenilen Çuvaşça (Oğur) denklikleri: ``y- ~ s-``,
+        ilk hece ``a ~ u``, son ``-k`` düşmesi, iç ``b`` korunur."""
+        self.assertEqual(self.predictor.predict("yan", "tr", "cv").form, "sun")
+        self.assertEqual(self.predictor.predict("kabuk", "tr", "cv").form, "hube")
 
     def test_prediction_is_deterministic(self):
         first = self.predictor.predict("kar", "tr", "kk").form
