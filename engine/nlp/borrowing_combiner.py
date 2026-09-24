@@ -31,6 +31,42 @@ sayar.
 (``trained=False``), sessizce yapılmaz.
 
 sklearn kullanılmaz (bağımlılık yok); optimizasyon bu dosyada, deterministik.
+
+⚠️ **Saha'da neden yalnız verici yakınlığı + zincir çalışıyor — ölçüldü,
+olumsuz sonuç (2026-09-24).** Analiz yalnız AYAR yarısında (WOLD n=770,
+Türkçe n=350; tekrarlı ÇD), karar ön-kayıtlı, rapor yarısına bir kez bakıldı.
+
+Saha ayar yarısında sinyal kapsamı ve ayırt ediciliği::
+
+    ses_kanunu_ihlali   20 ateşleme, 19'u mirasta   maddelerin %88'inde tanık yok;
+                                                    lang != tr için beklenti TÜRKÇE
+                                                    refleks, Saha biçimiyle kıyaslanıyor
+    değişimsiz_yayılım  12 ateşleme, 10'u mirasta
+    fonotaktik_ihlal    miras %15 / alıntı %15-18   AUC ~0,50 (Saha h- < *s- düzenli;
+                                                    "söz başı *h- yok" kuralı yanlış ateşler)
+    fonotaktik_model    AUC Rusça 0,73 · Moğolca 0,67
+    verici_yakınlığı    AUC Rusça 0,89 · Moğolca 0,60 (Moğolca havuzu tek başına 0,53)
+    zincir_kanıtı       miras %1 / alıntı %24       tek başına ek katkı veren sinyal
+
+Hata sınıfları (kat dışı): yalnız verici yakınlığı Moğolca alıntıların 63/81'ini,
+Rusçanın 29/119'unu kaçırıyor; Moğolca alıntılar ne fonotaktikle ne verici
+havuzuyla ayrılıyor. Rusça harf/küme göstergeleri (f, v, ts, ş, söz başı ünsüz
+kümesi) WOLD'un uyumlanmış biçimlerinde ~%1 — kullanılamaz. L2 ızgarası
+(0-0,3) fark yaratmıyor. ``verici_yakınlığı`` rampası (SCA 0,35-0,60, şans
+denetimsiz) karşı-kanıt: rampada alıntı oranı Saha 0,19 (taban 0,28),
+Türkçe 0,25 (taban 0,60).
+
+Ön-kayıtlı aday P1: verici yakınlığı ikili (güç = 1) + tekrarlı ÇD ile
+(5 kat x 3) doğruluk ölçütlü sinyal altkümesi seçimi. Ölçüt: Saha doğruluk
+GA'sı verici yakınlığına karşı sıfırı dışlasın VE Türkçe F düşmesin::
+
+                              Saha doğ. farkı (verici'ye)   Saha F   Türkçe F
+    üretim (bu dosya)         -0,0065 [-0,026, +0,013]      0,6554   0,8873
+    P1 (seçti: verici+zincir) +0,0039 [-0,009, +0,017]      0,6517   0,8612
+    yalnız ikilileştirme      (karar adayı değil)           0,6707   0,8765
+
+İki ölçüt de TUTMADI (ayar yarısında beklenen +0,019 rapor yarısında
++0,004'e indi; Türkçede seçim 175 maddede LM'yi eledi). Üretim değişmedi.
 """
 
 from __future__ import annotations
