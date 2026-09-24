@@ -103,6 +103,30 @@ class TestTextDonor(unittest.TestCase):
         self.assertEqual(donor_from_text(text), ("", ""))
         self.assertEqual(donor_from_text("From Persian پارچه (pârče). Cognate with Kurdish x.")[0], "fa")
 
+    def test_cognate_clause_keeps_donor_before_keyword(self):
+        """Anahtar kelimeden ÖNCEKİ verici silinmez; ``cf.`` de kırpılır."""
+        from engine.db.lexicon_index import donor_from_text
+
+        self.assertEqual(donor_from_text("From Persian خرد (xerad), compare Avestan x."), ("fa", "خرد"))
+        self.assertEqual(donor_from_text("Expressive sound, cf. English aiya."), ("", ""))
+        self.assertEqual(donor_from_text("From Arabic x, cf. Persian y."), ("ar", "x"))
+        # "pseudo-Arabic" bir verici adı değildir.
+        self.assertEqual(donor_from_text("From iç + -alat as a pseudo-Arabic derivation."), ("", ""))
+
+    def test_direct_donor_is_nearest_link(self):
+        """kurban: Osmanlıca ← Arapça ← Aramice; doğrudan verici Arapçadır."""
+        from engine.db.lexicon_index import donor_from_text
+
+        prose = (
+            "Inherited from Ottoman Turkish قربان (kurban), borrowed from Arabic "
+            "قُرْبَان (qurbān), borrowed from Aramaic קורבנא (qurbānā)."
+        )
+        tree = "Etymology tree\nAramaic קורבנא (qurbānā)bor.\nArabic قُرْبَان (qurbān)bor.\nOttoman Turkish قربان (kurban)\nTurkish kurban"
+        self.assertEqual(donor_from_text(tree + "\n" + prose), ("ar", "قُرْبَان"))
+        # Yalnız ağaç: satırlar kökten başlar, doğrudan verici sondakidir.
+        self.assertEqual(donor_from_text(tree), ("ar", "قُرْبَان"))
+        self.assertEqual(donor_from_text("From Classical Persian x."), ("fa-cls", "x"))
+
 
 class TestNewLocalSources(unittest.TestCase):
     def test_northeuralex_has_no_mongolic_khk(self):

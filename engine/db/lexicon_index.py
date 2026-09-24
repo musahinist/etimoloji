@@ -150,8 +150,46 @@ _DONOR_NAMES_BY_LENGTH = sorted(ETYMOLOGY_TEXT_DONORS, key=len, reverse=True)
 
 #: Köken zinciri burada biter; sonrası akraba/karşılaştırma listesidir.
 _COGNATE_SECTION = re.compile(r"(?im)^\s*(?:cognates?|compare|see also|descendants|related terms)\b")
-#: Zincir içindeki "Cognate with Kurdish gerek." / "Compare Persian …" cümleleri.
-_COGNATE_SENTENCE = re.compile(r"(?i)[^.]*\b(?:cognate|compare|cf\.)\b[^.]*\.?")
+#: Zincir içindeki "Cognate with Kurdish gerek." / "Compare Persian …" /
+#: "cf. …" kısımları — anahtar kelimeden CÜMLE SONUNA kadar.
+#:
+#: ⚠️ Cümlenin tamamı silinmez: "From Persian X, compare Y." cümlesinde
+#: verici dil anahtar kelimeden ÖNCE durur; cümleyi baştan silen eski desen
+#: vericiyi de götürüyordu. ``cf.`` noktayla bittiği için ardından ``\b``
+#: gelemez; eski ``cf\.\b`` hiç eşleşmiyordu.
+_COGNATE_SENTENCE = re.compile(r"(?i)(?:\bcognate\w*|\bcompare\b|\bcf\.)[^.]*\.?")
+
+#: Wiktionary "Etymology tree" bloğu: başlık satırı + KÖKTEN BAŞLAYAN halka
+#: satırları ("Aramaic קורבנא (qurbānā)bor."). Düzyazı ("Inherited from …")
+#: ilk "from" içeren satırda başlar.
+_TREE_HEADER = "Etymology tree"
+_PROSE_LINE = re.compile(r"(?i)\bfrom\b")
+
+
+def _split_tree_block(etymology_text: str) -> tuple[list[str], str]:
+    """Metni ``(ağaç satırları, düzyazı)`` olarak ayırır."""
+    lines = etymology_text.split("\n")
+    if not lines or lines[0].strip() != _TREE_HEADER:
+        return [], etymology_text
+    index = 1
+    while index < len(lines) and not _PROSE_LINE.search(lines[index]):
+        index += 1
+    return lines[1:index], "\n".join(lines[index:])
+
+
+def _nearest_donor_name(text: str) -> tuple[str, int]:
+    """Metinde EN ÖNCE geçen verici dil adı ve konumu; yoksa ``("", -1)``.
+
+    Aynı konumda başlayan adlardan uzun olan kazanır ("Classical Persian").
+    """
+    best_name, best_index = "", -1
+    for name in _DONOR_NAMES_BY_LENGTH:
+        match = re.search(r"(?<![\w-])" + re.escape(name) + " ", text)
+        if match is None:
+            continue
+        if best_index < 0 or match.start() < best_index:
+            best_name, best_index = name, match.start()
+    return best_name, best_index
 
 
 def donor_from_text(etymology_text: str) -> tuple[str, str]:
@@ -164,15 +202,25 @@ def donor_from_text(etymology_text: str) -> tuple[str, str]:
     """
     if not etymology_text:
         return "", ""
-    etymology_text = _COGNATE_SECTION.split(etymology_text, maxsplit=1)[0]
-    etymology_text = _COGNATE_SENTENCE.sub(" ", etymology_text)
-    for name in _DONOR_NAMES_BY_LENGTH:
-        index = etymology_text.find(name + " ")
-        if index < 0:
-            continue
-        rest = etymology_text[index + len(name) + 1 :].strip()
+    tree_lines, prose = _split_tree_block(etymology_text)
+    prose = _COGNATE_SECTION.split(prose, maxsplit=1)[0]
+    prose = _COGNATE_SENTENCE.sub(" ", prose)
+    # Düzyazı zinciri Türkçeden geriye doğru okunur ("Inherited from Ottoman
+    # Turkish …, borrowed from Arabic …, borrowed from Aramaic …"): EN ÖNCE
+    # geçen verici, Türkçeye en yakın halka yani DOĞRUDAN vericidir. Adları
+    # uzunluk sırasıyla denemek `kurban`ı Aramiceye bağlıyordu.
+    name, index = _nearest_donor_name(prose)
+    if name:
+        rest = prose[index + len(name) + 1 :].strip()
         form = rest.split()[0] if rest else ""
         return ETYMOLOGY_TEXT_DONORS[name], form.strip("(),.")
+    # Yalnız ağaç varsa: satırlar kökten başlar, doğrudan verici SONDAKİDİR.
+    for line in reversed(tree_lines):
+        name, index = _nearest_donor_name(line.strip() + " ")
+        if name and index == 0:
+            rest = line.strip()[len(name) + 1 :].strip()
+            form = rest.split()[0] if rest else ""
+            return ETYMOLOGY_TEXT_DONORS[name], form.strip("(),.")
     return "", ""
 
 
