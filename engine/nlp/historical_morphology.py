@@ -135,13 +135,28 @@ def strip_infinitive(lang_code: str, form: str) -> str:
     return form
 
 
-def infinitive_stem(word: str) -> str | None:
+def _meaning_is_verbal(meaning: str) -> bool:
+    """Anlam bir fiil tanımı mı? İngilizce ``to ...`` ya da Türkçe tanımın
+    ilk öbeği mastarla biter (TDK: "Kaygan bir yüzeyde ... gitmek")."""
+    text = meaning.strip().lower()
+    if text.startswith("to "):
+        return True
+    # Tek kelimelik baş öbek tanım değil, madde başının tekrarıdır
+    # (Wiktionary: "kaymak, a creamy dairy product").
+    words = text.replace(";", ",").split(",")[0].strip().rstrip(".").split()
+    return len(words) >= 2 and words[-1].endswith(("mak", "mek", "maq", "mək"))
+
+
+def infinitive_stem(word: str, meaning: str = "") -> str | None:
     """Türkçe sorgu bir FİİL mastarıysa gövdesini döndürür (`gülmek` → `gül`).
 
     ⚠️ Yalnız `-mAk` ile bitmek yetmez: `parmak`, `ırmak`, `damak`, `emek`
     ad. Sözlük indeksinde Türkçe FİİL kaydı olan kelime soyulur; indeks
-    yoksa ya da fiil kaydı yoksa ``None``. Hem ad hem fiil olan eşsesliler
-    (`kaymak`, `yumak`, `ekmek`) fiil okumasına düşer — bilinen sınır.
+    yoksa ya da fiil kaydı yoksa ``None``.
+
+    Hem ad hem fiil olan eşsesliler (`kaymak` "krema", `ekmek` "bread",
+    `yumak` "to wash") sorgunun ANA anlamıyla ayrılır: ``meaning`` verilmiş
+    ve fiil tanımına benzemiyorsa soyulmaz. Anlam yoksa fiil okuması seçilir.
     """
     w = to_comparison_form(word)
     if len(w) < 5 or not w.endswith(("mak", "mek")):
@@ -156,7 +171,10 @@ def infinitive_stem(word: str) -> str | None:
     except Exception:
         logger.debug("Mastar denetimi yapılamadı: %s", word, exc_info=True)
         return None
-    if not any(row.get("pos") == "verb" for row in rows):
+    parts = {row.get("pos") for row in rows}
+    if "verb" not in parts:
+        return None
+    if parts - {"verb"} and meaning.strip() and not _meaning_is_verbal(meaning):
         return None
     return w[:-3]
 

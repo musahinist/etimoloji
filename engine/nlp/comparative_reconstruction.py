@@ -114,9 +114,13 @@ class ComparativeReconstructor:
         *,
         check_borrowing: bool = True,
         sense: str = "",
+        borrowing_word: str = "",
     ) -> dict[str, Any]:
         """
         :param word: Modern sorgu kelimesi.
+        :param borrowing_word: Alıntı denetimine giden kelime; boşsa ``word``.
+            Mastarı soyulmuş fiilde tam mastar verilir: çıplak gövde eşsesli
+            bir alıntı ada takılıyordu (``yak`` ← İng. *yak*, ``kok`` ← *coke*).
         :param turkic_entries: Fetcher'lardan gelen gerçek akraba kayıtları.
         :returns: Ata biçim, uygulanan denklikler ve KANITA DAYALI güven skoru.
 
@@ -132,7 +136,9 @@ class ComparativeReconstructor:
         # Ölçüldü: negatif kontrol bataryasında alıntı tuzaklarının (kitap,
         # duvar, çorap, sabun, pencere, çay) tamamı rekonstrükte edilebilir
         # sayılıyordu. Bu denetim onları eler ve GEREKÇESİNİ verir.
-        borrowing = self._borrowing_verdict(word, turkic_entries) if check_borrowing else None
+        borrowing = (
+            self._borrowing_verdict(borrowing_word or word, turkic_entries) if check_borrowing else None
+        )
         if borrowing is not None and borrowing.blocks_inherited_reconstruction:
             result = self._no_result(
                 word,

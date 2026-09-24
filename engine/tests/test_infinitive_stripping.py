@@ -53,10 +53,39 @@ class TestInfinitiveStemIndex(unittest.TestCase):
         self.assertEqual(infinitive_stem("gülmek"), "gül")
         self.assertEqual(infinitive_stem("kolaylaşmak"), "kolaylaş")
 
+    def test_homograph_follows_query_meaning(self):
+        # `kaymak` hem "krema" hem "kaygan yüzeyde gitmek".
+        self.assertIsNone(infinitive_stem("kaymak", "kaymak, a creamy dairy product"))
+        self.assertIsNone(infinitive_stem("ekmek", "bread, a foodstuff prepared from a dough"))
+        self.assertEqual(infinitive_stem("kaymak", "to slide, to slip"), "kay")
+        self.assertEqual(infinitive_stem("kaymak", "Kaygan bir yüzeyde sürtünerek gitmek"), "kay")
+        # Anlam yoksa fiil okuması.
+        self.assertEqual(infinitive_stem("kaymak"), "kay")
+
+    def test_meaning_does_not_block_plain_verbs(self):
+        # Yalnız fiil olan kelimede anlam denetimi uygulanmaz.
+        self.assertEqual(infinitive_stem("gülmek", "laughter"), "gül")
+
     def test_nouns_ending_in_mak_are_not(self):
         for noun in ("parmak", "ırmak", "damak", "emek"):
             with self.subTest(noun=noun):
                 self.assertIsNone(infinitive_stem(noun))
+
+
+
+class TestBorrowingWord(unittest.TestCase):
+    def test_borrowing_check_uses_full_infinitive(self):
+        # Çıplak gövde (`yak`) eşsesli alıntı ada takılmasın: denetim `yakmak`la.
+        from unittest import mock
+
+        from engine.nlp.comparative_reconstruction import ComparativeReconstructor
+
+        engine = ComparativeReconstructor()
+        with mock.patch.object(ComparativeReconstructor, "_borrowing_verdict", return_value=None) as verdict:
+            engine.reconstruct("yak", [], borrowing_word="yakmak")
+            self.assertEqual(verdict.call_args.args[0], "yakmak")
+            engine.reconstruct("yak", [])
+            self.assertEqual(verdict.call_args.args[0], "yak")
 
 
 if __name__ == "__main__":

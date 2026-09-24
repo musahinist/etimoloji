@@ -36,7 +36,7 @@ from engine.nlp.cognate_clustering import CognateClusterEngine
 from engine.nlp.derivation_network import DerivationNetworkBuilder
 from engine.nlp.diachronic_semantic_engine import DiachronicSemanticEngine
 from engine.nlp.donor_search import DonorSearchEngine
-from engine.nlp.historical_morphology import HistoricalMorphologyAnalyzer
+from engine.nlp.historical_morphology import HistoricalMorphologyAnalyzer, infinitive_stem, strip_infinitive
 from engine.nlp.iterative_hypothesis_engine import (
     IterativeHypothesisEngine,
     _historical_gloss,
@@ -1153,12 +1153,26 @@ class SearchEngine:
             and _root_is_attested(morphological_root)
         )
         reconstruction_input = morphological_root if strip_ok else word_clean
+        # Fiil mastarı: sorgudan -mAk, tanıklardan dilin kendi mastar eki
+        # (`gülmək`, `күлүү`, `kulmoq`) soyulur; alıntı denetimi tam mastarla
+        # yapılır. Ölçüldü (406 miras fiil, 2026-09-24 ağacı): NED 0,427 -> 0,311,
+        # tam 0,212 -> 0,357 (ΔNED %95 GA −0,133…−0,100).
+        # Bkz. `historical_morphology.infinitive_stem`.
+        verb_stem = infinitive_stem(word_clean, root_meaning)
+        reconstruction_witnesses = sorted_entries
+        if verb_stem:
+            reconstruction_input = verb_stem
+            reconstruction_witnesses = [
+                {**e, "word": strip_infinitive(e.get("lang_code") or "", e.get("word") or "")}
+                for e in sorted_entries
+            ]
         reconstruction_eval = self.reconstructor.reconstruct_proto_form(
-            reconstruction_input, sorted_entries
+            reconstruction_input, reconstruction_witnesses,
+            borrowing_word=word_clean if verb_stem else "",
         )
         if reconstruction_input != word_clean:
             reconstruction_eval["stripped_from"] = word_clean
-            reconstruction_eval["stripped_suffixes"] = [
+            reconstruction_eval["stripped_suffixes"] = ["-mAk"] if verb_stem else [
                 layer.get("suffix") for layer in historical_morphology.get("layers", [])
             ]
 

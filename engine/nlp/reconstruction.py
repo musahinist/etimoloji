@@ -23,7 +23,7 @@ class ProtoTurkicReconstructor:
         self._engine = ComparativeReconstructor()
 
     def reconstruct_proto_form(
-        self, word: str, turkic_entries: list[dict[str, Any]] | None = None
+        self, word: str, turkic_entries: list[dict[str, Any]] | None = None, *, borrowing_word: str = ""
     ) -> dict[str, Any]:
         """Akraba biçimlerden Proto-Türkçe ata biçimi türetir."""
         w = (word or "").strip().lower()
@@ -41,4 +41,4 @@ class ProtoTurkicReconstructor:
                 ),
             }
 
-        return self._engine.reconstruct(w, turkic_entries)
+        return self._engine.reconstruct(w, turkic_entries, borrowing_word=borrowing_word)
