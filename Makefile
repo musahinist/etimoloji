@@ -168,7 +168,7 @@ eval-llm:
 	.venv/bin/python -m engine.evaluation.llm_borrowing_baseline --provider $(PROVIDER)
 
 eval-calibration: gold
-	.venv/bin/python -m engine.evaluation.calibration --split all
+	.venv/bin/python -m engine.evaluation.calibration --split train+dev
 
 calibrate: gold
 	.venv/bin/python -m engine.nlp.confidence

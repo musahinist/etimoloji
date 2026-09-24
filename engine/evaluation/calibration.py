@@ -398,6 +398,28 @@ def risk_coverage(
     return curve
 
 
+def items_for_split(gold: object, split: str, *, final_report: bool = False) -> list:
+    """Ölçülecek altın maddeler — **test bölümü yalnız bilinçli onayla**.
+
+    ⚠️ Eskiden ``make eval-calibration`` ``--split all`` ile koşuyor ve
+    ``gold.items``i doğrudan okuyordu: dondurulmuş test bölümü (78 madde)
+    kilide takılmadan her ölçüme giriyordu. Şimdi ``test`` ve ``all``,
+    ``gold.split("test")`` ile AYNI onayı (``i_am_writing_the_final_report``)
+    ister; varsayılan ``train+dev``dir.
+    """
+    parts = {
+        "train": ("train",),
+        "dev": ("dev",),
+        "train+dev": ("train", "dev"),
+        "test": ("test",),
+        "all": ("train", "dev", "test"),
+    }[split]
+    items: list = []
+    for part in parts:
+        items += gold.split(part, i_am_writing_the_final_report=final_report)  # type: ignore[attr-defined]
+    return items
+
+
 def main() -> int:
     import argparse
     import json
@@ -409,13 +431,23 @@ def main() -> int:
     from engine.evaluation.report import EVAL_DIR
 
     ap = argparse.ArgumentParser(description="Güven kalibrasyonu ölçümü")
-    ap.add_argument("--split", default="dev", choices=("train", "dev", "all"))
+    ap.add_argument(
+        "--split",
+        default="train+dev",
+        choices=("train", "dev", "train+dev", "test", "all"),
+        help="varsayılan train+dev; 'test' ve 'all' test bölümünü okur ve --final-report ister",
+    )
+    ap.add_argument(
+        "--final-report",
+        action="store_true",
+        help="test bölümünü açmak için gerekli bilinçli onay (gold.split ile aynı kilit)",
+    )
     ap.add_argument("--dataset", default="savelyevturkic")
     ap.add_argument("--bins", type=int, default=DEFAULT_BINS)
     args = ap.parse_args()
 
     gold = GoldStandard.build(args.dataset)
-    items = gold.items if args.split == "all" else gold.split(args.split)
+    items = items_for_split(gold, args.split, final_report=args.final_report)
     mapping = build_mapping(CldfWordlist.load(args.dataset))
     outcome = run(comparative_reconstructor(), items, mapping=mapping, split=args.split)
 

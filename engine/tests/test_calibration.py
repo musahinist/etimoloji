@@ -278,3 +278,34 @@ class TestConfidenceModelLoading(unittest.TestCase):
         self.assertFalse(out["calibrated"])
         self.assertIn("HAM", out["calibration_note"])
         confidence.reset_model_cache()
+
+
+class TestCalibrationSplitLock(unittest.TestCase):
+    """`make eval-calibration` dondurulmuş test bölümünü onaysız okumamalı."""
+
+    @staticmethod
+    def _gold():
+        from engine.evaluation.gold import GoldItem, GoldStandard
+
+        def item(i: int, split: str) -> GoldItem:
+            return GoldItem(
+                set_id=str(i), gold_form="*a", gold_candidates=("*a",), concept=f"c{i}",
+                concepticon_gloss="", has_length_witness=False,
+                proto_level="PT", witnesses={}, split=split,
+            )
+
+        return GoldStandard([item(0, "train"), item(1, "dev"), item(2, "test")], source="x")
+
+    def test_default_split_excludes_test(self):
+        from engine.evaluation.calibration import items_for_split
+
+        got = items_for_split(self._gold(), "train+dev")
+        self.assertEqual(sorted(i.split for i in got), ["dev", "train"])
+
+    def test_test_and_all_require_final_report_flag(self):
+        from engine.evaluation.calibration import items_for_split
+
+        for split in ("test", "all"):
+            with self.assertRaises(PermissionError):
+                items_for_split(self._gold(), split)
+        self.assertEqual(len(items_for_split(self._gold(), "all", final_report=True)), 3)
