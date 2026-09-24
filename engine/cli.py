@@ -128,6 +128,10 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
     # anlamsız bir "Ses Değişimi" etiketiyle basılıyordu.
     donor_entries = [e for e in turkic_languages if e.get("lang_code") == "donor"]
     turkic_languages = [e for e in turkic_languages if e.get("lang_code") not in ("donor", "ai")]
+    # Hüküm alıntıyken çeviri/indeks tanıkları paralel alıntıdır (bant ~
+    # Tatarca бинт); miras akrabalarla aynı listede basılmaz.
+    parallel_loans = [e for e in turkic_languages if e.get("parallel_loan")]
+    turkic_languages = [e for e in turkic_languages if not e.get("parallel_loan")]
     if donor_entries:
         print("\n" + "─" * 80)
         print(f" 🧭 KÖKEN ZİNCİRİ — KAYNAK DİLLER ({len(donor_entries)} kayıt)")
@@ -166,6 +170,17 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
                     for c in entry["source_cognates"][:8]
                 )
                 print(f"      ↳ Kaynağın andığı akrabalar: {cogs}")
+
+    if parallel_loans:
+        print("\n" + "─" * 80)
+        print(f" 🔀 PARALEL ALINTILAR ({len(parallel_loans)} kayıt; miras akraba değil, tanık sayılmaz)")
+        print("─" * 80)
+        for entry in parallel_loans:
+            word = entry.get("word", "")
+            if entry.get("comparison") and entry.get("script") not in (None, "Latin"):
+                word = f"{word} {entry['comparison']}"
+            meaning = entry.get("meaning", "")
+            print(f"  • {entry.get('lang_name', ''):<30} : {word:<24} [{'Anlam: ' + meaning if meaning else 'N/A'}]")
 
     mentions = finding.get("etymology_mentions") or {}
     if mentions.get("items"):

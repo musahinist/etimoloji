@@ -438,6 +438,41 @@ def _cited_cognates(word: str, entries: list[dict[str, Any]]) -> list[dict[str, 
 _REDIRECT_GLOSS = re.compile(r"\b(?:form|spelling) of\b", re.IGNORECASE)
 
 
+#: Hüküm ALINTI iken çeviri/indeks tanıklarının rolü. Sıralayıcının ve
+#: akraba listesinin (`engine/utils/cognates.py`) kullandığı etiketle aynı.
+PARALLEL_LOAN_LABEL = "paralel alıntı"
+
+
+def _mark_parallel_loans(
+    entries: list[dict[str, Any]], translation_sources: set[str]
+) -> list[dict[str, Any]]:
+    """Alıntı kelimede çeviri/indeks tanıklarını paralel alıntı diye işaretler.
+
+    Apertium çevirisi, NorthEuraLex kavramı ve çağdaş dil indeksindeki
+    eşyazımlı madde yalnız BİÇİMCE benzer karşılıktır. Kelime alıntıysa bu
+    benzerlik ortak atadan değil, aynı vericiden ayrı ayrı alınmaktan gelir:
+    `bant` ~ Tatarca бинт, `bale` ~ Kırgızca/Tatarca балет (105 kelimelik
+    denetimde 36 kelime). Miras akraba gibi gösterilmez, yayılım ve miras
+    kanıtı sayılmaz. Kaynağın açık akrabalık beyanı (`asserted_cognate`) ve
+    sorgunun kendi dil çizgisinin kaydı işaretlenmez.
+
+    İşaretlenmeyen (kanıt sayılacak) kayıtları döndürür.
+    """
+    evidence: list[dict[str, Any]] = []
+    for entry in entries:
+        if (
+            entry.get("source") in translation_sources
+            and entry.get("lang_code") in TURKIC_LANGUAGES_MAP
+            and entry.get("lang_code") not in OWN_LINE_CODES
+            and not entry.get("asserted_cognate")
+        ):
+            entry["parallel_loan"] = True
+            entry["witness_role"] = PARALLEL_LOAN_LABEL
+        else:
+            evidence.append(entry)
+    return evidence
+
+
 def _rank_own_by_meaning(word: str, entries: list[dict[str, Any]], primary: str) -> list[tuple[float, dict[str, Any]]]:
     """Sorgunun KENDİ kayıtları, anlamlarının sorgunun ana anlamına benzerliğiyle.
 
@@ -1130,6 +1165,21 @@ class SearchEngine:
         # Rakip hipotezler ve red gerekçeleri (Faz 9). Reddedilen köken
         # önerileri çıktıda KALIR; gerekçesiyle birlikte.
         ranked_hypotheses = self._rank_hypotheses(word_clean, sorted_entries)
+        # Hüküm alıntıysa çeviri/indeks tanıkları paralel alıntıdır: bundan
+        # sonraki miras/yayılım kanıtına (A-HVP üçgenlemesi, ses kanunu
+        # indüksiyonu, akraba listesi, yayılım raporu) girmez.
+        evidence_entries = sorted_entries
+        if ((ranked_hypotheses or {}).get("selected") or {}).get("kind") == "borrowed":
+            evidence_entries = _mark_parallel_loans(sorted_entries, {
+                f.source_name for f in self.fetchers
+                if isinstance(f, (ApertiumFetcher, NorthEuraLexFetcher, ModernIndexFetcher))
+            })
+            parallel_count = len(sorted_entries) - len(evidence_entries)
+            if parallel_count:
+                cognate_eval = self.cognate_alignment_engine.evaluate_cognate_distribution(
+                    word_clean, evidence_entries
+                )
+                cognate_eval["parallel_loans_excluded"] = parallel_count
         donor_eval = self.donor_search_engine.search_donor_neighbors(word_clean)
 
         finding_temp = {"root": {"proto_turkic": proto_root, "meaning": root_meaning}}
@@ -1137,9 +1187,9 @@ class SearchEngine:
         # eskiden bu veriler geçilmiyor, motorlar kendi ürettikleri varyantları
         # "kanıt" sayıyordu.
         proven_hypothesis_eval = self.hypothesis_engine.prove_etymological_hypothesis(
-            word_clean, finding_temp, sorted_entries, raw_fetcher_results
+            word_clean, finding_temp, evidence_entries, raw_fetcher_results
         )
-        unattested_prover_eval = self.hypothesis_prover.prove_unattested_word(word_clean, sorted_entries)
+        unattested_prover_eval = self.hypothesis_prover.prove_unattested_word(word_clean, evidence_entries)
 
         # Sözlüklerden kök bulunamadıysa karşılaştırmalı rekonstrüksiyona başvur.
         # ÖNEMLİ: kanıt yoksa `*<kelime>` biçiminde bir kök UYDURULMAZ.
@@ -1178,7 +1228,7 @@ class SearchEngine:
         # Eskiden tek çiftten sabit 0.95 güven skoru üretiliyordu.
         induction_pairs = [
             (proto_root or word_clean, e["word"])
-            for e in sorted_entries
+            for e in evidence_entries
             if e.get("word") and e.get("lang_code") in TURKIC_LANGUAGES_MAP
         ]
         sound_law_induced = (
@@ -1283,7 +1333,7 @@ class SearchEngine:
             # Kural tabanlı çözümleyici Eski Türkçe eklerini tanımıyor (`bitig`
             # -> "Yalın Kök"); sözlük maddesi yapıyı açıkça veriyorsa o yazılır.
             morphology_info = f"{formation_entry['formation']} (sözlük maddesine göre)"
-        related_cognates = get_related_cognates(word_clean, sorted_entries)
+        related_cognates = get_related_cognates(word_clean, evidence_entries)
 
         _lap("report")
         # 5. Neo4j Uyumlu Graf Veritabanı Düğüm Şeması Oluşturma

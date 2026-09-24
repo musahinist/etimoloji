@@ -383,6 +383,23 @@ class TestSourceStatus(unittest.TestCase):
         self.assertEqual(self._status(EmptyFetcher())["status"], "empty")
 
 
+class TestParallelLoans(unittest.TestCase):
+    def test_translation_witnesses_are_marked_in_borrowed_word(self):
+        from engine.search_engine import PARALLEL_LOAN_LABEL, _mark_parallel_loans
+
+        entries = [
+            {"lang_code": "tt", "word": "бинт", "source": "Apertium"},
+            {"lang_code": "tr", "word": "bant", "source": "Apertium"},
+            {"lang_code": "kk", "word": "бант", "source": "İndeks", "asserted_cognate": True},
+            {"lang_code": "donor", "word": "bande", "source": "Apertium"},
+            {"lang_code": "az", "word": "bant", "source": "Başka"},
+        ]
+        evidence = _mark_parallel_loans(entries, {"Apertium", "İndeks"})
+        self.assertEqual([e["word"] for e in entries if e.get("parallel_loan")], ["бинт"])
+        self.assertEqual(entries[0]["witness_role"], PARALLEL_LOAN_LABEL)
+        self.assertEqual(len(evidence), 4)
+
+
 class _FormationFetcher(FakeFetcher):
     """Yapıyı veren tarihî sözlük maddesi (indeksin `formation` sütunu)."""
 

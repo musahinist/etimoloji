@@ -462,7 +462,10 @@
             const allEntries = data.turkic_languages || [];
             const donorList = allEntries.filter(e => e.lang_code === "donor");
             const turkicList = allEntries.filter(e => e.lang_code !== "donor" && e.lang_code !== "ai");
-            document.getElementById('langCountBadge').textContent = `${turkicList.length} Dil/Katman`;
+            // Hüküm alıntıyken çeviri/indeks tanıkları paralel alıntıdır; miras akraba değil.
+            const parallelN = turkicList.filter(e => e.parallel_loan).length;
+            document.getElementById('langCountBadge').textContent =
+                `${turkicList.length - parallelN} Dil/Katman` + (parallelN ? ` · ${parallelN} paralel alıntı` : "");
 
             // 2. A-HVP
             const nlp = data.nlp_analysis || {};
@@ -607,6 +610,7 @@
                         <span class="font-bold text-base text-white block">${esc(item.word)}</span>
                         <span class="text-xs text-slate-300 block mt-1.5 truncate">${esc(item.meaning || "N/A")}</span>
                         <span class="text-[9px] uppercase tracking-wider block mt-1 ${ORIGIN_LABELS[item.origin]?.cls || ORIGIN_LABELS.live.cls}">${ORIGIN_LABELS[item.origin]?.text || ORIGIN_LABELS.live.text}</span>
+                        ${item.parallel_loan ? `<span class="text-[9px] uppercase tracking-wider block mt-1 text-orange-400/90">${esc(item.witness_role || "paralel alıntı")} — miras akraba değil</span>` : ""}
                         ${item.phonetic_shift ? `<span class="text-[10px] text-teal-300/80 block mt-2 pt-2 border-t border-slate-800/60 italic">${esc(item.phonetic_shift)}</span>` : ""}
                     </div>
                 `).join("");
