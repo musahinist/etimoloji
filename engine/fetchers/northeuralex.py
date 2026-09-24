@@ -23,9 +23,12 @@ from typing import Any
 
 from engine.config import CLDF_DIR
 from engine.fetchers.base import TURKIC_LANGUAGES_MAP, BaseFetcher, detect_script
+from engine.logging_setup import get_logger
 from engine.nlp.cognate_clustering import COGNATE_THRESHOLD
 from engine.nlp.donor_lexicon import levenshtein
 from engine.utils.orthography import to_comparison_form
+
+logger = get_logger(__name__)
 
 DATA_DIR = CLDF_DIR / "northeuralex"
 
@@ -108,6 +111,15 @@ class NorthEuraLexFetcher(BaseFetcher):
         return "NorthEuraLex (kavram hizalı, yerel CLDF)"
 
     def fetch(self, word: str) -> dict[str, Any]:
+        # Sözleşme: fetch() istisna atmaz. Bozuk/yarım CSV (`ID` sütunu yok)
+        # `_load`da KeyError veriyordu ve aramayı düşürüyordu.
+        try:
+            return self._fetch(word)
+        except Exception:
+            logger.warning("%s: kaynak işlenemedi", self.source_name, exc_info=True)
+            return self.empty_result()
+
+    def _fetch(self, word: str) -> dict[str, Any]:
         result = self.empty_result()
         query = (word or "").strip().lower()
         turkish, by_concept, glosses = _load()

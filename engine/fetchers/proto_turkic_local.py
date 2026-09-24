@@ -196,6 +196,15 @@ class LocalProtoTurkicFetcher(BaseFetcher):
         return "Proto-Türkçe kök torunları (yerel Wiktionary dökümü)"
 
     def fetch(self, word: str) -> dict[str, Any]:
+        # Sözleşme: fetch() istisna atmaz (bozuk döküm, kilitli/bozuk SQLite
+        # önbelleği ya da indeks aramayı düşürmesin).
+        try:
+            return self._fetch(word)
+        except Exception:
+            logger.warning("%s: kaynak işlenemedi", self.source_name, exc_info=True)
+            return self.empty_result()
+
+    def _fetch(self, word: str) -> dict[str, Any]:
         from engine.db.lexicon_index import LexiconIndex
 
         result = self.empty_result()

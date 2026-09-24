@@ -107,7 +107,14 @@ class ApertiumFetcher(BaseFetcher):
     def fetch(self, word: str) -> dict[str, Any]:
         result = self.empty_result()
         query = (word or "").strip().lower()
-        table = _table()
+        try:
+            table = _table()
+        except Exception:
+            # Sözleşme: fetch() istisna atmaz (bozuk künye ya da .dix dosyası).
+            from engine.logging_setup import get_logger
+
+            get_logger(__name__).warning("%s: kaynak işlenemedi", self.source_name, exc_info=True)
+            return result
         if not query or not table:
             return result
         predicted = _predicted_forms(query)
