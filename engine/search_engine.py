@@ -837,9 +837,13 @@ class SearchEngine:
         starling_root = ""
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=config.MAX_WORKERS) as executor:
+            # Sonuçlar PORTFÖY SIRASIYLA işlenir, bitiş sırasıyla değil.
+            # `as_completed` ile ilk biten kaynak başlık kökünü (`proto_root`)
+            # ve aynı (dil, kelime) anahtarlı tanığı kapıyordu; aynı kelime
+            # koşudan koşuya farklı kökle çıkabiliyordu. İşleme hafiftir,
+            # istekler yine paralel koşar.
             future_to_fetcher = {executor.submit(fetch_worker, f): f for f in self.fetchers}
-            for future in concurrent.futures.as_completed(future_to_fetcher):
-                fetcher = future_to_fetcher[future]
+            for future, fetcher in future_to_fetcher.items():
                 try:
                     _fetcher_obj, results, elapsed_ms, errors = future.result()
                     source_diagnostics[fetcher.source_name] = {
@@ -853,7 +857,9 @@ class SearchEngine:
                     for variant, res in results:
                         raw_fetcher_results.append(res)
                         root_info = res.get("root", {})
-                        if root_info.get("starling_proto") and not starling_root:
+                        # Kök varyantının ("kulluk" -> "kul") Starling kökü
+                        # sorgunun kökü değildir.
+                        if root_info.get("starling_proto") and not starling_root and variant == word_clean:
                             starling_root = str(root_info.get("proto_turkic") or "")
                         if root_info.get("proto_turkic") and not proto_root:
                             proto_root = root_info.get("proto_turkic")

@@ -317,6 +317,25 @@ class TestInheritedHypothesisIsNotASource(unittest.TestCase):
         self.assertFalse([e for e in res["turkic_languages"] if e["lang_code"] == "donor"])
 
 
+class TestPortfolioOrder(unittest.TestCase):
+    """Sonuçlar bitiş sırasıyla değil portföy sırasıyla işlenir."""
+
+    def test_slow_first_source_wins_duplicate_key(self):
+        slow = _EntryOnlyFetcher(name="Önce", entries=[("kk", "көз")], meaning="birinci",
+                                 only_for="göz", delay=0.1)
+        fast = _EntryOnlyFetcher(name="Sonra", entries=[("kk", "көз")], meaning="ikinci",
+                                 only_for="göz")
+        fd, path = tempfile.mkstemp(suffix=".db")
+        os.close(fd)
+        try:
+            res = SearchEngine(db_manager=DatabaseManager(path), fetchers=[slow, fast]).search(
+                "göz", save_to_db=False, use_cache=False)
+        finally:
+            os.remove(path)
+        kk = [e for e in res["turkic_languages"] if e["lang_code"] == "kk"]
+        self.assertEqual([e["meaning"] for e in kk], ["birinci"])
+
+
 class _FormationFetcher(FakeFetcher):
     """Yapıyı veren tarihî sözlük maddesi (indeksin `formation` sütunu)."""
 
