@@ -223,6 +223,16 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
         print(f"  • Sınıflandırma              : {loan_eval.get('classification')}")
         if loan_eval.get("source_override"):
             print(f"       ↳ {loan_eval['source_override']}")
+        # Sınıflandırıcı YALNIZ ses yapısına bakar; sıralayıcı tanıkları ve
+        # kaynakları da tartar. Çeliştiklerinde okur hangisinin neyi
+        # söylediğini görmeli (tutarlılık denetimi: parmaklık, akciğer).
+        _sel = (nlp_analysis.get("ranked_hypotheses") or {}).get("selected") or {}
+        _key = loan_eval.get("classification_key") or ""
+        if not loan_eval.get("source_override") and (
+            (_sel.get("kind") == "inherited" and _key not in ("native", ""))
+            or (_sel.get("kind") == "borrowed" and _key == "native")
+        ):
+            print(f"       ↳ ⚠️ yalnız ses yapısına göre; hüküm için bkz. rakip hipotezler: {_sel.get('claim')}")
         probs = loan_eval.get('probabilities', {})
         p_native = probs.get('p_native_turkic', 0) * 100
         p_east = probs.get('p_arabic_persian', 0) * 100
