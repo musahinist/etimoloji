@@ -164,3 +164,18 @@ class TestCircuitBreaker(unittest.TestCase):
             # Başka sunucu etkilenmez.
             network.fetch("https://example.org/", max_retries=0)
             self.assertEqual(session.get.call_count, calls + 1)
+
+
+class TestProtoTurkicLocal(unittest.TestCase):
+    def test_wiktionary_notation_key(self):
+        from engine.fetchers.proto_turkic_local import _key
+
+        self.assertEqual(_key("*köŕ"), _key("körᶻ"))
+        self.assertEqual(_key("*bōnčuk"), _key("bončuk"))
+
+    def test_borrowed_and_reshaped_branches_are_skipped(self):
+        from engine.fetchers.proto_turkic_local import _is_borrowed
+
+        self.assertTrue(_is_borrowed({"raw_tags": ["borrowed", "uncertain"]}))
+        self.assertTrue(_is_borrowed({"raw_tags": ["reshaped by analogy or addition of morphemes"]}))
+        self.assertFalse(_is_borrowed({"raw_tags": ["inherited"]}))

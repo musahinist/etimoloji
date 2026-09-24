@@ -92,6 +92,12 @@ CACHE_ENABLED = _env_bool("CACHE_ENABLED", True)
 # hangi dil bölümünden geldiğine bakmıyordu. Aynı dillerin çoğu yerel
 # Türkçe/Rusça Wiktionary dökümlerinde doğru dil etiketiyle var.
 LIVE_WIKTIONARY_EDITIONS = _env_bool("LIVE_WIKTIONARY_EDITIONS", False)
+# Canlı İngilizce Wiktionary (sayfa + REST). Varsayılan KAPALI: aynı veri yerel
+# kaikki dökümlerinde (indeks + Proto-Türkçe torunları). Wikimedia 503/hız
+# sınırı ve sayfa ayrıştırma hataları (`parça` -> *bar) canlı yolun bedeliydi.
+LIVE_WIKTIONARY = _env_bool("LIVE_WIKTIONARY", False)
+# Archive.org tam metin araması. Varsayılan KAPALI: ölçümlerde tanık üretmedi.
+LIVE_ARCHIVE_ORG = _env_bool("LIVE_ARCHIVE_ORG", False)
 CACHE_TTL_SECONDS = _env_int("CACHE_TTL_SECONDS", 7 * 24 * 3600)
 MAX_QUERY_LENGTH = _env_int("MAX_QUERY_LENGTH", 64)
 

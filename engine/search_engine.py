@@ -19,6 +19,7 @@ from engine.fetchers.local_pdf_books import LocalPdfBooksFetcher
 from engine.fetchers.multilang_wiktionary import MultiLangWiktionaryFetcher
 from engine.fetchers.northeuralex import NorthEuraLexFetcher
 from engine.fetchers.osmanlica_lugat import OsmanlicaLugatFetcher
+from engine.fetchers.proto_turkic_local import LocalProtoTurkicFetcher
 from engine.fetchers.starling import StarlingFetcher
 from engine.fetchers.tdk_historical import TdkDerlemeFetcher, TdkTaramaFetcher
 from engine.fetchers.tdk_nisanyan import NisanyanFetcher, TdkFetcher
@@ -553,9 +554,10 @@ def default_fetchers() -> list[BaseFetcher]:
         HistoricalIndexFetcher(),
         ModernIndexFetcher(),
         NorthEuraLexFetcher(),
+        LocalProtoTurkicFetcher(),
         HistoricalModernLexiconFetcher(),
         IsamAnsiklopediFetcher(),
-        ArchiveOrgFetcher(),
+        *([ArchiveOrgFetcher()] if config.LIVE_ARCHIVE_ORG else []),
         OsmanlicaLugatFetcher(),
         TurkicNationalDictionariesFetcher(),
         LoanwordDonorEtymologyFetcher(),
@@ -567,9 +569,11 @@ def default_fetchers() -> list[BaseFetcher]:
         TdkFetcher(),
         TdkTaramaFetcher(),
         TdkDerlemeFetcher(),
-        WiktionaryFetcher(),
+        # Canlı İngilizce Wiktionary: yerel karşılıkları ModernIndexFetcher
+        # (aynı yazılışlı maddeler, anlam doğrulamalı) ve LocalProtoTurkicFetcher
+        # (kök torunları). Ağ ancak açıkça istenirse (ETY_LIVE_WIKTIONARY=1).
+        *([WiktionaryFetcher(), WiktextractFetcher()] if config.LIVE_WIKTIONARY else []),
         *([MultiLangWiktionaryFetcher()] if config.LIVE_WIKTIONARY_EDITIONS else []),
-        WiktextractFetcher(),
     ]
 
 
