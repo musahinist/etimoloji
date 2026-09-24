@@ -324,7 +324,7 @@ def write_index_note(provenances: list[dict[str, Any]]) -> Path:
 
 def download_tr_edition(*, session: requests.Session, force: bool = False) -> dict[str, int]:
     """Türkçe sürümü indirir ve Türki dillere göre ayrı dosyalara böler."""
-    from engine.fetchers.base import TURKIC_LANGUAGES_MAP
+    from engine.fetchers.base import TURKIC_LANGUAGES_MAP, lang_code_from_wiktionary
 
     directory = LEXICON_DIR / TR_SUBDIR
     provenance_path = directory / "_provenance.json"
@@ -351,7 +351,10 @@ def download_tr_edition(*, session: requests.Session, force: bool = False) -> di
     counts: dict[str, int] = {}
     with gzip.open(raw, "rt", encoding="utf-8") as lines:
         for line in lines:
-            code = json.loads(line).get("lang_code")
+            # kaikki ISO kodu yazar (Hakasça `kjh`, Salarca `slr`); motor
+            # koduna çevrilmeden süzülürse bu diller atılır. Wiktionary'nin
+            # `khk`sı Halha Moğolcasıdır ve `mn`e düşer (Türki değil).
+            code = lang_code_from_wiktionary(str(json.loads(line).get("lang_code") or ""))
             if code not in TURKIC_LANGUAGES_MAP:
                 continue
             if code not in writers:

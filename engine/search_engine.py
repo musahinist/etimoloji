@@ -127,6 +127,30 @@ def _names_word(form: str, word: str) -> bool:
     return any(p.strip().strip("*-").lower() == word for p in re.split(r"[/,;()]", form))
 
 
+#: Sorgunun KENDİ dil çizgisi: Türkiye Türkçesi ve ataları (Osmanlıca, Eski
+#: Anadolu Türkçesi, Eski Türkçe). Başlık anlamı ve kelime düzeyi köken yalnız
+#: bu dillerin kaydından okunur. ⚠️ Eskiden yalnız biçim eşleşmesine
+#: bakılıyordu ve kardeş dilin EŞYAZIMLI kelimesi sorgunun kaydı sayılıyordu
+#: (105 kelimelik denetimde ölçüldü: 31 kelimede başlık anlamı başka Türk
+#: dilinden — `bale` "беда" Nogayca, `set` "sofa, couch", `tüp` "bottom",
+#: `özen` "river"; 24 kelimede köken katmanı — `nice` "alıntı — Rusça как
+#: (Gagavuzca)").
+OWN_LINE_CODES = frozenset({"tr", "ota", "otk", "trk-oat"})
+
+
+def _is_own_record(entry: dict[str, Any], word: str) -> bool:
+    """Kayıt sorgu kelimesinin KENDİ (Türkiye Türkçesi çizgisindeki) kaydı mı.
+
+    Ağız kaydı (`dialect`) sayılmaz: Derleme'nin `tüp` "Alt, dip" kaydı
+    yöresel bir eşseslidir, ölçünlü dilin anlamı değil.
+    """
+    if entry.get("lang_code") not in OWN_LINE_CODES or entry.get("dialect"):
+        return False
+    return _names_word(entry.get("word") or "", word) or (
+        bool(entry.get("comparison")) and entry["comparison"] == to_comparison_form(word)
+    )
+
+
 def _snippet(text: str, term: str, width: int = 160) -> str:
     """Metnin terimi içeren kısmı."""
     text = re.sub(r"\s+", " ", text)
@@ -170,7 +194,6 @@ def _origin_layers(
     """
     from engine.nlp.borrowing_chain import TURKIC_LINEAGE_CODES, language_name
 
-    own = to_comparison_form(word)
     layers: list[str] = []
     if formation_entry:
         layers.append(
@@ -178,7 +201,9 @@ def _origin_layers(
             f"({formation_entry.get('lang_name') or formation_entry.get('lang_code')} sözlük maddesi)"
         )
     for entry in entries:
-        if not (_names_word(entry.get("word") or "", word) or entry.get("comparison") == own):
+        # Kardeş dilin eşyazımlı kaydı sorgunun kökenini söylemez
+        # (`nice` ≠ Gagavuzca *nice* < Rusça как).
+        if not _is_own_record(entry, word):
             continue
         donor = str(entry.get("donor_lang") or "")
         if entry.get("lexicon_origin") != "alıntı" or not donor or donor in TURKIC_LINEAGE_CODES:
@@ -862,9 +887,10 @@ class SearchEngine:
                             refs = extract_cross_references(entry.get("meaning") or "")
                             if refs:
                                 entry["cross_references"] = refs
-                            if _names_word(entry.get("word") or "", word_clean) or (
-                                entry.get("comparison") and entry["comparison"] == to_comparison_form(word_clean)
-                            ):
+                            # Yalnız sorgunun KENDİ dilinin kaydı sorgunun anlamıdır;
+                            # kardeş dilin eşyazımlı kelimesi ve ağız kaydı değil
+                            # (bkz. `OWN_LINE_CODES`).
+                            if _is_own_record(entry, word_clean):
                                 _add_meaning(source_meanings, entry.get("meaning") or "")
                             # Ağız kaydı ile ölçünlü dil kaydı aynı (dil, kelime)
                             # çiftini taşıyabiliyor; ayrı tutulmazsa hangisinin
@@ -990,7 +1016,11 @@ class SearchEngine:
         # 4. KÖKEN NLP VE OTONOM İNATÇI HİPOTEZ REKONSTRÜKSİYONU
         # Eğer kök anlamı henüz atanmadıysa sorted_entries içindeki gerçek sözlük tanımından çek
         if not root_meaning or root_meaning == word_clean:
+            # Yedek de yalnız sorgunun kendi kaydından: ilk sıradaki kayıt
+            # başka bir Türk dilinin (ya da vericinin) kaydı olabilir.
             for entry in sorted_entries:
+                if not _is_own_record(entry, word_clean):
+                    continue
                 m = entry.get("meaning", "").strip()
                 if m and not m.startswith("Online") and m != word_clean and not is_cross_reference(m):
                     root_meaning = m
@@ -1217,10 +1247,10 @@ class SearchEngine:
 
         morphology_info = f"Kök: {stem} + Ekler: {', '.join(suffixes)}" if suffixes else "Yalın Kök"
         # Sorgu kelimesinin yapısını açıkça veren sözlük maddesi ("biti- + -g").
+        # Yalnız sorgunun kendi dil çizgisinin maddesi: Azerice `qaçmaq + -ır`
+        # Türkçe `kaçırmak`ın yapısı diye basılıyordu (denetim: 9 kelime).
         formation_entry = next(
-            (e for e in sorted_entries
-             if e.get("formation") and (_names_word(e.get("word") or "", word_clean)
-                                        or e.get("comparison") == to_comparison_form(word_clean))),
+            (e for e in sorted_entries if e.get("formation") and _is_own_record(e, word_clean)),
             None,
         )
         if not suffixes and formation_entry:

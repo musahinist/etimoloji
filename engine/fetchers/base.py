@@ -127,6 +127,23 @@ WIKTIONARY_LANG_HEADERS: dict[str, str] = {
 }
 
 
+#: Wiktionary/kaikki dil kodu -> motor kodu, yalnız ikisinin AYRIŞTIĞI yerde.
+#: Wiktionary ISO 639-3 kullanır: Hakasça ``kjh``, Salarca ``slr``; motor
+#: bunlara ``khk``/``slq`` der. Eşleme yokken kaikki verisindeki bu iki dil
+#: sessizce atılıyordu (ölçüldü: ``trk-pro`` torun ağaçlarında 511 Hakasça
+#: ve 598 Salarca biçim).
+#:
+#: ⚠️ ISO'da ``khk`` HALHA MOĞOLCASIdır: Wiktionary'den ``khk`` kodlu kayıt
+#: Hakasça SAYILMAZ, Moğolcaya (``mn``) eşlenir ve Türki tanık olamaz.
+WIKTIONARY_CODE_ALIASES: dict[str, str] = {"kjh": "khk", "slr": "slq", "khk": "mn"}
+
+
+def lang_code_from_wiktionary(code: str) -> str:
+    """Wiktionary/kaikki dil kodunu motorun koduna çevirir (``kjh`` -> ``khk``)."""
+    code = (code or "").strip()
+    return WIKTIONARY_CODE_ALIASES.get(code, code)
+
+
 def lang_code_from_wiktionary_header(header: str) -> str | None:
     """``"==Turkish=="`` gibi bir Wiktionary başlığından dil kodu çıkarır."""
     key = (header or "").strip().strip("=").strip().lower()

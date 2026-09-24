@@ -232,6 +232,73 @@ class TestMeaningsBySource(unittest.TestCase):
         self.assertEqual(tr, ["ev içinde giyilen ayak giysisi", "takke, başlık"])
 
 
+class _EntryOnlyFetcher(FakeFetcher):
+    """Kök anlamı vermeyen, yalnız kayıt döndüren kaynak (yerel sözlük indeksi gibi)."""
+
+    def __init__(self, *args, extra: dict | None = None, delay: float = 0.0, **kw):
+        super().__init__(*args, **kw)
+        self._extra = extra or {}
+        self._delay = delay
+
+    def fetch(self, word):
+        import time
+
+        time.sleep(self._delay)
+        result = super().fetch(word)
+        result["root"]["meaning"] = ""
+        for entry in result["turkic_languages"]:
+            entry.update(self._extra)
+        return result
+
+
+class TestOwnLineOnly(unittest.TestCase):
+    """105 kelimelik denetim: başlık anlamı ve köken katmanı kardeş dilden geliyordu."""
+
+    def setUp(self):
+        fd, self.db_path = tempfile.mkstemp(suffix=".db")
+        os.close(fd)
+        self.db = DatabaseManager(self.db_path)
+        self._cache = config.CACHE_ENABLED
+        config.CACHE_ENABLED = False
+
+    def tearDown(self):
+        config.CACHE_ENABLED = self._cache
+        if os.path.exists(self.db_path):
+            os.remove(self.db_path)
+
+    def test_sister_language_homograph_is_not_the_headline_meaning(self):
+        """bale: Nogayca баьле "беда" (comparison `bale`) başlık anlamı olmamalı."""
+        fetchers = [
+            _EntryOnlyFetcher(name="İndeks", entries=[("nog", "баьле")], meaning="беда",
+                              only_for="bale", extra={"comparison": "bale"}),
+            _EntryOnlyFetcher(name="İndeks 2", entries=[("az", "bale")], meaning="sofa",
+                              only_for="bale"),
+            FakeFetcher(name="Nişanyan", entries=[("tr", "bale")], meaning="gösteri dansı", only_for="bale"),
+        ]
+        res = SearchEngine(db_manager=self.db, fetchers=fetchers).search("bale", save_to_db=False)
+        self.assertEqual(res["root"]["meaning"], "gösteri dansı")
+        sources = [g["source"] for g in res["root"]["meanings"]]
+        self.assertNotIn("İndeks", sources)
+        self.assertNotIn("İndeks 2", sources)
+
+    def test_own_record_meaning_is_still_used(self):
+        fetchers = [_EntryOnlyFetcher(name="İndeks", entries=[("ota", "kulluk")],
+                                      meaning="servanthood", only_for="kulluk")]
+        res = SearchEngine(db_manager=self.db, fetchers=fetchers).search("kulluk", save_to_db=False)
+        self.assertEqual(res["root"]["meaning"], "servanthood")
+
+    def test_origin_layer_ignores_sister_language_record(self):
+        """nice: Gagavuzca *nice* < Rusça как, Türkçe `nice`nin kökeni değildir."""
+        from engine.search_engine import _origin_layers
+
+        gag = {"lang_code": "gag", "lang_name": "Gagavuzca", "word": "nice",
+               "lexicon_origin": "alıntı", "donor_lang": "ru", "donor_form": "как"}
+        self.assertEqual(_origin_layers([gag], "nice", None), [])
+        tr = dict(gag, lang_code="tr", lang_name="Türkiye Türkçesi", word="bant",
+                  donor_lang="fr", donor_form="bande")
+        self.assertEqual(len(_origin_layers([tr], "bant", None)), 1)
+
+
 class _FormationFetcher(FakeFetcher):
     """Yapıyı veren tarihî sözlük maddesi (indeksin `formation` sütunu)."""
 
@@ -269,6 +336,14 @@ class TestRootFromFormation(unittest.TestCase):
                                     meaning="göz, görme organı", only_for="göz")
         res = SearchEngine(db_manager=self.db, fetchers=[fetcher]).search("göz", save_to_db=False)
         self.assertEqual(res["root"]["proto_turkic"], "*köŕ")
+
+    def test_sister_language_formation_is_not_the_words_formation(self):
+        """kaçırmak: Azerice `qaçmaq + -ır` Türkçe kelimenin yapısı diye basılmamalı."""
+        fetcher = _FormationFetcher(name="İndeks", entries=[("az", "bitig")],
+                                    meaning="inscription", only_for="bitig")
+        res = SearchEngine(db_manager=self.db, fetchers=[fetcher]).search("bitig", save_to_db=False)
+        self.assertNotIn("sözlük maddesine göre", res["morphology"])
+        self.assertFalse(any("yapım" in layer for layer in res["root"]["origin_layers"]))
 
 
 class TestEtymologyMentions(unittest.TestCase):

@@ -325,11 +325,16 @@ def extract_long_vowels(ipa: str) -> str:
 
 #: Türki dil kodları. Zincirin bir halkası bu ailenin DIŞINA çıkıyorsa
 #: kelime nihayetinde alıntıdır — ilk halka "miras" etiketli olsa bile.
+#:
+#: ⚠️ Şablonlardaki kodlar WIKTIONARY kodlarıdır: Hakasça ``kjh``, Salarca
+#: ``slr``. ``khk`` Wiktionary'de Halha Moğolcasıdır, aileye girmez. Eskiden
+#: ``khk``/``slq`` yazıyordu; Salarca içi türetme (`öxsirik` < Salarca
+#: `öxsirğüsi`) "alıntı" çıkıyordu (ölçüldü: 2 kayıt).
 TURKIC_FAMILY_CODES = frozenset(
     {
         "tr", "ota", "otk", "trk-pro", "trk-oat", "trk-ogz-pro", "trk-cmn-pro",
         "az", "tk", "gag", "kk", "kaa", "ky", "tt", "ba", "nog", "kum", "krc",
-        "crh", "uz", "ug", "cv", "sah", "tyv", "alt", "khk", "cjs", "slq",
+        "crh", "uz", "ug", "cv", "sah", "tyv", "alt", "kjh", "cjs", "slr", "slq",
         "chg", "klj", "dlg", "kim", "ybe", "clw", "atv", "bay", "qwm", "kdr",
     }
 )
@@ -459,7 +464,12 @@ def _cognates_from_templates(record: dict[str, Any]) -> str:
         if str(template.get("name", "")).lower() not in ("cog", "cognate"):
             continue
         args = template.get("args", {}) or {}
-        lang = str(args.get("1", "") or "").strip()
+        # Motor koduna çevrilir: `cog|kjh|…` Hakasça (`khk`), `cog|khk|…` Halha
+        # Moğolcası (`mn`). Çevrilmeden 1.596 kaydın Hakasça/Salarca akrabası
+        # arama motorunda atılıyordu.
+        from engine.fetchers.base import lang_code_from_wiktionary
+
+        lang = lang_code_from_wiktionary(str(args.get("1", "") or ""))
         raw = str(args.get("2", "") or "").strip()
         form = _INLINE_MODIFIER.sub("", raw).strip()
         reading = str(args.get("ts") or args.get("tr") or "").strip()

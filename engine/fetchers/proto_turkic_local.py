@@ -25,13 +25,22 @@ from functools import lru_cache
 from typing import Any
 
 from engine.config import LEXICON_DIR, PROJECT_ROOT
-from engine.fetchers.base import TURKIC_LANGUAGES_MAP, BaseFetcher, detect_script
+from engine.fetchers.base import (
+    TURKIC_LANGUAGES_MAP,
+    WIKTIONARY_CODE_ALIASES,
+    BaseFetcher,
+    detect_script,
+    lang_code_from_wiktionary,
+)
+from engine.logging_setup import get_logger
+
+logger = get_logger(__name__)
 
 DUMP = LEXICON_DIR / "trk-pro.jsonl.gz"
 #: Dökümden türetilmiş küçük önbellek: anahtar başına hazır torun listesi ve
 #: ilk anlam. Döküm değişince (boyut/mtime) yeniden kurulur.
 CACHE = PROJECT_ROOT / "data" / "cache" / "trk-pro.sqlite3"
-_CACHE_VERSION = "1"
+_CACHE_VERSION = "2"
 
 
 def _key(proto: str) -> str:
@@ -69,7 +78,10 @@ def _page_descendants(page: dict[str, Any] | None) -> list[tuple[str, str, str]]
         for node in nodes or []:
             if _is_borrowed(node):
                 continue
-            code, word = str(node.get("lang_code") or ""), str(node.get("word") or "").strip()
+            # kaikki ISO kodu yazar (Hakasça `kjh`, Salarca `slr`); motor
+            # koduna çevrilmeden süzülünce 511 + 598 torun atılıyordu.
+            code = lang_code_from_wiktionary(str(node.get("lang_code") or ""))
+            word = str(node.get("word") or "").strip()
             if code in TURKIC_LANGUAGES_MAP and word and not word.startswith(("*", "-")):
                 out.append((code, word, str(node.get("roman") or "")))
             walk(node.get("descendants") or [])
@@ -87,11 +99,13 @@ def _page_gloss(page: dict[str, Any] | None) -> str:
 
 
 def _dump_signature() -> str:
-    """Döküm (boyut, mtime) ve önbelleğe gömülü süzgeç (Türk dili kodları)
-    değişince önbellek geçersizleşir; ``_is_borrowed`` değişirse sürümü artır."""
+    """Döküm (boyut, mtime) ve önbelleğe gömülü süzgeç (Türk dili kodları ve
+    Wiktionary kod eşlemesi) değişince önbellek geçersizleşir; ``_is_borrowed``
+    değişirse sürümü artır."""
     stat = DUMP.stat()
     langs = ",".join(sorted(TURKIC_LANGUAGES_MAP))
-    return f"{_CACHE_VERSION}:{stat.st_size}:{stat.st_mtime_ns}:{langs}"
+    aliases = ",".join(f"{k}>{v}" for k, v in sorted(WIKTIONARY_CODE_ALIASES.items()))
+    return f"{_CACHE_VERSION}:{stat.st_size}:{stat.st_mtime_ns}:{langs}:{aliases}"
 
 
 def _build_cache(signature: str) -> None:
