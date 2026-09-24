@@ -78,8 +78,12 @@ def inspect(word: str, finding: dict[str, Any]) -> tuple[str, list[str]]:
         issues.append("sınıflandırıcı alıntı, sıralayıcı miras")
     if "doğrulanmış" in provenance and report.get("status_code") != "VALIDATED":
         issues.append("köken 'doğrulanmış' ama rozet değil")
-    if head.strip("*").lower() == word and "türetilmiş" in provenance:
-        issues.append("kelimenin kendisi 'türetilmiş' kök")
+    # Kök kelimenin kendisi olabilir (*kök, *gaga); ama ek taşıyan kelime
+    # bütün olarak Proto-Türkçe kurulamaz (*kolaylaşmak: mastar eki kökte).
+    from engine.utils.morphology import analyze_morphology
+
+    if head.strip("*").lower() == word and analyze_morphology(word)[1]:
+        issues.append("ekli kelime bütün olarak kök kurulmuş")
     for entry in finding.get("turkic_languages") or []:
         code = entry.get("lang_code")
         if _ARTIFACT.search(str(entry.get("word") or "")):

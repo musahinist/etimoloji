@@ -8,6 +8,7 @@ from engine import config
 from engine.db.database import DatabaseManager
 from engine.db.graph_database import GraphDatabaseManager
 from engine.fetchers.academic_turkology import AcademicTurkologyFetcher
+from engine.fetchers.apertium import ApertiumFetcher
 from engine.fetchers.archive_org import ArchiveOrgFetcher
 from engine.fetchers.base import TURKIC_LANGUAGES_MAP, BaseFetcher
 from engine.fetchers.etimoloji_turkce import EtimolojiTurkceFetcher
@@ -554,6 +555,7 @@ def default_fetchers() -> list[BaseFetcher]:
         HistoricalIndexFetcher(),
         ModernIndexFetcher(),
         NorthEuraLexFetcher(),
+        ApertiumFetcher(),
         LocalProtoTurkicFetcher(),
         HistoricalModernLexiconFetcher(),
         IsamAnsiklopediFetcher(),

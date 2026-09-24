@@ -1,5 +1,5 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-cv audit eval-llm eval-prediction starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify semantic dialect
+        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-cv audit eval-llm eval-prediction starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify apertium semantic dialect
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -38,6 +38,7 @@ help:
 	@echo "audit          - Arama çıktısı tutarlılık denetimi (60 kelime)"
 	@echo "eval-cv        - Rekonstrüksiyon 5 katlı çapraz doğrulama (train+dev, n≈320)"
 	@echo "eval-llm       - Yalnız-LLM alıntı taban çizgisi (PROVIDER=ollama|claude)"
+	@echo "apertium       - Apertium iki dilli Türk dili sözlüklerini indir"
 	@echo "starling       - Starling Türk/Moğol etimoloji tablolarını indir (Dybo & Starostin 2005)"
 	@echo "calibrate      - Güven kalibratörünü TRAIN bölümünde eğit"
 	@echo ""
@@ -127,6 +128,9 @@ donors:
 
 starling:
 	.venv/bin/python scripts/download_starling.py
+
+apertium:
+	.venv/bin/python scripts/download_apertium.py
 
 lexicon-index: lexicons
 	.venv/bin/python -m engine.db.lexicon_index --build

@@ -226,3 +226,22 @@ class TestCircuitPersistence(unittest.TestCase):
             network._circuits_loaded = False
             self.assertTrue(network._circuit_open("sozluk.gov.tr"))
             network.reset_circuits()
+
+
+class TestApertium(unittest.TestCase):
+    def _fetch(self, word, table):
+        from unittest import mock
+
+        from engine.fetchers import apertium
+
+        with mock.patch.object(apertium, "_table", return_value=table), \
+             mock.patch.object(apertium, "_predicted_forms", return_value={}):
+            return [(e["lang_code"], e["word"]) for e in apertium.ApertiumFetcher().fetch(word)["turkic_languages"]]
+
+    def test_translation_that_is_not_cognate_is_dropped(self):
+        table = {("pencere", False): [("ky", "терезе"), ("tk", "penjire"), ("uz", "Deniz")]}
+        self.assertEqual(self._fetch("pencere", table), [("tk", "penjire")])
+
+    def test_infinitive_looks_only_at_verbs(self):
+        table = {("kırk", True): [("az", "qırx")], ("kırk", False): [("ky", "кырк")]}
+        self.assertEqual(self._fetch("kırkmak", table), [("az", "qırx")])

@@ -1,0 +1,56 @@
+{
+  "_schema": "turkic-etymology-apertium-provenance/v1",
+  "retrieved_at": "2026-09-24T07:49:10+00:00",
+  "note": "Çeviri karşılığıdır, etimolojik denklik değil; tanık olmadan önce ses denkliği denetlenir.",
+  "files": {
+    "chv-tur": {
+      "url": "https://raw.githubusercontent.com/apertium/apertium-chv-tur/master/apertium-chv-tur.chv-tur.dix",
+      "left": "cv",
+      "right": "tr",
+      "bytes": 2815527,
+      "sha256": "479a89da182f7f665d185fa05236ec09d40e0aa1211e64e27fde466b59cd24f8"
+    },
+    "crh-tur": {
+      "url": "https://raw.githubusercontent.com/apertium/apertium-crh-tur/master/apertium-crh-tur.crh-tur.dix",
+      "left": "crh",
+      "right": "tr",
+      "bytes": 648297,
+      "sha256": "fab579b57d7d96a85cb868e96d0ac46cade477f5d63e7d21d4d1822da1dd22d3"
+    },
+    "tur-kir": {
+      "url": "https://raw.githubusercontent.com/apertium/apertium-tur-kir/master/apertium-tur-kir.tur-kir.dix",
+      "left": "tr",
+      "right": "ky",
+      "bytes": 692848,
+      "sha256": "bfbd59ba4664609ac65d1f551abd5f08edf52d0c79130a42d381fce32be14db1"
+    },
+    "tur-tat": {
+      "url": "https://raw.githubusercontent.com/apertium/apertium-tur-tat/master/apertium-tur-tat.tur-tat.dix",
+      "left": "tr",
+      "right": "tt",
+      "bytes": 344536,
+      "sha256": "56a08ea7972e670bf8de25ee587639ca250d75e844b555f358f28c55d4c6e0c9"
+    },
+    "tur-uzb": {
+      "url": "https://raw.githubusercontent.com/apertium/apertium-tur-uzb/master/apertium-tur-uzb.tur-uzb.dix",
+      "left": "tr",
+      "right": "uz",
+      "bytes": 1529275,
+      "sha256": "92d71a82c20a65ee5f63e9fa5c9a213bb2a80fa2c53344337505e1101f666a7a"
+    },
+    "tur-aze": {
+      "url": "https://raw.githubusercontent.com/apertium/apertium-tur-aze/master/apertium-tur-aze.tur-aze.dix",
+      "left": "tr",
+      "right": "az",
+      "bytes": 556429,
+      "sha256": "ae1cf32b65f671e8d37995dfc9dfbd8c5af833912236164bf9fcfc4bee119886"
+    },
+    "tuk-tur": {
+      "url": "https://raw.githubusercontent.com/apertium/apertium-tuk-tur/master/apertium-tuk-tur.tuk-tur.dix",
+      "left": "tk",
+      "right": "tr",
+      "bytes": 273913,
+      "sha256": "629b7815e1cc2174fd42ee9a2914af037be24068c9e215521a7e79a94bf86939"
+    }
+  }
+}

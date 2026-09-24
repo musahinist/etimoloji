@@ -109,3 +109,6 @@ data/lexicons/ru_edition/gag.jsonl.gz
 
 # Kalıcı HTTP yanıt önbelleği (TDK, Nişanyan, EtimolojiTürkçe)
 data/cache/
+
+# Apertium iki dilli sözlükler (`make apertium`); künye commit edilir.
+data/apertium/*.dix
