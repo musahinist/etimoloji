@@ -1,0 +1,23 @@
+{
+  "_schema": "turkic-etymology-zemberek-provenance/v1",
+  "retrieved_at": "2026-09-24T16:27:34+00:00",
+  "source": "https://github.com/ahmetaa/zemberek-nlp",
+  "commit": "a419ac2680352093e688b0110c1b8628f90bd807",
+  "license": "Apache-2.0",
+  "attribution": "Zemberek-NLP, Ahmet A. Akın ve katkıda bulunanlar (Apache License 2.0)",
+  "note": "Yalnız kök ses öznitelikleri (Voicing/NoVoicing/Doubling/LastVowelDrop/ProgressiveVowelDrop) ve P: sözcük türü kullanılır; bkz. engine/nlp/root_variants.py.",
+  "files": {
+    "master-dictionary.dict": {
+      "url": "https://raw.githubusercontent.com/ahmetaa/zemberek-nlp/a419ac2680352093e688b0110c1b8628f90bd807/morphology/src/main/resources/tr/master-dictionary.dict",
+      "lines": 28921,
+      "bytes": 368797,
+      "sha256": "c539e12904d1ccac4792073f05deeae2babe692249dc4a359da254f1bd338f6f"
+    },
+    "non-tdk.dict": {
+      "url": "https://raw.githubusercontent.com/ahmetaa/zemberek-nlp/a419ac2680352093e688b0110c1b8628f90bd807/morphology/src/main/resources/tr/non-tdk.dict",
+      "lines": 3471,
+      "bytes": 88250,
+      "sha256": "106c459e9ab8d430e3c64cc60e529eca7c369de3993315a71db10ace17cca6b8"
+    }
+  }
+}

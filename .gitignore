@@ -115,3 +115,7 @@ data/apertium/*.dix
 
 # Hakasça sözlükler (`make khakas`); künye commit edilir.
 data/khakas/*.jsonl
+
+# Zemberek kök sözlüğü (`scripts/download_zemberek_lexicon.py`, Apache-2.0):
+# .dict dosyaları repoya alınmaz; künye (SHA-256) commit edilir.
+data/zemberek/*.dict
