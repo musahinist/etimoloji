@@ -713,7 +713,9 @@ class SearchEngine:
             logger.warning("Hipotez sıralaması başarısız: %s", word, exc_info=True)
             return None
 
-    def search(self, query: str, save_to_db: bool = True, use_qwen_agent: bool = False) -> dict[str, Any]:
+    def search(
+        self, query: str, save_to_db: bool = True, use_qwen_agent: bool = False, use_cache: bool = True
+    ) -> dict[str, Any]:
         word_clean = query.strip().lower()[: config.MAX_QUERY_LENGTH]
         search_started = time.perf_counter()
         diagnostics = Diagnostics()
@@ -734,7 +736,7 @@ class SearchEngine:
             )
         stage_timings["morphology"] = int((time.perf_counter() - stage_start) * 1000)
 
-        if config.CACHE_ENABLED and not use_qwen_agent:
+        if config.CACHE_ENABLED and use_cache and not use_qwen_agent:
             cached = self.db.get_finding(word_clean, max_age_seconds=config.CACHE_TTL_SECONDS)
             if cached:
                 cached["from_cache"] = True

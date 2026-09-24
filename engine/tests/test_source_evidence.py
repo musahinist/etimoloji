@@ -204,3 +204,25 @@ class TestPersistentHttpCache(unittest.TestCase):
                 network.fetch("https://example.org/x")
                 network.fetch("https://example.org/x")
                 self.assertEqual(session.get.call_count, 3)
+
+
+class TestCircuitPersistence(unittest.TestCase):
+    def test_open_circuit_survives_process_restart(self):
+        import tempfile
+        from pathlib import Path
+        from unittest import mock
+
+        from engine.utils import network
+
+        with tempfile.TemporaryDirectory() as tmp, \
+             mock.patch.object(network, "CIRCUIT_STATE_PATH", Path(tmp) / "circuits.json"), \
+             mock.patch.object(network, "_persistent_enabled", True):
+            network.reset_circuits()
+            for _ in range(network.CIRCUIT_FAILURES):
+                network._record("sozluk.gov.tr", failed=True)
+            self.assertTrue((Path(tmp) / "circuits.json").exists())
+            # Yeni süreç: bellek boş, durum diskten okunur.
+            network._circuits.clear()
+            network._circuits_loaded = False
+            self.assertTrue(network._circuit_open("sozluk.gov.tr"))
+            network.reset_circuits()

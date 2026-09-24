@@ -16,6 +16,7 @@ Sağladıkları:
 from __future__ import annotations
 
 import ipaddress
+import json
 import socket
 import sqlite3
 import threading
@@ -178,32 +179,71 @@ _circuits: dict[str, tuple[int, float]] = {}
 _circuit_lock = threading.Lock()
 
 
+#: Açık devreler diske de yazılır: her yeni süreç erişilemeyen sunucuyu
+#: yeniden denemesin (TDK çökükken her arama ilk ~40 sn'yi zaman aşımında
+#: geçiriyordu). Kalıcı önbellekle aynı anahtara bağlıdır; testler kapatır.
+CIRCUIT_STATE_PATH = HTTP_CACHE_PATH.parent / "circuits.json"
+_circuits_loaded = False
+
+
 def reset_circuits() -> None:
+    global _circuits_loaded
     with _circuit_lock:
         _circuits.clear()
+        _circuits_loaded = True  # diskteki durum da yok sayılır
+
+
+def _load_circuits() -> None:
+    global _circuits_loaded
+    if _circuits_loaded:
+        return
+    _circuits_loaded = True
+    if not _persistent_enabled or not CIRCUIT_STATE_PATH.exists():
+        return
+    try:
+        for host, open_until in json.loads(CIRCUIT_STATE_PATH.read_text(encoding="utf-8")).items():
+            if float(open_until) > time.time():
+                _circuits[host] = (0, float(open_until))
+    except (OSError, ValueError, TypeError):
+        logger.debug("Devre durumu okunamadı", exc_info=True)
+
+
+def _save_circuits() -> None:
+    if not _persistent_enabled:
+        return
+    try:
+        CIRCUIT_STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        state = {h: until for h, (_, until) in _circuits.items() if until > time.time()}
+        CIRCUIT_STATE_PATH.write_text(json.dumps(state), encoding="utf-8")
+    except OSError:
+        logger.debug("Devre durumu yazılamadı", exc_info=True)
 
 
 def _circuit_open(host: str) -> bool:
     with _circuit_lock:
+        _load_circuits()
         _, open_until = _circuits.get(host, (0, 0.0))
-        return open_until > time.monotonic()
+        return open_until > time.time()
 
 
 def _record(host: str, *, failed: bool) -> None:
     with _circuit_lock:
         if not failed:
-            _circuits.pop(host, None)
+            if _circuits.pop(host, (0, 0.0))[1]:
+                _save_circuits()
             return
         failures = _circuits.get(host, (0, 0.0))[0] + 1
         open_until = 0.0
         if failures >= CIRCUIT_FAILURES:
-            open_until = time.monotonic() + CIRCUIT_COOLDOWN
+            open_until = time.time() + CIRCUIT_COOLDOWN
             logger.warning(
                 "Devre açıldı: %s art arda %d kez başarısız; %.0f sn istek atılmayacak",
                 host, failures, CIRCUIT_COOLDOWN,
             )
             failures = 0
         _circuits[host] = (failures, open_until)
+        if open_until:
+            _save_circuits()
 
 
 # --- Güvenlik --------------------------------------------------------------

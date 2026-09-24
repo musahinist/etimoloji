@@ -145,6 +145,7 @@
                         <div>
                             <span class="text-xs text-slate-400 font-medium block">Ana Kök / Rekonstrüksiyon</span>
                             <span id="resProtoRoot" class="text-xl font-bold text-teal-300 font-heading">---</span>
+                        <span id="resProvenance" class="text-[11px] text-slate-400 block mt-1"></span>
                         </div>
                         <div>
                             <span class="text-xs text-slate-400 font-medium block">Tarihsel Anlam</span>
@@ -397,6 +398,8 @@
             document.getElementById('resQueryWord').textContent = data.query_word || "";
             document.getElementById('resMorphology').textContent = "Morfoloji: " + (data.morphology || "Yalın Kök");
             document.getElementById('resProtoRoot').textContent = (data.root && data.root.proto_turkic) ? data.root.proto_turkic : "Bilinmiyor";
+            // Kökün NEREDEN geldiği (sözlük, Starling, motorun rekonstrüksiyonu, sıralayıcı).
+            document.getElementById('resProvenance').textContent = (data.root && data.root.provenance) ? `kaynak: ${data.root.provenance}` : "";
             document.getElementById('resMeaning').textContent = (data.root && data.root.meaning) ? data.root.meaning : "Bilinmiyor";
             document.getElementById('resSources').textContent = (data.sources || []).join(", ") || "Çeşitli Lügatlar";
 
@@ -464,7 +467,12 @@
                         ? '<span class="text-red-400 font-bold">✗</span>'
                         : '<span class="text-emerald-400 font-bold">✓</span>';
                     const support = (h.supporting || []).slice(0, 3)
-                        .map(s => `<li class="text-slate-400">+ ${esc(s)}</li>`).join("");
+                        .map(s => `<li class="text-slate-400">+ ${esc(s)}</li>`).join("")
+                        + (h.against || []).slice(0, 2)
+                        .map(s => `<li class="text-slate-500">− ${esc(s)}</li>`).join("")
+                        // Veri olmadığı için çalışamayan sinyal karşı kanıt değildir.
+                        + ((h.not_evaluated || []).length
+                            ? `<li class="text-slate-600 italic">· ölçülemedi: ${esc(h.not_evaluated.slice(0, 3).join("; "))}</li>` : "");
                     const why = h.rejected_because
                         ? `<div class="text-red-300/90 mt-1">neden: ${esc(h.rejected_because)}</div>` : "";
                     const cf = h.counterfactual

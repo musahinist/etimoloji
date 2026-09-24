@@ -351,6 +351,8 @@ def main():
     search_parser.add_argument("--json", action="store_true", help="Çıktıyı ham JSON formatında basar")
     search_parser.add_argument("--ai", action="store_true", help="Qwen2.5 otonom web araştırma ajanı ile derinleştirilmiş arama yap")
     search_parser.add_argument("--no-save", action="store_false", dest="save", help="Sonucu veritabanına kaydetme")
+    search_parser.add_argument("--no-cache", action="store_false", dest="use_cache",
+                               help="Önbellekteki eski bulguyu kullanma, yeniden araştır")
 
     validate_parser = subparsers.add_parser("validate", help="Bir etimoloji hipotezini A-HVP protokolü ile bilimsel olarak doğrular")
     validate_parser.add_argument("word", type=str, help="Hedef kelime")
@@ -389,7 +391,7 @@ def main():
         try:
             if args.ai:
                 print("🤖 Qwen2.5 Otonom Web Keşif Ajanı Devrede... (Derin Web & Makale Taraması Yapılıyor)")
-            finding = engine.search(args.word, save_to_db=args.save, use_qwen_agent=args.ai)
+            finding = engine.search(args.word, save_to_db=args.save, use_qwen_agent=args.ai, use_cache=args.use_cache)
             if args.json:
                 print(json.dumps(finding, ensure_ascii=False, indent=2))
             else:
