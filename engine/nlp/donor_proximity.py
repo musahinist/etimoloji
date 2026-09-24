@@ -363,8 +363,8 @@ def proximity_strength(match: DonorMatch | None) -> float:
 # Etiket adımı her dilin en yakın maddesini AYRI bulur, o dilin kendi
 # null'ını (aynı uzunluktaki kontrol kelimelerinin o havuza medyan uzaklığı)
 # düşer ve en küçük farkı seçer; Moğolca için Starling ``monget`` kullanılır.
-# Ölçüldü: doğruluk 0,652 -> 0,711 (iki yarıda da artış), Moğolca->Rusça
-# 79 -> 46. Parametre seçilmedi (yarı-bölme gereksiz ama yine raporlanır).
+# Ölçüldü: doğruluk 0,652 -> 0,714 (çift yarı 0,636 -> 0,691, tek 0,668 -> 0,736), Moğolca->Rusça
+# 79 -> 45. Parametre seçilmedi (yarı-bölme gereksiz ama yine raporlanır).
 #
 # ⚠️ Sinyal GÜCÜ bu adımdan etkilenmez: ``monget`` havuza katılınca WOLD
 # "alıntı mı?" F'si 0,615'ten 0,584'e düşüyordu. Etiket yalnız sinyal zaten
