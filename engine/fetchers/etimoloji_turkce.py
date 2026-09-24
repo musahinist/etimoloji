@@ -82,14 +82,24 @@ _ATTEST_RE = re.compile(
 )
 
 
+#: Tırnak içindeki `>`'a dayanıklı etiket: title="Orta Farsça > 10. yy" gibi
+#: özniteliklerde `<[^>]+>` erken kapanıyor ve dil adı `10. yy)">Fa` oluyordu.
+_TAG_RE = re.compile(r"""<(?:[^>"']|"[^"]*"|'[^']*')*>""")
+
+
 def _text(html_fragment: str) -> str:
     """HTML parçasından düz metin çıkarır (tüm HTML varlıkları çözülür)."""
-    t = re.sub(r"<[^>]+>", " ", html_fragment or "")
+    t = _TAG_RE.sub(" ", html_fragment or "")
     t = html_module.unescape(t)
     return re.sub(r"\s+", " ", t).strip()
 
 
 class EtimolojiTurkceFetcher(BaseFetcher):
+    #: Kök varyantı almaz: `gülüş` -> `gül` sorgusu "gül (çiçek)" sayfasının
+    #: Farsça alıntı zincirini getiriyor ve sıralayıcı `gülüş`e "Farsça alıntı"
+    #: diyordu (60 kelimelik tarama). Alıntı zinciri kelimenin KENDİ sayfasından.
+    exact_query_only = True
+
     @property
     def source_name(self) -> str:
         return "EtimolojiTürkçe (Tarihli İlk Tanıklamalar)"

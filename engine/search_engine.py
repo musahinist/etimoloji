@@ -1165,13 +1165,16 @@ class SearchEngine:
             # bir verici dil DEĞİLDİR. Ayrım yapılmazsa miras kök "alıntı
             # kökeni" diye damgalanır (ölçüldü: göz -> yanlış damga).
             _donor_lang = str(hypo.get("donor_language") or "")
+            # ⚠️ Rozet "inceleme gerekli" (NEEDS_REVIEW) iken köken satırı
+            # "doğrulanmış" diyordu; 60 kelimelik taramada 6 kelimede çelişki.
+            _verdict = "doğrulanmış" if _report.get("status_code") == "VALIDATED" else "inceleme gerektiren"
             if _donor_lang in ("", "Proto-Türkçe", "Ana Türkçe", "Öz Türkçe", "Eski Türkçe"):
                 proto_root_provenance = (
-                    f"türetilmiş — A-HVP doğrulanmış miras kökü ({_donor_lang or 'Türki'})"
+                    f"türetilmiş — A-HVP {_verdict} miras kökü ({_donor_lang or 'Türki'})"
                 )
             else:
                 proto_root_provenance = (
-                    f"tanıklı — A-HVP doğrulanmış alıntı kökeni ({_donor_lang})"
+                    f"tanıklı — A-HVP {_verdict} alıntı kökeni ({_donor_lang})"
                 )
             # ⚠️ Eskiden burada `root_meaning` EZİLİYORDU: başlıktaki anlam
             # modern sözlük tanımı yerine hipotezin tarihî anlamı oluyordu
