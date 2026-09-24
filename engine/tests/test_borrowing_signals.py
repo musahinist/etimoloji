@@ -70,6 +70,68 @@ class TestLanguageSpecificPhonotactics(unittest.TestCase):
         self.assertIn("ünlü uyumu ihlali", signal.evidence["violations"])
 
 
+class _FakeIndex:
+    exists = True
+
+    def __init__(self, rows):
+        self.rows = rows
+
+    def lookup(self, form, *, languages=None, limit=50):
+        from engine.utils.orthography import to_comparison_form
+
+        key = to_comparison_form(form)
+        return [
+            dict(r) for r in self.rows
+            if to_comparison_form(r["word"]) == key and r.get("lang_code", "tr") in (languages or ["tr"])
+        ][:limit]
+
+
+def _row(word, origin, donor="", form="", pos="noun"):
+    return {"word": word, "origin": origin, "donor_lang": donor, "donor_form": form, "pos": pos}
+
+
+class TestChainHomonyms(unittest.TestCase):
+    def _chain(self, rows, word):
+        detector = bd.BorrowingDetector(index=_FakeIndex(rows))
+        signal, _, donor = detector._chain_signal(word, "tr")
+        return signal, donor
+
+    def test_infinitive_counts_as_inherited(self):
+        """``duy`` < Fr. *douille* (ad) ama ``duymak`` < *tuy-."""
+        rows = [
+            _row("duy", "alıntı", "fr", "douille"),
+            _row("duy", None, pos="verb"),
+            _row("duymak", "miras", "trk-pro", "*tuy-", pos="verb"),
+        ]
+        signal, donor = self._chain(rows, "duy")
+        self.assertFalse(signal.fired)
+        self.assertEqual(donor, "")
+
+    def test_repeated_loan_rows_count_once(self):
+        """``sek``: sıfat + zarf aynı Fr. *sec* — 2 alıntı sayılınca eşik geçiliyordu."""
+        rows = [
+            _row("sek", "alıntı", "fr", "sec", pos="adj"),
+            _row("sek", "alıntı", "fr", "sec", pos="adv"),
+            _row("sekmek", "miras", "trk-pro", "*sēk-", pos="verb"),
+        ]
+        self.assertFalse(self._chain(rows, "sek")[0].fired)
+
+    def test_suffix_and_different_spelling_are_not_evidence(self):
+        """``kar`` (*kār) ≠ ``kâr`` (Pehl.) ve ``-kâr`` (Fa. eki)."""
+        rows = [
+            _row("kar", "miras", "trk-pro", "*kār"),
+            _row("kâr", "alıntı", "pal", "kār"),
+            _row("-kâr", "alıntı", "fa-cls", "کار", pos="suffix"),
+        ]
+        self.assertFalse(self._chain(rows, "kar")[0].fired)
+
+    def test_plain_loan_still_fires(self):
+        rows = [_row("kitap", "alıntı", "ar", "كتاب")]
+        signal, donor = self._chain(rows, "kitap")
+        self.assertTrue(signal.fired)
+        self.assertEqual(donor, "ar")
+
+
 class TestProductionPassesSense(unittest.TestCase):
     def test_missing_sense_is_read_from_the_index(self):
         seen = {}

@@ -146,6 +146,99 @@ BORROWING_THRESHOLD = 0.45
 BLOCK_THRESHOLD = 0.55
 
 
+#: Fiil kökünün sözlükteki mastar biçimi (dil -> ekler). Sözlük fiili
+#: MASTARLA tutar: ``duy`` satırı yalnız ad (Fr. *douille*) ve emir kipi
+#: çekimidir, miras kayıt ``duymak`` (*tuy-) satırındadır.
+INFINITIVE_SUFFIXES: dict[str, tuple[str, ...]] = {"tr": ("mak", "mek")}
+
+
+def _lexical_origin_rows(
+    index: Any, word: str, lang: str, *, exact: bool
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
+    """``(alıntı kayıtları, miras kayıtları, bütün satırlar)`` — eşadlılık oranı için.
+
+    ``_chain_signal`` ve ``_index_attests_loan`` AYNI kuralı kullanır; eskiden
+    ikisi ayrı kopyaydı ve mastar kanıtı yalnız birinde vardı.
+
+    Ölçülmüş hatalar (başlık × Starling, G6): ``duy``, ``sek``, ``ser``,
+    ``tak``, ``gül``, ``büz``, ``dik``, ``kar`` miras fiil/ad köküne 1,0 güçle
+    ``zincir_kanıtı`` ateşleniyordu. Dört ayrı sebep:
+
+    * **Mastar.** Fiilin miras kaydı mastardadır (``duymak`` *tuy-); çıplak
+      biçimde yalnız eşsesli alıntı ad görünür. Mastar kaydı miras sayılır.
+    * **Ek satırları.** ``-kâr`` (Fa. ـکَار), ``-dik`` (*-tuk) karşılaştırma
+      biçiminde ``kar``/``dik`` ile çakışır; ek, kelime değildir.
+    * **Farklı yazılış.** ``kâr`` (Pehl. "kazanç") ≠ ``kar`` (*kār "snow").
+      Karşılaştırma biçimi düzeltme işaretini siliyor. Birebir aynı yazılışta
+      kayıt varsa yalnız onlar sayılır; yoksa (Saha IPA sorgusu ~ Kiril
+      madde) eski karşılaştırma eşleşmesine dönülür.
+    * **Tekrarlı alıntı satırı.** ``sek`` sıfat + zarf, ``dik`` sıfat + emir
+      kipi aynı vericiyi (Fr. *sec*, Ç. 直) iki kez sayıyordu; 2 alıntı / 1
+      miras = 0,67 eşadlılık eşiğini (0,6) geçiyordu. Alıntılar
+      ``(verici, biçim)`` başına bir kez sayılır.
+
+    :param exact: ``True`` ise yalnız birebir aynı yazılış (engelleme kararı
+        için; bkz. ``_index_attests_loan``).
+    """
+    from engine.nlp.borrowing_chain import TURKIC_LINEAGE_CODES
+
+    key = (word or "").strip()
+    folded = key.casefold()
+
+    def usable(rows: list[dict[str, Any]], headword: str) -> list[dict[str, Any]]:
+        target = headword.casefold()
+        rows = [r for r in rows if not _is_affix_row(r)]
+        if headword == headword.lower():
+            # Küçük harfli cins ad sorgusu için özel ad kaydı kanıt değildir.
+            rows = [
+                r
+                for r in rows
+                if r.get("pos") != "name" and not str(r.get("word") or "")[:1].isupper()
+            ]
+        same = [r for r in rows if str(r.get("word") or "").strip().casefold() == target]
+        return same if (same or exact) else rows
+
+    rows = usable(index.lookup(key, languages=[lang], limit=10) or [], key)
+
+    def is_loan(r: dict[str, Any]) -> bool:
+        donor = str(r.get("donor_lang") or "")
+        return r.get("origin") == "alıntı" and bool(donor) and donor not in TURKIC_LINEAGE_CODES
+
+    def is_inherited(r: dict[str, Any]) -> bool:
+        return r.get("origin") == "miras" or (
+            r.get("origin") == "alıntı"
+            and str(r.get("donor_lang") or "") in TURKIC_LINEAGE_CODES
+        )
+
+    borrowed: list[dict[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+    for r in rows:
+        if not is_loan(r):
+            continue
+        donor_key = (str(r.get("donor_lang") or ""), str(r.get("donor_form") or ""))
+        if donor_key in seen:
+            continue
+        seen.add(donor_key)
+        borrowed.append(r)
+    inherited = [r for r in rows if is_inherited(r)]
+    if borrowed and folded:
+        for suffix in INFINITIVE_SUFFIXES.get(lang, ()):
+            infinitive = key + suffix
+            found = usable(index.lookup(infinitive, languages=[lang], limit=5) or [], infinitive)
+            match = next((r for r in found if is_inherited(r)), None)
+            if match is not None:
+                inherited.append(match)
+                break
+    return borrowed, inherited, rows
+
+
+def _is_affix_row(row: dict[str, Any]) -> bool:
+    """``-kâr``, ``-dik`` gibi ek satırı mı?"""
+    return row.get("pos") in ("suffix", "prefix", "infix", "affix", "interfix") or str(
+        row.get("word") or ""
+    ).strip().startswith("-")
+
+
 def _index_attests_loan(word: str) -> bool:
     """Sözlük bu kelimeyi DOĞRUDAN alıntı olarak tanıklıyor mu?
 
@@ -180,7 +273,6 @@ def _index_attests_loan(word: str) -> bool:
         return False
     try:
         from engine.db.lexicon_index import LexiconIndex
-        from engine.nlp.borrowing_chain import TURKIC_LINEAGE_CODES
         from engine.nlp.loanword_classifier import KNOWN_REVERSED_LOAN_DIRECTION
 
         if key in KNOWN_REVERSED_LOAN_DIRECTION:
@@ -202,39 +294,11 @@ def _index_attests_loan(word: str) -> bool:
         # NED'i 0.302'den 0.3261'e bozuyordu. Tuzak kelimelerin hepsi zaten
         # tam eşleşiyor (duvar, kitap, çorap, sabun, pencere), yani şart
         # onları etkilemiyor.
-        def _same_headword(row: dict[str, Any]) -> bool:
-            return str(row.get("word") or "").strip().casefold() == key
-
-        rows = [
-            r
-            for r in (index.lookup(key, languages=["tr"], limit=10) or [])
-            if _same_headword(r)
-            and r.get("pos") != "name"
-            and not str(r.get("word") or "")[:1].isupper()
-        ]
-        loans = [
-            r
-            for r in rows
-            if r.get("origin") == "alıntı"
-            and str(r.get("donor_lang") or "")
-            and str(r.get("donor_lang") or "") not in TURKIC_LINEAGE_CODES
-        ]
+        # Mastar kanıtı, ek satırları ve tekrarlı alıntı satırları:
+        # bkz. `_lexical_origin_rows`.
+        loans, inherited, _ = _lexical_origin_rows(index, key, "tr", exact=True)
         if not loans:
             return False
-
-        inherited = [
-            r
-            for r in rows
-            if r.get("origin") == "miras"
-            or str(r.get("donor_lang") or "") in TURKIC_LINEAGE_CODES
-        ]
-        for suffix in ("mak", "mek"):
-            for r in index.lookup(key + suffix, languages=["tr"], limit=3) or []:
-                if r.get("origin") == "miras" or str(
-                    r.get("donor_lang") or ""
-                ) in TURKIC_LINEAGE_CODES:
-                    inherited.append(r)
-                    break
 
         if inherited and len(loans) / (len(loans) + len(inherited)) < 0.6:
             return False
@@ -523,7 +587,7 @@ class BorrowingDetector:
         En güçlü sinyal, çünkü dolaylı gösterge değil doğrudan tanıklamadır.
         Zincir çok halkalı olabilir: Türkçe ← Osmanlıca ← Arapça.
         """
-        from engine.nlp.borrowing_chain import TURKIC_LINEAGE_CODES, language_name
+        from engine.nlp.borrowing_chain import language_name
 
         if not getattr(self.index, "exists", False):
             return (
@@ -531,8 +595,6 @@ class BorrowingDetector:
                 [],
                 "",
             )
-        rows = self.index.lookup(word, languages=[lang], limit=10)
-
         # ⚠️ ÖZEL AD ELEMESİ. Arama `comparison` alanı üzerinden yapılır ve o
         # alan büyük/küçük harf ayırmaz; böylece özel adlar cins adın
         # sorgusuna düşer. Ölçüldü: `aya` için indekste doğru kayıt VAR
@@ -542,14 +604,7 @@ class BorrowingDetector:
         # eşik 0,6 — koruma ateşlenmedi ve özel ad, cins adı 1.0 güçle alıntı
         # ilan edip MİRAS hipotezini reddettirdi.
         # Küçük harfli bir cins ad sorgusu için özel ad kaydı kanıt DEĞİLDİR.
-        if word == word.lower():
-            rows = [
-                r
-                for r in rows
-                if r.get("pos") != "name"
-                and not str(r.get("word") or "")[:1].isupper()
-            ]
-
+        #
         # ⚠️ ATA KATMANI VERİCİ DEĞİLDİR. Sözlük `donor_lang` alanını ata
         # biçimi kaydetmek için de kullanıyor; `bardak` satırı
         # ('bardak', 'alıntı', 'trk-eog', 'برت') diyor ve trk-eog =
@@ -566,13 +621,11 @@ class BorrowingDetector:
         # anlamak, karınca, küsmek, evren, keçe, tin, bardak...).
         # `ota` ve kardeş Türki diller bilerek süzülmüyor — gerekçe
         # `TURKIC_LINEAGE_CODES` tanımında.
-        borrowed = [
-            r
-            for r in rows
-            if r.get("origin") == "alıntı"
-            and str(r.get("donor_lang") or "") not in TURKIC_LINEAGE_CODES
-        ]
-        inherited = [r for r in rows if r.get("origin") == "miras"]
+        #
+        # Mastar kanıtı, ek satırları, farklı yazılış ve tekrarlı alıntı
+        # satırları (G6: duy, sek, ser, tak, gül, büz, dik, kar): bkz.
+        # `_lexical_origin_rows`.
+        borrowed, inherited, rows = _lexical_origin_rows(self.index, word, lang, exact=False)
 
         # ⚠️ EŞADLILIK. Aynı yazılışta hem miras hem alıntı madde olabilir:
         # Türkçe `su` (miras, "water") ile Fransızca kökenli bir `su` maddesi
