@@ -5,18 +5,23 @@
   "systems": {
     "rules": {
       "exact": 0.2531,
-      "ned": 0.3679,
-      "bcfs": 0.5414
+      "ned": 0.3698,
+      "bcfs": 0.5351
     },
     "learned_table": {
       "exact": 0.2719,
-      "ned": 0.3426,
-      "bcfs": 0.5504
+      "ned": 0.3445,
+      "bcfs": 0.5437
     },
     "majority_character": {
       "exact": 0.2531,
       "ned": 0.3709,
       "bcfs": 0.5192
+    },
+    "column_model": {
+      "exact": 0.2969,
+      "ned": 0.3303,
+      "bcfs": 0.5562
     }
   },
   "comparisons": {
@@ -33,10 +38,10 @@
         "lower_is_better": false
       },
       "ned": {
-        "difference": -0.02828,
+        "difference": -0.02636,
         "ci95": [
-          -0.04672,
-          -0.00949
+          -0.04607,
+          -0.0057
         ],
         "significant": true,
         "a_is_better": true,
@@ -44,10 +49,10 @@
         "lower_is_better": true
       },
       "bcfs": {
-        "difference": 0.03112,
+        "difference": 0.02445,
         "ci95": [
-          0.01235,
-          0.04695
+          0.00269,
+          0.04417
         ],
         "significant": true,
         "a_is_better": true,
@@ -67,10 +72,10 @@
         "lower_is_better": false
       },
       "ned": {
-        "difference": -0.02535,
+        "difference": -0.02529,
         "ci95": [
-          -0.03572,
-          -0.0154
+          -0.03565,
+          -0.01547
         ],
         "significant": true,
         "a_is_better": true,
@@ -78,10 +83,44 @@
         "lower_is_better": true
       },
       "bcfs": {
-        "difference": 0.00891,
+        "difference": 0.00861,
         "ci95": [
-          0.00122,
-          0.01681
+          0.00149,
+          0.01606
+        ],
+        "significant": true,
+        "a_is_better": true,
+        "n": 320
+      }
+    },
+    "column_model-learned_table": {
+      "exact": {
+        "difference": 0.025,
+        "ci95": [
+          0.00625,
+          0.04688
+        ],
+        "significant": true,
+        "a_is_better": true,
+        "n": 320,
+        "lower_is_better": false
+      },
+      "ned": {
+        "difference": -0.0142,
+        "ci95": [
+          -0.02557,
+          -0.00348
+        ],
+        "significant": true,
+        "a_is_better": true,
+        "n": 320,
+        "lower_is_better": true
+      },
+      "bcfs": {
+        "difference": 0.01256,
+        "ci95": [
+          0.00061,
+          0.0238
         ],
         "significant": true,
         "a_is_better": true,
@@ -89,6 +128,13 @@
       }
     }
   },
+  "column_model_starling_per_fold": [
+    1719,
+    1764,
+    1798,
+    1767,
+    1726
+  ],
   "h2": {
     "criterion": "BCFS(motor) − BCFS(majority_character), eşleşmiş bootstrap %95 GA sıfırı dışlar, motor lehine",
     "system": "learned_table",

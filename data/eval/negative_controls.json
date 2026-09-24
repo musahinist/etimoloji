@@ -647,7 +647,7 @@
         "reconstructed": false,
         "method": "comparative",
         "evidence_available": true,
-        "root": "*zzzkh",
+        "root": "*ŕŕŕkŕ",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
         "reason": "Türkçenin ses dizimini ihlal ediyor"
@@ -667,9 +667,9 @@
         "reconstructed": false,
         "method": "comparative",
         "evidence_available": true,
-        "root": "*vlkrl",
+        "root": "*blkrm",
         "badge": "⚪ YETERSİZ KANIT",
-        "calibrated": 0.1322,
+        "calibrated": 0.1461,
         "reason": "Türkçenin ses dizimini ihlal ediyor"
       },
       {
@@ -783,7 +783,7 @@
         "reconstructed": true,
         "method": "comparative",
         "evidence_available": true,
-        "root": "*jay",
+        "root": "*jaj",
         "badge": "🟠 ZAYIF KANIT",
         "calibrated": 0.1962,
         "reason": "'tea' Farsça alıntı, 'brook' Proto-Türkçe miras — aynı yazılış"

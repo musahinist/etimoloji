@@ -1,5 +1,5 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-cv audit eval-llm eval-prediction starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify apertium semantic dialect bootstrap
+        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-cv audit eval-llm eval-prediction starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify apertium semantic dialect bootstrap column-model
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -15,6 +15,7 @@ help:
 	@echo "gold           - Altın standardı kur, kavram bazlı böl ve test setini mühürle"
 	@echo "eval-baseline  - Taban çizgisi: motor vs trivial sistemler (dev bölümü)"
 	@echo "patterns       - Ata ses örüntü tablosunu TRAIN'den öğren (denetimli katman)"
+	@echo "column-model   - Sütun modelini (ata ses / ∅) TRAIN + Starling'den öğren"
 	@echo "eval           - Rekonstrüksiyon ölçümü (dev bölümü)"
 	@echo "eval-cognates  - Akraba tespiti B-Cubed F (LexStat-Infomap taban çizgisine karşı)"
 	@echo "regularity     - CoPaR: verinin ne kadarı düzenli denkliklerle açıklanıyor (üst sınır)"
@@ -141,6 +142,11 @@ chains: lexicons
 
 patterns: gold
 	.venv/bin/python -m engine.nlp.proto_patterns
+
+# Sütun modeli (ata ses / ∅): savelyevturkic TRAIN + Starling turcet
+# (`make starling`); dev/test Türkçe biçimleri ve dev kökleri eğitimden çıkar.
+column-model: gold patterns
+	.venv/bin/python -m engine.nlp.column_model --train
 
 correspondences: gold
 	.venv/bin/python -m engine.nlp.cognate_prediction

@@ -26,6 +26,7 @@ from typing import Any
 
 from engine.fetchers.base import TURKIC_LANGUAGES_MAP
 from engine.logging_setup import get_logger
+from engine.nlp import column_model
 from engine.nlp.confidence import DEFAULT_PLAUSIBILITY_FLOOR, apply_calibration
 from engine.nlp.multi_alignment import align_forms
 from engine.nlp.nbest_reranking import generate as generate_candidates
@@ -222,9 +223,12 @@ class ComparativeReconstructor:
         decisions: list[Any] = []
         diagnostic_hits = 0
         last = len(informative) - 1
+        # Sütun modeli (``data/models/proto_column_model.json``) yüklüyse sütun
+        # kararlarını o verir (ses veya "sütun kökte yok"); yoksa kural+tablo.
+        column_decisions = column_model.decide(informative)
         for i, column in enumerate(informative):
             position = "initial" if i == 0 else ("final" if i == last else "medial")
-            decision = pick_proto_sound(column, position)
+            decision = column_decisions[i] if column_decisions else pick_proto_sound(column, position)
             decisions.append(decision)
             if decision.sound:
                 proto_chars.append(decision.sound)
@@ -356,6 +360,7 @@ class ComparativeReconstructor:
             # (bkz. `nbest_reranking`). Adaylar yine de değerlidir:
             # doğru cevap %50,6 oranında bu listenin içindedir (top-1 %43,4).
             "alternative_forms": alternative_forms,
+            "column_features": column_model.column_features(informative, decisions),
             "borrowing": borrowing.as_dict() if borrowing is not None else None,
             "reconstruction_notes": (
                 f"{len(by_lang)} dil tanığı ve {len(branches)} Türki kol üzerinden "

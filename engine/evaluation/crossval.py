@@ -45,6 +45,12 @@ yanlış 48 · ek soyulmamış 38 · ünlü uzunluğu 22 · çapa kısa 16. Tahm
   *d, 8 kez *t; g- iken 5 kez *g, 7 kez *k. Kural yazı-tura düzeyinde
   kalır (d için ~+3, g için ~−2 madde) ve 320 maddeye uydurulmuş olur.
 
+Sütun modeli (``column_model``, 2026-09-24): her katta öbür katlar + Starling
+turcet (katta 1.719–1.798 kök; sınanan/test Türkçe biçimi veya sınanan kökle
+çakışanlar elenir) ile eğitilir. Tabloya karşı (tanıksız kök yasağı dahil):
+tam 0,2969 vs 0,2719 GA[+0,006, +0,047] · NED 0,3303 vs 0,3445
+GA[−0,026, −0,003] ANLAMLI · BCFS +0,013 GA[+0,001, +0,024].
+
 Aday listesi tavanı (konformal kümeler için üst sınır): doğru cevabın N-best
 listesinde bulunma oranı 5 adayda 0,309, 20'de 0,316, 100'de 0,334, 500'de
 0,338 (top-1 0,272). Adaylar aynı iskelette sütun sütun ses değiştirerek
@@ -205,7 +211,21 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
     items = list(gold.split("train")) + list(gold.split("dev"))
     mapping = build_mapping(CldfWordlist.load(dataset))
 
-    systems = ("rules", "learned_table", "majority_character")
+    from engine.nlp import column_model
+    from engine.nlp.column_model import norm as proto_norm
+
+    # Sütun modeli (``column_model``): her katta YALNIZ öbür katlardan + Starling'den
+    # eğitilir. Starling hizalamaları ve altın sütunları kattan bağımsızdır, bir kez kurulur.
+    starling_sets = column_model.prepare_starling()
+    gold_sets = column_model.prepare_gold(items, mapping)
+    # ⚠️ Test bölümünden YALNIZ Türkçe tanık biçimi okunur (Starling sızıntı süzgeci).
+    test_turkish = set().union(
+        *(column_model.gold_turkish(it, mapping) for it in gold.items if it.split == "test")
+    )
+    if not starling_sets:
+        logger.warning("Starling turcet yok; column_model sistemi atlanıyor (`make starling`)")
+    systems = ("rules", "learned_table", "majority_character") + (("column_model",) if starling_sets else ())
+    starling_used: list[int] = []
     correct: dict[str, list[bool]] = {s: [] for s in systems}
     ned: dict[str, list[float]] = {s: [] for s in systems}
     # Madde başına (tahmin, altın) çifti — çekimserse None. B-Cubed veri
@@ -230,14 +250,30 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
                 (it.gold_form, {mapping[lang]: f for lang, f in it.witnesses.items() if lang in mapping})
                 for it in train
             ])
+            column_model.set_model(None)
             for name, pattern_table in (("rules", None), ("learned_table", table)):
                 proto_phonology._PATTERN_TABLE = pattern_table
                 proto_phonology._PATTERN_TABLE_LOADED = True
                 _collect(name, harness.comparative_reconstructor(), {})
             _collect("majority_character", majority_character, {"system": "majority"})
+            if starling_sets:
+                allowed = column_model.starling_allowed(
+                    starling_sets,
+                    set().union(*(gold_sets[it.set_id].turkish for it in held)) | test_turkish,
+                    {proto_norm(g) for it in held for g in it.gold_candidates},
+                )
+                model, used = column_model.train(
+                    gold_sets, [it.set_id for it in train], allowed, table, fold_of=fold_of
+                )
+                starling_used.append(used)
+                proto_phonology._PATTERN_TABLE = table
+                proto_phonology._PATTERN_TABLE_LOADED = True
+                column_model.set_model(model)
+                _collect("column_model", harness.comparative_reconstructor(), {})
     finally:
-        # Diskteki (train'de öğrenilmiş) tablo bir sonraki kullanımda yeniden yüklensin.
+        # Diskteki (train'de öğrenilmiş) tablo ve sütun modeli bir sonraki kullanımda yeniden yüklensin.
         proto_phonology.reset_pattern_cache()
+        column_model.reset_model_cache()
 
     n = len(correct["majority_character"])
     columns = {s: [item_columns(p) for p in pairs[s]] for s in systems}
@@ -251,7 +287,10 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
         for s in systems
     }
     comparisons = {}
-    for a, b in (("learned_table", "majority_character"), ("learned_table", "rules")):
+    pairs_to_compare = [("learned_table", "majority_character"), ("learned_table", "rules")]
+    if "column_model" in systems:
+        pairs_to_compare.append(("column_model", "learned_table"))
+    for a, b in pairs_to_compare:
         exact = bootstrap_metric_difference([float(x) for x in correct[a]], [float(x) for x in correct[b]])
         dist = bootstrap_metric_difference(ned[a], ned[b], lower_is_better=True)
         bcfs = bootstrap_bcubed_difference(columns[a], columns[b])
@@ -263,6 +302,7 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
         "n": n,
         "systems": summary,
         "comparisons": comparisons,
+        "column_model_starling_per_fold": starling_used,
         # PREREGISTRATION H2: motor majority_character'ı B-Cubed F'de geçer —
         # eşleşmiş bootstrap %95 GA sıfırı dışlar, motor lehine.
         "h2": {
