@@ -143,6 +143,36 @@ class TestOriginDetection(unittest.TestCase):
             "alıntı",
         )
 
+    def test_text_donor_ignored_when_chain_reaches_proto_turkic(self):
+        """``torun``: zincir *tōr-'da bitiyor; metindeki Ermenice "benzerlik
+        tesadüfidir" cümlesi verici DEĞİLDİR (G6: torun -> hy)."""
+        self.assertEqual(
+            self._origin(record(
+                "torun",
+                [
+                    {"name": "inh", "args": {"2": "ota", "3": "تورون"}},
+                    {"name": "inh", "args": {"2": "trk-pro", "3": "*tōr-"}},
+                    {"name": "ncog", "args": {"1": "xcl", "2": "թոռն"}},
+                ],
+                etymology=(
+                    "From Ottoman Turkish تورون (torun), from Proto-Turkic *tōr-. "
+                    "The similarity to Old Armenian թոռն (tʻoṙn) is accidental."
+                ),
+            )),
+            "miras",
+        )
+
+    def test_text_donor_still_extends_a_chain_ending_in_ottoman(self):
+        """Zincir ``ota``da bitiyorsa metin şablonun devamıdır (``kitap``)."""
+        self.assertEqual(
+            self._origin(record(
+                "hayvan",
+                [{"name": "inh", "args": {"2": "ota", "3": "حیوان"}}],
+                etymology="From Ottoman Turkish حیوان, from Arabic حَيَوَان (ḥayawān).",
+            )),
+            "alıntı",
+        )
+
     def test_no_templates_no_origin(self):
         self.assertIsNone(self._origin(record("kar")))
 

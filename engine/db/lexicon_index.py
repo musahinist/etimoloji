@@ -487,7 +487,17 @@ def _origin_from_templates(record: dict[str, Any]) -> tuple[str | None, str, str
 
     # Şablon zinciri aile içinde kalıyor ama metin aile dışı bir kaynak
     # gösteriyorsa, zincirin uzak halkası şablona yazılmamış demektir.
-    if text_donor and text_donor not in TURKIC_FAMILY_CODES:
+    #
+    # ⚠️ Zincir aile ATA DİLİNDE (``trk-pro``) bitiyorsa uzak halka yazılmış
+    # demektir: kelime kök düzeyine kadar mirastır ve metindeki yabancı dil
+    # adı verici değil, akraba listesi / karşılaştırma / reddedilen
+    # benzerliktir. Ölçüldü (tr dökümü): bu durumda metin vericisi alan 24
+    # maddenin 24'ü yanlıştı — ``torun`` ("similarity to Old Armenian թոռն
+    # is accidental" -> hy), ``koyun``/``eşek``/``kırağı`` (Moğolca akraba),
+    # ``küçük``/``çene`` (Farsça karşılaştırma). Zincir ``ota``da bitenler
+    # (161) değişmez: orada metin gerçekten şablonun devamıdır (``kitap``).
+    reaches_proto = final_lang.endswith("-pro")
+    if text_donor and text_donor not in TURKIC_FAMILY_CODES and not reaches_proto:
         return "alıntı", text_donor, text_form
     return "miras", final_lang, final_form
 
