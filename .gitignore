@@ -112,3 +112,6 @@ data/cache/
 
 # Apertium iki dilli sözlükler (`make apertium`); künye commit edilir.
 data/apertium/*.dix
+
+# Hakasça sözlükler (`make khakas`); künye commit edilir.
+data/khakas/*.jsonl

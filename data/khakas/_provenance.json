@@ -1,0 +1,43 @@
+{
+  "_schema": "turkic-etymology-khakas-provenance/v1",
+  "retrieved_at": "2026-09-24T08:54:39+00:00",
+  "via": "https://datasets-server.huggingface.co/rows",
+  "note": "Yazılışla bulunan aday akraba değildir; tanık olmadan önce anlamla doğrulanır (bkz. engine/fetchers/khakas_dict.py). etym=='rus' maddeler Rusça alıntıdır, elenir.",
+  "files": {
+    "khakas_russian.jsonl": {
+      "dataset": "adeshkin/khakas-russian-dict",
+      "config": "draft",
+      "split": "train",
+      "url": "https://huggingface.co/datasets/adeshkin/khakas-russian-dict",
+      "license": "CC-BY-4.0",
+      "rows": 22324,
+      "columns": [
+        "headword",
+        "word",
+        "headnum",
+        "semgloss",
+        "part",
+        "etym",
+        "semtag",
+        "dial",
+        "rest"
+      ],
+      "bytes": 9750419,
+      "sha256": "e6c832a816e21bde90c3ad5013a663957b6cadbaf019afcf47feb5807c26351a"
+    },
+    "khakas_explanatory.jsonl": {
+      "dataset": "adeshkin/khakas-explanatory-dict",
+      "config": "default",
+      "split": "train",
+      "url": "https://huggingface.co/datasets/adeshkin/khakas-explanatory-dict",
+      "license": "CC-BY-4.0",
+      "rows": 12498,
+      "columns": [
+        "headword_fix",
+        "field_fix"
+      ],
+      "bytes": 9505289,
+      "sha256": "e353f42d01108df7eaa3826e0e6b54117f6ce80493360eef31051c04d964e5b7"
+    }
+  }
+}

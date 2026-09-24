@@ -40,6 +40,7 @@ help:
 	@echo "eval-cv        - Rekonstrüksiyon 5 katlı çapraz doğrulama (train+dev, n≈320)"
 	@echo "eval-llm       - Yalnız-LLM alıntı taban çizgisi (PROVIDER=ollama|claude)"
 	@echo "apertium       - Apertium iki dilli Türk dili sözlüklerini indir"
+	@echo "khakas         - Hakasça–Rusça ve açıklamalı sözlüğü indir (HF, CC-BY-4.0; portföyde değil)"
 	@echo "starling       - Starling Türk/Moğol etimoloji tablolarını indir (Dybo & Starostin 2005)"
 	@echo "calibrate      - Güven kalibratörünü TRAIN bölümünde eğit"
 	@echo "bootstrap      - Taze klonda tüm veriyi indir ve kur (data+lexicons+tr+index+donors+starling+apertium+gold+patterns)"
@@ -133,6 +134,9 @@ starling:
 
 apertium:
 	.venv/bin/python scripts/download_apertium.py
+
+khakas:
+	.venv/bin/python scripts/download_khakas.py
 
 lexicon-index: lexicons
 	.venv/bin/python -m engine.db.lexicon_index --build
