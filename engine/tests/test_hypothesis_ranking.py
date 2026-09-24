@@ -177,3 +177,47 @@ class TestDonorProximityWithAttestedDonor(unittest.TestCase):
             hyp = HypothesisRanker._with_source_loan(base, borrowing, entries)
         self.assertNotIn("verici sözlüğünde yakın karşılık yok", hyp.against)
         self.assertTrue(any("accumulateur" in x for x in hyp.not_evaluated))
+
+
+class TestAttestedInheritedRoot(unittest.TestCase):
+    """B3 (G6): kaynağın kelimenin kendisi için verdiği miras kök miras
+    hipotezinin doğrudan kanıtıdır; sözlük alıntı kaydıyla çelişirse
+    çelişki raporda görünür."""
+
+    @staticmethod
+    def _ranker(chain_fired: bool, score: float):
+        from types import SimpleNamespace
+        from unittest import mock
+
+        from engine.nlp.borrowing_detector import Signal
+
+        signals = [Signal("zincir_kanıtı", chain_fired, 1.0 if chain_fired else 0.0,
+                          "sözlükte alıntı olarak tanıklanmış: Soğdca" if chain_fired else "alıntı kaydı yok")]
+        borrowing = SimpleNamespace(word="katır", donor_language="sog" if chain_fired else None,
+                                    score=score, chain=["Türkçe katır", "Soğdca x"] if chain_fired else [],
+                                    expected_if_inherited="", signals=signals)
+        detector = mock.Mock()
+        detector.detect.return_value = borrowing
+        recon = mock.Mock()
+        recon.reconstruct.return_value = {"method": "anchor_fallback"}
+        return HypothesisRanker(reconstructor=recon, borrowing_detector=detector)
+
+    def test_attested_root_is_inherited_evidence(self):
+        with self.subTest("tanıklı kök yok: miras 0,05"):
+            ranked = self._ranker(False, 0.32).rank("katır", [])
+            self.assertEqual(ranked.selected.kind, "borrowed")
+        ranked = self._ranker(False, 0.32).rank("katır", [], attested_root="*KAtɨr", attested_root_source="Starling")
+        self.assertEqual(ranked.selected.kind, "inherited")
+        self.assertIn("*KAtɨr", ranked.selected.supporting[0])
+        # Rekonstrüksiyonun kurulamaması karşı kanıt değil, uygulanamamadır.
+        self.assertEqual(ranked.selected.against, [])
+        self.assertEqual(ranked.conflicts, [])
+
+    def test_conflict_with_loan_record_is_reported_not_overridden(self):
+        ranked = self._ranker(True, 0.5).rank("katır", [], attested_root="*KAtɨr", attested_root_source="Starling")
+        # Aynı ağırlıkta iki doğrudan tanıklık: eşitlikte alıntı önde kalır.
+        self.assertEqual(ranked.selected.kind, "borrowed")
+        self.assertEqual(len(ranked.conflicts), 1)
+        self.assertIn("*KAtɨr", ranked.conflicts[0])
+        self.assertIn("kaynaklar çelişiyor", ranked.explain())
+        self.assertIn("conflicts", ranked.as_dict())

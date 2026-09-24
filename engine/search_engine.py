@@ -870,12 +870,16 @@ class SearchEngine:
                 item["live"] = live
         return found
 
-    def _rank_hypotheses(self, word: str, entries: list[dict[str, Any]]) -> dict[str, Any] | None:
+    def _rank_hypotheses(
+        self, word: str, entries: list[dict[str, Any]], *, attested_root: str = "", attested_root_source: str = ""
+    ) -> dict[str, Any] | None:
         """Rakip köken hipotezlerini sıralar; başarısız olursa hattı durdurmaz."""
         try:
             from engine.nlp.hypothesis_ranking import HypothesisRanker
 
-            return HypothesisRanker().rank(word, entries).as_dict()
+            return HypothesisRanker().rank(
+                word, entries, attested_root=attested_root, attested_root_source=attested_root_source
+            ).as_dict()
         except Exception:
             logger.warning("Hipotez sıralaması başarısız: %s", word, exc_info=True)
             return None
@@ -1288,7 +1292,18 @@ class SearchEngine:
 
         # Rakip hipotezler ve red gerekçeleri (Faz 9). Reddedilen köken
         # önerileri çıktıda KALIR; gerekçesiyle birlikte.
-        ranked_hypotheses = self._rank_hypotheses(word_clean, sorted_entries)
+        # Kaynağın kelimenin KENDİSİ için verdiği miras kök (A-HVP'nin sınadığı
+        # ve başlığın gösterdiği kaynaklar: kendi miras kaydı, sonra kendi
+        # Starling kökü) sıralayıcıya da kanıt olarak girer.
+        _own_root, _own_root_lang = _query_source_proto(
+            word_clean, sorted_entries, primary=(meanings_by_source.get(primary_source) or [""])[0]
+        )
+        _own_root_source = f"{_own_root_lang} sözlük kaydı" if _own_root else ""
+        if not _own_root and starling_root:
+            _own_root, _own_root_source = starling_root, "Starling"
+        ranked_hypotheses = self._rank_hypotheses(
+            word_clean, sorted_entries, attested_root=_own_root, attested_root_source=_own_root_source
+        )
         # Hüküm alıntıysa çeviri/indeks tanıkları paralel alıntıdır: bundan
         # sonraki miras/yayılım kanıtına (A-HVP üçgenlemesi, ses kanunu
         # indüksiyonu, akraba listesi, yayılım raporu) girmez.

@@ -96,6 +96,10 @@ class RankedHypotheses:
 
     word: str
     hypotheses: list[Hypothesis] = field(default_factory=list)
+    #: Aynı türden iki doğrudan tanıklığın çeliştiği durumlar (kaynakta
+    #: tanıklı miras kök × sözlükte alıntı kaydı). Hüküm skordan çıkar;
+    #: çelişki kullanıcıdan saklanmaz.
+    conflicts: list[str] = field(default_factory=list)
 
     @property
     def selected(self) -> Hypothesis | None:
@@ -133,6 +137,8 @@ class RankedHypotheses:
             lines.append(
                 f"  ⚠️ karar kırılgan: ilk iki hipotez arasındaki fark yalnız {self.margin:.2f}"
             )
+        for conflict in self.conflicts:
+            lines.append(f"  ⚠️ kaynaklar çelişiyor: {conflict}")
         return "\n".join(lines)
 
     def as_dict(self) -> dict[str, Any]:
@@ -141,6 +147,7 @@ class RankedHypotheses:
             "selected": self.selected.as_dict() if self.selected else None,
             "margin": self.margin,
             "is_contested": self.is_contested,
+            "conflicts": list(self.conflicts),
             "hypotheses": [
                 h.as_dict() for h in sorted(self.hypotheses, key=lambda h: -h.score)
             ],
@@ -173,6 +180,17 @@ def _donor_proximity_moot(attested: str) -> str:
     )
 
 
+def _direct_loan_record(borrowed: Hypothesis, borrowing: Any) -> str:
+    """Alıntı hipotezinin doğrudan sözlük tanıklığı (zincir kanıtı ya da
+    kaynağın alıntı adımı) varsa açıklaması; yoksa ``""``."""
+    if borrowed.detail.get("source_chain"):
+        return borrowed.supporting[0] if borrowed.supporting else "kaynağın alıntı zinciri"
+    for signal in getattr(borrowing, "signals", None) or []:
+        if signal.name == "zincir_kanıtı" and signal.fired:
+            return signal.explanation
+    return ""
+
+
 class HypothesisRanker:
     """Rakip kökenleri kurar, puanlar ve reddedilenleri gerekçelendirir."""
 
@@ -202,11 +220,17 @@ class HypothesisRanker:
         entries: list[dict[str, Any]] | None = None,
         *,
         attested_before: int | None = None,
+        attested_root: str = "",
+        attested_root_source: str = "",
     ) -> RankedHypotheses:
         """Bütün makul kökenleri kurar ve sıralar.
 
         :param attested_before: kelimenin bilinen en eski tanıklama yılı;
             modern türetme hipotezini elemek için kullanılır.
+        :param attested_root: kaynağın kelimenin KENDİSİ için verdiği
+            Proto-Türkçe kök (sorgunun kendi miras kaydı ya da kendi Starling
+            kökü; A-HVP'nin sınadığıyla aynı, bkz.
+            ``iterative_hypothesis_engine._attested_proto_root``).
         """
         entries = entries or []
         borrowing = self.borrowing.detect(word, entries)
@@ -215,9 +239,19 @@ class HypothesisRanker:
         borrowed = self._borrowed_hypothesis(borrowing)
         if not borrowing.donor_language:
             borrowed = self._with_source_loan(borrowed, borrowing, entries)
+        inherited = self._inherited_hypothesis(reconstruction, borrowing)
+        conflicts: list[str] = []
+        if attested_root:
+            inherited = self._with_attested_root(inherited, attested_root, attested_root_source)
+            loan_record = _direct_loan_record(borrowed, borrowing)
+            if loan_record:
+                conflicts.append(
+                    f"{attested_root_source or 'kaynak'} miras kök veriyor ({attested_root}), "
+                    f"ama {loan_record}"
+                )
         hypotheses = [
             borrowed,
-            self._inherited_hypothesis(reconstruction, borrowing),
+            inherited,
             self._modern_hypothesis(word, attested_before, borrowing),
         ]
         hypotheses = [h for h in hypotheses if h is not None]
@@ -232,7 +266,7 @@ class HypothesisRanker:
                 )
             )
 
-        ranked = RankedHypotheses(word=word, hypotheses=hypotheses)
+        ranked = RankedHypotheses(word=word, hypotheses=hypotheses, conflicts=conflicts)
         self._write_rejections(ranked)
         return ranked
 
@@ -359,6 +393,34 @@ class HypothesisRanker:
                 "proto_level": level,
                 "witness_languages": reconstruction.get("witness_languages", []),
             },
+        )
+
+    @staticmethod
+    def _with_attested_root(hypothesis: Hypothesis, root: str, source: str) -> Hypothesis:
+        """Kaynakta tanıklı miras kök, miras hipotezinin DOĞRUDAN kanıtıdır.
+
+        ⚠️ Eskiden miras hipotezi yalnız motorun kendi rekonstrüksiyonundan
+        puanlanıyordu: Starling `katır` için *KAtɨr verirken tek tanıkla
+        rekonstrüksiyon kurulamıyor, miras 0,05 alıyor ve en zayıf alıntı
+        sinyali bile kazanıyordu. Ağırlık, sözlük alıntı kaydıyla
+        (``SIGNAL_WEIGHTS["zincir_kanıtı"]``) AYNIDIR: ikisi de sözlükçünün
+        kelimenin kendisi için verdiği doğrudan hükümdür. Eşitlikte alıntı
+        önde kalır (liste sırası); çelişki ``conflicts``e yazılır.
+        """
+        from engine.nlp.borrowing_detector import SIGNAL_WEIGHTS
+
+        evidence = f"kaynakta tanıklı miras kök: {root} ({source or 'kaynak'})"
+        # Rekonstrüksiyonun kurulamaması ("akraba tanığı yok") kök tanıklıyken
+        # karşı kanıt değil, yöntemin uygulanamamasıdır.
+        moved = [] if hypothesis.score > 0.05 else list(hypothesis.against)
+        return Hypothesis(
+            kind="inherited",
+            claim=hypothesis.claim if hypothesis.score > 0.05 else f"MİRAS — {root} (tanıklı kök)",
+            score=round(max(hypothesis.score, SIGNAL_WEIGHTS["zincir_kanıtı"]), 3),
+            supporting=[evidence, *hypothesis.supporting],
+            against=[a for a in hypothesis.against if a not in moved],
+            not_evaluated=[*hypothesis.not_evaluated, *moved],
+            detail={**hypothesis.detail, "attested_root": root, "attested_root_source": source},
         )
 
     @staticmethod
