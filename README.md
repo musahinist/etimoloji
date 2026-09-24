@@ -586,6 +586,13 @@ kuruldu: TDK Güncel Türkçe Sözlük (`lisan` alanı) ve Nişanyan Sözlük
 | yalnız verici yakınlığı | 0,757 | 0,846 | 0,684 | 0,736 |
 | hepsi alıntı (trivial) | 0,749 | 0,599 | 1,000 | 0,599 |
 
+⚠️ **Zincir sinyali bu kümede KAPALI** (`use_chain=False`) ve öyle kalmalı.
+Ölçüldü (2026-09-24): açık olsaydı eğitilmiş motor F **0,963** alırdı. İndeksin
+Wiktionary köken etiketi, etiketli maddelerin %95'inde altın etiketle aynı
+(alıntı 394/404, miras 140/157); Wiktionary Türkçe kökenleri sık sık
+Nişanyan'a dayandığı için bu örtüşme ortak kaynaktan da gelebilir. Tablodaki
+sayılar etiketsiz ölçümdür.
+
 ⚠️ **Tanık bulma düzeltildi ve yalnız motorun kendi satırları oynadı.**
 Eskiden biçim bulunamayınca bulanık aramaya düşülüp dönen ilk isabet —
 anlamına bakılmadan — tanık sayılıyordu (bkz. `find_witnesses`). Tanık
