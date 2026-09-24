@@ -99,15 +99,15 @@ class EtymologyAPIHandler(BaseHTTPRequestHandler):
         elif parsed.path == "/api/list":
             self._handle_list()
         elif parsed.path == "/api/health":
+            # Kayıtların `origin` etiketiyle aynı üç sınıf (bkz.
+            # `BaseFetcher.origin_label`); her kaynak tam bir sınıfa girer.
+            labels = [getattr(f, "origin_label", "live") for f in engine.fetchers]
             self._respond(200, {
                 "status": "ok",
                 "fetcher_count": len(engine.fetchers),
-                "live_sources": sum(
-                    1 for f in engine.fetchers
-                    if not getattr(f, "is_seed_source", False) and not getattr(f, "is_local", False)
-                ),
-                "local_sources": sum(1 for f in engine.fetchers if getattr(f, "is_local", False)),
-                "seed_sources": sum(1 for f in engine.fetchers if getattr(f, "is_seed_source", False)),
+                "live_sources": labels.count("live"),
+                "local_sources": labels.count("local"),
+                "seed_sources": labels.count("seed"),
                 "cache_enabled": config.CACHE_ENABLED,
             })
         else:

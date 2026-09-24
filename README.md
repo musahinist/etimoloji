@@ -824,8 +824,9 @@ yapılandırılmış origin'lerle sınırlar. Kimlik doğrulaması yoktur; dış
 ## Veri kaynakları
 
 Motor **9 canlı kaynak** ve **9 yerel tohum (seed) veri dosyası** kullanır.
-İkisi arasındaki fark her kayıtta `origin: "live" | "seed"` alanıyla,
-CLI ve web panelinde ise görsel olarak belirtilir.
+Kaydın kökeni her kayıtta `origin: "live" | "local" | "seed"` alanıyla (canlı
+servis, indirilmiş yerel döküm/veritabanı, elle yazılmış tohum), CLI ve web
+panelinde ise görsel olarak belirtilir; `/api/health` üç sınıfı ayrı sayar.
 
 **Canlı kaynaklar** — TDK (Güncel Türkçe Sözlük, Tarama, Derleme), Nişanyan
 Sözlük, EtimolojiTürkçe (tarihli ilk tanıklamalar), İngilizce Wiktionary

@@ -335,6 +335,17 @@
                 "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
             })[c]);
         }
+        /**
+         * Kaydın köken etiketi (fetcher sözleşmesindeki `origin`). Yerel
+         * indirilmiş dökümler (sözlük indeksi, NorthEuraLex, Apertium,
+         * Starling veritabanı) eskiden "tohum veri" görünüyordu; tohum,
+         * elle yazılmış veridir. Etiketi olmayan kayıt canlı kaynaktır.
+         */
+        const ORIGIN_LABELS = {
+            seed: { text: "tohum veri", cls: "text-amber-400/80" },
+            local: { text: "yerel veri", cls: "text-sky-400/80" },
+            live: { text: "canlı kaynak", cls: "text-emerald-400/80" },
+        };
         let cyInstance = null;
 
         document.getElementById('searchForm').addEventListener('submit', function(e) {
@@ -595,7 +606,7 @@
                         <span class="text-[10px] uppercase font-bold tracking-wider text-teal-400 block mb-1">${esc(item.lang_name)}</span>
                         <span class="font-bold text-base text-white block">${esc(item.word)}</span>
                         <span class="text-xs text-slate-300 block mt-1.5 truncate">${esc(item.meaning || "N/A")}</span>
-                        <span class="text-[9px] uppercase tracking-wider block mt-1 ${item.origin === "seed" ? "text-amber-400/80" : "text-emerald-400/80"}">${item.origin === "seed" ? "tohum veri" : "canlı kaynak"}</span>
+                        <span class="text-[9px] uppercase tracking-wider block mt-1 ${ORIGIN_LABELS[item.origin]?.cls || ORIGIN_LABELS.live.cls}">${ORIGIN_LABELS[item.origin]?.text || ORIGIN_LABELS.live.text}</span>
                         ${item.phonetic_shift ? `<span class="text-[10px] text-teal-300/80 block mt-2 pt-2 border-t border-slate-800/60 italic">${esc(item.phonetic_shift)}</span>` : ""}
                     </div>
                 `).join("");

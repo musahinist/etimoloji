@@ -95,8 +95,8 @@ def _table() -> dict[tuple[str, bool], list[tuple[str, str]]]:
 
 
 class ApertiumFetcher(BaseFetcher):
-    #: Yerel veri.
-    is_seed_source = True
+    #: Yerel, indirilmiş veri (tohum değil).
+    is_local = True
     #: Kök varyantı almaz (fiil kökü kendi içinde, türüne bakarak çıkarılır).
     exact_query_only = True
 

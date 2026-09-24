@@ -60,8 +60,8 @@ MAX_PER_LANGUAGE = 3
 class HistoricalIndexFetcher(BaseFetcher):
     """Yerel sözlük indeksinin tarihî katmanını tanık olarak sunar."""
 
-    #: Canlı bir servis değil, yerel veri.
-    is_seed_source = True
+    #: Canlı bir servis değil, yerel indirilmiş veri (elle yazılmış tohum da değil).
+    is_local = True
     #: Sorgulanan diller (alt sınıf değiştirir).
     languages: tuple[str, ...] = HISTORICAL_LANGUAGES
 

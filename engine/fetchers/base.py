@@ -190,6 +190,19 @@ class BaseFetcher(ABC):
     is_local: bool = False
 
     @property
+    def origin_label(self) -> str:
+        """Kaydın köken etiketi: ``local`` (indirilmiş döküm/veritabanı),
+        ``seed`` (elle yazılmış tohum) ya da ``live`` (canlı servis).
+
+        Eskiden iki değer vardı: yerel dökümler (NorthEuraLex, Apertium,
+        sözlük indeksi) "seed" diye elle yazılmış veri gibi, Starling
+        veritabanı ise "live" diye canlı servis gibi etiketleniyordu.
+        """
+        if self.is_local:
+            return "local"
+        return "seed" if self.is_seed_source else "live"
+
+    @property
     @abstractmethod
     def source_name(self) -> str:
         """Fetcher kaynağının adı (örn. Wiktionary, Starling)."""
@@ -234,6 +247,6 @@ class BaseFetcher(ABC):
             "word": word,
             "meaning": meaning,
             "script": script or detect_script(word),
-            "origin": "seed" if self.is_seed_source else "live",
+            "origin": self.origin_label,
             "source": self.source_name,
         }

@@ -186,8 +186,8 @@ def gloss(proto: str) -> str:
 
 
 class LocalProtoTurkicFetcher(BaseFetcher):
-    #: Yerel veri.
-    is_seed_source = True
+    #: Yerel, indirilmiş veri (tohum değil).
+    is_local = True
     #: Kök varyantı almaz (bkz. `NorthEuraLexFetcher`).
     exact_query_only = True
 

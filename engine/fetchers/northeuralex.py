@@ -100,8 +100,8 @@ def _load() -> tuple[dict[str, set[str]], dict[str, list[tuple[str, str]]], dict
 
 
 class NorthEuraLexFetcher(BaseFetcher):
-    #: Yerel veri, canlı servis değil.
-    is_seed_source = True
+    #: Yerel, indirilmiş veri: canlı servis de elle yazılmış tohum da değil.
+    is_local = True
     #: Arama motoru bu kaynağa KÖK varyantlarını göndermez: `yankı` -> `yan`
     #: "side" kavramının Çuvaşça аяк'ı tanık oluyordu (ölçüldü, 50 kelime).
     exact_query_only = True
