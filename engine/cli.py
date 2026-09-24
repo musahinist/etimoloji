@@ -314,7 +314,9 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
     if source_diag:
         produced = [n for n, d in source_diag.items() if d.get("status") == "ok"]
         silent = [n for n, d in source_diag.items() if d.get("status") == "empty"]
-        failed = [n for n, d in source_diag.items() if d.get("status") == "error"]
+        # Cevap alınamayan kaynak (zaman aşımı, 429, açık devre) "sessiz"
+        # değildir: kanıt yokluğu değil, bakılamamış olmaktır.
+        failed = [n for n, d in source_diag.items() if d.get("status") in ("error", "circuit_open")]
         print("\n" + "─" * 80)
         print(" 📡 KAYNAK VERİMİ")
         print("─" * 80)
@@ -326,7 +328,8 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
             print(f"     ➖ {name}")
         for name in failed:
             errs = (source_diag[name].get("errors") or [""])[0]
-            print(f"     ❌ {name} -> {errs[:90]}")
+            why = "devre açık" if source_diag[name].get("status") == "circuit_open" else "hata"
+            print(f"     ❌ {name} ({why}) -> {errs[:90]}")
 
     # 7. EN ALTA FİNAL SENTEZİ OLARAK: Qwen2.5 Otonom Yapay Zeka Ajanı Analizi
     if ai_enrichment:

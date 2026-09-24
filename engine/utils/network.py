@@ -21,6 +21,8 @@ import socket
 import sqlite3
 import threading
 import time
+from collections.abc import Iterator
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from typing import Any
 from urllib.parse import urlparse
@@ -83,6 +85,62 @@ class Diagnostics:
             "total_ms": self.total_ms,
             "by_status": by_status,
         }
+
+
+@dataclass
+class _Tee(Diagnostics):
+    """Kaydı birden çok deftere yazar (çağıranın defteri + iş parçacığı defteri)."""
+    books: tuple[Diagnostics, ...] = ()
+
+    def add(self, record: RequestRecord) -> None:
+        for book in self.books:
+            book.add(record)
+
+
+#: İş parçacığına bağlı istek defteri (bkz. `capture_requests`).
+_thread_book = threading.local()
+
+
+@contextmanager
+def capture_requests() -> Iterator[Diagnostics]:
+    """Bu iş parçacığında yapılan bütün isteklerin kayıtlarını toplar.
+
+    Fetcher'lar `fetch`'e defter geçmiyor; başarısızlıkta yalnız ``None``
+    dönüyor ve arama motoru "kaynak veri döndürmedi" ile "kaynağa
+    ulaşılamadı"yı ayıramıyordu. Ölçüldü (105 kelimelik denetim): TDK her
+    aramada HTTP 429 / zaman aşımı alırken kaynak durumu 105/105 "sessiz
+    (veri yok)" görünüyordu; açık devre de hiç raporlanmıyordu.
+    """
+    book = Diagnostics()
+    previous = getattr(_thread_book, "book", None)
+    _thread_book.book = book
+    try:
+        yield book
+    finally:
+        _thread_book.book = previous
+
+
+def _with_thread_book(diagnostics: Diagnostics | None) -> Diagnostics | None:
+    book = getattr(_thread_book, "book", None)
+    if book is None or book is diagnostics:
+        return diagnostics
+    return book if diagnostics is None else _Tee(books=(diagnostics, book))
+
+
+def unanswered_status(records: list[RequestRecord]) -> tuple[str, list[str]] | None:
+    """Kaynak hiçbir isteğine cevap alamadıysa neden: ``circuit_open`` ya da ``error``.
+
+    404 "kelime yok" demektir, cevaptır; 429 (hız sınırı) ve zaman aşımı
+    cevap değildir. En az bir istek cevaplandıysa ``None`` (kaynak gerçekten
+    sessiz). Hiç istek yoksa (yerel kaynak) ``None``.
+    """
+    failed = [r for r in records if not (r.status == "ok" or r.http_status == 404)]
+    if not failed or len(failed) < len(records):
+        return None
+    errors = list(dict.fromkeys(f"{r.error or r.status} — {r.url}" for r in failed))
+    if all(r.status == "circuit_open" for r in failed):
+        return "circuit_open", errors
+    return "error", errors
 
 
 def _decode_body(resp: requests.Response) -> str:
@@ -327,8 +385,9 @@ def fetch(
     URL'yi çeker ve gövdeyi metin olarak döndürür; başarısızlıkta ``None``.
 
     Hata asla sessizce yutulmaz — her başarısızlık loglanır ve varsa
-    ``diagnostics`` defterine yazılır.
+    ``diagnostics`` defterine (ve `capture_requests` defterine) yazılır.
     """
+    diagnostics = _with_thread_book(diagnostics)
     allowed, reason = is_url_allowed(url, trusted_only=trusted_only, allow_private=allow_private)
     if not allowed:
         logger.warning("URL engellendi (%s): %s", reason, url)

@@ -426,9 +426,9 @@
             }
 
             // Veri döndürmeyen / hata veren kaynakları açıkça bildir
-            const failed = Object.entries(sources).filter(([, s]) => s.status === "error");
+            const failed = Object.entries(sources).filter(([, s]) => s.status === "error" || s.status === "circuit_open");
             if (failed.length) {
-                addLogLine("⚠️", `${failed.length} kaynak hata verdi`,
+                addLogLine("⚠️", `${failed.length} kaynağa ulaşılamadı`,
                     failed.map(([n]) => esc(n)).join(", ").slice(0, 220), 6);
             }
         }

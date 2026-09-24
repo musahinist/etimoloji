@@ -336,6 +336,53 @@ class TestPortfolioOrder(unittest.TestCase):
         self.assertEqual([e["meaning"] for e in kk], ["birinci"])
 
 
+class TestSourceStatus(unittest.TestCase):
+    """TDK zaman aşımı / açık devre "sessiz (veri yok)" görünüyordu."""
+
+    def _status(self, fetcher):
+        fd, path = tempfile.mkstemp(suffix=".db")
+        os.close(fd)
+        try:
+            res = SearchEngine(db_manager=DatabaseManager(path), fetchers=[fetcher]).search(
+                "göz", save_to_db=False, use_cache=False)
+        finally:
+            os.remove(path)
+        return res["diagnostics"]["sources"][fetcher.source_name]
+
+    def test_timeout_is_error_and_circuit_is_reported(self):
+        from unittest import mock
+
+        import requests
+
+        from engine.fetchers.tdk_nisanyan import TdkFetcher
+        from engine.utils import network
+
+        network.reset_session()
+        session = mock.Mock()
+        session.get.side_effect = requests.Timeout("okuma zaman aşımı")
+        with mock.patch.object(network, "get_session", return_value=session), \
+                mock.patch.object(network, "HTTP_MAX_RETRIES", 0), \
+                mock.patch.object(network, "HTTP_BACKOFF_BASE", 0):
+            diag = self._status(TdkFetcher())
+            self.assertEqual(diag["status"], "error")
+            self.assertIn("zaman aşımı", diag["errors"][0])
+            with mock.patch.object(network, "_circuit_open", return_value=True):
+                self.assertEqual(self._status(TdkFetcher())["status"], "circuit_open")
+        network.reset_session()
+
+    def test_not_found_is_empty(self):
+        from engine.utils.network import RequestRecord, unanswered_status
+
+        self.assertIsNone(unanswered_status([]))
+        self.assertIsNone(unanswered_status([RequestRecord("u", "http_error", 1, 404, "HTTP 404")]))
+        self.assertEqual(unanswered_status([RequestRecord("u", "http_error", 1, 429, "HTTP 429")])[0], "error")
+        self.assertIsNone(unanswered_status([RequestRecord("u", "ok", 1, 200),
+                                             RequestRecord("v", "network_error", 1)]))
+
+    def test_local_empty_source_stays_empty(self):
+        self.assertEqual(self._status(EmptyFetcher())["status"], "empty")
+
+
 class _FormationFetcher(FakeFetcher):
     """Yapıyı veren tarihî sözlük maddesi (indeksin `formation` sütunu)."""
 

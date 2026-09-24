@@ -49,7 +49,7 @@ from engine.nlp.sound_law_induction import SoundLawInductionEngine
 from engine.utils.cognates import get_related_cognates
 from engine.utils.geo_tagger import tag_geographical_region
 from engine.utils.morphology import analyze_morphology, is_inflection_gloss
-from engine.utils.network import Diagnostics
+from engine.utils.network import Diagnostics, RequestRecord, capture_requests, unanswered_status
 from engine.utils.orthography import to_comparison_form
 from engine.utils.phonetic_rules import analyze_phonetic_shifts
 from engine.utils.reference_resolver import extract_cross_references, is_cross_reference
@@ -807,10 +807,15 @@ class SearchEngine:
             results = []
             started = time.perf_counter()
             errors: list[str] = []
+            # Kaynağın dış istekleri: boş sonucun "veri yok" mu, "cevap
+            # alınamadı" mı olduğunu ayırmak için (bkz. `unanswered_status`).
+            requests_log: list[RequestRecord] = []
             variants = search_variants[:1] if getattr(fetcher, "exact_query_only", False) else search_variants
             for var in variants:
                 try:
-                    res = fetcher.fetch(var)
+                    with capture_requests() as book:
+                        res = fetcher.fetch(var)
+                    requests_log.extend(book.records)
                 except Exception as exc:  # fetcher sözleşmesi istisna atmamalı; atarsa görünür olsun
                     logger.warning(
                         "Fetcher istisna attı: %s (varyant=%r)", fetcher.source_name, var, exc_info=True
@@ -828,7 +833,12 @@ class SearchEngine:
                     # kök varyantının ("terlik" -> "ter") anlamı sorgunun anlamı değildir.
                     results.append((var, res))
             elapsed = int((time.perf_counter() - started) * 1000)
-            return fetcher, results, elapsed, errors
+            if not results and not errors:
+                failure = unanswered_status(requests_log)
+                if failure:
+                    return fetcher, results, elapsed, failure[1], failure[0]
+            status = "ok" if results else ("error" if errors else "empty")
+            return fetcher, results, elapsed, errors, status
 
         fetcher_order = {f.source_name: i for i, f in enumerate(self.fetchers)}
         hypothesis_historical_meaning = ""
@@ -845,9 +855,10 @@ class SearchEngine:
             future_to_fetcher = {executor.submit(fetch_worker, f): f for f in self.fetchers}
             for future, fetcher in future_to_fetcher.items():
                 try:
-                    _fetcher_obj, results, elapsed_ms, errors = future.result()
+                    _fetcher_obj, results, elapsed_ms, errors, status = future.result()
                     source_diagnostics[fetcher.source_name] = {
-                        "status": "ok" if results else ("error" if errors else "empty"),
+                        # ok | empty (cevap geldi, veri yok) | error | circuit_open
+                        "status": status,
                         "duration_ms": elapsed_ms,
                         "result_count": len(results),
                         "errors": errors or None,
