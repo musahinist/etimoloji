@@ -35,7 +35,7 @@ class TestHypothesisValidationProtocol(unittest.TestCase):
         self.goz_entries = make_entries([
             ("tr", "göz"), ("az", "göz"), ("kk", "көз"), ("tt", "күз"),
             ("cv", "куҫ"), ("ky", "көз"), ("otk", "köz"), ("ba", "күҙ"),
-        ])
+        ], origin="local")
 
     # --- Kanıt kapsamı ---------------------------------------------------
 
@@ -280,3 +280,34 @@ class TestAttestedRootReachesTimeLock(unittest.TestCase):
             )
         stage2 = out["validation_report"]["stage_breakdown"]["stage2_time_lock"]
         self.assertEqual(stage2["attestation_year"], 1069)
+
+
+class TestBadgeIsNetworkIndependent(unittest.TestCase):
+    """B2: canlı kaynağın o an yanıt vermesi kanıt değildir."""
+
+    def _report(self, entries):
+        return HypothesisValidationProtocol().validate_hypothesis(
+            "göz",
+            {"origin_form": "*köŕ", "donor_language": "Proto-Türkçe",
+             "historical_meaning": "", "modern_meaning": ""},
+            attestation_record={"verified": True, "first_attestation_year": 1074},
+            turkic_entries=entries,
+        )
+
+    def test_same_badge_with_and_without_live_sources(self):
+        local = [
+            {"lang_code": c, "word": f, "source": s, "origin": "local"}
+            for c, f, s in (("tr", "göz", "Vikisözlük"), ("az", "göz", "Vikisözlük"),
+                            ("kk", "көз", "Apertium"), ("tt", "күз", "NorthEuraLex"))
+        ]
+        # TDK ve Nişanyan yanıt verdi: sorgunun kendi Türkçe maddesi.
+        live = [
+            {"lang_code": "tr", "word": "göz", "source": "TDK", "origin": "live"},
+            {"lang_code": "tr", "word": "göz", "source": "Nişanyan", "origin": "live"},
+        ]
+        off, on = self._report(local), self._report(local + live)
+        self.assertEqual(off["badge"], on["badge"])
+        self.assertEqual(off["final_confidence_score"], on["final_confidence_score"])
+        tri_off = off["stage_breakdown"]["stage4_cognate_triangulation"]
+        tri_on = on["stage_breakdown"]["stage4_cognate_triangulation"]
+        self.assertEqual(tri_off["score"], tri_on["score"])

@@ -334,6 +334,12 @@ class SemanticDriftEvaluator:
         }
 
 
+#: 4. aşama alt ağırlıkları. Eski formül 0,55·yayılım + 0,25·kaynak +
+#: 0,20·canlı_kaynak idi; canlı terim çıkınca kalan ikisi aynı oranda 1'e
+#: ölçeklendi (0,55/0,80, 0,25/0,80).
+TRIANGULATION_WEIGHTS = {"spread": 0.6875, "sources": 0.3125}
+
+
 class CrossCognateTriangulator:
     """
     Aşama 4 — Kelimenin GERÇEK akraba dağılımı.
@@ -350,7 +356,20 @@ class CrossCognateTriangulator:
             e.get("lang_code") for e in entries if e.get("lang_code") in TURKIC_LANGUAGES_MAP
         }
         # Bağımsız kaynak çeşitliliği: tek bir kaynağın ürettiği liste zayıf kanıttır.
-        sources = {e.get("source") for e in entries if e.get("source")}
+        # ⚠️ Yalnız YEREL/tohum kaynaklar sayılır ve canlı kaynağın yanıt
+        # vermesi ayrıca puanlanmaz. Eskiden skorun %20'si `live_factor`dı
+        # (canlı kaynak sayısı; hiç yoksa 0,4): aynı kelime TDK/Nişanyan o an
+        # yanıt verdi mi vermedi mi diye farklı rozet alabiliyordu (denetimde
+        # TDK 105/105 kelimede sessizdi). Canlı kaynağın getirdiği Türki DİLLER
+        # yayılımda (`real_langs`) sayılmaya devam eder: bu içerik, erişilebilirlik değil.
+        # Birleştirilmiş tekrarlı tanıkların öbür kaynakları (`also_sources`,
+        # bkz. `search_engine._merge_duplicate_witnesses`) da sayılır.
+        sources = {
+            r.get("source")
+            for e in entries
+            for r in (e, *(e.get("also_sources") or []))
+            if r.get("source") and r.get("origin") != "live"
+        }
         live_sources = {
             e.get("source") for e in entries
             if e.get("source") and e.get("origin") == "live"
@@ -368,9 +387,13 @@ class CrossCognateTriangulator:
 
         spread = len(real_langs) / TURKIC_LANGUAGE_COUNT
         source_factor = min(1.0, len(sources) / 3.0)
-        live_factor = min(1.0, len(live_sources) / 2.0) if live_sources else 0.4
-
-        score = round(0.55 * min(1.0, spread / 0.4) + 0.25 * source_factor + 0.20 * live_factor, 3)
+        # Ağırlıklar eski 0,55 / 0,25 oranında, toplam 1'e yeniden ölçeklendi
+        # (bkz. `TRIANGULATION_WEIGHTS`).
+        score = round(
+            TRIANGULATION_WEIGHTS["spread"] * min(1.0, spread / 0.4)
+            + TRIANGULATION_WEIGHTS["sources"] * source_factor,
+            3,
+        )
 
         return {
             "evidence_available": True,

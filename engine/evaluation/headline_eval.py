@@ -219,13 +219,29 @@ def summarize_finding(finding: dict[str, Any]) -> dict[str, Any]:
         if stage2.get("attestation_year") is not None:
             precision = stage2.get("attestation_precision") or "point"
             break
+    # A-HVP rozeti (``eval-badge``): hipotez ve raporu.
+    hypothesis = nlp.get("proven_hypothesis") or {}
+    report = hypothesis.get("validation_report") or {}
+    ranked = nlp.get("ranked_hypotheses") or finding.get("ranked_hypotheses") or {}
+    selected = ranked.get("selected") or {}
     return {
         "headline": str(root.get("proto_turkic") or ""),
         "provenance": str(root.get("provenance") or ""),
         "attestation_year": int(year) if year is not None else None,
         "attestation_record": record,
         "attestation_precision": precision,
+        "badge": report.get("status_code"),
+        "badge_score": report.get("final_confidence_score"),
+        "hypothesis_donor": hypothesis.get("donor_language"),
+        "hypothesis_form": hypothesis.get("origin_form"),
+        "hypothesis_kind": hypothesis.get("evidence_kind"),
+        "verdict_kind": selected.get("kind"),
+        "verdict_conflicts": list(ranked.get("conflicts") or []),
     }
+
+
+#: Önbellekte bu alan yoksa madde eski bir özet biçimindedir; yeniden koşar.
+SUMMARY_KEYS = ("badge",)
 
 
 def run_engine(words: Iterable[str], *, ablate_starling: bool, fresh: bool = False) -> dict[str, dict[str, Any]]:
@@ -246,7 +262,8 @@ def run_engine(words: Iterable[str], *, ablate_starling: bool, fresh: bool = Fal
             cache = {}
     engine = None
     out: dict[str, dict[str, Any]] = {}
-    todo = [w for w in dict.fromkeys(words) if w not in cache]
+    todo = [w for w in dict.fromkeys(words)
+            if w not in cache or any(k not in cache[w] for k in SUMMARY_KEYS)]
     for i, word in enumerate(todo, 1):
         if engine is None:
             engine = build_engine(ablate_starling=ablate_starling)
@@ -256,7 +273,8 @@ def run_engine(words: Iterable[str], *, ablate_starling: bool, fresh: bool = Fal
         except Exception as exc:  # tek kelime hattı durdurmasın; görünür kalsın
             logger.warning("Arama başarısız: %s", word, exc_info=True)
             cache[word] = {"headline": "", "provenance": "", "attestation_year": None,
-                           "attestation_record": None, "error": f"{type(exc).__name__}: {exc}"}
+                           "attestation_record": None, "badge": None,
+                           "error": f"{type(exc).__name__}: {exc}"}
         if i % 25 == 0:
             logger.info("%s: %d/%d", config, i, len(todo))
             path.write_text(json.dumps({"head": head, "items": cache}, ensure_ascii=False), encoding="utf-8")

@@ -42,6 +42,7 @@ help:
 	@echo "eval-headline  - Başlık kökü × Starling ve savelyev dev (yalnız yerel kaynaklar)"
 	@echo "eval-donor     - Verici dil tanıma × WOLD Sakha (Rusça/Moğolca/Tunguzca)"
 	@echo "eval-chronology - A-HVP 2. aşama yılı × Starling tarihli kaynak etiketleri"
+	@echo "eval-badge     - A-HVP rozeti × doğruluk (rozet kalibrasyonu; Starling kapalı)"
 	@echo "apertium       - Apertium iki dilli Türk dili sözlüklerini indir"
 	@echo "khakas         - Hakasça–Rusça ve açıklamalı sözlüğü indir (HF, CC-BY-4.0; portföyde değil)"
 	@echo "wilkens        - Wilkens 2021 Eski Uygurca sözlüğünü indir ve ayrıştır (CC BY-SA 4.0; .[pdf] gerekir)"
@@ -194,6 +195,12 @@ eval-donor: data lexicon-index donors
 
 eval-chronology:
 	.venv/bin/python -m engine.evaluation.chronology_eval
+
+# A-HVP rozet sınıfı başına doğruluk (Türkçe altın train+dev + savelyev dev;
+# Starling kapalı). Arama önbelleğini eval-headline ile paylaşır.
+.PHONY: eval-badge
+eval-badge: gold
+	.venv/bin/python -m engine.evaluation.badge_eval
 
 eval-calibration: gold
 	.venv/bin/python -m engine.evaluation.calibration --split train+dev
