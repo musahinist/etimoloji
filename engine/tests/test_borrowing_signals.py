@@ -52,6 +52,24 @@ class TestSoundLawTargetsQueryLanguage(unittest.TestCase):
         self.assertEqual(expected, "")
 
 
+class TestLanguageSpecificPhonotactics(unittest.TestCase):
+    def test_sakha_initial_h_is_regular(self):
+        self.assertFalse(bd.BorrowingDetector._phonotactic_signal("χaːr", "sah").fired)
+        self.assertFalse(bd.BorrowingDetector._phonotactic_signal("hurt", "ba").fired)
+
+    def test_turkish_initial_h_still_fires(self):
+        self.assertTrue(bd.BorrowingDetector._phonotactic_signal("hayvan", "tr").fired)
+
+    def test_other_prohibited_initials_still_fire_in_sakha(self):
+        self.assertTrue(bd.BorrowingDetector._phonotactic_signal("lampa", "sah").fired)
+
+    def test_compound_harmony_is_checked_per_part(self):
+        signal = bd.BorrowingDetector._phonotactic_signal("kün_ortoto", "sah")
+        self.assertNotIn("ünlü uyumu ihlali", signal.evidence["violations"])
+        signal = bd.BorrowingDetector._phonotactic_signal("temperatura", "sah")
+        self.assertIn("ünlü uyumu ihlali", signal.evidence["violations"])
+
+
 class TestProductionPassesSense(unittest.TestCase):
     def test_missing_sense_is_read_from_the_index(self):
         seen = {}

@@ -680,7 +680,7 @@ def phonotactic_only(case: BorrowingCase) -> bool:
     """Miller ve ark. 2020 muadili: yalnız fonotaktik ihlal."""
     from engine.nlp.borrowing_detector import BorrowingDetector
 
-    return BorrowingDetector._phonotactic_signal(case.word).fired
+    return BorrowingDetector._phonotactic_signal(case.word, case.lang_code).fired
 
 
 def score_system(system: Callable[[BorrowingCase], bool], cases: list[BorrowingCase]) -> PRF:

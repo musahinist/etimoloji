@@ -32,6 +32,7 @@ Dört bağımsız sinyal kullanılır; hiçbiri tek başına karar vermez:
 
 from __future__ import annotations
 
+import re
 from collections import Counter
 from dataclasses import dataclass, field
 from typing import Any
@@ -112,6 +113,21 @@ SIGNAL_WEIGHTS: dict[str, float] = {
     "ses_kanunu_ihlali": 0.0,
     "değişimsiz_yayılım": 0.0,
 }
+
+#: Proto-Türkçe'de söz başında bulunmayan ama bu dilde DÜZENLİ miras
+#: refleksi olan sesler. ``fonotaktik_ihlal`` bunlar için ateşlenmez.
+#:
+#: * ``sah``: karşılaştırma biçimindeki söz başı ``h`` iki düzenli miras
+#:   refleksidir: ``χ`` < *k- art ünlü önünde (``χaːr`` "kar" < *kār,
+#:   ``χaːn`` "kan" < *kān) ve ``һ`` < *s-. Ölçüldü (WOLD Saha, AYAR yarısı
+#:   n=770): söz başı h- 49 miras / 20 alıntı — alıntı oranı 0,29, taban
+#:   0,28; ayırt edici değil ve sinyalin Saha'daki ateşlemelerinin çoğu buydu.
+#: * ``ba``: Başkurtçada da *s- > h- düzenlidir (``һыу`` "su"). Ölçülmedi —
+#:   bu dilde etiketli alıntı kümesi yok; kural ses tarihinden.
+REGULAR_INITIALS: dict[str, str] = {"sah": "h", "ba": "h"}
+
+#: Birleşik söz bileşenlerini ayıran işaretler (WOLD ``kün_ortoto``).
+_COMPOUND_SEPARATOR = re.compile(r"[_\-\s]+")
 
 #: Bu eşiğin üstünde kelime **alıntı olarak raporlanır**.
 BORROWING_THRESHOLD = 0.45
@@ -614,19 +630,33 @@ class BorrowingDetector:
         )
 
     @staticmethod
-    def _phonotactic_signal(word: str) -> Signal:
-        """Proto-Türkçe'de bulunmayan ses veya dizim var mı?"""
+    def _phonotactic_signal(word: str, lang: str = "tr") -> Signal:
+        """Proto-Türkçe'de bulunmayan ses veya dizim var mı?
+
+        ⚠️ Kurallar dile özgüdür (bkz. :data:`REGULAR_INITIALS`): Saha'da
+        söz başı ``h-`` (*k- > χ-, *s- > һ-) düzenli miras refleksidir ve
+        alıntı göstergesi değildir.
+
+        ⚠️ Ünlü uyumu **bileşenlere ayrı ayrı** bakılır. WOLD Saha maddelerinin
+        bir kısmı birleşik sözdür (``kün_ortoto``, ``uon_biːr``); karşılaştırma
+        biçimi ayracı sildiği için iki uyumlu kelime tek "uyumsuz" kelime
+        sayılıyordu.
+        """
         form = to_comparison_form(word)
         violations: list[str] = []
         if not form:
             return Signal("fonotaktik_ihlal", False, 0.0, "biçim çözümlenemedi", {"no_data": True})
 
-        if form[0] in PROHIBITED_INITIALS:
+        if form[0] in PROHIBITED_INITIALS and form[0] not in REGULAR_INITIALS.get(lang, ""):
             violations.append(f"Proto-Türkçe'de söz başı *{form[0]}- bulunmaz")
         if len(form) >= 2 and form[0] not in VOWELS and form[1] not in VOWELS:
             violations.append("söz başı ünsüz kümesi — Türkçede bulunmaz")
-        vowels = [ch for ch in form if ch in VOWELS]
-        if len(vowels) >= 2 and not has_vowel_harmony(form):
+        parts = [to_comparison_form(p) for p in _COMPOUND_SEPARATOR.split(word or "")]
+        if any(
+            len([ch for ch in part if ch in VOWELS]) >= 2 and not has_vowel_harmony(part)
+            for part in parts
+            if part
+        ):
             violations.append("ünlü uyumu ihlali")
 
         strength = min(1.0, len(violations) / 2)
@@ -869,7 +899,7 @@ class BorrowingDetector:
         witnesses.setdefault(lang, word)
 
         chain_signal, chain, donor = self._chain_signal(word, lang)
-        phonotactic = self._phonotactic_signal(word)
+        phonotactic = self._phonotactic_signal(word, lang)
         sound_law, expected = self._sound_law_signal(word, witnesses, lang)
         uniformity = self._uniformity_signal(witnesses)
         donor_proximity = self._donor_signal(word, sense, donors)
