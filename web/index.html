@@ -282,7 +282,7 @@
                     <ul id="timelineList" class="space-y-0.5 text-slate-300"></ul>
                 </div>
                 <div id="relatedBox" class="hidden p-4 rounded-2xl bg-slate-800/40 border border-slate-600/40 text-xs">
-                    <span class="text-slate-400 block mb-1">🔗 Kök akraba sözcük ağı</span>
+                    <span id="relatedTitle" class="text-slate-400 block mb-1">🔗 Kök akraba sözcük ağı</span>
                     <div id="relatedList" class="flex flex-wrap gap-1.5"></div>
                 </div>
             </div>
@@ -690,6 +690,12 @@
 
             // Kök akraba ağı
             const related = data.related_cognates || [];
+            // Alıntıda liste "aynı kökten akraba" değil, paralel alıntıdır
+            // (engine/utils/cognates.py COGNATE_HEADINGS ile aynı ayrım).
+            const relatedKind = (((data.nlp_analysis || {}).ranked_hypotheses || {}).selected || {}).kind;
+            document.getElementById('relatedTitle').textContent = relatedKind === "borrowed"
+                ? "🔗 Paralel alıntılar (aynı vericiden başka Türk dillerine)"
+                : "🔗 Kök akraba sözcük ağı";
             document.getElementById('relatedList').innerHTML = related.map(r =>
                 `<span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-teal-300">${esc(r)}</span>`).join("");
             toggle('relatedBox', related.length > 0);

@@ -221,10 +221,14 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
             print(f"  • {step}")
 
     if related_cognates:
+        from engine.utils.cognates import cognate_heading
+
+        # Alıntıda liste "aynı kökten akraba" değil, paralel alıntıdır.
+        heading, label = cognate_heading(finding)
         print("\n" + "─" * 80)
-        print(" 🔗 KÖK AKRABA SÖZCÜK AĞI")
+        print(f" 🔗 {heading}")
         print("─" * 80)
-        print(f"  • Aynı kökten türeyen akraba kelimeler: {', '.join(related_cognates)}")
+        print(f"  • {label}: {', '.join(related_cognates)}")
 
     # 6. HESAPLAMALI NLP ALINTI & REKONSTRÜKSİYON ANALİZİ
     if nlp_analysis:

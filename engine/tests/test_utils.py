@@ -273,6 +273,23 @@ class TestCognates(unittest.TestCase):
     def test_empty_entries(self):
         self.assertIsInstance(get_related_cognates("göz", []), list)
 
+    def test_own_spelling_is_not_a_cognate(self):
+        """laakal ~ Osmanlıca لااقل kelimenin kendi yazımıdır, akrabası değil."""
+        entries = [
+            {"lang_code": "ota", "word": "عسكر", "comparison": "asker", "latin_transliteration": "askr"},
+            {"lang_code": "ky", "word": "аскер", "comparison": "asker"},
+        ]
+        self.assertEqual(get_related_cognates("asker", entries), ["аскер"])
+
+    def test_heading_follows_ranker_verdict(self):
+        from engine.utils.cognates import cognate_heading
+
+        borrowed = {"nlp_analysis": {"ranked_hypotheses": {"selected": {"kind": "borrowed"}}}}
+        inherited = {"nlp_analysis": {"ranked_hypotheses": {"selected": {"kind": "inherited"}}}}
+        self.assertIn("paralel alıntı", cognate_heading(borrowed)[1])
+        self.assertIn("Aynı kökten", cognate_heading(inherited)[1])
+        self.assertIn("Aynı kökten", cognate_heading({})[1])
+
 
 if __name__ == "__main__":
     unittest.main()
