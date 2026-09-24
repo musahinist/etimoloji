@@ -16,15 +16,22 @@ from __future__ import annotations
 
 import gzip
 import json
+import os
 import re
+import sqlite3
+import threading
 import unicodedata
 from functools import lru_cache
 from typing import Any
 
-from engine.config import LEXICON_DIR
+from engine.config import LEXICON_DIR, PROJECT_ROOT
 from engine.fetchers.base import TURKIC_LANGUAGES_MAP, BaseFetcher, detect_script
 
 DUMP = LEXICON_DIR / "trk-pro.jsonl.gz"
+#: Dökümden türetilmiş küçük önbellek: anahtar başına hazır torun listesi ve
+#: ilk anlam. Döküm değişince (boyut/mtime) yeniden kurulur.
+CACHE = PROJECT_ROOT / "data" / "cache" / "trk-pro.sqlite3"
+_CACHE_VERSION = "1"
 
 
 def _key(proto: str) -> str:
@@ -55,9 +62,7 @@ def _is_borrowed(node: dict[str, Any]) -> bool:
     return any("borrow" in t or "reshaped" in t or "addition of morphemes" in t for t in tags)
 
 
-def descendants(proto: str) -> list[tuple[str, str, str]]:
-    """``(dil, biçim, okunuş)`` — alıntı dalları ve yıldızlı ara biçimler hariç."""
-    page = _pages().get(_key(proto))
+def _page_descendants(page: dict[str, Any] | None) -> list[tuple[str, str, str]]:
     out: list[tuple[str, str, str]] = []
 
     def walk(nodes: list[dict[str, Any]]) -> None:
@@ -74,12 +79,96 @@ def descendants(proto: str) -> list[tuple[str, str, str]]:
     return out
 
 
-def gloss(proto: str) -> str:
-    page = _pages().get(_key(proto))
+def _page_gloss(page: dict[str, Any] | None) -> str:
     for sense in (page or {}).get("senses") or []:
         if sense.get("glosses"):
             return str(sense["glosses"][0])
     return ""
+
+
+def _dump_signature() -> str:
+    """Döküm (boyut, mtime) ve önbelleğe gömülü süzgeç (Türk dili kodları)
+    değişince önbellek geçersizleşir; ``_is_borrowed`` değişirse sürümü artır."""
+    stat = DUMP.stat()
+    langs = ",".join(sorted(TURKIC_LANGUAGES_MAP))
+    return f"{_CACHE_VERSION}:{stat.st_size}:{stat.st_mtime_ns}:{langs}"
+
+
+def _build_cache(signature: str) -> None:
+    """Dökümü bir kez tarar; geçici dosyaya yazıp atomik olarak yerine koyar
+    (paralel süreçler yarım dosya görmez)."""
+    CACHE.parent.mkdir(parents=True, exist_ok=True)
+    tmp = CACHE.with_name(f"{CACHE.name}.{os.getpid()}.{threading.get_ident()}.tmp")
+    try:
+        conn = sqlite3.connect(tmp)
+        conn.execute("CREATE TABLE meta (signature TEXT NOT NULL)")
+        conn.execute("CREATE TABLE roots (key TEXT PRIMARY KEY, descendants TEXT NOT NULL, gloss TEXT NOT NULL)")
+        conn.executemany(
+            "INSERT INTO roots VALUES (?, ?, ?)",
+            (
+                (key, json.dumps(_page_descendants(page), ensure_ascii=False), _page_gloss(page))
+                for key, page in _pages().items()
+            ),
+        )
+        conn.execute("INSERT INTO meta VALUES (?)", (signature,))
+        conn.commit()
+        conn.close()
+        os.replace(tmp, CACHE)
+    finally:
+        tmp.unlink(missing_ok=True)
+    _pages.cache_clear()
+
+
+def _cache_signature() -> str | None:
+    try:
+        conn = sqlite3.connect(f"file:{CACHE}?mode=ro", uri=True)
+        try:
+            row = conn.execute("SELECT signature FROM meta").fetchone()
+        finally:
+            conn.close()
+    except sqlite3.Error:
+        return None
+    return row[0] if row else None
+
+
+_lock = threading.Lock()
+
+
+@lru_cache(maxsize=1)
+def _cache_ready() -> bool:
+    """Önbellek dökümle uyumluysa True; değilse kurar. Döküm yoksa False."""
+    if not DUMP.exists():
+        return False
+    with _lock:
+        signature = _dump_signature()
+        if _cache_signature() != signature:
+            _build_cache(signature)
+    return True
+
+
+@lru_cache(maxsize=512)
+def _entry(key: str) -> tuple[tuple[tuple[str, str, str], ...], str] | None:
+    if not _cache_ready():
+        return None
+    conn = sqlite3.connect(f"file:{CACHE}?mode=ro", uri=True)
+    try:
+        row = conn.execute("SELECT descendants, gloss FROM roots WHERE key = ?", (key,)).fetchone()
+    finally:
+        conn.close()
+    if row is None:
+        return None
+    return tuple(tuple(item) for item in json.loads(row[0])), row[1]
+
+
+def descendants(proto: str) -> list[tuple[str, str, str]]:
+    """``(dil, biçim, okunuş)`` — alıntı dalları ve yıldızlı ara biçimler hariç."""
+    entry = _entry(_key(proto))
+    return [tuple(item) for item in entry[0]] if entry else []  # type: ignore[misc]
+
+
+def gloss(proto: str) -> str:
+    entry = _entry(_key(proto))
+    return entry[1] if entry else ""
 
 
 class LocalProtoTurkicFetcher(BaseFetcher):
@@ -98,7 +187,7 @@ class LocalProtoTurkicFetcher(BaseFetcher):
         result = self.empty_result()
         query = (word or "").strip().lower()
         index = LexiconIndex()
-        if not query or not index.exists or not _pages():
+        if not query or not index.exists or not _cache_ready():
             return result
         protos = []
         for row in index.lookup(query, languages=["tr", "ota"], limit=10):
