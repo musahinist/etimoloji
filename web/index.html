@@ -671,7 +671,10 @@
             let attHtml = "";
             if (stage2) {
                 const yr = y => (y === null || y === undefined) ? "—" : (y < 0 ? `M.Ö. ${-y}` : `${y}`);
-                if (stage2.attestation_year !== null && stage2.attestation_year !== undefined) {
+                if (stage2.attestation_precision === "period") {
+                    // Dönem düzeyinde tanık (Wilkens): nokta yıl değil, aralık + üst sınır.
+                    attHtml += `<div>İlk tanıklık: <b class="text-white">${esc(stage2.attestation_label || "")}</b> (en geç ${esc(yr(stage2.attestation_year))})</div>`;
+                } else if (stage2.attestation_year !== null && stage2.attestation_year !== undefined) {
                     attHtml += `<div>Tanıklama yılı: <b class="text-white">${esc(yr(stage2.attestation_year))}</b></div>`;
                 }
                 if (stage2.source_year !== null && stage2.source_year !== undefined) {

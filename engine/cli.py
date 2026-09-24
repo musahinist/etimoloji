@@ -95,6 +95,9 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
         s4 = stages.get("stage4_cognate_triangulation", {})
 
         s2_reason = s2.get("reason") or s2.get("violation") or ""
+        # Dönem düzeyindeki tanık (Wilkens): nokta yıl değil, aralık gösterilir.
+        if s2.get("attestation_precision") == "period" and s2.get("attestation_label"):
+            s2_reason = f"İlk tanıklık: {s2['attestation_label']} (en geç {s2.get('attestation_year')}). " + s2_reason
 
         # ⚠️ AŞAMA SKORU GÖSTERİLMELİ. `✅ GEÇTİ` "ihlal yok" demektir,
         # "kanıt güçlü" demek DEĞİLDİR; rozet ise skor üzerinden verilir.

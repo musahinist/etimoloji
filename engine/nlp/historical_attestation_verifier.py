@@ -61,21 +61,49 @@ class HistoricalAttestationVerifier:
         """
         w = (word or "").strip().lower()
         candidates: list[tuple[int, str, str]] = []
+        #: Dönem düzeyindeki tanıklar (Wilkens: "9.-14. yy"): nokta yıl DEĞİL.
+        periods: list[dict[str, Any]] = []
 
         # 1. Fetcher'ın doğrudan sağladığı tarihli tanıklama (en güvenilir)
         for res in fetcher_results or []:
             att = (res or {}).get("first_attestation")
             if att and att.get("year"):
+                if att.get("precision") == "period":
+                    periods.append(att)
+                    continue
                 candidates.append((int(att["year"]), att.get("source", ""), "fetcher"))
 
         # 2. Dil kayıtlarının kaynak/ad alanlarında geçen bilinen tarihî eserler
         for entry in live_entries or []:
+            if entry.get("attestation_precision") == "period":
+                continue  # fetcher'ın dönem tanığı; eser adı ayrıca yıl vermesin
             haystack = " ".join(
                 str(entry.get(k, "")) for k in ("lang_name", "meaning", "source", "word")
             )
             for pattern, year, label in DATED_SOURCES:
                 if pattern.search(haystack):
                     candidates.append((year, label, "corpus"))
+
+        bound = min((int(p["year"]) for p in periods), default=None)
+        if bound is not None:
+            # Dönem tanığı yalnız ÜST SINIRDIR ("en geç 1350"). Nokta tarih
+            # (Starling, Orhun, DLT) her zaman kazanır; yalnız sınırdan geç
+            # olan nokta tarih ilk tanıklık olamaz (kelime zaten tanıklı).
+            # Eskiden Wilkens 1350'yi nokta yıl olarak veriyordu: Orhun'da
+            # (732) tanıklı kelime "ilk tanıklık 1350" görünüyordu.
+            candidates = [c for c in candidates if c[0] <= bound]
+            if not candidates:
+                best = min(periods, key=lambda p: int(p["year"]))
+                return {
+                    "word": w,
+                    "verified": True,
+                    "first_attestation_record": best.get("label") or best.get("source", ""),
+                    "first_attestation_year": int(best["year"]),
+                    "first_attestation_precision": "period",
+                    "first_attestation_range": list(best.get("range") or [None, int(best["year"])]),
+                    "evidence_origin": "fetcher",
+                    "candidate_count": len(periods),
+                }
 
         if not candidates:
             logger.debug("'%s' için tarihli tanıklama bulunamadı", w)
@@ -94,6 +122,7 @@ class HistoricalAttestationVerifier:
             "first_attestation_record": source,
             "first_attestation_year": year,
             "evidence_origin": origin,
+            "first_attestation_precision": "point",
             "candidate_count": len(candidates),
         }
 

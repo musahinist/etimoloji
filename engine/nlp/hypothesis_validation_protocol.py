@@ -214,6 +214,15 @@ class ChronologicalTimeLock:
         """
         t_source = self.donor_contact_year(donor_language)
         t_target = (attestation or {}).get("first_attestation_year")
+        # Dönem düzeyindeki tanık (Wilkens "9.-14. yy") yalnız üst sınırdır:
+        # yıl "en geç" demektir, rapor aralığı gösterir.
+        period = (attestation or {}).get("first_attestation_precision") == "period"
+        extra: dict[str, Any] = {
+            "attestation_precision": "period",
+            "attestation_range": (attestation or {}).get("first_attestation_range"),
+            "attestation_label": (attestation or {}).get("first_attestation_record"),
+        } if period else {}
+        when = f"en geç {t_target}; {extra['attestation_label']}" if period else f"{t_target}"
 
         if t_source is None or t_target is None:
             missing = []
@@ -227,7 +236,9 @@ class ChronologicalTimeLock:
                 "score": None,
                 "source_year": t_source,
                 "attestation_year": t_target,
-                "reason": "Kronoloji değerlendirilemedi: " + ", ".join(missing),
+                **extra,
+                "reason": "Kronoloji değerlendirilemedi: " + ", ".join(missing)
+                + (f" (tanıklık: {when})" if period else ""),
             }
 
         if t_source > t_target:
@@ -237,9 +248,10 @@ class ChronologicalTimeLock:
                 "score": 0.0,
                 "source_year": t_source,
                 "attestation_year": t_target,
+                **extra,
                 "violation": (
                     f"ANAKRONİZM: Kaynak dil teması (~{t_source}) kelimenin ilk "
-                    f"tanıklamasından ({t_target}) sonradır."
+                    f"tanıklamasından ({when}) sonradır."
                 ),
             }
 
@@ -252,7 +264,8 @@ class ChronologicalTimeLock:
             "score": round(score, 3),
             "source_year": t_source,
             "attestation_year": t_target,
-            "reason": f"Kronolojik sıra tutarlı (temas ~{t_source}, tanıklama {t_target}).",
+            **extra,
+            "reason": f"Kronolojik sıra tutarlı (temas ~{t_source}, tanıklama {when}).",
         }
 
 

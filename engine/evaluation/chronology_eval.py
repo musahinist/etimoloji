@@ -127,12 +127,14 @@ def run(*, sample: int = SAMPLE, fresh: bool = False) -> dict[str, Any]:
         rows = [agreement(runs[w].get("attestation_year"), y) for w, y, _ in items]
         systems[name] = summarize(rows)
         systems[name]["engine_record_counts"] = _record_counts(runs[w] for w in words)
+        systems[name].update(precision_split(rows, [runs[w] for w in words]))
     systems["taban_medyan_yıl"] = summarize([agreement(constant, y) for _, y, _ in items])
     for w, y, tag in items:
         detail.append({
             "word": w, "reference_year": y, "reference_tag": tag,
             **{f"{name}_year": configs[name][w].get("attestation_year") for name in configs},
             "starling_yok_record": configs["starling_yok"][w].get("attestation_record"),
+            **{f"{name}_precision": configs[name][w].get("attestation_precision") for name in configs},
         })
     tags: dict[str, int] = {}
     for _, _, tag in items:
@@ -147,6 +149,28 @@ def run(*, sample: int = SAMPLE, fresh: bool = False) -> dict[str, Any]:
         "circularity": CIRCULARITY,
         "systems": systems,
         "items": detail,
+    }
+
+
+def precision_split(rows: list[dict[str, Any]], runs: list[dict[str, Any]]) -> dict[str, Any]:
+    """Nokta tarih ile dönem düzeyindeki tanığı ayrı sayar.
+
+    Wilkens (Eski Uygurca) tanığı "9.-14. yy" aralığıdır, yıl alanında
+    yalnız üst sınır (1350) durur: yüzyıl isabetine katılması anlamsız.
+    "nokta tarih kapsamı" ve "yüzyıl içi|nokta" yalnız nokta tarihleri,
+    "dönem düzeyinde kapsam" yalnız aralıkları sayar.
+    """
+    n = len(rows)
+    point = [r for r, run in zip(rows, runs, strict=True)
+             if r["has_year"] and run.get("attestation_precision") != "period"]
+    period = sum(1 for r, run in zip(rows, runs, strict=True)
+                 if r["has_year"] and run.get("attestation_precision") == "period")
+    hits = sum(r["within_century"] for r in point)
+    return {
+        "coverage_point": round(len(point) / n, 4) if n else 0.0,
+        "coverage_period": round(period / n, 4) if n else 0.0,
+        "within_century|point": round(hits / len(point), 4) if point else 0.0,
+        "within_century|point_ci95": wilson(hits, len(point)),
     }
 
 
@@ -177,6 +201,9 @@ def main() -> int:
             f"{s['within_century|covered_ci95']} (tümünde {s['within_century|all']:.3f})  "
             f"aynı eser {s['same_source|covered']:.3f}  medyan|fark| {s['median_abs_diff|covered']}"
         )
+        if "coverage_point" in s:
+            print(f"{'':18} nokta tarih kapsamı {s['coverage_point']:.3f} (yüzyıl içi "
+                  f"{s['within_century|point']:.3f})  dönem düzeyinde kapsam {s['coverage_period']:.3f}")
         print(f"{'':18} ⚠️ {payload['circularity'][name]}")
     out = EVAL_DIR / "chronology.json"
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")

@@ -227,3 +227,59 @@ def test_parsed_dictionary_sanity():
     assert by_head[("köz", 1)]["tr"][0].startswith("göz")
     assert by_head[("til", 1)]["de"][0].startswith("Zunge")
     assert [s["lang"] for s in by_head[("ačite", 1)]["donor_chain"]] == ["TochB", "Skt."]
+
+
+# --- dönem düzeyinde tarih (aralık, üst sınır) --------------------------------------
+
+PERIOD_ATT = {"first_attestation": {"year": 1350, "precision": "period", "range": [800, 1350],
+                                    "label": "Eski Uygurca dönemi (9.–14. yy) içinde tanıklı; kesin yer yok",
+                                    "source": "Eski Uygurca (9.-14. yy), Wilkens 2021"}}
+
+
+def _verify(*results, entries=None):
+    from engine.nlp.historical_attestation_verifier import HistoricalAttestationVerifier
+
+    return HistoricalAttestationVerifier().verify_attestation("göz", entries or [], list(results))
+
+
+def test_period_only_attestation_is_a_range_not_a_point():
+    out = _verify(PERIOD_ATT)
+    assert out["first_attestation_precision"] == "period"
+    assert out["first_attestation_range"] == [800, 1350] and out["first_attestation_year"] == 1350
+    assert "kesin yer yok" in out["first_attestation_record"]
+
+
+def test_point_date_always_wins_over_period():
+    starling = {"first_attestation": {"year": 732, "source": "Orkh. (Starling #1)"}}
+    out = _verify(PERIOD_ATT, starling)
+    assert (out["first_attestation_year"], out["first_attestation_precision"]) == (732, "point")
+
+
+def test_point_date_later_than_period_bound_is_not_first_attestation():
+    late = {"first_attestation": {"year": 1876, "source": "Lehce-i Osmânî"}}
+    assert _verify(PERIOD_ATT, late)["first_attestation_precision"] == "period"
+
+
+def test_period_witness_entry_does_not_yield_a_corpus_year():
+    entry = {"lang_name": "Eski Uygurca", "word": "köz", "meaning": "göz",
+             "source": "Wilkens 2021, Handwörterbuch des Altuigurischen (yerel, Eski Uygurca)",
+             "attestation_precision": "period"}
+    assert _verify(PERIOD_ATT, entries=[entry])["first_attestation_precision"] == "period"
+
+
+def test_time_lock_reports_range_as_upper_bound():
+    from engine.nlp.hypothesis_validation_protocol import ChronologicalTimeLock
+
+    stage2 = ChronologicalTimeLock().verify("Sanskritçe", _verify(PERIOD_ATT))
+    assert stage2["attestation_precision"] == "period" and stage2["attestation_range"] == [800, 1350]
+    assert "en geç 1350" in stage2["reason"]
+
+
+def test_chronology_counts_point_and_period_coverage_separately():
+    from engine.evaluation.chronology_eval import agreement, precision_split
+
+    rows = [agreement(732, 732), agreement(1350, 1072), agreement(None, 1072)]
+    runs = [{"attestation_precision": "point"}, {"attestation_precision": "period"}, {}]
+    split = precision_split(rows, runs)
+    assert split["coverage_point"] == round(1 / 3, 4) and split["coverage_period"] == round(1 / 3, 4)
+    assert split["within_century|point"] == 1.0

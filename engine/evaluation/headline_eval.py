@@ -210,11 +210,21 @@ def summarize_finding(finding: dict[str, Any]) -> dict[str, Any]:
     if year is None:
         year = _stage2(unattested.get("validation_report"))
     record = (unattested.get("attestation") or {}).get("first_attestation_record")
+    # Dönem düzeyindeki tanık (Wilkens "9.-14. yy") nokta yıl değildir;
+    # eval-chronology iki kapsamı ayrı sayar.
+    precision = None
+    for report_ in ((nlp.get("proven_hypothesis") or {}).get("validation_report"),
+                    unattested.get("validation_report")):
+        stage2 = ((report_ or {}).get("stage_breakdown") or {}).get("stage2_time_lock") or {}
+        if stage2.get("attestation_year") is not None:
+            precision = stage2.get("attestation_precision") or "point"
+            break
     return {
         "headline": str(root.get("proto_turkic") or ""),
         "provenance": str(root.get("provenance") or ""),
         "attestation_year": int(year) if year is not None else None,
         "attestation_record": record,
+        "attestation_precision": precision,
     }
 
 

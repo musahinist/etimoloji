@@ -24,7 +24,10 @@ tanık olmaz. Köken zinciri (``< TochB ajite < Skt. ajita``) tanığa
 ``etymology``/``donor_chain`` olarak taşınır.
 
 Tarih: sözlük tanık yeri VERMEZ (Vorbemerkungen s. II), yani maddeye özgü
-yıl yoktur. Tanık, Eski Uygurca döneminin (``PERIOD``) ETİKETİYLE tarihlenir
+yıl yoktur. Tanık NOKTA YIL DEĞİL, dönem aralığıdır ("Eski Uygurca dönemi
+(9.–14. yy) içinde tanıklı; kesin yer yok"); kronolojide yalnız üst sınır
+(en geç 1350) olarak kullanılır ve nokta tarih (Starling, Orhun, DLT) varsa
+her zaman o kazanır (``HistoricalAttestationVerifier``). Tanık, Eski Uygurca döneminin (``PERIOD``) ETİKETİYLE tarihlenir
 ve yıl motorun var olan yüzyıl ayrıştırıcısıyla
 (``ChronologicalTimeLock.parse_year_or_century``) bu etiketten çıkar: "9.-14. yy"
 -> 1350, dönemin SONU. Dönemin başı (850) seçilseydi her Moğolca (temas
@@ -63,6 +66,8 @@ LANG = "oui"
 #: Eski Uygurca yazılı dönemi (Uygur Kağanlığı sonrası Turfan/Dunhuang
 #: metinleri). Yıl bundan ``parse_year_or_century`` ile çıkar.
 PERIOD = "9.-14. yy"
+#: Dönemin yıl aralığı: 9. yüzyıl başı - üst sınır (``attestation_year``).
+PERIOD_START = 800
 SOURCE_LABEL = "Wilkens 2021, Handwörterbuch des Altuigurischen"
 #: Madde başı ile sorgu (ya da tahmini Eski Türkçe biçim) arasındaki en düşük
 #: yazılış benzerliği (1 - Levenshtein / uzunluk).
@@ -269,6 +274,8 @@ class WilkensOldUyghurFetcher(BaseFetcher):
             entry["form_similarity"] = round(score, 3)
             entry["meaning_de"] = "; ".join(record.get("de", [])[:3])
             entry["source_page"] = record.get("page")
+            # Nokta yıl değil: doğrulayıcı eser adından ayrıca yıl çıkarmasın.
+            entry["attestation_precision"] = "period"
             etymology = _etymology(record)
             if etymology:
                 entry["etymology"] = f"Wilkens: {etymology}"
@@ -283,6 +290,12 @@ class WilkensOldUyghurFetcher(BaseFetcher):
                 "form": best["headword"],
                 "meaning": best["tr"][0],
                 "source": f"Eski Uygurca ({PERIOD}), {SOURCE_LABEL} s. {best.get('page')}",
+                # Yıl yalnız ÜST SINIR; doğrulayıcı nokta tarihi (Starling, Orhun,
+                # DLT) her zaman öne alır, rapor aralığı gösterir.
                 "year": year,
+                "precision": "period",
+                "range": [PERIOD_START, year],
+                "label": (f"Eski Uygurca dönemi ({PERIOD.replace('-', '–')}) içinde tanıklı; "
+                          f"kesin yer yok ({SOURCE_LABEL}, s. {best.get('page')})"),
             }
         return result
