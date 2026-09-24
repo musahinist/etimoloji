@@ -168,6 +168,9 @@ class BaseFetcher(ABC):
     #: servisten mi? Çıktıda `origin` alanı olarak raporlanır ve kullanıcıya
     #: elle yazılmış veriyle canlı kaynak ayrımını gösterir.
     is_seed_source: bool = False
+    #: Yerel, indirilmiş veri (canlı servis DEĞİL) ama elle yazılmış tohum da
+    #: değil: Starling veritabanı gibi. Canlı kaynak sayımına girmez.
+    is_local: bool = False
 
     @property
     @abstractmethod

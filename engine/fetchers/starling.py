@@ -24,6 +24,8 @@ class StarlingFetcher(BaseFetcher):
         self.has_database = bool(load_turcet()) if use_database is None else use_database
         #: Tohum veri yerel ve elle yazılmıştır, canlı bir servis DEĞİLDİR.
         self.is_seed_source = not self.has_database
+        #: İndirilmiş veritabanı yereldir, canlı değildir.
+        self.is_local = self.has_database
 
     @property
     def source_name(self) -> str:
