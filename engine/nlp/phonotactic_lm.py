@@ -95,6 +95,14 @@ class MarkovModel:
                 lambda_ = observed / (observed + distinct)
                 probability = lambda_ * (seen / observed) + (1 - lambda_) / size
             else:
+                # ⚠️ Geri-dönüşlü (interpolasyonlu) Witten-Bell denendi
+                # (Zemberek SmoothLm deseni; alt derece sayımları üçlülerden
+                # marjinalleştirilir). Model tek başına iyileşiyor — ayar
+                # yarısında AUC Saha 0,680 -> 0,691, Türkçe 0,800 -> 0,875;
+                # rapor yarısında phonotactic_model_only F Saha 0,558 ->
+                # 0,588, Türkçe 0,800 -> 0,827 — ama birleştirici içinde
+                # motor F'si DÜŞÜYOR: WOLD 0,6582 -> 0,6509, Türkçe
+                # 0,8873 -> 0,8806. Geri alındı.
                 probability = 1.0 / size
             total += math.log(max(probability, 1e-12))
         return total / len(grams)

@@ -335,6 +335,17 @@ def own_sense(word: str, lang: str) -> str:
     pozitiflerin ikisi (eğilmek, yılmaz) şans denetimi YAPILAMAYAN uzun
     kelimeler (``donor_proximity._controls`` 8'den az kontrol).
 
+    ⚠️ **Büyük örneklemde arama uyumu DÜŞÜYOR** (Türkçe altının AYAR
+    yarısından ayrık 75 alıntı + 75 miras, yerel kaynaklar; ön kayıt
+    ``data/cache/work/searchfp/PREREG.md``): bu fonksiyon yokken 110/150
+    (alıntı 72, miras 38), varken 100/150 (74, 26). Sebep rampa: sıralayıcı
+    el ağırlıklı toplamı kullanır (0,32 × güç) ve SCA 0,35–0,60 arası her
+    uzak eşleşme "kökeni belirlenemedi"yi (0,15) geçip ALINTI seçtirir;
+    ayar örnekleminde rampa mirasların 44/60'ında, alıntıların 11/60'ında
+    ateşleniyordu. Arama yolunda rampayı saymamak 106/150 verdi — 26c493b
+    öncesinin altında, kabul edilmedi. Şans denetimini her uzunluğa yaymak
+    ve miras kaydı olan kelimede susturmak ayar örnekleminde daha kötüydü.
+
     Kural ölçüm hattıyla **aynıdır** (``borrowing_eval._turkish_glosses``):
     aynı dil, birebir aynı yazılış, boş olmayan ilk ``gloss``. Farklı bir
     kural (ör. TDK'nın Türkçe tanımı) verici sözlüklerinin İngilizce
@@ -694,6 +705,11 @@ class BorrowingDetector:
         bir kısmı birleşik sözdür (``kün_ortoto``, ``uon_biːr``); karşılaştırma
         biçimi ayracı sildiği için iki uyumlu kelime tek "uyumsuz" kelime
         sayılıyordu.
+
+        ⚠️ Zemberek'in heceleme reddi ((C)V(C)(C) dışı küme: söz içi 4+,
+        söz sonu 3+ ünsüz) eklenmedi: AYAR yarısında söz başı kümesi
+        dışında hiç ateşlenmiyor (Türkçe 0/350, Saha 0/770) — alıntılar
+        uyarlanmış biçimde kayıtlı.
         """
         form = to_comparison_form(word)
         violations: list[str] = []
