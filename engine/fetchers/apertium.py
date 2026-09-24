@@ -36,7 +36,12 @@ _VERB_TAGS = ("vblex", "vbmod", "v", "tv", "iv")
 #: sahte (kazma ~ кайла, gevşek ~ кӑпка, yankı ~ ян); 0,67'de sahteler büyük
 #: ölçüde gider, köpük ~ кӑпӑк (0,6) ve gece ~ каҫ (0,5) gibi doğrular da
 #: kaybolur. ⚠️ Küçük örneklemle seçildi.
-LANGUAGE_THRESHOLDS = {"cv": 0.67}
+#: Yeni tahminciyle yeniden ölçüldü (altın kümeden 400 kelime, seed 33; 47
+#: Çuvaşça aday elle): 0,50'de kesinlik 30/47, 0,60'ta 20/22, 2/3'te 19/20.
+#: Tam 2/3 benzerlik (3 harfte 1 fark: gün ~ кун, saymak ~ сӑв) 0,67'nin
+#: altında kalıyordu; bu banttaki 35 aday (NorthEuraLex'in 33'ü dahil) hep
+#: doğru. Eski sahteler (kazma, gevşek, yankı, dadanmak) ≤ 0,60 — dışarıda.
+LANGUAGE_THRESHOLDS = {"cv": 0.66}
 
 
 def _side(raw: str) -> tuple[str, frozenset[str]]:
