@@ -3,14 +3,14 @@
   "negative_controls": [
     {
       "battery": "fonotaktik_gecerli_sahte",
-      "n": 8,
-      "reconstructed": 8,
-      "false_positive_rate": 1.0,
+      "n": 58,
+      "reconstructed": 1,
+      "false_positive_rate": 0.0172,
       "strong_claim_rate": 0.0,
-      "fallback": 0,
-      "fallback_rate": 0.0,
-      "unattested": 7,
-      "unattested_rate": 0.875
+      "fallback": 57,
+      "fallback_rate": 0.9828,
+      "unattested": 0,
+      "unattested_rate": 0.0
     },
     {
       "battery": "bariz_sahte",
@@ -57,7 +57,7 @@
       "unattested_rate": 0.0
     }
   ],
-  "measured_at": "2026-09-22T16:12:36+00:00",
+  "measured_at": "2026-09-24T08:39:51+00:00",
   "dataset": "savelyevturkic",
   "dataset_ref": "v2.1",
   "dataset_commit": "4a540590580f",
@@ -96,12 +96,12 @@
           "n": 83,
           "accuracy": 0.3976,
           "acceptable": 0.4819,
-          "ED": 1.4699,
-          "NED": 0.304,
+          "ED": 1.494,
+          "NED": 0.3058,
           "coverage": 0.9759,
           "abstained": 2,
-          "BCFS": 0.6001,
-          "FER": 0.2606,
+          "BCFS": 0.5973,
+          "FER": 0.2636,
           "mean_witnesses": 11.76,
           "error_modes": {
             "dogru": 33,
@@ -273,10 +273,10 @@
         }
       ],
       "primary_significance": {
-        "difference": -0.03472,
+        "difference": -0.03291,
         "ci95": [
-          -0.07534,
-          0.00648
+          -0.07369,
+          0.00848
         ],
         "significant": false,
         "a_is_better": false,
@@ -297,12 +297,12 @@
           "n": 83,
           "accuracy": 0.3855,
           "acceptable": 0.4819,
-          "ED": 1.4578,
-          "NED": 0.3003,
+          "ED": 1.4699,
+          "NED": 0.3002,
           "coverage": 0.9759,
           "abstained": 2,
-          "BCFS": 0.6033,
-          "FER": 0.2576,
+          "BCFS": 0.602,
+          "FER": 0.2605,
           "mean_witnesses": 12.76,
           "error_modes": {
             "dogru": 32,
@@ -474,10 +474,10 @@
         }
       ],
       "primary_significance": {
-        "difference": -0.06817,
+        "difference": -0.06836,
         "ci95": [
-          -0.10853,
-          -0.03052
+          -0.10868,
+          -0.03072
         ],
         "significant": true,
         "a_is_better": true,

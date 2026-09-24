@@ -33,9 +33,11 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any
 
 from engine.logging_setup import get_logger
+from engine.utils.orthography import to_comparison_form
 
 logger = get_logger(__name__)
 
@@ -70,6 +72,170 @@ PHONOTACTICALLY_VALID: tuple[ControlItem, ...] = tuple(
         ("dolgaş", [("az", "dolgaş"), ("tk", "dolgaş"), ("kk", "dolgas")]),
     ]
 )
+
+#: Sözlük biçimi (mastar/şimdiki zaman) ekleri; tanıklık denetimiyle AYNI
+#: liste. Üretilen sahte kök bu eklerle de indekste bulunmamalıdır.
+def _citation_suffixes() -> tuple[str, ...]:
+    from engine.nlp.comparative_reconstruction import CITATION_SUFFIXES
+
+    return CITATION_SUFFIXES
+
+
+#: Üretilmiş sahte köklerin tohumu. DEĞİŞTİRİLİRSE liste yeniden üretilmeli.
+GENERATED_FAKE_SEED = 20260924
+
+#: Üretilecek sahte kök sayısı.
+GENERATED_FAKE_COUNT = 50
+
+
+def _sample_markov(counts: dict[str, dict[str, int]], rng: Any, order: int = 3) -> str:
+    """Miras modelinin ham n-gram sayımlarından tek kelime örnekler.
+
+    Yumuşatma KULLANILMAZ: yumuşatılmış kütle her karakteri mümkün kılar ve
+    Türkçeye benzemeyen diziler üretir. Yalnız eğitimde görülmüş geçişler.
+    """
+    from engine.nlp.phonotactic_lm import BOUNDARY
+
+    context = BOUNDARY * (order - 1)
+    out = ""
+    for _ in range(12):
+        bucket = counts.get(context) or {}
+        if not bucket:
+            break
+        chars = sorted(bucket)
+        character = rng.choices(chars, weights=[bucket[c] for c in chars])[0]
+        if character == BOUNDARY:
+            break
+        out += character
+        context = (context + character)[-(order - 1):]
+    return out
+
+
+#: Söz sonunda Türkçede görülen ünsüz kümeleri; diğerleri (``-lp``,
+#: ``-şk``) üretilmiş kelimeyi yabancı gösterir.
+_FINAL_CLUSTERS = frozenset({"rt", "lt", "nt", "rk", "lk", "nk", "rç", "nç", "st", "rs", "ls", "rp", "ft", "şt"})
+
+
+def _bad_final_cluster(word: str) -> bool:
+    from engine.utils.phonotactics import VOWELS
+
+    tail = word[-2:]
+    return len(tail) == 2 and not (set(tail) & VOWELS) and tail not in _FINAL_CLUSTERS
+
+
+def fake_witnesses(root: str) -> list[tuple[str, str]]:
+    """Sahte köke düzenli ses denklikleriyle üç "akraba" biçim türetir.
+
+    Denklikler bilinçli olarak GERÇEKÇİDİR (Kıpçak ``y- > j-``, ``ş > s``,
+    ``ç > ş``; Tatar/Başkurt ünlü kayması): tanıklar birbiriyle kusursuz
+    uyumlu olmalı ki sınav tanık UYUMUNU değil tanık GERÇEKLİĞİNİ ölçsün.
+    """
+    kk = root.replace("ş", "s").replace("ç", "ş")
+    if kk.startswith("y"):
+        kk = "j" + kk[1:]
+    ky = "j" + root[1:] if root.startswith("y") else root
+    tt = root.translate(str.maketrans({"o": "u", "ö": "ü", "e": "ä"}))
+    return [("kk", kk), ("ky", ky), ("tt", tt)]
+
+
+def generate_phonotactic_fakes(
+    n: int = GENERATED_FAKE_COUNT,
+    *,
+    seed: int = GENERATED_FAKE_SEED,
+    model_file: Path | None = None,
+) -> list[str]:
+    """Eğitilmiş Türkçe fonotaktik modelden (miras yarısı) sahte kökler üretir.
+
+    Süzgeç: 4–7 harf, en az iki ünlü, büyük ünlü uyumu, kesin söz başı
+    ihlali yok, ve **kök de türetilen tanıkları da** sözlük indeksinde
+    (mastar ekli biçimleri dahil) YOK. İndeks yoksa üretim reddedilir:
+    "indekste yok" doğrulanamayan bir sahte kök sahte olduğu bilinmeyen köktür.
+    """
+    import random
+
+    from engine.db.lexicon_index import LexiconIndex
+    from engine.nlp.phonotactic_lm import MarkovModel, model_path
+    from engine.utils.phonotactics import (
+        VOWELS,
+        has_vowel_harmony,
+        initial_consonant_violation,
+    )
+
+    source = model_file or model_path("tr")
+    data = json.loads(source.read_text(encoding="utf-8"))
+    model = MarkovModel.from_dict(data["inherited"])
+    index = LexiconIndex()
+    if not index.exists:
+        raise RuntimeError("sözlük indeksi yok; sahte kökün yokluğu doğrulanamaz")
+    suffixes = _citation_suffixes()
+    rng = random.Random(seed)
+    seen: set[str] = set()
+    fakes: list[str] = []
+    with index.connect() as connection:
+
+        def attested(form: str) -> bool:
+            candidates = [form, *(form + suffix for suffix in suffixes)]
+            query = f"SELECT 1 FROM entries WHERE comparison IN ({','.join('?' * len(candidates))}) LIMIT 1"
+            return connection.execute(query, candidates).fetchone() is not None
+
+        for _ in range(200_000):
+            if len(fakes) >= n:
+                break
+            word = _sample_markov(model.counts, rng, model.order)
+            if word in seen or not 4 <= len(word) <= 7:
+                continue
+            seen.add(word)
+            if sum(ch in VOWELS for ch in word) < 2 or not has_vowel_harmony(word):
+                continue
+            if initial_consonant_violation(word)[0]:
+                continue
+            if _bad_final_cluster(word):
+                continue
+            forms = {word, *(to_comparison_form(w) for _, w in fake_witnesses(word))}
+            if any(attested(f) for f in forms):
+                continue
+            # Çekimli gerçek kelimeyi (``bayırı`` = ``bayır`` + iyelik) sahte
+            # kök saymamak için: 1–3 harf kısaltılmış biçim de (``ğ > k`` ile)
+            # indekste olmamalı.
+            stems = {
+                stem[:-1] + "k" if stem.endswith("ğ") else stem
+                for cut in (1, 2, 3)
+                if len(stem := word[:-cut]) >= 3
+            }
+            if any(attested(stem) for stem in stems):
+                continue
+            fakes.append(word)
+    return fakes
+
+
+#: :func:`generate_phonotactic_fakes` çıktısı (tohum
+#: :data:`GENERATED_FAKE_SEED`, ``data/models/phonotactic_tr.json`` commit
+#: ``b0e42d4`` sürümü). Modül yüklenirken indekse DOKUNULMAZ: liste burada
+#: sabittir, yeniden üretmek için
+#: ``python -m engine.evaluation.negative_controls --regenerate-fakes
+#: --model <o sürümün dosyası>``.
+GENERATED_FAKES: tuple[str, ...] = (
+    "afka", "akçık", "kıca", "iğitli", "açkut", "afkay",
+    "yençeği", "apulua", "balçava", "apul", "apulga", "oklık",
+    "arnıra", "arutçuk", "korbağı", "sirciği", "ayaymaç", "açkur",
+    "balmaçı", "oğuk", "apaçkut", "iğit", "acaskın", "ayışlık",
+    "açkabaş", "iğer", "aşyayıl", "afkar", "başyara", "afga",
+    "arnırık", "alçu", "başyana", "yençiçe", "osmaçık", "amyokya",
+    "yıtmak", "apulan", "amyokla", "alçuk", "asunacı", "apuluğu",
+    "otaşçık", "afgara", "oklım", "acaarna", "bençile", "bençeği",
+    "amsuna", "tupyırt",
+)
+
+GENERATED_PHONOTACTIC_FAKES: tuple[ControlItem, ...] = tuple(
+    ControlItem(
+        query=query,
+        witnesses=fake_witnesses(query),
+        battery="fonotaktik_gecerli_sahte",
+        reason="fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok",
+    )
+    for query in GENERATED_FAKES
+)
+
 
 #: Fonotaktiği açıkça ihlal edenler — taban çizgi, elenmeleri kolay olmalı.
 OBVIOUSLY_FAKE: tuple[ControlItem, ...] = tuple(
@@ -154,7 +320,7 @@ HOMONYM_CASES: tuple[ControlItem, ...] = tuple(
 )
 
 ALL_BATTERIES: dict[str, tuple[ControlItem, ...]] = {
-    "fonotaktik_gecerli_sahte": PHONOTACTICALLY_VALID,
+    "fonotaktik_gecerli_sahte": PHONOTACTICALLY_VALID + GENERATED_PHONOTACTIC_FAKES,
     "bariz_sahte": OBVIOUSLY_FAKE,
     "sahte_akraba": FALSE_FRIENDS,
     "alinti_tuzagi": LOANWORD_TRAPS,
@@ -217,6 +383,14 @@ class BatteryResult:
         ⚠️ `verdict` alanı bu iş için DENENDİ VE ÇÜRÜTÜLDÜ: `kalgır` ve
         `sötüm` de tıpkı `çay`/`kat` gibi "belirsiz" dönüyor.
         ⚠️ Dürüst kayıt: `kañtar` 1 tanıkla bu ölçütten kaçıyor (7/8).
+
+        **Tanıksız kök yasağından sonra** (``UNATTESTED_BAN``) bu sayaç
+        sıfıra iner: tanıksız maddeler artık `anchor_fallback`e düşer ve
+        `yedek` sütununda görünür. Ölçüldü (58 sahte, 50'si fonotaktik
+        modelden üretilmiş)::
+
+            önce   58/58 rekons, 57 tanıksız   yanlış-poz 1.000
+            sonra   1/58 rekons (kañtar), 57 yedek  yanlış-poz 0.017
         """
         return self.unattested / self.n if self.n else 0.0
 
@@ -290,7 +464,17 @@ def main() -> int:
 
     ap = argparse.ArgumentParser(description="Negatif kontrol bataryası")
     ap.add_argument("--verbose", action="store_true", help="madde madde göster")
+    ap.add_argument("--model", type=Path, help="--regenerate-fakes için model dosyası")
+    ap.add_argument(
+        "--regenerate-fakes",
+        action="store_true",
+        help="GENERATED_FAKES listesini fonotaktik modelden yeniden üret ve yazdır",
+    )
     args = ap.parse_args()
+
+    if args.regenerate_fakes:
+        print(generate_phonotactic_fakes(model_file=args.model))
+        return 0
 
     reconstructor = comparative_reconstructor()
     results = [

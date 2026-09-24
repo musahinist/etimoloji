@@ -273,6 +273,22 @@ class HypothesisRanker:
         # biçmini aday olarak döndürmüştür çünkü ölçümde cevapsızlık mümkün
         # olan en kötü değeri alır. Onu miras hipotezi için kanıt saymak,
         # yapılmamış bir işi kanıt göstermek olurdu.
+        if reconstruction.get("unattested_ban"):
+            # Tanıksız kök yasağı: tanıklar birbiriyle uyumlu ama HİÇBİRİ
+            # sözlükte yok. Aday ata biçim `detail`de görünür, iddia edilmez.
+            return Hypothesis(
+                kind="inherited",
+                claim="MİRAS — tanıksız; ata biçim iddia edilmiyor",
+                score=0.05,
+                against=[
+                    "tanık biçimlerinden hiçbiri sözlük indeksinde yok; "
+                    "tanıkların yalnız birbiriyle uyumu kök iddiasına yetmez"
+                ],
+                detail={
+                    "withheld_reconstruction": reconstruction.get("withheld_reconstruction", ""),
+                    "confidence_badge": reconstruction.get("confidence_badge", ""),
+                },
+            )
         if reconstruction.get("method") == "anchor_fallback":
             return Hypothesis(
                 kind="inherited",

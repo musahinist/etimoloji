@@ -26,7 +26,7 @@ from typing import Any
 
 from engine.fetchers.base import TURKIC_LANGUAGES_MAP
 from engine.logging_setup import get_logger
-from engine.nlp.confidence import apply_calibration
+from engine.nlp.confidence import DEFAULT_PLAUSIBILITY_FLOOR, apply_calibration
 from engine.nlp.multi_alignment import align_forms
 from engine.nlp.nbest_reranking import generate as generate_candidates
 from engine.nlp.proto_phonology import (
@@ -69,6 +69,28 @@ LANGUAGE_BRANCHES: dict[str, str] = {
     # koldur (Doerfer). Ayrı kol sayılması güven skorunu doğru etkiler.
     "klj": "arghu",
 }
+
+#: Tanıksız kök yasağı açık mı? Hiçbir tanık biçimi (sorgu dahil) sözlük
+#: indeksinde yoksa karşılaştırmalı kök üretilmez; bkz. ``reconstruct``.
+UNATTESTED_BAN = True
+
+#: Sözlüklerin fiil köklerini tuttuğu **alıntı biçimi** ekleri
+#: (karşılaştırma biçiminde). Tanıklık denetimi yalnız çıplak biçmi
+#: arıyordu; oysa sözlükler fiili mastarla verir: ``ırgıt`` indekste yok,
+#: ``ırgıtuu`` [ky], ``ırgıtırga`` [tt], ``ırgıtıu`` [ba] var. Ölçüldü —
+#: altın dev'deki tanıksız 7 maddenin 3'ü (``ırgıt``, ``köter``, ``tuḳma``)
+#: yalnız bu yüzden tanıksız görünüyordu.
+#:
+#: ⚠️ Yalnız MASTAR ekleri: isim çekimi ya da yapım eki eklemek tanıklığı
+#: gevşetir ve uydurma kökleri rastlantısal gerçek kelimelerle eşleştirir.
+CITATION_SUFFIXES: tuple[str, ...] = (
+    "mak", "mek", "mok",                      # tr/az/tk/crh/uz
+    "u", "ü", "uu", "üü", "oo", "öö",          # kk/ky/kaa/nog
+    "ıu", "iu", "eü", "ou", "öü",              # ba
+    "rga", "rge", "ırga", "irge", "arga", "erge", "urga", "ürge",  # tt
+    "uv", "üv", "ıv", "iv",                    # crh/nog/kum
+    "ar", "er", "ır", "ir",                    # tyv/alt sözlük biçimi (şimdiki zaman)
+)
 
 
 class ComparativeReconstructor:
@@ -244,28 +266,34 @@ class ComparativeReconstructor:
         # bu yüzden yüksek güven alıyordu.
         plausibility, plausibility_notes = proto_plausibility(proto_form)
 
-        # ⚠️ TANIK TANIKLIĞI — ENGELLEYİCİ DEĞİL, GÖRÜNÜR.
+        # ⚠️ TANIKSIZ KÖK YASAĞI.
         #
         # Sütun uyumu tanıkların birbiriyle uyuşmasını ölçer; tanıkların
         # GERÇEK olup olmadığını ölçmez. Uydurma bir kök için uydurulmuş
-        # tanıklar da kusursuz uyumludur.
+        # tanıklar da kusursuz uyumludur. Ölçüldü: fonotaktik olarak geçerli
+        # sahte köklerin 8/8'i karşılaştırmalı kök alıyordu, 7'sinin hiçbir
+        # tanığı sözlük indeksinde yoktu.
         #
-        # Sert kapı (en az bir tanık indekste olsun) denendi ve ÖLÇÜLEREK
-        # REDDEDİLDİ:
-        #     fonotaktik_gecerli_sahte  1/8 maddede tanık indekste  -> 7'si elenirdi
-        #     bariz_sahte               0/4
-        #     alinti_tuzagi             5/5  (gerçek kelimeler, dokunulmamalı)
-        #     eşadlı                    3/3  (gerçek kelimeler, dokunulmamalı)
-        #     GERÇEK altın dev          73/83 = %88,0
-        # Yani kapı sahtelerin çoğunu elerken gerçek maddelerin %12'sini de
-        # elerdi (*ḳap, *ḳatḳïr, *dïŋla, *jalpï, *ïrgï...). Kapsam 0.988'den
-        # ~0.88'e düşer ve çekimser madde NED 1.0 aldığı için ortalama
-        # bozulurdu. Üstelik bataryanın asıl güvenlik ölçütü
-        # `strong_claim_rate` zaten 0.0 — motor bu köklere ⚪/🟠 diyor.
-        #
-        # Bu yüzden sayı yalnızca RAPORLANIR: kullanıcı "hiçbir tanık
-        # sözlükte bulunamadı" ibaresini görür, kapsam kaybı olmaz.
+        # Eski not "sert kapı gerçek maddelerin %12'sini eler" diyordu. Bu
+        # iki ayrı sorundu ve ikisi de ölçülerek çözüldü:
+        #   1. Kayıpların çoğu İNDEKS BİÇİMİ farkıydı: sözlükler fiili
+        #      mastarla tutar (``ırgıt`` yok, ``ırgıtuu``/``ırgıtırga`` var).
+        #      Tanıklık artık mastar ekli biçmi de arar
+        #      (:data:`CITATION_SUFFIXES`).
+        #   2. Kalan tanıksız maddeler ÇEKİMSER BIRAKILMAZ (NED 1,0 alırdı);
+        #      etiketli geri-dönüşe düşer: karşılaştırmalı kök ÜRETİLMEZ,
+        #      ``method="anchor_fallback"``, güven 0,0, rozet ⚪. Türetilen
+        #      aday ``withheld_reconstruction`` alanında saklanır.
         attested = self._attested_witness_count([*by_lang.values(), anchor])
+        #   3. Proto-Türkçe OLAMAYACAK biçimler (makullük tabanın altında)
+        #      bu yoldan geçmez: kalibrasyon onları zaten çekimser bırakır;
+        #      geri-dönüş onlara bir aday biçim sunmuş olurdu.
+        if (
+            attested == 0
+            and UNATTESTED_BAN
+            and plausibility >= DEFAULT_PLAUSIBILITY_FLOOR
+        ):
+            return self._unattested_fallback(word, anchor, proto_form, by_lang)
 
         result: dict[str, Any] = {
             "word": word,
@@ -350,6 +378,9 @@ class ComparativeReconstructor:
     def _attested_witness_count(forms: list[str]) -> int | None:
         """Tanık biçimlerinden kaçı sözlük indeksinde bulunuyor?
 
+        Bir biçim ya olduğu gibi ya da bir mastar ekiyle
+        (:data:`CITATION_SUFFIXES`) indekste bulunursa tanıklı sayılır.
+
         İndeks yoksa ``None`` döner — "sıfır tanık doğrulandı" ile "ölçemedim"
         karıştırılmamalı.
         """
@@ -359,11 +390,55 @@ class ComparativeReconstructor:
             index = LexiconIndex()
             if not index.exists:
                 return None
-            unique = {f.strip() for f in forms if f and f.strip()}
-            return sum(1 for f in unique if index.lookup(f, limit=1))
+            unique = {to_comparison_form(f) for f in forms if f and f.strip()}
+            unique.discard("")
+            count = 0
+            with index.connect() as connection:
+                for form in unique:
+                    candidates = [form, *(form + suffix for suffix in CITATION_SUFFIXES)]
+                    row = connection.execute(
+                        "SELECT 1 FROM entries WHERE comparison IN "
+                        f"({','.join('?' * len(candidates))}) LIMIT 1",
+                        candidates,
+                    ).fetchone()
+                    count += row is not None
+            return count
         except Exception:
             logger.debug("Tanık tanıklığı ölçülemedi", exc_info=True)
             return None
+
+    def _unattested_fallback(
+        self, word: str, anchor: str, proto_form: str, by_lang: dict[str, str]
+    ) -> dict[str, Any]:
+        """Tanıksız kök yasağı: karşılaştırmalı kök yerine etiketli geri-dönüş."""
+        result = self._no_result(
+            word,
+            "Tanık biçimlerinden HİÇBİRİ sözlük indeksinde bulunamadı; tanıkların "
+            "yalnız birbiriyle uyumu bir kök iddiasına yetmez. Karşılaştırmalı kök "
+            "ÜRETİLMEDİ. Aşağıdaki biçim sorgu kelimesinin kendisidir.",
+            witness_count=len(by_lang),
+            witness_languages=sorted(by_lang),
+        )
+        result.update(
+            {
+                "reconstructed_root": f"*{anchor}",
+                "is_reconstructible": True,
+                "evidence_available": False,
+                "method": "anchor_fallback",
+                "fallback_reason": "tanıksız",
+                "unattested_ban": True,
+                "withheld_reconstruction": proto_form,
+                "attested_witness_count": 0,
+                "attestation_note": (
+                    "Tanık biçimlerinden hiçbiri sözlük indeksinde bulunamadı "
+                    "(mastar biçimleri dahil)."
+                ),
+                "confidence": 0.0,
+                "proto_level": "PCT",
+                "proto_level_note": "Tanıklı dayanak yok; hiçbir ata düğüm iddia edilmiyor.",
+            }
+        )
+        return apply_calibration(result)
 
     @staticmethod
     def _no_result(word: str, note: str, **extra: Any) -> dict[str, Any]:
