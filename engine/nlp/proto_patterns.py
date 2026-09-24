@@ -64,6 +64,7 @@ from typing import Any
 
 from engine.config import PROJECT_ROOT
 from engine.logging_setup import get_logger
+from engine.utils.provenance import write_if_changed
 
 logger = get_logger(__name__)
 
@@ -162,9 +163,10 @@ class ProtoPatternTable:
 def save(table: ProtoPatternTable, path: Path | None = None) -> Path:
     target = path or MODEL_PATH
     target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(
-        json.dumps(table.as_dict(), ensure_ascii=False, indent=2), encoding="utf-8"
-    )
+    # Tablo aynıysa dosyaya dokunulmaz: yalnız `trained_at` değişirdi ve
+    # taze klonda `make bootstrap` commit edilmiş modeli kirletirdi.
+    data = table.as_dict()
+    write_if_changed(target, data, json.dumps(data, ensure_ascii=False, indent=2), volatile=("trained_at",))
     return target
 
 

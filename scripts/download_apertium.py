@@ -25,6 +25,7 @@ import requests
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from engine.config import PROJECT_ROOT  # noqa: E402
+from engine.utils.provenance import write_if_changed  # noqa: E402
 
 TARGET = PROJECT_ROOT / "data" / "apertium"
 RAW = "https://raw.githubusercontent.com/apertium/apertium-{pair}/master/apertium-{pair}.{pair}.dix"
@@ -83,12 +84,16 @@ def main(argv: list[str] | None = None) -> int:
             "bytes": len(response.content), "sha256": hashlib.sha256(response.content).hexdigest(),
         }
         print(f"  + {pair}: {len(response.content) / 1024:.0f} KB")
-    (TARGET / "_provenance.json").write_text(json.dumps({
+    provenance = {
         "_schema": "turkic-etymology-apertium-provenance/v1",
         "retrieved_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "note": "Çeviri karşılığıdır, etimolojik denklik değil; tanık olmadan önce ses denkliği denetlenir.",
         "files": files,
-    }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    }
+    # Sözlükler aynıysa commit edilmiş künye korunur (yalnız indirme zamanı değişirdi).
+    write_if_changed(
+        TARGET / "_provenance.json", provenance, json.dumps(provenance, ensure_ascii=False, indent=2) + "\n"
+    )
     return 0 if files else 1
 
 

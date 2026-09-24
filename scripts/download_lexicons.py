@@ -23,6 +23,7 @@ from __future__ import annotations
 import argparse
 import gzip
 import hashlib
+import io
 import json
 import shutil
 import sys
@@ -36,6 +37,7 @@ import requests
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from engine.config import LEXICON_DIR  # noqa: E402
+from engine.utils.provenance import deterministic_gzip, write_if_changed  # noqa: E402
 
 #: ⚠️ kaikki DİZİN adında boşluğu korur, DOSYA adında siler:
 #:   dictionary/Ottoman%20Turkish/kaikki.org-dictionary-OttomanTurkish.jsonl
@@ -248,7 +250,8 @@ def download(
                 print(f"  ! kaikki'de yok: {name}")
                 return None
             response.raise_for_status()
-            opener = gzip.open(target, "wb") if compress else target.open("wb")
+            # Belirlenimci gzip: aynı içerik aynı SHA-256 verir (künye korunabilsin).
+            opener = deterministic_gzip(target) if compress else target.open("wb")
             with opener as out:
                 for chunk in response.iter_content(chunk_size=1 << 20):
                     if not chunk:
@@ -283,8 +286,9 @@ def download(
             "verilmez (Häuser & Stamatakis 2025)."
         ),
     }
-    provenance_path.write_text(
-        json.dumps(provenance, ensure_ascii=False, indent=2), encoding="utf-8"
+    # Döküm aynıysa commit edilmiş künye korunur (yalnız indirme zamanı değişirdi).
+    provenance = write_if_changed(
+        provenance_path, provenance, json.dumps(provenance, ensure_ascii=False, indent=2)
     )
     print(
         f"  + {lines:,} kayıt · ham {raw_bytes / (1 << 20):.1f} MB "
@@ -358,7 +362,7 @@ def download_tr_edition(*, session: requests.Session, force: bool = False) -> di
             if code not in TURKIC_LANGUAGES_MAP:
                 continue
             if code not in writers:
-                writers[code] = gzip.open(directory / f"{code}.jsonl.gz", "wt", encoding="utf-8")
+                writers[code] = io.TextIOWrapper(deterministic_gzip(directory / f"{code}.jsonl.gz"), encoding="utf-8")
             writers[code].write(line)
             counts[code] = counts.get(code, 0) + 1
     for writer in writers.values():
@@ -378,7 +382,7 @@ def download_tr_edition(*, session: requests.Session, force: bool = False) -> di
             "kategorileri okunmaz (Nişanyan/TDK kaynaklı; altın kümeyle döngüsellik)."
         ),
     }
-    provenance_path.write_text(json.dumps(provenance, ensure_ascii=False, indent=2), encoding="utf-8")
+    write_if_changed(provenance_path, provenance, json.dumps(provenance, ensure_ascii=False, indent=2))
     return counts
 
 

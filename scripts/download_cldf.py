@@ -38,6 +38,7 @@ import requests
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from engine.config import CLDF_DIR  # noqa: E402
+from engine.utils.provenance import write_if_changed  # noqa: E402
 
 RAW = "https://raw.githubusercontent.com/{org}/{repo}/{ref}/cldf/{name}"
 API = "https://api.github.com/repos/{org}/{repo}"
@@ -212,8 +213,9 @@ def download(name: str, *, force: bool = False, session: requests.Session | None
         "caveat": spec["caveat"],
         "files": files,
     }
-    provenance_path.write_text(json.dumps(provenance, ensure_ascii=False, indent=2), encoding="utf-8")
-    return provenance
+    # Dosyalar aynıysa commit edilmiş künye korunur (taze klonda
+    # `make bootstrap` yalnız indirme zamanı yüzünden ağacı kirletmesin).
+    return write_if_changed(provenance_path, provenance, json.dumps(provenance, ensure_ascii=False, indent=2))
 
 
 def write_sources_index(provenances: list[dict[str, Any]]) -> Path:

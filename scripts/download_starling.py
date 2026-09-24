@@ -26,6 +26,7 @@ import requests
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from engine.db.starling import STARLING_DIR, load_turcet  # noqa: E402
+from engine.utils.provenance import write_if_changed  # noqa: E402
 
 URL = "https://starlingdb.org/download/ALTAIC.exe"
 TABLES = ("turcet.dbf", "turcet.var", "monget.dbf", "monget.var")
@@ -92,8 +93,9 @@ def main(argv: list[str] | None = None) -> int:
         "turkic_roots": roots,
         "files": files,
     }
-    (STARLING_DIR / "_provenance.json").write_text(
-        json.dumps(provenance, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    # Tablolar aynıysa commit edilmiş künye korunur (yalnız indirme zamanı değişirdi).
+    write_if_changed(
+        STARLING_DIR / "_provenance.json", provenance, json.dumps(provenance, ensure_ascii=False, indent=2) + "\n"
     )
     print(f"Starling: {roots} Türk kökü -> {STARLING_DIR}")
     return 0
