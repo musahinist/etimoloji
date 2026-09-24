@@ -31,6 +31,17 @@ def _stage_mark(stage: dict[str, Any], fail_label: str) -> str:
     return "✅ GEÇTİ" if is_valid else fail_label
 
 
+def _witness_meaning(entry: dict[str, Any], finding: dict[str, Any]) -> str:
+    """Tanığın anlam hücresi. Anlamı sorgunun kendisi olan tanık ("Kemal
+    [Kemal]") için tekrar yerine "Türkçe ile aynı" yazılır."""
+    meaning = entry.get("meaning", "")
+    if meaning:
+        return f"Anlam: {meaning}"
+    if entry.get("meaning_same_as_query"):
+        return f"Anlam: Türkçe ‘{finding.get('query_word', '')}’ ile aynı"
+    return "N/A"
+
+
 def print_finding_formatted(finding: dict[str, Any]) -> None:
     query_word = finding.get("query_word", "")
     morphology = finding.get("morphology", "Yalın Kök")
@@ -160,7 +171,7 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
             # Runik/Arap yazılı biçimin yanında okunuşu (𐰋𐰃𐱅𐰏 bitig)
             if entry.get("comparison") and entry.get("script") not in (None, "Latin"):
                 word = f"{word} {entry['comparison']}"
-            print(f"  • {lang_name:<30} : {word:<24} [{'Anlam: ' + meaning if meaning else 'N/A'}]{shift_info}")
+            print(f"  • {lang_name:<30} : {word:<24} [{_witness_meaning(entry, finding)}]{shift_info}")
             if entry.get("formation"):
                 print(f"      ↳ Yapı: {entry['formation']}")
             if entry.get("etymology"):
@@ -182,8 +193,7 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
             word = entry.get("word", "")
             if entry.get("comparison") and entry.get("script") not in (None, "Latin"):
                 word = f"{word} {entry['comparison']}"
-            meaning = entry.get("meaning", "")
-            print(f"  • {entry.get('lang_name', ''):<30} : {word:<24} [{'Anlam: ' + meaning if meaning else 'N/A'}]")
+            print(f"  • {entry.get('lang_name', ''):<30} : {word:<24} [{_witness_meaning(entry, finding)}]")
 
     mentions = finding.get("etymology_mentions") or {}
     if mentions.get("items"):

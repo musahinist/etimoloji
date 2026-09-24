@@ -247,7 +247,11 @@ _ATTRIBUTED_FORM = (
     r"(?:turkish|old turkic|proto-turkic|др\.-тюрк\.?|турецк\w*|тур\.)"
     # Ara boşluk cümle sınırını (nokta) geçmez: "Proto-Turkic *ēl. Cognate
     # with Uyghur ئەل (el)" Uygurca biçimi Proto-Türkçeye bağlamamalı.
-    r"[^,;.]{{0,40}}?(?<![\w-])\*?{q}(?![\w-])"
+    # Ara boşluk tırnak da geçmez: tırnak içindeki sorgu bir ANLAMdır, biçim
+    # değil. `master`: 'Proto-Turkic *ūŕ ("master, craftsman")' ve 'Turkish
+    # hoca ("master, teacher")' Proto-Türkçe/Türkçe `master` biçimi değil
+    # (105 kelimelik denetim: master'da 6 sahte akrabalık beyanı).
+    r"[^,;.\"“”«»]{{0,40}}?(?<![\w-])\*?{q}(?![\w-])"
 )
 
 
@@ -282,7 +286,11 @@ def _first_sentence_loan(text: str) -> bool:
     """İlk cümle aile dışı bir dilden "From X" diyor mu (ҡәләм: "From Arabic قَلَم")."""
     from engine.db.lexicon_index import ETYMOLOGY_TEXT_DONORS
 
-    first = re.split(r"(?<=[.;])\s+", text.strip(), maxsplit=1)[0]
+    # Parantez içi anlamlar önce atılır: `;` anlam listesinin içinde de geçer
+    # ('From *xoja ("owner; host"), from Persian خواجه') ve cümle orada
+    # bölünüp "from Persian" kaçıyordu (Başkurtça хужа, `master` araması).
+    bare = re.sub(r"\([^()]*\)", "", text.strip())
+    first = re.split(r"(?<=[.;])\s+", bare, maxsplit=1)[0]
     names = [*ETYMOLOGY_TEXT_DONORS, "Middle Chinese", "Old Chinese"]
     return any(re.search(rf"\bfrom {re.escape(n)}\b", first, re.IGNORECASE) for n in names)
 
@@ -443,6 +451,78 @@ _REDIRECT_GLOSS = re.compile(r"\b(?:form|spelling) of\b", re.IGNORECASE)
 
 #: Hüküm ALINTI iken çeviri/indeks tanıklarının rolü. Sıralayıcının ve
 #: akraba listesinin (`engine/utils/cognates.py`) kullandığı etiketle aynı.
+def _tr_fold(text: str) -> str:
+    return str(text or "").replace("İ", "i").replace("I", "ı").lower().strip(" .;:,!")
+
+
+def _merge_duplicate_witnesses(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Aynı dil adı + aynı karşılaştırma biçimli tanıkları tek kayıtta birleştirir.
+
+    Birleştirme anahtarı ``(lang_code, word, lehçe mi)`` olduğu için aynı
+    biçim farklı yazımla (Kiril/Latin) ya da iki kaynaktan iki kez geliyordu:
+    Tatarca `pıçak` (NorthEuraLex + Çağdaş Türk Dilleri), Çağatayca `pıçak`
+    (Tarihî Katman ×2). 105 kelimelik denetim: 14 kelimede. İlk gelen
+    (portföy sırası) kalır; öbür kaynaklar ``also_sources``ta tutulur ki
+    A-HVP kaynak çeşitliliği (`CrossCognateTriangulator`) değişmesin. Ayrı
+    bölge etiketli ağız kayıtları (farklı ``lang_name``) ayrı tanıktır.
+    """
+    kept: dict[tuple[str, str, str], dict[str, Any]] = {}
+    out: list[dict[str, Any]] = []
+    for entry in entries:
+        form = entry.get("comparison") or to_comparison_form(
+            entry.get("latin_transliteration") or entry.get("word") or ""
+        )
+        if entry.get("lang_code") in ("donor", "ai") or not form:
+            out.append(entry)
+            continue
+        key = (str(entry.get("lang_code")), str(entry.get("lang_name")), form)
+        first = kept.get(key)
+        if first is None:
+            kept[key] = entry
+            out.append(entry)
+            continue
+        # Bilgisi zengin kayıt kalır: sözlük indeksi kaydının köken sınıfı
+        # ve verdiği Proto-Türkçe biçim (`lexicon_origin`, `donor_form`)
+        # başlık kökünün kaynağıdır (`_query_source_proto`); atılırsa başlık
+        # değişir (ölçüldü: dağ *tāg -> Starling *dāg).
+        if _witness_richness(entry) > _witness_richness(first):
+            out[out.index(first)] = entry
+            kept[key] = entry
+            first, entry = entry, first
+            first.setdefault("also_sources", []).extend(entry.pop("also_sources", []))
+        if not first.get("meaning") and entry.get("meaning"):
+            first["meaning"] = entry["meaning"]
+        extra = {"source": entry.get("source"), "origin": entry.get("origin")}
+        if entry.get("source") and entry.get("source") != first.get("source") and extra not in first.setdefault("also_sources", []):
+            first["also_sources"].append(extra)
+    return out
+
+
+_RICH_FIELDS = ("lexicon_origin", "donor_form", "etymology", "formation", "asserted_cognate", "source_cognates")
+
+
+def _witness_richness(entry: dict[str, Any]) -> int:
+    return sum(1 for k in _RICH_FIELDS if entry.get(k))
+
+
+def _drop_tautological_meanings(word: str, entries: list[dict[str, Any]]) -> None:
+    """Tanığın anlamı sorgu kelimesinin kendisiyse ("Kemal [Kemal]", Derleme
+    `gaçırmak` "Kaçırmak.", Apertium Tatarca `pıçaq` "bıçak") anlam değil
+    çeviri eşdeğeridir: anlam alanı boşaltılır, ``meaning_same_as_query``
+    işaretlenir (rapor "Türkçe ile aynı" der). Denetim: 10 kelime. Sorgunun
+    kendi dil çizgisinin kaydına dokunulmaz."""
+    own = _tr_fold(word)
+    for entry in entries:
+        # Sorgunun KENDİ dil çizgisinin kaydı (Osmanlıca `kan` "kan") başlık
+        # kökü seçiminde anlamıyla sıralanıyor (`_rank_own_by_meaning`);
+        # boşaltılınca başlık Starling'e kayıyordu (ölçüldü: kan, göl).
+        if entry.get("lang_code") in ("donor", "ai") or _is_own_record(entry, word):
+            continue
+        if own and _tr_fold(entry.get("meaning") or "") == own:
+            entry["meaning"] = ""
+            entry["meaning_same_as_query"] = True
+
+
 PARALLEL_LOAN_LABEL = "paralel alıntı"
 
 
@@ -1174,8 +1254,10 @@ class SearchEngine:
             if CITED_COGNATE_SOURCE not in sources:
                 sources.append(CITED_COGNATE_SOURCE)
 
+        witness_list = _merge_duplicate_witnesses(list(turkic_entries_map.values()))
+        _drop_tautological_meanings(word_clean, witness_list)
         sorted_entries = sorted(
-            list(turkic_entries_map.values()),
+            witness_list,
             key=lambda x: (0 if x["lang_code"] == "otk" else (0.3 if x["lang_code"] == "ai" else (0.5 if x["lang_code"] == "donor" else 1)), x["lang_name"])
         )
 
