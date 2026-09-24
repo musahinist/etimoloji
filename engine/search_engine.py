@@ -532,9 +532,57 @@ def _query_source_proto(word: str, entries: list[dict[str, Any]], primary: str =
         if best - similarity > _SAME_SENSE_MARGIN:
             break  # buradan sonrası başka bir anlamın (eşseslinin) kaydı
         form = re.sub(r"<[^<>]*>", "", str(entry.get("donor_form") or "")).strip()
-        if entry.get("lexicon_origin") == "miras" and entry.get("donor_lang") == "trk-pro" and form:
+        # Harfsiz biçim (`*-`, indeksteki boş şablon) kök değildir: `kavuk`
+        # başlığı "*-" basıyordu.
+        if (entry.get("lexicon_origin") == "miras" and entry.get("donor_lang") == "trk-pro"
+                and re.search(r"\w", form.strip("*-"))):
             return (form if form.startswith("*") else f"*{form}",
                     str(entry.get("lang_name") or entry.get("lang_code")))
+    return "", ""
+
+
+def _infinitive_of(stem: str) -> str:
+    """Çıplak fiil gövdesinin sözlük madde başı (`ayır` -> `ayırmak`)."""
+    vowels = [c for c in stem if c in "aıoueiöü"]
+    return stem + ("mak" if vowels and vowels[-1] in "aıou" else "mek")
+
+
+def _index_source_proto(word: str, primary: str = "") -> tuple[str, str]:
+    """Sorgunun sözlük indeksindeki KENDİ miras kaydının Proto-Türkçe biçimi.
+
+    `_query_source_proto` yalnız fetcher'ların getirdiği kayıtlara bakar;
+    oysa indeks fetcher'ları Türkiye Türkçesi (`tr`) kaydını HİÇ getirmez
+    (tarihî katman ota/otk/chg, çağdaş katman tr hariç). `anız` (*aŋïŕ),
+    `bön`, `sığ` gibi kelimelerin Türkçe kaydı Proto-Türkçe biçimi açıkça
+    verdiği hâlde başlık "kök belirlenemedi" diyordu. Çıplak fiil gövdesi
+    (`ayır`, `sil`, `uyan`) indekste mastarlı madde başıyla (`ayırmak`)
+    durur; gövdenin kendi kaydı yoksa yalnız mastarın FİİL kaydına bakılır.
+
+    Ölçüldü (başlık ölçümü, Starling kapalı, 240 kelime): tam 0,312 -> 0,412;
+    Starling açık üretim ayarı değişmez (bu yedek Starling'den SONRA gelir).
+    """
+    try:
+        from engine.db.lexicon_index import LexiconIndex
+
+        index = LexiconIndex()
+        if not index.exists:
+            return "", ""
+        stem = to_comparison_form(word)
+        for query, verbs_only in ((stem, False), (_infinitive_of(stem), True)):
+            entries = [
+                {"source": "yerel sözlük indeksi", "word": row.get("word") or "",
+                 "comparison": row.get("comparison") or "", "lang_code": row.get("lang_code"),
+                 "lang_name": TURKIC_LANGUAGES_MAP.get(str(row.get("lang_code") or ""), ""),
+                 "meaning": row.get("gloss") or "", "lexicon_origin": row.get("origin"),
+                 "donor_lang": row.get("donor_lang"), "donor_form": row.get("donor_form")}
+                for row in index.lookup(query, languages=["tr", "ota"], limit=20)
+                if not verbs_only or row.get("pos") == "verb"
+            ]
+            form, lang = _query_source_proto(query, entries, primary)
+            if form:
+                return form, lang
+    except Exception:
+        logger.debug("İndeks kaynak kökü okunamadı: %s", word, exc_info=True)
     return "", ""
 
 
@@ -1426,6 +1474,13 @@ class SearchEngine:
         source_label = f"{source_root_lang} sözlük kaydı"
         if not source_root and starling_root:
             source_root, source_label = starling_root, "Starling (Dybo & Starostin 2005)"
+        if not source_root:
+            # Starling'den SONRA: önce yerleştirilince Starling'li ayarda
+            # savelyev dev tam 0,656 -> 0,594 düşüyordu.
+            source_root, index_lang = _index_source_proto(
+                word_clean, primary=(meanings_by_source.get(primary_source) or [""])[0]
+            )
+            source_label = f"{index_lang} sözlük kaydı (yerel indeks)"
         if source_root and _sel_kind != "borrowed" and source_root != proto_root:
             engine_root = proto_root
             proto_root = source_root
