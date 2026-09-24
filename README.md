@@ -1205,9 +1205,7 @@ türetmek.
 | kaikki.org — Rusça sürüme 2026-09-24'te eklenen 8 dil | Kazakça, Tatarca, Azerice, Özbekçe, Kırgızca, Türkmence, Uygurca, Gagavuzca (~54 bin) | ✅ tanık ve arama verisi (anlamca doğrulanır, alt sınır 0,50) |
 | kaikki.org — Eski Uygurca, Eski Anadolu Türkçesi, **Proto-Türkçe** | 446 · 593 · 1.150 madde | ✅ ilk ikisi tanık dili (yayılım paydasına girmez) · Proto-Türkçe sayfaları indekse **girmez**; kök torunları olarak okunur (`LocalProtoTurkicFetcher`) |
 | [Starling](https://starlingdb.org) Türk etimolojisi (`turcet`, Dybo & Starostin 2005, `make starling`) | 2.017 Proto-Türkçe kök · 32 dil alanı · EDT/ЭСТЯ atıfları | ✅ başlık kökü (kaynak biçim yoksa) ve tarihli Eski Türkçe tanık (Orhun 732, DLT 1072) · ⚠️ ölçüldü: örüntü tablosuna ek eğitim verisi olarak **kazanç yok**; Moğolca tablosu verici indeksinde WOLD'u **bozdu**, kullanılmıyor |
-| [Apertium](https://github.com/apertium) iki dilli sözlükleri (`make apertium`) | Türkçe ↔ Çuvaşça, Kırım Tatarcası, Kırgızca, Tatarca, Özbekçe, Azerice, Türkmence | ✅ tanık (`ApertiumFetcher`) · ⚠️ **çeviri karşılığıdır**, akraba değil (pencere ~ терезе): benzerlik ≥ 0,50, Çuvaşça ≥ 0,67 |
-
-**Yerel öncelik (2026-09-24).** Canlı İngilizce Wiktionary, 14 Türk dili Wiktionary'si ve Archive.org varsayılan olarak **kapalı**; aynı veri yukarıdaki yerel dökümlerde. Canlı kalanlar yalnız TDK (3 sözlük), Nişanyan ve EtimolojiTürkçe: bunların cevapları kalıcı yerel önbelleğe (`data/cache/http.db`, 90 gün) yazılır ve erişilemeyen sunucuya devre kesici 5 dakika istek atmaz. Denenip reddedilen: OTC Osmanlıca derlemi (dosya tarihleri güvenilmez: *Seyahatname* 1611 = Evliya Çelebi'nin doğum yılı).
+| [Apertium](https://github.com/apertium) iki dilli sözlükleri (`make apertium`) | Türkçe ↔ Çuvaşça, Kırım Tatarcası, Kırgızca, Tatarca, Özbekçe, Azerice, Türkmence | ✅ tanık (`ApertiumFetcher`) · ⚠️ **çeviri karşılığıdır**, akraba değil (pencere ~ терезе): benzerlik ≥ 0,50, Çuvaşça ≥ 0,66 |
 | kaikki **verici dili** dökümleri — Rusça, Moğolca, Evenkice, Arapça, Farsça, Yunanca, Ermenice, Fransızca, İtalyanca | 1.674.418 madde, ~352 MB | ✅ verici yakınlığı sinyali · ⚠️ Türki arama indeksinden **AYRI** dosyada; karışsalardı Rusça `море` Türki akraba adayı olarak dönerdi |
 | DatSemShift | 10.565 anlam kayması | 🚧 semantik makullük |
 | CLICS⁴ | 3.447 dilde eş-adlandırma | 🚧 semantik makullük |
@@ -1215,6 +1213,8 @@ türetmek.
 | [SIGTYP ST2022](https://github.com/sigtyp/ST2022) (refleks tahmini) · [ST2023](https://github.com/sigtyp/ST2023) (akraba/türev tespiti) | shared task verisi ve metrikleri | 🚧 Türki verisi eklenecek (kaynak katkısı) |
 | TDK Güncel Türkçe Sözlük · Tarama · **Derleme** | çağdaş, tarihî ve **ağız** sözvarlığı | ✅ canlı kaynak · ⚠️ Derleme hedef sözvarlığıdır ama motorun ölçülen katma değeri orada **pratikte sıfırdır** (bkz. «Ağız kelimeleri») |
 | Etymological Wordnet (de Melo, LREC 2014) · [EtymDB-2.0](https://github.com/clefourrier/EtymDB) (Fourrier & Sagot, LREC 2020) | 1,8M sözlükbirim · 2.536 dil | ⚠️ zinciri *saklıyor*, çıkarsamıyor — karşılaştırma noktası |
+
+**Yerel öncelik (2026-09-24).** Canlı İngilizce Wiktionary, 14 Türk dili Wiktionary'si ve Archive.org varsayılan olarak **kapalı**; aynı veri yukarıdaki yerel dökümlerde. Canlı kalanlar yalnız TDK (3 sözlük), Nişanyan ve EtimolojiTürkçe: bunların cevapları kalıcı yerel önbelleğe (`data/cache/http.db`, 90 gün) yazılır ve erişilemeyen sunucuya devre kesici 5 dakika istek atmaz. Denenip reddedilen: OTC Osmanlıca derlemi (dosya tarihleri güvenilmez: *Seyahatname* 1611 = Evliya Çelebi'nin doğum yılı).
 
 ### Standartlar ve kütüphaneler
 
