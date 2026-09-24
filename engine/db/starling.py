@@ -225,14 +225,36 @@ def turkish_lookup() -> dict[str, tuple[StarlingEtymology, ...]]:
     return {k: tuple(v) for k, v in table.items()}
 
 
+#: Anlam alanında fiil anlamı: "to fly", "1 to rise 2 jump up", "fly v.".
+_VERBAL_MEANING = re.compile(r"(?:^|[\d;,]\s*)to\s|\bv\.")
+
+
 def lookup_turkish(word: str) -> tuple[StarlingEtymology, ...]:
-    """Türkçe kelimenin Starling kökleri (``boncuk`` -> *bōnčok)."""
+    """Türkçe kelimenin Starling kökleri (``boncuk`` -> *bōnčok).
+
+    ``-mak/-mek`` ile biten kelimenin HEM ad HEM fiil okuması döner; hangisi
+    kastedildiğini yazılış söyleyemez, anlam söyler (bkz.
+    ``StarlingFetcher``): `kaymak` "krem" ve "kaymak (fiil)", `etmek`
+    "yapmak" ve ağızdaki "ekmek" (*et-mek). Eskiden tam biçim tablodaysa
+    yalnız o dönüyordu (`etmek` -> "bread"), değilse fiil kökü (`kaymak` ->
+    *KAj- "to turn back").
+
+    Kök fiil yazılmamışsa (TRK alanı `kalk` tiresiz) aynı yazılışlı ada
+    bakılır, ama YALNIZ anlamı fiilse. Ölçüldü (indeksteki 81 Türkçe
+    mastarın düştüğü bu yol): çoğu sahteydi — `kızmak` -> "girl",
+    `bağırmak` -> "liver", `ırmak` -> *ɨr "song"; doğrular (`kalkmak` "to
+    rise", `boğmak` "to strangle") fiil anlamlıdır.
+    """
     key = (word or "").strip().lower()
     table = turkish_lookup()
-    if key in table:
-        return table[key]
-    # Mastar: önce fiil kökü ("uçmak" -> "uç-"), yoksa aynı yazılışlı ad.
     stem = re.sub(r"m[ae]k$", "", key)
-    if stem != key:
-        return table.get(f"{stem}-", ()) or table.get(stem, ())
-    return table.get(f"{key}-", ())
+    if stem == key:
+        found = list(table.get(key, ())) or list(table.get(f"{key}-", ()))
+    else:
+        found = [*table.get(key, ()), *table.get(f"{stem}-", ())]
+        if not found:
+            found = [e for e in table.get(stem, ()) if _VERBAL_MEANING.search(e.meaning)]
+    unique: dict[int, StarlingEtymology] = {}
+    for etym in found:
+        unique.setdefault(etym.number, etym)
+    return tuple(unique.values())
