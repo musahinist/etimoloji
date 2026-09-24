@@ -16,6 +16,42 @@ from unittest import mock
 from engine.nlp import borrowing_detector as bd
 
 
+class _Prediction:
+    def __init__(self, form: str, confidence: float = 0.9):
+        self.form = form
+        self.confidence = confidence
+
+
+class TestSoundLawTargetsQueryLanguage(unittest.TestCase):
+    def _detector(self, predict):
+        detector = bd.BorrowingDetector(index=mock.Mock(exists=False), predictor=mock.Mock())
+        detector._inherited_predictor = mock.Mock(predict=predict)
+        return detector
+
+    def test_prediction_target_is_the_query_language(self):
+        calls = []
+
+        def predict(form, source, target):
+            calls.append((source, target))
+            return _Prediction("kar")
+
+        detector = self._detector(predict)
+        witnesses = {"kk": "қар", "tt": "кар", "ky": "кар", "sah": "χaːr"}
+        detector._sound_law_signal("χaːr", witnesses, "sah")
+        self.assertTrue(calls)
+        self.assertTrue(all(target == "sah" for _, target in calls))
+        self.assertNotIn("sah", [source for source, _ in calls])
+
+    def test_language_without_tables_does_not_fire(self):
+        detector = self._detector(lambda form, source, target: _Prediction(form, 0.0))
+        signal, expected = detector._sound_law_signal(
+            "χaːr", {"kk": "қар", "tt": "кар", "ky": "кар"}, "sah"
+        )
+        self.assertFalse(signal.fired)
+        self.assertTrue(signal.evidence.get("no_data"))
+        self.assertEqual(expected, "")
+
+
 class TestProductionPassesSense(unittest.TestCase):
     def test_missing_sense_is_read_from_the_index(self):
         seen = {}

@@ -232,6 +232,12 @@ def _index_attests_loan(word: str) -> bool:
 UNIFORMITY_SUSPICION = 0.85
 
 
+def _language_name(code: str) -> str:
+    from engine.nlp.borrowing_chain import language_name
+
+    return language_name(code)
+
+
 def own_sense(word: str, lang: str) -> str:
     """Kelimenin sözlük indeksindeki KENDİ kaydının anlamı; yoksa boş dizgi.
 
@@ -323,6 +329,8 @@ class BorrowingVerdict:
     trained_probability: float | None = None
     #: Eğitilmiş modelin künyesi (hangi veride, kaç örnekle, hangi hedefle).
     combiner_note: str = ""
+    #: Sorgunun dili — ``expected_if_inherited`` bu dilin beklenen biçimidir.
+    lang: str = "tr"
 
     @property
     def is_trained(self) -> bool:
@@ -387,7 +395,8 @@ class BorrowingVerdict:
                 lines.append(f"  · {signal.explanation}")
         if self.expected_if_inherited:
             lines.append(
-                f"  · miras olsaydı beklenen Türkçe biçim: {self.expected_if_inherited}"
+                f"  · miras olsaydı beklenen {_language_name(self.lang)} biçim: "
+                f"{self.expected_if_inherited}"
             )
         if self.chain:
             lines.append(f"  · zincir: {' ← '.join(self.chain)}")
@@ -629,13 +638,23 @@ class BorrowingDetector:
             {"violations": violations},
         )
 
-    def _sound_law_signal(self, word: str, witnesses: dict[str, str]) -> tuple[Signal, str]:
+    def _sound_law_signal(
+        self, word: str, witnesses: dict[str, str], lang: str = "tr"
+    ) -> tuple[Signal, str]:
         """**Özgün katkı:** miras olsaydı beklenen biçim tutuyor mu?
 
         Miras bir kelime, akraba dillerdeki biçimleriyle **düzenli** ses
         denklikleri gösterir. Öğrenilmiş denklik tablolarıyla her tanıktan
-        Türkçe biçim tahmin edilir; tahminler gerçek biçme uymuyorsa kelime
-        ses kanunlarının işlediği dönemde dilde yoktu demektir.
+        ``lang`` dilindeki biçim tahmin edilir; tahminler gerçek biçme
+        uymuyorsa kelime ses kanunlarının işlediği dönemde dilde yoktu demektir.
+
+        ⚠️ **Hedef, sorgunun KENDİ dilidir.** Eskiden hedef sabit ``"tr"``di:
+        Saha kelimesi için akrabalardan beklenen TÜRKÇE refleks Saha biçimiyle
+        kıyaslanıyordu (``küöl`` ~ beklenen ``göl``) ve sinyal Saha'da
+        yapısal olarak anlamsızdı — WOLD birleştiricisi ona −0,27 katsayı
+        veriyordu (ayar yarısı analizinde −0,38). ``(kaynak, lang)`` denklik
+        tablosu olmayan tanık tahmin üretmez (güven 0); dilin hiç tablosu
+        yoksa sinyal "tahmin üretmedi" ile kapanır.
 
         ⚠️ **Beklenti MİRAS tablosundan okunur** (bkz.
         ``cognate_prediction.INHERITED_CORRESPONDENCE_PATH``). Ana tablo
@@ -653,9 +672,9 @@ class BorrowingDetector:
 
         expectations: list[str] = []
         for source_lang, source_form in sorted(witnesses.items()):
-            if source_lang == "tr":
+            if source_lang == lang:
                 continue
-            prediction = self.inherited_predictor.predict(source_form, source_lang, "tr")
+            prediction = self.inherited_predictor.predict(source_form, source_lang, lang)
             if prediction.form and prediction.confidence > 0:
                 expectations.append(prediction.form)
         if not expectations:
@@ -686,12 +705,17 @@ class BorrowingDetector:
                 fired,
                 1.0 - agreement,
                 (
-                    f"akraba biçimlerden beklenen Türkçe refleks {expected!r}, "
+                    f"akraba biçimlerden beklenen {_language_name(lang)} refleks {expected!r}, "
                     f"gerçek biçim {actual!r} — ses kanunları işlememiş"
                     if fired
                     else f"beklenen refleks tutuyor (uyum {agreement:.2f})"
                 ),
-                {"expected": expected, "actual": actual, "agreement": round(agreement, 3)},
+                {
+                    "expected": expected,
+                    "actual": actual,
+                    "agreement": round(agreement, 3),
+                    "target_lang": lang,
+                },
             ),
             expected if fired else "",
         )
@@ -846,7 +870,7 @@ class BorrowingDetector:
 
         chain_signal, chain, donor = self._chain_signal(word, lang)
         phonotactic = self._phonotactic_signal(word)
-        sound_law, expected = self._sound_law_signal(word, witnesses)
+        sound_law, expected = self._sound_law_signal(word, witnesses, lang)
         uniformity = self._uniformity_signal(witnesses)
         donor_proximity = self._donor_signal(word, sense, donors)
         phonotactic_model = self._phonotactic_model_signal(word, lang)
@@ -869,6 +893,7 @@ class BorrowingDetector:
             expected_if_inherited=expected,
             chain=chain,
             donor_language=donor,
+            lang=lang,
         )
 
         combiner = self.combiner
