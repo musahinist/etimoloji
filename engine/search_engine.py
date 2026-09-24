@@ -239,6 +239,8 @@ HOMONYM_SIMILARITY_FLOOR = 0.30
 #: "tuz", `gerek` ~ кӗрӗк "kürk", `kırkmak` ~ кырк "kırk"), üstünde ~%4
 #: (`çığlık` ~ çığ). Bedel: 225 adaydan 73'ü kalır; `deniz`in 0,46-0,49'daki
 #: doğru Karayca/Kırım Tatarca biçimleri de elenir.
+#: Bağımsız doğrulama (100 YENİ kelime, rastgele 50 tanık elle): 48 doğru,
+#: 1 sahte (Rusça yönlendirme anlamı, artık süzülüyor), 1 sınırda.
 LOCAL_WITNESS_FLOOR = 0.50
 
 #: Yerel çağdaş dil adayı, en iyi eşleşen adayın bu kadar altındaysa elenir

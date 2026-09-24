@@ -210,8 +210,10 @@ class ModernIndexFetcher(HistoricalIndexFetcher):
             gloss = str(entry.get("meaning") or "")
             # Özel ad (Kazakça `Дәнеш` "a male given name" `deniz`e 0,42 ile
             # geçiyordu) ve yönlendirme ("Arabic spelling of …") tanık değildir.
+            # Rusça yönlendirme de öyle: "Форма глагола аярга" (`aya` ~ ая
+            # "acımak" 100 kelimelik doğrulamadaki tek sahte tanıktı).
             if str(entry.get("word") or "")[:1].isupper() or re.search(
-                r"given name|surname|\b(?:form|spelling) of\b", gloss, re.IGNORECASE
+                r"given name|surname|\b(?:form|spelling) of\b|\bформа\b|^см\.", gloss, re.IGNORECASE
             ):
                 continue
             entry["meaning_check"] = True

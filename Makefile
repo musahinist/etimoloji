@@ -1,5 +1,5 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-llm eval-prediction starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify semantic dialect
+        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-cv eval-llm eval-prediction starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify semantic dialect
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -35,6 +35,7 @@ help:
 	@echo "predict-lock   - Öngörü üret ve kilitle (NAME=... gerekli)"
 	@echo "predict-verify - Kilitli öngörüleri doğrula (NAME=... gerekli)"
 	@echo "eval-controls  - Negatif kontrol bataryası (sahte kök, alıntı tuzağı)"
+	@echo "eval-cv        - Rekonstrüksiyon 5 katlı çapraz doğrulama (train+dev, n≈320)"
 	@echo "eval-llm       - Yalnız-LLM alıntı taban çizgisi (PROVIDER=ollama|claude)"
 	@echo "starling       - Starling Türk/Moğol etimoloji tablolarını indir (Dybo & Starostin 2005)"
 	@echo "calibrate      - Güven kalibratörünü TRAIN bölümünde eğit"
@@ -82,6 +83,10 @@ eval-baseline: gold patterns
 
 eval: gold
 	.venv/bin/python -m engine.evaluation.harness --split dev
+
+# Rekonstrüksiyon: train+dev üzerinde 5 katlı çapraz doğrulama (n≈320).
+eval-cv: gold
+	.venv/bin/python -m engine.evaluation.crossval
 
 expert-review:
 	.venv/bin/python -m engine.evaluation.expert_review
