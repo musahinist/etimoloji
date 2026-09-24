@@ -748,14 +748,24 @@ class SearchEngine:
             return []
         own = to_comparison_form(word)
         found: list[tuple[str, str]] = []
-        for item in [m for m in mentions.get("items", []) if m.get("lang_code") == "tr"][:limit]:
+        items = [m for m in mentions.get("items", []) if m.get("lang_code") == "tr"][:limit]
+        # Canlı istekler paralel atılır (soğuk süreçte sıralı 4 istek ~6,5 s
+        # sürüyordu); sonuçlar yine madde sırasıyla işlenir.
+        with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, 2 * len(items))) as pool:
+            pending = [
+                (item,
+                 pool.submit(tdk.fetch, item["word"]) if tdk else None,
+                 pool.submit(nisanyan.fetch, item["word"]) if nisanyan else None)
+                for item in items
+            ]
+        for item, tdk_future, nisanyan_future in pending:
             live: dict[str, str] = {}
-            if tdk:
-                t = tdk.fetch(item["word"])
+            if tdk_future is not None:
+                t = tdk_future.result()
                 if t["root"].get("meaning"):
                     live[tdk.source_name] = t["root"]["meaning"]
-            if nisanyan:
-                n = nisanyan.fetch(item["word"])
+            if nisanyan_future is not None:
+                n = nisanyan_future.result()
                 note = n["root"].get("reconstruction_notes") or ""
                 if note:
                     live[nisanyan.source_name] = note
@@ -815,6 +825,12 @@ class SearchEngine:
                 logger.info("Önbellekten döndürüldü: %r", word_clean)
                 return cached
         _lap("cache_lookup")
+        if self.uses_lexicon_index:
+            # Anlam süzgeçlerinin modeli ağ beklenirken yüklensin (bkz.
+            # `prewarm_sentence_transformer`); sonucu değiştirmez.
+            from engine.nlp.diachronic_semantic_engine import prewarm_sentence_transformer
+
+            prewarm_sentence_transformer()
 
         proto_root = ""
         # Kökün NEREDEN geldiği: sözlükten alıntılanan bilgi ile motorun kendi

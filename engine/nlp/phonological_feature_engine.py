@@ -20,6 +20,7 @@ dürüst bir yedek moda düşer ve bunu ``backend`` alanında bildirir.
 """
 from __future__ import annotations
 
+import threading
 from functools import lru_cache
 from typing import Any
 
@@ -49,13 +50,24 @@ _FEATURE_TABLE = None
 _DISTANCE = None
 _EPITRAN = None
 _BACKEND: str | None = None
+#: Fetcher iş parçacıkları `to_ipa`'yı aynı anda çağırıyor; kilit yokken her biri
+#: `_BACKEND`'i boş görüp PanPhon tablosunu ayrı ayrı kuruyordu (ölçüldü: soğuk
+#: aramada 5 kez, ~4,4 s CPU).
+_BACKEND_LOCK = threading.Lock()
 
 
 def _load_backend() -> str:
     """PanPhon/Epitran yüklemeyi dener; kullanılan arka ucu döndürür."""
-    global _FEATURE_TABLE, _DISTANCE, _EPITRAN, _BACKEND
     if _BACKEND is not None:
         return _BACKEND
+    with _BACKEND_LOCK:
+        if _BACKEND is not None:
+            return _BACKEND
+        return _load_backend_locked()
+
+
+def _load_backend_locked() -> str:
+    global _FEATURE_TABLE, _DISTANCE, _EPITRAN, _BACKEND
 
     try:
         import panphon
@@ -63,7 +75,6 @@ def _load_backend() -> str:
 
         _FEATURE_TABLE = panphon.FeatureTable()
         _DISTANCE = panphon.distance.Distance()
-        _BACKEND = "panphon"
         logger.info("PanPhon yüklendi: %d IPA segmenti", len(_FEATURE_TABLE.segments))
     except Exception:
         logger.info(
@@ -81,6 +92,11 @@ def _load_backend() -> str:
     except Exception:
         logger.info("epitran kurulu değil; IPA çevirisi yedek tabloyla yapılacak")
         _EPITRAN = None
+    # EN SON atanır: kilitsiz hızlı yol `_BACKEND`'i dolu görünce Epitran'ın
+    # da hazır olduğunu varsayar. Eskiden `_BACKEND` Epitran'dan ÖNCE
+    # atanıyordu; o arada `to_ipa` çağıran iş parçacığı yedek tabloya düşüp
+    # sonucu `lru_cache`'e yazıyordu (aynı kelime koşudan koşuya farklı IPA).
+    _BACKEND = "panphon"
     return _BACKEND
 
 

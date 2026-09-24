@@ -23,6 +23,7 @@ from __future__ import annotations
 import hashlib
 import math
 import re
+import threading
 from collections import Counter
 from typing import Any
 
@@ -32,6 +33,9 @@ logger = get_logger(__name__)
 
 _ST_MODEL = None
 _ST_TRIED = False
+#: Yükleme tek sefer ve tek iş parçacığında yapılır. Kilit yokken ikinci bir
+#: çağıran `_ST_TRIED` bayrağını görüp model yüklenirken `None` alabiliyordu.
+_ST_LOCK = threading.Lock()
 #: ⚠️ Eskiden burada `paraphrase-multilingual-MiniLM-L6-v2` yazıyordu ve
 #: BÖYLE BİR MODEL YOK: HuggingFace 401/RepositoryNotFound döndürüyor, yükleme
 #: sessizce başarısız oluyor ve semantik aşama paket KURULU OLSA BİLE
@@ -43,10 +47,37 @@ _ST_MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 
 def get_sentence_transformer():
     """Modeli tembel (lazy) yükler. Import anında ağ/disk erişimi yapılmaz."""
-    global _ST_MODEL, _ST_TRIED
+    global _ST_TRIED
     if _ST_TRIED:
         return _ST_MODEL
-    _ST_TRIED = True
+    with _ST_LOCK:
+        if not _ST_TRIED:
+            try:
+                _load_sentence_transformer()
+            finally:
+                # Yükleme BİTTİKTEN sonra: kilitsiz hızlı yol bayrağı görünce
+                # modelin hazır olduğunu varsayar.
+                _ST_TRIED = True
+        return _ST_MODEL
+
+
+def prewarm_sentence_transformer() -> None:
+    """Modeli arka planda yüklemeye başlar (sonucu değiştirmez, yalnız süreyi).
+
+    Soğuk süreçte ``sentence_transformers`` içe aktarımı + ağırlıklar
+    ~6–15 s sürüyor ve ilk anlam süzgecinde (``witness_filter``) bekleniyordu.
+    Arama başında çağrılırsa bu süre ağ ağırlıklı ``fetch`` aşamasıyla örtüşür;
+    sonraki ``get_sentence_transformer`` çağrısı kilitte yüklemenin bitmesini
+    bekler ve AYNI modeli alır.
+    """
+    if _ST_TRIED:
+        return
+    threading.Thread(target=get_sentence_transformer, name="st-prewarm", daemon=True).start()
+
+
+def _load_sentence_transformer():
+    """``_ST_LOCK`` altında çağrılır; sonucu ``_ST_MODEL``e yazar."""
+    global _ST_MODEL
     try:
         from sentence_transformers import SentenceTransformer
     except ImportError:
