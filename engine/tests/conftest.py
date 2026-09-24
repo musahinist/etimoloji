@@ -22,6 +22,12 @@ HTTP_FIXTURE_DIR = FIXTURE_DIR / "http"
 
 
 @pytest.fixture(autouse=True)
+def _no_persistent_http_cache(monkeypatch):
+    """Diskteki gerçek yanıt önbelleği sahte ağ cevaplarını gölgelemesin."""
+    monkeypatch.setattr(network, "_persistent_enabled", False)
+
+
+@pytest.fixture(autouse=True)
 def _isolate_network(monkeypatch):
     """
     Testlerin YANLIŞLIKLA canlı ağa çıkmasını engeller.

@@ -75,6 +75,12 @@ HTTP_BACKOFF_BASE = _env_float("HTTP_BACKOFF_BASE", 0.3)
 # 60 kelimelik tarama 10 dakikada yalnız 4 kelime ilerledi.
 CIRCUIT_FAILURES = _env_int("CIRCUIT_FAILURES", 3)
 CIRCUIT_COOLDOWN = _env_float("CIRCUIT_COOLDOWN", 300.0)
+# Kalıcı yanıt önbelleği: toplu dökümü olmayan canlı sözlüklerin (TDK,
+# Nişanyan, EtimolojiTürkçe) başarılı cevapları diske yazılır; bir kez sorulan
+# kelime bir daha ağa çıkmaz ve ölçümler tekrarlanabilir olur.
+HTTP_CACHE = _env_bool("HTTP_CACHE", True)
+HTTP_CACHE_TTL_DAYS = _env_float("HTTP_CACHE_TTL_DAYS", 90.0)
+HTTP_CACHE_PATH = PROJECT_ROOT / "data" / "cache" / "http.db"
 USER_AGENT = _env_str(
     "USER_AGENT",
     "TurkicEtymologyEngine/3.0 (academic research; +https://github.com/)",

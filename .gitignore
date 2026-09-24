@@ -106,3 +106,6 @@ data/lexicons/ru_edition/ky.jsonl.gz
 data/lexicons/ru_edition/tk.jsonl.gz
 data/lexicons/ru_edition/ug.jsonl.gz
 data/lexicons/ru_edition/gag.jsonl.gz
+
+# Kalıcı HTTP yanıt önbelleği (TDK, Nişanyan, EtimolojiTürkçe)
+data/cache/

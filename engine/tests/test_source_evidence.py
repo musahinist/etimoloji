@@ -179,3 +179,28 @@ class TestProtoTurkicLocal(unittest.TestCase):
         self.assertTrue(_is_borrowed({"raw_tags": ["borrowed", "uncertain"]}))
         self.assertTrue(_is_borrowed({"raw_tags": ["reshaped by analogy or addition of morphemes"]}))
         self.assertFalse(_is_borrowed({"raw_tags": ["inherited"]}))
+
+
+class TestPersistentHttpCache(unittest.TestCase):
+    def test_dictionary_response_is_served_from_disk(self):
+        import tempfile
+        from pathlib import Path
+        from unittest import mock
+
+        from engine.utils import network
+
+        with tempfile.TemporaryDirectory() as tmp:
+            session = mock.Mock()
+            session.get.return_value = mock.Mock(status_code=200, text="gövde", content=b"g", encoding="utf-8",
+                                                 headers={}, apparent_encoding="utf-8")
+            with mock.patch.object(network, "HTTP_CACHE_PATH", Path(tmp) / "http.db"), \
+                 mock.patch.object(network, "_persistent_enabled", True), \
+                 mock.patch.object(network, "_decode_body", return_value="gövde"), \
+                 mock.patch.object(network, "get_session", return_value=session):
+                self.assertEqual(network.fetch("https://sozluk.gov.tr/gts?ara=su"), "gövde")
+                self.assertEqual(network.fetch("https://sozluk.gov.tr/gts?ara=su"), "gövde")
+                self.assertEqual(session.get.call_count, 1, "ikinci istek diskten gelmeli")
+                # Listede olmayan sunucu önbelleğe alınmaz.
+                network.fetch("https://example.org/x")
+                network.fetch("https://example.org/x")
+                self.assertEqual(session.get.call_count, 3)

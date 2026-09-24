@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import ipaddress
 import socket
+import sqlite3
 import threading
 import time
 from dataclasses import dataclass, field
@@ -29,6 +30,9 @@ from engine.config import (
     CIRCUIT_COOLDOWN,
     CIRCUIT_FAILURES,
     HTTP_BACKOFF_BASE,
+    HTTP_CACHE,
+    HTTP_CACHE_PATH,
+    HTTP_CACHE_TTL_DAYS,
     HTTP_MAX_RETRIES,
     HTTP_TIMEOUT_MEDIUM,
     TRUSTED_DOMAINS,
@@ -117,6 +121,55 @@ def reset_session() -> None:
         _session.close()
     _session = None
     reset_circuits()
+
+
+# --- Kalıcı yanıt önbelleği ---------------------------------------------------
+#: Toplu dökümü olmayan canlı sözlükler. Başka hiçbir sunucu önbelleğe alınmaz.
+PERSISTENT_CACHE_HOSTS = frozenset({
+    "sozluk.gov.tr", "www.nisanyansozluk.com", "nisanyansozluk.com",
+    "www.etimolojiturkce.com", "etimolojiturkce.com",
+})
+#: Testler bunu kapatır (bkz. ``engine/tests/conftest.py``).
+_persistent_enabled = HTTP_CACHE
+_cache_lock = threading.Lock()
+
+
+def _cache_key(url: str, params: dict[str, Any] | None) -> str:
+    if not params:
+        return url
+    return url + "?" + "&".join(f"{k}={params[k]}" for k in sorted(params))
+
+
+def _cache_connect() -> sqlite3.Connection:
+    HTTP_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    connection = sqlite3.connect(HTTP_CACHE_PATH, timeout=10)
+    connection.execute(
+        "CREATE TABLE IF NOT EXISTS responses (key TEXT PRIMARY KEY, body TEXT NOT NULL, fetched_at REAL NOT NULL)"
+    )
+    return connection
+
+
+def _cache_get(key: str) -> str | None:
+    try:
+        with _cache_lock, _cache_connect() as connection:
+            row = connection.execute("SELECT body, fetched_at FROM responses WHERE key = ?", (key,)).fetchone()
+    except sqlite3.Error:
+        logger.debug("Yanıt önbelleği okunamadı", exc_info=True)
+        return None
+    if not row or time.time() - row[1] > HTTP_CACHE_TTL_DAYS * 86400:
+        return None
+    return row[0]
+
+
+def _cache_put(key: str, body: str) -> None:
+    try:
+        with _cache_lock, _cache_connect() as connection:
+            connection.execute(
+                "INSERT OR REPLACE INTO responses (key, body, fetched_at) VALUES (?, ?, ?)",
+                (key, body, time.time()),
+            )
+    except sqlite3.Error:
+        logger.debug("Yanıt önbelleğine yazılamadı", exc_info=True)
 
 
 # --- Devre kesici ----------------------------------------------------------
@@ -243,6 +296,13 @@ def fetch(
         return None
 
     host = urlparse(url).hostname or ""
+    cache_key = _cache_key(url, params) if _persistent_enabled and host in PERSISTENT_CACHE_HOSTS else ""
+    if cache_key:
+        cached = _cache_get(cache_key)
+        if cached is not None:
+            if diagnostics is not None:
+                diagnostics.add(RequestRecord(url=url, status="ok", duration_ms=0, http_status=200, error="kalıcı önbellek"))
+            return cached
     if _circuit_open(host):
         logger.debug("Devre açık, istek atlanıyor: %s", url)
         if diagnostics is not None:
@@ -263,7 +323,10 @@ def fetch(
                 elapsed = int((time.perf_counter() - started) * 1000)
                 if diagnostics is not None:
                     diagnostics.add(RequestRecord(url=url, status="ok", duration_ms=elapsed, http_status=200))
-                return _decode_body(resp)
+                body = _decode_body(resp)
+                if cache_key:
+                    _cache_put(cache_key, body)
+                return body
             last_error = f"HTTP {resp.status_code}"
             # ⚠️ 429 "yavaşla" demektir; körlemesine yeniden denemek yükü
             # ARTIRIR. Eskiden 429 geçici hata sayılıp 0,3s ve 0,6s arayla iki
