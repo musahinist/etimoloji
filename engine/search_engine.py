@@ -28,6 +28,7 @@ from engine.fetchers.tietze_altaica import TietzeAltaicaFetcher
 from engine.fetchers.turkic_national_dictionaries import TurkicNationalDictionariesFetcher
 from engine.fetchers.wiktextract_local import WiktextractFetcher
 from engine.fetchers.wiktionary import WiktionaryFetcher
+from engine.fetchers.wilkens_old_uyghur import WilkensOldUyghurFetcher
 from engine.llm.qwen_agent import QwenEtymologyAgent
 from engine.logging_setup import get_logger
 from engine.nlp.cldf_lingpy_aligner import CldfLingPyAligner
@@ -702,6 +703,10 @@ def default_fetchers() -> list[BaseFetcher]:
     return [
         AcademicTurkologyFetcher(),
         HistoricalIndexFetcher(),
+        # Eski Uygurca (Wilkens 2021, yerel): Türkçe anlam + biçim eşleşmesi;
+        # tanık "9.-14. yy" dönemiyle (1350) tarihlenir. Starling'siz kronoloji
+        # kapsamı 0,06 -> 0,455 (bkz. fetchers/wilkens_old_uyghur.py).
+        WilkensOldUyghurFetcher(),
         ModernIndexFetcher(),
         NorthEuraLexFetcher(),
         ApertiumFetcher(),

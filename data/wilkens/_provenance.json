@@ -1,0 +1,28 @@
+{
+  "_schema": "turkic-etymology-wilkens-provenance/v1",
+  "retrieved_at": "2026-09-24T17:57:57+00:00",
+  "citation": "Jens Wilkens, Handwörterbuch des Altuigurischen. Altuigurisch – Deutsch – Türkisch. Göttingen: Universitätsverlag Göttingen 2021.",
+  "doi": "https://doi.org/10.17875/gup2021-1590",
+  "landing_page": "https://univerlag.uni-goettingen.de/handle/3/isbn-978-3-86395-481-9",
+  "url": "https://univerlag.uni-goettingen.de/bitstream/handle/3/isbn-978-3-86395-481-9/Wilkens_handwoerterbuch.pdf?sequence=4&isAllowed=y",
+  "license": "CC BY-SA 4.0",
+  "note": "Sözlük tanık yeri (metin/yıl) vermez; tanık dönem etiketiyle (9.-14. yy) tarihlenir. JSONL, engine/db/wilkens.py ayrıştırıcısının çıktısıdır.",
+  "counts": {
+    "headwords": 29891,
+    "usable_with_turkish_gloss": 19401,
+    "errors_dagger": 6795,
+    "cross_references": 3667,
+    "with_donor_chain": 5307,
+    "subentries": 19728
+  },
+  "files": {
+    "Wilkens_handwoerterbuch.pdf": {
+      "bytes": 10894386,
+      "sha256": "4f61ac8db2a7cd5a60f3b454b0524b1c598de6e6e9681008576f84087e383c94"
+    },
+    "wilkens_oui.jsonl": {
+      "bytes": 8445901,
+      "sha256": "fb2e5ac7d18b8a5b3e70cdbb9bbb528a1c7fbc6174a68d25a6514a3301f8b41e"
+    }
+  }
+}

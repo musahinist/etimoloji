@@ -116,6 +116,11 @@ data/apertium/*.dix
 # Hakasça sözlükler (`make khakas`); künye commit edilir.
 data/khakas/*.jsonl
 
+# Wilkens 2021 Eski Uygurca sözlüğü (`make wilkens`): PDF ve ayrıştırılmış
+# JSONL repoya alınmaz; künye (SHA-256) commit edilir.
+data/wilkens/*.pdf
+data/wilkens/*.jsonl
+
 # Zemberek kök sözlüğü (`scripts/download_zemberek_lexicon.py`, Apache-2.0):
 # .dict dosyaları repoya alınmaz; künye (SHA-256) commit edilir.
 data/zemberek/*.dict

@@ -1,5 +1,5 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-cv audit eval-llm eval-prediction eval-headline eval-donor eval-chronology starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify apertium semantic dialect bootstrap column-model
+        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-cv audit eval-llm eval-prediction eval-headline eval-donor eval-chronology starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify apertium wilkens semantic dialect bootstrap column-model
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -44,6 +44,7 @@ help:
 	@echo "eval-chronology - A-HVP 2. aşama yılı × Starling tarihli kaynak etiketleri"
 	@echo "apertium       - Apertium iki dilli Türk dili sözlüklerini indir"
 	@echo "khakas         - Hakasça–Rusça ve açıklamalı sözlüğü indir (HF, CC-BY-4.0; portföyde değil)"
+	@echo "wilkens        - Wilkens 2021 Eski Uygurca sözlüğünü indir ve ayrıştır (CC BY-SA 4.0; .[pdf] gerekir)"
 	@echo "starling       - Starling Türk/Moğol etimoloji tablolarını indir (Dybo & Starostin 2005)"
 	@echo "calibrate      - Güven kalibratörünü TRAIN bölümünde eğit"
 	@echo "bootstrap      - Taze klonda tüm veriyi indir ve kur (data+lexicons+tr+index+donors+starling+apertium+gold+patterns)"
@@ -140,6 +141,9 @@ apertium:
 
 khakas:
 	.venv/bin/python scripts/download_khakas.py
+
+wilkens:
+	.venv/bin/python scripts/download_wilkens.py
 
 lexicon-index: lexicons
 	.venv/bin/python -m engine.db.lexicon_index --build
