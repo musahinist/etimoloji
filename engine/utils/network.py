@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import ipaddress
 import json
+import re
 import socket
 import sqlite3
 import threading
@@ -200,6 +201,53 @@ def _cache_key(url: str, params: dict[str, Any] | None) -> str:
     return url + "?" + "&".join(f"{k}={params[k]}" for k in sorted(params))
 
 
+#: Cloudflare doğrulama ve bakım sayfası işaretleri: bunlar da HTTP 200 ile
+#: gelebilir ve önbelleğe girerse 90 gün boyunca kelimenin sayfası diye geri
+#: verilir. ⚠️ ``challenge-platform`` tek başına işaret DEĞİLDİR: Cloudflare
+#: her Nişanyan sayfasına o yoldan bir betik ekliyor (ölçüldü: önbellekteki
+#: 905 Nişanyan sayfasının 905'inde var).
+_INTERSTITIAL = re.compile(
+    r"<title>\s*(?:just a moment|attention required|access denied|please wait"
+    r"|checking your browser|[^<]*(?:bakım|maintenance|service unavailable|under construction))"
+    r"|_cf_chl_opt|cf-browser-verification|id=[\"']challenge-form",
+    re.IGNORECASE,
+)
+
+#: Sunucunun GERÇEK sayfasında bulunan işaretler (hepsi gerekir). Ölçüldü:
+#: önbellekteki Nişanyan (905) ve EtimolojiTürkçe (113) sayfalarının hepsinde.
+_EXPECTED_MARKERS: dict[str, tuple[str, ...]] = {
+    "www.nisanyansozluk.com": ("Nişanyan", "</html>"),
+    "nisanyansozluk.com": ("Nişanyan", "</html>"),
+    "www.etimolojiturkce.com": ("<h1>", "</html>"),
+    "etimolojiturkce.com": ("<h1>", "</html>"),
+    "islamansiklopedisi.org.tr": ("</html>",),
+}
+
+#: JSON dönmesi gereken uçlar (sunucu, yol öneki).
+_JSON_ENDPOINTS: tuple[tuple[str, str], ...] = (("sozluk.gov.tr", "/gts"),)
+
+
+def _cacheable(url: str, body: str) -> bool:
+    """Gövde kalıcı önbelleğe yazılmaya (ve oradan okunmaya) uygun mu?
+
+    Yalnız 200 yetmez: bakım sayfası, Cloudflare doğrulaması ya da yarım
+    gövde de 200 ile gelebilir. Sunucuya göre beklenen biçim denetlenir.
+    """
+    if not body or not body.strip():
+        return False
+    parsed = urlparse(url)
+    host, path = (parsed.hostname or "").lower(), parsed.path or "/"
+    if any(host == h and path.startswith(prefix) for h, prefix in _JSON_ENDPOINTS):
+        try:
+            json.loads(body)
+        except ValueError:
+            return False
+        return True
+    if _INTERSTITIAL.search(body[:20000]):
+        return False
+    return all(marker in body for marker in _EXPECTED_MARKERS.get(host, ()))
+
+
 def _cache_connect() -> sqlite3.Connection:
     HTTP_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
     connection = sqlite3.connect(HTTP_CACHE_PATH, timeout=10)
@@ -217,6 +265,9 @@ def _cache_get(key: str) -> str | None:
         logger.debug("Yanıt önbelleği okunamadı", exc_info=True)
         return None
     if not row or time.time() - row[1] > HTTP_CACHE_TTL_DAYS * 86400:
+        return None
+    # Denetimden önce yazılmış geçersiz gövde (bakım/doğrulama sayfası) okunmaz.
+    if not _cacheable(key, row[0]):
         return None
     return row[0]
 
@@ -424,7 +475,7 @@ def fetch(
                 if diagnostics is not None:
                     diagnostics.add(RequestRecord(url=url, status="ok", duration_ms=elapsed, http_status=200))
                 body = _decode_body(resp)
-                if cache_key:
+                if cache_key and _cacheable(url, body):
                     _cache_put(cache_key, body)
                 return body
             last_error = f"HTTP {resp.status_code}"

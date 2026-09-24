@@ -191,14 +191,15 @@ class TestPersistentHttpCache(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tmp:
             session = mock.Mock()
-            session.get.return_value = mock.Mock(status_code=200, text="gövde", content=b"g", encoding="utf-8",
+            body = '[{"madde": "su"}]'  # /gts JSON döner; geçersiz gövde önbelleğe girmez
+            session.get.return_value = mock.Mock(status_code=200, text=body, content=b"g", encoding="utf-8",
                                                  headers={}, apparent_encoding="utf-8")
             with mock.patch.object(network, "HTTP_CACHE_PATH", Path(tmp) / "http.db"), \
                  mock.patch.object(network, "_persistent_enabled", True), \
-                 mock.patch.object(network, "_decode_body", return_value="gövde"), \
+                 mock.patch.object(network, "_decode_body", return_value=body), \
                  mock.patch.object(network, "get_session", return_value=session):
-                self.assertEqual(network.fetch("https://sozluk.gov.tr/gts?ara=su"), "gövde")
-                self.assertEqual(network.fetch("https://sozluk.gov.tr/gts?ara=su"), "gövde")
+                self.assertEqual(network.fetch("https://sozluk.gov.tr/gts?ara=su"), body)
+                self.assertEqual(network.fetch("https://sozluk.gov.tr/gts?ara=su"), body)
                 self.assertEqual(session.get.call_count, 1, "ikinci istek diskten gelmeli")
                 # Listede olmayan sunucu önbelleğe alınmaz.
                 network.fetch("https://example.org/x")
