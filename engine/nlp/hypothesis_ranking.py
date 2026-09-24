@@ -148,6 +148,31 @@ class RankedHypotheses:
         }
 
 
+#: `borrowing_detector._donor_signal` adı ve "karşılık yok" açıklaması.
+DONOR_PROXIMITY_SIGNAL = "verici_yakınlığı"
+DONOR_PROXIMITY_MISS = "verici sözlüğünde yakın karşılık yok"
+
+
+def _attested_donor_form(chain: list[str] | None) -> str:
+    """Zincirde tanıklı verici biçim varsa onu ("Arapça عَسْكَر") döndürür."""
+    return str(chain[-1]) if chain and len(chain) >= 2 else ""
+
+
+def _donor_proximity_moot(attested: str) -> str:
+    """Verici yakınlığı ıskası, tanıklı verici biçim varken karşı kanıt DEĞİLDİR.
+
+    ⚠️ Yakınlık ölçütü verici sözlüğünde AYNI ANLAMLI ve fonetik olarak yakın
+    bir madde arar; doğrudan verici biçmi sınamaz. Tanıklı verici biçim
+    (akü ← Fransızca accumulateur) dururken "verici sözlüğünde yakın karşılık
+    yok" demek aynı raporda kendi köken zinciriyle çelişiyordu (denetim: 105
+    kelimeden 42'si).
+    """
+    return (
+        f"verici sözlüğü yakınlık araması eşleşme bulmadı; tanıklı verici biçim "
+        f"({attested}) bu ölçütle sınanmadı"
+    )
+
+
 class HypothesisRanker:
     """Rakip kökenleri kurar, puanlar ve reddedilenleri gerekçelendirir."""
 
@@ -219,10 +244,16 @@ class HypothesisRanker:
 
         donor = language_name(borrowing.donor_language) if borrowing.donor_language else "?"
         supporting = [s.explanation for s in borrowing.signals if s.fired]
+        attested_donor = _attested_donor_form(borrowing.chain)
         against = [s.explanation for s in borrowing.signals
-                   if not s.fired and not s.evidence.get("no_data")]
+                   if not s.fired and not s.evidence.get("no_data")
+                   and not (attested_donor and s.name == DONOR_PROXIMITY_SIGNAL)]
         not_evaluated = [s.explanation for s in borrowing.signals
                          if not s.fired and s.evidence.get("no_data")]
+        if attested_donor and any(
+            s.name == DONOR_PROXIMITY_SIGNAL and not s.fired for s in borrowing.signals
+        ):
+            not_evaluated.append(_donor_proximity_moot(attested_donor))
         return Hypothesis(
             kind="borrowed",
             claim=f"ALINTI — {donor}" if borrowing.donor_language else "ALINTI",
@@ -257,8 +288,15 @@ class HypothesisRanker:
             claim=f"ALINTI — {donor_name}",
             score=round(min(1.0, borrowing.score + SIGNAL_WEIGHTS["zincir_kanıtı"]), 3),
             supporting=[evidence, *hypothesis.supporting],
-            against=[a for a in hypothesis.against if "alıntı kaydı yok" not in a],
-            not_evaluated=hypothesis.not_evaluated,
+            against=[
+                a for a in hypothesis.against
+                if "alıntı kaydı yok" not in a and a != DONOR_PROXIMITY_MISS
+            ],
+            not_evaluated=[
+                *hypothesis.not_evaluated,
+                *([_donor_proximity_moot(f"{donor_name} {step.get('word')}")]
+                  if DONOR_PROXIMITY_MISS in hypothesis.against else []),
+            ],
             detail={
                 **hypothesis.detail,
                 "chain": [f"Türkçe {borrowing.word}", f"{donor_name} {step.get('word')}"],

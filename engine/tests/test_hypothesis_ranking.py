@@ -132,3 +132,48 @@ class TestRankerEndToEnd(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestDonorProximityWithAttestedDonor(unittest.TestCase):
+    """Tanıklı verici biçim varken verici yakınlığı ıskası karşı kanıt değildir."""
+
+    @staticmethod
+    def _borrowing(chain, donor="ar"):
+        from types import SimpleNamespace
+
+        from engine.nlp.borrowing_detector import Signal
+
+        return SimpleNamespace(
+            word="asker",
+            donor_language=donor,
+            score=0.6,
+            chain=chain,
+            expected_if_inherited="",
+            signals=[
+                Signal("verici_yakınlığı", False, 0.0, "verici sözlüğünde yakın karşılık yok"),
+                Signal("ünlü_uyumu", False, 0.0, "ünlü uyumu korunuyor"),
+            ],
+        )
+
+    def test_attested_donor_moves_miss_to_not_evaluated(self):
+        hyp = HypothesisRanker._borrowed_hypothesis(self._borrowing(["Türkçe asker", "Arapça عَسْكَر"]))
+        self.assertNotIn("verici sözlüğünde yakın karşılık yok", hyp.against)
+        self.assertIn("ünlü uyumu korunuyor", hyp.against)
+        self.assertTrue(any("Arapça عَسْكَر" in x for x in hyp.not_evaluated))
+
+    def test_without_donor_form_miss_stays_counter_evidence(self):
+        hyp = HypothesisRanker._borrowed_hypothesis(self._borrowing([], donor=None))
+        self.assertIn("verici sözlüğünde yakın karşılık yok", hyp.against)
+
+    def test_source_loan_chain_also_clears_the_miss(self):
+        borrowing = self._borrowing([], donor=None)
+        base = HypothesisRanker._borrowed_hypothesis(borrowing)
+        entries = [{"lang_code": "donor", "lang_name": "Fransızca", "word": "accumulateur",
+                    "etymology": "Alıntı", "source": "kaynak"}]
+        from unittest import mock
+
+        step = {"lang_name": "Fransızca", "word": "accumulateur", "source": "kaynak"}
+        with mock.patch("engine.nlp.borrowing_chain.source_loan_step", return_value=step):
+            hyp = HypothesisRanker._with_source_loan(base, borrowing, entries)
+        self.assertNotIn("verici sözlüğünde yakın karşılık yok", hyp.against)
+        self.assertTrue(any("accumulateur" in x for x in hyp.not_evaluated))
