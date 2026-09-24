@@ -368,7 +368,12 @@ class CrossCognateTriangulator:
             "spreading_ratio": round(spread, 3),
             "source_count": len(sources),
             "live_source_count": len(live_sources),
-            "sample_cognates": [e.get("word") for e in entries[:6] if e.get("word")],
+            # Numune YALNIZ Türki tanıklardan: verici/köken zinciri kayıtları
+            # (master ← `maistre, magister`) akraba değildir.
+            "sample_cognates": [
+                e.get("word") for e in entries
+                if e.get("word") and e.get("lang_code") in TURKIC_LANGUAGES_MAP
+            ][:6],
         }
 
 

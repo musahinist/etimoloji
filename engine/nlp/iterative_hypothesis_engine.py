@@ -204,6 +204,48 @@ def _historical_gloss(
     return min(candidates, key=lambda c: c[0])[1]
 
 
+def _attested_proto_root(
+    word: str,
+    root: dict[str, Any],
+    entries: list[dict[str, Any]],
+    fetcher_results: list[dict[str, Any]] | None = None,
+) -> str:
+    """Kaynağın açıkça verdiği Proto-Türkçe kök; yoksa ``""``.
+
+    Başlıkla AYNI kaynaklar ve öncelik (``search_engine``): önce sorgunun kendi
+    miras kaydının verdiği biçim (``_query_source_proto``), sonra sorgunun
+    KENDİ Starling kökü.
+
+    ⚠️ Yalnız VERİLEN girdiler okunur: Starling kökü ``fetcher_results``te
+    yoksa veritabanından çekilmez (çağıran kaynağı getirmediyse kök tanıklı
+    değildir). Starling kök varyantlarıyla da sorgulanır (`kulluk` -> `kul`);
+    sonucun sorgunun kendisine ait olduğu doğrudan aramayla doğrulanır.
+    ⚠️ İlk fetcher'ın kökü (``root.proto_turkic``) kullanılmaz:
+    EtimolojiTürkçe'nin ETü adımı çoğu kez türetme tabanıdır (`açıkgöz` ->
+    *açuk) ve başlık onu göstermez.
+    """
+    from engine.search_engine import _query_source_proto
+
+    form, _lang = _query_source_proto(word, entries, primary=str(root.get("meaning") or ""))
+    if form:
+        return form
+    fetched = {
+        str((r.get("root") or {}).get("proto_turkic") or "")
+        for r in fetcher_results or []
+        if (r.get("root") or {}).get("starling_proto")
+    } - {""}
+    if not fetched:
+        return ""
+    try:
+        from engine.fetchers.starling import StarlingFetcher
+
+        own = StarlingFetcher().fetch(word).get("root") or {}
+    except Exception:
+        return ""
+    own_root = str(own.get("proto_turkic") or "")
+    return own_root if own.get("starling_proto") and own_root in fetched else ""
+
+
 class IterativeHypothesisEngine:
     def __init__(self) -> None:
         self.donor_db = DeepDonorEtymologyDatabase()
@@ -252,6 +294,7 @@ class IterativeHypothesisEngine:
             reconstruction,
             str(_historical_gloss(entries, w)),
             _historical_gloss_candidates(entries),
+            attested_root=_attested_proto_root(w, root, entries, fetcher_results),
         )
 
         if hypothesis is None:
@@ -288,8 +331,14 @@ class IterativeHypothesisEngine:
         reconstruction: dict[str, Any],
         historical_gloss: str = "",
         historical_candidates: list[str] | None = None,
+        attested_root: str = "",
     ) -> dict[str, Any] | None:
-        """Kanıt gücüne göre en iyi hipotezi seçer. Kanıt yoksa ``None``."""
+        """Kanıt gücüne göre en iyi hipotezi seçer. Kanıt yoksa ``None``.
+
+        :param attested_root: kaynağın AÇIKÇA verdiği Proto-Türkçe biçim
+            (başlık kökü). Varsa A-HVP motorun rekonstrüksiyonunu değil onu
+            sınar.
+        """
         modern_meaning = root.get("meaning", "") or ""
 
         # 1. Donör sözlük eşleşmesi — en güçlü doğrudan kanıt
@@ -319,10 +368,22 @@ class IterativeHypothesisEngine:
 
         # 3. Karşılaştırmalı yöntemle ata biçim (en az 2 bağımsız dil tanığı)
         if reconstruction.get("evidence_available") and reconstruction.get("reconstructed_root"):
+            # ⚠️ Tanıklı kök varken A-HVP motorun KENDİ rekonstrüksiyonunu
+            # sınıyordu: başlık `uçmak` *uč- (kaynak) derken A-HVP *uça'yı
+            # sınayıp onayı/reddi ona veriyordu (105 kelimelik denetim: 14
+            # kelimede başlık kökü ≠ A-HVP ata biçimi). Kaynak kökü verdiyse
+            # sınanan odur; motorun biçimi karşılaştırma için ayrı alanda kalır.
+            engine_root = str(reconstruction["reconstructed_root"])
+            tested_root = attested_root or engine_root
             return {
-                "hypothesis_type": "Asli Proto-Türkçe kök (karşılaştırmalı yöntem)",
+                "hypothesis_type": (
+                    "Asli Proto-Türkçe kök (tanıklı kök, karşılaştırmalı yöntemle sınandı)"
+                    if attested_root else "Asli Proto-Türkçe kök (karşılaştırmalı yöntem)"
+                ),
                 "donor_language": "Proto-Türkçe",
-                "origin_form": reconstruction["reconstructed_root"],
+                "origin_form": tested_root,
+                "engine_reconstruction": engine_root,
+                "origin_form_attested": bool(attested_root),
                 "proof_summary": reconstruction.get("reconstruction_notes", ""),
                 # ⚠️ Burada `modern_meaning` yazıyordu; iki alan aynı olunca
                 # A-HVP 3. aşaması anlamı kendisiyle karşılaştırıyordu.

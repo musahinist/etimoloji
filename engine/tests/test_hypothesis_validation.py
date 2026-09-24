@@ -195,3 +195,51 @@ class TestHistoricalGlossCrossReference(unittest.TestCase):
             {"lang_code": "otk", "word": "derlik (terlik)", "meaning": "Üstten giyilen ince elbise."},
         ]
         self.assertEqual(_historical_gloss(entries, "terlik"), "Üstten giyilen ince elbise")
+
+
+class TestAuditConsistency(unittest.TestCase):
+    """105 kelimelik tutarlılık denetiminin (seed 99) A-HVP bulguları."""
+
+    def test_sample_cognates_exclude_donor_chain(self):
+        """master: numune akraba satırında `maistre, magister` görünüyordu."""
+        entries = [
+            {"lang_code": "donor", "word": "maistre", "source": "a"},
+            {"lang_code": "donor", "word": "magister", "source": "a"},
+            {"lang_code": "kk", "word": "мастер", "source": "b"},
+            {"lang_code": "ky", "word": "мастер", "source": "c"},
+        ]
+        sample = CrossCognateTriangulator().verify("master", entries)["sample_cognates"]
+        self.assertNotIn("maistre", sample)
+        self.assertNotIn("magister", sample)
+        self.assertIn("мастер", sample)
+
+    def test_attested_root_is_tested_not_engine_reconstruction(self):
+        """uçmak: başlık *uč- (kaynak), A-HVP *uça'yı sınıyordu."""
+        from engine.nlp.iterative_hypothesis_engine import IterativeHypothesisEngine
+
+        recon = {"evidence_available": True, "reconstructed_root": "*uça"}
+        hyp = IterativeHypothesisEngine._select_hypothesis(
+            "uçmak", {}, None, None, recon, attested_root="*uč-"
+        )
+        self.assertEqual(hyp["origin_form"], "*uč-")
+        self.assertEqual(hyp["engine_reconstruction"], "*uça")
+        self.assertTrue(hyp["origin_form_attested"])
+        # Tanıklı kök yoksa motorun rekonstrüksiyonu sınanır.
+        hyp = IterativeHypothesisEngine._select_hypothesis("uçmak", {}, None, None, recon)
+        self.assertEqual(hyp["origin_form"], "*uça")
+
+    def test_attested_root_is_not_first_fetcher_root(self):
+        """açıkgöz: EtimolojiTürkçe'nin ETü tabanı (*açuk) tanıklı kök değildir."""
+        from unittest import mock
+
+        from engine.nlp.iterative_hypothesis_engine import _attested_proto_root
+
+        starling = {"root": {"proto_turkic": "*uč-", "starling_proto": "*uč-"}}
+        self.assertEqual(_attested_proto_root("açıkgöz", {"proto_turkic": "*açuk"}, []), "")
+        # Çağıran Starling sonucunu getirmediyse veritabanına gidilmez.
+        self.assertEqual(_attested_proto_root("uçmak", {}, [], []), "")
+        with mock.patch("engine.fetchers.starling.StarlingFetcher.fetch", return_value=starling):
+            self.assertEqual(_attested_proto_root("uçmak", {}, [], [starling]), "*uč-")
+            # Kök varyantının (`kulluk` -> `kul`) Starling kökü sorgunun değildir.
+            kul = {"root": {"proto_turkic": "*Kul", "starling_proto": "*Kul"}}
+            self.assertEqual(_attested_proto_root("kulluk", {}, [], [kul]), "")
