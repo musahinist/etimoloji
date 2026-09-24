@@ -1,0 +1,2750 @@
+{
+  "_schema": "badge_eval/v1",
+  "commit": "2165c26",
+  "fetchers": "yalnız yerel, Starling KAPALI, ağ kapalı (headline_eval.build_engine)",
+  "sample": {
+    "turkce_altin_train+dev": 300,
+    "savelyev_dev": 32,
+    "seed": 20260924
+  },
+  "correctness": {
+    "turkce_altin/train+dev": "A-HVP hipotezinin yönü (miras/alıntı) altın etiketle aynı",
+    "savelyev_dev": "hipotez miras ve sınanan ata biçim altın adaylardan biriyle kabul edilebilir"
+  },
+  "circularity": {
+    "turkce_altin/train+dev": "Kısmen döngüsel: altın TDK+Nişanyan, motor ağ kapalıyken Wiktionary köken etiketini okuyor (çoğu maddede aynı bilgi); sıralayıcı ağırlıkları Türkçe altının tamamında eğitildi.",
+    "savelyev_dev": "Dev bölümü örüntü tablolarına girmez; Wiktionary ile ortak Clauson/EDAL kaynakçası olası."
+  },
+  "subsets": {
+    "turkce_altin/train+dev": {
+      "n": 300,
+      "n_with_hypothesis": 134,
+      "accuracy_all": 0.4267,
+      "by_badge": {
+        "VALIDATED": {
+          "n": 11,
+          "accuracy": 1.0,
+          "accuracy_ci95": [
+            0.7412,
+            1.0
+          ]
+        },
+        "NEEDS_REVIEW": {
+          "n": 56,
+          "accuracy": 0.9464,
+          "accuracy_ci95": [
+            0.8539,
+            0.9816
+          ]
+        },
+        "INSUFFICIENT_EVIDENCE": {
+          "n": 53,
+          "accuracy": 0.9434,
+          "accuracy_ci95": [
+            0.8463,
+            0.9806
+          ]
+        },
+        "REJECTED": {
+          "n": 14,
+          "accuracy": 1.0,
+          "accuracy_ci95": [
+            0.7847,
+            1.0
+          ]
+        },
+        "hipotez_yok": {
+          "n": 166,
+          "accuracy": 0.0,
+          "accuracy_ci95": [
+            0.0,
+            0.0226
+          ]
+        }
+      },
+      "auc_badge_order": 0.4941,
+      "auc_final_score": 0.5677,
+      "green_above_yellow": true
+    },
+    "savelyev_dev": {
+      "n": 32,
+      "n_with_hypothesis": 30,
+      "accuracy_all": 0.625,
+      "by_badge": {
+        "VALIDATED": {
+          "n": 17,
+          "accuracy": 0.6471,
+          "accuracy_ci95": [
+            0.413,
+            0.8269
+          ]
+        },
+        "NEEDS_REVIEW": {
+          "n": 8,
+          "accuracy": 0.625,
+          "accuracy_ci95": [
+            0.3057,
+            0.8632
+          ]
+        },
+        "INSUFFICIENT_EVIDENCE": {
+          "n": 0,
+          "accuracy": null,
+          "accuracy_ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "REJECTED": {
+          "n": 5,
+          "accuracy": 0.8,
+          "accuracy_ci95": [
+            0.3755,
+            0.9638
+          ]
+        },
+        "hipotez_yok": {
+          "n": 2,
+          "accuracy": 0.0,
+          "accuracy_ci95": [
+            0.0,
+            0.6576
+          ]
+        }
+      },
+      "auc_badge_order": 0.4575,
+      "auc_final_score": 0.48,
+      "green_above_yellow": true
+    }
+  },
+  "items": {
+    "turkce_altin/train+dev": [
+      {
+        "word": "agnostisizm",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "ajite",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "akciğer",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "albümin",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "alışmak",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "amentü",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "anafor",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "anason",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "angajman",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "anjiyografi",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "anlayışsız",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "apandisit",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "arbede",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "arkalık",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "asil",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "asker",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "aslan",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.552,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "averaj",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "aydınlanmak",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "azamet",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "açılış",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "aşina",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "baba",
+        "gold_loan": false,
+        "badge": "VALIDATED",
+        "score": 0.674,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "baktırmak",
+        "gold_loan": false,
+        "badge": "REJECTED",
+        "score": 0.406,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "bant",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "batı",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.403,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "bağlamak",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.559,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "bağlılık",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "başhekim",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "beklemek",
+        "gold_loan": false,
+        "badge": "REJECTED",
+        "score": 0.228,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "belde",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "belirti",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "berilyum",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "betimlemek",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "beğendirmek",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "beşlik",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "bijuteri",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "bitirmek",
+        "gold_loan": false,
+        "badge": "REJECTED",
+        "score": 0.371,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "bitkisel",
+        "gold_loan": false,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "Türkçe (modern türetme)",
+        "correct": true
+      },
+      {
+        "word": "boks",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "bordro",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "bozmak",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.577,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "büyükşehir",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "camız",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "cephane",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "cezve",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "cibinlik",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": false
+      },
+      {
+        "word": "cila",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "cumhuriyet",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "dalaşmak",
+        "gold_loan": false,
+        "badge": "REJECTED",
+        "score": 0.416,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "dalgıç",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "danışıklı",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "darp",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "davet",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "defterdar",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "demek",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.535,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "deneme",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "devetabanı",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "dezenfektan",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "değiş",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.541,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "dilek",
+        "gold_loan": false,
+        "badge": "VALIDATED",
+        "score": 0.702,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "diğer",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "dolunay",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "don",
+        "gold_loan": false,
+        "badge": "VALIDATED",
+        "score": 0.823,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "dondurmak",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.29,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "dudu",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "duyar",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "dönüştürmek",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "düzenlemek",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "düş",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.62,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "ebcet",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "ebegümeci",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "edilgen",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "egosantrik",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "ehliyet",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "ekspoze",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "endirekt",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "esmek",
+        "gold_loan": false,
+        "badge": "REJECTED",
+        "score": 0.191,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "eşhas",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "fayton",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "fiil",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "fındık",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "galon",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "garanti",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "gelenekçi",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "gerek",
+        "gold_loan": false,
+        "badge": "REJECTED",
+        "score": 0.268,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "gerici",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "gerinmek",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "geyşa",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "gidermek",
+        "gold_loan": false,
+        "badge": "REJECTED",
+        "score": 0.377,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "gömüt",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "görünüm",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "gösterişli",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "göynümek",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "gözlenmek",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "güldürmek",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.533,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "gülüş",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.557,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "gündelik",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "güruh",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "hamarat",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "hanlık",
+        "gold_loan": false,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": false
+      },
+      {
+        "word": "hasıla",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "hatime",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "havi",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "haşin",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "hedik",
+        "gold_loan": false,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": false
+      },
+      {
+        "word": "heteroseksüel",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "homojen",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "hususi",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "hüsün",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "iade",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "iltihak",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "imambayıldı",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "imla",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "infaz",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "irs",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "istihza",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "itmam",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "iyot",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "iğneci",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "jeoloji",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "kamaşmak",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "kamuoyu",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "kapsam",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "kaput",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "karafatma",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "kargı",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "karlı",
+        "gold_loan": false,
+        "badge": "VALIDATED",
+        "score": 0.643,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "kasılmak",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "katlamak",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "kenger",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "kerevit",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "kola",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "kolonyalist",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "kopya",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "kullanmak",
+        "gold_loan": false,
+        "badge": "REJECTED",
+        "score": 0.199,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "kulluk",
+        "gold_loan": false,
+        "badge": "VALIDATED",
+        "score": 0.818,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "kurban",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "kâşif",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "kösem",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "künk",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "kısa",
+        "gold_loan": false,
+        "badge": "VALIDATED",
+        "score": 0.657,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "laakal",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "lama",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "lavta",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "lejant",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "letafet",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "makûs",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "malul",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "marksizm",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.378,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": false
+      },
+      {
+        "word": "master",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "mazur",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "melun",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "memnun",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "menfaat",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "menzil",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "metro",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "misafir",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "modifikasyon",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "monden",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "muafiyet",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "muvaffak",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "müeddep",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "müfrit",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "mühendis",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "müptela",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "mütekebbir",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "mütevellit",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "müzmin",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "nakdi",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "namahrem",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "nebi",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "nilüfer",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "nüfuz",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "oba",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.401,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "odacı",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "odunsu",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "okutmak",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.481,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "opsiyon",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "otlanmak",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "paralel",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "parmaklık",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": false
+      },
+      {
+        "word": "patrikhane",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "pençe",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "peyk",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "pikap",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "pişman",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "plütonyum",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "polisiye",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "problem",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "prostat",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "puma",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "regülatör",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "restoran",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "rezistans",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "reçete",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "sandık",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "santur",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "saplantı",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "sayfiye",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "saymak",
+        "gold_loan": false,
+        "badge": "REJECTED",
+        "score": 0.417,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "saç",
+        "gold_loan": false,
+        "badge": "VALIDATED",
+        "score": 0.892,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "sağaltma",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "sekans",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "sekte",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "sepet",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "serseri",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "set",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "sevk",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "seyran",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "sezinlemek",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "siyahi",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "sofa",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "somutlaşmak",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "suna",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "sövülmek",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "sülün",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.486,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "süpürmek",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.484,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "sürülmek",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "süzülmek",
+        "gold_loan": false,
+        "badge": "REJECTED",
+        "score": 0.221,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "sırtlan",
+        "gold_loan": false,
+        "badge": "VALIDATED",
+        "score": 0.473,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "sızma",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "tadım",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "tahsildar",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "tahvilat",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "taksi",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "tantal",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "tapınmak",
+        "gold_loan": false,
+        "badge": "REJECTED",
+        "score": 0.227,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "tasarruf",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "taslamak",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "tat",
+        "gold_loan": false,
+        "badge": "REJECTED",
+        "score": 0.288,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "taverna",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "tavus",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "taşıma",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "tebessüm",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "teftiş",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "tein",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "teleskop",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "tem",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "tenis",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "tepik",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.542,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "terakki",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "terk",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "tezgâhtar",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "teşkil",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "tozmak",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "tren",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "tutku",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.472,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "törpü",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.314,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "tüketmek",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.457,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "tüp",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "uluslararası",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "unutulmak",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.458,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "uydu",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "uzak",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.341,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "uçmak",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.678,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "uşak",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "vahşi",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "vatan",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "velinimet",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "veri",
+        "gold_loan": false,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": false
+      },
+      {
+        "word": "yalan",
+        "gold_loan": false,
+        "badge": "VALIDATED",
+        "score": 0.755,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "yanılmak",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.545,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "yapışmak",
+        "gold_loan": false,
+        "badge": "REJECTED",
+        "score": 0.25,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "yas",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "yazı",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.391,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "yazışmak",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "yitirmek",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.465,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "yonga",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "yontulmak",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "yükseklik",
+        "gold_loan": false,
+        "badge": "VALIDATED",
+        "score": 0.546,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "yürütmek",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.51,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "yüzgeç",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "zangoç",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "zaruri",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "zirve",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "zulüm",
+        "gold_loan": true,
+        "badge": "INSUFFICIENT_EVIDENCE",
+        "score": 0.35,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "zürriyet",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "zımpara",
+        "gold_loan": true,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "",
+        "correct": true
+      },
+      {
+        "word": "çatış",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "çerçeve",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "çevirim",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "çeçe",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "çikolata",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "çizme",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.369,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "çolak",
+        "gold_loan": false,
+        "badge": "VALIDATED",
+        "score": 0.645,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "çıkar",
+        "gold_loan": false,
+        "badge": "REJECTED",
+        "score": 0.273,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "ölçüm",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "önderlik",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.381,
+        "hypothesis_donor": "Türkçe (modern türetme)",
+        "correct": true
+      },
+      {
+        "word": "örgüt",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "özne",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "üretken",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "ürpermek",
+        "gold_loan": false,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.479,
+        "hypothesis_donor": "Proto-Türkçe",
+        "correct": true
+      },
+      {
+        "word": "ısrar",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "şahane",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "şaklaban",
+        "gold_loan": false,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "şan",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "şeffaf",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "şehadetname",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      },
+      {
+        "word": "şürekâ",
+        "gold_loan": true,
+        "badge": null,
+        "score": null,
+        "hypothesis_donor": null,
+        "correct": false
+      }
+    ],
+    "savelyev_dev": [
+      {
+        "word": "dur",
+        "badge": "REJECTED",
+        "score": 0.255,
+        "hypothesis_form": "*tur",
+        "correct": true
+      },
+      {
+        "word": "kan",
+        "badge": "VALIDATED",
+        "score": 0.868,
+        "hypothesis_form": "*kān",
+        "correct": false
+      },
+      {
+        "word": "yeni",
+        "badge": "NEEDS_REVIEW",
+        "score": 0.628,
+        "hypothesis_form": "*jaŋi",
+        "correct": false
+      },
+      {
+        "word": "yan",
+        "badge": "VALIDATED",
+        "score": 0.833,
+        "hypothesis_form": "*yān",
+        "correct": true
+      },
+      {
+        "word": "kemik",
+        "badge": "NEEDS_REVIEW",
+        "score": 0.405,
+        "hypothesis_form": "*kemük",
+        "correct": true
+      },
+      {
+        "word": "gül",
+        "badge": "REJECTED",
+        "score": 0.259,
+        "hypothesis_form": "*kül",
+        "correct": true
+      },
+      {
+        "word": "işit",
+        "badge": "REJECTED",
+        "score": 0.128,
+        "hypothesis_form": "*eid",
+        "correct": false
+      },
+      {
+        "word": "deri",
+        "badge": "REJECTED",
+        "score": 0.308,
+        "hypothesis_form": "*tẹri",
+        "correct": true
+      },
+      {
+        "word": "em",
+        "badge": "REJECTED",
+        "score": 0.305,
+        "hypothesis_form": "*em",
+        "correct": true
+      },
+      {
+        "word": "karınca",
+        "badge": null,
+        "score": null,
+        "hypothesis_form": "",
+        "correct": false
+      },
+      {
+        "word": "kalın",
+        "badge": "VALIDATED",
+        "score": 0.76,
+        "hypothesis_form": "*kalïŋ",
+        "correct": true
+      },
+      {
+        "word": "geniş",
+        "badge": "NEEDS_REVIEW",
+        "score": 0.545,
+        "hypothesis_form": "*keŋi",
+        "correct": false
+      },
+      {
+        "word": "at",
+        "badge": "VALIDATED",
+        "score": 0.873,
+        "hypothesis_form": "*at",
+        "correct": true
+      },
+      {
+        "word": "üç",
+        "badge": "VALIDATED",
+        "score": 0.911,
+        "hypothesis_form": "*üč",
+        "correct": true
+      },
+      {
+        "word": "kanat",
+        "badge": "VALIDATED",
+        "score": 0.853,
+        "hypothesis_form": "*kanat",
+        "correct": false
+      },
+      {
+        "word": "yıl",
+        "badge": "VALIDATED",
+        "score": 0.772,
+        "hypothesis_form": "*yïl",
+        "correct": true
+      },
+      {
+        "word": "et",
+        "badge": "VALIDATED",
+        "score": 0.904,
+        "hypothesis_form": "*et",
+        "correct": true
+      },
+      {
+        "word": "irin",
+        "badge": "VALIDATED",
+        "score": 0.71,
+        "hypothesis_form": "*iriŋ",
+        "correct": false
+      },
+      {
+        "word": "uç",
+        "badge": "VALIDATED",
+        "score": 0.755,
+        "hypothesis_form": "*uč-",
+        "correct": true
+      },
+      {
+        "word": "ince",
+        "badge": "VALIDATED",
+        "score": 0.769,
+        "hypothesis_form": "*inçe",
+        "correct": false
+      },
+      {
+        "word": "atla",
+        "badge": null,
+        "score": null,
+        "hypothesis_form": "",
+        "correct": false
+      },
+      {
+        "word": "çok",
+        "badge": "VALIDATED",
+        "score": 0.514,
+        "hypothesis_form": "*čok",
+        "correct": true
+      },
+      {
+        "word": "sümük",
+        "badge": "NEEDS_REVIEW",
+        "score": 0.323,
+        "hypothesis_form": "*simük",
+        "correct": true
+      },
+      {
+        "word": "dişi",
+        "badge": "VALIDATED",
+        "score": 0.711,
+        "hypothesis_form": "*tiši",
+        "correct": false
+      },
+      {
+        "word": "alın",
+        "badge": "VALIDATED",
+        "score": 0.715,
+        "hypothesis_form": "*ālïn",
+        "correct": false
+      },
+      {
+        "word": "sol",
+        "badge": "VALIDATED",
+        "score": 0.772,
+        "hypothesis_form": "*sōl",
+        "correct": true
+      },
+      {
+        "word": "ev",
+        "badge": "NEEDS_REVIEW",
+        "score": 0.636,
+        "hypothesis_form": "*eb",
+        "correct": true
+      },
+      {
+        "word": "kabuk",
+        "badge": "VALIDATED",
+        "score": 0.499,
+        "hypothesis_form": "*kāpuk",
+        "correct": true
+      },
+      {
+        "word": "diş",
+        "badge": "VALIDATED",
+        "score": 0.694,
+        "hypothesis_form": "*tīĺ",
+        "correct": true
+      },
+      {
+        "word": "su",
+        "badge": "NEEDS_REVIEW",
+        "score": 0.716,
+        "hypothesis_form": "*sɨb",
+        "correct": true
+      },
+      {
+        "word": "vur",
+        "badge": "NEEDS_REVIEW",
+        "score": 0.434,
+        "hypothesis_form": "*ur",
+        "correct": true
+      },
+      {
+        "word": "boynuz",
+        "badge": "NEEDS_REVIEW",
+        "score": 0.401,
+        "hypothesis_form": "*büńüŕ",
+        "correct": false
+      }
+    ]
+  }
+}
