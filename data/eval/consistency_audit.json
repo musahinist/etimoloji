@@ -1,0 +1,33 @@
+{
+  "n": 60,
+  "agreement_with_gold": 0.9833,
+  "confusion": {
+    "alıntı->alıntı": 30,
+    "miras->miras": 29,
+    "miras->belirsiz": 1
+  },
+  "disagreements": [
+    {
+      "word": "duyar",
+      "gold": "miras",
+      "verdict": "belirsiz"
+    }
+  ],
+  "issues": {
+    "sınıflandırıcı alıntı, sıralayıcı miras": {
+      "count": 2,
+      "words": [
+        "parmaklık",
+        "akciğer"
+      ]
+    },
+    "kelimenin kendisi 'türetilmiş' kök": {
+      "count": 2,
+      "words": [
+        "gaga",
+        "kolaylaşmak"
+      ]
+    }
+  },
+  "caveat": "Altın uyumu bağımsız doğruluk değildir: arama Nişanyan'ı okur, altın küme TDK+Nişanyan."
+}
