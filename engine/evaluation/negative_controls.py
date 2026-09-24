@@ -13,10 +13,10 @@ Beş batarya:
 ``bariz_sahte``
     Fonotaktiği ihlal eden uydurmalar (``zzzqx``, ``ftrxq``). Taban çizgi.
 ``sahte_akraba``
-    Benzeyen ama akraba OLMAYAN çiftler (Türkçe ``ay`` ~ İngilizce ``eye``).
+    Benzeyen ama akraba OLMAYAN çiftler (Farsça ``bād`` ~ İngilizce ``bad``).
     Rastlantısal benzerliğin klasik tuzağı.
 ``alinti_tuzagi``
-    Alıntı olduğu **kesin** ama miras gibi görünen kelimeler (``kitap``,
+    Alıntı olduğu **kesin** ama miras gibi görünen kelimeler (``saat``,
     ``duvar``, ``çorap``). Motor bunları miras sayarsa alıntı katmanı işe
     yaramıyor demektir.
 ``eşadlı``
@@ -262,11 +262,12 @@ FALSE_FRIENDS: tuple[ControlItem, ...] = tuple(
         battery="sahte_akraba",
         reason=reason,
     )
+    # "ay", "kol", "gel" burada YOKTUR: bunlar gerçek miras Türkçe kelimelerdir
+    # (Proto-Türkçe köklere dayanırlar), sahte akraba örneği değildirler. Motor
+    # bunlara "YETERSİZ KANIT" derse bu bir KAÇIRMADIR (yanlış negatif), ama
+    # `sahte_akraba` bataryası bunu başarı sayardı — ölçüt tersine dönerdi.
     for query, witnesses, reason in [
-        ("ay", [("en", "eye"), ("de", "auge")], "Türkçe 'ay' ~ İng. 'eye': salt rastlantı"),
         ("bad", [("en", "bad"), ("fa", "bad")], "Farsça 'bād' rüzgâr ~ İng. 'bad': ilgisiz"),
-        ("kol", [("en", "call"), ("de", "kohl")], "salt ses benzerliği"),
-        ("gel", [("de", "gel"), ("en", "gel")], "salt ses benzerliği"),
     ]
 )
 
@@ -280,8 +281,14 @@ LOANWORD_TRAPS: tuple[ControlItem, ...] = tuple(
         reason=reason,
     )
     for query, witnesses, reason in [
-        ("kitap", [("kk", "kitap"), ("tt", "kitap"), ("uz", "kitob"), ("ky", "kitep")],
-         "Arapça kitāb — bütün Türki dillerde var ama MİRAS DEĞİL"),
+        # "kitap" burada YOKTUR: data/seed/donor/donor_etymology.json TOHUM
+        # dosyasında `kitap` doğrudan Arapça alıntı olarak kayıtlı — motor
+        # gerçek karşılaştırmalı akıl yürütmeden, tohum sızıntısıyla doğru
+        # cevabı verebilir. "saat" aynı yayılım desenini taşır (kk/tt/uz/ky
+        # tümünde ayrı ayrı ödünçlenmiş Arapça sā'a, indekste origin='alıntı'
+        # donor_lang='ar' olarak kayıtlı) ama tohum dosyasında YOKTUR.
+        ("saat", [("kk", "sagat"), ("tt", "segat"), ("uz", "soat"), ("ky", "saat")],
+         "Arapça sā'a — bütün Türki dillerde ayrı ayrı ödünçlenmiş, MİRAS DEĞİL"),
         ("duvar", [("az", "divar"), ("tk", "diwar"), ("uz", "devor")],
          "Farsça dīwār"),
         ("çorap", [("az", "corab"), ("kk", "şorap"), ("tt", "çorap")],
