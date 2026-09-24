@@ -33,11 +33,11 @@ saklanır.
 
 | Ölçüm | Değer | Taban çizgi | Hüküm |
 |---|---|---|---|
-| Alıntı F — **Türkçe** (TDK+Nişanyan, n=349) | **0,885** | 0,749 hepsi-alıntı | ✅ **anlamlı** (+0,267 doğruluk, p=0,0001) |
-| Alıntı F — WOLD/Sakha (n=769) | **0,651** | 0,464 hepsi-alıntı | ⚠️ fonotaktiğe karşı anlamlı **değil** (p=0,251) |
+| Alıntı F — **Türkçe** (TDK+Nişanyan, n=349) | **0,889** | 0,749 hepsi-alıntı | ✅ **anlamlı** (+0,272 doğruluk, p=0,0001) |
+| Alıntı F — WOLD/Sakha (n=769) | **0,657** | 0,464 hepsi-alıntı | ✅ fonotaktiğe karşı anlamlı (+0,121 doğruluk, p=0,0001) · ⚠️ yalnız verici yakınlığına karşı anlamlı **değil** (−0,007, p=0,608) |
 | Rekonstrüksiyon NED (dev, n=83, çapa hariç) | **0,304** | 0,339 `majority_character` | ⚠️ anlamlı **değil** (GA [−0,075, +0,007]) |
 | Rekonstrüksiyon tam (dev, çapa hariç) | **0,398** | 0,337 | ⚠️ anlamlı **değil** (p=0,188) |
-| Rekonstrüksiyon NED (5 katlı ÇD, train+dev n=320) | **0,343** | 0,371 `majority_character` | ✅ **anlamlı** (fark −0,028, GA [−0,047, −0,009]) · tam 0,272 vs 0,253 anlamlı değil · `make eval-cv` |
+| Rekonstrüksiyon NED (5 katlı ÇD, train+dev n=320) | **0,343** | 0,371 `majority_character` | ✅ **anlamlı** (fark −0,028, GA [−0,047, −0,009]) · tam 0,272 vs 0,253 anlamlı değil · BCFS 0,550 vs 0,519 ✅ anlamlı (+0,031, GA [+0,012, +0,047]) → **H2 destekleniyor** · `make eval-cv` |
 | Akraba tespiti B-Cubed F (dev) | 0,931 | 0,934 düzenleme uzaklığı | ⚠️ taban çizgisine **eşit** (kümeleyici artık aynı ölçüyü kullanıyor) |
 | Uzman uyuşmazlık bandı | **0,914** | — | otomatik sistemin gerçekçi tavanı |
 | Denklik düzenliliği (CoPaR, TRAIN) | **0,713** | — | kural tabanlı doğruluğun üst sınırı |
@@ -1008,8 +1008,12 @@ Bunlar gizlenmiş kusurlar değil, **ölçülmüş ve raporlanmış** sınırlar
 ### Bilimsel
 
 - **Motorun trivial taban çizgilerine üstünlüğü kanıtlanmış değil.**
-  Rekonstrüksiyonda dört koşulun hiçbirinde fark istatistiksel olarak anlamlı
-  çıkmıyor. Bu, yayına gitmeden önce kapatılması gereken asıl açıktır.
+  Rekonstrüksiyonda tek bölümlük dev ölçümünde (n=83) fark anlamlı çıkmıyor;
+  5 katlı çapraz doğrulamada (`make eval-cv`, train+dev n=320) NED'de
+  (−0,028, GA [−0,047, −0,009]) ve B-Cubed F'de (+0,031, GA [+0,012, +0,047])
+  `majority_character`a karşı anlamlı, tam eşleşmede anlamlı değil
+  (+0,019, GA [−0,013, +0,050]). Fark küçük ve dondurulmuş test bölümünde
+  henüz doğrulanmadı; yayına gitmeden önce kapatılması gereken asıl açık budur.
 - **Alıntı tespiti sözlük etiketine bağımlı.** Ablasyon ölçümü, bağımsız
   fonolojik sinyallerin ölçülebilir katkı sağlamadığını gösteriyor.
 - **Öngörü sicili üçüncü tarafta kayıtlı değil.** Yerel zaman damgası ön-kayıt

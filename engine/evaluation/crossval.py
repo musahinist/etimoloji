@@ -10,11 +10,19 @@ görülmez. Test bölümü okunmaz.
 
 Ölçüldü (2026-09-24, n=320)::
 
-    sistem                 tam      NED
-    yalnız kural           0,2531   0,3679
-    öğrenilmiş tablo       0,2719   0,3426
-    majority_character     0,2531   0,3709
+    sistem                 tam      NED      BCFS
+    yalnız kural           0,2531   0,3679   0,5414
+    öğrenilmiş tablo       0,2719   0,3426   0,5504
+    majority_character     0,2531   0,3709   0,5192
     tablo − taban çizgisi  NED −0,0283  GA[−0,047, −0,009]  ANLAMLI
+                           BCFS +0,0311 GA[+0,012, +0,047]  ANLAMLI
+    tablo − yalnız kural   BCFS +0,0089 GA[+0,001, +0,017]  ANLAMLI
+
+BCFS havuzlanmış 320 tahmin üzerinde veri kümesi düzeyinde hesaplanır;
+fark GA'sı maddeler üzerinde eşleşmiş bootstrap'tir (her örneklemde iki
+sistemin BCFS'si yeniden hesaplanır). Ön kayıttaki H2 (motor BCFS'de
+``majority_character``ı geçer, GA sıfırı dışlar) bu koşuda **destekleniyor**
+— ancak train+dev çapraz doğrulamasıdır, dondurulmuş test bölümü değil.
 
 Denenip kazanç vermeyen: Starling ``turcet`` kökleri tabloya ek eğitim
 verisi (154 -> 1.301 küme, sınanan kat ve test kavramlarıyla aynı Türkçe
@@ -47,7 +55,10 @@ değil, aday üretimidir.
 
 from __future__ import annotations
 
+import random
 import zlib
+from collections import Counter
+from collections.abc import Sequence
 from typing import Any
 
 from engine.logging_setup import get_logger
@@ -90,12 +101,103 @@ def learn_table(examples: list[tuple[str, dict[str, str]]]) -> Any:
     return table
 
 
+def item_columns(pair: tuple[str, str] | None) -> Counter[tuple[str, str]]:
+    """Bir maddenin ``(tahmin_sesi, altın_sesi)`` sütun sayımı.
+
+    ``metrics.reconstruction_bcubed`` ile AYNI hizalama (``trim=False``,
+    boşluk sütunları dahil). Çekimser madde (``None``) sütun üretmez —
+    veri kümesi düzeyindeki hesapta da hiçbir konum eklemez.
+    """
+    from engine.evaluation.metrics import normalize_proto
+    from engine.nlp.multi_alignment import GAP, align_forms
+
+    counts: Counter[tuple[str, str]] = Counter()
+    if pair is None:
+        return counts
+    prediction, gold = normalize_proto(pair[0]), normalize_proto(pair[1])
+    if not prediction or not gold:
+        return counts
+    for column in align_forms({"pred": prediction, "gold": gold}, trim=False):
+        left = column.sounds.get("pred", GAP) or GAP
+        right = column.sounds.get("gold", GAP) or GAP
+        if left == GAP and right == GAP:
+            continue
+        counts[(left, right)] += 1
+    return counts
+
+
+def bcubed_from_counts(counts: Counter[tuple[str, str]]) -> float:
+    """Sütun sayımından B-Cubed F — ``reconstruction_bcubed`` ile eşdeğer.
+
+    Aynı ``(p, g)`` karşılığını taşıyan her konumun kesinliği ``c(p,g)/c(p)``,
+    duyarlılığı ``c(p,g)/c(g)``; toplam ``Σ c(p,g)²/c(p)`` biçimine iner.
+    Konumları tek tek gezmeden bootstrap'i hızlı kılar.
+    """
+    total = sum(counts.values())
+    if not total:
+        return 0.0
+    by_pred: Counter[str] = Counter()
+    by_gold: Counter[str] = Counter()
+    for (p, g), c in counts.items():
+        by_pred[p] += c
+        by_gold[g] += c
+    precision = sum(c * c / by_pred[p] for (p, _), c in counts.items()) / total
+    recall = sum(c * c / by_gold[g] for (_, g), c in counts.items()) / total
+    return 2 * precision * recall / (precision + recall) if precision + recall else 0.0
+
+
+def bootstrap_bcubed_difference(
+    a: Sequence[Counter[tuple[str, str]]],
+    b: Sequence[Counter[tuple[str, str]]],
+    *,
+    iterations: int = 10000,
+    alpha: float = 0.05,
+    seed: int | None = None,
+) -> dict[str, Any]:
+    """Maddeler üzerinde **eşleşmiş** bootstrap: BCFS(a) − BCFS(b).
+
+    B-Cubed veri kümesi düzeyinde bir ölçüdür, madde ortalaması değildir;
+    bu yüzden her örneklemde iki sistemin BCFS'si AYNI yeniden örneklenmiş
+    madde kümesi üzerinden baştan hesaplanır. Daha yüksek daha iyidir.
+    """
+    from engine.evaluation.significance import SIGNIFICANCE_SEED
+
+    if len(a) != len(b) or not a:
+        return {"difference": 0.0, "ci95": [0.0, 0.0], "significant": False, "n": len(a)}
+    rng = random.Random(SIGNIFICANCE_SEED if seed is None else seed)
+    size = len(a)
+    observed = bcubed_from_counts(sum(a, Counter())) - bcubed_from_counts(sum(b, Counter()))
+    samples: list[float] = []
+    for _ in range(iterations):
+        weights = Counter(rng.randrange(size) for _ in range(size))
+        pooled_a: Counter[tuple[str, str]] = Counter()
+        pooled_b: Counter[tuple[str, str]] = Counter()
+        for index, weight in weights.items():
+            for key, c in a[index].items():
+                pooled_a[key] += c * weight
+            for key, c in b[index].items():
+                pooled_b[key] += c * weight
+        samples.append(bcubed_from_counts(pooled_a) - bcubed_from_counts(pooled_b))
+    samples.sort()
+    low = samples[int(alpha / 2 * iterations)]
+    high = samples[min(iterations - 1, int((1 - alpha / 2) * iterations))]
+    excludes_zero = low > 0 or high < 0
+    return {
+        "difference": round(observed, 5),
+        "ci95": [round(low, 5), round(high, 5)],
+        "significant": excludes_zero,
+        "a_is_better": bool(observed > 0 and excludes_zero),
+        "n": size,
+    }
+
+
 def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
     from engine.db.cldf_wordlist import CldfWordlist
     from engine.db.language_mapping import build_mapping
     from engine.evaluation import harness
     from engine.evaluation.baselines import majority_character
     from engine.evaluation.gold import GoldStandard
+    from engine.evaluation.metrics import reconstruction_bcubed
     from engine.evaluation.significance import bootstrap_metric_difference
     from engine.nlp import proto_phonology
 
@@ -106,6 +208,20 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
     systems = ("rules", "learned_table", "majority_character")
     correct: dict[str, list[bool]] = {s: [] for s in systems}
     ned: dict[str, list[float]] = {s: [] for s in systems}
+    # Madde başına (tahmin, altın) çifti — çekimserse None. B-Cubed veri
+    # kümesi düzeyinde olduğu için bootstrap'te maddeyle birlikte taşınmalı.
+    pairs: dict[str, list[tuple[str, str] | None]] = {s: [] for s in systems}
+    held: list[Any] = []
+
+    def _collect(name: str, reconstructor: Any, extra: dict[str, Any]) -> None:
+        # Madde madde koşulur: harness ``pairs`` listesi çekimser maddeleri
+        # atladığı için toplu koşuda çift -> madde eşlemesi kurulamaz.
+        for item in held:
+            result = harness.run(reconstructor, [item], mapping=mapping, **extra)
+            correct[name] += result.item_correct
+            ned[name] += result.item_ned
+            pairs[name].append(result.pairs[0] if result.pairs else None)
+
     try:
         for fold in range(k):
             held = [it for it in items if fold_of(it.concept, k) == fold]
@@ -117,24 +233,44 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
             for name, pattern_table in (("rules", None), ("learned_table", table)):
                 proto_phonology._PATTERN_TABLE = pattern_table
                 proto_phonology._PATTERN_TABLE_LOADED = True
-                result = harness.run(harness.comparative_reconstructor(), held, mapping=mapping)
-                correct[name] += result.item_correct
-                ned[name] += result.item_ned
-            base = harness.run(majority_character, held, mapping=mapping, system="majority")
-            correct["majority_character"] += base.item_correct
-            ned["majority_character"] += base.item_ned
+                _collect(name, harness.comparative_reconstructor(), {})
+            _collect("majority_character", majority_character, {"system": "majority"})
     finally:
         # Diskteki (train'de öğrenilmiş) tablo bir sonraki kullanımda yeniden yüklensin.
         proto_phonology.reset_pattern_cache()
 
     n = len(correct["majority_character"])
-    summary = {s: {"exact": round(sum(correct[s]) / n, 4), "ned": round(sum(ned[s]) / n, 4)} for s in systems}
+    columns = {s: [item_columns(p) for p in pairs[s]] for s in systems}
+    summary = {
+        s: {
+            "exact": round(sum(correct[s]) / n, 4),
+            "ned": round(sum(ned[s]) / n, 4),
+            # Havuzlanmış 320 tahmin üzerinde, harness'in kullandığı ölçü.
+            "bcfs": reconstruction_bcubed([p for p in pairs[s] if p is not None])["fscore"],
+        }
+        for s in systems
+    }
     comparisons = {}
     for a, b in (("learned_table", "majority_character"), ("learned_table", "rules")):
         exact = bootstrap_metric_difference([float(x) for x in correct[a]], [float(x) for x in correct[b]])
         dist = bootstrap_metric_difference(ned[a], ned[b], lower_is_better=True)
-        comparisons[f"{a}-{b}"] = {"exact": exact, "ned": dist}
-    return {"dataset": dataset, "k": k, "n": n, "systems": summary, "comparisons": comparisons}
+        bcfs = bootstrap_bcubed_difference(columns[a], columns[b])
+        comparisons[f"{a}-{b}"] = {"exact": exact, "ned": dist, "bcfs": bcfs}
+    h2 = comparisons["learned_table-majority_character"]["bcfs"]
+    return {
+        "dataset": dataset,
+        "k": k,
+        "n": n,
+        "systems": summary,
+        "comparisons": comparisons,
+        # PREREGISTRATION H2: motor majority_character'ı B-Cubed F'de geçer —
+        # eşleşmiş bootstrap %95 GA sıfırı dışlar, motor lehine.
+        "h2": {
+            "criterion": "BCFS(motor) − BCFS(majority_character), eşleşmiş bootstrap %95 GA sıfırı dışlar, motor lehine",
+            "system": "learned_table",
+            "supported": bool(h2["a_is_better"]),
+        },
+    }
 
 
 def main() -> int:
@@ -145,11 +281,15 @@ def main() -> int:
     payload = run()
     print(f"\n=== rekonstrüksiyon · {payload['k']} katlı çapraz doğrulama · train+dev n={payload['n']} ===")
     for name, row in payload["systems"].items():
-        print(f"  {name:20} tam {row['exact']:.4f}   NED {row['ned']:.4f}")
+        print(f"  {name:20} tam {row['exact']:.4f}   NED {row['ned']:.4f}   BCFS {row['bcfs']:.4f}")
     for name, cmp in payload["comparisons"].items():
-        e, d = cmp["exact"], cmp["ned"]
+        e, d, b = cmp["exact"], cmp["ned"], cmp["bcfs"]
         print(f"  {name}: tam {e['difference']:+.4f} GA{e['ci95']} · NED {d['difference']:+.4f} "
-              f"GA{d['ci95']} {'ANLAMLI' if d['significant'] else 'anlamlı değil'}")
+              f"GA{d['ci95']} {'ANLAMLI' if d['significant'] else 'anlamlı değil'} · "
+              f"BCFS {b['difference']:+.4f} GA{b['ci95']} {'ANLAMLI' if b['significant'] else 'anlamlı değil'}")
+    h2 = payload["h2"]
+    print(f"\n  H2 (ön kayıt, BCFS'de majority_character'ı geçer): "
+          f"{'EVET — destekleniyor' if h2['supported'] else 'HAYIR — desteklenmiyor'}")
     out = EVAL_DIR / "crossval.json"
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     print(f"\nJSON: {out}")
