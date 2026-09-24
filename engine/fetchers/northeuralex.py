@@ -8,7 +8,8 @@ listesinin ötesine (~1.000 kavram) taşır.
 ⚠️ Aynı kavram akraba demek DEĞİLDİR: 'pencere' kavramının Kazakça biçimi
 *терезе*dir ve *pencere* ile akraba değildir. Bu yüzden aday, sorguya
 yazılışça da benzemelidir: ``cognate_clustering``'in ölçülmüş eşiği
-(normalize düzenleme benzerliği ≥ 0,50) kullanılır.
+(normalize düzenleme benzerliği ≥ 0,50) kullanılır; aday hem sorguyla
+hem de o dil için ses denklikleriyle TAHMİN edilen biçimle karşılaştırılır.
 
 ⚠️ Dil kodu çakışması: NorthEuraLex ``khk`` = Halha MOĞOLCASI; motorda
 ``khk`` = Hakasça. Eşleme açıkça yazılır, Moğol dilleri tanık yapılmaz.
@@ -38,6 +39,31 @@ LANGUAGES = {
 def _similarity(a: str, b: str) -> float:
     longest = max(len(a), len(b)) or 1
     return 1 - levenshtein(a, b) / longest
+
+
+@lru_cache(maxsize=1)
+def _predictor():
+    from engine.nlp.cognate_prediction import CognatePredictor
+
+    return CognatePredictor()
+
+
+def _predicted_forms(word: str) -> dict[str, str]:
+    """Türkçe kelimeden öğrenilmiş ses denklikleriyle tahmin edilen biçimler.
+
+    Çuvaşça düzenli ama büyük ses değişimleri geçirmiştir (göz ~ куҫ); ham
+    yazılış benzerliği gerçek akrabaları kaçırır. Ölçüldü (savelyevturkic,
+    Türkçe-Çuvaşça çiftleri, eşik 0,50): duyarlılık train 0,195 -> 0,598,
+    dev 0,261 -> 0,696; kesinlik 0,907 / 0,889.
+    """
+    try:
+        return {
+            p.language: to_comparison_form(p.form)
+            for p in _predictor().predict_all(word, "tr")
+            if p.form and p.confidence > 0
+        }
+    except Exception:
+        return {}
 
 
 @lru_cache(maxsize=1)
@@ -90,13 +116,16 @@ class NorthEuraLexFetcher(BaseFetcher):
         if not concepts:
             return result
         own = to_comparison_form(query)
+        predicted = _predicted_forms(query)
         seen: set[tuple[str, str]] = set()
         for concept in sorted(concepts):
             for code, form in by_concept.get(concept, []):
                 if code == "tr" or code not in TURKIC_LANGUAGES_MAP or (code, form) in seen or " " in form or "_" in form:
                     continue
                 comparison = to_comparison_form(form)
-                if not comparison or _similarity(own, comparison) < COGNATE_THRESHOLD:
+                expected = predicted.get(code, "")
+                score = max(_similarity(own, comparison), _similarity(expected, comparison) if expected else 0.0)
+                if not comparison or score < COGNATE_THRESHOLD:
                     continue  # aynı kavram, başka kök
                 seen.add((code, form))
                 entry = self.make_entry(code, form, glosses.get(concept, ""), script=detect_script(form))
