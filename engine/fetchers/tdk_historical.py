@@ -107,6 +107,15 @@ class TdkDerlemeFetcher(BaseFetcher):
                                 # taşıyor (Oğuz kolu sayımı için doğru); birleştirmede
                                 # TDK sözlük maddesinin yerini kapmasın diye işaretli.
                                 "dialect": True,
+                                # Ağız kaydı yazılışla (ve ses/kök varyantıyla)
+                                # bulunur; sorgunun anlamını taşıdığı ancak ANLAMLA
+                                # doğrulanır, yerel çağdaş dil adayları gibi (bkz.
+                                # `LOCAL_WITNESS_FLOOR`). Ölçüldü (105 kelimelik
+                                # denetim): 56 kelimede süzgeçsiz tanık vardı —
+                                # `kulluk` ~ kul "Ayakyolu, hela", `kurban` ~
+                                # "Peteğini yatay yapan bal arısı", `veri` ~
+                                # "Durmaksızın".
+                                "meaning_check": True,
                             })
         except Exception:
             logger.warning("%s: kaynak işlenemedi", self.source_name if hasattr(self, "source_name") else __name__, exc_info=True)

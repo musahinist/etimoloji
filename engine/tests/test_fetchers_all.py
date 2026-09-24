@@ -258,6 +258,20 @@ class TestTdkFetchers(unittest.TestCase):
         assert_contract(self, res, "TdkDerleme")
 
     @responses.activate
+    def test_tdk_derleme_entries_need_meaning_check(self):
+        """Ağız kaydı anlamla doğrulanmadan tanık olmaz (kurban ~ "bal arısı")."""
+        network.reset_session()
+        responses.add(
+            responses.GET,
+            re.compile(r"https://eski\.sozluk\.gov\.tr/derleme.*"),
+            json=[{"madde": "kurban", "anlam": "Peteğini yatay yapan bal arısı.", "sehir": "Isparta"}],
+        )
+        entries = TdkDerlemeFetcher().fetch("kurban")["turkic_languages"]
+        self.assertEqual(len(entries), 1)
+        self.assertTrue(entries[0]["meaning_check"])
+        self.assertTrue(entries[0]["dialect"])
+
+    @responses.activate
     def test_tdk_tarama_handles_not_found(self):
         """TDK 'Sonuç bulunamadı' hatasını bulgu sanmamalıdır."""
         network.reset_session()
