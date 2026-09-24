@@ -352,6 +352,22 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
 
     print("═" * 80 + "\n")
 
+def print_stage_timings(finding: dict[str, Any]) -> None:
+    """Aşama sürelerini standart hataya basar (``--json`` çıktısı temiz kalsın)."""
+    timings = (finding.get("diagnostics") or {}).get("stage_timings_ms") or {}
+    if not timings:
+        print("⏱  Aşama süresi yok (sonuç önbellekten geldi).", file=sys.stderr)
+        return
+    total = timings.get("total", 0)
+    print("⏱  Aşama süreleri:", file=sys.stderr)
+    for name, ms in timings.items():
+        if name != "total":
+            print(f"   {name:<16}{ms:>8} ms", file=sys.stderr)
+    covered = sum(ms for name, ms in timings.items() if name != "total")
+    share = f" (aşamalar toplamın %{100 * covered / total:.1f}'i)" if total else ""
+    print(f"   {'total':<16}{total:>8} ms{share}", file=sys.stderr)
+
+
 def main():
     parser = argparse.ArgumentParser(description="Türki Diller Etimoloji Araştırma Motoru CLI")
     subparsers = parser.add_subparsers(dest="command", help="Komutlar")
@@ -363,6 +379,8 @@ def main():
     search_parser.add_argument("--no-save", action="store_false", dest="save", help="Sonucu veritabanına kaydetme")
     search_parser.add_argument("--no-cache", action="store_false", dest="use_cache",
                                help="Önbellekteki eski bulguyu kullanma, yeniden araştır")
+    search_parser.add_argument("--timings", action="store_true",
+                               help="Aşama sürelerini (ms) standart hataya bas")
 
     validate_parser = subparsers.add_parser("validate", help="Bir etimoloji hipotezini A-HVP protokolü ile bilimsel olarak doğrular")
     validate_parser.add_argument("word", type=str, help="Hedef kelime")
@@ -406,6 +424,8 @@ def main():
                 print(json.dumps(finding, ensure_ascii=False, indent=2))
             else:
                 print_finding_formatted(finding)
+            if args.timings:
+                print_stage_timings(finding)
         except Exception as e:
             logger.error("Arama başarısız: %s", args.word, exc_info=True)
             print(f"❌ Arama başarısız: {type(e).__name__}. Ayrıntı için --verbose kullanın.", file=sys.stderr)

@@ -558,6 +558,7 @@ def default_fetchers() -> list[BaseFetcher]:
         ApertiumFetcher(),
         LocalProtoTurkicFetcher(),
         HistoricalModernLexiconFetcher(),
+        # Yerel tohum veri; canlı site yalnız ETY_LIVE_ISAM=1 ile (madde başı).
         IsamAnsiklopediFetcher(),
         *([ArchiveOrgFetcher()] if config.LIVE_ARCHIVE_ORG else []),
         OsmanlicaLugatFetcher(),
@@ -724,8 +725,17 @@ class SearchEngine:
         # Kaynak bazlı teşhis: hangi fetcher ne kadar sürdü, ne döndürdü, neden düştü.
         source_diagnostics: dict[str, dict[str, Any]] = {}
         stage_timings: dict[str, int] = {}
+        # Aşama süreleri ardışık "tur"larla ölçülür: her `_lap(ad)` bir önceki
+        # işaretten bu yana geçen süreyi o aşamaya yazar. Böylece aşamalar
+        # boşluksuz bitişir ve toplamları `total`a eşit olur (eskiden soğuk
+        # aramanın ~8 s'si hiçbir aşamaya yazılmıyordu).
+        _lap_mark = [search_started]
 
-        stage_start = time.perf_counter()
+        def _lap(name: str) -> None:
+            now = time.perf_counter()
+            stage_timings[name] = stage_timings.get(name, 0) + int((now - _lap_mark[0]) * 1000)
+            _lap_mark[0] = now
+
         stem, suffixes = analyze_morphology(word_clean)
 
         # Varyant patlamasını sınırla: her varyant 21 fetcher'a ayrı istek demek.
@@ -736,7 +746,7 @@ class SearchEngine:
                 "Varyant sayısı %d -> %d olarak sınırlandı (MAX_VARIANTS)",
                 len(all_variants), len(search_variants),
             )
-        stage_timings["morphology"] = int((time.perf_counter() - stage_start) * 1000)
+        _lap("morphology")
 
         if config.CACHE_ENABLED and use_cache and not use_qwen_agent:
             cached = self.db.get_finding(word_clean, max_age_seconds=config.CACHE_TTL_SECONDS)
@@ -744,6 +754,7 @@ class SearchEngine:
                 cached["from_cache"] = True
                 logger.info("Önbellekten döndürüldü: %r", word_clean)
                 return cached
+        _lap("cache_lookup")
 
         proto_root = ""
         # Kökün NEREDEN geldiği: sözlükten alıntılanan bilgi ile motorun kendi
@@ -800,7 +811,6 @@ class SearchEngine:
         # vermiyorsa başlıkta gösterilir; bkz. aşağıdaki kaynak kökü adımı).
         starling_root = ""
 
-        stage_start = time.perf_counter()
         with concurrent.futures.ThreadPoolExecutor(max_workers=config.MAX_WORKERS) as executor:
             future_to_fetcher = {executor.submit(fetch_worker, f): f for f in self.fetchers}
             for future in concurrent.futures.as_completed(future_to_fetcher):
@@ -876,7 +886,7 @@ class SearchEngine:
                         "result_count": 0,
                         "errors": [f"{type(exc).__name__}: {exc}"],
                     }
-        stage_timings["fetch"] = int((time.perf_counter() - stage_start) * 1000)
+        _lap("fetch")
 
         # Ana anlam SABİT bir öncelikle seçilir: ölçünlü TDK sözlüğü önce,
         # sonra fetcher portföyünün sırası. Bitiş sırası artık belirleyici değil.
@@ -985,8 +995,7 @@ class SearchEngine:
                 if m and not m.startswith("Online") and m != word_clean and not is_cross_reference(m):
                     root_meaning = m
                     break
-
-        stage_start = time.perf_counter()
+        _lap("witness_filter")
 
         # Katman 2 (çapraz lehçe yayılımı) önce hesaplanır; Katman 1'e girdi olur.
         cognate_eval = self.cognate_alignment_engine.evaluate_cognate_distribution(word_clean, sorted_entries)
@@ -1204,7 +1213,7 @@ class SearchEngine:
             elif "1901" in lname or "Kamus-ı Türkî" in lname or "13.-19." in lname or "Osmanlıca Lügat" in lname:
                 timeline.append(f"19. YY (Osmanlıca / Lehçe-i Osmanî / Kamus-ı Türkî): {entry.get('word')}")
 
-        stage_timings["nlp"] = int((time.perf_counter() - stage_start) * 1000)
+        _lap("nlp")
 
         morphology_info = f"Kök: {stem} + Ekler: {', '.join(suffixes)}" if suffixes else "Yalın Kök"
         # Sorgu kelimesinin yapısını açıkça veren sözlük maddesi ("biti- + -g").
@@ -1220,6 +1229,7 @@ class SearchEngine:
             morphology_info = f"{formation_entry['formation']} (sözlük maddesine göre)"
         related_cognates = get_related_cognates(word_clean, sorted_entries)
 
+        _lap("report")
         # 5. Neo4j Uyumlu Graf Veritabanı Düğüm Şeması Oluşturma
         graph_export = self.graph_db.build_etymology_graph(
             word=word_clean,
@@ -1228,6 +1238,7 @@ class SearchEngine:
             attestations=timeline,
             cognates=related_cognates
         )
+        _lap("graph")
 
         # ⚠️ BAŞLIK İLE HÜKÜM AYRI KAYNAKLARDAN BESLENİYORDU.
         #
@@ -1316,12 +1327,14 @@ class SearchEngine:
         origin_layers = _origin_layers(sorted_entries, word_clean, formation_entry)
         source_proto = _source_proto_forms(sorted_entries)
 
+        _lap("headline")
         # (Sorgu TDK'da yoksa) ters bağlantılı maddelerin canlı sonuçları.
         # ⚠️ Anlam seçiminden ve skorlardan SONRA: yalnız rapor.
         if _PRIMARY_MEANING_SOURCE not in meanings_by_source:
             for source_name, meaning in self._consult_descendants(word_clean, etymology_mentions):
                 bucket = meanings_by_source.setdefault(source_name, [])
                 _add_meaning(bucket, meaning)
+        _lap("descendants")
 
         finding = {
             "query_word": word_clean,
@@ -1371,10 +1384,10 @@ class SearchEngine:
             "from_cache": False,
         }
 
+        _lap("assemble")
         if use_qwen_agent:
-            stage_start = time.perf_counter()
             finding = self.qwen_agent.research_and_enrich(word_clean, finding)
-            stage_timings["ai_enrichment"] = int((time.perf_counter() - stage_start) * 1000)
+            _lap("ai_enrichment")
 
         # Gerçek telemetri: web panelindeki sahte setTimeout simülasyonunun yerini alır.
         stage_timings["total"] = int((time.perf_counter() - search_started) * 1000)

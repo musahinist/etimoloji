@@ -129,6 +129,7 @@ def reset_session() -> None:
 PERSISTENT_CACHE_HOSTS = frozenset({
     "sozluk.gov.tr", "www.nisanyansozluk.com", "nisanyansozluk.com",
     "www.etimolojiturkce.com", "etimolojiturkce.com",
+    "islamansiklopedisi.org.tr",
 })
 #: Testler bunu kapatır (bkz. ``engine/tests/conftest.py``).
 _persistent_enabled = HTTP_CACHE

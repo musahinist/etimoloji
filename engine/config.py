@@ -102,6 +102,10 @@ LIVE_WIKTIONARY_EDITIONS = _env_bool("LIVE_WIKTIONARY_EDITIONS", False)
 # kaikki dökümlerinde (indeks + Proto-Türkçe torunları). Wikimedia 503/hız
 # sınırı ve sayfa ayrıştırma hataları (`parça` -> *bar) canlı yolun bedeliydi.
 LIVE_WIKTIONARY = _env_bool("LIVE_WIKTIONARY", False)
+# Canlı TDV İslâm Ansiklopedisi madde sayfası. Varsayılan KAPALI: yerel tohum
+# veri her zaman okunur; canlı yol ölçümde sıcak aramanın 6,1/6,3 s'sini
+# yiyordu (4 varyant × istek) ve eşleştirmesi gürültülüydü.
+LIVE_ISAM = _env_bool("LIVE_ISAM", False)
 # Archive.org tam metin araması. Varsayılan KAPALI: ölçümlerde tanık üretmedi.
 LIVE_ARCHIVE_ORG = _env_bool("LIVE_ARCHIVE_ORG", False)
 CACHE_TTL_SECONDS = _env_int("CACHE_TTL_SECONDS", 7 * 24 * 3600)
