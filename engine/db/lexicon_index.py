@@ -628,6 +628,23 @@ def iter_entries(path: Path, lang_code: str, *, skip_form_of: bool = False) -> I
             )
 
 
+def _within_one(a: str, b: str) -> int:
+    """Levenshtein uzaklığı 0 ya da 1 ise onu, değilse 2 döndürür (O(n))."""
+    if a == b:
+        return 0
+    la, lb = len(a), len(b)
+    if abs(la - lb) > 1:
+        return 2
+    if la > lb:
+        a, b, la, lb = b, a, lb, la
+    i = 0
+    while i < la and a[i] == b[i]:
+        i += 1
+    if la == lb:
+        return 1 if a[i + 1:] == b[i + 1:] else 2  # tek değiştirme
+    return 1 if a[i:] == b[i + 1:] else 2  # tek ekleme
+
+
 class LexiconIndex:
     """FTS5 destekli yerel sözlük indeksi."""
 
@@ -808,10 +825,20 @@ class LexiconIndex:
 
         from engine.evaluation.metrics import edit_distance
 
+        # ⚠️ Tam Levenshtein tablosu her aday için hesaplanıyordu: ölçüldü,
+        # 30 kelimede 1.041.766 çağrı, sürenin %97'si (indeks 449 bin kayıt;
+        # `make eval-borrowing` 16 -> 35 dk). Uzaklık ≤ 1 sorusu tek geçişte
+        # cevaplanır; sonuç birebir aynıdır.
+        within = _within_one if max_distance == 1 else None
+
         results: list[dict[str, Any]] = []
         with self.connect() as connection:
             for row in connection.execute(query, params):
-                distance = edit_distance(comparison, row["comparison"])
+                candidate = row["comparison"]
+                if within is not None:
+                    distance = within(comparison, candidate)
+                else:
+                    distance = edit_distance(comparison, candidate)
                 if distance <= max_distance:
                     entry = dict(row)
                     entry["edit_distance"] = distance

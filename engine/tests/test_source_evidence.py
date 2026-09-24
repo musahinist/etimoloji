@@ -122,3 +122,17 @@ class TestNewLocalSources(unittest.TestCase):
         with mock.patch.object(northeuralex, "_load", return_value=data):
             words = [e["word"] for e in northeuralex.NorthEuraLexFetcher().fetch("pencere")["turkic_languages"]]
         self.assertEqual(words, ["pəncərə"])
+
+
+class TestWithinOne(unittest.TestCase):
+    def test_matches_full_edit_distance(self):
+        import random
+
+        from engine.db.lexicon_index import _within_one
+        from engine.evaluation.metrics import edit_distance
+
+        rng = random.Random(0)
+        for _ in range(2000):
+            a = "".join(rng.choice("abç") for _ in range(rng.randint(0, 5)))
+            b = "".join(rng.choice("abç") for _ in range(rng.randint(0, 5)))
+            self.assertEqual(_within_one(a, b), min(edit_distance(a, b), 2), (a, b))
