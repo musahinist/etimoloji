@@ -15,6 +15,7 @@ from engine.nlp.hypothesis_ranking import (
     HypothesisRanker,
     RankedHypotheses,
 )
+from engine.tests.data_guards import needs_index
 
 
 def h(kind, score, **kwargs):
@@ -90,6 +91,7 @@ class TestRankerEndToEnd(unittest.TestCase):
     def setUp(self):
         self.ranker = HypothesisRanker()
 
+    @needs_index
     def test_borrowing_wins_for_a_known_loanword(self):
         entries = [{"lang_code": c, "word": w} for c, w in
                    [("kk", "kitap"), ("tt", "kitap"), ("uz", "kitob")]]

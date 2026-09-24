@@ -14,6 +14,7 @@ from engine.nlp.hypothesis_validation_protocol import (
     PhoneticChainVerifier,
     SemanticDriftEvaluator,
 )
+from engine.tests.data_guards import needs_panphon
 
 
 def make_entries(pairs, origin="live", source="TestSource"):
@@ -70,6 +71,7 @@ class TestHypothesisValidationProtocol(unittest.TestCase):
         )
         self.assertIsNone(report["stage_breakdown"]["stage2_time_lock"]["score"])
 
+    @needs_panphon
     def test_well_attested_etymology_scores_high(self):
         """Gerçek, çok tanıklı bir etimoloji yüksek skor ve kapsam almalıdır."""
         report = self.protocol.validate_hypothesis(

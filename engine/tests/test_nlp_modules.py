@@ -24,6 +24,7 @@ from engine.nlp.neologism_detector import NeologismDetector
 from engine.nlp.reconstruction import ProtoTurkicReconstructor
 from engine.nlp.sound_law_induction import SoundLawInductionEngine
 from engine.nlp.unsupervised_morpheme_segmenter import UnsupervisedMorphemeSegmenter
+from engine.tests.data_guards import needs_index
 
 
 def entries(pairs, origin="live"):
@@ -53,6 +54,7 @@ class TestAttestedLoanBlocksReconstruction(unittest.TestCase):
     #: ters yönlü "alıntı" kaydı var, çekirdek Ortak Türkçe).
     PROTECTED = ("gül", "yaz", "öküz", "göz", "bardak", "deniz", "su", "çay", "kat")
 
+    @needs_index
     def test_traps_are_blocked(self):
         from engine.nlp.borrowing_detector import BorrowingDetector
 
@@ -69,6 +71,7 @@ class TestAttestedLoanBlocksReconstruction(unittest.TestCase):
             with self.subTest(word=w):
                 self.assertFalse(d.detect(w).blocks_inherited_reconstruction, w)
 
+    @needs_index
     def test_blocked_trap_yields_no_root(self):
         """Engellenen kelimeye ata biçim ÜRETİLMEMELİ."""
         from engine.nlp.comparative_reconstruction import ComparativeReconstructor
@@ -82,6 +85,7 @@ class TestAttestedLoanBlocksReconstruction(unittest.TestCase):
         self.assertFalse(res.get("is_reconstructible"))
         self.assertEqual(res.get("reconstructed_root"), "")
 
+    @needs_index
     def test_infinitive_evidence_rescues_homonym(self):
         """`gül` indekste yalnız alıntı görünür; miras kanıtı `gülmek`tedir."""
         from engine.nlp.borrowing_detector import _index_attests_loan
@@ -123,6 +127,7 @@ class TestWitnessAttestationDiagnostic(unittest.TestCase):
     içindeki notta.
     """
 
+    @needs_index
     def test_fabricated_witnesses_report_zero(self):
         from engine.nlp.comparative_reconstruction import ComparativeReconstructor
 
@@ -137,6 +142,7 @@ class TestWitnessAttestationDiagnostic(unittest.TestCase):
         # Engellemez: kök yine üretilir, yalnız dayanaksızlığı görünür olur.
         self.assertTrue(res.get("reconstructed_root"))
 
+    @needs_index
     def test_real_witnesses_report_positive(self):
         from engine.nlp.comparative_reconstruction import ComparativeReconstructor
 
@@ -296,6 +302,7 @@ class TestLoanwordClassifier(unittest.TestCase):
             with self.subTest(word=w):
                 self.assertGreaterEqual(c.classify(w)["probabilities"]["p_native_turkic"], 0.55, w)
 
+    @needs_index
     def test_attestation_overrides_phonotactics(self):
         """Tamamen Türkçeleşmiş alıntıları fonotaktik göremez, sözlük söyler.
 
@@ -327,6 +334,7 @@ class TestLoanwordClassifier(unittest.TestCase):
                     c.classify(w)["probabilities"]["p_native_turkic"], 0.55, w
                 )
 
+    @needs_index
     def test_genuine_balkan_loans_still_detected(self):
         """Ters-yön listesi gerçek Balkan alıntılarını kırmamalı."""
         c = LoanwordClassifier()
@@ -399,6 +407,7 @@ class TestBorrowingLineageFilter(unittest.TestCase):
             self.assertNotIn("zincir_kanıtı", fired, w)
             self.assertFalse(verdict.donor_language, w)
 
+    @needs_index
     def test_real_loans_still_detected(self):
         """Süzgeç gerçek alıntıyı öldürmemeli.
 
@@ -501,6 +510,7 @@ class TestHistoricalMorphology(unittest.TestCase):
         self.assertEqual(toplumsal["root"], "toplum")
         self.assertEqual(toplumsal["depth"], 1)
 
+    @needs_index
     def test_derivation_formula_opens_strip(self):
         """Kaynağın kendi türetme formülü soymayı açmalı; formül yoksa açmamalı.
 
@@ -530,6 +540,7 @@ class TestHistoricalMorphology(unittest.TestCase):
         self.assertEqual(a.build_tree("adaletsizlik")["root"], "adaletsiz")
         self.assertEqual(a.build_tree("eczacı")["root"], "ecza")
 
+    @needs_index
     def test_deverbal_gate_blocks_nonverb_stems(self):
         """Fiilden türeten ek FİİL kök ister.
 

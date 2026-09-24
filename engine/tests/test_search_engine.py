@@ -14,6 +14,7 @@ import unittest
 from engine import config
 from engine.db.database import DatabaseManager
 from engine.search_engine import SearchEngine, default_fetchers, translate_meaning
+from engine.tests.data_guards import needs_torch
 from engine.tests.fakes import EmptyFetcher, FailingFetcher, FakeFetcher
 
 GOZ_FORMS = [("tr", "göz"), ("az", "göz"), ("kk", "көз"), ("tt", "күз"),
@@ -350,6 +351,7 @@ class TestHomonymFilter(unittest.TestCase):
         cands = [{"word": "x", "meaning": "to sow"}]
         self.assertEqual(_homonym_filter(cands, []), (cands, []))
 
+    @needs_torch
     def test_low_similarity_is_dropped(self):
         from unittest import mock
 

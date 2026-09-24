@@ -10,6 +10,7 @@ from engine.fetchers.wiktextract_local import WiktextractFetcher
 from engine.nlp.cldf_lingpy_aligner import CldfLingPyAligner
 from engine.nlp.diachronic_semantic_engine import DiachronicSemanticEngine
 from engine.nlp.phonological_feature_engine import PhonologicalFeatureEngine
+from engine.tests.data_guards import needs_panphon
 
 
 class TestNewScientificModules(unittest.TestCase):
@@ -21,6 +22,7 @@ class TestNewScientificModules(unittest.TestCase):
         self.cldf_exporter = CldfExporter()
         self.wiktextract = WiktextractFetcher()
 
+    @needs_panphon
     def test_panphon_articulatory_feature_vector(self):
         """Gerçek PanPhon artikülatör özellik vektörleri ve mesafe testi.
 

@@ -33,6 +33,7 @@ from engine.nlp.donor_etymology_database import (
 from engine.nlp.donor_lexicon import DonorLexicon
 from engine.nlp.phonological_feature_engine import PhonologicalFeatureEngine, to_ipa
 from engine.tests.conftest import load_http_fixture
+from engine.tests.data_guards import needs_pdfminer
 from engine.utils import network
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -162,12 +163,14 @@ class TestCliFormatting(unittest.TestCase):
 class TestPdfScanning(unittest.TestCase):
     """Gerçek PDF tam metin taraması (eski sürüm hiç PDF okumuyordu)."""
 
+    @needs_pdfminer
     def test_extracts_text_from_real_pdf(self):
         pdf = FIXTURES / "test_turkoloji.pdf"
         self.assertTrue(pdf.exists(), "test PDF fixture yok")
         text = extract_pdf_text(pdf)
         self.assertIn("deniz", text.lower())
 
+    @needs_pdfminer
     def test_fetcher_finds_word_in_pdf(self, ):
         fetcher = LocalPdfBooksFetcher(books_dir=FIXTURES)
         self.assertFalse(fetcher.is_seed_source, "PDF varken tohum kaynak sayılmamalı")
