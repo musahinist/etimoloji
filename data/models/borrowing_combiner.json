@@ -9,14 +9,14 @@
     "değişimsiz_yayılım"
   ],
   "weights": {
-    "zincir_kanıtı": 1.17256,
-    "verici_yakınlığı": 1.54996,
-    "fonotaktik_model": 0.857685,
-    "ses_kanunu_ihlali": -0.270695,
-    "fonotaktik_ihlal": 0.135172,
-    "değişimsiz_yayılım": -0.046757
+    "zincir_kanıtı": 1.164909,
+    "verici_yakınlığı": 1.543232,
+    "fonotaktik_model": 0.849852,
+    "ses_kanunu_ihlali": -0.228371,
+    "fonotaktik_ihlal": 0.492828,
+    "değişimsiz_yayılım": -0.042591
   },
-  "bias": -1.982421,
+  "bias": -1.974318,
   "threshold": 0.39,
   "objective": "fscore",
   "l1": 0.0,
@@ -31,5 +31,5 @@
   "selection": {},
   "trained_on": "wold/sah/tune",
   "n": 385,
-  "trained_at": "2026-09-24T09:43:49+00:00"
+  "trained_at": "2026-09-24T17:57:48+00:00"
 }

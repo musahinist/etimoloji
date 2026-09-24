@@ -900,6 +900,17 @@ class BorrowingDetector:
         """
         comparison = to_comparison_form(word)
         match = nearest_donor(comparison, sense, languages=donors)
+        # ⚠️ Rampa (SCA 0,35–0,60, şans denetimsiz) BİLEREK duruyor — ikili güç
+        # denendi ve kabul ölçütünü geçmedi. AYAR yarısında rampa maddelerinin
+        # alıntı oranı tabanın altındaydı (Saha 401 madde 0,187 / taban 0,277;
+        # Türkçe 127 madde 0,252 / 0,603) ve rampaya şans denetimi eklemek
+        # kurtarmıyordu (denetimi geçen rampa Saha 21 madde 0,19; dil
+        # null'ının 0,1 altı 62 madde 0,26). Ama birleştirici rampayı zaten
+        # küçük ağırlıkla kullanıyor; güç ikili yapılınca (``match.is_close``)
+        # Türkçe altın F 0,8873 -> 0,8765 (eşleşmiş fark −0,011, %95 GA
+        # [−0,028, +0,006]) — "Türkçe F düşmemeli" ölçütü nedeniyle geri
+        # alındı. Ayrıca ``make eval-donor`` etiketi yalnız ateşlenen
+        # maddelere kalınca 0,714 -> 0,552 düşüyordu (etiket ayrıca tutulmalı).
         strength = proximity_strength(match)
         if match is None or strength <= 0.0:
             return Signal(
