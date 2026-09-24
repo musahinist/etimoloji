@@ -36,6 +36,13 @@ yanlış 48 · ek soyulmamış 38 · ünlü uzunluğu 22 · çapa kısa 16. Tahm
   altının kendisi tutarsız: Oğuz tanıkları çoğunlukla d- iken altın 11 kez
   *d, 8 kez *t; g- iken 5 kez *g, 7 kez *k. Kural yazı-tura düzeyinde
   kalır (d için ~+3, g için ~−2 madde) ve 320 maddeye uydurulmuş olur.
+
+Aday listesi tavanı (konformal kümeler için üst sınır): doğru cevabın N-best
+listesinde bulunma oranı 5 adayda 0,309, 20'de 0,316, 100'de 0,334, 500'de
+0,338 (top-1 0,272). Adaylar aynı iskelette sütun sütun ses değiştirerek
+üretildiği için uzunluk hatalarını (%35) hiç kapsamaz; "%80 kapsama
+garantili" aday kümesi bu üreteçle MÜMKÜN DEĞİLDİR. Darboğaz küme seçimi
+değil, aday üretimidir.
 """
 
 from __future__ import annotations
