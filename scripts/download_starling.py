@@ -12,6 +12,7 @@ dosyasında commit edilir.
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import io
 import json
@@ -34,7 +35,31 @@ def _sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def main() -> int:
+def is_current(directory: Path) -> bool:
+    """Künyedeki tüm tablolar diskte VE SHA-256'ları aynı mı?
+
+    ``_provenance.json`` commit edilir, tablolar edilmez; taze klonda künye
+    olur ama veri olmaz. Atlama kararı dosyaların kendisine bakar.
+    """
+    provenance_path = directory / "_provenance.json"
+    if not provenance_path.exists():
+        return False
+    files = json.loads(provenance_path.read_text(encoding="utf-8")).get("files") or {}
+    return bool(files) and all(
+        (directory / name).is_file()
+        and _sha256((directory / name).read_bytes()) == info.get("sha256")
+        for name, info in files.items()
+    )
+
+
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(description="Starling Altay paketi indirici")
+    ap.add_argument("--force", action="store_true", help="mevcut olsa bile yeniden indir")
+    args = ap.parse_args(argv)
+    if not args.force and is_current(STARLING_DIR):
+        print(f"Starling: zaten var, SHA-256 künyeyle aynı (--force ile yeniden indirilir) -> {STARLING_DIR}")
+        return 0
+
     response = requests.get(URL, timeout=120, headers={"User-Agent": "turkic-etymology-engine/3.0 (+research)"})
     response.raise_for_status()
     archive = response.content

@@ -127,6 +127,18 @@ def _sha256(path: Path) -> str:
     return h.hexdigest()
 
 
+def is_current(directory: Path, files: dict[str, dict[str, Any]]) -> bool:
+    """Künyedeki her dosya var VE SHA-256'sı aynı mı?
+
+    ``_provenance.json`` repoya commit edilir, CSV'ler git-ignore'dadır; taze
+    klonda künye var ama veri yoktur. Atlama kararı dosyaların kendisine bakar.
+    """
+    return bool(files) and all(
+        (directory / name).is_file() and _sha256(directory / name) == info.get("sha256")
+        for name, info in files.items()
+    )
+
+
 def _resolve_ref(
     repo: str, ref: str, session: requests.Session, *, org: str = DEFAULT_ORG
 ) -> tuple[str, str]:
@@ -157,8 +169,11 @@ def download(name: str, *, force: bool = False, session: requests.Session | None
 
     provenance_path = target / "_provenance.json"
     if provenance_path.exists() and not force:
-        print(f"[{name}] zaten var (yeniden indirmek için --force)")
-        return json.loads(provenance_path.read_text(encoding="utf-8"))
+        existing = json.loads(provenance_path.read_text(encoding="utf-8"))
+        if is_current(target, existing.get("files") or {}):
+            print(f"[{name}] zaten var, SHA-256 künyeyle aynı (yeniden indirmek için --force)")
+            return existing
+        print(f"[{name}] künye var ama veri dosyaları eksik/uyuşmuyor; indiriliyor")
 
     org = spec.get("org", DEFAULT_ORG)
     ref, sha = _resolve_ref(name, spec["ref"], session, org=org)

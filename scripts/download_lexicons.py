@@ -188,9 +188,19 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def is_current(path: Path, expected_sha: str | None) -> bool:
+    """Dosya var VE SHA-256'sı künyedekiyle aynı mı?
+
+    Künye (``*.provenance.json``) repoya commit edilir ama veri dosyası
+    git-ignore'dadır; bu yüzden taze bir klonda künye var, veri yoktur.
+    Atlama kararı künyenin varlığına değil, dosyanın kendisine bakmalı.
+    """
+    return bool(expected_sha) and path.is_file() and _sha256(path) == expected_sha
+
+
 def remote_size(name: str, session: requests.Session) -> int:
     try:
-        response = session.head(URL.format(name=name), timeout=30, allow_redirects=True)
+        response = session.head(kaikki_url(name), timeout=30, allow_redirects=True)
         return int(response.headers.get("content-length", 0))
     except (requests.RequestException, ValueError):
         return 0
@@ -222,8 +232,11 @@ def download(
     provenance_path = directory / f"{code}.provenance.json"
 
     if provenance_path.exists() and not force:
-        print(f"[{name}] zaten var (--force ile yeniden indirilir)")
-        return json.loads(provenance_path.read_text(encoding="utf-8"))
+        existing = json.loads(provenance_path.read_text(encoding="utf-8"))
+        if is_current(target, existing.get("sha256_stored")):
+            print(f"[{name}] zaten var, SHA-256 künyeyle aynı (--force ile yeniden indirilir)")
+            return existing
+        print(f"[{name}] künye var ama veri dosyası yok ya da SHA-256 uyuşmuyor; indiriliyor")
 
     url = RU_EDITION.format(name=quote(name)) if ru_edition else kaikki_url(name)
     print(f"[{name}] indiriliyor -> {target.name}")
@@ -316,8 +329,14 @@ def download_tr_edition(*, session: requests.Session, force: bool = False) -> di
     directory = LEXICON_DIR / TR_SUBDIR
     provenance_path = directory / "_provenance.json"
     if provenance_path.exists() and not force:
-        print("[tr sürümü] zaten var (--force ile yeniden indirilir)")
-        return json.loads(provenance_path.read_text(encoding="utf-8"))["entries"]
+        existing = json.loads(provenance_path.read_text(encoding="utf-8"))
+        files = existing.get("files") or {}
+        if files and all(
+            is_current(directory / f"{code}.jsonl.gz", sha) for code, sha in files.items()
+        ):
+            print("[tr sürümü] zaten var, SHA-256 künyeyle aynı (--force ile yeniden indirilir)")
+            return existing["entries"]
+        print("[tr sürümü] künye var ama veri dosyaları eksik/uyuşmuyor; indiriliyor")
     directory.mkdir(parents=True, exist_ok=True)
     raw = directory / "_raw.jsonl.gz"
     print(f"[tr sürümü] indiriliyor -> {raw}")

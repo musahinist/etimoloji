@@ -1,5 +1,5 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-cv audit eval-llm eval-prediction starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify apertium semantic dialect
+        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-cv audit eval-llm eval-prediction starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify apertium semantic dialect bootstrap
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -41,6 +41,7 @@ help:
 	@echo "apertium       - Apertium iki dilli Türk dili sözlüklerini indir"
 	@echo "starling       - Starling Türk/Moğol etimoloji tablolarını indir (Dybo & Starostin 2005)"
 	@echo "calibrate      - Güven kalibratörünü TRAIN bölümünde eğit"
+	@echo "bootstrap      - Taze klonda tüm veriyi indir ve kur (data+lexicons+tr+index+donors+starling+apertium+gold+patterns)"
 	@echo ""
 	@echo "serve       - REST API sunucusu"
 	@echo "web         - Web panelini yayınla (localhost:3000)"
@@ -177,6 +178,15 @@ serve:
 
 web:
 	cd web && npx serve -l 3000 .
+
+# Taze klondan tüm yerel veriyi kurar (~800 MB). İndiriciler, veri dosyası
+# diskte VE SHA-256'sı künyeyle aynıysa atlar; tekrar koşmak ucuzdur.
+# Türkçe sürüm (--tr) indeksten ÖNCE iner ki indekse girsin. `calibrate`
+# dahil değil: commit edilmiş data/calibration/model.json'u yeniden yazar.
+bootstrap:
+	$(MAKE) data lexicons
+	.venv/bin/python scripts/download_lexicons.py --tr
+	$(MAKE) lexicon-index donors starling apertium gold patterns
 
 clean:
 	find . -type d -name __pycache__ -prune -exec rm -rf {} +
