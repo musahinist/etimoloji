@@ -19,6 +19,7 @@ from engine.nlp.borrowing_combiner import (
     SIGNAL_ORDER,
     BorrowingCombiner,
     fit,
+    fit_nested,
     load,
     save,
 )
@@ -97,6 +98,89 @@ class TestThresholdObjective(unittest.TestCase):
         self.assertNotEqual(model.threshold, 0.5)
 
 
+def _noisy_samples(n: int = 160) -> list[tuple[dict[str, float], bool]]:
+    """``verici_yakınlığı`` bilgilendirici; ``fonotaktik_ihlal`` saf gürültü
+    ama değişken — sabit gürültü L1'in sınaması için fazla kolay."""
+    out: list[tuple[dict[str, float], bool]] = []
+    for i in range(n):
+        borrowed = i % 3 == 0
+        out.append(
+            (
+                {
+                    "verici_yakınlığı": (0.9 if borrowed else 0.1) if i % 7 else 0.5,
+                    "fonotaktik_ihlal": 1.0 if (i * 7919) % 11 < 5 else 0.0,
+                },
+                borrowed,
+            )
+        )
+    return out
+
+
+class TestL1(unittest.TestCase):
+    """L1 katkısız sinyalin katsayısını **tam sıfıra** indirir; L2 yalnız
+    küçültür. WOLD/Sakha'da ``fonotaktik_ihlal``'ı çıkarmak F'yi artırıyordu."""
+
+    def test_l1_zeroes_the_noise_signal(self):
+        model = fit(_noisy_samples(), trained_on="t", l1=0.05)
+        self.assertEqual(model.weights["fonotaktik_ihlal"], 0.0)
+        self.assertGreater(model.weights["verici_yakınlığı"], 0.0)
+
+    def test_inactive_signal_stays_zero(self):
+        model = fit(_samples(), trained_on="t", active=("verici_yakınlığı",))
+        self.assertEqual(model.weights["değişimsiz_yayılım"], 0.0)
+        self.assertEqual(model.active, ("verici_yakınlığı",))
+
+    def test_unknown_signal_is_refused(self):
+        with self.assertRaises(ValueError):
+            fit(_samples(), trained_on="t", active=("yok_böyle",))
+
+    def test_given_threshold_is_kept(self):
+        """İç ÇD'de seçilen eşik eğitim verisinde yeniden aranmamalı."""
+        self.assertEqual(fit(_samples(), trained_on="t", threshold=0.42).threshold, 0.42)
+
+
+#: Testte küçük ızgara ve az yineleme: yöntem sınanıyor, sayı değil.
+_FAST = {"trained_on": "test/tune", "iterations": 400, "l1_grid": (0.0, 0.03), "folds": 3}
+
+
+class TestNestedCV(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.model = fit_nested(_noisy_samples(), **_FAST)
+
+    def test_noise_signal_is_eliminated(self):
+        """Daha az sinyalle aynı skor bir kazançtır."""
+        self.assertNotIn("fonotaktik_ihlal", self.model.active)
+        self.assertIn("verici_yakınlığı", self.model.active)
+
+    def test_never_fired_signal_is_not_a_candidate(self):
+        """Türkçede zincir kapalı: hiç ateşlenmeyen sinyal seçime girmez."""
+        self.assertNotIn("zincir_kanıtı", self.model.selection["trail"][0]["signals"])
+
+    def test_selection_is_recorded(self):
+        record = self.model.as_dict()
+        self.assertIn("trail", record["selection"])
+        self.assertIn("l1", record)
+        self.assertIn("active_signals", record)
+
+    def test_folds_are_stratified(self):
+        """⚠️ ``sıra mod kat`` ataması, her üçüncü madde alıntıyken 3 katta
+        bir katı yalnız alıntılarla doldurup iç ÇD skorunu 0'a düşürüyordu."""
+        from engine.nlp.borrowing_combiner import _stratified_folds
+
+        samples = _noisy_samples(30)
+        assignment = _stratified_folds(samples, 3)
+        for fold in range(3):
+            labels = {label for (_, label), f in zip(samples, assignment, strict=True) if f == fold}
+            self.assertEqual(labels, {True, False})
+        self.assertGreater(self.model.selection["cv_score"], 0.5)
+
+    def test_nested_is_deterministic(self):
+        again = fit_nested(_noisy_samples(), **_FAST)
+        self.assertEqual(self.model.weights, again.weights)
+        self.assertEqual(self.model.threshold, again.threshold)
+
+
 class TestPersistence(unittest.TestCase):
     def setUp(self):
         self._tmp = TemporaryDirectory()
@@ -112,6 +196,13 @@ class TestPersistence(unittest.TestCase):
         self.assertIsNotNone(loaded)
         self.assertAlmostEqual(loaded.bias, model.bias, places=6)
         self.assertEqual(loaded.trained_on, "test/tune")
+
+    def test_round_trip_keeps_selection(self):
+        model = fit(_samples(), trained_on="t", l1=0.01, active=("verici_yakınlığı",))
+        save(model, self.path)
+        loaded = load(self.path)
+        self.assertEqual(loaded.active, ("verici_yakınlığı",))
+        self.assertEqual(loaded.l1, 0.01)
 
     def test_missing_file_returns_none(self):
         self.assertIsNone(load(self.path))
@@ -159,6 +250,23 @@ class TestDetectorIntegration(unittest.TestCase):
                 verdict.trained_probability = probability
                 verdict._trained_threshold = 0.33
                 self.assertEqual(verdict.is_borrowed, verdict.verdict == "alıntı")
+
+
+class TestWoldDonorField(unittest.TestCase):
+    """⚠️ Verici ``Borrowed_base``'den okunuyordu; o alan Sakha'da hep boş.
+    Doğru alan ``borrowings.csv`` / ``Source_languoid``."""
+
+    def test_borrowed_sakha_cases_carry_a_donor(self):
+        from engine.evaluation.borrowing_eval import load_wold_cases
+
+        cases = load_wold_cases(with_witnesses=False)
+        if not cases:
+            self.skipTest("WOLD indirilmemiş")
+        borrowed = [c for c in cases if c.is_borrowed]
+        with_donor = [c for c in borrowed if c.donor]
+        self.assertGreater(len(with_donor), 0.9 * len(borrowed))
+        self.assertIn("Russian", {c.donor for c in with_donor})
+        self.assertFalse(any(c.donor for c in cases if not c.is_borrowed))
 
 
 if __name__ == "__main__":

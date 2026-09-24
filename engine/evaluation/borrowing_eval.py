@@ -245,6 +245,21 @@ def load_wold_cases(
                     row.get("Concepticon_Gloss") or row.get("Name") or ""
                 ).strip()
 
+    # ⚠️ Verici dili ``forms.csv``'nin ``Borrowed_base`` alanında DEĞİL:
+    # o alan Sakha'da hep boş (serbest not alanı). Doğrudan kaynak
+    # ``borrowings.csv``'deki ``Source_relation = immediate`` satırının
+    # ``Source_languoid``'idir (bkz. ``donor_id_eval.load_cases``).
+    # Alan hiçbir sinyale girmez — yalnız künye; F bundan etkilenmez.
+    donors: dict[str, str] = {}
+    borrowings_path = directory / "borrowings.csv"
+    if borrowings_path.exists():
+        with borrowings_path.open(encoding="utf-8", newline="") as handle:
+            for row in csv.DictReader(handle):
+                if row.get("Source_relation") == "immediate":
+                    donors.setdefault(
+                        row["Target_Form_ID"], (row.get("Source_languoid") or "").strip()
+                    )
+
     borrowed_scores = {"1. clearly borrowed", "2. probably borrowed"}
     inherited_scores = {"5. no evidence for borrowing", "4. very little evidence for borrowing"}
 
@@ -268,7 +283,7 @@ def load_wold_cases(
                     word=word,
                     lang_code="sah",
                     is_borrowed=is_borrowed,
-                    donor=(row.get("Borrowed_base") or "").strip(),
+                    donor=donors.get(row.get("ID") or "", "") if is_borrowed else "",
                     source="wold",
                     sense=senses.get(row.get("Parameter_ID") or "", ""),
                 )
@@ -513,15 +528,66 @@ def signal_strengths(case: BorrowingCase, *, use_chain: bool) -> dict[str, float
 
 
 def train_combiner(
-    cases: list[BorrowingCase], *, use_chain: bool, trained_on: str, objective: str = "fscore"
+    cases: list[BorrowingCase],
+    *,
+    use_chain: bool,
+    trained_on: str,
+    objective: str = "fscore",
+    nested: bool = False,
+    strengths: Callable[[BorrowingCase], dict[str, float]] | None = None,
 ):
-    """Birleştiriciyi **ayar yarısında** eğitir."""
-    from engine.nlp.borrowing_combiner import fit
+    """Birleştiriciyi **ayar yarısında** eğitir.
 
-    samples = [
-        (signal_strengths(c, use_chain=use_chain), c.is_borrowed) for c in cases
-    ]
+    ``nested=False`` (varsayılan, üretim): tek-geçişli L2 modeli, bütün
+    sinyaller. ``True``: L1 cezası, sinyal kümesi ve eşik ayar yarısının İÇ
+    katlarında seçilir (:func:`fit_nested`) — ölçüldü, rapor yarısında daha
+    kötü; bkz. :func:`evaluate`.
+    """
+    from engine.nlp.borrowing_combiner import fit, fit_nested
+
+    get = strengths or (lambda c: signal_strengths(c, use_chain=use_chain))
+    samples = [(get(c), c.is_borrowed) for c in cases]
+    if nested:
+        return fit_nested(samples, trained_on=trained_on, objective=objective)
     return fit(samples, trained_on=trained_on, objective=objective)
+
+
+def f_difference(
+    a: list[bool], b: list[bool], truth: list[bool], *, iterations: int = 10000
+) -> dict[str, Any]:
+    """İki sistemin **F** farkı için eşleşmiş bootstrap aralığı.
+
+    ⚠️ :func:`compare_systems` madde başına doğruluğu sınar. F birleştiricinin
+    eşik hedefidir; yalnız doğruluk farkı raporlanırsa F'yi en yükselten
+    modelin karşılaştırması gizlenmiş olur.
+    """
+    import random
+
+    from engine.evaluation.significance import SIGNIFICANCE_SEED
+
+    def fscore(idx: list[int], preds: list[bool]) -> float:
+        tp = sum(1 for i in idx if preds[i] and truth[i])
+        fp = sum(1 for i in idx if preds[i] and not truth[i])
+        fn = sum(1 for i in idx if not preds[i] and truth[i])
+        return 2 * tp / (2 * tp + fp + fn) if tp else 0.0
+
+    size = len(truth)
+    everything = list(range(size))
+    observed = fscore(everything, a) - fscore(everything, b)
+    rng = random.Random(SIGNIFICANCE_SEED)
+    samples = []
+    for _ in range(iterations):
+        idx = [rng.randrange(size) for _ in range(size)]
+        samples.append(fscore(idx, a) - fscore(idx, b))
+    samples.sort()
+    low, high = samples[int(0.025 * iterations)], samples[int(0.975 * iterations)]
+    return {
+        "metric": "fscore",
+        "difference": round(observed, 4),
+        "ci95": [round(low, 4), round(high, 4)],
+        "ci_excludes_zero": low > 0 or high < 0,
+        "n": size,
+    }
 
 
 def train_phonotactic_lm(cases: list[BorrowingCase], *, language: str, trained_on: str):
@@ -672,6 +738,11 @@ def signal_ablation(
     return out
 
 
+#: İç içe ÇD modelleri, ``trained_on`` anahtarıyla — rapora künye olarak
+#: yazılır (dönüş değerini bozmamak için ayrı tutulur).
+NESTED_MODELS: dict[str, Any] = {}
+
+
 def evaluate(
     cases: list[BorrowingCase], *, use_chain: bool, trained_on: str = ""
 ) -> tuple[dict[str, PRF], float, Any, list[BorrowingCase]]:
@@ -705,6 +776,16 @@ def evaluate(
 
     threshold, _ = tune_threshold(tune_set, use_chain=use_chain)
 
+    # Sinyal güçleri madde başına BİR KEZ hesaplanır; birleştiricinin üç
+    # sürümü ve iç ÇD aynı değerleri kullanır (dedektör çağrısı pahalı).
+    cached: dict[int, dict[str, float]] = {}
+
+    def strengths(case: BorrowingCase) -> dict[str, float]:
+        key = id(case)
+        if key not in cached:
+            cached[key] = signal_strengths(case, use_chain=use_chain)
+        return cached[key]
+
     systems: dict[str, Callable[[BorrowingCase], bool]] = {
         "always_inherited": always_inherited,
         "always_borrowed": always_borrowed,
@@ -716,18 +797,35 @@ def evaluate(
 
     # ⚠️ Eğitilmiş birleştirici AYAR yarısında eğitilir, RAPOR yarısında
     # ölçülür. Aynı veride hem eğitip hem ölçmek ölçümü yok sayar.
-    combiner = train_combiner(tune_set, use_chain=use_chain, trained_on=trained_on)
-    systems["engine_trained"] = lambda case: combiner.predict(
-        signal_strengths(case, use_chain=use_chain)
+    #
+    combiner = train_combiner(
+        tune_set, use_chain=use_chain, trained_on=trained_on, strengths=strengths
     )
-    # ⚠️ Aynı model, yalnız eşik hedefi farklı. F ile doğruluk aynı anda
+    systems["engine_trained"] = lambda case: combiner.predict(strengths(case))
+    # ⚠️ İÇ İÇE ÇD DENEMESİ (L1 + geriye doğru eleme + kat dışı eşik).
+    # Yalnız ayar yarısında seçim yapar; ÜRETİME GİTMEDİ çünkü rapor
+    # yarısında iki ölçütte de tek-geçişli modelden KÖTÜ çıktı::
+    #
+    #                      tek-geçişli (üretim)   iç içe ÇD
+    #     WOLD/Sakha   F   0,6554 (6 sinyal)      0,6380 (3 sinyal)
+    #     Türkçe altın F   0,8873 (5 sinyal)      0,8455 (2 sinyal)
+    #
+    # Ayar kümesi küçük (WOLD ~190, Türkçe ~87 madde): iç katlar ~40 ve
+    # ~17 maddelik; eleme ve eşik bu gürültüye göre seçiliyor. Sonuç gizlenmez,
+    # her koşuda yeniden ölçülür.
+    nested = train_combiner(
+        tune_set, use_chain=use_chain, trained_on=trained_on, nested=True,
+        strengths=strengths,
+    )
+    systems["engine_trained_nested"] = lambda case: nested.predict(strengths(case))
+    # ⚠️ Aynı yöntem, yalnız eşik hedefi farklı. F ile doğruluk aynı anda
     # alınamaz; ikisi de raporlanır ki seçim gizlenmesin.
     accurate = train_combiner(
-        tune_set, use_chain=use_chain, trained_on=trained_on, objective="accuracy"
+        tune_set, use_chain=use_chain, trained_on=trained_on, objective="accuracy",
+        strengths=strengths,
     )
-    systems["engine_trained_acc"] = lambda case: accurate.predict(
-        signal_strengths(case, use_chain=use_chain)
-    )
+    systems["engine_trained_acc"] = lambda case: accurate.predict(strengths(case))
+    NESTED_MODELS[trained_on] = nested
     scores = {name: score_system(fn, report_set) for name, fn in systems.items()}
     return scores, threshold, combiner, tune_set
 
@@ -806,6 +904,21 @@ def _print_ablation_verdict(comparisons: list[dict[str, Any]]) -> None:
         )
 
 
+def _f_vs_donor(scores: dict[str, PRF], cases: list[BorrowingCase]) -> dict[str, Any]:
+    """Birleştiricinin iki sürümünün yalnız verici yakınlığına karşı F farkı."""
+    truth = [c.is_borrowed for i, c in enumerate(cases) if i % 2 == 1]
+    donor = scores["donor_proximity_only"]
+
+    def predictions(prf: PRF) -> list[bool]:
+        # per_item doğru/yanlış tutar; tahmin = doğruysa gerçek etiket.
+        return [t if ok else not t for t, ok in zip(truth, prf.per_item, strict=True)]
+
+    return {
+        name: f_difference(predictions(scores[name]), predictions(donor), truth)
+        for name in ("engine_trained", "engine_trained_nested")
+    }
+
+
 def main() -> int:
     import argparse
 
@@ -842,6 +955,7 @@ def main() -> int:
             "n": len(wold) // 2,
             "tuned_threshold": wold_threshold,
             "combiner": wold_combiner.as_dict(),
+            "combiner_nested": NESTED_MODELS["wold/sah/tune"].as_dict(),
             "systems": {k: v.as_dict() for k, v in scores.items()},
             "significance": compare_systems(
                 {k: v.per_item for k, v in scores.items()}, reference="always_inherited"
@@ -863,10 +977,12 @@ def main() -> int:
                 {
                     "engine": scores["engine"].per_item,
                     "engine_trained": scores["engine_trained"].per_item,
+                    "engine_trained_nested": scores["engine_trained_nested"].per_item,
                     "donor_proximity_only": scores["donor_proximity_only"].per_item,
                 },
                 reference="donor_proximity_only",
             ),
+            "vs_donor_proximity_f": _f_vs_donor(scores, wold),
         }
         wold_signals = signal_ablation(wold, use_chain=True, tune_set=wold_tune)
         payload["wold"]["signal_ablation"] = {
@@ -906,6 +1022,7 @@ def main() -> int:
             "tuned_threshold": turkish_threshold,
             "chain_signal": "disabled",
             "combiner": turkish_combiner.as_dict(),
+            "combiner_nested": NESTED_MODELS["tdk_nisanyan/tr/tune"].as_dict(),
             "systems": {k: v.as_dict() for k, v in scores.items()},
             "vs_phonotactic": compare_systems(
                 {
@@ -914,6 +1031,15 @@ def main() -> int:
                 },
                 reference="phonotactic_only",
             ),
+            "vs_donor_proximity": compare_systems(
+                {
+                    "engine_trained": scores["engine_trained"].per_item,
+                    "engine_trained_nested": scores["engine_trained_nested"].per_item,
+                    "donor_proximity_only": scores["donor_proximity_only"].per_item,
+                },
+                reference="donor_proximity_only",
+            ),
+            "vs_donor_proximity_f": _f_vs_donor(scores, turkish),
             "vs_always_borrowed": compare_systems(
                 {
                     "engine_trained": scores["engine_trained"].per_item,
