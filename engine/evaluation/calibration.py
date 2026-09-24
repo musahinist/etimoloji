@@ -30,6 +30,35 @@ olmadan ECE raporlanmaz (:func:`bootstrap_ci`).
 
 İzotonik regresyon bu büyüklükte aşırı uyar; bu yüzden Platt ölçekleme ile
 karşılaştırılıp veriye göre seçilir.
+
+**Denenip hedefi tutturamayan: özellik tabanlı güven modeli** (2026-09-24).
+Platt tek boyutlu olduğu için ham skorun sıralamasını değiştiremez; AUC
+0,56'da kalır ve en emin %20'de hata 0,67'dir. Yerine madde özellikleriyle
+lojistik regresyon denendi. Kurulum: savelyevturkic train+dev (n=315
+cevaplı madde, test OKUNMADI), dış katlar ``crossval.fold_of``; örüntü
+tablosu her dış kat için yalnız öbür katlardan, eğitim maddeleri için ayrıca
+kendi katları da dışlanarak (T₋{f,g}) yeniden öğrenildi; C iç 5 katlı
+log-kayıpla seçildi. Hedef AUC ≥ 0,70 · ECE ≤ 0,06 · %20 kapsamda risk ≤ 0,45::
+
+    model                              AUC     ECE    risk@%20  ΔAUC (Platt'a göre, %95 GA)
+    Platt (ham skor)                   0,562   0,024   0,667    —
+    sonuç sözlüğündeki özellikler      0,667   0,039   0,508    +0,104 [+0,029, +0,181]
+    + sütun kararı özellikleri         0,707   0,040   0,508    +0,145 [+0,068, +0,222]
+    + sütun olasılık çarpımı           0,718   0,030   0,476    +0,156 [+0,076, +0,238]
+
+Sütun kararı özellikleri: sütun başına ilk iki aday arasındaki fark (en
+küçüğü), N-best aday puan farkı, öğrenilmiş tablonun oy güveni, karar yolu
+payları. Tek başına en ayırt ediciler: aday farkı 0,67, öğrenilmiş güven
+0,67, tahmin uzunluğu 0,65 (kısa = daha çok doğru); tanık ve kol sayısı
+~0,55.
+
+Hüküm: ayırt etme gücü ANLAMLI biçimde artıyor, ama **risk hedefi hiçbir
+varyantta tutmadı** (en iyi 0,476; %20 kapsam = 63 madde, standart hata
+~0,06). AUC ≥ 0,70'i geçen varyantlar ayrıca sonuç sözlüğünde olmayan sütun
+kararlarına ihtiyaç duyuyor (``comparative_reconstruction`` değişmeli);
+yalnız sonuç sözlüğüyle AUC 0,667 kalıyor. Dört özellik kümesi denendi;
+seçim yanlılığı nedeniyle en iyi satır hafif iyimserdir. Üretim Platt'ta
+kaldı.
 """
 
 from __future__ import annotations
