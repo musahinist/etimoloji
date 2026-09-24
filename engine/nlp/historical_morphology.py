@@ -80,6 +80,87 @@ _ATTESTATION_CACHE: dict[str, bool] = {}
 _FORMULA_CACHE: dict[str, str | None] = {}
 
 
+# --- Mastar eki -----------------------------------------------------------
+#
+# Fiil sözlükte MASTARLA durur (`kolaylaşmak`), akraba dillerin sözlükleri de
+# kendi mastar/sözlük biçimleriyle (`gülmək`, `күлу`, `күлүү`, `kulmoq`).
+# Mastar eki ata biçme ait değildir; soyulmazsa rekonstrüktör `*kolaylaşmak`
+# gibi bütün bir mastar ya da eklerin karışımı (`*bulma`, `*tura`) üretiyordu.
+#
+# ⚠️ Ölçüldü (2026-09-24, 406 Türkçe miras fiil; referans: Türkçe maddenin
+# kendi Wiktionary Proto-Türkçe biçimi — TDK/Nişanyan altınından bağımsız):
+#     taban                     tam 0,131  NED 0,481
+#     sorgu + tanık soyma       tam 0,330  NED 0,319
+#     ΔNED −0,162 [%95 GA −0,180, −0,144]; 262 iyileşme, 19 bozulma.
+#
+# Kurallar KARŞILAŞTIRMA BİÇMİ üzerindedir (`to_comparison_form`: ə→e, q→k,
+# ä→e, Kiril→Latin). Dil başına en uzun eşleşen ek soyulur.
+# Çuvaşça (`cv`) kuralı ölçümde zararlı çıktı (-ма/-ме kök sonu da olabiliyor)
+# ve bilerek YOK.
+_MAK = ("mak", "mek", "mag", "meg", "mah", "meh", "mok")
+_RGA = ("ırga", "irge", "arga", "erge", "orgo", "örgö", "rga", "rge")
+_U = ("ıu", "iu", "eü", "ou", "öü", "uv", "üv", "ıv", "iv", "u", "ü", "v")
+INFINITIVE_ENDINGS: dict[str, tuple[str, ...]] = {
+    **{code: _MAK for code in (
+        "tr", "az", "tk", "crh", "kum", "klj", "ug", "kdr", "ota", "chg",
+        "trk-oat", "uz", "otk", "oui",
+    )},
+    "gag": ("maa", "mee", *_MAK),
+    "ky": ("uu", "üü", "oo", "öö"),
+    "kk": _U,
+    "kaa": (*_MAK, *_U),
+    "nog": _U,
+    "ba": _U,
+    "tt": (*_RGA, *_MAK, "u", "ü"),
+    **{code: _RGA for code in ("atv", "cjs", "krc", "clw", "khk", "kjh")},
+    **{code: ("aar", "eer", "oor", "öör", "ar", "er", "ır", "ir", "or", "ör")
+       for code in ("alt", "tyv", "kim")},
+    "slq": ("ğusı", "ğüsi", "gusı", "güsi", "usı", "üsi"),
+}
+_VOWELS = frozenset("aeıioöuüâîûə")
+
+
+def strip_infinitive(lang_code: str, form: str) -> str:
+    """Bir tanık biçiminden o dilin mastar/sözlük ekini soyar.
+
+    Girdi ve çıktı karşılaştırma biçimidir. Kalan gövde en az iki harf ve
+    bir ünlü içermiyorsa ya da dil için kural yoksa biçim aynen döner.
+    """
+    form = to_comparison_form(form)
+    for suffix in sorted(INFINITIVE_ENDINGS.get(lang_code, ()), key=len, reverse=True):
+        if form.endswith(suffix):
+            rest = form[: -len(suffix)]
+            if len(rest) >= 2 and any(ch in _VOWELS for ch in rest):
+                return rest
+    return form
+
+
+def infinitive_stem(word: str) -> str | None:
+    """Türkçe sorgu bir FİİL mastarıysa gövdesini döndürür (`gülmek` → `gül`).
+
+    ⚠️ Yalnız `-mAk` ile bitmek yetmez: `parmak`, `ırmak`, `damak`, `emek`
+    ad. Sözlük indeksinde Türkçe FİİL kaydı olan kelime soyulur; indeks
+    yoksa ya da fiil kaydı yoksa ``None``. Hem ad hem fiil olan eşsesliler
+    (`kaymak`, `yumak`, `ekmek`) fiil okumasına düşer — bilinen sınır.
+    """
+    w = to_comparison_form(word)
+    if len(w) < 5 or not w.endswith(("mak", "mek")):
+        return None
+    try:
+        from engine.db.lexicon_index import LexiconIndex
+
+        index = LexiconIndex()
+        if not index.exists:
+            return None
+        rows = index.lookup(w, languages=["tr"], limit=20)
+    except Exception:
+        logger.debug("Mastar denetimi yapılamadı: %s", word, exc_info=True)
+        return None
+    if not any(row.get("pos") == "verb" for row in rows):
+        return None
+    return w[:-3]
+
+
 def _formula_stem(word: str) -> str | None:
     """Kelimenin KAYITLI etimolojisindeki türetme formülünden kökü çıkarır.
 
