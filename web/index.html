@@ -265,6 +265,48 @@
                 <div id="turkicGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
             </div>
 
+            <!-- Card 3b: CLI'nin gösterip panelin atladığı alanlar -->
+            <div id="extraCard" class="hidden glass rounded-3xl p-6 space-y-4">
+                <h3 class="font-heading font-bold text-lg text-white">🧾 Sınıflandırma, Tanıklama ve Kronoloji</h3>
+                <div id="classificationBox" class="hidden p-4 rounded-2xl bg-slate-800/40 border border-slate-600/40 text-xs">
+                    <span class="text-slate-400 block mb-1">Sınıflandırma (alıntı/miras sınıflandırıcısı)</span>
+                    <span id="classificationText" class="font-bold text-slate-200 block"></span>
+                    <div id="classificationNotes" class="mt-1 space-y-0.5"></div>
+                </div>
+                <div id="attestationBox" class="hidden p-4 rounded-2xl bg-slate-800/40 border border-slate-600/40 text-xs">
+                    <span class="text-slate-400 block mb-1">📜 İlk yazılı tanıklama</span>
+                    <div id="attestationText" class="text-slate-200"></div>
+                </div>
+                <div id="timelineBox" class="hidden p-4 rounded-2xl bg-slate-800/40 border border-slate-600/40 text-xs">
+                    <span class="text-slate-400 block mb-1">⏳ Tarihsel zaman çizelgesi</span>
+                    <ul id="timelineList" class="space-y-0.5 text-slate-300"></ul>
+                </div>
+                <div id="relatedBox" class="hidden p-4 rounded-2xl bg-slate-800/40 border border-slate-600/40 text-xs">
+                    <span class="text-slate-400 block mb-1">🔗 Kök akraba sözcük ağı</span>
+                    <div id="relatedList" class="flex flex-wrap gap-1.5"></div>
+                </div>
+            </div>
+
+            <!-- Card 3c: Etimolojisinde bu kelime geçen kayıtlar -->
+            <div id="mentionsCard" class="hidden glass rounded-3xl p-6">
+                <div class="flex items-center justify-between mb-3 pb-3 border-b border-slate-800">
+                    <h3 class="font-heading font-bold text-lg text-white">🔁 Etimolojisinde Bu Kelime Geçen Kayıtlar</h3>
+                    <span id="mentionsCount" class="text-xs text-slate-400 font-mono"></span>
+                </div>
+                <p id="localWitnessNote" class="hidden text-xs text-slate-400 mb-2"></p>
+                <ul id="mentionsList" class="space-y-2 text-xs"></ul>
+                <ul id="homonymList" class="mt-2 space-y-0.5 text-xs text-amber-300"></ul>
+            </div>
+
+            <!-- Card 3d: Kaynak verimi (diagnostics.sources) -->
+            <div id="sourceDiagCard" class="hidden glass rounded-3xl p-6">
+                <div class="flex items-center justify-between mb-3 pb-3 border-b border-slate-800">
+                    <h3 class="font-heading font-bold text-lg text-white">📡 Kaynak Verimi</h3>
+                    <span id="sourceDiagSummary" class="text-xs text-slate-400 font-mono"></span>
+                </div>
+                <ul id="sourceDiagList" class="grid grid-cols-1 md:grid-cols-2 gap-1.5 text-xs"></ul>
+            </div>
+
             <!-- Card 4: AI Agent Reasoning Synthesis -->
             <div id="aiAgentCard" class="hidden glass rounded-3xl p-6 border-l-4 border-l-cyan-400">
                 <div class="flex items-center gap-2 mb-3">
@@ -559,6 +601,8 @@
                 `).join("");
             }
 
+            renderExtras(data);
+
             // 4. AI Agent
             const aiText = data.ai_agent_enrichment;
             const aiCard = document.getElementById('aiAgentCard');
@@ -571,6 +615,130 @@
 
             // 5. Render Cytoscape Graph
             renderGraph(data.graph_database || {});
+        }
+
+        /** Bir kutuyu içerik varsa gösterir, yoksa gizler. */
+        function toggle(id, show) {
+            document.getElementById(id).classList.toggle('hidden', !show);
+        }
+
+        /**
+         * CLI'nin (print_finding_formatted) basıp panelin atladığı alanlar:
+         * sınıflandırma notu, ilk tanıklama, zaman çizelgesi, akraba ağı,
+         * etimoloji anmaları ve kaynak başına durum.
+         */
+        function renderExtras(data) {
+            const nlp = data.nlp_analysis || {};
+
+            // Sınıflandırma + kaynak alıntı zinciri / "yalnız ses yapısına göre" notu
+            const loan = nlp.loanword_classification || {};
+            const notes = [];
+            if (loan.source_override) {
+                notes.push(`<div class="text-amber-300">↳ ${esc(loan.source_override)}</div>`);
+            } else {
+                const sel = (nlp.ranked_hypotheses || {}).selected || {};
+                const key = loan.classification_key || "";
+                if ((sel.kind === "inherited" && key !== "native" && key !== "")
+                    || (sel.kind === "borrowed" && key === "native")) {
+                    notes.push(`<div class="text-amber-300">↳ ⚠️ yalnız ses yapısına göre; hüküm için bkz. rakip hipotezler: ${esc(sel.claim)}</div>`);
+                }
+            }
+            if (loan.cross_dialect_note) notes.push(`<div class="text-slate-400">· ${esc(loan.cross_dialect_note)}</div>`);
+            if (loan.attestation_note) notes.push(`<div class="text-slate-400">· ${esc(loan.attestation_note)}</div>`);
+            document.getElementById('classificationText').textContent = loan.classification || "";
+            document.getElementById('classificationNotes').innerHTML = notes.join("");
+            const hasClass = !!loan.classification;
+            toggle('classificationBox', hasClass);
+
+            // İlk yazılı tanıklama (A-HVP aşama 2: zaman kilidi)
+            const stage2 = ((((nlp.proven_hypothesis || {}).validation_report || {})
+                .stage_breakdown) || {}).stage2_time_lock;
+            let attHtml = "";
+            if (stage2) {
+                const yr = y => (y === null || y === undefined) ? "—" : (y < 0 ? `M.Ö. ${-y}` : `${y}`);
+                if (stage2.attestation_year !== null && stage2.attestation_year !== undefined) {
+                    attHtml += `<div>Tanıklama yılı: <b class="text-white">${esc(yr(stage2.attestation_year))}</b></div>`;
+                }
+                if (stage2.source_year !== null && stage2.source_year !== undefined) {
+                    attHtml += `<div class="text-slate-400">Kaynak/köken katmanı yılı: ${esc(yr(stage2.source_year))}</div>`;
+                }
+                if (stage2.reason) attHtml += `<div class="text-slate-400 mt-1">${esc(stage2.reason)}</div>`;
+            }
+            document.getElementById('attestationText').innerHTML = attHtml;
+            toggle('attestationBox', !!attHtml);
+
+            // Zaman çizelgesi
+            const timeline = data.timeline || [];
+            document.getElementById('timelineList').innerHTML =
+                timeline.map(s => `<li>• ${esc(s)}</li>`).join("");
+            toggle('timelineBox', timeline.length > 0);
+
+            // Kök akraba ağı
+            const related = data.related_cognates || [];
+            document.getElementById('relatedList').innerHTML = related.map(r =>
+                `<span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-teal-300">${esc(r)}</span>`).join("");
+            toggle('relatedBox', related.length > 0);
+
+            toggle('extraCard', hasClass || !!attHtml || timeline.length > 0 || related.length > 0);
+
+            // Etimoloji anmaları (tanık sayılmaz)
+            const em = data.etymology_mentions || {};
+            const items = em.items || [];
+            const homonyms = em.homonym_cognates || [];
+            const lw = em.local_witnesses;
+            document.getElementById('mentionsCount').textContent =
+                items.length ? `${em.total ?? items.length} kayıt · tanık sayılmaz` : "";
+            document.getElementById('mentionsList').innerHTML = items.slice(0, 12).map(m => {
+                const form = m.comparison && m.comparison !== m.word ? `${m.word} ${m.comparison}` : m.word;
+                const live = Object.entries(m.live || {}).map(([src, t]) =>
+                    `<div class="text-slate-500">↳ ${esc(src)}: ${esc(String(t).slice(0, 200))}</div>`).join("");
+                return `<li class="p-2 rounded-lg bg-slate-900/40">
+                    <div><span class="text-teal-400 font-bold">${esc(m.lang_name)}</span>
+                    <b class="text-white ml-1">${esc(form)}</b>
+                    <span class="text-slate-400">[${esc(m.gloss || "N/A")}]</span></div>
+                    <div class="text-slate-400 mt-0.5">↳ ${esc(m.etymology)}</div>${live}
+                </li>`;
+            }).join("") + (items.length > 12
+                ? `<li class="text-slate-500 italic">… ve ${esc((em.total ?? items.length) - 12)} kayıt daha</li>` : "");
+            document.getElementById('homonymList').innerHTML = homonyms.map(h =>
+                `<li>⚠️ eşsesli, tanık sayılmadı: ${esc(h.lang_name)} ${esc(h.word)} “${esc(h.meaning)}” (anlam benzerliği ${esc(h.similarity)})</li>`).join("");
+            const lwEl = document.getElementById('localWitnessNote');
+            if (lw) {
+                lwEl.textContent = `Yerel tanıklar: ${lw.found} aday bulundu, ${lw.verified} tanesi anlamca doğrulandı`;
+            }
+            lwEl.classList.toggle('hidden', !lw);
+            toggle('mentionsCard', items.length > 0 || homonyms.length > 0 || !!lw);
+
+            // Kaynak başına durum
+            const srcDiag = (data.diagnostics || {}).sources || {};
+            const entries = Object.entries(srcDiag);
+            const isDown = d => d.status === "error" || d.status === "circuit_open"
+                || (d.errors || []).some(e => /devre açık/i.test(String(e)));
+            const statusView = d => {
+                if (d.status === "ok") return ["✅", "text-emerald-400", `${d.result_count ?? 0} sonuç`];
+                if (isDown(d)) return ["❌", "text-red-400", "erişilemez / devre açık"];
+                if (d.status === "empty") return ["➖", "text-slate-500", "sessiz (veri yok)"];
+                return ["·", "text-slate-400", d.status || "—"];
+            };
+            const okN = entries.filter(([, d]) => d.status === "ok").length;
+            const downN = entries.filter(([, d]) => isDown(d)).length;
+            document.getElementById('sourceDiagSummary').textContent =
+                `kanıt üreten ${okN}/${entries.length} · erişilemez ${downN}`;
+            const order = d => d.status === "ok" ? 0 : (isDown(d) ? 1 : 2);
+            document.getElementById('sourceDiagList').innerHTML = entries
+                .sort(([, a], [, b]) => order(a) - order(b))
+                .map(([name, d]) => {
+                    const [icon, cls, label] = statusView(d);
+                    const err = isDown(d) && (d.errors || [])[0]
+                        ? `<div class="text-red-300/70 truncate">${esc(String(d.errors[0]).slice(0, 120))}</div>` : "";
+                    return `<li class="p-2 rounded-lg bg-slate-900/40">
+                        <div class="flex justify-between gap-2">
+                            <span class="text-slate-300 truncate" title="${esc(name)}">${esc(icon)} ${esc(name)}</span>
+                            <span class="${cls} whitespace-nowrap">${esc(label)}</span>
+                        </div>${err}
+                    </li>`;
+                }).join("");
+            toggle('sourceDiagCard', entries.length > 0);
         }
 
         function renderGraph(graphDb) {
