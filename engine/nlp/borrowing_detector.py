@@ -232,6 +232,62 @@ def _index_attests_loan(word: str) -> bool:
 UNIFORMITY_SUSPICION = 0.85
 
 
+def own_sense(word: str, lang: str) -> str:
+    """Kelimenin sözlük indeksindeki KENDİ kaydının anlamı; yoksa boş dizgi.
+
+    ⚠️ Verici yakınlığı sinyali anlam kısıtlıdır: anlam yoksa hiç aday
+    aranmaz ve sinyal ATEŞLENMEZ. Ölçüm hattı anlamı kendisi veriyordu
+    (Türkçe altın küme: indeksin ``gloss`` alanı; WOLD: kavram adı) ama
+    üretimdeki çağıranlar (``HypothesisRanker.rank``,
+    ``ComparativeReconstructor._borrowing_verdict``) ``sense`` geçmiyordu.
+    Sonuç: WOLD'da ölçülmüş en güçlü sinyal (birleştirici katsayısı +1,55)
+    arama yolunda HİÇ yoktu. Ölçüldü (denetim örneklemi, tohum 21, 20 alıntı
+    + 20 miras, yalnız yerel kaynaklar): önce 0/40 kelimede ateşleme; sonra
+    alıntıların 15/20'sinde, mirasların 5/20'sinde (duyar, eğilmek, aslan,
+    yılmaz, gaga — sıralayıcı bunları ALINTI'ya çevirdi; altın uyumu
+    28/40 -> 26/40). Ölçüm hattıyla aynı sinyal artık üretimde; yanlış
+    pozitiflerin ikisi (eğilmek, yılmaz) şans denetimi YAPILAMAYAN uzun
+    kelimeler (``donor_proximity._controls`` 8'den az kontrol).
+
+    Kural ölçüm hattıyla **aynıdır** (``borrowing_eval._turkish_glosses``):
+    aynı dil, birebir aynı yazılış, boş olmayan ilk ``gloss``. Farklı bir
+    kural (ör. TDK'nın Türkçe tanımı) verici sözlüklerinin İngilizce
+    anlamlarıyla örtüşmez ve ölçülmemiş bir sinyal üretirdi.
+    """
+    key = (word or "").strip()
+    if not key or not lang:
+        return ""
+    try:
+        from engine.db.lexicon_index import LexiconIndex
+
+        index = LexiconIndex()
+        if not index.exists:
+            return ""
+        with index.connect() as connection:
+            row = connection.execute(
+                "SELECT gloss FROM entries WHERE lang_code = ? AND word = ? "
+                "AND gloss IS NOT NULL AND gloss != '' LIMIT 1",
+                (lang, key),
+            ).fetchone()
+        return str(row["gloss"]) if row else ""
+    except Exception:
+        logger.debug("Kelimenin anlamı okunamadı: %s", key, exc_info=True)
+        return ""
+
+
+def default_donors(lang: str) -> list[str] | None:
+    """Dilin verici sözlükleri — ölçüm hattıyla aynı küme.
+
+    ⚠️ ``None`` bütün verici sözlükleri demektir; havuz büyüdükçe şans
+    benzerliği artar (bkz. ``donor_proximity.CHANCE_CONTROL_COUNT``).
+    Üretim ``None`` ile, ölçüm ``donors_for(lang)`` ile çalışsaydı ölçülen
+    sinyal üretimdekiyle aynı sinyal olmazdı.
+    """
+    from engine.evaluation.borrowing_eval import donors_for
+
+    return donors_for(lang)
+
+
 @dataclass
 class Signal:
     """Tek bir kanıt kalemi."""
@@ -772,9 +828,15 @@ class BorrowingDetector:
         """Bir kelimenin alıntı olup olmadığına gerekçeli karar verir.
 
         :param sense: kelimenin anlamı. Verici yakınlığı sinyali bunsuz
-            çalışmaz (anlam kısıtı yayınlanmış kurulumun parçasıdır).
-        :param donors: bakılacak verici dil kodları. ``None`` ise hepsi.
+            çalışmaz (anlam kısıtı yayınlanmış kurulumun parçasıdır). Boşsa
+            sözlük indeksindeki kendi kaydından okunur (:func:`own_sense`).
+        :param donors: bakılacak verici dil kodları. ``None`` ise dilin
+            ölçüm hattındaki kümesi (:func:`default_donors`).
         """
+        if not sense:
+            sense = own_sense(word, lang)
+        if donors is None:
+            donors = default_donors(lang)
         witnesses = {
             e["lang_code"]: e.get("word", "")
             for e in (entries or [])
