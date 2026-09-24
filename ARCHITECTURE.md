@@ -23,9 +23,10 @@ graph TB
         LOG["logging_setup.py"]
     end
 
-    subgraph Fetch["4. Veri Toplama — 18 kaynak"]
-        Live["9 CANLI kaynak<br/>TDK · Nişanyan · EtimolojiTürkçe<br/>Wiktionary ×2 · Wiktextract · Archive.org"]
-        Seed["9 TOHUM veri dosyası<br/>data/seed/ — 59 kayıt<br/>Clauson · ÉSTJa · DLT · Starling · Tietze"]
+    subgraph Fetch["4. Veri Toplama — 19 kaynak, yerel öncelikli"]
+        Live["5 CANLI kaynak (kalıcı yanıt önbelleği + devre kesici)<br/>TDK ×3 · Nişanyan · EtimolojiTürkçe"]
+        Local["YEREL dökümler<br/>sözlük indeksi (kaikki en/tr/ru Wiktionary, ~449 bin)<br/>Proto-Türkçe torunları · NorthEuraLex · Apertium · Starling"]
+        Seed["TOHUM veri dosyaları<br/>data/seed/ — 59 kayıt<br/>Clauson · ÉSTJa · DLT · Tietze"]
         HTTP["Ortak HTTP istemcisi<br/>utils/network.py<br/>retry · SSRF koruması · teşhis"]
     end
 
@@ -61,7 +62,7 @@ graph TB
     WebUI --> REST --> SE
     CFG --> SE
     LOG --> SE
-    SE --> Live & Seed
+    SE --> Live & Local & Seed
     Live --> HTTP
     SE --> Recon & Loan & Clust & Morph & SLI
     Recon --> Align --> Phon
@@ -81,7 +82,7 @@ graph TB
 | Loglama | `engine/logging_setup.py` | Merkezî logger; her yutulan hata görünür olur. |
 | Orkestrasyon | `engine/search_engine.py` | Fetcher paralelleştirme, teşhis toplama, NLP zinciri, önbellek. Fetcher listesi enjekte edilebilir (`fetchers=`). |
 | HTTP | `engine/utils/network.py` | Tek HTTP kapısı: retry/backoff, tek User-Agent, SSRF koruması, charset sezimi, istek bazlı teşhis. |
-| Veri toplama | `engine/fetchers/` | 18 toplayıcı + `BaseFetcher` sözleşmesi. Sözleşme: `fetch()` asla istisna fırlatmaz. |
+| Veri toplama | `engine/fetchers/` | 19 toplayıcı + `BaseFetcher` sözleşmesi. Sözleşme: `fetch()` asla istisna fırlatmaz. Canlı Wiktionary, 14 Türk dili Wiktionary'si ve Archive.org varsayılan kapalı (`ETY_LIVE_*`). |
 | Dilbilim | `engine/nlp/` | Rekonstrüksiyon, hizalama, kümeleme, alıntı keşfi, A-HVP. |
 | Ortak kurallar | `engine/utils/phonotactics.py`, `orthography.py` | Fonotaktik kısıtlar, ünlü uyumu, alıntı dil kalıpları, Türki Kiril karakter sınıfı. |
 | Kalıcılık | `engine/db/` | SQLite (TTL önbellekli), Cytoscape graf, CLDF içe/dışa aktarım. |
@@ -94,7 +95,7 @@ sequenceDiagram
     participant U as Kullanıcı
     participant SE as SearchEngine
     participant DB as SQLite
-    participant F as 18 Fetcher
+    participant F as 19 Fetcher
     participant N as NLP
     participant A as A-HVP
 
