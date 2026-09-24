@@ -57,5 +57,35 @@ class IndexSourceProtoTest(unittest.TestCase):
         self.assertEqual(_infinitive_of("üt"), "ütmek")
 
 
+class IndexTurkishGlossTest(unittest.TestCase):
+    def test_english_detection(self):
+        from engine.search_engine import looks_english
+
+        self.assertTrue(looks_english("army, a highly organized military force"))
+        self.assertTrue(looks_english("clipping of akümülatör"))
+        self.assertTrue(looks_english("cosine (abbreviated form: cos)"))
+        self.assertFalse(looks_english("Orduda görev yapan erden generale kadar herkes."))
+        self.assertFalse(looks_english("Uğursuz"))
+
+    def test_first_turkish_gloss_of_own_record(self):
+        from engine.search_engine import _index_turkish_gloss
+
+        rows = {"kar": [
+            _row("kâr", None, gloss="Alışveriş işlerinin sağladığı kazanç"),  # başka kelime
+            _row("kar", "miras", "trk-pro", "*kār", gloss="snow"),
+            _row("Kar", None, pos="name", gloss="Bir soyadı."),
+            _row("kar", None, gloss="(Artvin ağzı) bir tür ölçek"),
+            _row("kar", None, gloss="Buz kristallerinden oluşan yağış"),
+        ]}
+        with _with_rows(rows):
+            self.assertEqual(_index_turkish_gloss("kar"), "Buz kristallerinden oluşan yağış")
+
+    def test_no_turkish_gloss(self):
+        from engine.search_engine import _index_turkish_gloss
+
+        with _with_rows({"neft": [_row("neft", "alıntı", "fa", "نفت", gloss="naphtha")]}):
+            self.assertEqual(_index_turkish_gloss("neft"), "")
+
+
 if __name__ == "__main__":
     unittest.main()

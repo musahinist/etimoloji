@@ -99,6 +99,8 @@ logger = get_logger(__name__)
 
 #: Ana (başlık) anlamının öncelikli kaynağı: ölçünlü Türkçe sözlük.
 _PRIMARY_MEANING_SOURCE = "TDK (Türk Dil Kurumu)"
+#: TDK yokken başlık anlamının Türkçe yedeği (bkz. `_index_turkish_gloss`).
+_INDEX_TR_MEANING_SOURCE = "Türkçe Vikisözlük (yerel sözlük indeksi)"
 
 
 def _add_meaning(bucket: list[str], meaning: str) -> None:
@@ -539,6 +541,45 @@ def _query_source_proto(word: str, entries: list[dict[str, Any]], primary: str =
             return (form if form.startswith("*") else f"*{form}",
                     str(entry.get("lang_name") or entry.get("lang_code")))
     return "", ""
+
+
+_ENGLISH_GLOSS = re.compile(
+    r"^[A-Za-z0-9 ,;:()'\"\-.!?/]+$|\b(?:of|the|an?|and|or|to|clipping|abbreviat\w*)\b"
+)
+#: Ağız kaydı (`(Artvin, Erzincan ağzı) …`) ölçünlü dilin anlamı değildir.
+_DIALECT_GLOSS = re.compile(r"^\([^)]*ağz[ıi][^)]*\)")
+
+
+def looks_english(text: str) -> bool:
+    """Anlam İngilizce mi (kaba ama açık ölçüt: ASCII ya da İngilizce işlev sözcüğü)."""
+    return bool(_ENGLISH_GLOSS.search(text.strip()))
+
+
+def _index_turkish_gloss(word: str) -> str:
+    """Sorgunun indeksteki Türkçe kaydının (Türkçe Vikisözlük) ilk TÜRKÇE anlamı.
+
+    TDK cevap vermeyince başlık anlamı ya boş (kelimenin kendisi) ya da
+    İngilizce Wiktionary anlamı oluyordu; indeksteki Türkçe sürüm kaydı
+    hiç okunmuyordu (105 kelimelik denetim, yalnız yerel kaynak: 76 boş,
+    27 İngilizce, 2 Türkçe). Yalnız sorgunun kendisi (`kâr` ≠ `kar`),
+    özel ad, ağız kaydı ve yönlendirme olmayan anlam.
+    """
+    try:
+        from engine.db.lexicon_index import LexiconIndex
+
+        index = LexiconIndex()
+        if not index.exists:
+            return ""
+        for row in index.lookup(word, languages=["tr"], limit=30):
+            gloss = str(row.get("gloss") or "").strip()
+            if (row.get("word") != word or row.get("pos") == "name" or not gloss
+                    or looks_english(gloss) or _DIALECT_GLOSS.match(gloss)
+                    or is_cross_reference(gloss) or is_inflection_gloss(gloss)):
+                continue
+            return gloss
+    except Exception:
+        logger.debug("İndeks Türkçe anlamı okunamadı: %s", word, exc_info=True)
+    return ""
 
 
 def _infinitive_of(stem: str) -> str:
@@ -1527,6 +1568,18 @@ class SearchEngine:
                 _add_meaning(bucket, meaning)
         _lap("descendants")
 
+        # Başlık anlamı TDK'dan gelmediyse ve boş/İngilizceyse indeksteki
+        # Türkçe kayıt gösterilir. ⚠️ Yalnız GÖSTERİM: `root_meaning` A-HVP
+        # 3. aşamasının ve eşsesli süzgecinin girdisidir, değiştirilmez.
+        display_meaning = root_meaning or word_clean
+        if primary_source != _PRIMARY_MEANING_SOURCE and (
+            display_meaning == word_clean or looks_english(display_meaning)
+        ):
+            turkish_gloss = _index_turkish_gloss(word_clean)
+            if turkish_gloss:
+                display_meaning = turkish_gloss
+                _add_meaning(meanings_by_source.setdefault(_INDEX_TR_MEANING_SOURCE, []), turkish_gloss)
+
         finding = {
             "query_word": word_clean,
             "morphology": morphology_info,
@@ -1534,7 +1587,7 @@ class SearchEngine:
             "etymology_mentions": etymology_mentions,
             "root": {
                 "proto_turkic": proto_root or word_clean,
-                "meaning": root_meaning or word_clean,
+                "meaning": display_meaning,
                 # Tek anlam seçmek bilgi kaybıydı; her sözlüğün anlamı kendi
                 # adıyla, portföy sırasıyla (TDK önce).
                 "meanings": [

@@ -284,8 +284,23 @@ class TestOwnLineOnly(unittest.TestCase):
     def test_own_record_meaning_is_still_used(self):
         fetchers = [_EntryOnlyFetcher(name="İndeks", entries=[("ota", "kulluk")],
                                       meaning="servanthood", only_for="kulluk")]
-        res = SearchEngine(db_manager=self.db, fetchers=fetchers).search("kulluk", save_to_db=False)
+        from unittest import mock
+
+        # İngilizce anlam gösterimde indeksin Türkçe kaydıyla değişir
+        # (`_index_turkish_gloss`); burada ölçülen kendi kayıt seçimidir.
+        with mock.patch("engine.search_engine._index_turkish_gloss", return_value=""):
+            res = SearchEngine(db_manager=self.db, fetchers=fetchers).search("kulluk", save_to_db=False)
         self.assertEqual(res["root"]["meaning"], "servanthood")
+
+    def test_english_headline_meaning_shown_in_turkish_from_index(self):
+        from unittest import mock
+
+        fetchers = [_EntryOnlyFetcher(name="İndeks", entries=[("ota", "kulluk")],
+                                      meaning="servanthood", only_for="kulluk")]
+        with mock.patch("engine.search_engine._index_turkish_gloss", return_value="kul olma durumu"):
+            res = SearchEngine(db_manager=self.db, fetchers=fetchers).search("kulluk", save_to_db=False)
+        self.assertEqual(res["root"]["meaning"], "kul olma durumu")
+        self.assertIn("servanthood", str(res["root"]["meanings"]))
 
     def test_origin_layer_ignores_sister_language_record(self):
         """nice: Gagavuzca *nice* < Rusça как, Türkçe `nice`nin kökeni değildir."""
