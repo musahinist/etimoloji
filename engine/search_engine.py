@@ -1211,7 +1211,8 @@ class SearchEngine:
             # ⚠️ Rozet "inceleme gerekli" (NEEDS_REVIEW) iken köken satırı
             # "doğrulanmış" diyordu; 60 kelimelik taramada 6 kelimede çelişki.
             _verdict = "doğrulanmış" if _report.get("status_code") == "VALIDATED" else "inceleme gerektiren"
-            if _donor_lang in ("", "Proto-Türkçe", "Ana Türkçe", "Öz Türkçe", "Eski Türkçe"):
+            _inherited = _donor_lang in ("", "Proto-Türkçe", "Ana Türkçe", "Öz Türkçe", "Eski Türkçe")
+            if _inherited:
                 proto_root_provenance = (
                     f"türetilmiş — A-HVP {_verdict} miras kökü ({_donor_lang or 'Türki'})"
                 )
@@ -1223,8 +1224,16 @@ class SearchEngine:
             # modern sözlük tanımı yerine hipotezin tarihî anlamı oluyordu
             # (`terlik` -> "bk. derlik"). Tarihî anlam ayrı alanda taşınır.
             hypothesis_historical_meaning = hypo.get("historical_meaning") or ""
-            sources.append(f"Derin Komşu Diller Etimoloji Veritabanı ({hypo.get('donor_language')})")
-            if not any(e.get("lang_code") == "donor" for e in sorted_entries):
+            # ⚠️ Miras kökte A-HVP'nin ata biçimi motorun KENDİ
+            # rekonstrüksiyonudur: ne bir kaynak ne de bir "kaynak dil".
+            # Eskiden burada da portföyde olmayan "Derin Komşu Diller
+            # Etimoloji Veritabanı (Proto-Türkçe)" kaynağı yazılıyor ve
+            # *uça gibi tahminler "Köken zinciri — kaynak diller" altında
+            # tanık gibi basılıyordu (105 kelimelik denetim: 51 miras
+            # kelimenin 32'sinde). Ata biçimi başlıkta, kaynağı damgada kalır.
+            if not _inherited:
+                sources.append(f"Derin Komşu Diller Etimoloji Veritabanı ({hypo.get('donor_language')})")
+            if not _inherited and not any(e.get("lang_code") == "donor" for e in sorted_entries):
                 sorted_entries.insert(0, {
                     "lang_code": "donor",
                     "lang_name": f"Kaynak Dil Etimolojisi ({hypo.get('donor_language')})",

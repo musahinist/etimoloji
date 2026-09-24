@@ -299,6 +299,24 @@ class TestOwnLineOnly(unittest.TestCase):
         self.assertEqual(len(_origin_layers([tr], "bant", None)), 1)
 
 
+class TestInheritedHypothesisIsNotASource(unittest.TestCase):
+    def test_engine_reconstruction_is_not_a_source_language(self):
+        """uçmak: A-HVP'nin *uça tahmini "Köken zinciri — kaynak diller" altında basılıyordu."""
+        fd, path = tempfile.mkstemp(suffix=".db")
+        os.close(fd)
+        fetcher = FakeFetcher(name="Sahte Sözlük", entries=GOZ_FORMS,
+                              meaning="göz, görme organı", only_for="göz")
+        try:
+            res = SearchEngine(db_manager=DatabaseManager(path), fetchers=[fetcher]).search(
+                "göz", save_to_db=False, use_cache=False)
+        finally:
+            os.remove(path)
+        hypo = res["nlp_analysis"]["proven_hypothesis"] or {}
+        self.assertEqual(hypo.get("donor_language"), "Proto-Türkçe")
+        self.assertEqual(res["sources"], ["Sahte Sözlük"])
+        self.assertFalse([e for e in res["turkic_languages"] if e["lang_code"] == "donor"])
+
+
 class _FormationFetcher(FakeFetcher):
     """Yapıyı veren tarihî sözlük maddesi (indeksin `formation` sütunu)."""
 
