@@ -1,0 +1,1751 @@
+{
+  "_schema": "chronology_eval/v1",
+  "commit": "5fcd8a2",
+  "reference": "Starling earliest_dated_source (ATU+KRH kaynak etiketleri)",
+  "n": 200,
+  "reference_tags": {
+    "MK": 104,
+    "KB": 47,
+    "Orkh.": 47,
+    "IM": 2
+  },
+  "constant_baseline_year": 1072,
+  "circularity": {
+    "yerel": "DÖNGÜSEL — StarlingFetcher first_attestation alanını bu etiketten üretir.",
+    "starling_yok": "Starling okunmaz; yıl yerel kayıtlardaki eser adlarından. Nişanyan/EtimolojiTürkçe ağ kaynağı olduğu için kapalı (üretimdeki katkıları ölçülmedi).",
+    "taban_medyan_yıl": "Her kelimeye başvuru yıllarının medyanı — bilgi taşımayan taban."
+  },
+  "systems": {
+    "yerel": {
+      "n": 200,
+      "coverage": 0.715,
+      "coverage_ci95": [
+        0.6488,
+        0.7731
+      ],
+      "not_later|covered": 0.993,
+      "not_later|covered_ci95": [
+        0.9615,
+        0.9988
+      ],
+      "not_later|all": 0.71,
+      "not_later|all_ci95": [
+        0.6436,
+        0.7685
+      ],
+      "within_century|covered": 0.958,
+      "within_century|covered_ci95": [
+        0.9115,
+        0.9806
+      ],
+      "within_century|all": 0.685,
+      "within_century|all_ci95": [
+        0.6176,
+        0.7454
+      ],
+      "same_source|covered": 0.958,
+      "same_source|covered_ci95": [
+        0.9115,
+        0.9806
+      ],
+      "same_source|all": 0.685,
+      "same_source|all_ci95": [
+        0.6176,
+        0.7454
+      ],
+      "median_abs_diff|covered": 0,
+      "engine_record_counts": {
+        "1072": 66,
+        "yok": 57,
+        "732": 43,
+        "1069": 33,
+        "1245": 1
+      }
+    },
+    "starling_yok": {
+      "n": 200,
+      "coverage": 0.06,
+      "coverage_ci95": [
+        0.0347,
+        0.1019
+      ],
+      "not_later|covered": 0.0,
+      "not_later|covered_ci95": [
+        0.0,
+        0.2425
+      ],
+      "not_later|all": 0.0,
+      "not_later|all_ci95": [
+        0.0,
+        0.0188
+      ],
+      "within_century|covered": 0.0,
+      "within_century|covered_ci95": [
+        0.0,
+        0.2425
+      ],
+      "within_century|all": 0.0,
+      "within_century|all_ci95": [
+        0.0,
+        0.0188
+      ],
+      "same_source|covered": 0.0,
+      "same_source|covered_ci95": [
+        0.0,
+        0.2425
+      ],
+      "same_source|all": 0.0,
+      "same_source|all_ci95": [
+        0.0,
+        0.0188
+      ],
+      "median_abs_diff|covered": 571.0,
+      "engine_record_counts": {
+        "yok": 188,
+        "1303": 10,
+        "1074": 2
+      }
+    },
+    "taban_medyan_yıl": {
+      "n": 200,
+      "coverage": 1.0,
+      "coverage_ci95": [
+        0.9812,
+        1.0
+      ],
+      "not_later|covered": 0.765,
+      "not_later|covered_ci95": [
+        0.7016,
+        0.8184
+      ],
+      "not_later|all": 0.765,
+      "not_later|all_ci95": [
+        0.7016,
+        0.8184
+      ],
+      "within_century|covered": 0.755,
+      "within_century|covered_ci95": [
+        0.691,
+        0.8094
+      ],
+      "within_century|all": 0.755,
+      "within_century|all_ci95": [
+        0.691,
+        0.8094
+      ],
+      "same_source|covered": 0.755,
+      "same_source|covered_ci95": [
+        0.691,
+        0.8094
+      ],
+      "same_source|all": 0.755,
+      "same_source|all_ci95": [
+        0.691,
+        0.8094
+      ],
+      "median_abs_diff|covered": 0.0
+    }
+  },
+  "items": [
+    {
+      "word": "acı",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "alaz",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "alız",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "am",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "ana",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "anat",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "armağan",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "arpa",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": 1303,
+      "starling_yok_record": "1303 Codex Cumanicus"
+    },
+    {
+      "word": "as",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "at",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": 1303,
+      "starling_yok_record": "1303 Codex Cumanicus"
+    },
+    {
+      "word": "avut",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "avuç",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "ayaz",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "ayık",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "ayın",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "az",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "aç",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": 1303,
+      "starling_yok_record": "1303 Codex Cumanicus"
+    },
+    {
+      "word": "ağaç",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "bacı",
+      "reference_year": 1245,
+      "reference_tag": "IM",
+      "yerel_year": 1245,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "bak",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "baldır",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "bay",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": 1303,
+      "starling_yok_record": "1303 Codex Cumanicus"
+    },
+    {
+      "word": "başmak",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "bel",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "beniz",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "beyin",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "bez",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "bile",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "bilek",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "boğ",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "boğak",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "budak",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "bul",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "bulut",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": 1303,
+      "starling_yok_record": "1303 Codex Cumanicus"
+    },
+    {
+      "word": "bun",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "buna",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "burçak",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "but",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "böbrek",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "böcek",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "bögür",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "böke",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "börü",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "böyü",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "dam",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "darga",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "deli",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "depe",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "değin",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "dokun",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "don",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "doğan",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "duynak",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "dör",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "döşek",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "düz",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "düş",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "dış",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "elik",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "erte",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "esri",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "geleni",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "gelin",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "gemi",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "genç",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "geri",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "gevrek",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "gevşek",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "geyik",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "guz",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "gök",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "göl",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "göm",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "gülü",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "güreş",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "güz",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": 1074,
+      "starling_yok_record": "1074 Divânu Lugâti't-Türk (Kâşgarlı Mahmud)"
+    },
+    {
+      "word": "gıcık",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "iki",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": 1303,
+      "starling_yok_record": "1303 Codex Cumanicus"
+    },
+    {
+      "word": "il",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": 1074,
+      "starling_yok_record": "1074 Divânu Lugâti't-Türk (Kâşgarlı Mahmud)"
+    },
+    {
+      "word": "ir",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "iye",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "iz",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kakı",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kalak",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kapa",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "karamuk",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "karmuk",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kart",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "karın",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "katır",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kağnı",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kaşı",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kepek",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "key",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kirpik",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kolan",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kopuz",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "koru",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kov",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kovuk",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "koç",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kur",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kurt",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kus",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "köle",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "köpük",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "köstek",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "küpe",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kın",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kırk",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kısır",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kıy",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "kızıl",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": 1303,
+      "starling_yok_record": "1303 Codex Cumanicus"
+    },
+    {
+      "word": "man",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "neme",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "ok",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "ora",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "oy",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "pisi",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "piş",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "sap",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "sarp",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "sarı",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": 1303,
+      "starling_yok_record": "1303 Codex Cumanicus"
+    },
+    {
+      "word": "savaş",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "savur",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "sağ",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "sek",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "semiz",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "sen",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "ser",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "sik",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "sin",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "sinir",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "sol",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "son",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "sun",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "sülün",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "süngü",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "sık",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "sırt",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "sırça",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "sıva",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "tan",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "tar",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "toklu",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "torum",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "toy",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "tumağan",
+      "reference_year": 1245,
+      "reference_tag": "IM",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "tur",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "turna",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "tuğra",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "törpü",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "tüken",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "tütün",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "tın",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "tırnak",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "us",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "uyan",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "uyu",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "uzun",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yakın",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yalpık",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yama",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yanak",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yaprak",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yapış",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yara",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yassı",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yavan",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yağı",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yağız",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "ye",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yel",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yelpaze",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yine",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yiv",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yol",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": 1303,
+      "starling_yok_record": "1303 Codex Cumanicus"
+    },
+    {
+      "word": "yular",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yumuş",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yürü",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yüzük",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": 1303,
+      "starling_yok_record": "1303 Codex Cumanicus"
+    },
+    {
+      "word": "yıl",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "yılan",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "çakır",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "çav",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "çayan",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "çiriş",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "çoku",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "çömçe",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "çıban",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "çıbık",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "öl",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "ön",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "öyken",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "öç",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 1072,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "üleş",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "ürün",
+      "reference_year": 732,
+      "reference_tag": "Orkh.",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "üt",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": 732,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "ırak",
+      "reference_year": 1069,
+      "reference_tag": "KB",
+      "yerel_year": 1069,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    },
+    {
+      "word": "şaş",
+      "reference_year": 1072,
+      "reference_tag": "MK",
+      "yerel_year": null,
+      "starling_yok_year": null,
+      "starling_yok_record": null
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-cv audit eval-llm eval-prediction starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify apertium semantic dialect bootstrap column-model
+        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-cv audit eval-llm eval-prediction eval-headline eval-donor eval-chronology starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify apertium semantic dialect bootstrap column-model
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -39,6 +39,9 @@ help:
 	@echo "audit          - Arama çıktısı tutarlılık denetimi (60 kelime)"
 	@echo "eval-cv        - Rekonstrüksiyon 5 katlı çapraz doğrulama (train+dev, n≈320)"
 	@echo "eval-llm       - Yalnız-LLM alıntı taban çizgisi (PROVIDER=ollama|claude)"
+	@echo "eval-headline  - Başlık kökü × Starling ve savelyev dev (yalnız yerel kaynaklar)"
+	@echo "eval-donor     - Verici dil tanıma × WOLD Sakha (Rusça/Moğolca/Tunguzca)"
+	@echo "eval-chronology - A-HVP 2. aşama yılı × Starling tarihli kaynak etiketleri"
 	@echo "apertium       - Apertium iki dilli Türk dili sözlüklerini indir"
 	@echo "khakas         - Hakasça–Rusça ve açıklamalı sözlüğü indir (HF, CC-BY-4.0; portföyde değil)"
 	@echo "starling       - Starling Türk/Moğol etimoloji tablolarını indir (Dybo & Starostin 2005)"
@@ -176,6 +179,17 @@ eval-controls:
 PROVIDER ?= ollama
 eval-llm:
 	.venv/bin/python -m engine.evaluation.llm_borrowing_baseline --provider $(PROVIDER)
+
+# Başlık ve kronoloji arama hattını kelime başına koşar (~2 sn/kelime);
+# sonuçlar data/cache/eval_engine_runs altında HEAD'e bağlı önbelleğe yazılır.
+eval-headline: gold
+	.venv/bin/python -m engine.evaluation.headline_eval
+
+eval-donor: data lexicon-index donors
+	.venv/bin/python -m engine.evaluation.donor_id_eval
+
+eval-chronology:
+	.venv/bin/python -m engine.evaluation.chronology_eval
 
 eval-calibration: gold
 	.venv/bin/python -m engine.evaluation.calibration --split train+dev
