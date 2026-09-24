@@ -20,8 +20,22 @@ Denenip kazanç vermeyen: Starling ``turcet`` kökleri tabloya ek eğitim
 verisi (154 -> 1.301 küme, sınanan kat ve test kavramlarıyla aynı Türkçe
 biçimi taşıyanlar elendi): tam +0,003 GA[−0,006, +0,013], NED +0,0006.
 Bu tablo (dil, ses) başına oy dağılımı öğreniyor; dağılımlar 154 kümeyle
-zaten oturmuş. Veriden yararlanabilecek bağlam duyarlı bir model ayrıca
-denenmeli.
+zaten oturmuş.
+
+Denenip kazanç vermeyen (2): konum duyarlı tablo (baş/orta/son, konumsuz
+sayıma geri çekilmeli): tam +0,003; Starling ile birlikte +0,006. İkisi de
+anlamlı değil.
+
+Hata dökümü (öğrenilmiş tablo, n=320): doğru 87 · ses hatası 98 · söz başı
+yanlış 48 · ek soyulmamış 38 · ünlü uzunluğu 22 · çapa kısa 16. Tahminlerin
+%35'inde uzunluk bile tutmuyor; ses tablosu bunları düzeltemez.
+
+- "Ek soyulmamış" çoğunlukla altın kökün tanıklardan KISA olmasıdır
+  (tanık yaχšï "iyi", altın *jak): görev tanımı, düzeltilecek hata değil.
+- "Söz başı" hatalarının yarısı ön ses ötümlülüğü (*t/*d 17, *k/*g 7) ve
+  altının kendisi tutarsız: Oğuz tanıkları çoğunlukla d- iken altın 11 kez
+  *d, 8 kez *t; g- iken 5 kez *g, 7 kez *k. Kural yazı-tura düzeyinde
+  kalır (d için ~+3, g için ~−2 madde) ve 320 maddeye uydurulmuş olur.
 """
 
 from __future__ import annotations
