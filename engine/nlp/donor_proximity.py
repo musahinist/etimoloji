@@ -27,6 +27,7 @@ kaçan alıntıların **%45'i** tam bu kısıttan gelir.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, replace
 from functools import lru_cache
 from typing import Any
@@ -182,6 +183,9 @@ def reset_cache() -> None:
     sca_distance.cache_clear()
     _controls.cache_clear()
     _control_distances.cache_clear()
+    _attribution_controls.cache_clear()
+    _null_distance.cache_clear()
+    _monget_entries.cache_clear()
 
 
 def _cheap_distance(a: str, b: str) -> float:
@@ -336,3 +340,214 @@ def proximity_strength(match: DonorMatch | None) -> float:
         return 0.0
     span = DONOR_DISTANCE_CEILING - DONOR_DISTANCE_THRESHOLD
     return round((DONOR_DISTANCE_CEILING - match.distance) / span, 4)
+
+
+# ---------------------------------------------------------------------------
+# Verici dil ETİKETİ — alıntı gücünden ayrı adım
+# ---------------------------------------------------------------------------
+#
+# ⚠️ Yukarıdaki :func:`nearest_donor` bütün verici dilleri TEK havuzda arar
+# ve en yakın maddenin dilini döndürür. Bu "alıntı mı?" için doğru, "kimden?"
+# için yanlıştı. Ölçüldü (``make eval-donor``, WOLD Saha, n=440): 166
+# Moğolca alıntının 79'u Rusça etiketleniyordu. Sebepler:
+#
+# * Havuzlar eşit değil: Rusça 440.919 madde, kaikki Moğolcası 6.480 (çoğu
+#   çekimli biçim). Hatalı maddelerde kavram başına aday medyanı Rusça 30,
+#   Moğolca 1. Büyük havuzda şans eşleşmesi kaçınılmaz (``ʤon`` ~ ``каян``
+#   0,20, ``naːr`` ~ ``нары`` 0,15).
+# * Mesafe ölçeği diller arasında karşılaştırılamaz: rastgele Türkçe kontrol
+#   kelimelerinin havuza medyan uzaklığı Rusçada 0,503, Moğolcada 0,656.
+# * Kapsam ve yazı: Saha Yazı Moğolcası biçiminden almıştır (``čakilɣan``),
+#   kaikki Halha Kirilini tutar (``цахилгаан``); doğru kelime çoğu kez hiç yok.
+#
+# Etiket adımı her dilin en yakın maddesini AYRI bulur, o dilin kendi
+# null'ını (aynı uzunluktaki kontrol kelimelerinin o havuza medyan uzaklığı)
+# düşer ve en küçük farkı seçer; Moğolca için Starling ``monget`` kullanılır.
+# Ölçüldü: doğruluk 0,652 -> 0,711 (iki yarıda da artış), Moğolca->Rusça
+# 79 -> 46. Parametre seçilmedi (yarı-bölme gereksiz ama yine raporlanır).
+#
+# ⚠️ Sinyal GÜCÜ bu adımdan etkilenmez: ``monget`` havuza katılınca WOLD
+# "alıntı mı?" F'si 0,615'ten 0,584'e düşüyordu. Etiket yalnız sinyal zaten
+# ateşlendiğinde hesaplanır.
+
+#: Bu mesafenin üstündeki etiket "verici belirsiz" notuyla gösterilir.
+#: Ölçüldü: yalnız bu eşiğin altında etiketlense kapsananda doğruluk 0,855,
+#: ama kapsam 0,64'e iner; etiket gizlenmez, belirsizliği ilan edilir.
+DONOR_UNCERTAIN_DISTANCE = DONOR_DISTANCE_THRESHOLD
+
+#: Moğolca verici kodu. Etiket adımında kaikki yerine Starling ``monget``.
+MONGOLIAN = "mn"
+
+#: Etiket null'ı için kontrol sayısı.
+ATTRIBUTION_CONTROL_COUNT = 12
+
+
+@dataclass(frozen=True)
+class DonorAttribution:
+    """Verici dil etiketi: dil başına en yakın madde, dilin null'ına göre."""
+
+    lang_code: str
+    word: str
+    comparison: str
+    gloss: str
+    distance: float
+    #: Kontrol kelimelerinin bu dilin havuzuna medyan uzaklığı.
+    null_distance: float
+    source: str = "kaikki"
+    #: Öbür dillerin (dil, mesafe, null) değerleri — şeffaflık için.
+    alternatives: tuple[tuple[str, float, float], ...] = ()
+
+    @property
+    def adjusted(self) -> float:
+        return self.distance - self.null_distance
+
+    @property
+    def uncertain(self) -> bool:
+        return self.distance > DONOR_UNCERTAIN_DISTANCE
+
+    def describe(self) -> str:
+        source = ", Starling monget" if self.source == "starling-monget" else ""
+        note = " ⚠️ verici belirsiz" if self.uncertain else ""
+        return (
+            f"{self.lang_code} {self.word} ({self.comparison}) SCA {self.distance:.3f}, "
+            f"dil null'ı {self.null_distance:.3f}{source}{note}"
+        )
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "donor_lang": self.lang_code,
+            "donor_word": self.word,
+            "donor_gloss": self.gloss,
+            "donor_distance": round(self.distance, 4),
+            "donor_null_distance": round(self.null_distance, 4),
+            "donor_source": self.source,
+            "donor_uncertain": self.uncertain,
+            "donor_alternatives": [
+                {"lang": lang, "sca_distance": round(d, 4), "null_distance": round(n, 4)}
+                for lang, d, n in self.alternatives
+            ],
+        }
+
+
+@lru_cache(maxsize=64)
+def _attribution_controls(length: int) -> tuple[str, ...]:
+    """Her uzunlukta kontrol biçimleri.
+
+    ⚠️ :func:`_controls` 6 harften uzun sorguda 8'den az kontrol veriyor ve
+    şans denetimi o kelimelerde hiç yapılmıyor. Burada eksik kalan uzunluk
+    iki gerçek kelime birleştirilip kırpılarak doldurulur: yine gerçek Türkçe
+    fonotaktik, yine sorguyla aynı uzunluk.
+    """
+    words = [to_comparison_form(w) for w in _CONTROL_SOURCE.split()]
+    exact = [w for w in words if len(w) == length]
+    trimmed = [w[:length] for w in words if len(w) > length]
+    joined = [(a + b)[:length] for a, b in zip(words, words[1:]) if len(a + b) >= length]
+    # Çok uzun sorgularda komşu çiftler yetmez: öbür çiftlere de bakılır.
+    joined += [(a + b)[:length] for a in words for b in words if a != b and len(a + b) >= length]
+    return tuple(list(dict.fromkeys(exact + trimmed + joined))[:ATTRIBUTION_CONTROL_COUNT])
+
+
+@lru_cache(maxsize=20000)
+def _null_distance(length: int, pool: tuple[str, ...]) -> float:
+    """Kontrol kelimelerinin bu havuza medyan en yakın mesafesi."""
+    controls = _attribution_controls(length)
+    if not controls or not pool:
+        return 0.0
+    distances = sorted(best_sca(control, list(pool))[0] for control in controls)
+    middle = len(distances) // 2
+    if len(distances) % 2:
+        return distances[middle]
+    return (distances[middle - 1] + distances[middle]) / 2
+
+
+@lru_cache(maxsize=1)
+def _monget_entries() -> tuple[tuple[str, str, str, frozenset[str]], ...]:
+    """(karşılaştırma biçimi, biçim, anlam, anlam sözcükleri) — Starling monget."""
+    from engine.db.donor_index import MAX_LENGTH, MIN_LENGTH
+    from engine.db.starling import load_monget
+
+    out = []
+    for entry in load_monget():
+        comparison = to_comparison_form(entry.form)
+        if not MIN_LENGTH <= len(comparison) <= MAX_LENGTH:
+            continue
+        tokens = frozenset(t for t in re.split(r"[^a-zA-ZçğıöşüÇĞİÖŞÜ]+", entry.meaning.lower()) if t)
+        out.append((comparison, entry.form, entry.meaning, tokens))
+    return tuple(out)
+
+
+def _monget_rows(sense: str) -> list[dict[str, str]]:
+    """Anlamı sorguyla örtüşen monget biçimleri (verici indeksiyle aynı kural)."""
+    from engine.db.donor_index import _sense_tokens
+
+    # ``DonorIndex.by_sense`` ile aynı: 2 harften uzun ilk 6 sözcük, tam eşleşme.
+    tokens = set([t for t in _sense_tokens(sense) if len(t) > 2][:6])
+    if not tokens:
+        return []
+    return [
+        {"lang_code": MONGOLIAN, "word": form, "comparison": comparison, "gloss": meaning}
+        for comparison, form, meaning, words in _monget_entries()
+        if words & tokens
+    ]
+
+
+def attribute_donor(
+    comparison: str,
+    sense: str = "",
+    *,
+    languages: list[str] | None = None,
+    max_candidates: int = 200,
+) -> DonorAttribution | None:
+    """Alıntı olduğu düşünülen kelimenin verici dilini seçer.
+
+    Her dilin anlam kısıtlı en yakın maddesi ayrı bulunur; seçim ölçütü
+    ``mesafe − o dilin null'ı``dır (eşitlikte ham mesafe). Moğolca istendiyse
+    ve Starling ``monget`` varsa Moğolca adayları ondan gelir.
+
+    ⚠️ Karar değil etikettir: kelimenin alıntı olup olmadığını bu fonksiyon
+    söylemez, :func:`nearest_donor` ve :func:`proximity_strength` söyler.
+    """
+    index = _index()
+    if _pairwise() is None or not comparison or not getattr(index, "exists", False):
+        return None
+    rows = index.by_sense(sense, languages=languages, limit=max_candidates)
+    groups: dict[str, list[Any]] = {}
+    for row in rows:
+        groups.setdefault(row["lang_code"], []).append(row)
+    sources = {lang: "kaikki" for lang in groups}
+    if languages is None or MONGOLIAN in languages:
+        mongolic = _monget_rows(sense)
+        if mongolic or _monget_entries():
+            groups.pop(MONGOLIAN, None)
+            sources.pop(MONGOLIAN, None)
+        if mongolic:
+            groups[MONGOLIAN] = mongolic
+            sources[MONGOLIAN] = "starling-monget"
+
+    scored: list[tuple[float, float, str, Any, float]] = []
+    for lang, members in groups.items():
+        by_form: dict[str, Any] = {}
+        for row in members:
+            if row["comparison"] and row["comparison"] not in by_form:
+                by_form[row["comparison"]] = row
+        if not by_form:
+            continue
+        distance, form = best_sca(comparison, list(by_form))
+        if not form:
+            continue
+        null = _null_distance(len(comparison), tuple(sorted(by_form)))
+        scored.append((distance - null, distance, lang, by_form[form], null))
+    if not scored:
+        return None
+    scored.sort(key=lambda item: (item[0], item[1], item[2]))
+    _, distance, lang, row, null = scored[0]
+    return DonorAttribution(
+        lang_code=lang,
+        word=row["word"],
+        comparison=row["comparison"],
+        gloss=row["gloss"] or "",
+        distance=distance,
+        null_distance=null,
+        source=sources.get(lang, "kaikki"),
+        alternatives=tuple((item[2], item[1], item[4]) for item in scored[1:]),
+    )

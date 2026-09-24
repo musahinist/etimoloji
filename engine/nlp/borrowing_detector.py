@@ -37,7 +37,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from engine.logging_setup import get_logger
-from engine.nlp.donor_proximity import nearest_donor, proximity_strength
+from engine.nlp.donor_proximity import attribute_donor, nearest_donor, proximity_strength
 from engine.nlp.proto_phonology import PROHIBITED_INITIALS
 from engine.utils.orthography import to_comparison_form
 from engine.utils.phonotactics import VOWELS, has_vowel_harmony
@@ -745,14 +745,20 @@ class BorrowingDetector:
                 0.0,
                 "verici sözlüğünde yakın karşılık yok",
             )
-        return Signal(
-            "verici_yakınlığı",
-            True,
-            strength,
+        # ⚠️ "Kimden?" ayrı bir adımdır (bkz. ``donor_proximity.attribute_donor``):
+        # tek havuzdaki en yakın maddenin dili Moğolca alıntıların 79/166'sını
+        # Rusça etiketliyordu. Etiket GÜCE girmez; güç yukarıda hesaplandı.
+        evidence = match.as_dict()
+        explanation = (
             f"verici sözlüğünde aynı kavramın karşılığı fonetik olarak yakın: "
-            f"{match.describe()}",
-            match.as_dict(),
+            f"{match.describe()}"
         )
+        attribution = attribute_donor(comparison, sense, languages=donors)
+        if attribution is not None:
+            evidence["attributed_lang"] = attribution.lang_code
+            evidence["attribution"] = attribution.as_dict()
+            explanation += f"; verici etiketi: {attribution.describe()}"
+        return Signal("verici_yakınlığı", True, strength, explanation, evidence)
 
     def detect(
         self,

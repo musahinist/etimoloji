@@ -258,3 +258,88 @@ def lookup_turkish(word: str) -> tuple[StarlingEtymology, ...]:
     for etym in found:
         unique.setdefault(etym.number, etym)
     return tuple(unique.values())
+
+
+# ---------------------------------------------------------------------------
+# Moğol tablosu (``monget``) — YALNIZ verici dil ETİKETİ için
+# ---------------------------------------------------------------------------
+
+#: ``monget`` alanları: Yazı Moğolcası, Orta Moğolca, Halha, Buryatça, Kalmukça.
+#: Öbür alanlar (Ordos, Dongxiang, Bao'an, Dagur, Moghol…) Saha'ya verici
+#: olmadığından alınmaz.
+MONGOLIC_FIELDS = ("WMO", "MMO", "HAL", "BUR", "KAL")
+
+
+@dataclass(frozen=True)
+class MongolicForm:
+    """``monget`` tablosundan tek bir Moğolca biçim ve kökünün anlamı."""
+
+    form: str
+    meaning: str
+    field: str
+    proto: str
+
+
+def _mongolic_forms(field_text: str) -> list[str]:
+    """"dölü (L 272), döl (Khalkha)" -> ["dölü", "döl"].
+
+    Kaynakça parantezleri, tırnaklı anlamlar ve köşeli notlar atılır.
+    Starling ``j`` yazımı Saha karşılaştırmasındaki ``y`` ile hizalanır;
+    ``ǯ`` ise ``ʤ`` olur (karşılaştırma biçiminde ikisi de ``c``).
+    """
+    text = re.sub(r"\([^)]*\)", "", field_text)
+    text = re.sub(r"'[^']*'", "", text)
+    text = re.sub(r"\[[^\]]*\]", "", text)
+    out: list[str] = []
+    for part in re.split(r"[,;~/]", text):
+        token = part.strip().split(" ")[0] if part.strip() else ""
+        if token:
+            out.append(token.replace("j", "y").replace("ǯ", "ʤ"))
+    return out
+
+
+@lru_cache(maxsize=1)
+def load_monget(directory: Path = STARLING_DIR) -> tuple[MongolicForm, ...]:
+    """``monget.dbf`` + ``monget.var``: Moğolca biçimler ve İngilizce anlamları.
+
+    ⚠️ **Yalnız verici dili etiketlemek içindir, alıntı gücüne girmez.**
+    Ölçüldü (WOLD Saha, değerlendirme yarısı): bu biçimler verici yakınlığı
+    havuzuna katılınca "alıntı mı?" F'si 0,615'ten 0,584'e düşüyor — Starling
+    Moğol tablosu Türk-Moğol ortak sözvarlığıyla dolu ve miras Saha
+    kelimeleri de ona yakın düşüyor. Ama alıntı olduğu zaten bilinen
+    kelimenin vericisini seçerken kaikki Moğolcasından çok daha iyi:
+    Saha Moğolca alıntıları Yazı Moğolcası biçiminden alınmıştır
+    (``čakilɣan``), kaikki ise Halha Kirilini tutar (``цахилгаан``) ve
+    6.480 maddesinin çoğu çekimli biçimdir.
+
+    Dosyalar yoksa boş döner.
+    """
+    dbf_path, var_path = directory / "monget.dbf", directory / "monget.var"
+    if not (dbf_path.exists() and var_path.exists()):
+        return ()
+    dbf, var = dbf_path.read_bytes(), var_path.read_bytes()
+    count = struct.unpack("<I", dbf[4:8])[0]
+    header, row = struct.unpack("<HH", dbf[8:12])
+    fields = _read_fields(dbf)
+
+    out: list[MongolicForm] = []
+    for index in range(count):
+        record = dbf[header + index * row: header + (index + 1) * row]
+        if record[:1] == b"*":
+            continue
+        values: dict[str, str] = {}
+        offset = 1
+        for name, kind, length in fields:
+            raw = record[offset:offset + length]
+            offset += length
+            if kind == "N":
+                continue
+            start, size = struct.unpack("<IH", raw)
+            values[name] = decode(var[start:start + size]) if size else ""
+        meaning = values.get("MEANING", "")
+        if not meaning:
+            continue
+        for name in MONGOLIC_FIELDS:
+            for form in _mongolic_forms(values.get(name, "")):
+                out.append(MongolicForm(form, meaning, name, values.get("PROTO", "")))
+    return tuple(out)

@@ -19,8 +19,13 @@ Sistemler
 ---------
 * ``zincir``: ``BorrowingDetector.detect(...).donor_language`` — yerel sözlük
   indeksindeki (Wiktionary) alıntı kaydının verici kodu.
-* ``yakınlık``: verici yakınlığı sinyalinin en yakın maddesinin dili
-  (``ru``/``mn``/``evn`` sözlükleri, anlam kısıtlı SCA).
+* ``yakınlık``: verici yakınlığı sinyalinin verici ETİKETİ
+  (``donor_proximity.attribute_donor``): dil başına en yakın madde, o dilin
+  null'ı düşülerek seçilir; Moğolca adaylar Starling ``monget``ten gelir.
+* ``yakınlık (tek havuz, eski)``: ru/mn/evn tek havuzdaki en yakın maddenin
+  dili. Moğolca alıntıların 79/166'sını Rusça etiketliyordu (Rusça havuz
+  440.919, kaikki Moğolcası 6.480 madde; mesafe ölçeği diller arasında
+  karşılaştırılamaz). Karşılaştırma için raporlanır.
 * ``motor``: önce zincir, yoksa yakınlık — kullanıcıya gösterilebilecek en
   iyi verici tahmini.
 * ``motor|alıntı_dedi``: ``motor``, ama yalnız dedektör ``is_borrowed``
@@ -145,20 +150,29 @@ def predict(case: DonorCase, detector: Any) -> dict[str, Any]:
     from engine.evaluation.borrowing_eval import donors_for
 
     verdict = detector.detect(case.word, [], lang="sah", sense=case.sense, donors=donors_for("sah"))
-    proximity_code = ""
+    proximity_code = nearest_code = ""
+    uncertain = None
     for signal in verdict.signals:
         if signal.name == "verici_yakınlığı" and signal.fired:
-            proximity_code = str((signal.evidence or {}).get("donor_lang") or "")
+            evidence = signal.evidence or {}
+            nearest_code = str(evidence.get("donor_lang") or "")
+            proximity_code = str(evidence.get("attributed_lang") or nearest_code)
+            uncertain = (evidence.get("attribution") or {}).get("donor_uncertain")
     chain = engine_class(verdict.donor_language)
     proximity = engine_class(proximity_code)
+    nearest = engine_class(nearest_code)
     combined = chain if chain != NO_PREDICTION else proximity
     return {
         "zincir": chain,
         "yakınlık": proximity,
+        "yakınlık (tek havuz, eski)": nearest,
         "motor": combined,
+        "motor (tek havuz, eski)": chain if chain != NO_PREDICTION else nearest,
         "motor|alıntı_dedi": combined if verdict.is_borrowed else NO_PREDICTION,
         "raw_chain": verdict.donor_language,
         "raw_proximity": proximity_code,
+        "raw_nearest": nearest_code,
+        "donor_uncertain": uncertain,
         "is_borrowed": verdict.is_borrowed,
     }
 
@@ -189,7 +203,8 @@ def score(gold: list[str], predicted: list[str]) -> dict[str, Any]:
     }
 
 
-SYSTEMS = ("zincir", "yakınlık", "motor", "motor|alıntı_dedi")
+SYSTEMS = ("zincir", "yakınlık", "yakınlık (tek havuz, eski)", "motor", "motor (tek havuz, eski)",
+           "motor|alıntı_dedi")
 
 
 def run() -> dict[str, Any]:
@@ -207,16 +222,34 @@ def run() -> dict[str, Any]:
     eval_half = [i for i, c in enumerate(cases) if c.index % 2 == 1]
     results["motor|alıntı_dedi (değerlendirme yarısı)"] = score(
         [gold[i] for i in eval_half], [predictions[i]["motor|alıntı_dedi"] for i in eval_half])
+    # Yarı-bölme: verici etiketinde ayarlanmış parametre yok, ama iki yarının
+    # ikisinde de ayrı raporlanır (seçim bir yarıda yapılsaydı öbürü test olurdu).
+    for half, parity in (("çift", 0), ("tek", 1)):
+        idx = [i for i, c in enumerate(cases) if c.index % 2 == parity]
+        for name in ("motor", "motor (tek havuz, eski)"):
+            results[f"{name} ({half} yarı)"] = score(
+                [gold[i] for i in idx], [predictions[i][name] for i in idx])
+    # "Verici belirsiz" notu (SCA > 0,35) taşıyan ve taşımayan etiketler.
+    for flag, tag in ((False, "kesin"), (True, "belirsiz")):
+        idx = [i for i, p in enumerate(predictions)
+               if p["zincir"] == NO_PREDICTION and p["donor_uncertain"] is flag]
+        if idx:
+            results[f"yakınlık etiketi, {tag}"] = score(
+                [gold[i] for i in idx], [predictions[i]["yakınlık"] for i in idx])
     from engine.evaluation.significance import mcnemar_test
 
     majority_hits = [g == majority for g in gold]
     significance = {
         name: mcnemar_test([p[name] == g for p, g in zip(predictions, gold, strict=True)],
                            majority_hits).as_dict()
-        for name in ("motor", "yakınlık")
+        for name in ("motor", "yakınlık", "motor (tek havuz, eski)")
     }
+    significance["motor vs motor (tek havuz, eski)"] = mcnemar_test(
+        [p["motor"] == g for p, g in zip(predictions, gold, strict=True)],
+        [p["motor (tek havuz, eski)"] == g for p, g in zip(predictions, gold, strict=True)],
+    ).as_dict()
     return {
-        "_schema": "donor_id_eval/v1",
+        "_schema": "donor_id_eval/v2",
         "commit": _head(),
         "reference": "WOLD Sakha, borrowings.csv Source_relation=immediate, Borrowed ∈ {1,2}, Unidentified hariç",
         "n": len(cases),
@@ -225,6 +258,7 @@ def run() -> dict[str, Any]:
         "raw_engine_codes": {
             "zincir": dict(Counter(p["raw_chain"] for p in predictions).most_common()),
             "yakınlık": dict(Counter(p["raw_proximity"] for p in predictions).most_common()),
+            "yakınlık (tek havuz, eski)": dict(Counter(p["raw_nearest"] for p in predictions).most_common()),
         },
         "systems": results,
         "vs_majority_mcnemar": significance,
@@ -256,7 +290,7 @@ def main() -> int:
             f"makro-duyarlılık {s['macro_recall']:.3f}"
         )
     for name, t in payload["vs_majority_mcnemar"].items():
-        print(f"McNemar {name} vs çoğunluk: {t}")
+        print(f"McNemar {name if ' vs ' in name else name + ' vs çoğunluk'}: {t}")
     print("\nkarışıklık (motor):")
     for g, row in payload["systems"]["motor"]["confusion"].items():
         print(f"  {g:10} -> {row}")
