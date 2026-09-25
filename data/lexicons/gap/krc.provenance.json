@@ -1,0 +1,16 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Карачаево-балкарский",
+  "code": "krc",
+  "donor": false,
+  "ru_edition": false,
+  "gap_edition": "ru",
+  "url": "https://kaikki.org/ruwiktionary/%D0%9A%D0%B0%D1%80%D0%B0%D1%87%D0%B0%D0%B5%D0%B2%D0%BE-%D0%B1%D0%B0%D0%BB%D0%BA%D0%B0%D1%80%D1%81%D0%BA%D0%B8%D0%B9/kaikki.org-dictionary-%D0%9A%D0%B0%D1%80%D0%B0%D1%87%D0%B0%D0%B5%D0%B2%D0%BE%D0%B1%D0%B0%D0%BB%D0%BA%D0%B0%D1%80%D1%81%D0%BA%D0%B8%D0%B9.jsonl",
+  "retrieved_at": "2026-09-25T07:50:50+00:00",
+  "raw_bytes": 1000302,
+  "stored_bytes": 92410,
+  "entries": 875,
+  "compressed": true,
+  "sha256_stored": "59b7fb331f952d63a878371162e549ade0e180c90371d6feeac855ca6e88dedd",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

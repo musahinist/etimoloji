@@ -107,7 +107,9 @@ LEXICONS: dict[str, str] = {
 #:
 #: Bu yüzden Rusça sürüm maddeleri **yalnız tanık ve arama verisi** olarak
 #: kullanılır; köken etiketi olarak ASLA kullanılmaz.
-RU_EDITION = "https://kaikki.org/ruwiktionary/{name}/kaikki.org-dictionary-{name}.jsonl"
+#: ⚠️ İngilizce sürümdeki gibi DİZİN adı tireyi korur, DOSYA adı siler:
+#: ``Карачаево-балкарский/kaikki.org-dictionary-Карачаевобалкарский.jsonl``.
+RU_EDITION = "https://kaikki.org/ruwiktionary/{dir}/kaikki.org-dictionary-{file}.jsonl"
 
 RU_LEXICONS: dict[str, str] = {
     "Караимский": "kdr",            # Karayca — İngilizce sürümde yok denecek kadar az
@@ -131,7 +133,8 @@ RU_LEXICONS: dict[str, str] = {
     "Туркменский": "tk",
     "Уйгурский": "ug",
     "Гагаузский": "gag",
-    # Карачаево-балкарский: kaikki'de bu adla döküm yok (404, 2026-09-23).
+    # Карачаево-балкарский: 2026-09-23'teki 404 dosya adındaki tirenin
+    # silinmemesiydi (bkz. RU_EDITION); döküm var ama bkz. GAP_LEXICONS.
 }
 
 #: Rusça sürüm dökümleri ayrı dizine iner; şema farkı orada işlenir.
@@ -149,6 +152,35 @@ RU_SUBDIR = "ru_edition"
 #: kaynaktan kuruldu; okunursa `make eval-borrowing` döngüsel olur.
 TR_EDITION = "https://kaikki.org/trwiktionary/raw-wiktextract-data.jsonl.gz"
 TR_SUBDIR = "tr_edition"
+
+#: Veri açığı dilleri (G11): indirilir ama İNDEKSE BAĞLANMAZ.
+#:
+#: Ayrı dizine (``data/lexicons/gap/``) iner; ``lexicon_index --build`` o
+#: dizine bakmaz. İstenirse ``lexicon_index --append gap krc`` ile kurulu
+#: indekse yeniden kurmadan eklenebilir.
+#:
+#: * Karaçay-Balkarca, Rusça sürüm: 875 madde (İngilizce/Türkçe sürümde 278),
+#:   807'si köken metinli ("Происходит от пратюркск. *ōn").
+#: * Kumanca (Codex Cumanicus, 14. yy), Türkçe sürüm dil sayfası: 651 madde,
+#:   anlamları Türkçe. Türkçe sürümün ham dökümünde ``lang_code`` "unknown"
+#:   olduğu için bölünürken atılıyordu.
+#:
+#: ⚠️ ÖLÇÜLDÜ, BAĞLANMADI (2026-09-25). İndekse eklenince (train+dev 131
+#: kelime) Karaçay-Balkarca tanıklı kelime 41 -> 44, Kumanca 13 -> 20; ama
+#: yeni tanıkların elle kesinliği 46 örnekte ~0,76 (eşik 0,85). Yanlışların
+#: hepsi yazılışça aynı, anlamca başka kelime: kayın "kayınbirader" ~ къайын
+#: "huş", yarık ~ Kumanca yarık "ışık", tol ~ tol "dolmak", köp (ağız) ~ köp
+#: "çok", senek "su testisi" ~ сенек "yaba", -dır ~ -дыр (ettirgen). Anlam
+#: süzgeci eşsesliyi ayıramıyor (Rusça anlamda zaten zayıf, bkz.
+#: ``khakas_dict``). Karaçay-Balkarcanın temel söz varlığı eski indekste
+#: zaten var: altın kümenin 130 kavramından yeni dökümün kapsadığı 35'in
+#: 35'i eski 278 kayıtta da vardı.
+GAP_SUBDIR = "gap"
+TR_LANG_EDITION = "https://kaikki.org/trwiktionary/{dir}/kaikki.org-dictionary-{file}.jsonl"
+GAP_LEXICONS: dict[str, tuple[str, str]] = {
+    "Карачаево-балкарский": ("ru", "krc"),
+    "Kumanca": ("tr", "qwm"),
+}
 
 #: **Verici** dil dökümleri. Bunlar Türki DEĞİLDİR ve akraba arama indeksine
 #: ASLA karışmaz — ayrı dizine iner (``data/lexicons/donors/``).
@@ -216,6 +248,7 @@ def download(
     compress: bool = True,
     donor: bool = False,
     ru_edition: bool = False,
+    gap: bool = False,
 ) -> dict[str, Any] | None:
     """Tek bir dilin dökümünü indirir ve künyesini döndürür.
 
@@ -225,6 +258,9 @@ def download(
     if ru_edition:
         code = RU_LEXICONS[name]
         directory = LEXICON_DIR / RU_SUBDIR
+    elif gap:
+        edition, code = GAP_LEXICONS[name]
+        directory = LEXICON_DIR / GAP_SUBDIR
     else:
         code = (DONORS if donor else LEXICONS)[name]
         directory = LEXICON_DIR / DONOR_SUBDIR if donor else LEXICON_DIR
@@ -240,7 +276,11 @@ def download(
             return existing
         print(f"[{name}] künye var ama veri dosyası yok ya da SHA-256 uyuşmuyor; indiriliyor")
 
-    url = RU_EDITION.format(name=quote(name)) if ru_edition else kaikki_url(name)
+    if ru_edition or gap:
+        template = TR_LANG_EDITION if gap and edition == "tr" else RU_EDITION
+        url = template.format(dir=quote(name), file=quote(name.replace("-", "")))
+    else:
+        url = kaikki_url(name)
     print(f"[{name}] indiriliyor -> {target.name}")
     raw_bytes = 0
     lines = 0
@@ -273,6 +313,7 @@ def download(
         "code": code,
         "donor": donor,
         "ru_edition": ru_edition,
+        **({"gap_edition": edition} if gap else {}),
         "url": url,
         "retrieved_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "raw_bytes": raw_bytes,
@@ -402,6 +443,11 @@ def main() -> int:
         help="verici dil dökümleri (ad verilmezse Sakha ölçütü için Russian Mongolian Evenki)",
     )
     ap.add_argument("--tr", action="store_true", help="Türkçe Wiktionary sürümü (~44 MB, Türki dillere bölünür)")
+    ap.add_argument(
+        "--gap",
+        action="store_true",
+        help="veri açığı dilleri (Karaçay-Balkarca ru, Kumanca tr); indekse bağlanmaz",
+    )
     ap.add_argument("--small", action="store_true", help=f"{SMALL_LIMIT >> 20} MB altındakiler")
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--no-compress", action="store_true", help="gzip'lemeden sakla")
@@ -422,6 +468,14 @@ def main() -> int:
         counts = download_tr_edition(session=session, force=args.force)
         print(f"Türkçe sürüm: {counts}")
         return 0 if counts else 1
+
+    if args.gap:
+        results = [
+            prov for name in GAP_LEXICONS
+            if (prov := download(name, session=session, force=args.force,
+                                 compress=not args.no_compress, gap=True))
+        ]
+        return 0 if results else 1
 
     if args.ru:
         results = [

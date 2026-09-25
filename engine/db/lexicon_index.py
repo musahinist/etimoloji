@@ -669,6 +669,29 @@ def _romanised_comparison(record: dict[str, Any]) -> str:
     return to_comparison_form(text)
 
 
+#: Kiril imlasında ``ё``/``ю`` ünsüzden sonra (ve söz başında) ö/ü olan
+#: diller: Karaçay-Balkarca кёз = köz, тюз = tüz, ёгюз = ögüz. Genel Kiril
+#: tablosu bunları yo/yu okur (``kyoz``) ve hiçbir Türkçe biçimle eşleşmez.
+#: Ünlüden ya da ь/ъ'dan sonra y+ünlüdür (аю = ayu). ⚠️ Kumukça da aynı
+#: imlayı kullanır (гёз), ama indeksi yeniden kurmadan 3.330 kaydı
+#: değiştirmemek için şimdilik yalnız Karaçay-Balkarca.
+_FRONT_ROUNDED_YO_YU = frozenset({"krc"})
+_AFTER_VOWEL = re.compile(r"(?<=[аеёиоуыэюяьъ])([ёю])")
+
+
+def _front_rounded_cyrillic(word: str) -> str:
+    """кёз -> кöз, ёгюз -> öгüз, аю -> аю (ünlüden sonra y+ünlü kalır)."""
+    marked = _AFTER_VOWEL.sub(lambda m: {"ё": "\x00", "ю": "\x01"}[m.group(1)], word.lower())
+    return marked.replace("ё", "ö").replace("ю", "ü").replace("\x00", "ё").replace("\x01", "ю")
+
+
+def comparison_for(word: str, lang_code: str) -> str:
+    """Kiril kaydın karşılaştırma biçimi, dile özgü ``ё``/``ю`` okumasıyla."""
+    if lang_code in _FRONT_ROUNDED_YO_YU:
+        word = _front_rounded_cyrillic(word)
+    return to_comparison_form(word)
+
+
 def iter_entries(path: Path, lang_code: str, *, skip_form_of: bool = False) -> Iterator[LexiconEntry]:
     """Bir kaikki JSONL dökümünü satır satır okur (bellekte tutmadan).
 
@@ -694,7 +717,7 @@ def iter_entries(path: Path, lang_code: str, *, skip_form_of: bool = False) -> I
                 s.get("form_of") or "form-of" in (s.get("tags") or []) for s in senses
             ):
                 continue
-            comparison = to_comparison_form(word)
+            comparison = comparison_for(word, lang_code)
             if not comparison:
                 # Arap veya Orhun yazısı: önce Latin'e çevir.
                 # Ölçüldü: bu adım olmadan 4.215 Uygurca kaydın yalnız 114'ü
@@ -861,6 +884,80 @@ class LexiconIndex:
                 info.items(),
             )
         return {"languages": counts, "total": sum(counts.values())}
+
+    def append(self, lang_code: str, source: Path, edition: str) -> int:
+        """Kurulu indekse TEK bir sürüm dökümünü ekler (yeniden kurmadan).
+
+        İndeksin kurulumu uzun ve indeks eval'lerin girdisidir; sonradan
+        inen küçük bir döküm (ör. Rusça sürüm Karaçay-Balkarca, Türkçe
+        sürüm Kumanca) için baştan kurmak gerekmez. ``build`` aynı dökümü
+        ``discover_edition`` ile zaten bulur; buradaki ekleme onunla aynı
+        satırları üretir. Aynı dosya (SHA-256) ikinci kez eklenmez.
+
+        ⚠️ Veri açığı dökümleri (``gap/``) bununla eklenip ölçüldü ve
+        BAĞLANMADI: yeni Karaçay-Balkarca/Kumanca tanıklarının kesinliği
+        ~0,76 (eşsesli yazılış eşleşmesi). Ayrıntı ``GAP_LEXICONS``.
+
+        :return: eklenen kayıt sayısı (zaten ekliyse 0).
+        """
+        import hashlib
+
+        sha = hashlib.sha256(source.read_bytes()).hexdigest()
+        key = f"appended:{edition}:{lang_code}"
+        with self.connect() as connection:
+            done = connection.execute("SELECT value FROM build_info WHERE key = ?", (key,)).fetchone()
+            if done and done[0] == sha:
+                return 0
+            if done:
+                raise RuntimeError(f"{key} başka bir dökümle eklenmiş; indeksi --build ile yeniden kurun")
+            first = connection.execute("SELECT COALESCE(MAX(id), 0) FROM entries").fetchone()[0]
+            rows = [e.as_row() for e in iter_entries(source, lang_code, skip_form_of=edition == "tr")]
+            self._insert(connection, rows)
+            connection.execute(
+                "INSERT INTO entries_fts(rowid, word, comparison, gloss, etymology) "
+                "SELECT id, word, comparison, gloss, etymology FROM entries WHERE id > ?",
+                (first,),
+            )
+            if lang_code in _FRONT_ROUNDED_YO_YU:
+                self._refresh_comparisons(connection, lang_code, first)
+            languages = json.loads(
+                (connection.execute("SELECT value FROM build_info WHERE key = 'languages'").fetchone() or ["{}"])[0]
+            )
+            languages[lang_code] = languages.get(lang_code, 0) + len(rows)
+            total = int(
+                (connection.execute("SELECT value FROM build_info WHERE key = 'total_entries'").fetchone() or ["0"])[0]
+            ) + len(rows)
+            connection.executemany(
+                "INSERT OR REPLACE INTO build_info(key, value) VALUES (?, ?)",
+                [("languages", json.dumps(languages, ensure_ascii=False)),
+                 ("total_entries", str(total)), (key, sha)],
+            )
+        return len(rows)
+
+    @staticmethod
+    def _refresh_comparisons(connection: sqlite3.Connection, lang_code: str, before_id: int) -> None:
+        """Eklemeden ÖNCEKİ kayıtların karşılaştırma biçimini ``comparison_for``la
+        günceller (kurulumda ``iter_entries`` bunu zaten yapar); FTS de."""
+        rows = connection.execute(
+            "SELECT id, word, comparison, gloss, etymology FROM entries "
+            "WHERE lang_code = ? AND id <= ? AND (word LIKE '%ё%' OR word LIKE '%ю%' "
+            "OR word LIKE '%Ё%' OR word LIKE '%Ю%')",
+            (lang_code, before_id),
+        ).fetchall()
+        for row_id, word, old, gloss, etymology in rows:
+            new = comparison_for(word, lang_code)
+            if not new or new == old:
+                continue
+            connection.execute(
+                "INSERT INTO entries_fts(entries_fts, rowid, word, comparison, gloss, etymology) "
+                "VALUES('delete', ?, ?, ?, ?, ?)",
+                (row_id, word, old, gloss, etymology),
+            )
+            connection.execute("UPDATE entries SET comparison = ? WHERE id = ?", (new, row_id))
+            connection.execute(
+                "INSERT INTO entries_fts(rowid, word, comparison, gloss, etymology) VALUES (?, ?, ?, ?, ?)",
+                (row_id, word, new, gloss, etymology),
+            )
 
     @staticmethod
     def _insert(connection: sqlite3.Connection, rows: list[tuple]) -> None:
@@ -1040,6 +1137,11 @@ RU_EDITION_SUBDIR = "ru_edition"
 #: Türkçe Wiktionary sürümü; Rusça sürümle AYNI kural: yalnız tanık ve arama.
 TR_EDITION_SUBDIR = "tr_edition"
 
+#: Veri açığı dökümleri (Karaçay-Balkarca ru, Kumanca tr): ``build`` BAKMAZ.
+#: Ölçüldü, kesinlik eşiği tutmadı (bkz. ``scripts/download_lexicons.py``
+#: ``GAP_LEXICONS``); yalnız ``--append gap <dil>`` ile elle eklenir.
+GAP_SUBDIR = "gap"
+
 
 def discover_ru_edition() -> dict[str, Path]:
     """Rusça sürüm dökümleri — yoksa boş sözlük."""
@@ -1084,6 +1186,12 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Yerel sözlük indeksi")
     ap.add_argument("--build", action="store_true", help="indeksi kur")
     ap.add_argument("--stats", action="store_true", help="indeks künyesi")
+    ap.add_argument(
+        "--append",
+        nargs=2,
+        metavar=("SÜRÜM", "DİL"),
+        help="kurulu indekse tek sürüm dökümü ekle, yeniden kurmadan (ör. --append ru krc)",
+    )
     ap.add_argument("--lookup", help="tam biçim ara")
     ap.add_argument("--fuzzy", help="bir harf toleranslı ara")
     ap.add_argument("--borrowings", help="bir dilin alıntılarını listele (dil kodu)")
@@ -1104,6 +1212,16 @@ def main() -> int:
         print("İndeks yok. Önce: python -m engine.db.lexicon_index --build")
         return 1
 
+    if args.append:
+        edition, code = args.append
+        subdir = {"ru": RU_EDITION_SUBDIR, "tr": TR_EDITION_SUBDIR, "gap": GAP_SUBDIR}[edition]
+        source = discover_edition(subdir)[code]
+        if edition == "gap":  # veri açığı dökümünün asıl sürümü künyesinde
+            meta = json.loads((LEXICON_DIR / GAP_SUBDIR / f"{code}.provenance.json").read_text(encoding="utf-8"))
+            edition = meta.get("gap_edition") or "ru"
+        added = index.append(code, source, edition)
+        print(f"{edition}:{code} -> {added:,} kayıt eklendi" if added else f"{edition}:{code} zaten ekli")
+        return 0
     if args.stats:
         for key, value in index.stats().items():
             print(f"{key:16} {value}")

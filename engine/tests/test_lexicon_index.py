@@ -197,6 +197,15 @@ class TestIndexOperations(unittest.TestCase):
     def tearDown(self):
         self._tmp.cleanup()
 
+    def test_append_edition_without_rebuild(self):
+        """Sonradan inen tek sürüm dökümü eklenir; aynı dosya iki kez eklenmez."""
+        dump = write_dump(self.dir, "krc", [record("таш", gloss="камень", lang="krc")])
+        self.assertEqual(self.index.append("krc", dump, "ru"), 1)
+        self.assertEqual(self.index.append("krc", dump, "ru"), 0)
+        self.assertEqual([r["lang_code"] for r in self.index.lookup("taş")], ["krc"])
+        self.assertEqual(self.index.search("камень")[0]["word"], "таш")
+        self.assertEqual(json.loads(self.index.stats()["languages"])["krc"], 1)
+
     def test_exact_lookup(self):
         rows = self.index.lookup("göz")
         self.assertEqual(len(rows), 1)

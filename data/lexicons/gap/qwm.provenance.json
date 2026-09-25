@@ -1,0 +1,16 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Kumanca",
+  "code": "qwm",
+  "donor": false,
+  "ru_edition": false,
+  "gap_edition": "tr",
+  "url": "https://kaikki.org/trwiktionary/Kumanca/kaikki.org-dictionary-Kumanca.jsonl",
+  "retrieved_at": "2026-09-25T07:50:50+00:00",
+  "raw_bytes": 261649,
+  "stored_bytes": 23661,
+  "entries": 651,
+  "compressed": true,
+  "sha256_stored": "6748818fbbb212eb260db053766f923a4e2437dc4f4a1bf2f7c7ba4ea29fc4c2",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

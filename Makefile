@@ -44,6 +44,7 @@ help:
 	@echo "eval-chronology - A-HVP 2. aşama yılı × Starling tarihli kaynak etiketleri"
 	@echo "eval-badge     - hüküm rozeti × doğruluk (train=ayar, dev=rapor; Starling kapalı)"
 	@echo "apertium       - Apertium iki dilli Türk dili sözlüklerini indir"
+	@echo "gap-lexicons   - Karaçay-Balkarca (ru) + Kumanca (tr) dökümlerini indir (indekse bağlanmaz)"
 	@echo "khakas         - Hakasça–Rusça ve açıklamalı sözlüğü indir (HF, CC-BY-4.0; portföyde değil)"
 	@echo "wilkens        - Wilkens 2021 Eski Uygurca sözlüğünü indir ve ayrıştır (CC BY-SA 4.0; .[pdf] gerekir)"
 	@echo "starling       - Starling Türk/Moğol etimoloji tablolarını indir (Dybo & Starostin 2005)"
@@ -125,6 +126,13 @@ lexicons:
 	# ⚠️ Rusça sürüm (~2,8 MB): İngilizce sürümde olmayan diller
 	# (Karayca, Kırım Tatarcası, Şorca) ve Çuvaşça'nın 3 katı.
 	.venv/bin/python scripts/download_lexicons.py --ru
+
+# Veri açığı (G11): Karaçay-Balkarca (Rusça sürüm, 875) ve Kumanca (Türkçe
+# sürüm, 651) dökümlerini data/lexicons/gap/ altına indirir. İndekse
+# BAĞLANMAZ (ölçüldü: yeni tanık kesinliği ~0,76 < 0,85); denemek için
+# `python -m engine.db.lexicon_index --append gap krc` (yeniden kurmadan).
+gap-lexicons:
+	.venv/bin/python scripts/download_lexicons.py --gap
 
 turkish-gold: lexicon-index
 	.venv/bin/python scripts/build_turkish_loanword_gold.py --limit 2000
