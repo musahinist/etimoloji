@@ -70,6 +70,7 @@ from typing import Any
 from engine.logging_setup import get_logger
 from engine.nlp.cognate_prediction import PROTO_CODE
 from engine.nlp.proto_phonology import ColumnDecision, proto_plausibility
+from engine.utils.edit_distance import normalized_edit_distance
 from engine.utils.orthography import to_comparison_form, to_expected_reflex
 
 logger = get_logger(__name__)
@@ -130,20 +131,7 @@ class Candidate:
         }
 
 
-def _normalised_distance(a: str, b: str) -> float:
-    if a == b:
-        return 0.0
-    if not a or not b:
-        return 1.0
-    previous = list(range(len(b) + 1))
-    for i, ca in enumerate(a, start=1):
-        current = [i]
-        for j, cb in enumerate(b, start=1):
-            current.append(
-                min(previous[j] + 1, current[j - 1] + 1, previous[j - 1] + (ca != cb))
-            )
-        previous = current
-    return previous[-1] / max(len(a), len(b))
+_normalised_distance = normalized_edit_distance
 
 
 @lru_cache(maxsize=1)

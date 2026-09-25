@@ -33,6 +33,7 @@ from functools import lru_cache
 from typing import Any
 
 from engine.logging_setup import get_logger
+from engine.utils.edit_distance import normalized_edit_distance
 from engine.utils.orthography import to_comparison_form
 
 logger = get_logger(__name__)
@@ -189,21 +190,8 @@ def reset_cache() -> None:
     _monget_entries.cache_clear()
 
 
-def _cheap_distance(a: str, b: str) -> float:
-    """Normalize Levenshtein — SCA öncesi ucuz ön eleme için."""
-    if a == b:
-        return 0.0
-    if not a or not b:
-        return 1.0
-    previous = list(range(len(b) + 1))
-    for i, ca in enumerate(a, start=1):
-        current = [i]
-        for j, cb in enumerate(b, start=1):
-            current.append(
-                min(previous[j] + 1, current[j - 1] + 1, previous[j - 1] + (ca != cb))
-            )
-        previous = current
-    return previous[-1] / max(len(a), len(b))
+#: Normalize Levenshtein — SCA öncesi ucuz ön eleme için.
+_cheap_distance = normalized_edit_distance
 
 
 def _shortlist(query: str, candidates: list[str], size: int = SCA_SHORTLIST) -> list[str]:

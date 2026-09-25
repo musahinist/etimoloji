@@ -24,6 +24,7 @@ from typing import Any
 from engine import config
 from engine.logging_setup import get_logger
 from engine.nlp.phonological_feature_engine import to_ipa
+from engine.utils.edit_distance import edit_distance as levenshtein  # tek kaynak; ad korunur
 from engine.utils.network import fetch as http_get
 from engine.utils.seed import load_seed_entries
 
@@ -45,23 +46,6 @@ DONOR_LANGUAGES: dict[str, str] = {
 
 #: Plan dokümanındaki eşik: IPA düzeyinde en fazla 2 düzenleme.
 MAX_PHONETIC_DISTANCE = 2
-
-
-def levenshtein(a: str, b: str) -> int:
-    """Klasik düzenleme mesafesi. (Projede 3 ayrı kopyası vardı; tek kaynak.)"""
-    if a == b:
-        return 0
-    if not a:
-        return len(b)
-    if not b:
-        return len(a)
-    prev = list(range(len(b) + 1))
-    for i, ca in enumerate(a, 1):
-        cur = [i]
-        for j, cb in enumerate(b, 1):
-            cur.append(min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (ca != cb)))
-        prev = cur
-    return prev[-1]
 
 
 def ipa_distance(a: str, b: str) -> int:
