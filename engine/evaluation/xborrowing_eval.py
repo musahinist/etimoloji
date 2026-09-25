@@ -118,10 +118,40 @@ def _assert_blind() -> None:
         raise SystemExit(f"kör indeks değil: blind={info.get('blind')} origin dolu={left}")
 
 
-def capture(split: str, *, limit: int = 0, tag: str = "") -> Path:
+#: Verici yakınlığı adımının ön-kayıtlı çeşitleri (``capture --variant``).
+#: ``sca`` üretim; ``mean`` = X2 (SCA+PMI ortalaması, eşik 0,60 / tavan 0,85,
+#: donor2/PREREG.md'deki gibi SABİT); ``sense:<tanım>`` = X3 anlam süzgeci
+#: (bkz. :mod:`engine.nlp.sense_match`).
+def apply_variant(variant: str) -> None:
+    """Verici yakınlığı çeşidini süreç içinde uygular (üretim dosyasına yazmaz)."""
+    import os
+
+    from engine.nlp import donor_proximity as dp
+
+    if variant == "sca":
+        os.environ.pop("ETY_DONOR_SENSE_FILTER", None)
+    elif variant == "mean":
+        dp.STRENGTH_DISTANCE = "mean"
+        dp.DONOR_DISTANCE_THRESHOLD = 0.60
+        dp.DONOR_DISTANCE_CEILING = 0.85
+    elif variant.startswith("sense:"):
+        from engine.nlp.sense_match import parse_spec
+
+        spec = variant.removeprefix("sense:")
+        parse_spec(spec)  # geçersizse hemen hata
+        os.environ["ETY_DONOR_SENSE_FILTER"] = spec
+    else:
+        raise SystemExit(f"bilinmeyen çeşit {variant}")
+    dp.reset_cache()
+
+
+def capture(split: str, *, limit: int = 0, tag: str = "", variant: str = "sca") -> Path:
     """Sinyalleri hesaplar ve önbelleğe yazar (yarıda kalırsa kaldığı yerden sürer)."""
+    if variant != "sca" and not tag:
+        raise SystemExit("--variant sca dışındaysa --tag zorunlu (önbellek ayrı dosya)")
     _assert_blind()
     forbid_model_writes()
+    apply_variant(variant)
     from engine.db.lexicon_index import LexiconIndex
     from engine.nlp.borrowing_detector import BorrowingDetector
     from engine.nlp.donor_proximity import attribute_donor, nearest_donor
@@ -154,6 +184,7 @@ def capture(split: str, *, limit: int = 0, tag: str = "") -> Path:
                 attribution = attribute_donor(comparison, sense, languages=donors)
             row = {
                 "id": item["id"],
+                "variant": variant,
                 "lang": lang,
                 "y": item["label"] == "alıntı",
                 "etymon": item["etymon"],
@@ -694,6 +725,158 @@ def report_split(split: str, prereg: str | None, final_report: bool, tag: str = 
     print(out)
 
 
+# --- eşleşmiş çeşit karşılaştırması (X2/X3; ön kayıtlı, bir kez) ---------------
+
+
+def _counts(members: list[dict[str, Any]], pred: dict[str, bool]) -> tuple[int, int, int, int]:
+    tp = sum(1 for r in members if pred[r["id"]] and r["y"])
+    fp = sum(1 for r in members if pred[r["id"]] and not r["y"])
+    fn = sum(1 for r in members if not pred[r["id"]] and r["y"])
+    return tp, fp, fn, len(members) - tp - fp - fn
+
+
+METRICS = {
+    "F": lambda tp, fp, fn, tn: _f(tp, fp, fn),
+    "accuracy": lambda tp, fp, fn, tn: (tp + tn) / max(1, tp + fp + fn + tn),
+    "precision": lambda tp, fp, fn, tn: tp / (tp + fp) if tp + fp else 0.0,
+}
+
+
+def paired_bootstrap(
+    rows_a: list[dict[str, Any]], a: dict[str, bool], rows_b: list[dict[str, Any]], b: dict[str, bool],
+    metric: str, *, iterations: int = BOOTSTRAP,
+) -> dict[str, Any]:
+    """metric(a) − metric(b), etimona göre kümelenmiş eşleşmiş bootstrap.
+
+    ``p_one_sided`` = örneklerin ≤0 payı (artış hipotezi için).
+    """
+    fn_metric = METRICS[metric]
+    by_a: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    by_b: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for r in rows_a:
+        by_a[r["etymon"]].append(r)
+    for r in rows_b:
+        by_b[r["etymon"]].append(r)
+    keys = sorted(by_a)
+    per_a = {k: _counts(by_a[k], a) for k in keys}
+    per_b = {k: _counts(by_b[k], b) for k in keys}
+
+    def value(pick: list[str]) -> float:
+        ta = [sum(per_a[k][j] for k in pick) for j in range(4)]
+        tb = [sum(per_b[k][j] for k in pick) for j in range(4)]
+        return fn_metric(*ta) - fn_metric(*tb)
+
+    rng = random.Random(BOOTSTRAP_SEED)
+    samples = sorted(value([keys[rng.randrange(len(keys))] for _ in keys]) for _ in range(iterations))
+    return {
+        "value": round(value(keys), 4),
+        "ci95": [round(samples[int(0.025 * iterations)], 4), round(samples[int(0.975 * iterations)], 4)],
+        "p_one_sided": round(sum(1 for x in samples if x <= 0) / iterations, 4),
+        "clusters": len(keys),
+    }
+
+
+def holm(pvalues: dict[str, float]) -> dict[str, float]:
+    """Holm düzeltmesi (düzeltilmiş p, tekdüze)."""
+    order = sorted(pvalues, key=lambda k: pvalues[k])
+    m, running, out = len(order), 0.0, {}
+    for i, k in enumerate(order):
+        running = max(running, min(1.0, (m - i) * pvalues[k]))
+        out[k] = round(running, 4)
+    return out
+
+
+def _ramp(row: dict[str, Any]) -> bool:
+    """Verici yakınlığı RAMPADA ateşlendi mi (0 < güç < 1: eşik ile tavan arası)?"""
+    return 0.0 < row["signals"].get("verici_yakınlığı", 0.0) < 1.0
+
+
+def mcnemar_one_sided(before: list[bool], after: list[bool]) -> dict[str, Any]:
+    """Eşleşmiş ikili: ``after`` ``before``dan AZ mı? Kesin binom (tek yönlü)."""
+    lost = sum(1 for x, y in zip(before, after, strict=True) if x and not y)
+    gained = sum(1 for x, y in zip(before, after, strict=True) if y and not x)
+    n = lost + gained
+    p = sum(math.comb(n, k) for k in range(lost, n + 1)) / 2 ** n if n else 1.0
+    return {"before": sum(before), "after": sum(after), "lost": lost, "gained": gained, "p_one_sided": round(p, 6)}
+
+
+def _variant_predictions(split: str, tag: str) -> tuple[list[dict[str, Any]], dict[str, dict[str, bool]]]:
+    tune = load_cache("tune", tag)
+    if split == "tune":  # ayar: kat dışı kararlar (çapraz uydurma), kilit yok
+        preds, _ = crossfit(tune)
+        return tune, preds
+    rows = load_cache(split, tag)
+    preds = _train_predict(tune, rows)
+    preds.pop("_combiner", None)
+    for r in rows:
+        preds["donor_proximity_only"][r["id"]] = bool((r["dp"] or {}).get("close"))
+    return rows, preds
+
+
+def compare_variants(split: str, prereg: str | None, base_tag: str, cand_tags: list[str],
+                     final_report: bool = False) -> dict[str, Any]:
+    """Ön kayıtlı çeşit karşılaştırması: ``split`` BİR KEZ açılır.
+
+    Her çeşit kendi ayar önbelleğinde eğitilir (bellek içi), ``split``te
+    ölçülür. Birincil: engine_trained F farkı (çeşit − taban), kümelenmiş
+    eşleşmiş bootstrap; birden çok çeşitte Holm (tek yönlü p, α=0,025 ≡
+    %95 GA alt ucu).
+    """
+    lock = None if split == "tune" else _guard_open(split, prereg, final_report)
+    forbid_model_writes()
+    base_rows, base = _variant_predictions(split, base_tag)
+    ids = {r["id"] for r in base_rows}
+    if lock is not None:
+        lock.write_text(json.dumps({"prereg": prereg, "commit": _git_head(), "at": time.time(),
+                                    "base": base_tag, "candidates": cand_tags}), encoding="utf-8")
+
+    def summary(rows: list[dict[str, Any]], preds: dict[str, dict[str, bool]]) -> dict[str, Any]:
+        inherited = [r for r in rows if not r["y"]]
+        return {
+            "engine_trained": prf(rows, preds["engine_trained"]).as_dict(),
+            "donor_proximity_only": prf(rows, preds["donor_proximity_only"]).as_dict(),
+            "donor_identification": donor_identification(rows, preds["engine_trained"]),
+            "ramp_rate_inherited": round(sum(_ramp(r) for r in inherited) / max(1, len(inherited)), 4),
+            "ramp_rate_borrowed": round(sum(_ramp(r) for r in rows if r["y"]) / max(1, len(rows) - len(inherited)), 4),
+            "breakdowns": breakdowns(rows, preds["engine_trained"]),
+        }
+
+    payload: dict[str, Any] = {"split": split, "prereg": prereg, "base": base_tag or "sca",
+                               "n": len(base_rows), "systems": {base_tag or "sca": summary(base_rows, base)},
+                               "comparisons": {}}
+    for tag in cand_tags:
+        rows, preds = _variant_predictions(split, tag)
+        if {r["id"] for r in rows} != ids:
+            raise SystemExit(f"çeşit {tag}: madde kümesi tabanla aynı değil")
+        by_id = {r["id"]: r for r in rows}
+        payload["systems"][tag] = summary(rows, preds)
+        inherited = [r for r in base_rows if not r["y"]]
+        payload["comparisons"][tag] = {
+            "F_engine_trained": paired_bootstrap(rows, preds["engine_trained"], base_rows, base["engine_trained"], "F"),
+            "accuracy_engine_trained": paired_bootstrap(rows, preds["engine_trained"], base_rows, base["engine_trained"], "accuracy"),
+            "precision_donor_proximity_only": paired_bootstrap(
+                rows, preds["donor_proximity_only"], base_rows, base["donor_proximity_only"], "precision"),
+            "ramp_inherited_mcnemar": mcnemar_one_sided(
+                [_ramp(r) for r in inherited], [_ramp(by_id[r["id"]]) for r in inherited]),
+        }
+    if len(cand_tags) > 1:
+        adjusted = holm({t: payload["comparisons"][t]["F_engine_trained"]["p_one_sided"] for t in cand_tags})
+        for t in cand_tags:
+            payload["comparisons"][t]["F_engine_trained"]["p_holm"] = adjusted[t]
+    payload["code_commit"] = _git_head()
+    stem = Path(prereg).stem if prereg else "cmp_" + "_".join(t.replace(":", "") for t in cand_tags)
+    out = WORK_DIR / f"xborrowing_{split}_{stem}.json"
+    out.write_text(json.dumps(payload, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    print(json.dumps({"systems": {k: {"F": v["engine_trained"]["fscore"], "acc": v["engine_trained"]["accuracy"],
+                                      "dp_P": v["donor_proximity_only"]["precision"],
+                                      "donor_id": v["donor_identification"]["accuracy"],
+                                      "ramp_inh": v["ramp_rate_inherited"]}
+                                  for k, v in payload["systems"].items()},
+                      "comparisons": payload["comparisons"]}, ensure_ascii=False, indent=1))
+    print(out)
+    return payload
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Türk dilleri arası alıntı değerlendirmesi")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -701,6 +884,7 @@ def main() -> int:
     c.add_argument("--split", default="tune")
     c.add_argument("--limit", type=int, default=0)
     c.add_argument("--tag", default="")
+    c.add_argument("--variant", default="sca")
     c.add_argument("--prereg")
     c.add_argument("--final-report", action="store_true")
     r = sub.add_parser("replay")
@@ -708,13 +892,22 @@ def main() -> int:
     r.add_argument("--tag", default="")
     r.add_argument("--prereg")
     r.add_argument("--final-report", action="store_true")
+    cmp_ = sub.add_parser("compare", help="ön kayıtlı çeşit karşılaştırması (bölüm bir kez açılır)")
+    cmp_.add_argument("--split", required=True)
+    cmp_.add_argument("--prereg")
+    cmp_.add_argument("--base-tag", default="")
+    cmp_.add_argument("--tags", nargs="+", required=True)
+    cmp_.add_argument("--final-report", action="store_true")
     args = ap.parse_args()
     if args.split not in ("tune", "r1", "r2", "test"):
         raise SystemExit(f"bilinmeyen bölüm {args.split}")
+    if args.cmd == "compare":
+        compare_variants(args.split, args.prereg, args.base_tag, args.tags, args.final_report)
+        return 0
     if args.cmd == "capture":
         if args.split != "tune":
             _guard_open(args.split, args.prereg, args.final_report)
-        print(capture(args.split, limit=args.limit, tag=args.tag))
+        print(capture(args.split, limit=args.limit, tag=args.tag, variant=args.variant))
     elif args.split == "tune":
         report_tune(args.tag)
     else:
