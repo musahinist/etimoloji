@@ -185,6 +185,7 @@ def reset_cache() -> None:
     _control_distances.cache_clear()
     _attribution_controls.cache_clear()
     _null_distance.cache_clear()
+    _control_profile.cache_clear()
     _monget_entries.cache_clear()
 
 
@@ -215,12 +216,72 @@ def _shortlist(query: str, candidates: list[str], size: int = SCA_SHORTLIST) -> 
 
 def best_sca(query: str, candidates: list[str]) -> tuple[float, str]:
     """Aday havuzundaki en yakın biçim ve SCA mesafesi."""
-    best_distance, best_form = 1.0, ""
+    return _best(query, candidates, sca_distance)
+
+
+def _best(
+    query: str, candidates: list[str], distance_fn: Any, initial: float = 1.0
+) -> tuple[float, str]:
+    best_distance, best_form = initial, ""
     for candidate in _shortlist(query, candidates):
-        distance = sca_distance(query, candidate)
+        distance = distance_fn(query, candidate)
         if distance < best_distance:
             best_distance, best_form = distance, candidate
     return best_distance, best_form
+
+
+#: Alıntı GÜCÜ adımının ses mesafesi: ``sca`` (üretim), ``mean`` (SCA ile
+#: ASJP-PMI'nin ortalaması) ya da ``pmi``. Eşikler SCA ölçeğindedir.
+#:
+#: ⚠️ ÖLÇÜLDÜ, ön-kayıtlı, OLUMSUZ (2026-09-25). ``mean`` + eşik 0,60 / tavan
+#: 0,85 (WOLD ayar yarısında seçildi: yalnız-yakınlık F 0,565 -> 0,585).
+#: Rapor yarısı, bir kez::
+#:
+#:                        SCA (üretim)             mean
+#:     WOLD engine_trained F 0,6582                0,6721
+#:     WOLD yalnız yakınlık  F 0,6238, doğr. 0,7945  F 0,6339, doğr. 0,8062
+#:     doğr. farkı (motor − yakınlık) −0,004 [−0,023, +0,016]  −0,016 [−0,039, +0,008]
+#:     Türkçe engine_trained F 0,8873              0,8990
+#:
+#: Ölçüt 1 (GA sıfırı dışlasın) TUTMADI, ölçüt 2 (Türkçe F düşmesin) tuttu;
+#: üretim değişmedi. Yalnız PMI ayar yarısında SCA'nın altında (F 0,515).
+STRENGTH_DISTANCE = "sca"
+
+
+def _mean_distance(a: str, b: str) -> float:
+    from engine.nlp.pmi_distance import pmi_distance
+
+    return (sca_distance(a, b) + min(1.0, pmi_distance(a, b))) / 2
+
+
+def _strength_best(query: str, candidates: list[str]) -> tuple[float, str]:
+    if STRENGTH_DISTANCE == "mean":
+        return _best(query, candidates, _mean_distance)
+    if STRENGTH_DISTANCE == "pmi":
+        from engine.nlp.pmi_distance import pmi_distance
+
+        return _best(query, candidates, lambda a, b: min(1.0, pmi_distance(a, b)))
+    return best_sca(query, candidates)
+
+
+def label_distance(a: str, b: str) -> float:
+    """Etiket adımının mesafesi — bkz. :data:`LABEL_DISTANCE`."""
+    if LABEL_DISTANCE == "sca":
+        return sca_distance(a, b)
+    from engine.nlp.pmi_distance import available, pmi_distance
+
+    if not available():
+        return sca_distance(a, b)
+    if LABEL_DISTANCE == "pmi":
+        return pmi_distance(a, b)
+    return (sca_distance(a, b) + pmi_distance(a, b)) / 2
+
+
+def best_label(query: str, candidates: list[str]) -> tuple[float, str]:
+    """Aday havuzundaki en yakın biçim, etiket mesafesiyle."""
+    # ⚠️ PMI mesafesi 1'i aşabilir (negatif PMI); başlangıç sonsuz olmalı,
+    # yoksa ilgisiz adaylar "aday yok" sayılır ve dil etiketten düşer.
+    return _best(query, candidates, label_distance, float("inf") if LABEL_DISTANCE != "sca" else 1.0)
 
 
 @lru_cache(maxsize=200000)
@@ -272,7 +333,7 @@ def nearest_donor(
         return None
 
     by_form = {row["comparison"]: row for row in rows if row["comparison"]}
-    distance, form = best_sca(comparison, list(by_form))
+    distance, form = _strength_best(comparison, list(by_form))
     best: DonorMatch | None = None
     if form:
         row = by_form[form]
@@ -307,7 +368,7 @@ def _control_distances(length: int, pool: tuple[str, ...]) -> tuple[float, ...]:
     görür ve kontroller yeniden hesaplanmaz.
     """
     candidates = list(pool)
-    return tuple(best_sca(control, candidates)[0] for control in _controls(length))
+    return tuple(_strength_best(control, candidates)[0] for control in _controls(length))
 
 
 def _chance_percentile(observed: float, length: int, pool: tuple[str, ...]) -> float | None:
@@ -378,6 +439,41 @@ DONOR_UNCERTAIN_DISTANCE = DONOR_DISTANCE_THRESHOLD
 #: Moğolca verici kodu. Etiket adımında kaikki yerine Starling ``monget``.
 MONGOLIAN = "mn"
 
+# ⚠️ ÖLÇÜLDÜ, OLUMSUZ (2026-09-25) — aşağıdaki üç bayrak üretimde kapalı.
+# Havuz: Moğolca 12.455 monget -> +7.643 (NorthEuraLex khk/bua/xal 3.626 +
+# robbeets 4.017), Tunguzca 599 kaikki -> +7.363 (NEL evn/gld 2.118 + robbeets
+# 5.245); Rusça alıntı süzgeci 243 NEL biçimi attı. WOLD Saha n=440, motor
+# doğruluğu (çift / tek yarı), taban 0,711 (0,686 / 0,736):
+#
+#     havuz          mesafe  seçim       doğruluk  çift   tek    Mo  Tu
+#     yeni (tümü)    SCA     medyan      0,686     0,682  0,691  74  2
+#     yeni (yalnız mn) SCA   medyan      0,714     0,691  0,736  85  1
+#     yeni (tümü)    PMI     yüzdelik    0,723     0,732  0,714  85  4
+#     yeni (tümü)    ort.    medyan      0,709     0,696  0,723  81  5
+#     eski           PMI     medyan      0,700     0,691  0,709  73  2
+#     çeşit başına   SCA     yüzdelik    0,709     0,705  0,714  87  2
+#
+# Hiçbiri 0,74'e ve iki yarıda artışa ulaşmadı; en iyi (PMI + yüzdelik) tek
+# yarıda düşüyor, McNemar p=0,55. Neden: Tunguz listeleri Moğolca alıntılarla
+# dolu (Evenkice Moğolcadan çok almış) — Moğolca->Tunguzca 10 -> 25; yanlış
+# etiketlenen Moğolca maddelerin anlamları (GOITER, TEMPLES, IDEA …) ~1.000
+# kavramlık listelerde yok. CLICS⁴ komşu kavram genişlemesi (Wientzek: >=0,05,
+# ceza 0,1) etikette 0,677'ye düşürdü (Rusça->Tunguzca/Moğolca 28).
+
+#: Etiket adımında Moğolca ve Tunguzca havuzlarına kavram hizalı listeler
+#: (NorthEuraLex + robbeetstriangulation) eklensin mi? Bkz.
+#: :mod:`engine.db.concept_donors`. Yalnız ETİKET; güç havuzu değişmez.
+CONCEPT_DONOR_LABELS = False
+
+#: Etiket seçim ölçütü: ``median`` = mesafe − kontrol medyanı;
+#: ``percentile`` = kontrollerin kaçı bu kadar yakın (Kessler 2001), eşitlikte
+#: ham mesafe.
+ATTRIBUTION_SCORE = "median"
+
+#: Etiket adımının ses mesafesi: ``sca``, ``pmi`` (ASJP-PMI, Jäger 2018;
+#: bkz. :mod:`engine.nlp.pmi_distance`) ya da ``mean`` (ikisinin ortalaması).
+LABEL_DISTANCE = "sca"
+
 #: Etiket null'ı için kontrol sayısı.
 ATTRIBUTION_CONTROL_COUNT = 12
 
@@ -406,7 +502,11 @@ class DonorAttribution:
         return self.distance > DONOR_UNCERTAIN_DISTANCE
 
     def describe(self) -> str:
-        source = ", Starling monget" if self.source == "starling-monget" else ""
+        source = {
+            "starling-monget": ", Starling monget",
+            "northeuralex": ", NorthEuraLex",
+            "robbeetstriangulation": ", robbeetstriangulation",
+        }.get(self.source, "")
         note = " ⚠️ verici belirsiz" if self.uncertain else ""
         return (
             f"{self.lang_code} {self.word} ({self.comparison}) SCA {self.distance:.3f}, "
@@ -448,12 +548,20 @@ def _attribution_controls(length: int) -> tuple[str, ...]:
 
 
 @lru_cache(maxsize=20000)
-def _null_distance(length: int, pool: tuple[str, ...]) -> float:
-    """Kontrol kelimelerinin bu havuza medyan en yakın mesafesi."""
+def _control_profile(length: int, pool: tuple[str, ...]) -> tuple[float, ...]:
+    """Kontrol kelimelerinin bu havuza en yakın mesafeleri, sıralı."""
     controls = _attribution_controls(length)
     if not controls or not pool:
+        return ()
+    return tuple(sorted(best_label(control, list(pool))[0] for control in controls))
+
+
+@lru_cache(maxsize=20000)
+def _null_distance(length: int, pool: tuple[str, ...]) -> float:
+    """Kontrol kelimelerinin bu havuza medyan en yakın mesafesi."""
+    distances = _control_profile(length, pool)
+    if not distances:
         return 0.0
-    distances = sorted(best_sca(control, list(pool))[0] for control in controls)
     middle = len(distances) // 2
     if len(distances) % 2:
         return distances[middle]
@@ -491,6 +599,31 @@ def _monget_rows(sense: str) -> list[dict[str, str]]:
     ]
 
 
+def _concept_rows(sense: str) -> dict[str, list[dict[str, str]]]:
+    """Anlamı sorguyla örtüşen kavram hizalı Moğol/Tunguz biçimleri, havuza göre.
+
+    Bkz. :mod:`engine.db.concept_donors` — NorthEuraLex + robbeetstriangulation.
+    Eşleşme kuralı :func:`_monget_rows` ile aynıdır.
+    """
+    from engine.db.concept_donors import load_concept_donors
+    from engine.db.donor_index import _sense_tokens
+
+    tokens = set([t for t in _sense_tokens(sense) if len(t) > 2][:6])
+    if not tokens:
+        return {}
+    out: dict[str, list[dict[str, str]]] = {}
+    for form, words in load_concept_donors():
+        if words & tokens:
+            out.setdefault(form.pool, []).append({
+                "lang_code": form.pool,
+                "word": f"{form.form} ({form.variety})",
+                "comparison": form.comparison,
+                "gloss": form.gloss,
+                "source": form.source,
+            })
+    return out
+
+
 def attribute_donor(
     comparison: str,
     sense: str = "",
@@ -523,6 +656,10 @@ def attribute_donor(
         if mongolic:
             groups[MONGOLIAN] = mongolic
             sources[MONGOLIAN] = "starling-monget"
+    if CONCEPT_DONOR_LABELS:
+        for pool, extra in _concept_rows(sense).items():
+            if languages is None or pool in languages:
+                groups.setdefault(pool, []).extend(extra)
 
     scored: list[tuple[float, float, str, Any, float]] = []
     for lang, members in groups.items():
@@ -532,11 +669,17 @@ def attribute_donor(
                 by_form[row["comparison"]] = row
         if not by_form:
             continue
-        distance, form = best_sca(comparison, list(by_form))
+        distance, form = best_label(comparison, list(by_form))
         if not form:
             continue
-        null = _null_distance(len(comparison), tuple(sorted(by_form)))
-        scored.append((distance - null, distance, lang, by_form[form], null))
+        pool = tuple(sorted(by_form))
+        null = _null_distance(len(comparison), pool)
+        if ATTRIBUTION_SCORE == "percentile":
+            profile = _control_profile(len(comparison), pool)
+            key: Any = (sum(1 for d in profile if d <= distance) / max(len(profile), 1), distance)
+        else:
+            key = (distance - null, distance)
+        scored.append((key, distance, lang, by_form[form], null))
     if not scored:
         return None
     scored.sort(key=lambda item: (item[0], item[1], item[2]))
@@ -548,6 +691,6 @@ def attribute_donor(
         gloss=row["gloss"] or "",
         distance=distance,
         null_distance=null,
-        source=sources.get(lang, "kaikki"),
+        source=(row.get("source") if isinstance(row, dict) else None) or sources.get(lang, "kaikki"),
         alternatives=tuple((item[2], item[1], item[4]) for item in scored[1:]),
     )

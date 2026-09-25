@@ -1,0 +1,11 @@
+{
+  "dataset": "ASJP PMI ses eşleme puanları ve boşluk cezaları",
+  "citation": "Jäger, G. (2018). Global-scale phylogenetic linguistic inference from lexical resources. Scientific Data 5:180189. https://doi.org/10.1038/sdata.2018.189",
+  "original": "OSF rb3n4 (pmiScores.csv), 9bvfe (gapPenalties.csv)",
+  "copied_from": "https://github.com/TGH-2020/CWE_BorDetect data/pmi @ e3f9c39feebf58e8876e90bda23bcf744d17d91c",
+  "license": "CC-BY-4.0",
+  "files": {
+    "pmi_scores.csv": {"sha256": "0404eadc04c3128b95b1fa7f47635e1ac6f260d39a26ff0af691c00ef2c0104e"},
+    "gap_penalties.csv": {"sha256": "64fb968123a501f713f3409aa8f2cbc13cf247b22dadeb4f1825591e8d0ed8ba"}
+  }
+}
