@@ -308,6 +308,11 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
         elif isinstance(_attested, int) and _attested > 0:
             print(f"  • Tanık Tanıklığı          : {_attested} tanık biçimi sözlükte doğrulandı")
 
+        # 9a: sütun modeli çekimser kaldığında sinir önerisi — kök DEĞİL.
+        suggestion = recon_eval.get("neural_suggestion") or {}
+        if suggestion.get("form"):
+            print(f"  💡 Sinir önerisi            : {suggestion['form']}  (öneri, doğrulanmamış — kök değildir)")
+
         # Kullanıcıya giden sayı HAM skor değil kalibre skordur (ham skorun
         # ECE'si 0,43 ölçüldü). Motor bunu zaten hesaplıyordu ama CLI basmıyor,
         # yalnızca kalibre edilmemiş ara skorlar görünüyordu.

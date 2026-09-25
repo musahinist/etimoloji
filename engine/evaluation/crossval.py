@@ -292,7 +292,7 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
     # Doğrulama koşusu tohumu (ön kayıt 3): sinir eğitimi ve iç kat bölmesi.
     neural_seed = int(os.environ.get("CV_NEURAL_SEED", "0"))
     rank_salt = "#rank" + (str(neural_seed) if neural_seed else "")
-    neural_meta: dict[str, Any] = {"seconds_per_fold": [], "maxrss_mb": 0.0, "beam5": [], "beam10": []}
+    neural_meta: dict[str, Any] = {"seconds_per_fold": [], "maxrss_mb": 0.0, "beam5": [], "beam10": [], "suggest": []}
     starling_used: list[int] = []
     correct: dict[str, list[bool]] = {s: [] for s in systems}
     ned: dict[str, list[float]] = {s: [] for s in systems}
@@ -322,6 +322,44 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
         )
         logger.info("sıralayıcı kat %d: %d satır, ağırlıklar %s", fold, n_rows, weights)
         return weights, intercept
+
+    def _suggestions(model: Any, weights: dict[str, float], intercept: float,
+                     held_items: list[Any], column_preds: list[Any]) -> None:
+        """9a (PREREG bölüm 4): çekimser maddelerde sinir ÖNERİSİ — motorun
+        kendi yolu (``NEURAL_SUGGESTION``) bu katın seçicisiyle koşulur.
+        Kök alanları değişmemeli (``root_same`` ile denetlenir)."""
+        from engine.nlp import comparative_reconstruction as cr
+
+        previous = cr.NEURAL_SUGGESTION
+        cr.NEURAL_SUGGESTION = True
+        neural.set_selector(neural.Selector(model, weights, intercept))
+        recon = harness.comparative_reconstructor()
+        try:
+            for item, column_pair in zip(held_items, column_preds, strict=True):
+                seen: dict[str, Any] = {}
+
+                def as_root(word: str, entries: list[Any], seen: dict[str, Any] = seen) -> dict[str, Any]:
+                    out = recon(word, entries)
+                    seen["out"] = out
+                    form = (out.get("neural_suggestion") or {}).get("form") or ""
+                    return {"reconstructed_root": form, "is_reconstructible": bool(form)}
+
+                scored = harness.run(as_root, [item], mapping=mapping)
+                out = seen.get("out") or {}
+                root = str(out.get("reconstructed_root") or "") if out.get("is_reconstructible") else ""
+                neural_meta["suggest"].append({
+                    "id": item.set_id,
+                    "abstain": not out.get("is_reconstructible"),
+                    "method": out.get("method") or "none",
+                    "eligible": cr.suggestion_eligible(out) if out else False,
+                    "suggestion": (out.get("neural_suggestion") or {}).get("form"),
+                    "ned": scored.item_ned[0],
+                    "correct": bool(scored.item_correct[0]),
+                    "root_same": root == ((column_pair or [""])[0] or ""),
+                })
+        finally:
+            cr.NEURAL_SUGGESTION = previous
+            neural.set_selector(None)
 
     def _neural_fold(fold: int, held_items: list[Any], train_items: list[Any], col_model: Any, table: Any) -> None:
         import gc
@@ -383,6 +421,7 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
                 neural_meta[f"beam{width}"].append(
                     any(best_match(c.text, item.gold_candidates)[1] for c in beam[:width])
                 )
+        _suggestions(model, weights, intercept, held_items, column_preds)
         gc.collect()
         neural_meta["seconds_per_fold"].append(round(time.time() - start))
         neural_meta["maxrss_mb"] = round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1e6)
@@ -475,6 +514,8 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
         neural_result = {
             **neural_meta,
             "seed": neural_seed,
+            "train": {"batch": neural.BATCH, "lr": neural.LR, "epochs": neural.EPOCHS, "device": neural.train_device()},
+            "suggest_summary": _suggest_summary(neural_meta["suggest"]),
             # Tohumlar arası birleşik doğrulama için madde başına kayıt (ön kayıt 3).
             "items": {
                 c: {"ned": ned[c], "correct": correct[c], "pairs": pairs[c]}
@@ -503,6 +544,24 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
             "system": "learned_table",
             "supported": bool(h2["a_is_better"]),
         },
+    }
+
+
+def _suggest_summary(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """9a özet: çekimser maddeler, uygun olanlar, öneri kapsamı ve NED'i."""
+    abstain = [r for r in rows if r["abstain"]]
+    made = [r for r in abstain if r["suggestion"]]
+    return {
+        "n": len(rows),
+        "abstain": len(abstain),
+        "eligible": sum(r["eligible"] for r in abstain),
+        "suggested": len(made),
+        "suggestion_on_non_abstain": sum(bool(r["suggestion"]) for r in rows if not r["abstain"]),
+        "ned_suggested": round(sum(r["ned"] for r in made) / len(made), 4) if made else None,
+        "exact_suggested": sum(r["correct"] for r in made),
+        "ned_abstain_with_suggestions": round(
+            sum(r["ned"] if r["suggestion"] else 1.0 for r in abstain) / len(abstain), 4) if abstain else None,
+        "root_changed": sum(not r["root_same"] for r in rows),
     }
 
 
@@ -588,6 +647,8 @@ def main() -> int:
         nr = payload["neural"]
         print(f"\n  neural: kat başına sn {nr['seconds_per_fold']} · maxrss {nr['maxrss_mb']} MB · "
               f"ışın-5 kapsamı {nr['beam5']:.4f} · ışın-10 {nr['beam10']:.4f}")
+        if nr.get("suggest_summary"):
+            print(f"  9a öneri: {nr['suggest_summary']} · eğitim {nr.get('train')}")
         for key in ("prereg", "prereg2"):
             for c, r in nr[key].items():
                 print(f"  {key.upper()} {c}: NED {r['ned_diff']:+.4f} GA{r['ci95']} p={r['p']} Holm p={r['p_holm']} "

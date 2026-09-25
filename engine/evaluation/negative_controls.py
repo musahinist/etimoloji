@@ -345,6 +345,9 @@ class BatteryResult:
     strong_badge: int = 0
     fallback: int = 0
     unattested: int = 0
+    #: 9a: ``neural_suggestion`` (öneri, doğrulanmamış) üretilen maddeler.
+    #: Sahte köklerde 0 olmalı (PREREG.md bölüm 4).
+    suggested: int = 0
     details: list[dict[str, Any]] = field(default_factory=list)
 
     @property
@@ -417,6 +420,7 @@ class BatteryResult:
             "fallback_rate": round(self.fallback_rate, 4),
             "unattested": self.unattested,
             "unattested_rate": round(self.unattested_rate, 4),
+            "suggested": self.suggested,
         }
 
 
@@ -448,6 +452,8 @@ def run_battery(reconstructor, items: tuple[ControlItem, ...], name: str) -> Bat
         result.fallback += is_fallback
         result.unattested += reconstructed and attested == 0
         result.strong_badge += strong
+        suggestion = (output.get("neural_suggestion") or {}).get("form")
+        result.suggested += bool(suggestion)
         result.details.append(
             {
                 "query": item.query,
@@ -457,6 +463,7 @@ def run_battery(reconstructor, items: tuple[ControlItem, ...], name: str) -> Bat
                 "root": output.get("reconstructed_root") or output.get("withheld_reconstruction", ""),
                 "badge": badge,
                 "calibrated": output.get("calibrated_confidence"),
+                "suggestion": suggestion,
                 "reason": item.reason,
             }
         )
@@ -527,14 +534,14 @@ def main() -> int:
     # sorgu biçimi" dediği maddeler burada açıkça durur.
     print(
         f"\n{'batarya':30} {'n':>4} {'rekonstrükte':>13} {'yanlış-poz':>11} "
-        f"{'güçlü iddia':>12} {'yedek':>7} {'tanıksız':>9}"
+        f"{'güçlü iddia':>12} {'yedek':>7} {'tanıksız':>9} {'öneri':>6}"
     )
     print("-" * 92)
     for result in results:
         print(
             f"{result.battery:30} {result.n:>4} {result.reconstructed:>13} "
             f"{result.false_positive_rate:>11.3f} {result.strong_claim_rate:>12.3f} "
-            f"{result.fallback:>7} {result.unattested:>9}"
+            f"{result.fallback:>7} {result.unattested:>9} {result.suggested:>6}"
         )
 
     if args.verbose:
@@ -550,6 +557,7 @@ def main() -> int:
                 print(
                     f"  {mark} {detail['query']:10} {str(detail['root']):14} "
                     f"{detail['badge']:20} {detail['calibrated']}"
+                    + (f"  öneri {detail['suggestion']}" if detail.get("suggestion") else "")
                 )
 
     EVAL_DIR.mkdir(parents=True, exist_ok=True)

@@ -93,6 +93,20 @@ UNATTESTED_BAN = True
 #: ``ETIM_NEURAL_SELECTION=1`` açar.
 NEURAL_SELECTION = os.environ.get("ETIM_NEURAL_SELECTION", "0") == "1"
 
+#: B2 dar kullanım (9a): sütun modeli ÇEKİMSER kaldığında sinir seçicisinin
+#: adayı ayrı bir ``neural_suggestion`` alanında "öneri, doğrulanmamış"
+#: olarak gösterilir — kök DEĞİLDİR (``reconstructed_root`` boş,
+#: ``is_reconstructible`` False kalır). Uygunluk (:func:`suggestion_eligible`):
+#: alıntı engeli yok, geri-dönüş değil (tanıksız kök yasağı dahil), en az bir
+#: tanık sözlükte doğrulanmış; öneri biçimi makullük tabanını geçmeli.
+#: Ön kayıt: ``data/cache/work/neural/PREREG.md`` bölüm 4 — RED, varsayılan KAPALI.
+#: Ölçüldü (ÇD tohum 1, n=320): çekimser 4 maddenin 3'ü ALINTI ENGELİ maddesi
+#: (c03b771'in "çekimser −0,51" kazancı çoğunlukla alıntı engelini aşmaktı);
+#: kapsamda kalan tek maddede öneri NED 0,667 (b128) / öneri yok (b32-MPS) ->
+#: yarar kapısı (NED ≤ 0,50) tutmadı. Güvenlik tuttu: kök değişimi 0/320,
+#: sahte kök bataryalarında öneri 0.
+NEURAL_SUGGESTION = os.environ.get("ETIM_NEURAL_SUGGESTION", "0") == "1"
+
 #: Sözlüklerin fiil köklerini tuttuğu **alıntı biçimi** ekleri
 #: (karşılaştırma biçiminde). Tanıklık denetimi yalnız çıplak biçmi
 #: arıyordu; oysa sözlükler fiili mastarla verir: ``ırgıt`` indekste yok,
@@ -110,6 +124,22 @@ CITATION_SUFFIXES: tuple[str, ...] = (
     "uv", "üv", "ıv", "iv",                    # crh/nog/kum
     "ar", "er", "ır", "ir",                    # tyv/alt sözlük biçimi (şimdiki zaman)
 )
+
+
+def suggestion_eligible(result: dict[str, Any]) -> bool:
+    """9a öneri kapsamı: yalnız sütun modelinin ÇEKİMSER kaldığı maddeler.
+
+    Alıntı engeli (``borrowing``) ve geri-dönüşler (``anchor_fallback``,
+    tanıksız kök yasağı dahil) kapsam DIŞIDIR; tanık denetimi ayrıca
+    ``_neural_suggest`` içinde yapılır.
+    """
+    return (
+        not result.get("is_reconstructible")
+        and not result.get("borrowing_blocked")
+        and not (result.get("borrowing") or {}).get("is_borrowed")
+        and result.get("method") != "anchor_fallback"
+        and not result.get("unattested_ban")
+    )
 
 
 class ComparativeReconstructor:
@@ -144,7 +174,66 @@ class ComparativeReconstructor:
         )
         if NEURAL_SELECTION:
             result = self._neural_select(result, word, turkic_entries)
+        if NEURAL_SUGGESTION:
+            self._neural_suggest(result, word, turkic_entries)
         return result
+
+    @staticmethod
+    def _selector_inputs(word: str, turkic_entries: list[dict[str, Any]] | None) -> tuple[list[dict[str, Any]], str, dict[str, str], dict[str, str]]:
+        entries = [e for e in (turkic_entries or []) if e.get("lang_code") in TURKIC_LANGUAGES_MAP]
+        anchor = to_comparison_form(word)
+        by_lang: dict[str, str] = {}
+        for e in entries:
+            form = to_comparison_form(e.get("word") or "")
+            if len(form) >= 2 and (e["lang_code"] not in by_lang or len(form) < len(by_lang[e["lang_code"]])):
+                by_lang[e["lang_code"]] = form
+        forms = dict(by_lang)
+        if anchor and anchor not in by_lang.values():
+            forms["__anchor__"] = anchor
+        return entries, anchor, by_lang, forms
+
+    def _neural_suggest(self, result: dict[str, Any], word: str, turkic_entries: list[dict[str, Any]] | None) -> None:
+        """9a: çekimser maddeye sinir ÖNERİSİ ekler; kök alanlarına dokunmaz."""
+        if not suggestion_eligible(result):
+            return
+        from engine.nlp import neural_reconstruction
+        from engine.nlp.proto_phonology import _pattern_table
+
+        column = column_model.active_model()
+        selector = neural_reconstruction.active_selector() if column is not None else None
+        if selector is None:
+            return
+        entries, anchor, by_lang, forms = self._selector_inputs(word, turkic_entries)
+        if not anchor or len(forms) < 2:
+            return
+        # Tanıksız kök yasağının ruhu: hiçbir tanığı sözlükte bulunmayan
+        # maddeye öneri de verilmez (ölçülemiyorsa da verilmez).
+        attested = self._attested_witness_count([*by_lang.values(), anchor])
+        if not attested:
+            return
+        try:
+            informative = column_model.informative_columns(forms)
+            chosen, candidates = selector.select(word, entries, informative, column, _pattern_table(), None)
+        except Exception:  # noqa: BLE001 — öneri hatası sonucu bozmamalı
+            logger.warning("Sinir önerisi çöktü: %s", word, exc_info=True)
+            return
+        if not chosen:
+            return
+        plausibility, _ = proto_plausibility(chosen)
+        if plausibility < DEFAULT_PLAUSIBILITY_FLOOR:
+            return
+        result["neural_suggestion"] = {
+            "form": chosen,
+            "label": "öneri, doğrulanmamış",
+            "verified": False,
+            "attested_witness_count": attested,
+            "proto_plausibility": plausibility,
+            "candidates": [c.text for c in sorted(candidates, key=lambda c: c.rank) if c.in_beam][:5],
+            "note": (
+                "Sütun modeli çekimser kaldı; bu biçim sinir aday üreteci + B2 sıralayıcının "
+                "önerisidir, karşılaştırmalı yöntemle doğrulanmış bir kök DEĞİLDİR."
+            ),
+        }
 
     @staticmethod
     def _neural_select(result: dict[str, Any], word: str, turkic_entries: list[dict[str, Any]] | None) -> dict[str, Any]:
@@ -158,16 +247,7 @@ class ComparativeReconstructor:
         selector = neural_reconstruction.active_selector() if column is not None else None
         if selector is None:
             return result
-        entries = [e for e in (turkic_entries or []) if e.get("lang_code") in TURKIC_LANGUAGES_MAP]
-        anchor = to_comparison_form(word)
-        by_lang: dict[str, str] = {}
-        for e in entries:
-            form = to_comparison_form(e.get("word") or "")
-            if len(form) >= 2 and (e["lang_code"] not in by_lang or len(form) < len(by_lang[e["lang_code"]])):
-                by_lang[e["lang_code"]] = form
-        forms = dict(by_lang)
-        if anchor and anchor not in by_lang.values():
-            forms["__anchor__"] = anchor
+        entries, _, _, forms = ComparativeReconstructor._selector_inputs(word, turkic_entries)
         original = str(result.get("reconstructed_root") or "")
         try:
             informative = column_model.informative_columns(forms)
@@ -229,6 +309,7 @@ class ComparativeReconstructor:
                 f"{borrowing.explain()}",
             )
             result["borrowing"] = borrowing.as_dict()
+            result["borrowing_blocked"] = True
             return apply_calibration(result)
 
         # Dil başına tek biçim (en kısa, en çekirdek olan)

@@ -54,6 +54,15 @@ class TrainSmokeTests(unittest.TestCase):
         self.assertLess(score, 0.0)
 
 
+@needs_torch
+class DeviceTests(unittest.TestCase):
+    def test_env_forces_cpu(self):
+        from unittest import mock
+
+        with mock.patch.dict("os.environ", {neural.DEVICE_ENV: "cpu"}):
+            self.assertEqual(neural.train_device(), "cpu")
+
+
 class EngineHookTests(unittest.TestCase):
     def _fake(self, chosen):
         class FakeSelector:
@@ -90,6 +99,52 @@ class EngineHookTests(unittest.TestCase):
         result = {"method": "comparative", "is_reconstructible": True, "reconstructed_root": "*köl"}
         with mock.patch.object(neural, "active_selector", return_value=None):
             self.assertEqual(ComparativeReconstructor._neural_select(dict(result), "kül", []), result)
+
+
+class SuggestionTests(unittest.TestCase):
+    """9a: çekimser maddeye ``neural_suggestion`` — kök alanları değişmez."""
+
+    ENTRIES = [{"lang_code": "kk", "word": "kül"}, {"lang_code": "tt", "word": "köl"}]
+
+    def _run(self, result, chosen="*kül", attested=2):
+        from unittest import mock
+
+        from engine.nlp.comparative_reconstruction import ComparativeReconstructor
+
+        rec = ComparativeReconstructor()
+        out = dict(result)
+        with mock.patch.object(neural, "active_selector", return_value=EngineHookTests._fake(None, chosen)), \
+                mock.patch("engine.nlp.column_model.active_model", return_value=object()), \
+                mock.patch("engine.nlp.column_model.informative_columns", return_value=[]), \
+                mock.patch("engine.nlp.proto_phonology._pattern_table", return_value=None), \
+                mock.patch.object(ComparativeReconstructor, "_attested_witness_count", return_value=attested):
+            rec._neural_suggest(out, "kül", self.ENTRIES)
+        return out
+
+    ABSTAIN = {"method": "comparative", "is_reconstructible": False, "reconstructed_root": "", "abstained": True}
+
+    def test_abstain_gets_suggestion_root_unchanged(self):
+        out = self._run(self.ABSTAIN)
+        self.assertEqual(out["neural_suggestion"]["form"], "*kül")
+        self.assertFalse(out["neural_suggestion"]["verified"])
+        self.assertEqual(out["reconstructed_root"], "")
+        self.assertFalse(out["is_reconstructible"])
+
+    def test_no_suggestion_when_unattested(self):
+        self.assertNotIn("neural_suggestion", self._run(self.ABSTAIN, attested=0))
+        self.assertNotIn("neural_suggestion", self._run(self.ABSTAIN, attested=None))
+
+    def test_no_suggestion_for_fallback_borrowing_or_root(self):
+        for result in (
+            {"method": "anchor_fallback", "is_reconstructible": True, "reconstructed_root": "*kül"},
+            {"method": "anchor_fallback", "is_reconstructible": True, "unattested_ban": True},
+            {"is_reconstructible": False, "borrowing_blocked": True, "borrowing": {"is_borrowed": True}},
+            {"method": "comparative", "is_reconstructible": True, "reconstructed_root": "*köl"},
+        ):
+            self.assertNotIn("neural_suggestion", self._run(result))
+
+    def test_implausible_suggestion_dropped(self):
+        self.assertNotIn("neural_suggestion", self._run(self.ABSTAIN, chosen="*djg"))
 
 
 if __name__ == "__main__":

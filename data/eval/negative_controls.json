@@ -11,7 +11,8 @@
       "fallback": 57,
       "fallback_rate": 0.9828,
       "unattested": 0,
-      "unattested_rate": 0.0
+      "unattested_rate": 0.0,
+      "suggested": 0
     },
     {
       "battery": "bariz_sahte",
@@ -22,18 +23,20 @@
       "fallback": 0,
       "fallback_rate": 0.0,
       "unattested": 0,
-      "unattested_rate": 0.0
+      "unattested_rate": 0.0,
+      "suggested": 0
     },
     {
       "battery": "sahte_akraba",
-      "n": 4,
+      "n": 1,
       "reconstructed": 0,
       "false_positive_rate": 0.0,
       "strong_claim_rate": 0.0,
-      "fallback": 4,
+      "fallback": 1,
       "fallback_rate": 1.0,
       "unattested": 0,
-      "unattested_rate": 0.0
+      "unattested_rate": 0.0,
+      "suggested": 0
     },
     {
       "battery": "alinti_tuzagi",
@@ -44,7 +47,8 @@
       "fallback": 0,
       "fallback_rate": 0.0,
       "unattested": 0,
-      "unattested_rate": 0.0
+      "unattested_rate": 0.0,
+      "suggested": 0
     },
     {
       "battery": "eşadlı",
@@ -55,7 +59,8 @@
       "fallback": 0,
       "fallback_rate": 0.0,
       "unattested": 0,
-      "unattested_rate": 0.0
+      "unattested_rate": 0.0,
+      "suggested": 0
     }
   ],
   "details": {
@@ -68,6 +73,7 @@
         "root": "*kalgır",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
       },
       {
@@ -78,6 +84,7 @@
         "root": "*sötüm",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
       },
       {
@@ -88,6 +95,7 @@
         "root": "*tirbek",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
       },
       {
@@ -98,6 +106,7 @@
         "root": "*yomgan",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
       },
       {
@@ -108,6 +117,7 @@
         "root": "*bürtel",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
       },
       {
@@ -118,6 +128,7 @@
         "root": "*kaŋtar",
         "badge": "🟠 ZAYIF KANIT",
         "calibrated": 0.2101,
+        "suggestion": null,
         "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
       },
       {
@@ -128,6 +139,7 @@
         "root": "*üsper",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
       },
       {
@@ -138,6 +150,7 @@
         "root": "*dolgaş",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "Türkçenin ses dizimine uyuyor ama böyle bir kök yok"
       },
       {
@@ -148,6 +161,7 @@
         "root": "*afka",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -158,6 +172,7 @@
         "root": "*akçık",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -168,6 +183,7 @@
         "root": "*kıca",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -178,6 +194,7 @@
         "root": "*iğitli",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -188,6 +205,7 @@
         "root": "*açkut",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -198,6 +216,7 @@
         "root": "*afkay",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -208,6 +227,7 @@
         "root": "*yençeği",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -218,6 +238,7 @@
         "root": "*apulua",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -228,6 +249,7 @@
         "root": "*balçava",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -238,6 +260,7 @@
         "root": "*apul",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -248,6 +271,7 @@
         "root": "*apulga",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -258,6 +282,7 @@
         "root": "*oklık",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -268,6 +293,7 @@
         "root": "*arnıra",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -278,6 +304,7 @@
         "root": "*arutçuk",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -288,6 +315,7 @@
         "root": "*korbağı",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -298,6 +326,7 @@
         "root": "*sirciği",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -308,6 +337,7 @@
         "root": "*ayaymaç",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -318,6 +348,7 @@
         "root": "*açkur",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -328,6 +359,7 @@
         "root": "*balmaçı",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -338,6 +370,7 @@
         "root": "*oğuk",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -348,6 +381,7 @@
         "root": "*apaçkut",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -358,6 +392,7 @@
         "root": "*iğit",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -368,6 +403,7 @@
         "root": "*acaskın",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -378,6 +414,7 @@
         "root": "*ayışlık",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -388,6 +425,7 @@
         "root": "*açkabaş",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -398,6 +436,7 @@
         "root": "*iğer",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -408,6 +447,7 @@
         "root": "*aşyayıl",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -418,6 +458,7 @@
         "root": "*afkar",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -428,6 +469,7 @@
         "root": "*başyara",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -438,6 +480,7 @@
         "root": "*afga",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -448,6 +491,7 @@
         "root": "*arnırık",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -458,6 +502,7 @@
         "root": "*alçu",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -468,6 +513,7 @@
         "root": "*başyana",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -478,6 +524,7 @@
         "root": "*yençiçe",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -488,6 +535,7 @@
         "root": "*osmaçık",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -498,6 +546,7 @@
         "root": "*amyokya",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -508,6 +557,7 @@
         "root": "*yıtmak",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -518,6 +568,7 @@
         "root": "*apulan",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -528,6 +579,7 @@
         "root": "*amyokla",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -538,6 +590,7 @@
         "root": "*alçuk",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -548,6 +601,7 @@
         "root": "*asunacı",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -558,6 +612,7 @@
         "root": "*apuluğu",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -568,6 +623,7 @@
         "root": "*otaşçık",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -578,6 +634,7 @@
         "root": "*afgara",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -588,6 +645,7 @@
         "root": "*oklım",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -598,6 +656,7 @@
         "root": "*acaarna",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -608,6 +667,7 @@
         "root": "*bençile",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -618,6 +678,7 @@
         "root": "*bençeği",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -628,6 +689,7 @@
         "root": "*amsuna",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       },
       {
@@ -638,6 +700,7 @@
         "root": "*tupyırt",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "fonotaktik modelden üretildi; kök ve tanıkları sözlük indeksinde yok"
       }
     ],
@@ -650,6 +713,7 @@
         "root": "*ŕŕŕkŕ",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "Türkçenin ses dizimini ihlal ediyor"
       },
       {
@@ -660,6 +724,7 @@
         "root": "*ftrhp",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "Türkçenin ses dizimini ihlal ediyor"
       },
       {
@@ -670,6 +735,7 @@
         "root": "*blkrm",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1461,
+        "suggestion": null,
         "reason": "Türkçenin ses dizimini ihlal ediyor"
       },
       {
@@ -680,20 +746,11 @@
         "root": "*pshtl",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1474,
+        "suggestion": null,
         "reason": "Türkçenin ses dizimini ihlal ediyor"
       }
     ],
     "sahte_akraba": [
-      {
-        "query": "ay",
-        "reconstructed": false,
-        "method": "anchor_fallback",
-        "evidence_available": false,
-        "root": "*ay",
-        "badge": "⚪ YETERSİZ KANIT",
-        "calibrated": 0.1322,
-        "reason": "Türkçe 'ay' ~ İng. 'eye': salt rastlantı"
-      },
       {
         "query": "bad",
         "reconstructed": false,
@@ -702,39 +759,21 @@
         "root": "*bad",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": 0.1322,
+        "suggestion": null,
         "reason": "Farsça 'bād' rüzgâr ~ İng. 'bad': ilgisiz"
-      },
-      {
-        "query": "kol",
-        "reconstructed": false,
-        "method": "anchor_fallback",
-        "evidence_available": false,
-        "root": "*kol",
-        "badge": "⚪ YETERSİZ KANIT",
-        "calibrated": 0.1322,
-        "reason": "salt ses benzerliği"
-      },
-      {
-        "query": "gel",
-        "reconstructed": false,
-        "method": "anchor_fallback",
-        "evidence_available": false,
-        "root": "*gel",
-        "badge": "⚪ YETERSİZ KANIT",
-        "calibrated": 0.1322,
-        "reason": "salt ses benzerliği"
       }
     ],
     "alinti_tuzagi": [
       {
-        "query": "kitap",
+        "query": "saat",
         "reconstructed": false,
         "method": "comparative",
         "evidence_available": false,
         "root": "",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": null,
-        "reason": "Arapça kitāb — bütün Türki dillerde var ama MİRAS DEĞİL"
+        "suggestion": null,
+        "reason": "Arapça sā'a — bütün Türki dillerde ayrı ayrı ödünçlenmiş, MİRAS DEĞİL"
       },
       {
         "query": "duvar",
@@ -744,6 +783,7 @@
         "root": "",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": null,
+        "suggestion": null,
         "reason": "Farsça dīwār"
       },
       {
@@ -754,6 +794,7 @@
         "root": "",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": null,
+        "suggestion": null,
         "reason": "Farsça/Arapça ǧurāb"
       },
       {
@@ -764,6 +805,7 @@
         "root": "",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": null,
+        "suggestion": null,
         "reason": "Farsça panǧara"
       },
       {
@@ -774,6 +816,7 @@
         "root": "",
         "badge": "⚪ YETERSİZ KANIT",
         "calibrated": null,
+        "suggestion": null,
         "reason": "Arapça ṣābūn (nihayetinde Latince)"
       }
     ],
@@ -786,6 +829,7 @@
         "root": "*jaj",
         "badge": "🟠 ZAYIF KANIT",
         "calibrated": 0.1962,
+        "suggestion": null,
         "reason": "'tea' Farsça alıntı, 'brook' Proto-Türkçe miras — aynı yazılış"
       },
       {
@@ -796,6 +840,7 @@
         "root": "*jaĺ",
         "badge": "🟠 ZAYIF KANIT",
         "calibrated": 0.1859,
+        "suggestion": null,
         "reason": "'age' ve 'wet/tear' ayrı köklerdir"
       },
       {
@@ -806,6 +851,7 @@
         "root": "*kat",
         "badge": "🟠 ZAYIF KANIT",
         "calibrated": 0.209,
+        "suggestion": null,
         "reason": "'layer' ve 'hard' ayrı köklerdir"
       }
     ]
