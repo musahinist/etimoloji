@@ -71,3 +71,40 @@ kapalı/açık; train+dev), Fransızca hata tanısı.
   (paralel~parallelo, kontrast, referans).
 Ucuz düzeltme adayları (ayrı ön kayıt ister): dil başına LIMIT; D1'in
 "from French" karşılığı.
+
+---
+
+## SONUÇ (ön kayıt commit'i 6370422'den sonra, bir kez)
+
+Türkçe DEV (n=64), etiket doğruluğu, `harness.py tr --split dev` (önbellekle 64/64 aynı):
+
+| kural | DEV | McNemar (yalnız aday / yalnız off) | ham p | Holm p |
+|---|---|---|---|---|
+| off | 0,484 (31) | — | — | — |
+| D1 | 0,641 (41) | 10 / 0 | 0,00195 | 0,0039 |
+| D2 | 0,609 (39) | 8 / 0 | 0,00781 | 0,0078 |
+| D3 | 0,656 (42) | 11 / 0 | 0,00098 | 0,0029 |
+
+Korumalar: Saha `make eval-donor` motor 0,7136 (değişmedi; ar/fa havuzda
+yok) — tuttu. xturkic tune verici tanıma 0,5499 -> 0,7459 — tuttu.
+
+Bilgi: xturkic R1 (proximity ateşlenen, n=300) 0,560 -> D1 0,707 / D2 0,643 /
+D3 0,690; R2 (n=292) 0,548 -> 0,695 / 0,599 / 0,671.
+
+**KARAR: D1 KABUL, üretimde varsayılan açık (`ARABIC_VIA_RULE = "d1"`).**
+DEV'de D1 çoğunluk tabanını (DEV'de Arapça payı) geçip geçmediği tam
+yakalama raporunda (`tr_donor_dev.json`).
+
+Tam yakalama (üretim D1, A2 kapalı; bir kez; `make eval-tr-donor` yalnız off):
+
+| | train+dev n=293 | DEV n=64 |
+|---|---|---|
+| çoğunluk | 0,505 | 0,531 |
+| (a) etiket | 0,427 -> **0,563** (çoğunluğa McNemar p=0,064) | 0,641 (p=0,21) |
+| (c) kör | 0,379 -> **0,515** (p=0,83) | 0,625 (p=0,31) |
+| (b) dedektör | 0,932 -> 0,939 | — |
+
+Bağımsız sistemler artık çoğunluğun altında değil, ama anlamlı üstünde de
+değil. Kalan baskın hata Fransızca -> Arapça (21; anlam havuzunun Arapçayla
+dolması, yukarıdaki tanı) ve Farsça -> Arapça (13). A2 açık yakalama
+yapılmadı (eski önbellekler `*_pre9d.jsonl`).

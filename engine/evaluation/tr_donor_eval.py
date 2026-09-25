@@ -314,14 +314,18 @@ ERROR_NOTE = (
     "kısa mesafede. Etiket adımı 'en yakın biçimin dili'ni seçer; vericinin vericisini (Farsçanın "
     "da Arapçadan aldığını) bilmez. İkinci sık hata Fransızca->Arapça/İtalyanca/Farsça (anlam "
     "kısıtlı havuzda Fransızca karşılığın uzak düşmesi)."
+    " 9d (ön kayıt data/cache/work/donor9d/PREREG.md): etiket adımına 'Farsça üzerinden Arapça' "
+    "kuralı (D1) eklendi — Farsça kazanan Arapçayla aynı yazı iskeletliyse ya da kaikki'de "
+    "'from Arabic' ise etiket Arapça, via=fa. Fransızca hatalarının tanısı PREREG.md'de "
+    "(anlam havuzunun LIMIT 200'ü tümüyle Arapça dolması; düzeltme yok)."
 )
 
 
-def report() -> dict[str, Any]:
+def report(split: str | None = None) -> dict[str, Any]:
     from engine.evaluation.headline_eval import _head
     from engine.evaluation.significance import mcnemar_test
 
-    cases = load_cases()
+    cases = [c for c in load_cases() if split in (None, c.split)]
     gold = [c.gold for c in cases]
     payload: dict[str, Any] = {
         "_schema": "tr_donor_eval/v1",
@@ -330,6 +334,7 @@ def report() -> dict[str, Any]:
         "gold": "turkish_loanwords.json: alıntı, tdk_source ile nisanyan_source ilk dil adı aynı; "
                 "train+dev (assign_split('tr-gold:<kelime>') test hariç)",
         "n": len(cases),
+        "split": split or "train+dev",
         "split_counts": dict(Counter(c.split for c in cases)),
         "gold_distribution": dict(Counter(gold).most_common()),
         "gold_other_names": dict(Counter(c.gold_name for c in cases if c.gold == "diğer").most_common()),
@@ -375,14 +380,16 @@ def main() -> int:
     cap.add_argument("--index", choices=("full", "blind"), required=True)
     cap.add_argument("--a2", choices=("off", "on"), required=True)
     cap.add_argument("--limit", type=int, default=0)
-    sub.add_parser("report")
+    rep = sub.add_parser("report")
+    rep.add_argument("--split", choices=("train", "dev"), default=None,
+                     help="yalnız bu bölüm (ör. dev ayrı rapor); varsayılan train+dev")
     args = parser.parse_args()
     if args.cmd == "capture":
         print(capture(args.index, args.a2, limit=args.limit))
         return 0
     from engine.evaluation.report import EVAL_DIR
 
-    payload = report()
+    payload = report(args.split)
     print(f"\n=== {payload['name']} · n={payload['n']} · commit {payload['commit']} ===")
     print(f"altın: {payload['gold_distribution']}  (çoğunluk {payload['majority_class']})")
     for a2, result in payload["by_a2"].items():
@@ -392,7 +399,7 @@ def main() -> int:
                   f"kapsananda {s['accuracy_when_predicted']:.3f}  makro-duyarlılık {s['macro_recall']:.3f}")
             print(f"{'':16} en sık hata: {s['top_errors'][:3]}")
     print(f"\n⚠️ {payload['circularity_warning']}")
-    out = EVAL_DIR / OUT_NAME
+    out = EVAL_DIR / (OUT_NAME if not args.split else OUT_NAME.replace(".json", f"_{args.split}.json"))
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"\nJSON: {out}")
     return 0

@@ -11,6 +11,7 @@ os.environ.setdefault("ETY_DONOR_CLEAN", "0")
 os.environ.setdefault("ETY_DONOR_RAMP_CHANCE", "0")
 OUT = Path(__file__).parent
 RULES = ("off", "d1", "d2", "d3")
+import engine.nlp.donor_proximity as _dp  # noqa: E402  (varsayılan ne olursa olsun kural açıkça atanır)
 
 
 def tr(split: str) -> None:
@@ -54,17 +55,17 @@ def summarize(rows):
         print(rule, f"{sum(hits)/n:.3f}", sum(hits), mc, err)
 
 
-def xt() -> None:
+def xt(split: str = "tune") -> None:
     from engine.evaluation import xborrowing_eval as xb
     from engine.evaluation.xturkic_gold import donor_macro
     from engine.nlp import donor_proximity as dp
     from engine.utils.orthography import to_comparison_form
 
     xb.apply_variant("sca")
-    rows = xb.load_cache("tune")
-    gold = {g["id"]: g for g in xb.load_split("tune")}
-    preds, _ = xb.crossfit(rows)
-    pred = preds["engine_trained"]
+    rows = xb.load_cache(split)
+    gold = {g["id"]: g for g in xb.load_split(split)}
+    rows = [r for r in rows if r["id"] in gold]
+    pred = xb.crossfit(rows)[0]["engine_trained"] if split == "tune" else None
     out = {}
     t = time.time()
     for rule in RULES:
@@ -79,15 +80,15 @@ def xt() -> None:
             new.append(r2)
         if rule == "off":
             print("cached==off", sum(a["attributed"] == b["attributed"] for a, b in zip(rows, new)), len(rows))
-        out[rule] = {"engine_trained": xb.donor_identification(new, pred),
+        out[rule] = {"engine_trained": xb.donor_identification(new, pred) if pred else None,
                      "all_fired": xb.donor_identification(new, {r["id"]: True for r in new}),
                      "attributed": {r["id"]: r["attributed"] for r in new}}
         print(rule, {k: v for k, v in out[rule].items() if k != "attributed"}, f"{time.time()-t:.0f}s", flush=True)
-    (OUT / "xt_tune.json").write_text(json.dumps(out, ensure_ascii=False, indent=0))
+    (OUT / f"xt_{split}.json").write_text(json.dumps(out, ensure_ascii=False, indent=0))
 
 
 if __name__ == "__main__":
     if sys.argv[1] == "tr":
         tr(sys.argv[3] if len(sys.argv) > 3 else "train")
     else:
-        xt()
+        xt(sys.argv[2] if len(sys.argv) > 2 else "tune")

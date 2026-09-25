@@ -1,0 +1,1232 @@
+{
+  "_schema": "tr_donor_eval/v1",
+  "name": "Türkçe verici dil — Wiktionary↔TDK uyumu",
+  "commit": "6370422",
+  "gold": "turkish_loanwords.json: alıntı, tdk_source ile nisanyan_source ilk dil adı aynı; train+dev (assign_split('tr-gold:<kelime>') test hariç)",
+  "n": 64,
+  "split": "dev",
+  "split_counts": {
+    "dev": 64
+  },
+  "gold_distribution": {
+    "Arapça": 34,
+    "Fransızca": 18,
+    "Farsça": 5,
+    "Yunanca": 3,
+    "diğer": 2,
+    "İtalyanca": 2
+  },
+  "gold_other_names": {
+    "İngilizce": 2
+  },
+  "majority_class": "Arapça",
+  "circularity_warning": "Bu ölçüm 'Wiktionary↔TDK uyumu'dur, verici doğruluğu değil. (b) DÖNGÜSEL: arama/zincir sözlük indeksindeki Wiktionary donor_lang kaydını okur ve Wiktionary Türkçe etimolojileri büyük ölçüde Nişanyan/TDK'ya dayanır — (b) iki sözlükçü geleneğin uyumunu ölçer. (c) kör indeks + zincir kapalı ve (a) yalnız etiket adımı kaydı görmez: bağımsız çıkarım. Önsel sızıntı: verici havuzu TURKISH_DONORS (ar, fa, el, hy, fr, it) Türkçe alıntı dağılımına bakılarak seçildi; 'diğer' sınıfını (a)/(c) yapısal olarak hemen hiç üretemez.",
+  "a2_flags": {
+    "off": {
+      "ETY_DONOR_CLEAN": "0",
+      "ETY_DONOR_RAMP_CHANCE": "0"
+    },
+    "on": {
+      "ETY_DONOR_CLEAN": "1",
+      "ETY_DONOR_RAMP_CHANCE": "1"
+    }
+  },
+  "dominant_error_note": "Bağımsız sistemlerde (a)/(c) en sık hata Arapça->Farsça. İncelenen 15 maddenin 15'inde Farsça havuzdaki eşleşme Farsçadaki ARAPÇA ALINTININ kendisi (davet~دعوت, kısmet~قسمت, gazap~غضب, masum~معصوم, azamet~عظمت): Osmanlıca biçim Arapça sözcüğün Farsça/Osmanlı okunuşuna (-et, v/w) daha yakın düştüğü için Farsça kaydı Arapça kayıttan (ör. عظمة) daha kısa mesafede. Etiket adımı 'en yakın biçimin dili'ni seçer; vericinin vericisini (Farsçanın da Arapçadan aldığını) bilmez. İkinci sık hata Fransızca->Arapça/İtalyanca/Farsça (anlam kısıtlı havuzda Fransızca karşılığın uzak düşmesi). 9d (ön kayıt data/cache/work/donor9d/PREREG.md): etiket adımına 'Farsça üzerinden Arapça' kuralı (D1) eklendi — Farsça kazanan Arapçayla aynı yazı iskeletliyse ya da kaikki'de 'from Arabic' ise etiket Arapça, via=fa. Fransızca hatalarının tanısı PREREG.md'de (anlam havuzunun LIMIT 200'ü tümüyle Arapça dolması; düzeltme yok).",
+  "by_a2": {
+    "off": {
+      "systems": {
+        "(a) etiket": {
+          "n": 64,
+          "accuracy": 0.6406,
+          "accuracy_ci95": [
+            0.5182,
+            0.7471
+          ],
+          "coverage": 1.0,
+          "accuracy_when_predicted": 0.6406,
+          "accuracy_when_predicted_ci95": [
+            0.5182,
+            0.7471
+          ],
+          "macro_recall": 0.3608,
+          "per_class_recall": {
+            "Arapça": 0.7647,
+            "Farsça": 0.4,
+            "Fransızca": 0.6667,
+            "Yunanca": 0.3333,
+            "diğer": 0.0,
+            "İtalyanca": 0.0
+          },
+          "confusion": {
+            "Arapça": {
+              "Yunanca": 3,
+              "Arapça": 26,
+              "diğer": 2,
+              "Farsça": 3
+            },
+            "Yunanca": {
+              "Arapça": 2,
+              "Yunanca": 1
+            },
+            "Fransızca": {
+              "Fransızca": 12,
+              "Farsça": 3,
+              "Arapça": 2,
+              "İtalyanca": 1
+            },
+            "diğer": {
+              "Arapça": 1,
+              "Fransızca": 1
+            },
+            "Farsça": {
+              "Yunanca": 1,
+              "Arapça": 1,
+              "diğer": 1,
+              "Farsça": 2
+            },
+            "İtalyanca": {
+              "Fransızca": 1,
+              "Arapça": 1
+            }
+          },
+          "top_errors": [
+            {
+              "gold": "Arapça",
+              "pred": "Yunanca",
+              "n": 3
+            },
+            {
+              "gold": "Fransızca",
+              "pred": "Farsça",
+              "n": 3
+            },
+            {
+              "gold": "Arapça",
+              "pred": "Farsça",
+              "n": 3
+            },
+            {
+              "gold": "Yunanca",
+              "pred": "Arapça",
+              "n": 2
+            },
+            {
+              "gold": "Fransızca",
+              "pred": "Arapça",
+              "n": 2
+            }
+          ]
+        },
+        "(b) arama": {
+          "n": 64,
+          "accuracy": 0.9375,
+          "accuracy_ci95": [
+            0.85,
+            0.9754
+          ],
+          "coverage": 0.9375,
+          "accuracy_when_predicted": 1.0,
+          "accuracy_when_predicted_ci95": [
+            0.9398,
+            1.0
+          ],
+          "macro_recall": 0.8692,
+          "per_class_recall": {
+            "Arapça": 0.9706,
+            "Farsça": 0.8,
+            "Fransızca": 0.9444,
+            "Yunanca": 1.0,
+            "diğer": 1.0,
+            "İtalyanca": 0.5
+          },
+          "confusion": {
+            "Arapça": {
+              "Arapça": 33,
+              "—": 1
+            },
+            "Yunanca": {
+              "Yunanca": 3
+            },
+            "Fransızca": {
+              "—": 1,
+              "Fransızca": 17
+            },
+            "diğer": {
+              "diğer": 2
+            },
+            "Farsça": {
+              "Farsça": 4,
+              "—": 1
+            },
+            "İtalyanca": {
+              "İtalyanca": 1,
+              "—": 1
+            }
+          },
+          "top_errors": [
+            {
+              "gold": "Fransızca",
+              "pred": "—",
+              "n": 1
+            },
+            {
+              "gold": "Farsça",
+              "pred": "—",
+              "n": 1
+            },
+            {
+              "gold": "Arapça",
+              "pred": "—",
+              "n": 1
+            },
+            {
+              "gold": "İtalyanca",
+              "pred": "—",
+              "n": 1
+            }
+          ]
+        },
+        "(b) zincir": {
+          "n": 64,
+          "accuracy": 0.9375,
+          "accuracy_ci95": [
+            0.85,
+            0.9754
+          ],
+          "coverage": 0.9375,
+          "accuracy_when_predicted": 1.0,
+          "accuracy_when_predicted_ci95": [
+            0.9398,
+            1.0
+          ],
+          "macro_recall": 0.8692,
+          "per_class_recall": {
+            "Arapça": 0.9706,
+            "Farsça": 0.8,
+            "Fransızca": 0.9444,
+            "Yunanca": 1.0,
+            "diğer": 1.0,
+            "İtalyanca": 0.5
+          },
+          "confusion": {
+            "Arapça": {
+              "Arapça": 33,
+              "—": 1
+            },
+            "Yunanca": {
+              "Yunanca": 3
+            },
+            "Fransızca": {
+              "—": 1,
+              "Fransızca": 17
+            },
+            "diğer": {
+              "diğer": 2
+            },
+            "Farsça": {
+              "Farsça": 4,
+              "—": 1
+            },
+            "İtalyanca": {
+              "İtalyanca": 1,
+              "—": 1
+            }
+          },
+          "top_errors": [
+            {
+              "gold": "Fransızca",
+              "pred": "—",
+              "n": 1
+            },
+            {
+              "gold": "Farsça",
+              "pred": "—",
+              "n": 1
+            },
+            {
+              "gold": "Arapça",
+              "pred": "—",
+              "n": 1
+            },
+            {
+              "gold": "İtalyanca",
+              "pred": "—",
+              "n": 1
+            }
+          ]
+        },
+        "(b) dedektör": {
+          "n": 64,
+          "accuracy": 0.9531,
+          "accuracy_ci95": [
+            0.871,
+            0.9839
+          ],
+          "coverage": 1.0,
+          "accuracy_when_predicted": 0.9531,
+          "accuracy_when_predicted_ci95": [
+            0.871,
+            0.9839
+          ],
+          "macro_recall": 0.8784,
+          "per_class_recall": {
+            "Arapça": 0.9706,
+            "Farsça": 0.8,
+            "Fransızca": 1.0,
+            "Yunanca": 1.0,
+            "diğer": 1.0,
+            "İtalyanca": 0.5
+          },
+          "confusion": {
+            "Arapça": {
+              "Arapça": 33,
+              "Farsça": 1
+            },
+            "Yunanca": {
+              "Yunanca": 3
+            },
+            "Fransızca": {
+              "Fransızca": 18
+            },
+            "diğer": {
+              "diğer": 2
+            },
+            "Farsça": {
+              "Farsça": 4,
+              "Arapça": 1
+            },
+            "İtalyanca": {
+              "İtalyanca": 1,
+              "Arapça": 1
+            }
+          },
+          "top_errors": [
+            {
+              "gold": "Farsça",
+              "pred": "Arapça",
+              "n": 1
+            },
+            {
+              "gold": "Arapça",
+              "pred": "Farsça",
+              "n": 1
+            },
+            {
+              "gold": "İtalyanca",
+              "pred": "Arapça",
+              "n": 1
+            }
+          ]
+        },
+        "(c) kör": {
+          "n": 64,
+          "accuracy": 0.625,
+          "accuracy_ci95": [
+            0.5025,
+            0.7333
+          ],
+          "coverage": 0.9062,
+          "accuracy_when_predicted": 0.6897,
+          "accuracy_when_predicted_ci95": [
+            0.562,
+            0.7938
+          ],
+          "macro_recall": 0.3559,
+          "per_class_recall": {
+            "Arapça": 0.7353,
+            "Farsça": 0.4,
+            "Fransızca": 0.6667,
+            "Yunanca": 0.3333,
+            "diğer": 0.0,
+            "İtalyanca": 0.0
+          },
+          "confusion": {
+            "Arapça": {
+              "Yunanca": 2,
+              "Arapça": 25,
+              "diğer": 2,
+              "—": 2,
+              "Farsça": 3
+            },
+            "Yunanca": {
+              "Arapça": 1,
+              "—": 1,
+              "Yunanca": 1
+            },
+            "Fransızca": {
+              "Fransızca": 12,
+              "Farsça": 3,
+              "Arapça": 1,
+              "İtalyanca": 1,
+              "—": 1
+            },
+            "diğer": {
+              "—": 1,
+              "Fransızca": 1
+            },
+            "Farsça": {
+              "Yunanca": 1,
+              "Arapça": 1,
+              "—": 1,
+              "Farsça": 2
+            },
+            "İtalyanca": {
+              "Fransızca": 1,
+              "Arapça": 1
+            }
+          },
+          "top_errors": [
+            {
+              "gold": "Fransızca",
+              "pred": "Farsça",
+              "n": 3
+            },
+            {
+              "gold": "Arapça",
+              "pred": "Farsça",
+              "n": 3
+            },
+            {
+              "gold": "Arapça",
+              "pred": "Yunanca",
+              "n": 2
+            },
+            {
+              "gold": "Arapça",
+              "pred": "diğer",
+              "n": 2
+            },
+            {
+              "gold": "Arapça",
+              "pred": "—",
+              "n": 2
+            }
+          ]
+        },
+        "çoğunluk": {
+          "n": 64,
+          "accuracy": 0.5312,
+          "accuracy_ci95": [
+            0.4107,
+            0.6482
+          ],
+          "coverage": 1.0,
+          "accuracy_when_predicted": 0.5312,
+          "accuracy_when_predicted_ci95": [
+            0.4107,
+            0.6482
+          ],
+          "macro_recall": 0.1667,
+          "per_class_recall": {
+            "Arapça": 1.0,
+            "Farsça": 0.0,
+            "Fransızca": 0.0,
+            "Yunanca": 0.0,
+            "diğer": 0.0,
+            "İtalyanca": 0.0
+          },
+          "confusion": {
+            "Arapça": {
+              "Arapça": 34
+            },
+            "Yunanca": {
+              "Arapça": 3
+            },
+            "Fransızca": {
+              "Arapça": 18
+            },
+            "diğer": {
+              "Arapça": 2
+            },
+            "Farsça": {
+              "Arapça": 5
+            },
+            "İtalyanca": {
+              "Arapça": 2
+            }
+          },
+          "top_errors": [
+            {
+              "gold": "Fransızca",
+              "pred": "Arapça",
+              "n": 18
+            },
+            {
+              "gold": "Farsça",
+              "pred": "Arapça",
+              "n": 5
+            },
+            {
+              "gold": "Yunanca",
+              "pred": "Arapça",
+              "n": 3
+            },
+            {
+              "gold": "diğer",
+              "pred": "Arapça",
+              "n": 2
+            },
+            {
+              "gold": "İtalyanca",
+              "pred": "Arapça",
+              "n": 2
+            }
+          ]
+        }
+      },
+      "vs_majority_mcnemar": {
+        "(a) etiket": {
+          "test": "mcnemar",
+          "statistic": 7.0,
+          "p": 0.21004,
+          "n": 23,
+          "significant": false,
+          "note": "yalnız A doğru: 15, yalnız B doğru: 8"
+        },
+        "(b) arama": {
+          "test": "mcnemar",
+          "statistic": 26.0,
+          "p": 0.0,
+          "n": 28,
+          "significant": true,
+          "note": "yalnız A doğru: 27, yalnız B doğru: 1"
+        },
+        "(b) zincir": {
+          "test": "mcnemar",
+          "statistic": 26.0,
+          "p": 0.0,
+          "n": 28,
+          "significant": true,
+          "note": "yalnız A doğru: 27, yalnız B doğru: 1"
+        },
+        "(b) dedektör": {
+          "test": "mcnemar",
+          "statistic": 27.0,
+          "p": 0.0,
+          "n": 29,
+          "significant": true,
+          "note": "yalnız A doğru: 28, yalnız B doğru: 1"
+        },
+        "(c) kör": {
+          "test": "mcnemar",
+          "statistic": 6.0,
+          "p": 0.30746,
+          "n": 24,
+          "significant": false,
+          "note": "yalnız A doğru: 15, yalnız B doğru: 9"
+        }
+      },
+      "missing_rows": {
+        "full": 0,
+        "blind": 0
+      },
+      "sense_coverage": 1.0
+    }
+  },
+  "items": [
+    {
+      "word": "abdiâciz",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Yunanca",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Yunanca"
+    },
+    {
+      "word": "anafor",
+      "gold": "Yunanca",
+      "gold_name": "Yunanca",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Yunanca",
+      "off:(b) zincir": "Yunanca",
+      "off:(b) dedektör": "Yunanca",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "arbede",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "atletik",
+      "gold": "Fransızca",
+      "gold_name": "Fransızca",
+      "split": "dev",
+      "off:(a) etiket": "Fransızca",
+      "off:(b) arama": "—",
+      "off:(b) zincir": "—",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Fransızca"
+    },
+    {
+      "word": "azamet",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "badire",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "bale",
+      "gold": "Fransızca",
+      "gold_name": "Fransızca",
+      "split": "dev",
+      "off:(a) etiket": "Farsça",
+      "off:(b) arama": "Fransızca",
+      "off:(b) zincir": "Fransızca",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Farsça"
+    },
+    {
+      "word": "benzin",
+      "gold": "Fransızca",
+      "gold_name": "Fransızca",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Fransızca",
+      "off:(b) zincir": "Fransızca",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "dezenfektan",
+      "gold": "Fransızca",
+      "gold_name": "Fransızca",
+      "split": "dev",
+      "off:(a) etiket": "Fransızca",
+      "off:(b) arama": "Fransızca",
+      "off:(b) zincir": "Fransızca",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Fransızca"
+    },
+    {
+      "word": "ekspoze",
+      "gold": "Fransızca",
+      "gold_name": "Fransızca",
+      "split": "dev",
+      "off:(a) etiket": "Fransızca",
+      "off:(b) arama": "Fransızca",
+      "off:(b) zincir": "Fransızca",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Fransızca"
+    },
+    {
+      "word": "fayton",
+      "gold": "Fransızca",
+      "gold_name": "Fransızca",
+      "split": "dev",
+      "off:(a) etiket": "Fransızca",
+      "off:(b) arama": "Fransızca",
+      "off:(b) zincir": "Fransızca",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Fransızca"
+    },
+    {
+      "word": "galon",
+      "gold": "diğer",
+      "gold_name": "İngilizce",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "diğer",
+      "off:(b) zincir": "diğer",
+      "off:(b) dedektör": "diğer",
+      "off:(c) kör": "—"
+    },
+    {
+      "word": "gayri",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "gayritabii",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "gıyabi",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "halife",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "diğer",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "diğer"
+    },
+    {
+      "word": "hatime",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "herek",
+      "gold": "Yunanca",
+      "gold_name": "Yunanca",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Yunanca",
+      "off:(b) zincir": "Yunanca",
+      "off:(b) dedektör": "Yunanca",
+      "off:(c) kör": "—"
+    },
+    {
+      "word": "heteroseksüel",
+      "gold": "Fransızca",
+      "gold_name": "Fransızca",
+      "split": "dev",
+      "off:(a) etiket": "Fransızca",
+      "off:(b) arama": "Fransızca",
+      "off:(b) zincir": "Fransızca",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Fransızca"
+    },
+    {
+      "word": "imsak",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "—"
+    },
+    {
+      "word": "irs",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "istihza",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Yunanca",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "—"
+    },
+    {
+      "word": "karakterize",
+      "gold": "Fransızca",
+      "gold_name": "Fransızca",
+      "split": "dev",
+      "off:(a) etiket": "Fransızca",
+      "off:(b) arama": "Fransızca",
+      "off:(b) zincir": "Fransızca",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Fransızca"
+    },
+    {
+      "word": "kemal",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "kenger",
+      "gold": "Farsça",
+      "gold_name": "Farsça",
+      "split": "dev",
+      "off:(a) etiket": "Yunanca",
+      "off:(b) arama": "Farsça",
+      "off:(b) zincir": "Farsça",
+      "off:(b) dedektör": "Farsça",
+      "off:(c) kör": "Yunanca"
+    },
+    {
+      "word": "kerevit",
+      "gold": "Yunanca",
+      "gold_name": "Yunanca",
+      "split": "dev",
+      "off:(a) etiket": "Yunanca",
+      "off:(b) arama": "Yunanca",
+      "off:(b) zincir": "Yunanca",
+      "off:(b) dedektör": "Yunanca",
+      "off:(c) kör": "Yunanca"
+    },
+    {
+      "word": "kobalt",
+      "gold": "Fransızca",
+      "gold_name": "Fransızca",
+      "split": "dev",
+      "off:(a) etiket": "Farsça",
+      "off:(b) arama": "Fransızca",
+      "off:(b) zincir": "Fransızca",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Farsça"
+    },
+    {
+      "word": "kolonyalist",
+      "gold": "Fransızca",
+      "gold_name": "Fransızca",
+      "split": "dev",
+      "off:(a) etiket": "Fransızca",
+      "off:(b) arama": "Fransızca",
+      "off:(b) zincir": "Fransızca",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Fransızca"
+    },
+    {
+      "word": "künk",
+      "gold": "Farsça",
+      "gold_name": "Farsça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "—",
+      "off:(b) zincir": "—",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "kısmet",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "mahbup",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "majör",
+      "gold": "Fransızca",
+      "gold_name": "Fransızca",
+      "split": "dev",
+      "off:(a) etiket": "Fransızca",
+      "off:(b) arama": "Fransızca",
+      "off:(b) zincir": "Fransızca",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Fransızca"
+    },
+    {
+      "word": "malul",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "manzum",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "menzil",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "mesai",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "mistisizm",
+      "gold": "Fransızca",
+      "gold_name": "Fransızca",
+      "split": "dev",
+      "off:(a) etiket": "Fransızca",
+      "off:(b) arama": "Fransızca",
+      "off:(b) zincir": "Fransızca",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Fransızca"
+    },
+    {
+      "word": "modifikasyon",
+      "gold": "Fransızca",
+      "gold_name": "Fransızca",
+      "split": "dev",
+      "off:(a) etiket": "İtalyanca",
+      "off:(b) arama": "Fransızca",
+      "off:(b) zincir": "Fransızca",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "İtalyanca"
+    },
+    {
+      "word": "mugayir",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Yunanca",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Yunanca"
+    },
+    {
+      "word": "müeddep",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "münhasır",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "mütebessim",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "müzmin",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Farsça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Farsça"
+    },
+    {
+      "word": "nakdi",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Farsça",
+      "off:(b) arama": "—",
+      "off:(b) zincir": "—",
+      "off:(b) dedektör": "Farsça",
+      "off:(c) kör": "Farsça"
+    },
+    {
+      "word": "nizamiye",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "pikap",
+      "gold": "diğer",
+      "gold_name": "İngilizce",
+      "split": "dev",
+      "off:(a) etiket": "Fransızca",
+      "off:(b) arama": "diğer",
+      "off:(b) zincir": "diğer",
+      "off:(b) dedektör": "diğer",
+      "off:(c) kör": "Fransızca"
+    },
+    {
+      "word": "restoran",
+      "gold": "Fransızca",
+      "gold_name": "Fransızca",
+      "split": "dev",
+      "off:(a) etiket": "Farsça",
+      "off:(b) arama": "Fransızca",
+      "off:(b) zincir": "Fransızca",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Farsça"
+    },
+    {
+      "word": "reçete",
+      "gold": "İtalyanca",
+      "gold_name": "İtalyanca",
+      "split": "dev",
+      "off:(a) etiket": "Fransızca",
+      "off:(b) arama": "İtalyanca",
+      "off:(b) zincir": "İtalyanca",
+      "off:(b) dedektör": "İtalyanca",
+      "off:(c) kör": "Fransızca"
+    },
+    {
+      "word": "sahte",
+      "gold": "Farsça",
+      "gold_name": "Farsça",
+      "split": "dev",
+      "off:(a) etiket": "diğer",
+      "off:(b) arama": "Farsça",
+      "off:(b) zincir": "Farsça",
+      "off:(b) dedektör": "Farsça",
+      "off:(c) kör": "—"
+    },
+    {
+      "word": "sakat",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "diğer",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "diğer"
+    },
+    {
+      "word": "sayfiye",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "spazm",
+      "gold": "Fransızca",
+      "gold_name": "Fransızca",
+      "split": "dev",
+      "off:(a) etiket": "Fransızca",
+      "off:(b) arama": "Fransızca",
+      "off:(b) zincir": "Fransızca",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Fransızca"
+    },
+    {
+      "word": "sıhhiye",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "tebessüm",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "tekrar",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Farsça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Farsça"
+    },
+    {
+      "word": "terk",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "tren",
+      "gold": "Fransızca",
+      "gold_name": "Fransızca",
+      "split": "dev",
+      "off:(a) etiket": "Fransızca",
+      "off:(b) arama": "Fransızca",
+      "off:(b) zincir": "Fransızca",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Fransızca"
+    },
+    {
+      "word": "tulumba",
+      "gold": "İtalyanca",
+      "gold_name": "İtalyanca",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "—",
+      "off:(b) zincir": "—",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "tüyo",
+      "gold": "Fransızca",
+      "gold_name": "Fransızca",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Fransızca",
+      "off:(b) zincir": "Fransızca",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "—"
+    },
+    {
+      "word": "vahşi",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "velinimet",
+      "gold": "Arapça",
+      "gold_name": "Arapça",
+      "split": "dev",
+      "off:(a) etiket": "Arapça",
+      "off:(b) arama": "Arapça",
+      "off:(b) zincir": "Arapça",
+      "off:(b) dedektör": "Arapça",
+      "off:(c) kör": "Arapça"
+    },
+    {
+      "word": "üniversite",
+      "gold": "Fransızca",
+      "gold_name": "Fransızca",
+      "split": "dev",
+      "off:(a) etiket": "Fransızca",
+      "off:(b) arama": "Fransızca",
+      "off:(b) zincir": "Fransızca",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Fransızca"
+    },
+    {
+      "word": "şahane",
+      "gold": "Farsça",
+      "gold_name": "Farsça",
+      "split": "dev",
+      "off:(a) etiket": "Farsça",
+      "off:(b) arama": "Farsça",
+      "off:(b) zincir": "Farsça",
+      "off:(b) dedektör": "Farsça",
+      "off:(c) kör": "Farsça"
+    },
+    {
+      "word": "şayan",
+      "gold": "Farsça",
+      "gold_name": "Farsça",
+      "split": "dev",
+      "off:(a) etiket": "Farsça",
+      "off:(b) arama": "Farsça",
+      "off:(b) zincir": "Farsça",
+      "off:(b) dedektör": "Farsça",
+      "off:(c) kör": "Farsça"
+    }
+  ]
+}

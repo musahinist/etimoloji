@@ -118,6 +118,59 @@ class TestAttributeDonor(unittest.TestCase):
         self.assertIsNone(self._run([], [], {}))
 
 
+class TestArabicViaPersian(unittest.TestCase):
+    """9d: Farsça kazanan aday Farsçadaki Arapça alıntıysa etiket Arapça.
+
+    Ölçüldü (ön kayıt ``data/cache/work/donor9d/PREREG.md``): Türkçe DEV
+    etiket doğruluğu 0,484 -> 0,641 (D1, McNemar 10/0, Holm p=0,004).
+    """
+
+    def setUp(self):
+        dp.reset_cache()
+        if dp._pairwise() is None:
+            self.skipTest("LingPy kurulu değil")
+
+    def tearDown(self):
+        dp.reset_cache()
+
+    def _run(self, rows, comparison, rule="d1", loans=frozenset()):
+        with mock.patch.object(dp, "_index", lambda: _FakeIndex(rows)), \
+                mock.patch.object(dp, "_monget_entries", lambda: ()), \
+                mock.patch.object(dp, "ARABIC_VIA_RULE", rule), \
+                mock.patch.object(dp, "persian_arabic_loans", lambda: loans), \
+                mock.patch.object(dp, "_null_distance", lambda length, pool: 0.5):
+            return dp.attribute_donor(comparison, "invitation", languages=["ar", "fa", "fr"])
+
+    def test_same_script_skeleton_relabels_to_arabic(self):
+        rows = [_row("ar", "دعوة", "dava"), _row("fa", "دعوت", "davat")]
+        off = self._run(rows, "davet", rule="off")
+        self.assertEqual(off.lang_code, "fa")
+        on = self._run(rows, "davet")
+        self.assertEqual((on.lang_code, on.via, on.word), ("ar", "fa", "دعوة"))
+        self.assertIn("Farsça aracılığıyla", on.describe())
+        self.assertEqual(on.as_dict()["donor_via"], "fa")
+        self.assertNotIn("ar", [alt[0] for alt in on.alternatives])
+
+    def test_etymology_mark_relabels_without_skeleton_match(self):
+        rows = [_row("ar", "كلمة", "kalima"), _row("fa", "دعوت", "davat", gloss="invitation")]
+        on = self._run(rows, "davet", loans=frozenset({("دعوت", "invitation")}))
+        self.assertEqual((on.lang_code, on.via), ("ar", "fa"))
+
+    def test_native_persian_stays_persian(self):
+        rows = [_row("ar", "رخيص", "rahis"), _row("fa", "ارزان", "arzan")]
+        self.assertEqual(self._run(rows, "arzan").lang_code, "fa")
+
+    def test_d1_leaves_non_persian_winner(self):
+        rows = [_row("ar", "دعوة", "dava"), _row("fr", "davet", "davet")]
+        chosen = self._run(rows, "davet")
+        self.assertEqual((chosen.lang_code, chosen.via), ("fr", ""))
+
+    def test_skeletons(self):
+        self.assertEqual(dp.script_skeleton("عَظَمَة"), dp.script_skeleton("عظمت"))
+        self.assertIn(dp.consonant_skeleton("gadab"), dp._query_skeletons("gazap"))
+        self.assertIn(dp.consonant_skeleton("dava"), dp._query_skeletons("davet"))
+
+
 class TestSignalStrengthIsUntouched(unittest.TestCase):
     """⚠️ Etiket güce girerse WOLD "alıntı mı?" F'si değişir."""
 

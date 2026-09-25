@@ -826,7 +826,22 @@ PERSIAN = "fa"
 #: kazanan aday Arapçadan alıntı işaretli ya da Arapça havuzda aynı yazı
 #: iskeletli karşılığı var), ``d2`` (sorgunun ünsüz iskeleti bir Arapça
 #: adayınkiyle aynı), ``d3`` (ikisi). Yalnız ETİKET; alıntı gücü değişmez.
-ARABIC_VIA_RULE = "off"
+#:
+#: ÖLÇÜLDÜ, ön kayıtlı (``data/cache/work/donor9d/PREREG.md``), KABUL: Türkçe
+#: altın etiket doğruluğu (A2 kapalı; çoğunluk tabanı 0,505)::
+#:
+#:              TRAIN n=229   DEV n=64 (bir kez)   McNemar DEV   Holm p
+#:     off      0,410         0,484                —             —
+#:     D1       0,541         0,641                10 / 0        0,004
+#:     D2       0,515         0,609                 8 / 0        0,008
+#:     D3       0,555         0,656                11 / 0        0,003
+#:
+#: xturkic verici tanıma (kör önbellek, etiket yeniden oynatıldı): tune
+#: 0,550 -> 0,746 (D1); bilgi R1 0,560 -> 0,707, R2 0,548 -> 0,695. Bedel:
+#: altını "Farsça" olan, Farsça üzerinden gelmiş Arapça sözcükler (tune fa->ar
+#: 29 -> 54). Saha ``make eval-donor`` 0,714 (ar/fa havuzda yok, değişmez).
+#: D1 önceden seçilmişti (D3'ün TRAIN farkı +3/229, fa->ar hatası artıyor).
+ARABIC_VIA_RULE = "d1"
 
 _HARAKAT = re.compile("[\u064b-\u065f\u0670\u0640\u200c\u200d]")
 _SCRIPT_MAP = str.maketrans({"ة": "ت", "ى": "ي", "ی": "ي", "ک": "ك", "أ": "ا", "إ": "ا", "آ": "ا",
