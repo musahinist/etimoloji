@@ -27,6 +27,9 @@ Dört bağımsız sinyal kullanılır; hiçbiri tek başına karar vermez:
                               fonetik olarak neredeyse aynı (sabor)
 ``fonotaktik_model``          eğitilmiş dizilim modeli kelimeyi alıntı
                               sınıfında daha olası buluyor (PyBor)
+``ters_uyum``                 (yalnız tr) ek, kökün son ünlüsüne uymuyor
+                              (Zemberek InverseHarmony/ImplicitPlural)
+``söz_sonu_ünsüz_kümesi``     (yalnız tr) söz sonunda iki ünsüz
 ============================  =============================================
 """
 
@@ -37,7 +40,7 @@ from collections import Counter
 from dataclasses import dataclass, field
 from typing import Any
 
-from engine.config import SEARCH_DONOR_PROXIMITY
+from engine.config import BORROWING_TR_SOUND_SIGNALS, SEARCH_DONOR_PROXIMITY
 from engine.logging_setup import get_logger
 from engine.nlp.donor_proximity import attribute_donor, nearest_donor, proximity_strength
 from engine.nlp.proto_phonology import PROHIBITED_INITIALS
@@ -113,6 +116,9 @@ SIGNAL_WEIGHTS: dict[str, float] = {
     "fonotaktik_model": 0.0,
     "ses_kanunu_ihlali": 0.0,
     "değişimsiz_yayılım": 0.0,
+    # Yalnız eğitilmiş birleştiriciye girer (bkz. _inverse_harmony_signal).
+    "ters_uyum": 0.0,
+    "söz_sonu_ünsüz_kümesi": 0.0,
 }
 
 #: Proto-Türkçe'de söz başında bulunmayan ama bu dilde DÜZENLİ miras
@@ -951,6 +957,74 @@ class BorrowingDetector:
             explanation += f"; verici etiketi: {attribution.describe()}"
         return Signal("verici_yakınlığı", True, strength, explanation, evidence)
 
+    @staticmethod
+    def _inverse_harmony_signal(word: str, lang: str) -> Signal:
+        """Ek alma davranışı ünlü uyumuna aykırı mı? (yalnız Türkçe)
+
+        Zemberek sözlüğünün (``data/zemberek``, TDK tabanlı) ``InverseHarmony``
+        (``saat → saati``, ``kalp → kalbi``) ve ``ImplicitPlural`` (``ulema``,
+        ``hayvanat``) işaretleri. Başka dilde ateşlenmez: sözlük Türkçedir.
+
+        ⚠️ Döngüsellik: Türkçe altın (TDK + Nişanyan) ile aynı sözlükçü
+        geleneğinden gelir. İşaret köken beyanı DEĞİL, ek alma davranışıdır
+        (sözlükteki ``saat, -ti`` gösteriminden), yani ses/biçim özelliğidir;
+        yine de sözlükçünün bunu yalnız alıntılarda kaydetmesi etiketle
+        örtüşmedir. AYAR yarısında ölçüldü (n=350: 211 alıntı / 139 miras)::
+
+            Zemberek sözlüğünde bulunan   209/211 alıntı · 106/139 miras
+            InverseHarmony işaretli         5/211 alıntı ·   0/139 miras
+            ImplicitPlural işaretli         0/211        ·   0/139
+
+        Kapsam %2,4 (imsak, kemal, mahsul, megapol, metal); sızıntı olsa da
+        en çok 5 maddeyi etkileyebilir.
+
+        ⚠️ OLUMSUZ SONUÇ — bayrak KAPALI (``ETY_BORROWING_TR_SOUND_SIGNALS``,
+        2026-09-25, ön kayıt ``data/cache/work/z1/PREREG.md``). Türkçe
+        birleştiricinin ayar parçasında (n=175) 10×5 kat ÇD, kat dışı F::
+
+            taban 0,8835 · +ters_uyum −0,0009 · +küme +0,0021 · ikisi +0,0030
+
+        Seçim eşiği (+0,005) aşılmadı. Rapor yarısı (n=349) bir kez, bilgi
+        için (ikisi birden): F 0,8873 → 0,8835, fark −0,0038
+        [−0,0132, +0,0055]; 4 karar değişti (avurt, deizm, istemli, tat).
+        Katsayılar +0,33 (ters_uyum) ve +0,85 (küme): ateşlendiği maddeler
+        zaten fonotaktik_ihlal/fonotaktik_model/verici_yakınlığı ile alıntı
+        sayılıyor; kapsam dar (ayar parçasında 3 ve 11 ateşleme), eşik
+        kayması miras kaybı getiriyor (``avurt`` -rt miras). Üretim
+        birleştiricisi (WOLD/Saha) sinyali hiç görmez → arama yolu ve WOLD F
+        bayraktan bağımsız aynı.
+        """
+        if lang != "tr" or not BORROWING_TR_SOUND_SIGNALS:
+            return Signal("ters_uyum", False, 0.0, "yalnız Türkçe", {"no_data": True})
+        from engine.nlp.root_variants import borrowing_marks
+
+        marks = borrowing_marks(word)
+        if not marks:
+            return Signal("ters_uyum", False, 0.0, "ek alma davranışı uyumlu (veya sözlükte yok)")
+        explanation = []
+        if "InverseHarmony" in marks:
+            explanation.append("ek ünlü uyumuna aykırı alınıyor (saat → saati tipi)")
+        if "ImplicitPlural" in marks:
+            explanation.append("biçim kendiliğinden çoğul (Arapça kırık çoğul tipi)")
+        return Signal("ters_uyum", True, 1.0, "; ".join(explanation), {"marks": sorted(marks)})
+
+    @staticmethod
+    def _final_cluster_signal(word: str, lang: str) -> Signal:
+        """Söz sonunda iki ünsüz var mı? (yalnız Türkçe)
+
+        AYAR yarısında (n=350) 18/211 alıntı, 0/139 miras (bant, kontrast,
+        şart, terk, felç...). Miras sözde de olur (``kurt``, ``üst``, ``kırk``);
+        karar birleştiricidedir.
+        """
+        if lang != "tr" or not BORROWING_TR_SOUND_SIGNALS:
+            return Signal("söz_sonu_ünsüz_kümesi", False, 0.0, "yalnız Türkçe", {"no_data": True})
+        form = to_comparison_form(word)
+        if " " in (word or "") or len(form) < 2 or form[-1] in VOWELS or form[-2] in VOWELS:
+            return Signal("söz_sonu_ünsüz_kümesi", False, 0.0, "söz sonunda ünsüz kümesi yok")
+        return Signal(
+            "söz_sonu_ünsüz_kümesi", True, 1.0, f"söz sonunda ünsüz kümesi (-{form[-2:]})"
+        )
+
     def detect(
         self,
         word: str,
@@ -1001,6 +1075,8 @@ class BorrowingDetector:
             uniformity,
             donor_proximity,
             phonotactic_model,
+            self._inverse_harmony_signal(word, lang),
+            self._final_cluster_signal(word, lang),
         ]
         score = sum(
             SIGNAL_WEIGHTS[signal.name] * signal.strength for signal in signals if signal.fired

@@ -181,3 +181,22 @@ class TestProductionPassesSense(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestTurkishSoundSignals(unittest.TestCase):
+    """``ters_uyum`` ve ``söz_sonu_ünsüz_kümesi`` yalnız Türkçede, bayrakla."""
+
+    def test_final_cluster_fires_only_for_turkish_when_enabled(self):
+        with mock.patch.object(bd, "BORROWING_TR_SOUND_SIGNALS", True):
+            self.assertTrue(bd.BorrowingDetector._final_cluster_signal("kontrast", "tr").fired)
+            self.assertFalse(bd.BorrowingDetector._final_cluster_signal("kontrast", "sah").fired)
+            self.assertFalse(bd.BorrowingDetector._final_cluster_signal("kapı", "tr").fired)
+        with mock.patch.object(bd, "BORROWING_TR_SOUND_SIGNALS", False):
+            self.assertFalse(bd.BorrowingDetector._final_cluster_signal("kontrast", "tr").fired)
+
+    def test_inverse_harmony_reads_marks_only_for_turkish(self):
+        with mock.patch.object(bd, "BORROWING_TR_SOUND_SIGNALS", True), mock.patch(
+            "engine.nlp.root_variants.borrowing_marks", lambda w: frozenset({"InverseHarmony"})
+        ):
+            self.assertTrue(bd.BorrowingDetector._inverse_harmony_signal("saat", "tr").fired)
+            self.assertFalse(bd.BorrowingDetector._inverse_harmony_signal("saat", "sah").fired)

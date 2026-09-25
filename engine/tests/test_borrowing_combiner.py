@@ -223,6 +223,21 @@ class TestPersistence(unittest.TestCase):
         self.assertIsNone(load(self.path))
 
 
+    def test_old_model_without_appended_signals_still_loads(self):
+        """Sona eklenen sinyal eski modeli bozmaz: katsayısı 0 sayılır."""
+        model = fit(_samples(), trained_on="t")
+        save(model, self.path)
+        data = json.loads(self.path.read_text(encoding="utf-8"))
+        data["signal_order"] = list(SIGNAL_ORDER[:-1])
+        data["weights"].pop(SIGNAL_ORDER[-1], None)
+        self.path.write_text(json.dumps(data), encoding="utf-8")
+        loaded = load(self.path)
+        self.assertIsNotNone(loaded)
+        self.assertAlmostEqual(
+            loaded.probability({SIGNAL_ORDER[-1]: 1.0}), loaded.probability({})
+        )
+
+
 class TestDetectorIntegration(unittest.TestCase):
     def test_untrained_detector_declares_itself(self):
         """Kalibre edilmemiş bir skoru kalibreymiş gibi sunmak, hiç kalibre

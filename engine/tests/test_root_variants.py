@@ -70,3 +70,11 @@ def test_real_lexicon_both_directions():
     assert rv.root_candidates("kitab") == ["kitap"]
     # Şimdiki zaman düşmesi ters yönde kullanılmaz (`ad` -> `ada-` olmaz).
     assert rv.root_candidates("ad") == []
+
+
+@pytest.mark.skipif(not (rv.LEXICON_DIR / "master-dictionary.dict").is_file(),
+                    reason="Zemberek sözlüğü indirilmemiş")
+def test_borrowing_marks_read_inverse_harmony_and_implicit_plural():
+    assert "InverseHarmony" in rv.borrowing_marks("saat")
+    assert "ImplicitPlural" in rv.borrowing_marks("hâdisat")
+    assert rv.borrowing_marks("burun") == frozenset()

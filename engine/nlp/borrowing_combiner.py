@@ -96,6 +96,8 @@ SIGNAL_ORDER: tuple[str, ...] = (
     "ses_kanunu_ihlali",
     "fonotaktik_ihlal",
     "değişimsiz_yayılım",
+    "ters_uyum",
+    "söz_sonu_ünsüz_kümesi",
 )
 
 #: L2 düzenlileştirme. n≈770'te beş katsayı için küçük bir değer yeter;
@@ -504,7 +506,10 @@ def load(path: Path | None = None) -> BorrowingCombiner | None:
     except (json.JSONDecodeError, OSError):
         logger.warning("alıntı birleştirici modeli okunamadı: %s", source)
         return None
-    if tuple(data.get("signal_order") or ()) != SIGNAL_ORDER:
+    stored = tuple(data.get("signal_order") or ())
+    # Sona eklenen sinyal eski modeli bozmaz: katsayılar ada göre okunur,
+    # eksik olanın katsayısı 0 (model o sinyali hiç görmedi).
+    if stored != SIGNAL_ORDER[: len(stored)] or not stored:
         logger.warning(
             "alıntı birleştirici modeli ESKİ sinyal sırasıyla eğitilmiş; kullanılmıyor"
         )

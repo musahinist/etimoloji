@@ -25,7 +25,8 @@ Kök sözlükte yoksa yalnız GÜVENLİ genel kural uygulanır: çok heceli ve
 sözlüksüz TAHMİN EDİLMEZ (``kavun → kavn`` yanlış olurdu).
 
 ``InverseHarmony`` (ters ünlü uyumu) yüzey kökü değiştirmez ve alıntı
-sinyalidir; burada KULLANILMAZ (ayrı iş, döngüsellik denetimi gerekir).
+sinyalidir; yüzey varyantlarında KULLANILMAZ, yalnız :func:`borrowing_marks`
+ile alıntı dedektörüne verilir (``ters_uyum`` sinyali).
 
 ⚠️ Döngüsellik: Zemberek sözlüğü TDK tabanlıdır; burada yalnız ses
 öznitelikleri kullanılır, köken bilgisi değil.
@@ -235,3 +236,44 @@ def root_candidates(surface: str) -> list[str]:
     if _vowel_count(form) > 1 and form[-1] in _DEVOICE:
         return [form[:-1] + _DEVOICE[form[-1]]]
     return []
+
+
+#: Ek alma davranışından okunan alıntı işaretleri (bkz. ``borrowing_marks``).
+BORROWING_MARKS = frozenset({"InverseHarmony", "ImplicitPlural"})
+
+
+@lru_cache(maxsize=1)
+def _borrowing_marks() -> dict[str, frozenset[str]]:
+    """Karşılaştırma biçimi (fiilde mastarsız gövde) -> işaretler."""
+    out: dict[str, set[str]] = {}
+    for name in DICT_FILES:
+        path = LEXICON_DIR / name
+        if not path.is_file():
+            continue
+        for line in path.read_text(encoding="utf-8").splitlines():
+            parsed = _parse_line(line)
+            if not parsed or " " in parsed[0]:
+                continue
+            word, pos, attributes = parsed
+            marks = attributes & BORROWING_MARKS
+            if not marks:
+                continue
+            key = to_comparison_form(word)
+            if pos == "Verb" and key.endswith(("mak", "mek")):
+                key = key[:-3]
+            if key:
+                out.setdefault(key, set()).update(marks)
+    return {k: frozenset(v) for k, v in out.items()}
+
+
+def borrowing_marks(word: str) -> frozenset[str]:
+    """Kelimenin ``InverseHarmony`` / ``ImplicitPlural`` işaretleri (yoksa boş).
+
+    ``InverseHarmony``: ek, kökün son ünlüsüne değil ince/kalın karşıtına
+    uyar (``saat → saati``, ``kalp → kalbi``, ``alkol → alkolü``).
+    ``ImplicitPlural``: madde zaten çoğuldur (Arapça kırık çoğul: ``ulema``,
+    ``hayvanat``). İkisi de ek alma DAVRANIŞIDIR, köken beyanı değildir —
+    ama sözlükçü onları alıntılarda gözlemiştir; döngüsellik ölçümü
+    ``borrowing_detector._inverse_harmony_signal`` notunda.
+    """
+    return _borrowing_marks().get(to_comparison_form(word), frozenset())

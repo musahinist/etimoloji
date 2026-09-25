@@ -111,6 +111,12 @@ LIVE_ISAM = _env_bool("LIVE_ISAM", False)
 # birleştiriciye geçince de (Türkçe altın dev, data/cache/work/ranker) kapalı
 # 129/135, açık 119/135 (McNemar p=0,031). Ölçüm hattını etkilemez.
 SEARCH_DONOR_PROXIMITY = _env_bool("SEARCH_DONOR_PROXIMITY", False)
+# Türkçeye özgü iki ses sinyali (alıntı dedektörü): Zemberek InverseHarmony/
+# ImplicitPlural işareti (``ters_uyum``) ve söz sonu iki ünsüz
+# (``söz_sonu_ünsüz_kümesi``). Yalnız lang == "tr"de ateşlenir. Bkz.
+# borrowing_detector._inverse_harmony_signal. KAPALI: Türkçe altın rapor
+# yarısında F farkı -0,0038 [-0,0132, +0,0055] (Z1, data/cache/work/z1).
+BORROWING_TR_SOUND_SIGNALS = _env_bool("BORROWING_TR_SOUND_SIGNALS", False)
 # Archive.org tam metin araması. Varsayılan KAPALI: ölçümlerde tanık üretmedi.
 LIVE_ARCHIVE_ORG = _env_bool("LIVE_ARCHIVE_ORG", False)
 CACHE_TTL_SECONDS = _env_int("CACHE_TTL_SECONDS", 7 * 24 * 3600)
