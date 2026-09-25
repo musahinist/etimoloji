@@ -93,6 +93,24 @@ class TestAttestedLoanBlocksReconstruction(unittest.TestCase):
         self.assertFalse(_index_attests_loan("gül"))
         self.assertTrue(_index_attests_loan("duvar"))
 
+    @needs_index
+    def test_native_material_rows_do_not_block(self):
+        """9c: Türkçe malzemeli türetme ve Türk dili verici engellemez."""
+        from engine.nlp.borrowing_detector import _index_attests_loan
+
+        for word in ("örgüt", "kurmay", "bakşı"):
+            with self.subTest(word=word):
+                self.assertFalse(_index_attests_loan(word), word)
+
+    def test_native_material_loan_row(self):
+        from engine.nlp.borrowing_detector import _native_material_loan_row
+
+        self.assertTrue(_native_material_loan_row({"donor_lang": "oui", "etymology": ""}))
+        self.assertTrue(_native_material_loan_row(
+            {"donor_lang": "fr", "etymology": "Calque of French sous-marin"}))
+        self.assertFalse(_native_material_loan_row(
+            {"donor_lang": "ar", "etymology": "Borrowed from Arabic"}))
+
     def test_cldf_forms_do_not_collide_with_turkish_headwords(self):
         """Tam eşleşme şartı — normalleştirme çarpışması regresyonu.
 

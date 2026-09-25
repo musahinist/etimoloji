@@ -313,6 +313,7 @@ def _index_attests_loan(word: str) -> bool:
         # Mastar kanıtı, ek satırları ve tekrarlı alıntı satırları:
         # bkz. `_lexical_origin_rows`.
         loans, inherited, _ = _lexical_origin_rows(index, key, "tr", exact=True)
+        loans = [r for r in loans if not _native_material_loan_row(r)]
         if not loans:
             return False
 
@@ -322,6 +323,34 @@ def _index_attests_loan(word: str) -> bool:
     except Exception:
         logger.debug("Alıntı tanıklığı okunamadı: %s", key, exc_info=True)
         return False
+
+#: Engelleme kararında ALINTI TANIKLIĞI sayılmayan köken metinleri: Türkçe
+#: malzemeyle türetme, verici yalnız modeldir (9c, data/cache/work/block/PREREG.md).
+_NATIVE_MATERIAL_ETYMOLOGY = re.compile(
+    r"calque of|coined by|by surface analysis|semantic loan|phono-semantic", re.IGNORECASE
+)
+
+#: Engelleme kararında verici sayılmayan Türk dilleri (soy kodları ayrıca
+#: ``TURKIC_LINEAGE_CODES``): Türk dilinden "alıntı" miras malzemesidir.
+_TURKIC_DONOR_CODES = frozenset({"oui", "xqa", "chg", "ota", "otk"})
+
+
+def _native_material_loan_row(row: dict[str, Any]) -> bool:
+    """Alıntı satırı miras rekonstrüksiyonunu engellememeli mi? (9c)
+
+    Yalnız :func:`_index_attests_loan` kullanır; zincir sinyali, el skoru ve
+    birleştirici DEĞİŞMEZ. Ölçüldü (TRAIN+DEV, PREREG.md): engellenen 12 miras
+    maddenin 7'si bu iki sınıftaydı — Türkçe malzemeli türetme (`aday`,
+    `örgüt`, `kurmay`, `kumul`, `denizaltı`: "Coined by TDK", "Calque of
+    French …") ve Türk dili verici (`bakşı`, `diremek`: Eski Uygurca).
+    """
+    from engine.fetchers.base import TURKIC_LANGUAGES_MAP
+
+    donor = str(row.get("donor_lang") or "")
+    if donor in _TURKIC_DONOR_CODES or donor in TURKIC_LANGUAGES_MAP:
+        return True
+    return bool(_NATIVE_MATERIAL_ETYMOLOGY.search(str(row.get("etymology") or "")))
+
 
 #: Bu benzerlik oranının üstündeki yayılım şüphelidir. Miras kelimeler
 #: bin yılda düzenli ses farkları biriktirir; birikmemişse yayılım yenidir.
