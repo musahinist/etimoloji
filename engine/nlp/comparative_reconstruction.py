@@ -22,6 +22,7 @@ Artık ata biçim gerçekten akraba biçimlerden türetilir ve güven skoru kan�
 """
 from __future__ import annotations
 
+import os
 from typing import Any
 
 from engine.fetchers.base import TURKIC_LANGUAGES_MAP
@@ -75,6 +76,23 @@ LANGUAGE_BRANCHES: dict[str, str] = {
 #: indeksinde yoksa karşılaştırmalı kök üretilmez; bkz. ``reconstruct``.
 UNATTESTED_BAN = True
 
+#: Sinir üretir, sütun modeli seçer (B2, ``neural_reconstruction``). Önceden
+#: eğitilmiş ``data/models/proto_neural_selector.pt`` (``make neural-selector``)
+#: yüklenir; dosya ya da torch yoksa sütun modelinin kökü aynen kalır. Yalnız
+#: ``method == "comparative"`` sonuçlarına uygulanır: alıntı engeli, tanıksız
+#: kök yasağı ve geri-dönüşler DEĞİŞMEZ.
+#:
+#: Ölçüldü (ön kayıt 3, 3 yeni tohum, 5 kat, n=320): ÇD sistemi NED 0,3126
+#: vs 0,3282, fark −0,016 GA[−0,030, −0,002], p=0,026 -> ön kayıt KABUL.
+#: ⚠️ Ama ÇD sistemi seçimi HER maddeye uyguluyordu; kazancın çoğu sütun
+#: modelinin çekimser kaldığı 4 madde (−0,51) ve ``anchor_fallback`` 39
+#: madde (−0,018) üzerinden. Üretim kuralıyla (yalnız ``comparative``, 277
+#: madde) aynı veriden: fark −0,007 GA[−0,018, +0,004], p=0,23 — anlamlı
+#: DEĞİL. Dev (n=83, yayın modeli): NED 0,3087 -> 0,3032, tam 0,398 -> 0,373,
+#: BCFS 0,597 -> 0,583; medyan gecikme +26 ms. Bu yüzden varsayılan KAPALI;
+#: ``ETIM_NEURAL_SELECTION=1`` açar.
+NEURAL_SELECTION = os.environ.get("ETIM_NEURAL_SELECTION", "0") == "1"
+
 #: Sözlüklerin fiil köklerini tuttuğu **alıntı biçimi** ekleri
 #: (karşılaştırma biçiminde). Tanıklık denetimi yalnız çıplak biçmi
 #: arıyordu; oysa sözlükler fiili mastarla verir: ``ırgıt`` indekste yok,
@@ -109,6 +127,70 @@ class ComparativeReconstructor:
         return self._aligner
 
     def reconstruct(
+        self,
+        word: str,
+        turkic_entries: list[dict[str, Any]] | None = None,
+        *,
+        check_borrowing: bool = True,
+        sense: str = "",
+        borrowing_word: str = "",
+    ) -> dict[str, Any]:
+        """Sütun modeli rekonstrüksiyonu + (açıksa) sinir aday seçimi.
+
+        Ayrıntı: :meth:`_reconstruct_columns` ve :data:`NEURAL_SELECTION`.
+        """
+        result = self._reconstruct_columns(
+            word, turkic_entries, check_borrowing=check_borrowing, sense=sense, borrowing_word=borrowing_word
+        )
+        if NEURAL_SELECTION:
+            result = self._neural_select(result, word, turkic_entries)
+        return result
+
+    @staticmethod
+    def _neural_select(result: dict[str, Any], word: str, turkic_entries: list[dict[str, Any]] | None) -> dict[str, Any]:
+        """B2: sinir ışını-10 ∪ sütun kökü arasından öğrenilmiş sıralayıcıyla seçim."""
+        if result.get("method") != "comparative" or not result.get("is_reconstructible"):
+            return result
+        from engine.nlp import neural_reconstruction
+        from engine.nlp.proto_phonology import _pattern_table
+
+        column = column_model.active_model()
+        selector = neural_reconstruction.active_selector() if column is not None else None
+        if selector is None:
+            return result
+        entries = [e for e in (turkic_entries or []) if e.get("lang_code") in TURKIC_LANGUAGES_MAP]
+        anchor = to_comparison_form(word)
+        by_lang: dict[str, str] = {}
+        for e in entries:
+            form = to_comparison_form(e.get("word") or "")
+            if len(form) >= 2 and (e["lang_code"] not in by_lang or len(form) < len(by_lang[e["lang_code"]])):
+                by_lang[e["lang_code"]] = form
+        forms = dict(by_lang)
+        if anchor and anchor not in by_lang.values():
+            forms["__anchor__"] = anchor
+        original = str(result.get("reconstructed_root") or "")
+        try:
+            informative = column_model.informative_columns(forms)
+            chosen, candidates = selector.select(word, entries, informative, column, _pattern_table(), original)
+        except Exception:  # noqa: BLE001 — seçici hatası sütun kökünü bozmamalı
+            logger.warning("Sinir seçimi çöktü: %s", word, exc_info=True)
+            return result
+        result["neural_selection"] = {
+            "selected": chosen or original,
+            "column_model_root": original,
+            "candidates": [c.text for c in sorted(candidates, key=lambda c: c.rank)][:10],
+        }
+        if chosen and chosen != original:
+            result["reconstructed_root"] = chosen
+            alternatives = [f for f in result.get("alternative_forms") or [] if f != chosen]
+            result["alternative_forms"] = [original, *alternatives][:5]
+            result["reconstruction_notes"] = (
+                f"{result.get('reconstruction_notes', '')} Sinir aday seçimi: sütun modeli {original} "
+                f"yerine {chosen} seçildi."
+            ).strip()
+        return result
+
+    def _reconstruct_columns(
         self,
         word: str,
         turkic_entries: list[dict[str, Any]] | None = None,

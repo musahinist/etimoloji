@@ -73,16 +73,26 @@ NED 0,3100 vs 0,3282, fark −0,018 GA[−0,034, −0,003], tam +0,025
 GA[+0,003, +0,050], BCFS +0,012 (anlamlı değil) — ham p=0,020, Holm
 p=0,059 -> ön kayıtlı ölçüt sağlanmadı, RED. B1 (sütun log-olasılığı)
 −0,015 anlamlı değil; B3 (sıra füzyonu) +0,001. Işın kapsamı 5'te 0,481,
-10'da 0,553. Üretime bağlanmadı.
+10'da 0,553.
+
+Doğrulama (ön kayıt 3, yalnız B2, tohum 1–3, ``make eval-cv-neural-validate``):
+birleşik NED 0,3126 vs 0,3282, fark −0,0156 GA[−0,0299, −0,0018], p=0,026,
+BCFS hiçbir tohumda anlamlı kötü değil -> KABUL. Üretim kapsamında (seçim
+yalnız ``comparative`` sonuçlarına; 277/320) fark −0,007 GA[−0,018, +0,004]
+anlamlı değil -> motorda bayrakla bağlı, varsayılan KAPALI.
+``crossval.json`` → ``neural_validation``. Düz ``make eval-cv`` önceki
+``neural``/``neural_validation`` alanlarını korur.
 """
 
 from __future__ import annotations
 
+import json
 import os
 import random
 import zlib
 from collections import Counter
 from collections.abc import Sequence
+from pathlib import Path
 from typing import Any
 
 from engine.logging_setup import get_logger
@@ -215,14 +225,16 @@ def bootstrap_bcubed_difference(
     }
 
 
-def paired_bootstrap_p(a: Sequence[float], b: Sequence[float], iterations: int = 10000) -> float:
+def paired_bootstrap_p(
+    a: Sequence[float], b: Sequence[float], iterations: int = 10000, seed: int | None = None
+) -> float:
     """Eşleşmiş bootstrap ile iki yönlü p: ortalama(a − b) örneklerinin sıfırın öbür yanındaki payı."""
     from engine.evaluation.significance import SIGNIFICANCE_SEED
 
     diffs = [x - y for x, y in zip(a, b, strict=True)]
     if not diffs:
         return 1.0
-    rng = random.Random(SIGNIFICANCE_SEED)
+    rng = random.Random(SIGNIFICANCE_SEED if seed is None else seed)
     size = len(diffs)
     means = [sum(diffs[rng.randrange(size)] for _ in range(size)) / size for _ in range(iterations)]
     below = sum(m <= 0 for m in means) / iterations
@@ -277,6 +289,9 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
 
         neural_starling = neural.prepare_starling()
         systems += ("neural", "neural_rerank", "nsel_column", "nsel_ranker", "nsel_vote")
+    # Doğrulama koşusu tohumu (ön kayıt 3): sinir eğitimi ve iç kat bölmesi.
+    neural_seed = int(os.environ.get("CV_NEURAL_SEED", "0"))
+    rank_salt = "#rank" + (str(neural_seed) if neural_seed else "")
     neural_meta: dict[str, Any] = {"seconds_per_fold": [], "maxrss_mb": 0.0, "beam5": [], "beam10": []}
     starling_used: list[int] = []
     correct: dict[str, list[bool]] = {s: [] for s in systems}
@@ -295,65 +310,17 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
             ned[name] += result.item_ned
             pairs[name].append(result.pairs[0] if result.pairs else None)
 
-    def _neural_inputs(item: Any) -> tuple[str, list[Any]] | None:
-        """Harness'in motora verdiği ``(çapa, tanıklar)`` — çapa dili çıkarılmış."""
-        witnesses = harness._witnesses_for(item, mapping)
-        anchor, anchor_lang = harness._anchor_for(witnesses)
-        if not anchor:
-            return None
-        return anchor, [w for w in witnesses if w["lang_code"] != anchor_lang]
-
     def _neural_examples(train_items: list[Any], excluded_items: list[Any]) -> list[Any]:
-        excluded_tr = set().union(*(gold_sets[it.set_id].turkish for it in excluded_items)) | test_turkish
-        excluded_protos = {proto_norm(g) for it in excluded_items for g in it.gold_candidates}
-        examples = [e for e in (neural.gold_example(it, mapping) for it in train_items) if e]
-        return examples + neural.starling_allowed(neural_starling, excluded_tr, excluded_protos)
+        return neural.examples_for(train_items, excluded_items, mapping, gold_sets, neural_starling, test_turkish)
 
     def _ranker(fold: int, held_items: list[Any], train_items: list[Any]) -> tuple[dict[str, float], float]:
         """B2 sıralayıcı: YALNIZ TRAIN, 3 iç kat (ön kayıt 2)."""
-        import gc
-
-        from engine.evaluation.metrics import best_match
-
-        rows: list[tuple[dict[str, float], int]] = []
-        for g in range(3):
-            inner_held = [it for it in train_items if fold_of(it.concept + "#rank", 3) == g]
-            inner_train = [it for it in train_items if fold_of(it.concept + "#rank", 3) != g]
-            excluded = held_items + inner_held
-            inner_table = learn_table([
-                (it.gold_form, {mapping[lang]: f for lang, f in it.witnesses.items() if lang in mapping})
-                for it in inner_train
-            ])
-            allowed = column_model.starling_allowed(
-                starling_sets,
-                set().union(*(gold_sets[it.set_id].turkish for it in excluded)) | test_turkish,
-                {proto_norm(x) for it in excluded for x in it.gold_candidates},
-            )
-            inner_col, _ = column_model.train(
-                gold_sets, [it.set_id for it in inner_train], allowed, inner_table, fold_of=fold_of
-            )
-            inner_neural = neural.train(_neural_examples(inner_train, excluded), seed=100 + 3 * fold + g)
-            proto_phonology._PATTERN_TABLE = inner_table
-            proto_phonology._PATTERN_TABLE_LOADED = True
-            column_model.set_model(inner_col)
-            recon = harness.comparative_reconstructor()
-            for item in inner_held:
-                inputs = _neural_inputs(item)
-                if inputs is None:
-                    continue
-                word, entries = inputs
-                result = harness.run(recon, [item], mapping=mapping)
-                column_pred = result.pairs[0][0] if result.pairs else None
-                informative = gold_sets[item.set_id].informative
-                scored = inner_col.score_columns(informative, inner_table)[1] if informative else []
-                cands = neural.build_candidates(inner_neural, scored, informative, word, entries, column_pred)
-                for c in cands:
-                    feats = neural.candidate_features(c, len(informative), word, entries)
-                    rows.append((feats, int(best_match(c.text, item.gold_candidates)[1])))
-            del inner_neural
-            gc.collect()
-        weights, intercept = column_model.fit_logistic(rows)
-        logger.info("sıralayıcı kat %d: %d satır, ağırlıklar %s", fold, len(rows), weights)
+        weights, intercept, n_rows = neural.learn_ranker(
+            train_items, held_items, mapping=mapping, gold_sets=gold_sets, starling_sets=starling_sets,
+            neural_starling=neural_starling, test_turkish=test_turkish,
+            seed_base=100 + 3 * fold + 1000 * neural_seed, salt=rank_salt,
+        )
+        logger.info("sıralayıcı kat %d: %d satır, ağırlıklar %s", fold, n_rows, weights)
         return weights, intercept
 
     def _neural_fold(fold: int, held_items: list[Any], train_items: list[Any], col_model: Any, table: Any) -> None:
@@ -371,7 +338,7 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
         proto_phonology._PATTERN_TABLE_LOADED = True
         column_model.set_model(col_model)
         examples = _neural_examples(train_items, held_items)
-        model = neural.train(examples, seed=fold)
+        model = neural.train(examples, seed=fold + 1000 * neural_seed)
         for item, column_pair in zip(held_items, column_preds, strict=True):
             column_pred = column_pair[0] if column_pair else None
             informative = gold_sets[item.set_id].informative
@@ -421,6 +388,11 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
         neural_meta["maxrss_mb"] = round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1e6)
         logger.info("neural kat %d: %d örnek, %.0f sn", fold, len(examples), time.time() - start)
 
+    from engine.nlp import neural_reconstruction
+
+    # Yayın sinir seçicisi TRAIN'de eğitildi: sınanan katları görmüş olur;
+    # çapraz doğrulamada kapalı (sütun modeli sistemi saf kalır).
+    neural_reconstruction.set_selector(None)
     try:
         for fold in range(k):
             held = [it for it in items if fold_of(it.concept, k) == fold]
@@ -455,6 +427,7 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
         # Diskteki (train'de öğrenilmiş) tablo ve sütun modeli bir sonraki kullanımda yeniden yüklensin.
         proto_phonology.reset_pattern_cache()
         column_model.reset_model_cache()
+        neural_reconstruction.reset_selector_cache()
 
     n = len(correct["majority_character"])
     columns = {s: [item_columns(p) for p in pairs[s]] for s in systems}
@@ -501,6 +474,12 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
 
         neural_result = {
             **neural_meta,
+            "seed": neural_seed,
+            # Tohumlar arası birleşik doğrulama için madde başına kayıt (ön kayıt 3).
+            "items": {
+                c: {"ned": ned[c], "correct": correct[c], "pairs": pairs[c]}
+                for c in ("column_model", "nsel_ranker")
+            },
             "beam5": round(sum(neural_meta["beam5"]) / n, 4),
             "beam10": round(sum(neural_meta["beam10"]) / n, 4),
             # Ön kayıt 1: sinir tek başına / sinir yeniden sıralama (Holm, 2 aday).
@@ -527,11 +506,72 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
     }
 
 
+NEURAL_WORK = Path(__file__).resolve().parents[2] / "data" / "cache" / "work" / "neural"
+#: Ön kayıt 3 birleşik bootstrap tohumu.
+VALIDATION_SEED = 20260925
+
+
+def combine_neural_seeds(paths: Sequence[Path]) -> dict[str, Any]:
+    """Ön kayıt 3: B2 ``nsel_ranker`` tohumlar arası birleşik doğrulama.
+
+    Madde başına NED(B2) tohumların ortalaması alınır; sütun modeli
+    deterministiktir (tohumlar arasında aynı olduğu denetlenir). Birleşik
+    fark eşleşmiş bootstrap (``VALIDATION_SEED``); BCFS her tohumda ayrı.
+    """
+    from engine.evaluation.significance import bootstrap_metric_difference
+
+    runs = [json.loads(Path(p).read_text(encoding="utf-8"))["neural"] for p in paths]
+    column = runs[0]["items"]["column_model"]["ned"]
+    for r in runs[1:]:
+        if r["items"]["column_model"]["ned"] != column:
+            raise ValueError("sütun modeli tohumlar arasında farklı — birleşim geçersiz")
+    n = len(column)
+    ranker = [sum(r["items"]["nsel_ranker"]["ned"][i] for r in runs) / len(runs) for i in range(n)]
+    diff = bootstrap_metric_difference(ranker, column, lower_is_better=True, seed=VALIDATION_SEED)
+    p = paired_bootstrap_p(ranker, column, seed=VALIDATION_SEED)
+    per_seed = []
+    bcfs_ok = True
+    for r in runs:
+        items = r["items"]
+        ned_cmp = bootstrap_metric_difference(items["nsel_ranker"]["ned"], column, lower_is_better=True)
+        cols_a = [item_columns(tuple(x) if x else None) for x in items["nsel_ranker"]["pairs"]]
+        cols_b = [item_columns(tuple(x) if x else None) for x in items["column_model"]["pairs"]]
+        bcfs = bootstrap_bcubed_difference(cols_a, cols_b)
+        bcfs_ok &= bcfs["ci95"][1] >= 0
+        exact = (sum(items["nsel_ranker"]["correct"]) - sum(items["column_model"]["correct"])) / n
+        per_seed.append({"seed": r["seed"], "ned": ned_cmp, "bcfs": bcfs, "exact_diff": round(exact, 4)})
+    return {
+        "prereg": "data/cache/work/neural/PREREG.md, bölüm 3",
+        "seeds": [r["seed"] for r in runs],
+        "ned_column": round(sum(column) / n, 4),
+        "ned_ranker_mean": round(sum(ranker) / n, 4),
+        "pooled": {**diff, "p": p},
+        "per_seed": per_seed,
+        "accepted": bool(diff["ci95"][1] < 0 and p < 0.05 and bcfs_ok),
+    }
+
+
 def main() -> int:
-    import json
+    import sys
 
     from engine.evaluation.report import EVAL_DIR
 
+    if "--combine-neural" in sys.argv:
+        # Ön kayıt 3: ``crossval_seed{1,2,3}.json`` birleşimi resmi dosyaya yazılır.
+        seeds = [a for a in sys.argv[sys.argv.index("--combine-neural") + 1:] if a.isdigit()] or ["1", "2", "3"]
+        validation = combine_neural_seeds([NEURAL_WORK / f"crossval_seed{s}.json" for s in seeds])
+        target = EVAL_DIR / "crossval.json"
+        official = json.loads(target.read_text(encoding="utf-8")) if target.exists() else {}
+        official["neural_validation"] = validation
+        target.write_text(json.dumps(official, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+        pooled = validation["pooled"]
+        print(f"B2 nsel_ranker birleşik ({validation['seeds']}): NED {validation['ned_ranker_mean']} vs "
+              f"sütun {validation['ned_column']} · fark {pooled['difference']:+.4f} GA{pooled['ci95']} "
+              f"p={pooled['p']} -> {'KABUL' if validation['accepted'] else 'RED'}")
+        for r in validation["per_seed"]:
+            print(f"  tohum {r['seed']}: NED {r['ned']['difference']:+.4f} GA{r['ned']['ci95']} · tam "
+                  f"{r['exact_diff']:+.4f} · BCFS {r['bcfs']['difference']:+.4f} GA{r['bcfs']['ci95']}")
+        return 0
     payload = run()
     print(f"\n=== rekonstrüksiyon · {payload['k']} katlı çapraz doğrulama · train+dev n={payload['n']} ===")
     for name, row in payload["systems"].items():
@@ -553,6 +593,21 @@ def main() -> int:
                 print(f"  {key.upper()} {c}: NED {r['ned_diff']:+.4f} GA{r['ci95']} p={r['p']} Holm p={r['p_holm']} "
                       f"BCFS {r['bcfs_diff']:+.4f} GA{r['bcfs_ci95']} -> {'KABUL' if r['accepted'] else 'RED'}")
     out = EVAL_DIR / "crossval.json"
+    seed = os.environ.get("CV_NEURAL_SEED")
+    if payload.get("neural") and seed:
+        # Doğrulama tohumu: resmi dosyaya değil, birleştirme için ayrı dosyaya.
+        out = NEURAL_WORK / f"crossval_seed{seed}.json"
+        out.parent.mkdir(parents=True, exist_ok=True)
+    elif not payload.get("neural") and out.exists():
+        # Düz ``make eval-cv`` önceki ``eval-cv-neural`` sonucunu silmesin.
+        try:
+            previous = json.loads(out.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            previous = {}
+        for key in ("neural", "neural_validation"):
+            if previous.get(key):
+                payload[key] = previous[key]
+                payload.setdefault("neural_carried_over", []).append(key)
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     print(f"\nJSON: {out}")
     return 0

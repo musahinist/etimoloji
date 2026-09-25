@@ -425,5 +425,145 @@
     "criterion": "BCFS(motor) − BCFS(majority_character), eşleşmiş bootstrap %95 GA sıfırı dışlar, motor lehine",
     "system": "learned_table",
     "supported": true
+  },
+  "neural_validation": {
+    "prereg": "data/cache/work/neural/PREREG.md, bölüm 3",
+    "seeds": [
+      1,
+      2,
+      3
+    ],
+    "ned_column": 0.3282,
+    "ned_ranker_mean": 0.3126,
+    "pooled": {
+      "difference": -0.01561,
+      "ci95": [
+        -0.02988,
+        -0.00177
+      ],
+      "significant": true,
+      "a_is_better": true,
+      "n": 320,
+      "lower_is_better": true,
+      "p": 0.026
+    },
+    "per_seed": [
+      {
+        "seed": 1,
+        "ned": {
+          "difference": -0.01674,
+          "ci95": [
+            -0.03292,
+            -0.00162
+          ],
+          "significant": true,
+          "a_is_better": true,
+          "n": 320,
+          "lower_is_better": true
+        },
+        "bcfs": {
+          "difference": 0.00754,
+          "ci95": [
+            -0.00949,
+            0.02385
+          ],
+          "significant": false,
+          "a_is_better": false,
+          "n": 320
+        },
+        "exact_diff": 0.0187
+      },
+      {
+        "seed": 2,
+        "ned": {
+          "difference": -0.00568,
+          "ci95": [
+            -0.02293,
+            0.01111
+          ],
+          "significant": false,
+          "a_is_better": false,
+          "n": 320,
+          "lower_is_better": true
+        },
+        "bcfs": {
+          "difference": 0.00319,
+          "ci95": [
+            -0.01603,
+            0.02115
+          ],
+          "significant": false,
+          "a_is_better": false,
+          "n": 320
+        },
+        "exact_diff": 0.0094
+      },
+      {
+        "seed": 3,
+        "ned": {
+          "difference": -0.0244,
+          "ci95": [
+            -0.04161,
+            -0.00795
+          ],
+          "significant": true,
+          "a_is_better": true,
+          "n": 320,
+          "lower_is_better": true
+        },
+        "bcfs": {
+          "difference": 0.01723,
+          "ci95": [
+            0.00079,
+            0.03396
+          ],
+          "significant": true,
+          "a_is_better": true,
+          "n": 320
+        },
+        "exact_diff": 0.0312
+      }
+    ],
+    "accepted": true,
+    "production_scope": {
+      "note": "Üretim kuralı: seçim yalnız method=='comparative' sonuçlarına; öbür maddelerde sütun NED'i. Aynı 3 tohum, aynı bootstrap tohumu. Sonuç görüldükten sonra hesaplandı (ön kayıtlı değil).",
+      "methods": {
+        "comparative": 277,
+        "anchor_fallback": 39,
+        "none": 4
+      },
+      "ned_mean": 0.3213,
+      "ned_diff": -0.00694,
+      "ci95": [
+        -0.0184,
+        0.00441
+      ],
+      "p": 0.2268,
+      "mean_diff_by_method": {
+        "comparative": -0.008,
+        "anchor_fallback": -0.0184,
+        "none": -0.5139
+      },
+      "dev_release_model": {
+        "n": 83,
+        "ned": [
+          0.3087,
+          0.3032
+        ],
+        "exact": [
+          0.3976,
+          0.3735
+        ],
+        "bcfs": [
+          0.5974,
+          0.5825
+        ],
+        "latency_ms_median": [
+          52,
+          78
+        ]
+      },
+      "decision": "bağlandı, varsayılan KAPALI (ETIM_NEURAL_SELECTION=1 açar)"
+    }
   }
 }

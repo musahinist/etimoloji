@@ -1,5 +1,5 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-cv eval-cv-neural audit eval-llm eval-prediction eval-headline eval-donor eval-chronology starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify apertium wilkens semantic dialect bootstrap column-model
+        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-cv eval-cv-neural eval-cv-neural-validate audit eval-llm eval-prediction eval-headline eval-donor eval-chronology starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify apertium wilkens semantic dialect bootstrap column-model neural-selector
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -16,6 +16,7 @@ help:
 	@echo "eval-baseline  - Taban çizgisi: motor vs trivial sistemler (dev bölümü)"
 	@echo "patterns       - Ata ses örüntü tablosunu TRAIN'den öğren (denetimli katman)"
 	@echo "column-model   - Sütun modelini (ata ses / ∅) TRAIN + Starling'den öğren"
+	@echo "neural-selector - Sinir aday üreteci + B2 sıralayıcı (torch, ~55 dk CPU; TRAIN + Starling)"
 	@echo "eval           - Rekonstrüksiyon ölçümü (dev bölümü)"
 	@echo "eval-cognates  - Akraba tespiti B-Cubed F (LexStat-Infomap taban çizgisine karşı)"
 	@echo "regularity     - CoPaR: verinin ne kadarı düzenli denkliklerle açıklanıyor (üst sınır)"
@@ -107,6 +108,11 @@ eval-cv: gold
 eval-cv-neural: gold
 	CV_NEURAL=1 .venv/bin/python -m engine.evaluation.crossval
 
+# Ön kayıt 3: B2 sıralayıcı 3 yeni tohumla (her biri ~50 dk), sonra birleşim.
+eval-cv-neural-validate: gold
+	for s in 1 2 3; do CV_NEURAL=1 CV_NEURAL_SEED=$$s .venv/bin/python -m engine.evaluation.crossval || exit 1; done
+	.venv/bin/python -m engine.evaluation.crossval --combine-neural 1 2 3
+
 expert-review:
 	.venv/bin/python -m engine.evaluation.expert_review
 
@@ -190,6 +196,9 @@ patterns: gold
 # (`make starling`); dev/test Türkçe biçimleri ve dev kökleri eğitimden çıkar.
 column-model: gold patterns
 	.venv/bin/python -m engine.nlp.column_model --train
+
+neural-selector: gold
+	.venv/bin/python -m engine.nlp.neural_reconstruction --train
 
 correspondences: gold
 	.venv/bin/python -m engine.nlp.cognate_prediction

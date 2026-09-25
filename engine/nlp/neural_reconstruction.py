@@ -47,8 +47,14 @@ Sinir üretir, sütun modeli seçer (ön kayıt 2, ışın 10; kapsam 5'te 0,481
                     ham p=0,020, Holm (3 aday) p=0,059 -> ön kayıtlı ölçüt SAĞLANMADI, RED
     B3 nsel_vote    karşılıklı sıra füzyonu                    NED 0,3291  +0,001  RED
 
-B2 umut verici ama kabul edilmedi; doğrulama için tek adaylı YENİ ön kayıt
-gerekir. Kat başına ~600 sn (3 iç + 1 dış sinir eğitimi), tepe 2,8 GB.
+Doğrulama (ön kayıt 3, yalnız B2, 3 yeni tohum; ``make eval-cv-neural-validate``):
+birleşik NED 0,3126 vs 0,3282, fark −0,016 GA[−0,030, −0,002], p=0,026,
+BCFS hiçbir tohumda kötü değil -> KABUL. Ancak üretim kapsamında (seçim
+yalnız ``comparative`` sonuçlarına) fark −0,007 GA[−0,018, +0,004] anlamlı
+değil; bu yüzden motorda bayrakla bağlı, varsayılan KAPALI
+(``comparative_reconstruction.NEURAL_SELECTION``). Yayın modeli
+``make neural-selector`` (~55 dk CPU) -> ``data/models/proto_neural_selector.pt``
+(1,5 MB, fp16). Kat başına ~600 sn (3 iç + 1 dış sinir eğitimi), tepe 2,8 GB.
 
 Kat başına eğitim+çıkarım (yalnız dış sinir) ~150 sn (CPU, 4 iş parçacığı, 15 epok);
 eval-cv sürecinin tepe belleği 2,9 GB. Üretime BAĞLANMADI.
@@ -577,5 +583,229 @@ def select_ranker(cands: list[Candidate], weights: dict[str, float], intercept: 
     return max(cands, key=lambda c: (z(c), c.is_column)).text
 
 
+# --- sıralayıcı eğitimi (ön kayıt 2/3, B2) ------------------------------------
+def examples_for(
+    train_items: list[Any], excluded_items: list[Any], mapping: dict[str, str], gold_sets: dict[str, Any],
+    neural_starling: list[StarlingExample], test_turkish: set[str],
+) -> list[Example]:
+    """Eğitim örnekleri: altın TRAIN + sızıntı süzgecinden geçmiş Starling."""
+    from engine.nlp.column_model import norm as proto_norm
+
+    excluded_tr = set().union(*(gold_sets[it.set_id].turkish for it in excluded_items)) | test_turkish
+    excluded_protos = {proto_norm(g) for it in excluded_items for g in it.gold_candidates}
+    examples = [e for e in (gold_example(it, mapping) for it in train_items) if e]
+    return examples + starling_allowed(neural_starling, excluded_tr, excluded_protos)
+
+
+def learn_ranker(
+    train_items: list[Any],
+    excluded_items: list[Any],
+    *,
+    mapping: dict[str, str],
+    gold_sets: dict[str, Any],
+    starling_sets: list[Any],
+    neural_starling: list[StarlingExample],
+    test_turkish: set[str],
+    seed_base: int,
+    salt: str = "#rank",
+) -> tuple[dict[str, float], float, int]:
+    """B2 sıralayıcısı: ``train_items`` üzerinde 3 iç kat.
+
+    Her iç katta sinir modeli, sütun modeli ve örüntü tablosu iç TRAIN'de
+    eğitilir; iç sınanan maddelerde aday + özellik üretilir. ``excluded_items``
+    (dış sınanan kat / dev) ve iç sınanan maddeler Starling'den süzülür.
+    """
+    import gc
+
+    from engine.evaluation import harness
+    from engine.evaluation.crossval import fold_of, learn_table
+    from engine.evaluation.metrics import best_match
+    from engine.nlp import column_model, proto_phonology
+    from engine.nlp.column_model import norm as proto_norm
+
+    rows: list[tuple[dict[str, float], int]] = []
+    for g in range(3):
+        inner_held = [it for it in train_items if fold_of(it.concept + salt, 3) == g]
+        inner_train = [it for it in train_items if fold_of(it.concept + salt, 3) != g]
+        excluded = excluded_items + inner_held
+        inner_table = learn_table([
+            (it.gold_form, {mapping[lang]: f for lang, f in it.witnesses.items() if lang in mapping})
+            for it in inner_train
+        ])
+        allowed = column_model.starling_allowed(
+            starling_sets,
+            set().union(*(gold_sets[it.set_id].turkish for it in excluded)) | test_turkish,
+            {proto_norm(x) for it in excluded for x in it.gold_candidates},
+        )
+        inner_col, _ = column_model.train(
+            gold_sets, [it.set_id for it in inner_train], allowed, inner_table, fold_of=fold_of
+        )
+        inner_neural = train(
+            examples_for(inner_train, excluded, mapping, gold_sets, neural_starling, test_turkish),
+            seed=seed_base + g,
+        )
+        proto_phonology._PATTERN_TABLE = inner_table
+        proto_phonology._PATTERN_TABLE_LOADED = True
+        column_model.set_model(inner_col)
+        recon = harness.comparative_reconstructor()
+        for item in inner_held:
+            witnesses = harness._witnesses_for(item, mapping)
+            anchor, anchor_lang = harness._anchor_for(witnesses)
+            if not anchor:
+                continue
+            word, entries = anchor, [w for w in witnesses if w["lang_code"] != anchor_lang]
+            result = harness.run(recon, [item], mapping=mapping)
+            column_pred = result.pairs[0][0] if result.pairs else None
+            informative = gold_sets[item.set_id].informative
+            scored = inner_col.score_columns(informative, inner_table)[1] if informative else []
+            cands = build_candidates(inner_neural, scored, informative, word, entries, column_pred)
+            for c in cands:
+                feats = candidate_features(c, len(informative), word, entries)
+                rows.append((feats, int(best_match(c.text, item.gold_candidates)[1])))
+        del inner_neural
+        gc.collect()
+    weights, intercept = column_model.fit_logistic(rows)
+    return weights, intercept, len(rows)
+
+
+# --- yayın modeli ve motor kancası --------------------------------------------
+def _model_path() -> Any:
+    from engine.nlp.column_model import MODEL_PATH as COLUMN_MODEL_PATH
+
+    return COLUMN_MODEL_PATH.parent / "proto_neural_selector.pt"
+
+
+SELECTOR_SCHEMA = "turkic-etymology-neural-selector/v1"
+
+
+@dataclass
+class Selector:
+    """Yayın seçicisi: sinir üreteç + B2 lojistik sıralayıcı."""
+
+    model: NeuralReconstructor
+    weights: dict[str, float]
+    intercept: float
+    meta: dict[str, Any] = field(default_factory=dict)
+
+    def select(self, word: str, entries: list[dict[str, str]], informative: list[Any],
+               column_model_obj: Any, table: Any, column_prediction: str | None) -> tuple[str | None, list[Candidate]]:
+        scored = column_model_obj.score_columns(informative, table)[1] if informative else []
+        cands = build_candidates(self.model, scored, informative, word, entries, column_prediction)
+        return select_ranker(cands, self.weights, self.intercept, len(informative), word, entries), cands
+
+
+def save_selector(selector: Selector, path: Any = None) -> Any:
+    import torch
+
+    target = path or _model_path()
+    state = {k: v.half() if v.is_floating_point() else v for k, v in selector.model.net.state_dict().items()}
+    torch.save({
+        "_schema": SELECTOR_SCHEMA,
+        "itos": selector.model.vocab.itos,
+        "state": state,
+        "weights": selector.weights,
+        "intercept": selector.intercept,
+        "meta": selector.meta,
+    }, target)
+    return target
+
+
+def load_selector(path: Any = None) -> Selector | None:
+    """Diskteki seçiciyi yükler; torch yoksa veya dosya yoksa ``None``."""
+    source = path or _model_path()
+    if not source.exists():
+        return None
+    try:
+        import torch
+
+        torch.set_num_threads(THREADS)
+        data = torch.load(source, map_location="cpu", weights_only=True)
+        if data.get("_schema") != SELECTOR_SCHEMA:
+            raise ValueError(f"beklenmeyen şema: {data.get('_schema')}")
+        vocab = Vocab(list(data["itos"]))
+        net = _build_net(len(vocab.itos))
+        net.load_state_dict({k: v.float() if v.is_floating_point() else v for k, v in data["state"].items()})
+        return Selector(NeuralReconstructor(vocab, net), dict(data["weights"]), float(data["intercept"]), dict(data["meta"]))
+    except Exception:  # noqa: BLE001 — torch yok / bozuk dosya: sütun modeline düşülür
+        logger.warning("Sinir seçici yüklenemedi: %s", source, exc_info=True)
+        return None
+
+
+_SELECTOR: Selector | None = None
+_SELECTOR_LOADED = False
+
+
+def active_selector() -> Selector | None:
+    global _SELECTOR, _SELECTOR_LOADED
+    if not _SELECTOR_LOADED:
+        _SELECTOR = load_selector()
+        _SELECTOR_LOADED = True
+    return _SELECTOR
+
+
+def set_selector(selector: Selector | None) -> None:
+    """Ölçüm için etkin seçiciyi değiştirir (``None`` = kapalı)."""
+    global _SELECTOR, _SELECTOR_LOADED
+    _SELECTOR, _SELECTOR_LOADED = selector, True
+
+
+def reset_selector_cache() -> None:
+    global _SELECTOR, _SELECTOR_LOADED
+    _SELECTOR, _SELECTOR_LOADED = None, False
+
+
+def train_release(dataset: str = "savelyevturkic") -> Selector:
+    """Yayın seçicisi: ``column_model.train_release`` ile AYNI veri sınırı.
+
+    Yalnız ``train`` bölümü + Starling (dev/test Türkçe biçimleri ve dev
+    kökleri hariç); dev temiz kalır (``make eval-baseline``). Sıralayıcı
+    TRAIN üzerinde 3 iç katla, sinir modeli bütün TRAIN'de eğitilir.
+    """
+    from datetime import UTC, datetime
+
+    from engine.db.cldf_wordlist import CldfWordlist
+    from engine.db.language_mapping import build_mapping
+    from engine.evaluation.gold import GoldStandard
+    from engine.nlp import column_model, proto_phonology
+
+    gold_std = GoldStandard.build(dataset)
+    mapping = build_mapping(CldfWordlist.load(dataset))
+    train_items = list(gold_std.split("train"))
+    dev_items = list(gold_std.split("dev"))
+    gold_sets = column_model.prepare_gold(train_items + dev_items, mapping)
+    # ⚠️ Test bölümünden YALNIZ Türkçe tanık biçimi okunur (sızıntı süzgeci).
+    test_turkish = set().union(
+        *(column_model.gold_turkish(it, mapping) for it in gold_std.items if it.split == "test")
+    )
+    starling_sets = column_model.prepare_starling()
+    neural_starling = prepare_starling()
+    if not starling_sets or not neural_starling:
+        raise SystemExit("Starling turcet yok: önce `make starling`.")
+    try:
+        weights, intercept, n_rows = learn_ranker(
+            train_items, dev_items, mapping=mapping, gold_sets=gold_sets, starling_sets=starling_sets,
+            neural_starling=neural_starling, test_turkish=test_turkish, seed_base=100,
+        )
+    finally:
+        proto_phonology.reset_pattern_cache()
+        column_model.reset_model_cache()
+    examples = examples_for(train_items, dev_items, mapping, gold_sets, neural_starling, test_turkish)
+    model = train(examples, seed=0)
+    return Selector(model, weights, intercept, {
+        "trained_on": f"{dataset}/train + starling/turcet",
+        "trained_at": datetime.now(UTC).isoformat(timespec="seconds"),
+        "n_examples": len(examples),
+        "n_ranker_rows": n_rows,
+        "epochs": EPOCHS,
+        "gold_source_ref": gold_std.source_ref,
+    })
+
+
 if __name__ == "__main__":
-    print(choose_epochs())
+    import sys
+
+    if "--train" in sys.argv:
+        selector = train_release()
+        print(f"Kaydedildi: {save_selector(selector)} · {selector.meta}")
+    else:
+        print(choose_epochs())

@@ -54,5 +54,43 @@ class TrainSmokeTests(unittest.TestCase):
         self.assertLess(score, 0.0)
 
 
+class EngineHookTests(unittest.TestCase):
+    def _fake(self, chosen):
+        class FakeSelector:
+            def select(self, word, entries, informative, column, table, original):
+                return chosen, [neural.Candidate(chosen or original, rank=0, in_beam=True)]
+        return FakeSelector()
+
+    def _run(self, result, chosen):
+        from unittest import mock
+
+        from engine.nlp.comparative_reconstruction import ComparativeReconstructor
+
+        with mock.patch.object(neural, "active_selector", return_value=self._fake(chosen)), \
+                mock.patch("engine.nlp.column_model.active_model", return_value=object()):
+            return ComparativeReconstructor._neural_select(
+                dict(result), "kül", [{"lang_code": "kk", "word": "kül"}, {"lang_code": "tt", "word": "köl"}]
+            )
+
+    def test_replaces_comparative_root(self):
+        out = self._run({"method": "comparative", "is_reconstructible": True, "reconstructed_root": "*köl"}, "*kül")
+        self.assertEqual(out["reconstructed_root"], "*kül")
+        self.assertEqual(out["neural_selection"]["column_model_root"], "*köl")
+        self.assertEqual(out["alternative_forms"][0], "*köl")
+
+    def test_fallback_untouched(self):
+        result = {"method": "anchor_fallback", "is_reconstructible": True, "reconstructed_root": "*köl"}
+        self.assertEqual(self._run(result, "*kül"), result)
+
+    def test_no_selector_keeps_root(self):
+        from unittest import mock
+
+        from engine.nlp.comparative_reconstruction import ComparativeReconstructor
+
+        result = {"method": "comparative", "is_reconstructible": True, "reconstructed_root": "*köl"}
+        with mock.patch.object(neural, "active_selector", return_value=None):
+            self.assertEqual(ComparativeReconstructor._neural_select(dict(result), "kül", []), result)
+
+
 if __name__ == "__main__":
     unittest.main()
