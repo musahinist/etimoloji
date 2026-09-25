@@ -245,6 +245,12 @@ def content_tokens(sense: str) -> list[str]:
 
 
 #: Temizliğin varsayılanı (bayrak verilmediğinde). Bkz. PREREG_x4.md.
+#: ⚠️ ÖLÇÜLDÜ, ön-kayıtlı (PREREG_x4.md), KABUL EDİLMEDİ — R2 bir kez, n=684,
+#: taban F 0,7436: A1 (bu temizlik) ΔF +0,009 [−0,007, +0,023] (Holm p 0,12),
+#: mirasta rampa 169 -> 186 (azalmadı); A2 (+ rampa dil null'ı) ΔF +0,014
+#: [−0,003, +0,031] (Holm p 0,11), doğruluk +0,026 [+0,006, +0,048], rampa
+#: 169 -> 129 (p<0,001). Birincil ölçüt ikisinde de tutmadı; güç yetersiz
+#: (MDE 0,038–0,053) -> "belirsiz". Varsayılan KAPALI.
 CLEAN_DEFAULT = False
 
 #: (c) sıralı sorguda süzgeç öncesi okunan en çok satır.

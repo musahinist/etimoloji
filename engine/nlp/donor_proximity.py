@@ -316,7 +316,8 @@ def _sense_filter(sense_filter: Any) -> Any:
 
 
 #: Rampa şans denetiminin varsayılanı (``ETY_DONOR_RAMP_CHANCE`` verilmezse).
-#: Bkz. ``data/cache/work/xtr/PREREG_x4.md``.
+#: Bkz. ``data/cache/work/xtr/PREREG_x4.md``; sonuç ``donor_index.CLEAN_DEFAULT``
+#: notunda (A2: mekanizma tuttu, birincil F ölçütü tutmadı). Varsayılan KAPALI.
 RAMP_CHANCE_DEFAULT = False
 
 
