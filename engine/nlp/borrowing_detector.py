@@ -973,7 +973,9 @@ class BorrowingDetector:
         # c0e8dd7): sıralayıcı × altın uyumu kapalıyken 110/150, açıkken
         # 100/150 — sıralayıcı birleştiriciyi değil elle ağırlıklı toplamı
         # kullandığından 0,35–0,60 rampası mirasları ALINTI'ya çeviriyor.
-        # Kalıcı çözüm: sıralayıcının eğitilmiş birleştiriciyi kullanması.
+        # Sıralayıcı artık birleştiriciyi kullanıyor (data/cache/work/ranker);
+        # yine de dev'de açık 119/135 < kapalı 129/135: birleştirici anlam
+        # verilen WOLD verisinde eğitildi, own_sense rampasını ayırt etmiyor.
         if not sense and SEARCH_DONOR_PROXIMITY:
             sense = own_sense(word, lang)
         if donors is None:

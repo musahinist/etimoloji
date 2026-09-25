@@ -221,3 +221,73 @@ class TestAttestedInheritedRoot(unittest.TestCase):
         self.assertIn("*KAtɨr", ranked.conflicts[0])
         self.assertIn("kaynaklar çelişiyor", ranked.explain())
         self.assertIn("conflicts", ranked.as_dict())
+
+
+class TestTrainedCombinerDecision(unittest.TestCase):
+    """R1: alıntı/miras kararı eğitilmiş birleştiricinin olasılığından gelir
+    (el ağırlıklı toplam değil); doğrudan sözlük tanıklığı karar verici kalır."""
+
+    @staticmethod
+    def _ranker(probability, *, chain_fired=False, hand_score=0.32, recon=None):
+        from types import SimpleNamespace
+        from unittest import mock
+
+        from engine.nlp.borrowing_detector import Signal
+
+        signals = [
+            Signal("zincir_kanıtı", chain_fired, 1.0 if chain_fired else 0.0,
+                   "sözlükte alıntı olarak tanıklanmış: Arapça" if chain_fired else "alıntı kaydı yok"),
+            Signal("verici_yakınlığı", True, 0.5, "verici sözlüğünde yakın karşılık (rampa)"),
+        ]
+        borrowing = SimpleNamespace(
+            word="x", donor_language="ar" if chain_fired else None, score=hand_score,
+            chain=["Türkçe x", "Arapça y"] if chain_fired else [], expected_if_inherited="",
+            signals=signals, trained_probability=probability, _trained_threshold=0.39,
+        )
+        detector = mock.Mock()
+        detector.detect.return_value = borrowing
+        reconstructor = mock.Mock()
+        reconstructor.reconstruct.return_value = recon or {"method": "anchor_fallback"}
+        return HypothesisRanker(reconstructor=reconstructor, borrowing_detector=detector)
+
+    def _rank(self, ranker):
+        from unittest import mock
+
+        with mock.patch("engine.nlp.borrowing_chain.source_loan_step", return_value=None), \
+                mock.patch("engine.nlp.neologism_detector.NeologismDetector.detect", return_value=None):
+            return ranker.rank("x", [])
+
+    def test_rejected_loan_does_not_win_on_hand_sum(self):
+        """El toplamı 0,32 "belirsiz"i geçerdi; birleştirici reddedince geçmez."""
+        ranked = self._rank(self._ranker(0.20))
+        borrowed = next(x for x in ranked.hypotheses if x.kind == "borrowed")
+        self.assertLess(borrowed.score, 0.1)
+        self.assertEqual(ranked.selected.kind, "inherited")
+        self.assertIn("birleştiricisi alıntıyı reddediyor", ranked.selected.supporting[0])
+
+    def test_accepted_loan_maps_threshold_to_borrowing_threshold(self):
+        from engine.nlp.borrowing_detector import BORROWING_THRESHOLD
+
+        ranked = self._rank(self._ranker(0.39, hand_score=0.0))
+        self.assertEqual(ranked.selected.kind, "borrowed")
+        self.assertAlmostEqual(ranked.selected.score, BORROWING_THRESHOLD, places=3)
+
+    def test_direct_loan_record_stays_decisive(self):
+        """Saha modeli sözlük kaydını tek başına alıntı saymıyor (p < eşik);
+        doğrudan tanıklık yine de tanıklı kökle eşit ağırlık taşır."""
+        ranked = self._rank(self._ranker(0.31, chain_fired=True))
+        self.assertEqual(ranked.selected.kind, "borrowed")
+        self.assertGreaterEqual(ranked.selected.score, 0.5)
+
+    def test_real_inherited_evidence_beats_the_floor(self):
+        recon = {"is_reconstructible": True, "reconstructed_root": "*köz", "proto_level": "PT",
+                 "witness_count": 4, "branch_count": 3, "column_agreement": 0.6,
+                 "calibrated_confidence": 0.45}
+        ranked = self._rank(self._ranker(0.20, recon=recon))
+        self.assertEqual(ranked.selected.kind, "inherited")
+        self.assertAlmostEqual(ranked.selected.score, 0.45)
+
+    def test_untrained_falls_back_to_hand_sum(self):
+        ranked = self._rank(self._ranker(None))
+        borrowed = next(x for x in ranked.hypotheses if x.kind == "borrowed")
+        self.assertAlmostEqual(borrowed.score, 0.32)

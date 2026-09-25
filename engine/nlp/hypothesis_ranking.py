@@ -180,6 +180,96 @@ def _donor_proximity_moot(attested: str) -> str:
     )
 
 
+#: Birleştirici alıntıyı reddedince (p < eşik) alıntı skoru bu tavanın altında
+#: kalır: "belirsiz" tabanı (``any(score > 0,1)``) hiçbir zaman geçilmez.
+REJECTED_LOAN_CEILING = 0.10
+#: Birleştirici alıntıyı reddedince miras hipotezinin tabanı: "belirsiz"in
+#: (0,15) üstü, her gerçek kanıtın (rekonstrüksiyon güveni, tanıklı kök 0,5,
+#: modern türetme) altında ya da onunla birleşir (``max``).
+LOAN_REJECTED_INHERITED_FLOOR = 0.20
+
+
+def _combiner_verdict(borrowing: Any) -> tuple[float, float] | None:
+    """Eğitilmiş birleştiricinin ``(olasılık, eşik)``i; model yoksa ``None``."""
+    probability = getattr(borrowing, "trained_probability", None)
+    threshold = getattr(borrowing, "_trained_threshold", None)
+    if isinstance(probability, float) and isinstance(threshold, float) and 0.0 < threshold < 1.0:
+        return probability, threshold
+    return None
+
+
+def _trained_loan_score(borrowing: Any, *, direct_record: bool = False) -> float | None:
+    """Alıntı hipotezinin skoru, EĞİTİLMİŞ birleştiricinin kararından.
+
+    ⚠️ Eskiden skor elle ağırlıklı toplamdı (``SIGNAL_WEIGHTS``; ör. 0,32 ×
+    verici yakınlığı gücü) ve 0,1'i aşan her toplam "belirsiz"i geçip ALINTI
+    seçtiriyordu. Birleştirici (``borrowing_combiner``) detektörün ölçülmüş
+    karar yoludur ama sıralayıcı onu kullanmıyordu: arama yolunda verici
+    yakınlığı açılınca rampa mirasları ALINTI'ya çevirdi (150 kelimede uyum
+    110 → 100, c0e8dd7). Ölçüm: ``data/cache/work/ranker/PREREG.md``.
+
+    * p ≥ eşik: eşik ``BORROWING_THRESHOLD``'a, 1 → 1'e doğrusal eşlenir.
+    * p < eşik: birleştirici alıntıyı reddediyor; skor
+      ``REJECTED_LOAN_CEILING`` × p/eşik (sürekli eşleme denendi: kanıtsız
+      kelimede p≈0,12 "belirsiz"i geçip ALINTI seçtiriyordu).
+    * Doğrudan sözlük tanıklığı (alıntı kaydı ya da kaynağın alıntı adımı)
+      karar verici kalır: skor en az ``SIGNAL_WEIGHTS["zincir_kanıtı"]`` —
+      tanıklı miras kökle eşit ağırlık (``_with_attested_root``). Saha'da
+      eğitilen model Türkçe sözlük kaydını tek başına alıntı saymıyor
+      (p=0,31 < 0,39); kural b39e36f'deki simetriyi korur.
+
+    Model yoksa ``None``: çağıran el ağırlıklı toplama döner.
+    """
+    from engine.nlp.borrowing_detector import BORROWING_THRESHOLD, SIGNAL_WEIGHTS
+
+    verdict = _combiner_verdict(borrowing)
+    if verdict is None:
+        return None
+    probability, threshold = verdict
+    if probability < threshold:
+        score = REJECTED_LOAN_CEILING * probability / threshold
+    else:
+        score = BORROWING_THRESHOLD + (1 - BORROWING_THRESHOLD) * (probability - threshold) / (1 - threshold)
+    direct_record = direct_record or any(
+        s.name == "zincir_kanıtı" and s.fired for s in getattr(borrowing, "signals", None) or []
+    )
+    if direct_record:
+        score = max(score, SIGNAL_WEIGHTS["zincir_kanıtı"])
+    return round(score, 3)
+
+
+def _with_loan_rejection(hypothesis: Hypothesis, borrowing: Any) -> Hypothesis:
+    """Birleştirici alıntıyı reddediyorsa (p < eşik) bu, miras yönünde zayıf kanıttır.
+
+    Türkçe altının train bölümünde (438 kelime) sıralayıcı rekonstrüksiyonu
+    kurulamayan mirasların 83/179'unda "KÖKENİ BELİRSİZ" diyordu; detektörün
+    kendi hükmü ise "miras adayı"/"belirsiz"di. Taban düşüktür: tanıklı kök,
+    rekonstrüksiyon güveni ya da modern türetme varsa onlar belirler.
+    """
+    verdict = _combiner_verdict(borrowing)
+    if verdict is None or verdict[0] >= verdict[1] or hypothesis.score >= LOAN_REJECTED_INHERITED_FLOOR:
+        return hypothesis
+    probability, threshold = verdict
+    return Hypothesis(
+        kind=hypothesis.kind,
+        claim=hypothesis.claim,
+        score=LOAN_REJECTED_INHERITED_FLOOR,
+        supporting=[
+            f"alıntı birleştiricisi alıntıyı reddediyor (olasılık {probability:.2f} < eşik {threshold:.2f})",
+            *hypothesis.supporting,
+        ],
+        against=hypothesis.against,
+        not_evaluated=hypothesis.not_evaluated,
+        rejected_because=hypothesis.rejected_because,
+        counterfactual=hypothesis.counterfactual,
+        detail={**hypothesis.detail, "loan_probability": round(probability, 4)},
+    )
+
+
+def _score_or(trained: float | None, fallback: float) -> float:
+    return fallback if trained is None else trained
+
+
 def _direct_loan_record(borrowed: Hypothesis, borrowing: Any) -> str:
     """Alıntı hipotezinin doğrudan sözlük tanıklığı (zincir kanıtı ya da
     kaynağın alıntı adımı) varsa açıklaması; yoksa ``""``."""
@@ -249,6 +339,7 @@ class HypothesisRanker:
                     f"{attested_root_source or 'kaynak'} miras kök veriyor ({attested_root}), "
                     f"ama {loan_record}"
                 )
+        inherited = _with_loan_rejection(inherited, borrowing)
         hypotheses = [
             borrowed,
             inherited,
@@ -291,7 +382,7 @@ class HypothesisRanker:
         return Hypothesis(
             kind="borrowed",
             claim=f"ALINTI — {donor}" if borrowing.donor_language else "ALINTI",
-            score=borrowing.score,
+            score=_score_or(_trained_loan_score(borrowing), borrowing.score),
             supporting=supporting,
             against=against,
             not_evaluated=not_evaluated,
@@ -306,8 +397,9 @@ class HypothesisRanker:
     def _with_source_loan(hypothesis: Hypothesis, borrowing: Any, entries: list[dict[str, Any]]) -> Hypothesis:
         """Kaynağın açık alıntı zincirini, sözlük alıntı kaydıyla AYNI ağırlıkla ekler.
 
-        Sözlük indeksindeki alıntı kaydı skora ``SIGNAL_WEIGHTS["zincir_kanıtı"]``
-        × 1,0 katar; kaynağın "Alıntı" adımı aynı türden doğrudan tanıklamadır.
+        Sözlük indeksindeki alıntı kaydı skoru en az ``SIGNAL_WEIGHTS["zincir_kanıtı"]``
+        yapar (model yoksa bu kadar katar); kaynağın "Alıntı" adımı aynı türden
+        doğrudan tanıklamadır.
         """
         from engine.nlp.borrowing_chain import source_loan_step
         from engine.nlp.borrowing_detector import SIGNAL_WEIGHTS
@@ -320,7 +412,10 @@ class HypothesisRanker:
         return Hypothesis(
             kind="borrowed",
             claim=f"ALINTI — {donor_name}",
-            score=round(min(1.0, borrowing.score + SIGNAL_WEIGHTS["zincir_kanıtı"]), 3),
+            score=_score_or(
+                _trained_loan_score(borrowing, direct_record=True),
+                round(min(1.0, borrowing.score + SIGNAL_WEIGHTS["zincir_kanıtı"]), 3),
+            ),
             supporting=[evidence, *hypothesis.supporting],
             against=[
                 a for a in hypothesis.against

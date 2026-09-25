@@ -107,7 +107,9 @@ LIVE_WIKTIONARY = _env_bool("LIVE_WIKTIONARY", False)
 # yiyordu (4 varyant × istek) ve eşleştirmesi gürültülüydü.
 LIVE_ISAM = _env_bool("LIVE_ISAM", False)
 # Arama yolunda verici yakınlığı (anlamı indeksten doldurarak). Kapalı: 150
-# kelimede sıralayıcı uyumu 110 vs açıkken 100 (c0e8dd7). Ölçüm hattını etkilemez.
+# kelimede sıralayıcı uyumu 110 vs açıkken 100 (c0e8dd7). Sıralayıcı eğitilmiş
+# birleştiriciye geçince de (Türkçe altın dev, data/cache/work/ranker) kapalı
+# 129/135, açık 119/135 (McNemar p=0,031). Ölçüm hattını etkilemez.
 SEARCH_DONOR_PROXIMITY = _env_bool("SEARCH_DONOR_PROXIMITY", False)
 # Archive.org tam metin araması. Varsayılan KAPALI: ölçümlerde tanık üretmedi.
 LIVE_ARCHIVE_ORG = _env_bool("LIVE_ARCHIVE_ORG", False)
