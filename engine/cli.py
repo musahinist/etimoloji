@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from engine.config import BADGE_THRESHOLDS
 from engine.db.cldf_exporter import CldfExporter
 from engine.db.database import DatabaseManager
 from engine.logging_setup import get_logger, set_verbose
@@ -130,7 +131,7 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
         print(f"  • 2. Kronolojik Zaman Kilidi : {_stage_mark(s2, '❌ ANAKRONİZM')}{_score(s2)}" + (f" -> {s2_reason}" if s2_reason else ""))
         print(f"  • 3. Semantik Yörünge Sınırı : {_stage_mark(s3, '❌ İHLAL')}{_score(s3)} -> {s3.get('reason')}")
         print(f"  • 4. Akraba Dil Triangulation: {_stage_mark(s4, '❌ İHLAL')}{_score(s4)} -> Numune Akrabalar: {', '.join(s4.get('sample_cognates', [])[:4])}")
-        print(f"  • Ölçülebilen kanıt kalitesi  : {val_report.get('stage_score')} (rozet bu sayıya göre verilir; eşikler 🟢 0.75 / 🟡 0.50)")
+        print(f"  • Ölçülebilen kanıt kalitesi  : {val_report.get('stage_score')} (aşama kararı bu sayıya göre verilir; eşikler 🟢 {BADGE_THRESHOLDS['validated']:.2f} / 🟡 {BADGE_THRESHOLDS['needs_review']:.2f}; gösterilen rozet ayrıdır, verdict_badge)")
         missing = val_report.get("missing_evidence") or []
         if missing:
             print(f"  • Ölçülemeyen aşamalar       : {', '.join(missing)} (kapsam %{val_report.get('evidence_coverage', 0) * 100:.0f})")

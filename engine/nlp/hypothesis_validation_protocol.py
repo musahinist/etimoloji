@@ -25,6 +25,21 @@ ağırlığı toplamdan DÜŞÜLÜR, skor katkıda bulunan aşamalara normalize 
 ``evidence_coverage`` alanı kaç aşamanın gerçekten konuştuğunu raporlar.
 Kapsam ``MIN_EVIDENCE_COVERAGE`` altındaysa rozet en fazla
 ``⚪ INSUFFICIENT_EVIDENCE`` olabilir.
+
+Bugünkü değerler (tablodaki cömert varsayılanların hiçbiri artık yok):
+
+* Ağırlıklar ``config.A_HVP_WEIGHTS`` (0,35 / 0,30 / 0,15 / 0,20).
+* 3 · Semantik: veri yoksa ``score=None`` (aşama düşer); varsa
+  ``1 - anlam mesafesi``, mesafe > θ (``THETA_THRESHOLD``) ihlaldir.
+* 4 · Triangulation: yalnız veri katmanındaki gerçek Türki kayıtlar;
+  ``0,6875 · min(1, yayılım / SPREAD_NATIVE_EVIDENCE) + 0,3125 ·
+  min(1, kaynak / 3)`` — yayılım 0,40'ta doyar (``loanword_classifier``
+  ile aynı sabit). Kayıt yoksa ``score=None``.
+* Aşama kararı ``config.BADGE_THRESHOLDS`` (🟢 0,75 / 🟡 0,50) ile verilir
+  ama kullanıcıya gösterilen rozet DEĞİLDİR: ölçümde doğruyu yanlıştan
+  ayırmadı (``make eval-badge``, AUC 0,49). Gösterilen rozet
+  ``engine.nlp.verdict_badge`` (🟢 TUTARLI / 🔴 ŞÜPHELİ / ∅
+  DEĞERLENDİRİLMEDİ); bu karar ``stage_badge`` alanında kalır.
 """
 from __future__ import annotations
 
