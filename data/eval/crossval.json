@@ -5,13 +5,13 @@
   "systems": {
     "rules": {
       "exact": 0.2531,
-      "ned": 0.3677,
-      "bcfs": 0.5354
+      "ned": 0.3674,
+      "bcfs": 0.5332
     },
     "learned_table": {
       "exact": 0.2719,
-      "ned": 0.3424,
-      "bcfs": 0.544
+      "ned": 0.3417,
+      "bcfs": 0.5427
     },
     "majority_character": {
       "exact": 0.2531,
@@ -20,33 +20,8 @@
     },
     "column_model": {
       "exact": 0.2969,
-      "ned": 0.3282,
-      "bcfs": 0.5566
-    },
-    "neural": {
-      "exact": 0.275,
-      "ned": 0.3394,
-      "bcfs": 0.5206
-    },
-    "neural_rerank": {
-      "exact": 0.275,
-      "ned": 0.3394,
-      "bcfs": 0.5206
-    },
-    "nsel_column": {
-      "exact": 0.2938,
-      "ned": 0.3134,
-      "bcfs": 0.5589
-    },
-    "nsel_ranker": {
-      "exact": 0.3219,
-      "ned": 0.31,
-      "bcfs": 0.5685
-    },
-    "nsel_vote": {
-      "exact": 0.3,
-      "ned": 0.3291,
-      "bcfs": 0.5338
+      "ned": 0.3273,
+      "bcfs": 0.5556
     }
   },
   "comparisons": {
@@ -63,10 +38,10 @@
         "lower_is_better": false
       },
       "ned": {
-        "difference": -0.02845,
+        "difference": -0.02918,
         "ci95": [
-          -0.04791,
-          -0.00848
+          -0.04853,
+          -0.00918
         ],
         "significant": true,
         "a_is_better": true,
@@ -74,10 +49,10 @@
         "lower_is_better": true
       },
       "bcfs": {
-        "difference": 0.0248,
+        "difference": 0.02351,
         "ci95": [
-          0.00298,
-          0.04438
+          0.00158,
+          0.04295
         ],
         "significant": true,
         "a_is_better": true,
@@ -97,10 +72,10 @@
         "lower_is_better": false
       },
       "ned": {
-        "difference": -0.02529,
+        "difference": -0.02574,
         "ci95": [
-          -0.03565,
-          -0.01547
+          -0.03605,
+          -0.01584
         ],
         "significant": true,
         "a_is_better": true,
@@ -108,10 +83,10 @@
         "lower_is_better": true
       },
       "bcfs": {
-        "difference": 0.00862,
+        "difference": 0.0095,
         "ci95": [
-          0.0015,
-          0.01606
+          0.00221,
+          0.017
         ],
         "significant": true,
         "a_is_better": true,
@@ -131,10 +106,10 @@
         "lower_is_better": false
       },
       "ned": {
-        "difference": -0.0142,
+        "difference": -0.01443,
         "ci95": [
-          -0.02557,
-          -0.00348
+          -0.02574,
+          -0.00371
         ],
         "significant": true,
         "a_is_better": true,
@@ -142,183 +117,13 @@
         "lower_is_better": true
       },
       "bcfs": {
-        "difference": 0.01253,
+        "difference": 0.0129,
         "ci95": [
-          0.00057,
-          0.02378
+          0.00102,
+          0.02406
         ],
         "significant": true,
         "a_is_better": true,
-        "n": 320
-      }
-    },
-    "neural-column_model": {
-      "exact": {
-        "difference": -0.02187,
-        "ci95": [
-          -0.06563,
-          0.02187
-        ],
-        "significant": false,
-        "a_is_better": false,
-        "n": 320,
-        "lower_is_better": false
-      },
-      "ned": {
-        "difference": 0.01117,
-        "ci95": [
-          -0.01429,
-          0.03708
-        ],
-        "significant": false,
-        "a_is_better": false,
-        "n": 320,
-        "lower_is_better": true
-      },
-      "bcfs": {
-        "difference": -0.03593,
-        "ci95": [
-          -0.06133,
-          -0.00829
-        ],
-        "significant": true,
-        "a_is_better": false,
-        "n": 320
-      }
-    },
-    "neural_rerank-column_model": {
-      "exact": {
-        "difference": -0.02187,
-        "ci95": [
-          -0.06563,
-          0.02187
-        ],
-        "significant": false,
-        "a_is_better": false,
-        "n": 320,
-        "lower_is_better": false
-      },
-      "ned": {
-        "difference": 0.01117,
-        "ci95": [
-          -0.01429,
-          0.03708
-        ],
-        "significant": false,
-        "a_is_better": false,
-        "n": 320,
-        "lower_is_better": true
-      },
-      "bcfs": {
-        "difference": -0.03593,
-        "ci95": [
-          -0.06133,
-          -0.00829
-        ],
-        "significant": true,
-        "a_is_better": false,
-        "n": 320
-      }
-    },
-    "nsel_column-column_model": {
-      "exact": {
-        "difference": -0.00312,
-        "ci95": [
-          -0.04063,
-          0.03438
-        ],
-        "significant": false,
-        "a_is_better": false,
-        "n": 320,
-        "lower_is_better": false
-      },
-      "ned": {
-        "difference": -0.01487,
-        "ci95": [
-          -0.03649,
-          0.00731
-        ],
-        "significant": false,
-        "a_is_better": false,
-        "n": 320,
-        "lower_is_better": true
-      },
-      "bcfs": {
-        "difference": 0.00238,
-        "ci95": [
-          -0.01863,
-          0.0242
-        ],
-        "significant": false,
-        "a_is_better": false,
-        "n": 320
-      }
-    },
-    "nsel_ranker-column_model": {
-      "exact": {
-        "difference": 0.025,
-        "ci95": [
-          0.00313,
-          0.05
-        ],
-        "significant": true,
-        "a_is_better": true,
-        "n": 320,
-        "lower_is_better": false
-      },
-      "ned": {
-        "difference": -0.01826,
-        "ci95": [
-          -0.03399,
-          -0.00291
-        ],
-        "significant": true,
-        "a_is_better": true,
-        "n": 320,
-        "lower_is_better": true
-      },
-      "bcfs": {
-        "difference": 0.01199,
-        "ci95": [
-          -0.00428,
-          0.02834
-        ],
-        "significant": false,
-        "a_is_better": false,
-        "n": 320
-      }
-    },
-    "nsel_vote-column_model": {
-      "exact": {
-        "difference": 0.00312,
-        "ci95": [
-          -0.03125,
-          0.0375
-        ],
-        "significant": false,
-        "a_is_better": false,
-        "n": 320,
-        "lower_is_better": false
-      },
-      "ned": {
-        "difference": 0.00091,
-        "ci95": [
-          -0.02255,
-          0.02387
-        ],
-        "significant": false,
-        "a_is_better": false,
-        "n": 320,
-        "lower_is_better": true
-      },
-      "bcfs": {
-        "difference": -0.02273,
-        "ci95": [
-          -0.0467,
-          0.00396
-        ],
-        "significant": false,
-        "a_is_better": false,
         "n": 320
       }
     }
@@ -426,6 +231,10 @@
     "system": "learned_table",
     "supported": true
   },
+  "neural_carried_over": [
+    "neural",
+    "neural_validation"
+  ],
   "neural_validation": {
     "prereg": "data/cache/work/neural/PREREG.md, bölüm 3",
     "seeds": [

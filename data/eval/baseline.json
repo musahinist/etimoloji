@@ -10,7 +10,8 @@
       "fallback": 57,
       "fallback_rate": 0.9828,
       "unattested": 0,
-      "unattested_rate": 0.0
+      "unattested_rate": 0.0,
+      "suggested": 0
     },
     {
       "battery": "bariz_sahte",
@@ -21,18 +22,20 @@
       "fallback": 0,
       "fallback_rate": 0.0,
       "unattested": 0,
-      "unattested_rate": 0.0
+      "unattested_rate": 0.0,
+      "suggested": 0
     },
     {
       "battery": "sahte_akraba",
-      "n": 4,
+      "n": 1,
       "reconstructed": 0,
       "false_positive_rate": 0.0,
       "strong_claim_rate": 0.0,
-      "fallback": 4,
+      "fallback": 1,
       "fallback_rate": 1.0,
       "unattested": 0,
-      "unattested_rate": 0.0
+      "unattested_rate": 0.0,
+      "suggested": 0
     },
     {
       "battery": "alinti_tuzagi",
@@ -43,7 +46,8 @@
       "fallback": 0,
       "fallback_rate": 0.0,
       "unattested": 0,
-      "unattested_rate": 0.0
+      "unattested_rate": 0.0,
+      "suggested": 0
     },
     {
       "battery": "eşadlı",
@@ -54,10 +58,11 @@
       "fallback": 0,
       "fallback_rate": 0.0,
       "unattested": 0,
-      "unattested_rate": 0.0
+      "unattested_rate": 0.0,
+      "suggested": 0
     }
   ],
-  "measured_at": "2026-09-24T09:15:12+00:00",
+  "measured_at": "2026-09-25T22:57:14+00:00",
   "dataset": "savelyevturkic",
   "dataset_ref": "v2.1",
   "dataset_commit": "4a540590580f",
@@ -96,18 +101,18 @@
           "n": 83,
           "accuracy": 0.3976,
           "acceptable": 0.4819,
-          "ED": 1.506,
-          "NED": 0.3087,
+          "ED": 1.4819,
+          "NED": 0.308,
           "coverage": 0.9759,
           "abstained": 2,
-          "BCFS": 0.5974,
-          "FER": 0.2639,
+          "BCFS": 0.5995,
+          "FER": 0.2618,
           "mean_witnesses": 11.76,
           "error_modes": {
             "dogru": 33,
-            "ses_hatasi": 19,
+            "ses_hatasi": 20,
             "soz_basi_yanlis": 13,
-            "ek_soyulmamis": 11,
+            "ek_soyulmamis": 10,
             "unlu_uzunlugu": 2,
             "capa_kisa": 2,
             "cekimser": 2,
@@ -273,10 +278,10 @@
         }
       ],
       "primary_significance": {
-        "difference": -0.03007,
+        "difference": -0.03074,
         "ci95": [
-          -0.06787,
-          0.00692
+          -0.06885,
+          0.00651
         ],
         "significant": false,
         "a_is_better": false,
@@ -297,18 +302,18 @@
           "n": 83,
           "accuracy": 0.4096,
           "acceptable": 0.494,
-          "ED": 1.4699,
-          "NED": 0.2995,
+          "ED": 1.4458,
+          "NED": 0.2988,
           "coverage": 0.9759,
           "abstained": 2,
-          "BCFS": 0.6027,
-          "FER": 0.2651,
+          "BCFS": 0.6047,
+          "FER": 0.263,
           "mean_witnesses": 12.76,
           "error_modes": {
             "dogru": 34,
-            "ses_hatasi": 18,
+            "ses_hatasi": 19,
             "soz_basi_yanlis": 12,
-            "ek_soyulmamis": 12,
+            "ek_soyulmamis": 11,
             "capa_kisa": 3,
             "unlu_uzunlugu": 2,
             "cekimser": 2
@@ -473,10 +478,10 @@
         }
       ],
       "primary_significance": {
-        "difference": -0.06901,
+        "difference": -0.06968,
         "ci95": [
-          -0.11218,
-          -0.0282
+          -0.11302,
+          -0.02873
         ],
         "significant": true,
         "a_is_better": true,

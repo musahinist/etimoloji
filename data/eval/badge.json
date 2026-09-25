@@ -1,6 +1,6 @@
 {
   "_schema": "badge_eval/v2",
-  "commit": "d1cf978",
+  "commit": "192d518",
   "fetchers": "yalnız yerel, Starling KAPALI, ağ kapalı (headline_eval.build_engine)",
   "sample": {
     "turkce_altin/train (ayar, örneklem içi)": 438,
@@ -20,23 +20,23 @@
     "turkce_altin/train (ayar, örneklem içi)": {
       "n": 438,
       "n_with_hypothesis": 195,
-      "accuracy_all": 0.4178,
+      "accuracy_all": 0.4201,
       "verdict_badge": {
         "by_badge": {
           "CONSISTENT": {
-            "n": 171,
-            "accuracy": 0.9825,
+            "n": 183,
+            "accuracy": 0.9836,
             "accuracy_ci95": [
-              0.9497,
-              0.994
+              0.9529,
+              0.9944
             ]
           },
           "SUSPECT": {
-            "n": 24,
-            "accuracy": 0.625,
+            "n": 12,
+            "accuracy": 0.3333,
             "accuracy_ci95": [
-              0.4271,
-              0.7884
+              0.1381,
+              0.6094
             ]
           },
           "NOT_EVALUATED": {
@@ -48,7 +48,7 @@
             ]
           }
         },
-        "auc_score": 0.8832,
+        "auc_score": 0.878,
         "consistent_above_suspect": true,
         "fisher_p": 0.0
       },
@@ -56,18 +56,18 @@
         "by_badge": {
           "VALIDATED": {
             "n": 14,
-            "accuracy": 0.8571,
+            "accuracy": 0.9286,
             "accuracy_ci95": [
-              0.6006,
-              0.9599
+              0.6853,
+              0.9873
             ]
           },
           "NEEDS_REVIEW": {
-            "n": 84,
-            "accuracy": 0.9405,
+            "n": 88,
+            "accuracy": 0.9318,
             "accuracy_ci95": [
-              0.8681,
-              0.9743
+              0.8591,
+              0.9684
             ]
           },
           "INSUFFICIENT_EVIDENCE": {
@@ -79,11 +79,11 @@
             ]
           },
           "REJECTED": {
-            "n": 26,
-            "accuracy": 0.9231,
+            "n": 22,
+            "accuracy": 0.9545,
             "accuracy_ci95": [
-              0.7586,
-              0.9786
+              0.782,
+              0.9919
             ]
           },
           "hipotez_yok": {
@@ -95,8 +95,8 @@
             ]
           }
         },
-        "auc_badge_order": 0.4492,
-        "auc_final_score": 0.5565,
+        "auc_badge_order": 0.4402,
+        "auc_final_score": 0.5358,
         "green_above_yellow": false
       }
     },
@@ -107,19 +107,19 @@
       "verdict_badge": {
         "by_badge": {
           "CONSISTENT": {
-            "n": 61,
+            "n": 63,
             "accuracy": 1.0,
             "accuracy_ci95": [
-              0.9408,
+              0.9425,
               1.0
             ]
           },
           "SUSPECT": {
-            "n": 4,
-            "accuracy": 0.75,
+            "n": 2,
+            "accuracy": 0.5,
             "accuracy_ci95": [
-              0.3006,
-              0.9544
+              0.0945,
+              0.9055
             ]
           },
           "NOT_EVALUATED": {
@@ -133,15 +133,15 @@
         },
         "auc_score": 0.9844,
         "consistent_above_suspect": true,
-        "fisher_p": 0.0615
+        "fisher_p": 0.0308
       },
       "stage_verdict": {
         "by_badge": {
           "VALIDATED": {
-            "n": 9,
+            "n": 11,
             "accuracy": 1.0,
             "accuracy_ci95": [
-              0.7008,
+              0.7412,
               1.0
             ]
           },
@@ -162,10 +162,10 @@
             ]
           },
           "REJECTED": {
-            "n": 9,
+            "n": 7,
             "accuracy": 1.0,
             "accuracy_ci95": [
-              0.7008,
+              0.6457,
               1.0
             ]
           },
@@ -178,31 +178,31 @@
             ]
           }
         },
-        "auc_badge_order": 0.6562,
-        "auc_final_score": 0.6094,
+        "auc_badge_order": 0.6875,
+        "auc_final_score": 0.6406,
         "green_above_yellow": false
       }
     },
     "savelyev_dev": {
       "n": 32,
       "n_with_hypothesis": 31,
-      "accuracy_all": 0.6562,
+      "accuracy_all": 0.625,
       "verdict_badge": {
         "by_badge": {
           "CONSISTENT": {
-            "n": 28,
-            "accuracy": 0.6786,
+            "n": 29,
+            "accuracy": 0.6552,
             "accuracy_ci95": [
-              0.4934,
-              0.8207
+              0.4734,
+              0.8006
             ]
           },
           "SUSPECT": {
-            "n": 3,
-            "accuracy": 0.6667,
+            "n": 2,
+            "accuracy": 0.5,
             "accuracy_ci95": [
-              0.2077,
-              0.9385
+              0.0945,
+              0.9055
             ]
           },
           "NOT_EVALUATED": {
@@ -214,26 +214,26 @@
             ]
           }
         },
-        "auc_score": 0.6476,
+        "auc_score": 0.7045,
         "consistent_above_suspect": true,
         "fisher_p": 1.0
       },
       "stage_verdict": {
         "by_badge": {
           "VALIDATED": {
-            "n": 18,
-            "accuracy": 0.6111,
+            "n": 20,
+            "accuracy": 0.65,
             "accuracy_ci95": [
-              0.3862,
-              0.797
+              0.4329,
+              0.8188
             ]
           },
           "NEEDS_REVIEW": {
-            "n": 8,
-            "accuracy": 0.75,
+            "n": 9,
+            "accuracy": 0.6667,
             "accuracy_ci95": [
-              0.4093,
-              0.9285
+              0.3542,
+              0.8794
             ]
           },
           "INSUFFICIENT_EVIDENCE": {
@@ -245,11 +245,11 @@
             ]
           },
           "REJECTED": {
-            "n": 5,
-            "accuracy": 0.8,
+            "n": 2,
+            "accuracy": 0.5,
             "accuracy_ci95": [
-              0.3755,
-              0.9638
+              0.0945,
+              0.9055
             ]
           },
           "hipotez_yok": {
@@ -261,8 +261,8 @@
             ]
           }
         },
-        "auc_badge_order": 0.4071,
-        "auc_final_score": 0.481,
+        "auc_badge_order": 0.5136,
+        "auc_final_score": 0.5545,
         "green_above_yellow": false
       }
     }
@@ -493,8 +493,8 @@
         "word": "arkalık",
         "badge": "REJECTED",
         "score": 0.246,
-        "verdict": "SUSPECT",
-        "verdict_score": 0.4444,
+        "verdict": "CONSISTENT",
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -584,7 +584,7 @@
         "badge": "REJECTED",
         "score": 0.226,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4572,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -613,8 +613,8 @@
         "word": "açılış",
         "badge": "NEEDS_REVIEW",
         "score": 0.343,
-        "verdict": "SUSPECT",
-        "verdict_score": 0.4499,
+        "verdict": "CONSISTENT",
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -892,7 +892,7 @@
       {
         "word": "bozmak",
         "badge": "NEEDS_REVIEW",
-        "score": 0.577,
+        "score": 0.524,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": true,
@@ -931,20 +931,20 @@
       },
       {
         "word": "büz",
-        "badge": "REJECTED",
-        "score": 0.117,
-        "verdict": "SUSPECT",
-        "verdict_score": 0.0437,
+        "badge": null,
+        "score": null,
+        "verdict": "NOT_EVALUATED",
+        "verdict_score": null,
         "correct": false,
         "gold_loan": true,
-        "hypothesis_donor": "Proto-Türkçe"
+        "hypothesis_donor": null
       },
       {
         "word": "camız",
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6284,
+        "verdict_score": 0.612,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -954,7 +954,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.5446,
+        "verdict_score": 0.5683,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -974,7 +974,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "SUSPECT",
-        "verdict_score": 0.3497,
+        "verdict_score": 0.3825,
         "correct": false,
         "gold_loan": false,
         "hypothesis_donor": ""
@@ -984,7 +984,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.776,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -994,7 +994,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.7741,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -1004,7 +1004,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.7577,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -1014,7 +1014,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.776,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -1034,7 +1034,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4608,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -1182,7 +1182,7 @@
       {
         "word": "don",
         "badge": "VALIDATED",
-        "score": 0.823,
+        "score": 0.849,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": true,
@@ -1243,8 +1243,8 @@
         "word": "döşenmek",
         "badge": "REJECTED",
         "score": 0.374,
-        "verdict": "SUSPECT",
-        "verdict_score": 0.4536,
+        "verdict": "CONSISTENT",
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -1344,7 +1344,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.776,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -1354,7 +1354,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.776,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -1364,7 +1364,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.776,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -1394,7 +1394,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.776,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -1414,7 +1414,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.776,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -1424,7 +1424,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6594,
+        "verdict_score": 0.643,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -1481,8 +1481,8 @@
       },
       {
         "word": "gerek",
-        "badge": "REJECTED",
-        "score": 0.268,
+        "badge": "VALIDATED",
+        "score": 0.669,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": true,
@@ -1514,7 +1514,7 @@
         "badge": "REJECTED",
         "score": 0.235,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4645,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -1543,8 +1543,8 @@
         "word": "gidermek",
         "badge": "REJECTED",
         "score": 0.377,
-        "verdict": "SUSPECT",
-        "verdict_score": 0.4536,
+        "verdict": "CONSISTENT",
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -1663,8 +1663,8 @@
         "word": "gündelik",
         "badge": "NEEDS_REVIEW",
         "score": 0.359,
-        "verdict": "SUSPECT",
-        "verdict_score": 0.4536,
+        "verdict": "CONSISTENT",
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -1684,7 +1684,7 @@
         "badge": "REJECTED",
         "score": 0.259,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4572,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -1694,7 +1694,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.776,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -1724,7 +1724,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "SUSPECT",
-        "verdict_score": 0.3497,
+        "verdict_score": 0.3825,
         "correct": false,
         "gold_loan": false,
         "hypothesis_donor": ""
@@ -1734,7 +1734,7 @@
         "badge": "REJECTED",
         "score": 0.237,
         "verdict": "SUSPECT",
-        "verdict_score": 0.224,
+        "verdict_score": 0.2459,
         "correct": false,
         "gold_loan": true,
         "hypothesis_donor": "Proto-Türkçe"
@@ -1754,7 +1754,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6284,
+        "verdict_score": 0.6138,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -1764,7 +1764,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.776,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -1774,7 +1774,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.776,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -1784,7 +1784,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6284,
+        "verdict_score": 0.612,
         "correct": false,
         "gold_loan": false,
         "hypothesis_donor": ""
@@ -1794,7 +1794,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.7577,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -1804,7 +1804,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.7577,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -1814,7 +1814,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.412,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.7741,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -1824,7 +1824,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6594,
+        "verdict_score": 0.643,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -1834,7 +1834,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6284,
+        "verdict_score": 0.612,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -1844,7 +1844,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6594,
+        "verdict_score": 0.643,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -2141,8 +2141,8 @@
       },
       {
         "word": "kazma",
-        "badge": "REJECTED",
-        "score": 0.168,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.384,
         "verdict": "CONSISTENT",
         "verdict_score": 0.5137,
         "correct": true,
@@ -2164,7 +2164,7 @@
         "badge": "REJECTED",
         "score": 0.267,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4608,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -2314,7 +2314,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.506,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4645,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -2404,7 +2404,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.348,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4718,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -2454,7 +2454,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6867,
+        "verdict_score": 0.6758,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -2464,7 +2464,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6867,
+        "verdict_score": 0.6758,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -2504,7 +2504,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.674,
+        "verdict_score": 0.6576,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -2554,7 +2554,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7741,
+        "verdict_score": 0.7577,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -2584,7 +2584,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7741,
+        "verdict_score": 0.7577,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -2654,7 +2654,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.5355,
+        "verdict_score": 0.5683,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -2664,7 +2664,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7741,
+        "verdict_score": 0.7577,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -2674,7 +2674,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "SUSPECT",
-        "verdict_score": 0.3588,
+        "verdict_score": 0.3916,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -2684,7 +2684,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.533,
         "verdict": "SUSPECT",
-        "verdict_score": 0.0565,
+        "verdict_score": 0.0692,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -2744,7 +2744,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7741,
+        "verdict_score": 0.7577,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -2812,7 +2812,7 @@
       {
         "word": "nice",
         "badge": "NEEDS_REVIEW",
-        "score": 0.407,
+        "score": 0.428,
         "verdict": "CONSISTENT",
         "verdict_score": 0.5027,
         "correct": true,
@@ -2834,7 +2834,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6849,
+        "verdict_score": 0.6685,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -2954,7 +2954,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7741,
+        "verdict_score": 0.7577,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -2964,7 +2964,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "SUSPECT",
-        "verdict_score": 0.3497,
+        "verdict_score": 0.3825,
         "correct": false,
         "gold_loan": false,
         "hypothesis_donor": ""
@@ -2974,7 +2974,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7741,
+        "verdict_score": 0.7577,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -2994,7 +2994,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.5355,
+        "verdict_score": 0.5683,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -3034,7 +3034,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7741,
+        "verdict_score": 0.7577,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -3054,7 +3054,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.5355,
+        "verdict_score": 0.5683,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -3064,7 +3064,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.7741,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -3084,7 +3084,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "SUSPECT",
-        "verdict_score": 0.3388,
+        "verdict_score": 0.3716,
         "correct": false,
         "gold_loan": false,
         "hypothesis_donor": ""
@@ -3104,7 +3104,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6976,
+        "verdict_score": 0.6867,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -3124,7 +3124,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6976,
+        "verdict_score": 0.6867,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -3134,7 +3134,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.776,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -3144,7 +3144,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6867,
+        "verdict_score": 0.6758,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -3154,7 +3154,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6867,
+        "verdict_score": 0.6576,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -3483,8 +3483,8 @@
         "word": "sülün",
         "badge": "NEEDS_REVIEW",
         "score": 0.486,
-        "verdict": "SUSPECT",
-        "verdict_score": 0.4536,
+        "verdict": "CONSISTENT",
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -3624,7 +3624,7 @@
         "badge": "REJECTED",
         "score": 0.227,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4645,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -3741,8 +3741,8 @@
       },
       {
         "word": "tem",
-        "badge": "VALIDATED",
-        "score": 0.422,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.391,
         "verdict": "CONSISTENT",
         "verdict_score": 0.4863,
         "correct": false,
@@ -3764,7 +3764,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.542,
         "verdict": "SUSPECT",
-        "verdict_score": 0.0401,
+        "verdict_score": 0.0455,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -3801,8 +3801,8 @@
       },
       {
         "word": "tetik",
-        "badge": "VALIDATED",
-        "score": 0.767,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.747,
         "verdict": "CONSISTENT",
         "verdict_score": 0.4863,
         "correct": true,
@@ -3872,9 +3872,9 @@
       {
         "word": "tutku",
         "badge": "NEEDS_REVIEW",
-        "score": 0.472,
-        "verdict": "SUSPECT",
-        "verdict_score": 0.4499,
+        "score": 0.462,
+        "verdict": "CONSISTENT",
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -3894,7 +3894,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.457,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4718,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -3974,7 +3974,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.291,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4754,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -3994,7 +3994,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.341,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4754,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -4024,7 +4024,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.776,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -4034,7 +4034,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.776,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -4054,7 +4054,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "SUSPECT",
-        "verdict_score": 0.3388,
+        "verdict_score": 0.3716,
         "correct": false,
         "gold_loan": false,
         "hypothesis_donor": ""
@@ -4074,7 +4074,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6284,
+        "verdict_score": 0.612,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -4101,8 +4101,8 @@
       },
       {
         "word": "yapışmak",
-        "badge": "REJECTED",
-        "score": 0.25,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.593,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": true,
@@ -4111,13 +4111,13 @@
       },
       {
         "word": "yas",
-        "badge": null,
-        "score": null,
-        "verdict": "NOT_EVALUATED",
-        "verdict_score": null,
-        "correct": false,
+        "badge": "VALIDATED",
+        "score": 0.473,
+        "verdict": "CONSISTENT",
+        "verdict_score": 0.8106,
+        "correct": true,
         "gold_loan": false,
-        "hypothesis_donor": null
+        "hypothesis_donor": "Proto-Türkçe"
       },
       {
         "word": "yayık",
@@ -4142,9 +4142,9 @@
       {
         "word": "yağmurluk",
         "badge": "NEEDS_REVIEW",
-        "score": 0.466,
+        "score": 0.392,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4718,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -4204,7 +4204,7 @@
         "badge": "REJECTED",
         "score": 0.422,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4718,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -4244,7 +4244,7 @@
         "badge": "VALIDATED",
         "score": 0.546,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4754,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -4284,7 +4284,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.776,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -4304,7 +4304,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6594,
+        "verdict_score": 0.643,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -4324,7 +4324,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.7577,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -4344,7 +4344,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "SUSPECT",
-        "verdict_score": 0.3497,
+        "verdict_score": 0.3825,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -4423,8 +4423,8 @@
         "word": "çizme",
         "badge": "NEEDS_REVIEW",
         "score": 0.369,
-        "verdict": "SUSPECT",
-        "verdict_score": 0.4481,
+        "verdict": "CONSISTENT",
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -4443,8 +4443,8 @@
         "word": "çıkar",
         "badge": "REJECTED",
         "score": 0.273,
-        "verdict": "SUSPECT",
-        "verdict_score": 0.4463,
+        "verdict": "CONSISTENT",
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -4483,8 +4483,8 @@
         "word": "özen",
         "badge": "REJECTED",
         "score": 0.239,
-        "verdict": "SUSPECT",
-        "verdict_score": 0.4499,
+        "verdict": "CONSISTENT",
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -4523,8 +4523,8 @@
         "word": "ürpermek",
         "badge": "NEEDS_REVIEW",
         "score": 0.479,
-        "verdict": "SUSPECT",
-        "verdict_score": 0.4554,
+        "verdict": "CONSISTENT",
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -4534,7 +4534,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.511,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4627,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -4704,7 +4704,7 @@
       {
         "word": "artmak",
         "badge": "NEEDS_REVIEW",
-        "score": 0.71,
+        "score": 0.589,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": true,
@@ -4764,7 +4764,7 @@
       {
         "word": "baba",
         "badge": "VALIDATED",
-        "score": 0.772,
+        "score": 0.765,
         "verdict": "CONSISTENT",
         "verdict_score": 0.7286,
         "correct": true,
@@ -4816,7 +4816,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.36,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4718,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -4874,7 +4874,7 @@
       {
         "word": "buzağı",
         "badge": "VALIDATED",
-        "score": 0.792,
+        "score": 0.815,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": true,
@@ -4915,8 +4915,8 @@
         "word": "deneme",
         "badge": "REJECTED",
         "score": 0.177,
-        "verdict": "SUSPECT",
-        "verdict_score": 0.4499,
+        "verdict": "CONSISTENT",
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -4966,7 +4966,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.541,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4572,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -4986,7 +4986,7 @@
         "badge": "VALIDATED",
         "score": 0.417,
         "verdict": "SUSPECT",
-        "verdict_score": 0.031,
+        "verdict_score": 0.0528,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -4996,7 +4996,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.29,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4645,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -5033,8 +5033,8 @@
       },
       {
         "word": "elek",
-        "badge": "REJECTED",
-        "score": 0.264,
+        "badge": "VALIDATED",
+        "score": 0.642,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": true,
@@ -5156,7 +5156,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.776,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -5166,7 +5166,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.776,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -5176,7 +5176,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6594,
+        "verdict_score": 0.643,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -5186,7 +5186,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.7596,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -5334,7 +5334,7 @@
       {
         "word": "kulluk",
         "badge": "VALIDATED",
-        "score": 0.818,
+        "score": 0.797,
         "verdict": "CONSISTENT",
         "verdict_score": 0.7122,
         "correct": true,
@@ -5366,7 +5366,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6867,
+        "verdict_score": 0.6758,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -5496,7 +5496,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7741,
+        "verdict_score": 0.7577,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -5526,7 +5526,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.5137,
+        "verdict_score": 0.5464,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -5546,7 +5546,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.401,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4718,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -5566,7 +5566,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.776,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -5586,7 +5586,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.6867,
+        "verdict_score": 0.6758,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -5654,7 +5654,7 @@
       {
         "word": "saç",
         "badge": "VALIDATED",
-        "score": 0.892,
+        "score": 0.934,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": true,
@@ -5723,8 +5723,8 @@
       },
       {
         "word": "tat",
-        "badge": "REJECTED",
-        "score": 0.288,
+        "badge": "VALIDATED",
+        "score": 0.694,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": true,
@@ -5804,7 +5804,7 @@
       {
         "word": "törpü",
         "badge": "NEEDS_REVIEW",
-        "score": 0.314,
+        "score": 0.304,
         "verdict": "CONSISTENT",
         "verdict_score": 0.5883,
         "correct": true,
@@ -5826,7 +5826,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.458,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.4572,
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -5836,7 +5836,7 @@
         "badge": "NEEDS_REVIEW",
         "score": 0.381,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7869,
+        "verdict_score": 0.776,
         "correct": true,
         "gold_loan": true,
         "hypothesis_donor": ""
@@ -5856,7 +5856,7 @@
         "badge": "INSUFFICIENT_EVIDENCE",
         "score": 0.35,
         "verdict": "SUSPECT",
-        "verdict_score": 0.3388,
+        "verdict_score": 0.3716,
         "correct": false,
         "gold_loan": false,
         "hypothesis_donor": ""
@@ -5894,7 +5894,7 @@
       {
         "word": "yaş",
         "badge": "REJECTED",
-        "score": 0.304,
+        "score": 0.322,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": true,
@@ -5955,8 +5955,8 @@
         "word": "üzerlik",
         "badge": "REJECTED",
         "score": 0.239,
-        "verdict": "SUSPECT",
-        "verdict_score": 0.4444,
+        "verdict": "CONSISTENT",
+        "verdict_score": 0.4772,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -5964,9 +5964,9 @@
       {
         "word": "ılık",
         "badge": "VALIDATED",
-        "score": 0.431,
+        "score": 0.442,
         "verdict": "CONSISTENT",
-        "verdict_score": 0.7231,
+        "verdict_score": 0.725,
         "correct": true,
         "gold_loan": false,
         "hypothesis_donor": "Proto-Türkçe"
@@ -6005,8 +6005,8 @@
     "savelyev_dev": [
       {
         "word": "dur",
-        "badge": "REJECTED",
-        "score": 0.287,
+        "badge": "VALIDATED",
+        "score": 0.663,
         "verdict": "CONSISTENT",
         "verdict_score": 0.725,
         "correct": true,
@@ -6015,7 +6015,7 @@
       {
         "word": "kan",
         "badge": "VALIDATED",
-        "score": 0.868,
+        "score": 0.894,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": false,
@@ -6032,8 +6032,8 @@
       },
       {
         "word": "yan",
-        "badge": "VALIDATED",
-        "score": 0.833,
+        "badge": "REJECTED",
+        "score": 0.335,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": true,
@@ -6050,26 +6050,26 @@
       },
       {
         "word": "gül",
-        "badge": "REJECTED",
-        "score": 0.306,
+        "badge": "NEEDS_REVIEW",
+        "score": 0.59,
         "verdict": "SUSPECT",
         "verdict_score": 0.1002,
-        "correct": true,
-        "hypothesis_form": "*kül"
+        "correct": false,
+        "hypothesis_form": "*kul"
       },
       {
         "word": "işit",
         "badge": "REJECTED",
         "score": 0.128,
-        "verdict": "SUSPECT",
-        "verdict_score": 0.4536,
+        "verdict": "CONSISTENT",
+        "verdict_score": 0.4772,
         "correct": false,
         "hypothesis_form": "*eid"
       },
       {
         "word": "deri",
-        "badge": "REJECTED",
-        "score": 0.308,
+        "badge": "VALIDATED",
+        "score": 0.748,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": true,
@@ -6077,8 +6077,8 @@
       },
       {
         "word": "em",
-        "badge": "REJECTED",
-        "score": 0.305,
+        "badge": "VALIDATED",
+        "score": 0.765,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": true,
@@ -6105,7 +6105,7 @@
       {
         "word": "geniş",
         "badge": "NEEDS_REVIEW",
-        "score": 0.505,
+        "score": 0.495,
         "verdict": "CONSISTENT",
         "verdict_score": 0.7086,
         "correct": true,
@@ -6114,7 +6114,7 @@
       {
         "word": "at",
         "badge": "VALIDATED",
-        "score": 0.873,
+        "score": 0.895,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": true,
@@ -6123,7 +6123,7 @@
       {
         "word": "üç",
         "badge": "VALIDATED",
-        "score": 0.911,
+        "score": 0.934,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": true,
@@ -6141,7 +6141,7 @@
       {
         "word": "yıl",
         "badge": "VALIDATED",
-        "score": 0.772,
+        "score": 0.797,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": true,
@@ -6150,7 +6150,7 @@
       {
         "word": "et",
         "badge": "VALIDATED",
-        "score": 0.904,
+        "score": 0.93,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": true,
@@ -6168,7 +6168,7 @@
       {
         "word": "uç",
         "badge": "VALIDATED",
-        "score": 0.755,
+        "score": 0.802,
         "verdict": "CONSISTENT",
         "verdict_score": 0.8106,
         "correct": true,

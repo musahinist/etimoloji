@@ -1,13 +1,13 @@
 {
   "_schema": "headline_eval/v1",
-  "commit": "a9af713",
+  "commit": "192d518",
   "fetchers": "yalnız yerel (tohum/indeks + indirilmiş Starling); ağ kaynakları kapalı",
   "sample": {
     "starling_words": 250,
     "savelyev_dev_turkish": 32,
     "seed": 20260924
   },
-  "headline_from_starling_share": 0.6,
+  "headline_from_starling_share": 0.596,
   "metric": "normalize_proto ile tam eşleşme, is_acceptable, NED (en yakın adaya)",
   "circularity": {
     "starling/yerel/tümü": "DÖNGÜSEL — motor Starling kökünü başlık yedeği olarak gösterir.",
@@ -20,20 +20,20 @@
     "starling/yerel/tümü": {
       "engine": {
         "n": 240,
-        "exact": 0.8042,
+        "exact": 0.8125,
         "exact_ci95": [
-          0.7493,
-          0.8494
+          0.7583,
+          0.8568
         ],
-        "acceptable": 0.8583,
+        "acceptable": 0.8667,
         "acceptable_ci95": [
-          0.8086,
-          0.8968
+          0.8178,
+          0.9039
         ],
-        "mean_ned": 0.0977,
+        "mean_ned": 0.0893,
         "mean_ned_ci95": [
-          0.0703,
-          0.129
+          0.0627,
+          0.1173
         ]
       },
       "baseline_identity": {
@@ -54,7 +54,7 @@
           0.3897
         ]
       },
-      "headline_is_starred": 0.9708,
+      "headline_is_starred": 0.9792,
       "items": [
         {
           "word": "abuş",
@@ -106,14 +106,14 @@
         },
         {
           "word": "angut",
-          "headline": "Moğolca ангир",
+          "headline": "*Ăŋ",
           "reference": [
             "*Ăŋ"
           ],
-          "provenance": "sıralayıcı hükmü — ALINTI — Moğolca",
-          "exact": false,
-          "acceptable": false,
-          "ned": 1.0,
+          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *Ăŋ); motorun rekonstrüksiyonu: *angut",
+          "exact": true,
+          "acceptable": true,
+          "ned": 0.0,
           "matched": "*Ăŋ"
         },
         {
@@ -414,7 +414,7 @@
           "reference": [
             "*bAĺ-mak"
           ],
-          "provenance": "sıralayıcı hükmü — MİRAS — *baĺmak [*PT]",
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -474,7 +474,7 @@
           "reference": [
             "*bile"
           ],
-          "provenance": "tanıklı — Starling Türk Etimoloji Veritabanı (Dybo & Starostin 2005, yerel)",
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -486,7 +486,7 @@
           "reference": [
             "*bilek"
           ],
-          "provenance": "tanıklı — Starling Türk Etimoloji Veritabanı (Dybo & Starostin 2005, yerel)",
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -559,7 +559,7 @@
           "reference": [
             "*boĺ"
           ],
-          "provenance": "tanıklı — Starling Türk Etimoloji Veritabanı (Dybo & Starostin 2005, yerel)",
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -671,7 +671,7 @@
             "*büŕ",
             "*bür"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *büŕ-); motorun rekonstrüksiyonu: *bü",
+          "provenance": "tanıklı — Starling Türk Etimoloji Veritabanı (Dybo & Starostin 2005, yerel)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -1243,7 +1243,7 @@
           "reference": [
             "*ẹk"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *ẹk); motorun rekonstrüksiyonu: *egi",
+          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *ẹk); motorun rekonstrüksiyonu: *eki",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -2350,7 +2350,7 @@
           "reference": [
             "*diāĺ"
           ],
-          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *tiāĺ); motorun rekonstrüksiyonu: *taĺ",
+          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *tiāĺ); motorun rekonstrüksiyonu: *daĺ",
           "exact": false,
           "acceptable": true,
           "ned": 0.25,
@@ -2394,14 +2394,14 @@
         },
         {
           "word": "torun",
-          "headline": "Ermenice թոռն",
+          "headline": "*tōr-um",
           "reference": [
             "*tōr-um"
           ],
-          "provenance": "sıralayıcı hükmü — ALINTI — Ermenice",
-          "exact": false,
-          "acceptable": false,
-          "ned": 1.0,
+          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *tōr-um); motorun rekonstrüksiyonu: *torun",
+          "exact": true,
+          "acceptable": true,
+          "ned": 0.0,
           "matched": "*tōr-um"
         },
         {
@@ -2977,42 +2977,42 @@
     },
     "starling/yerel/starling_dışı": {
       "engine": {
-        "n": 99,
-        "exact": 0.5253,
+        "n": 100,
+        "exact": 0.55,
         "exact_ci95": [
-          0.4278,
-          0.6208
+          0.4524,
+          0.6439
         ],
-        "acceptable": 0.6566,
+        "acceptable": 0.68,
         "acceptable_ci95": [
-          0.5588,
-          0.7427
+          0.5834,
+          0.7633
         ],
-        "mean_ned": 0.2367,
+        "mean_ned": 0.2144,
         "mean_ned_ci95": [
-          0.1787,
-          0.2999
+          0.1599,
+          0.2732
         ]
       },
       "baseline_identity": {
-        "n": 99,
-        "exact": 0.2626,
+        "n": 100,
+        "exact": 0.28,
         "exact_ci95": [
-          0.186,
-          0.357
+          0.2014,
+          0.3749
         ],
-        "acceptable": 0.3434,
+        "acceptable": 0.36,
         "acceptable_ci95": [
-          0.2573,
-          0.4412
+          0.2727,
+          0.4576
         ],
-        "mean_ned": 0.3361,
+        "mean_ned": 0.322,
         "mean_ned_ci95": [
-          0.2822,
-          0.391
+          0.2686,
+          0.3791
         ]
       },
-      "headline_is_starred": 0.9293,
+      "headline_is_starred": 0.95,
       "items": [
         {
           "word": "ad",
@@ -3037,18 +3037,6 @@
           "acceptable": false,
           "ned": 0.5,
           "matched": "*āt"
-        },
-        {
-          "word": "angut",
-          "headline": "Moğolca ангир",
-          "reference": [
-            "*Ăŋ"
-          ],
-          "provenance": "sıralayıcı hükmü — ALINTI — Moğolca",
-          "exact": false,
-          "acceptable": false,
-          "ned": 1.0,
-          "matched": "*Ăŋ"
         },
         {
           "word": "apa",
@@ -3202,7 +3190,7 @@
           "reference": [
             "*bAĺ-mak"
           ],
-          "provenance": "sıralayıcı hükmü — MİRAS — *baĺmak [*PT]",
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -3219,6 +3207,30 @@
           "acceptable": true,
           "ned": 0.0,
           "matched": "*bẹ̄l"
+        },
+        {
+          "word": "bile",
+          "headline": "*bile",
+          "reference": [
+            "*bile"
+          ],
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
+          "exact": true,
+          "acceptable": true,
+          "ned": 0.0,
+          "matched": "*bile"
+        },
+        {
+          "word": "bilek",
+          "headline": "*bilek",
+          "reference": [
+            "*bilek"
+          ],
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
+          "exact": true,
+          "acceptable": true,
+          "ned": 0.0,
+          "matched": "*bilek"
         },
         {
           "word": "boynuz",
@@ -3244,6 +3256,18 @@
           "acceptable": true,
           "ned": 0.0,
           "matched": "*boŕ"
+        },
+        {
+          "word": "boş",
+          "headline": "*boĺ",
+          "reference": [
+            "*boĺ"
+          ],
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
+          "exact": true,
+          "acceptable": true,
+          "ned": 0.0,
+          "matched": "*boĺ"
         },
         {
           "word": "bucak",
@@ -3921,7 +3945,7 @@
           "reference": [
             "*diāĺ"
           ],
-          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *tiāĺ); motorun rekonstrüksiyonu: *taĺ",
+          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *tiāĺ); motorun rekonstrüksiyonu: *daĺ",
           "exact": false,
           "acceptable": true,
           "ned": 0.25,
@@ -3938,18 +3962,6 @@
           "acceptable": true,
           "ned": 0.0,
           "matched": "*topra-k"
-        },
-        {
-          "word": "torun",
-          "headline": "Ermenice թոռն",
-          "reference": [
-            "*tōr-um"
-          ],
-          "provenance": "sıralayıcı hükmü — ALINTI — Ermenice",
-          "exact": false,
-          "acceptable": false,
-          "ned": 1.0,
-          "matched": "*tōr-um"
         },
         {
           "word": "tütün",
@@ -4232,10 +4244,10 @@
           0.4743,
           0.5995
         ],
-        "mean_ned": 0.273,
+        "mean_ned": 0.2697,
         "mean_ned_ci95": [
-          0.2374,
-          0.3121
+          0.235,
+          0.3072
         ]
       },
       "baseline_identity": {
@@ -4256,7 +4268,7 @@
           0.3897
         ]
       },
-      "headline_is_starred": 0.7625,
+      "headline_is_starred": 0.7667,
       "items": [
         {
           "word": "abuş",
@@ -4308,14 +4320,14 @@
         },
         {
           "word": "angut",
-          "headline": "Moğolca ангир",
+          "headline": "*āŋkït",
           "reference": [
             "*Ăŋ"
           ],
-          "provenance": "sıralayıcı hükmü — ALINTI — Moğolca",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *āŋkït); motorun rekonstrüksiyonu: *angut",
           "exact": false,
           "acceptable": false,
-          "ned": 1.0,
+          "ned": 0.8,
           "matched": "*Ăŋ"
         },
         {
@@ -4616,7 +4628,7 @@
           "reference": [
             "*bAĺ-mak"
           ],
-          "provenance": "türetilmiş — tanıksız kelime kanıtlayıcısı",
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -4676,7 +4688,7 @@
           "reference": [
             "*bile"
           ],
-          "provenance": "türetilmiş — tanıksız kelime kanıtlayıcısı",
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -4688,7 +4700,7 @@
           "reference": [
             "*bilek"
           ],
-          "provenance": "türetilmiş — tanıksız kelime kanıtlayıcısı",
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -4761,7 +4773,7 @@
           "reference": [
             "*boĺ"
           ],
-          "provenance": "türetilmiş — tanıksız kelime kanıtlayıcısı",
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -4847,7 +4859,7 @@
             "*büŕ",
             "*bür"
           ],
-          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
+          "provenance": "türetilmiş — A-HVP inceleme gerektiren miras kökü (Proto-Türkçe)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -4868,12 +4880,12 @@
         },
         {
           "word": "büz",
-          "headline": "*bü",
+          "headline": "büz",
           "reference": [
             "*büŕ",
             "*bür"
           ],
-          "provenance": "türetilmiş — tanıksız kelime kanıtlayıcısı",
+          "provenance": "yok — kök belirlenemedi",
           "exact": false,
           "acceptable": false,
           "ned": 0.3333,
@@ -4897,7 +4909,7 @@
           "reference": [
             "*tāŋ"
           ],
-          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
+          "provenance": "sıralayıcı hükmü — MİRAS — *dan [*PCT]",
           "exact": false,
           "acceptable": false,
           "ned": 1.0,
@@ -5445,7 +5457,7 @@
           "reference": [
             "*ẹk"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *ẹk(k)i); motorun rekonstrüksiyonu: *egi",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *ẹk(k)i); motorun rekonstrüksiyonu: *eki",
           "exact": false,
           "acceptable": false,
           "ned": 0.5,
@@ -5766,7 +5778,7 @@
           "reference": [
             "*Kuŕ"
           ],
-          "provenance": "türetilmiş — tanıksız kelime kanıtlayıcısı",
+          "provenance": "türetilmiş — A-HVP inceleme gerektiren miras kökü (Proto-Türkçe)",
           "exact": false,
           "acceptable": false,
           "ned": 0.3333,
@@ -6552,7 +6564,7 @@
           "reference": [
             "*diāĺ"
           ],
-          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *tiāĺ); motorun rekonstrüksiyonu: *taĺ",
+          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *tiāĺ); motorun rekonstrüksiyonu: *daĺ",
           "exact": false,
           "acceptable": true,
           "ned": 0.25,
@@ -6596,14 +6608,14 @@
         },
         {
           "word": "torun",
-          "headline": "Ermenice թոռն",
+          "headline": "*tōr-",
           "reference": [
             "*tōr-um"
           ],
-          "provenance": "sıralayıcı hükmü — ALINTI — Ermenice",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *tōr-); motorun rekonstrüksiyonu: *torun",
           "exact": false,
           "acceptable": false,
-          "ned": 1.0,
+          "ned": 0.4,
           "matched": "*tōr-um"
         },
         {
@@ -6951,7 +6963,7 @@
             "*jüm",
             "*jum"
           ],
-          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *yum-); motorun rekonstrüksiyonu: *jumr",
+          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *yum-); motorun rekonstrüksiyonu: *jum",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -7319,7 +7331,7 @@
           "reference": [
             "*em"
           ],
-          "provenance": "sıralayıcı hükmü — MİRAS — *em [*PCT]",
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -7746,7 +7758,7 @@
           "reference": [
             "*em"
           ],
-          "provenance": "türetilmiş — tanıksız kelime kanıtlayıcısı",
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,

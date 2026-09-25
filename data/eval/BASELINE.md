@@ -5,7 +5,7 @@ düzenlemeyin. Her sayı, adı geçen veri kümesi sürümünden sıfırdan
 hesaplanır.
 
 - **Veri kümesi:** `savelyevturkic` `v2.1` (commit `4a540590580f`)
-- **Ölçüm:** 2026-09-24T09:15:12+00:00
+- **Ölçüm:** 2026-09-25T22:57:14+00:00
 - **Bölüm:** `dev`
 - **Altın standart:** 400 madde · train 237 / dev 83 / test 80
 - **Kavram sızıntısı:** 0 (0 olmalı)
@@ -21,13 +21,13 @@ raporlanmaz — n=400'de en oynak ölçüdür.
 
 | Sistem | **NED**↓ | **BCFS**↑ | ED↓ | FER↓ | tam | kapsam |
 |---|---|---|---|---|---|---|
-| **comparative** | **0.309** | **0.597** | 1.51 | 0.264 | 0.398 | 0.976 |
+| **comparative** | **0.308** | **0.600** | 1.48 | 0.262 | 0.398 | 0.976 |
 | copy_anchor | **0.390** | **0.529** | 1.87 | 0.351 | 0.229 | 1.000 |
 | copy_random_daughter | **0.401** | **0.520** | 1.84 | 0.351 | 0.241 | 1.000 |
 | copy_longest | **0.500** | **0.429** | 2.57 | 0.512 | 0.157 | 1.000 |
 | majority_character | **0.339** | **0.571** | 1.59 | 0.297 | 0.337 | 1.000 |
 
-> **BİRİNCİL (NED)** `comparative` vs `majority_character`: fark **-0.0301** (düşük olan iyi), %95 GA [-0.0679, +0.0069] → anlamlı DEĞİL — güven aralığı sıfırı içeriyor.
+> **BİRİNCİL (NED)** `comparative` vs `majority_character`: fark **-0.0307** (düşük olan iyi), %95 GA [-0.0688, +0.0065] → anlamlı DEĞİL — güven aralığı sıfırı içeriyor.
 
 > ikincil (tam doğruluk) `comparative` vs `majority_character`: fark **+0.0602**, %95 GA [-0.0120, +0.1325], permütasyon p=0.228, McNemar p=0.227 → anlamlı DEĞİL — güven aralığı sıfırı içeriyor.
 
@@ -41,13 +41,13 @@ raporlanmaz — n=400'de en oynak ölçüdür.
 
 | Sistem | **NED**↓ | **BCFS**↑ | ED↓ | FER↓ | tam | kapsam |
 |---|---|---|---|---|---|---|
-| **comparative** | **0.299** | **0.603** | 1.47 | 0.265 | 0.410 | 0.976 |
+| **comparative** | **0.299** | **0.605** | 1.45 | 0.263 | 0.410 | 0.976 |
 | copy_anchor | **0.390** | **0.529** | 1.87 | 0.351 | 0.229 | 1.000 |
 | copy_random_daughter | **0.436** | **0.471** | 2.04 | 0.382 | 0.205 | 1.000 |
 | copy_longest | **0.540** | **0.412** | 2.77 | 0.553 | 0.084 | 1.000 |
 | majority_character | **0.368** | **0.539** | 1.75 | 0.324 | 0.289 | 1.000 |
 
-> **BİRİNCİL (NED)** `comparative` vs `majority_character`: fark **-0.0690** (düşük olan iyi), %95 GA [-0.1122, -0.0282] → **motor daha iyi**.
+> **BİRİNCİL (NED)** `comparative` vs `majority_character`: fark **-0.0697** (düşük olan iyi), %95 GA [-0.1130, -0.0287] → **motor daha iyi**.
 
 > ikincil (tam doğruluk) `comparative` vs `majority_character`: fark **+0.1205**, %95 GA [+0.0361, +0.2048], permütasyon p=0.012, McNemar p=0.013 → **anlamlı**.
 
@@ -109,7 +109,7 @@ bir kelimeye 🟢/🟡 rozet verme oranı sıfır olmalıdır.
 |---|---|---|---|---|
 | `fonotaktik_gecerli_sahte` | 58 | 1 | 0.017 | **0.000** |
 | `bariz_sahte` | 4 | 0 | 0.000 | **0.000** |
-| `sahte_akraba` | 4 | 0 | 0.000 | **0.000** |
+| `sahte_akraba` | 1 | 0 | 0.000 | **0.000** |
 | `alinti_tuzagi` | 5 | 0 | 0.000 | **0.000** |
 | `eşadlı` | 3 | 3 | 1.000 | **0.000** |
 

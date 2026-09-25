@@ -1,18 +1,11 @@
 {
   "n": 60,
-  "agreement_with_gold": 0.9833,
+  "agreement_with_gold": 1.0,
   "confusion": {
     "alıntı->alıntı": 30,
-    "miras->miras": 29,
-    "miras->belirsiz": 1
+    "miras->miras": 30
   },
-  "disagreements": [
-    {
-      "word": "duyar",
-      "gold": "miras",
-      "verdict": "belirsiz"
-    }
-  ],
+  "disagreements": [],
   "issues": {
     "sınıflandırıcı alıntı, sıralayıcı miras": {
       "count": 2,
@@ -24,7 +17,7 @@
     "ekli kelime bütün olarak kök kurulmuş": {
       "count": 1,
       "words": [
-        "kolaylaşmak"
+        "kurumsal"
       ]
     }
   },

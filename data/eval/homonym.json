@@ -1,6 +1,6 @@
 {
   "_schema": "homonym_eval/v1",
-  "commit": "a9af713",
+  "commit": "192d518",
   "circularity": "DÖNGÜSEL KAYNAK: motorun sözlük indeksi (index.db) altın kümeyle AYNI kaikki dökümünden kurulur. Ölçülen, motorun aynı kaynaktaki iki etimolojiyi ayırıp ayıramadığıdır; bağımsız doğruluk değildir. Starling açık düzende başlık Starling'den de gelebilir (Wiktionary Proto-Türkçe biçimleri kısmen EDAL soyundan).",
   "source": "kaikki İngilizce Wiktionary dökümü (data/lexicons/{tr,ota}.jsonl.gz), Etymology N bölümleri",
   "dump": {
@@ -17,13 +17,15 @@
         "5": 1
       },
       "origin_mix": {
-        "alıntı": 109,
+        "alıntı": 106,
         "miras": 76,
         "alıntı+miras": 64,
         "?+miras": 51,
-        "?+alıntı": 49,
+        "?+alıntı": 48,
         "?": 30,
-        "?+alıntı+miras": 3
+        "alıntı+diriltme": 3,
+        "?+alıntı+miras": 3,
+        "?+diriltme": 1
       },
       "with_proto_root_in_2plus": 67
     },
@@ -76,29 +78,29 @@
         "a": {
           "a_fark_ediyor": {
             "n": 150,
-            "k": 110,
-            "oran": 0.7333,
+            "k": 115,
+            "oran": 0.7667,
             "ci95": [
-              0.6574,
-              0.7976
+              0.6928,
+              0.8272
             ]
           },
           "a_uyari_tanik": {
             "n": 150,
-            "k": 44,
-            "oran": 0.2933,
+            "k": 57,
+            "oran": 0.38,
             "ci95": [
-              0.2264,
-              0.3706
+              0.3062,
+              0.4598
             ]
           },
           "a_uyari_metin": {
             "n": 150,
-            "k": 58,
-            "oran": 0.3867,
+            "k": 59,
+            "oran": 0.3933,
             "ci95": [
-              0.3125,
-              0.4665
+              0.3188,
+              0.4732
             ]
           },
           "a_cok_koken": {
@@ -122,27 +124,27 @@
           "baslik_E1_payi": 0.8016,
           "sans_tabani_E1": 0.4828,
           "tutarsiz_baslik": {
-            "n": 57,
+            "n": 61,
             "k": 0,
             "oran": 0.0,
             "ci95": [
               0.0,
-              0.0631
+              0.0592
             ]
           }
         },
         "c": {
-          "tanik_atanan_payi": 0.4563,
+          "tanik_atanan_payi": 0.4778,
           "karisik": {
             "n": 94,
-            "k": 6,
-            "oran": 0.0638,
+            "k": 5,
+            "oran": 0.0532,
             "ci95": [
-              0.0296,
-              0.1323
+              0.0229,
+              0.1185
             ]
           },
-          "yabanci_tanik_payi": 0.0204,
+          "yabanci_tanik_payi": 0.0187,
           "baslik_tanik_catismasi": {
             "n": 77,
             "k": 1,
@@ -212,15 +214,15 @@
           "word": "anık",
           "k": 2,
           "a_uyari_tanik": false,
-          "a_uyari_metin": false,
+          "a_uyari_metin": true,
           "a_cok_koken": false,
-          "a_fark_ediyor": false,
+          "a_fark_ediyor": true,
           "surfaced_etymologies": [
             1
           ],
-          "b_headline": "oui 𐽰𐽰𐽺𐽳𐽲",
+          "b_headline": "*anu-",
           "b_headline_etym": 1,
-          "b_headline_basis": "verici",
+          "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
           "c_witnesses": 1,
@@ -257,7 +259,7 @@
         {
           "word": "arz",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": false,
           "a_cok_koken": true,
           "a_fark_ediyor": true,
@@ -270,7 +272,7 @@
           "b_headline_basis": "verici",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 4,
+          "c_witnesses": 3,
           "c_assigned": 1,
           "c_by_etym": {
             "1": 1
@@ -295,10 +297,10 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 23,
-          "c_assigned": 17,
+          "c_witnesses": 24,
+          "c_assigned": 18,
           "c_by_etym": {
-            "1": 17
+            "1": 18
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -391,7 +393,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 44,
+          "c_witnesses": 40,
           "c_assigned": 36,
           "c_by_etym": {
             "1": 36
@@ -455,7 +457,7 @@
         {
           "word": "bar",
           "k": 4,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": true,
           "a_cok_koken": true,
           "a_fark_ediyor": true,
@@ -469,7 +471,7 @@
           "b_headline_basis": "verici",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 20,
+          "c_witnesses": 19,
           "c_assigned": 0,
           "c_by_etym": {},
           "c_reference_etym": 3,
@@ -503,7 +505,7 @@
         {
           "word": "baş",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": false,
           "a_cok_koken": true,
           "a_fark_ediyor": true,
@@ -540,10 +542,10 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 20,
-          "c_assigned": 10,
+          "c_witnesses": 21,
+          "c_assigned": 11,
           "c_by_etym": {
-            "1": 9,
+            "1": 10,
             "3": 1
           },
           "c_reference_etym": 1,
@@ -564,17 +566,16 @@
           "b_headline": "*bel-",
           "b_headline_etym": 1,
           "b_headline_basis": "kök",
-          "b_meaning_etym": null,
+          "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 15,
-          "c_assigned": 3,
+          "c_witnesses": 11,
+          "c_assigned": 2,
           "c_by_etym": {
-            "1": 2,
-            "2": 1
+            "1": 2
           },
           "c_reference_etym": 1,
-          "c_foreign": 1,
-          "c_karisik": true,
+          "c_foreign": 0,
+          "c_karisik": false,
           "c_baslik_tanik_catismasi": false
         },
         {
@@ -593,7 +594,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 34,
+          "c_witnesses": 30,
           "c_assigned": 2,
           "c_by_etym": {
             "1": 1,
@@ -705,10 +706,10 @@
         {
           "word": "biz",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": false,
           "a_cok_koken": false,
-          "a_fark_ediyor": false,
+          "a_fark_ediyor": true,
           "surfaced_etymologies": [
             1
           ],
@@ -717,7 +718,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 40,
+          "c_witnesses": 29,
           "c_assigned": 0,
           "c_by_etym": {},
           "c_reference_etym": 1,
@@ -834,7 +835,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 2,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 3,
+          "c_witnesses": 2,
           "c_assigned": 1,
           "c_by_etym": {
             "2": 1
@@ -920,7 +921,7 @@
         {
           "word": "dil",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": true,
           "a_cok_koken": false,
           "a_fark_ediyor": true,
@@ -932,7 +933,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 36,
+          "c_witnesses": 35,
           "c_assigned": 25,
           "c_by_etym": {
             "1": 25
@@ -1015,10 +1016,10 @@
         {
           "word": "dolu",
           "k": 2,
-          "a_uyari_tanik": true,
+          "a_uyari_tanik": false,
           "a_uyari_metin": false,
           "a_cok_koken": false,
-          "a_fark_ediyor": true,
+          "a_fark_ediyor": false,
           "surfaced_etymologies": [
             1
           ],
@@ -1052,7 +1053,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 17,
+          "c_witnesses": 16,
           "c_assigned": 0,
           "c_by_etym": {},
           "c_reference_etym": 1,
@@ -1076,10 +1077,10 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 17,
-          "c_assigned": 14,
+          "c_witnesses": 18,
+          "c_assigned": 15,
           "c_by_etym": {
-            "1": 14
+            "1": 15
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -1101,10 +1102,10 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 21,
-          "c_assigned": 10,
+          "c_witnesses": 22,
+          "c_assigned": 11,
           "c_by_etym": {
-            "1": 10
+            "1": 11
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -1152,7 +1153,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 9,
+          "c_witnesses": 8,
           "c_assigned": 1,
           "c_by_etym": {
             "1": 1
@@ -1177,10 +1178,10 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 2,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 34,
-          "c_assigned": 15,
+          "c_witnesses": 38,
+          "c_assigned": 17,
           "c_by_etym": {
-            "2": 15
+            "2": 17
           },
           "c_reference_etym": 2,
           "c_foreign": 0,
@@ -1190,7 +1191,7 @@
         {
           "word": "esir",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": false,
           "a_cok_koken": true,
           "a_fark_ediyor": true,
@@ -1203,7 +1204,7 @@
           "b_headline_basis": "verici",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 7,
+          "c_witnesses": 5,
           "c_assigned": 2,
           "c_by_etym": {
             "1": 2
@@ -1328,10 +1329,10 @@
           "b_headline_basis": "verici",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 18,
-          "c_assigned": 7,
+          "c_witnesses": 12,
+          "c_assigned": 5,
           "c_by_etym": {
-            "1": 7
+            "1": 5
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -1351,9 +1352,9 @@
           "b_headline": "*gēŋ",
           "b_headline_etym": 1,
           "b_headline_basis": "kök",
-          "b_meaning_etym": null,
+          "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 22,
+          "c_witnesses": 21,
           "c_assigned": 19,
           "c_by_etym": {
             "1": 19
@@ -1646,9 +1647,9 @@
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
           "c_witnesses": 38,
-          "c_assigned": 31,
+          "c_assigned": 30,
           "c_by_etym": {
-            "1": 31
+            "1": 30
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -1695,7 +1696,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 4,
+          "c_witnesses": 3,
           "c_assigned": 0,
           "c_by_etym": {},
           "c_reference_etym": 1,
@@ -1757,19 +1758,19 @@
         {
           "word": "kaymak",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": false,
           "a_cok_koken": false,
-          "a_fark_ediyor": false,
+          "a_fark_ediyor": true,
           "surfaced_etymologies": [
             1
           ],
           "b_headline": "*kańak",
           "b_headline_etym": 1,
           "b_headline_basis": "kök",
-          "b_meaning_etym": null,
+          "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 21,
+          "c_witnesses": 20,
           "c_assigned": 5,
           "c_by_etym": {
             "1": 5
@@ -1782,7 +1783,7 @@
         {
           "word": "kaz",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": true,
           "a_cok_koken": false,
           "a_fark_ediyor": true,
@@ -1794,7 +1795,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 38,
+          "c_witnesses": 32,
           "c_assigned": 29,
           "c_by_etym": {
             "1": 29
@@ -1807,10 +1808,10 @@
         {
           "word": "kol",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": false,
           "a_cok_koken": false,
-          "a_fark_ediyor": false,
+          "a_fark_ediyor": true,
           "surfaced_etymologies": [
             1
           ],
@@ -1819,10 +1820,10 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 36,
-          "c_assigned": 22,
+          "c_witnesses": 32,
+          "c_assigned": 21,
           "c_by_etym": {
-            "1": 22
+            "1": 21
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -1967,12 +1968,12 @@
           "b_headline": "*kül",
           "b_headline_etym": 1,
           "b_headline_basis": "kök",
-          "b_meaning_etym": null,
+          "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 17,
-          "c_assigned": 8,
+          "c_witnesses": 16,
+          "c_assigned": 9,
           "c_by_etym": {
-            "1": 8
+            "1": 9
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -2226,7 +2227,7 @@
         {
           "word": "meyan",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": true,
           "a_cok_koken": false,
           "a_fark_ediyor": true,
@@ -2236,7 +2237,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 1,
+          "c_witnesses": 0,
           "c_assigned": 0,
           "c_by_etym": {},
           "c_reference_etym": null,
@@ -2749,7 +2750,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 11,
+          "c_witnesses": 10,
           "c_assigned": 2,
           "c_by_etym": {
             "1": 2
@@ -2834,7 +2835,7 @@
         {
           "word": "sin",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": true,
           "a_cok_koken": false,
           "a_fark_ediyor": true,
@@ -2844,7 +2845,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 8,
+          "c_witnesses": 3,
           "c_assigned": 3,
           "c_by_etym": {
             "2": 3
@@ -2869,10 +2870,10 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 15,
-          "c_assigned": 9,
+          "c_witnesses": 18,
+          "c_assigned": 10,
           "c_by_etym": {
-            "1": 9
+            "1": 10
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -2988,7 +2989,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 46,
+          "c_witnesses": 43,
           "c_assigned": 0,
           "c_by_etym": {},
           "c_reference_etym": null,
@@ -3058,12 +3059,12 @@
           "b_headline": "*sɨba-",
           "b_headline_etym": 1,
           "b_headline_basis": "kök",
-          "b_meaning_etym": 1,
+          "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 10,
-          "c_assigned": 8,
+          "c_witnesses": 9,
+          "c_assigned": 7,
           "c_by_etym": {
-            "1": 8
+            "1": 7
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -3168,10 +3169,10 @@
         {
           "word": "tor",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": false,
           "a_cok_koken": false,
-          "a_fark_ediyor": false,
+          "a_fark_ediyor": true,
           "surfaced_etymologies": [
             2
           ],
@@ -3180,7 +3181,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 11,
+          "c_witnesses": 10,
           "c_assigned": 1,
           "c_by_etym": {
             "2": 1
@@ -3374,10 +3375,10 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 7,
-          "c_assigned": 6,
+          "c_witnesses": 8,
+          "c_assigned": 7,
           "c_by_etym": {
-            "1": 5,
+            "1": 6,
             "2": 1
           },
           "c_reference_etym": null,
@@ -3400,7 +3401,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 3,
+          "c_witnesses": 2,
           "c_assigned": 1,
           "c_by_etym": {
             "2": 1
@@ -3471,10 +3472,10 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 35,
-          "c_assigned": 30,
+          "c_witnesses": 34,
+          "c_assigned": 31,
           "c_by_etym": {
-            "1": 29,
+            "1": 30,
             "2": 1
           },
           "c_reference_etym": 1,
@@ -3609,19 +3610,19 @@
         {
           "word": "öz",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": false,
           "a_cok_koken": false,
-          "a_fark_ediyor": false,
+          "a_fark_ediyor": true,
           "surfaced_etymologies": [
             1
           ],
           "b_headline": "*ȫŕ",
           "b_headline_etym": 1,
           "b_headline_basis": "kök",
-          "b_meaning_etym": null,
+          "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 9,
+          "c_witnesses": 7,
           "c_assigned": 6,
           "c_by_etym": {
             "1": 6
@@ -3732,7 +3733,7 @@
         {
           "word": "şer",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": true,
           "a_cok_koken": true,
           "a_fark_ediyor": true,
@@ -3745,7 +3746,7 @@
           "b_headline_basis": "verici",
           "b_meaning_etym": 2,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 2,
+          "c_witnesses": 1,
           "c_assigned": 1,
           "c_by_etym": {
             "2": 1
@@ -3835,29 +3836,29 @@
         "a": {
           "a_fark_ediyor": {
             "n": 150,
-            "k": 108,
-            "oran": 0.72,
+            "k": 112,
+            "oran": 0.7467,
             "ci95": [
-              0.6433,
-              0.7857
+              0.6715,
+              0.8095
             ]
           },
           "a_uyari_tanik": {
             "n": 150,
-            "k": 39,
-            "oran": 0.26,
+            "k": 51,
+            "oran": 0.34,
             "ci95": [
-              0.1964,
-              0.3356
+              0.269,
+              0.419
             ]
           },
           "a_uyari_metin": {
             "n": 150,
-            "k": 57,
-            "oran": 0.38,
+            "k": 58,
+            "oran": 0.3867,
             "ci95": [
-              0.3062,
-              0.4598
+              0.3125,
+              0.4665
             ]
           },
           "a_cok_koken": {
@@ -3872,36 +3873,36 @@
         },
         "b": {
           "baslik_etimolojisi": {
-            "E1": 106,
+            "E1": 105,
             "E2": 21,
-            "hiçbiri": 14,
+            "hiçbiri": 15,
             "belirsiz": 8,
             "E3": 1
           },
-          "baslik_E1_payi": 0.8281,
-          "sans_tabani_E1": 0.4831,
+          "baslik_E1_payi": 0.8268,
+          "sans_tabani_E1": 0.4829,
           "tutarsiz_baslik": {
-            "n": 54,
+            "n": 57,
             "k": 0,
             "oran": 0.0,
             "ci95": [
               0.0,
-              0.0664
+              0.0631
             ]
           }
         },
         "c": {
-          "tanik_atanan_payi": 0.4315,
+          "tanik_atanan_payi": 0.4518,
           "karisik": {
             "n": 93,
-            "k": 6,
-            "oran": 0.0645,
+            "k": 5,
+            "oran": 0.0538,
             "ci95": [
-              0.0299,
-              0.1337
+              0.0232,
+              0.1197
             ]
           },
-          "yabanci_tanik_payi": 0.026,
+          "yabanci_tanik_payi": 0.024,
           "baslik_tanik_catismasi": {
             "n": 78,
             "k": 2,
@@ -3970,21 +3971,19 @@
           "word": "anık",
           "k": 2,
           "a_uyari_tanik": false,
-          "a_uyari_metin": false,
+          "a_uyari_metin": true,
           "a_cok_koken": false,
-          "a_fark_ediyor": false,
-          "surfaced_etymologies": [
-            1
-          ],
-          "b_headline": "oui 𐽰𐽰𐽺𐽳𐽲",
-          "b_headline_etym": 1,
-          "b_headline_basis": "verici",
+          "a_fark_ediyor": true,
+          "surfaced_etymologies": [],
+          "b_headline": "anık",
+          "b_headline_etym": "hiçbiri",
+          "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
           "c_witnesses": 0,
           "c_assigned": 0,
           "c_by_etym": {},
-          "c_reference_etym": 1,
+          "c_reference_etym": null,
           "c_foreign": 0,
           "c_karisik": false,
           "c_baslik_tanik_catismasi": false
@@ -4015,7 +4014,7 @@
         {
           "word": "arz",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": false,
           "a_cok_koken": true,
           "a_fark_ediyor": true,
@@ -4028,7 +4027,7 @@
           "b_headline_basis": "verici",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 4,
+          "c_witnesses": 3,
           "c_assigned": 1,
           "c_by_etym": {
             "1": 1
@@ -4053,10 +4052,10 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 23,
-          "c_assigned": 17,
+          "c_witnesses": 24,
+          "c_assigned": 18,
           "c_by_etym": {
-            "1": 17
+            "1": 18
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -4149,7 +4148,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 44,
+          "c_witnesses": 40,
           "c_assigned": 36,
           "c_by_etym": {
             "1": 36
@@ -4213,7 +4212,7 @@
         {
           "word": "bar",
           "k": 4,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": true,
           "a_cok_koken": true,
           "a_fark_ediyor": true,
@@ -4227,7 +4226,7 @@
           "b_headline_basis": "verici",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 20,
+          "c_witnesses": 19,
           "c_assigned": 0,
           "c_by_etym": {},
           "c_reference_etym": 3,
@@ -4261,7 +4260,7 @@
         {
           "word": "baş",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": false,
           "a_cok_koken": true,
           "a_fark_ediyor": true,
@@ -4298,10 +4297,10 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 20,
-          "c_assigned": 10,
+          "c_witnesses": 21,
+          "c_assigned": 11,
           "c_by_etym": {
-            "1": 9,
+            "1": 10,
             "3": 1
           },
           "c_reference_etym": 1,
@@ -4322,17 +4321,16 @@
           "b_headline": "*bel-",
           "b_headline_etym": 1,
           "b_headline_basis": "kök",
-          "b_meaning_etym": null,
+          "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 15,
-          "c_assigned": 3,
+          "c_witnesses": 11,
+          "c_assigned": 2,
           "c_by_etym": {
-            "1": 2,
-            "2": 1
+            "1": 2
           },
           "c_reference_etym": 1,
-          "c_foreign": 1,
-          "c_karisik": true,
+          "c_foreign": 0,
+          "c_karisik": false,
           "c_baslik_tanik_catismasi": false
         },
         {
@@ -4351,7 +4349,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 34,
+          "c_witnesses": 30,
           "c_assigned": 2,
           "c_by_etym": {
             "1": 1,
@@ -4461,10 +4459,10 @@
         {
           "word": "biz",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": false,
           "a_cok_koken": false,
-          "a_fark_ediyor": false,
+          "a_fark_ediyor": true,
           "surfaced_etymologies": [
             1
           ],
@@ -4473,7 +4471,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 40,
+          "c_witnesses": 29,
           "c_assigned": 0,
           "c_by_etym": {},
           "c_reference_etym": 1,
@@ -4590,7 +4588,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 5,
+          "c_witnesses": 4,
           "c_assigned": 2,
           "c_by_etym": {
             "1": 2
@@ -4676,7 +4674,7 @@
         {
           "word": "dil",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": true,
           "a_cok_koken": false,
           "a_fark_ediyor": true,
@@ -4688,7 +4686,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 36,
+          "c_witnesses": 35,
           "c_assigned": 25,
           "c_by_etym": {
             "1": 25
@@ -4771,10 +4769,10 @@
         {
           "word": "dolu",
           "k": 2,
-          "a_uyari_tanik": true,
+          "a_uyari_tanik": false,
           "a_uyari_metin": false,
           "a_cok_koken": false,
-          "a_fark_ediyor": true,
+          "a_fark_ediyor": false,
           "surfaced_etymologies": [
             1
           ],
@@ -4808,7 +4806,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 17,
+          "c_witnesses": 16,
           "c_assigned": 0,
           "c_by_etym": {},
           "c_reference_etym": 1,
@@ -4832,10 +4830,10 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 17,
-          "c_assigned": 14,
+          "c_witnesses": 18,
+          "c_assigned": 15,
           "c_by_etym": {
-            "1": 14
+            "1": 15
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -4857,10 +4855,10 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 21,
-          "c_assigned": 10,
+          "c_witnesses": 22,
+          "c_assigned": 11,
           "c_by_etym": {
-            "1": 10
+            "1": 11
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -4908,7 +4906,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 15,
+          "c_witnesses": 14,
           "c_assigned": 3,
           "c_by_etym": {
             "2": 3
@@ -4933,10 +4931,10 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 2,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 34,
-          "c_assigned": 15,
+          "c_witnesses": 38,
+          "c_assigned": 17,
           "c_by_etym": {
-            "2": 15
+            "2": 17
           },
           "c_reference_etym": 2,
           "c_foreign": 0,
@@ -4946,7 +4944,7 @@
         {
           "word": "esir",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": false,
           "a_cok_koken": true,
           "a_fark_ediyor": true,
@@ -4959,7 +4957,7 @@
           "b_headline_basis": "verici",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 7,
+          "c_witnesses": 5,
           "c_assigned": 2,
           "c_by_etym": {
             "1": 2
@@ -5084,10 +5082,10 @@
           "b_headline_basis": "verici",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 18,
-          "c_assigned": 7,
+          "c_witnesses": 12,
+          "c_assigned": 5,
           "c_by_etym": {
-            "1": 7
+            "1": 5
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -5400,9 +5398,9 @@
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
           "c_witnesses": 38,
-          "c_assigned": 31,
+          "c_assigned": 30,
           "c_by_etym": {
-            "1": 31
+            "1": 30
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -5437,7 +5435,7 @@
         {
           "word": "kart",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": true,
           "a_cok_koken": false,
           "a_fark_ediyor": true,
@@ -5447,7 +5445,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 5,
+          "c_witnesses": 4,
           "c_assigned": 0,
           "c_by_etym": {},
           "c_reference_etym": null,
@@ -5509,19 +5507,19 @@
         {
           "word": "kaymak",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": false,
           "a_cok_koken": false,
-          "a_fark_ediyor": false,
+          "a_fark_ediyor": true,
           "surfaced_etymologies": [
             1
           ],
           "b_headline": "*kańak",
           "b_headline_etym": 1,
           "b_headline_basis": "kök",
-          "b_meaning_etym": null,
+          "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 21,
+          "c_witnesses": 20,
           "c_assigned": 5,
           "c_by_etym": {
             "1": 5
@@ -5534,7 +5532,7 @@
         {
           "word": "kaz",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": true,
           "a_cok_koken": false,
           "a_fark_ediyor": true,
@@ -5546,7 +5544,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 38,
+          "c_witnesses": 32,
           "c_assigned": 29,
           "c_by_etym": {
             "1": 29
@@ -5559,10 +5557,10 @@
         {
           "word": "kol",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": false,
           "a_cok_koken": false,
-          "a_fark_ediyor": false,
+          "a_fark_ediyor": true,
           "surfaced_etymologies": [
             1
           ],
@@ -5571,10 +5569,10 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 36,
-          "c_assigned": 22,
+          "c_witnesses": 32,
+          "c_assigned": 21,
           "c_by_etym": {
-            "1": 22
+            "1": 21
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -5718,12 +5716,12 @@
           "b_headline": "*kül",
           "b_headline_etym": 1,
           "b_headline_basis": "kök",
-          "b_meaning_etym": null,
+          "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 17,
-          "c_assigned": 8,
+          "c_witnesses": 16,
+          "c_assigned": 9,
           "c_by_etym": {
-            "1": 8
+            "1": 9
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -6502,7 +6500,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 11,
+          "c_witnesses": 10,
           "c_assigned": 2,
           "c_by_etym": {
             "1": 2
@@ -6587,7 +6585,7 @@
         {
           "word": "sin",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": true,
           "a_cok_koken": false,
           "a_fark_ediyor": true,
@@ -6597,7 +6595,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 8,
+          "c_witnesses": 3,
           "c_assigned": 3,
           "c_by_etym": {
             "2": 3
@@ -6622,10 +6620,10 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 15,
-          "c_assigned": 9,
+          "c_witnesses": 18,
+          "c_assigned": 10,
           "c_by_etym": {
-            "1": 9
+            "1": 10
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -6741,7 +6739,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 46,
+          "c_witnesses": 43,
           "c_assigned": 0,
           "c_by_etym": {},
           "c_reference_etym": null,
@@ -6921,10 +6919,10 @@
         {
           "word": "tor",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": false,
           "a_cok_koken": false,
-          "a_fark_ediyor": false,
+          "a_fark_ediyor": true,
           "surfaced_etymologies": [
             2
           ],
@@ -6933,7 +6931,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 11,
+          "c_witnesses": 10,
           "c_assigned": 1,
           "c_by_etym": {
             "2": 1
@@ -7129,10 +7127,10 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 6,
-          "c_assigned": 6,
+          "c_witnesses": 7,
+          "c_assigned": 7,
           "c_by_etym": {
-            "1": 5,
+            "1": 6,
             "2": 1
           },
           "c_reference_etym": 1,
@@ -7227,10 +7225,10 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 35,
-          "c_assigned": 30,
+          "c_witnesses": 34,
+          "c_assigned": 31,
           "c_by_etym": {
-            "1": 29,
+            "1": 30,
             "2": 1
           },
           "c_reference_etym": 1,
@@ -7486,7 +7484,7 @@
         {
           "word": "şer",
           "k": 2,
-          "a_uyari_tanik": false,
+          "a_uyari_tanik": true,
           "a_uyari_metin": true,
           "a_cok_koken": true,
           "a_fark_ediyor": true,
@@ -7499,7 +7497,7 @@
           "b_headline_basis": "verici",
           "b_meaning_etym": 2,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 2,
+          "c_witnesses": 1,
           "c_assigned": 1,
           "c_by_etym": {
             "2": 1
@@ -7683,9 +7681,9 @@
           "glosses": [
             "synonym of hazır (“ready”)"
           ],
-          "origin": "alıntı",
-          "donor_lang": "oui",
-          "donor_form": "𐽰𐽰𐽺𐽳𐽲",
+          "origin": "diriltme",
+          "donor_lang": "trk-pro",
+          "donor_form": "*anu-",
           "proto_roots": [
             "*anu-"
           ],
@@ -8338,7 +8336,7 @@
             "eternal, perpetual",
             "eternally, forever"
           ],
-          "origin": "alıntı",
+          "origin": "diriltme",
           "donor_lang": "otk",
           "donor_form": "𐰋𐰭𐰏𐰇",
           "proto_roots": [],
@@ -11497,7 +11495,7 @@
             "a sort of elegy written by pre-Islamic Turkic people",
             "elegy, lament, requiem"
           ],
-          "origin": "alıntı",
+          "origin": "diriltme",
           "donor_lang": "trk-oat",
           "donor_form": "صاغو",
           "proto_roots": [],

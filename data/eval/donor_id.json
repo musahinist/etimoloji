@@ -1,6 +1,6 @@
 {
   "_schema": "donor_id_eval/v2",
-  "commit": "e81fe84",
+  "commit": "192d518",
   "reference": "WOLD Sakha, borrowings.csv Source_relation=immediate, Borrowed ∈ {1,2}, Unidentified hariç",
   "n": 440,
   "gold_distribution": {
@@ -260,28 +260,28 @@
     },
     "motor|alıntı_dedi": {
       "n": 440,
-      "accuracy": 0.5932,
+      "accuracy": 0.5955,
       "accuracy_ci95": [
-        0.5467,
-        0.6381
+        0.549,
+        0.6403
       ],
-      "coverage": 0.6886,
-      "accuracy_when_predicted": 0.8614,
+      "coverage": 0.6909,
+      "accuracy_when_predicted": 0.8618,
       "accuracy_when_predicted_ci95": [
-        0.8179,
-        0.8958
+        0.8185,
+        0.8961
       ],
-      "macro_recall": 0.2986,
+      "macro_recall": 0.2996,
       "per_class_recall": {
         "Moğolca": 0.2771,
-        "Rusça": 0.8458,
+        "Rusça": 0.8498,
         "Tunguzca": 0.0714,
         "diğer": 0.0
       },
       "confusion": {
         "Rusça": {
-          "Rusça": 214,
-          "—": 32,
+          "Rusça": 215,
+          "—": 31,
           "Tunguzca": 3,
           "Moğolca": 3,
           "diğer": 1
@@ -341,21 +341,21 @@
     },
     "motor|alıntı_dedi (değerlendirme yarısı)": {
       "n": 220,
-      "accuracy": 0.6273,
+      "accuracy": 0.6318,
       "accuracy_ci95": [
-        0.5617,
-        0.6885
+        0.5663,
+        0.6928
       ],
-      "coverage": 0.7364,
-      "accuracy_when_predicted": 0.8519,
+      "coverage": 0.7409,
+      "accuracy_when_predicted": 0.8528,
       "accuracy_when_predicted_ci95": [
-        0.789,
-        0.8984
+        0.7903,
+        0.899
       ],
-      "macro_recall": 0.3398,
+      "macro_recall": 0.3418,
       "per_class_recall": {
         "Moğolca": 0.3765,
-        "Rusça": 0.84,
+        "Rusça": 0.848,
         "Tunguzca": 0.1429,
         "diğer": 0.0
       },
@@ -368,8 +368,8 @@
           "Tunguzca": 2
         },
         "Rusça": {
-          "Rusça": 105,
-          "—": 16,
+          "Rusça": 106,
+          "—": 15,
           "Tunguzca": 2,
           "Moğolca": 2
         },
@@ -4072,12 +4072,12 @@
       "yakınlık (tek havuz, eski)": "Rusça",
       "motor": "Rusça",
       "motor (tek havuz, eski)": "Rusça",
-      "motor|alıntı_dedi": "—",
+      "motor|alıntı_dedi": "Rusça",
       "raw_chain": "",
       "raw_proximity": "ru",
       "raw_nearest": "ru",
       "donor_uncertain": true,
-      "is_borrowed": false
+      "is_borrowed": true
     },
     {
       "word": "oruos",

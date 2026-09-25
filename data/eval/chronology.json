@@ -1,6 +1,6 @@
 {
   "_schema": "chronology_eval/v1",
-  "commit": "eb79040",
+  "commit": "192d518",
   "reference": "Starling earliest_dated_source (ATU+KRH kaynak etiketleri)",
   "n": 200,
   "reference_tags": {
@@ -71,52 +71,52 @@
     },
     "starling_yok": {
       "n": 200,
-      "coverage": 0.485,
+      "coverage": 0.48,
       "coverage_ci95": [
-        0.4167,
-        0.5539
+        0.4118,
+        0.549
       ],
-      "not_later|covered": 0.1959,
+      "not_later|covered": 0.1771,
       "not_later|covered_ci95": [
-        0.1291,
-        0.2858
+        0.1136,
+        0.2654
       ],
-      "not_later|all": 0.095,
+      "not_later|all": 0.085,
       "not_later|all_ci95": [
-        0.0617,
-        0.1436
+        0.0537,
+        0.1319
       ],
-      "within_century|covered": 0.1856,
+      "within_century|covered": 0.1667,
       "within_century|covered_ci95": [
-        0.1207,
-        0.2744
+        0.1053,
+        0.2537
       ],
-      "within_century|all": 0.09,
+      "within_century|all": 0.08,
       "within_century|all_ci95": [
-        0.0577,
-        0.1378
+        0.0498,
+        0.126
       ],
-      "same_source|covered": 0.0515,
+      "same_source|covered": 0.0521,
       "same_source|covered_ci95": [
-        0.0222,
-        0.115
+        0.0224,
+        0.1162
       ],
       "same_source|all": 0.025,
       "same_source|all_ci95": [
         0.0107,
         0.0572
       ],
-      "median_abs_diff|covered": 276,
+      "median_abs_diff|covered": 276.0,
       "engine_record_counts": {
-        "yok": 103,
-        "1350": 55,
-        "1000": 33,
+        "yok": 104,
+        "1350": 56,
+        "1000": 31,
         "732": 5,
         "1303": 3,
         "1074": 1
       },
       "coverage_point": 0.045,
-      "coverage_period": 0.44,
+      "coverage_period": 0.435,
       "within_century|point": 0.5556,
       "within_century|point_ci95": [
         0.2666,
@@ -429,8 +429,8 @@
       "reference_year": 1074,
       "reference_tag": "MK",
       "yerel_year": 1074,
-      "starling_yok_year": 1000,
-      "starling_yok_record": "Eski Türkçe runik yazıt dönemi (8.–10. yy) içinde tanıklı; tarihli yazıt atfı yok (𐰋𐰃𐰕)",
+      "starling_yok_year": 1350,
+      "starling_yok_record": null,
       "yerel_precision": "point",
       "starling_yok_precision": "period"
     },
@@ -610,7 +610,7 @@
       "reference_tag": "Orkh.",
       "yerel_year": 732,
       "starling_yok_year": null,
-      "starling_yok_record": "732 Orhun Yazıtları",
+      "starling_yok_record": null,
       "yerel_precision": "point",
       "starling_yok_precision": null
     },
@@ -1479,10 +1479,10 @@
       "reference_year": 1069,
       "reference_tag": "KB",
       "yerel_year": 732,
-      "starling_yok_year": 1000,
-      "starling_yok_record": "Eski Türkçe runik yazıt dönemi (8.–10. yy) içinde tanıklı; tarihli yazıt atfı yok (𐰾𐰤)",
+      "starling_yok_year": null,
+      "starling_yok_record": null,
       "yerel_precision": "point",
-      "starling_yok_precision": "period"
+      "starling_yok_precision": null
     },
     {
       "word": "sinir",
