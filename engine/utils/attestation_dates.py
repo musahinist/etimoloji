@@ -56,6 +56,9 @@ Değerler ve kaynakları
   "9.-14. yy", sözlük tanık yeri vermiyor). NOKTA YIL DEĞİL: 1350 yalnız üst
   sınırdır, nokta tarih her zaman kazanır. Bkz.
   ``fetchers/wilkens_old_uyghur.py``.
+* **Eski Türkçe runik madde — [700, 1000]** (Vikisözlük ``otk``; tanık
+  atfında tarihli yazıt yoksa). Atıf Köl Tigin / Bilge Kağan / Tonyukuk
+  yazıtını adlandırıyorsa Orhun 732 nokta yılı alır.
 """
 
 from __future__ import annotations
@@ -83,7 +86,11 @@ class DatedWork:
 
 WORKS: tuple[DatedWork, ...] = (
     DatedWork("orhun", "Orhun Yazıtları", 732,
-              re.compile(r"orhun|orkhon|köktürk|kül\s*tigin|köl\s*tigin|bilge\s*kağan", re.I), ("Orkh.",)),
+              # İngilizce Vikisözlük tanık atıfları da: "Kültegin Inscription",
+              # "Kül Tégin", "Bilge Khagan/Ḳaġan", "Tonyukuk/Toɲuquq" (Tonyukuk
+              # ~720'ler ama kesin tarihli değil; Starling ``Orkh.`` gibi 732).
+              re.compile(r"orhun|orkhon|köktürk|k[üuö]l[\s-]*t[eéi]g[ie]n|bilge\s*[kḳq]h?a[gğġɣ]h?an"
+                         r"|t[ou][nɲ]y?u[kqḳ]u[kqḳ]", re.I), ("Orkh.",)),
     DatedWork("kb", "Kutadgu Bilig (Yusuf Has Hacib)", 1069,
               re.compile(r"kutadgu\s*bilig", re.I), ("KB",)),
     DatedWork("dlt", "Divânu Lugâti't-Türk (Kâşgarlı Mahmud)", 1074,
@@ -99,6 +106,13 @@ WORKS: tuple[DatedWork, ...] = (
     DatedWork("oui", "Eski Uygurca (9.-14. yy), Wilkens 2021", 1350,
               re.compile(r"wilkens|handwörterbuch\s*des\s*altuigur", re.I), (),
               precision="period", range=(800, 1350)),
+    # Runik yazılı Eski Türkçe madde (Vikisözlük ``otk``), tanık atfında
+    # tarihli bir yazıt (Köl Tigin, Bilge Kağan, Tonyukuk) YOKSA: runik yazı
+    # 8.-10. yy'da kullanıldı (Orhun 720-735, Yenisey 8.-10. yy, Irk Bitig
+    # ~10. yy; Tekin 1968, s. 8-12). NOKTA YIL DEĞİL: 1000 yalnız üst sınır.
+    DatedWork("otk_runic", "Eski Türkçe runik yazıtlar (8.-10. yy)", 1000,
+              re.compile(r"runik\s*yaz[ıi]t", re.I), (),
+              precision="period", range=(700, 1000)),
     DatedWork("abush", "Abuşka", 1500, re.compile(r"abu[şs]ka", re.I), ("Abush.",)),
     DatedWork("sangl", "Senglâh (Mehdî Han)", 1760, re.compile(r"sengl[aâ]h|sanglax", re.I), ("Sangl.",)),
     DatedWork("tarama", "TDK Tarama Sözlüğü (13.-19. yy)", 1300, re.compile(r"tarama\s*sözlü", re.I), ()),
@@ -126,6 +140,15 @@ def works_in(text: str) -> list[DatedWork]:
     if not text:
         return []
     return [w for w in WORKS if w.pattern.search(text)]
+
+
+#: Eski Türk (runik) yazısı bloğu, U+10C00–U+10C4F.
+_RUNIC = re.compile(r"[\U00010C00-\U00010C4F]")
+
+
+def is_old_turkic_runic(text: str) -> bool:
+    """Biçim runik yazıyla mı yazılmış (Orhun-Yenisey alfabesi)."""
+    return bool(_RUNIC.search(text or ""))
 
 
 def canonical_year(text: str, fallback: int | None = None) -> int | None:

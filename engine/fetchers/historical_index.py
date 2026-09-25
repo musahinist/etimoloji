@@ -57,6 +57,45 @@ _SKIPPED_POS = frozenset({"romanization"})
 MAX_PER_LANGUAGE = 3
 
 
+_OTK_REFS: dict[str, str] | None = None
+
+
+def old_turkic_citation(word: str) -> str:
+    """Runik Eski Türkçe maddenin Vikisözlük tanık atfı (tarihli yazıtı
+    adlandıranlardan en erkeni; yoksa boş).
+
+    İndeks tanık atıflarını (``examples[].ref``) saklamıyor; indeksi yeniden
+    kurmamak için küçük ``otk`` dökümünden (≈470 satır) bir kez okunur.
+    Yalnız eser adı yıl verir (``attestation_dates``); atfın kendi yazdığı
+    "c. 735 CE" kullanılmaz, çünkü eser tanınınca haritanın yılı geçerlidir.
+    """
+    global _OTK_REFS
+    if _OTK_REFS is None:
+        import gzip
+
+        from engine.db.lexicon_index import discover_lexicons
+        from engine.utils.attestation_dates import POINT_WORKS
+
+        refs: dict[str, tuple[int, str]] = {}
+        path = discover_lexicons().get("otk")
+        try:
+            opener = gzip.open if path and path.suffix == ".gz" else open
+            with opener(path, "rt", encoding="utf-8") as fh:  # type: ignore[arg-type]
+                for line in fh:
+                    record = json.loads(line)
+                    surface = str(record.get("word") or "")
+                    for sense in record.get("senses") or []:
+                        for example in sense.get("examples") or []:
+                            ref = " ".join(str(example.get("ref") or "").split())
+                            years = [w.year for w in POINT_WORKS if w.pattern.search(ref)]
+                            if years and (surface not in refs or min(years) < refs[surface][0]):
+                                refs[surface] = (min(years), ref)
+        except (OSError, TypeError, ValueError):
+            logger.debug("otk dökümü okunamadı; runik tanık atfı yok", exc_info=True)
+        _OTK_REFS = {k: v[1] for k, v in refs.items()}
+    return _OTK_REFS.get(word, "")
+
+
 class HistoricalIndexFetcher(BaseFetcher):
     """Yerel sözlük indeksinin tarihî katmanını tanık olarak sunar."""
 
@@ -128,6 +167,12 @@ class HistoricalIndexFetcher(BaseFetcher):
                 # buna bakarak anlar.
                 if row.get("comparison"):
                     entry["comparison"] = str(row["comparison"])
+                # Runik maddenin tarihli yazıt atfı ("Kültegin Inscription"):
+                # doğrulayıcı bunu Orhun 732'ye eşler; atıf yoksa dönem tanığı.
+                if lang_code == "otk":
+                    ref = old_turkic_citation(surface)
+                    if ref:
+                        entry["attestation_ref"] = ref
                 # Sözlüğün KENDİ etimoloji notu. İndekste duruyordu ama kayda
                 # taşınmıyordu; `bitig` için "biti- + -g, Orta Çince 筆 (pit)"
                 # bilgisi rapora hiç ulaşmıyordu.

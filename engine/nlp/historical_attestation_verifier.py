@@ -24,7 +24,7 @@ import re
 from typing import Any
 
 from engine.logging_setup import get_logger
-from engine.utils.attestation_dates import POINT_WORKS, canonical_year
+from engine.utils.attestation_dates import POINT_WORKS, canonical_year, is_old_turkic_runic, work
 
 logger = get_logger(__name__)
 
@@ -37,6 +37,26 @@ DATED_SOURCES: list[tuple[re.Pattern[str], int, str]] = [
 ]
 
 _YEAR_RE = re.compile(r"\b(1[0-9]{3}|20[0-2][0-9]|[6-9][0-9]{2})\b")
+
+
+_VOWELS = str.maketrans("", "", "aeıioöuüâîûïäéë")
+_VOICING = str.maketrans({"g": "k", "d": "t", "ğ": "k", "ġ": "k", "ɣ": "k", "q": "k"})
+
+
+def _skeleton(text: str) -> str:
+    """Ünsüz iskeleti (ötümlülük birleşik): runik yazı ünlüleri çoğu yerde
+    yazmaz, Oğuz g-/d- Eski Türkçe k-/t- karşılığıdır (güz ~ küz)."""
+    return (text or "").lower().strip("-* ").translate(_VOWELS).translate(_VOICING)
+
+
+def _names_query(entry: dict[str, Any], word: str) -> bool:
+    """Runik madde sorgunun kendisi mi (ünsüz iskeleti örtüşüyor mu)?
+
+    Yalnız ses varyantıyla bulunan indeks kaydı (``comparison`` taşır)
+    sınanır; Proto-Türkçe kökün torun listesindeki runik biçim köke bağlı
+    geldiği için ve Latin okunuşu olmadığı için olduğu gibi kabul edilir."""
+    comparison = str(entry.get("comparison") or "")
+    return not comparison or _skeleton(comparison) == _skeleton(word)
 
 
 class HistoricalAttestationVerifier:
@@ -59,6 +79,11 @@ class HistoricalAttestationVerifier:
         candidates: list[tuple[int, str, str]] = []
         #: Dönem düzeyindeki tanıklar (Wilkens: "9.-14. yy"): nokta yıl DEĞİL.
         periods: list[dict[str, Any]] = []
+        #: Runik (atıfsız) Eski Türkçe madde: dönem tanığı, ama yalnız serbest
+        #: metin eşleşmesinden gelen (``corpus``) nokta yılları eler. Kaynağın
+        #: kelime düzeyinde verdiği yıl (Starling, EtimolojiTürkçe) kazanır:
+        #: runik eşleşme ses varyantıyla bulunur, eşsesli olabilir.
+        runic_periods: list[dict[str, Any]] = []
 
         # 1. Fetcher'ın doğrudan sağladığı tarihli tanıklama (en güvenilir)
         for res in fetcher_results or []:
@@ -76,21 +101,48 @@ class HistoricalAttestationVerifier:
         for entry in live_entries or []:
             if entry.get("attestation_precision") == "period":
                 continue  # fetcher'ın dönem tanığı; eser adı ayrıca yıl vermesin
+            # ``attestation_ref``: sözlüğün kendi tanık atfı (Vikisözlük
+            # otk: "8th century CE, Kültegin Inscription, S5").
             haystack = " ".join(
-                str(entry.get(k, "")) for k in ("lang_name", "meaning", "source", "word")
+                str(entry.get(k, "")) for k in ("lang_name", "meaning", "source", "word", "attestation_ref")
             )
+            dated = False
+            runic_form = is_old_turkic_runic(str(entry.get("word") or ""))
+            if runic_form and not _names_query(entry, w):
+                # Runik madde ses varyantıyla bulunur (`iz` -> 𐰃𐰾 iş, `ye` ->
+                # 𐰲𐰀 çe): ünsüz iskeleti sorguyla örtüşmüyorsa başka kelimedir,
+                # ne atfı ne dönemi bu kelimeye yıl verir.
+                continue
             for pattern, year, label in DATED_SOURCES:
                 if pattern.search(haystack):
                     candidates.append((year, label, "corpus"))
+                    dated = True
+            if not dated and is_old_turkic_runic(str(entry.get("word") or "")):
+                # Runik madde, atfında tarihli yazıt yok: dönem tanığı (8.-10.
+                # yy, üst sınır 1000). Eskiden tarihsizdi; Starling kapalıyken
+                # Orhun'da tanıklı kelime Kumanca tanıktan 1303 alıyordu.
+                runic = work("otk_runic")
+                runic_periods.append({
+                    "year": runic.year,
+                    "precision": "period",
+                    "range": list(runic.range or (None, runic.year)),
+                    "source": f"{runic.label}: {entry.get('word')}",
+                    "label": (f"Eski Türkçe runik yazıt dönemi (8.–10. yy) içinde tanıklı; "
+                              f"tarihli yazıt atfı yok ({entry.get('word')})"),
+                })
 
+        runic_bound = min((int(p["year"]) for p in runic_periods), default=None)
+        if runic_bound is not None:
+            candidates = [c for c in candidates if c[2] != "corpus" or c[0] <= runic_bound]
         bound = min((int(p["year"]) for p in periods), default=None)
-        if bound is not None:
+        periods = periods + runic_periods
+        if bound is not None or runic_bound is not None:
             # Dönem tanığı yalnız ÜST SINIRDIR ("en geç 1350"). Nokta tarih
             # (Starling, Orhun, DLT) her zaman kazanır; yalnız sınırdan geç
             # olan nokta tarih ilk tanıklık olamaz (kelime zaten tanıklı).
             # Eskiden Wilkens 1350'yi nokta yıl olarak veriyordu: Orhun'da
             # (732) tanıklı kelime "ilk tanıklık 1350" görünüyordu.
-            candidates = [c for c in candidates if c[0] <= bound]
+            candidates = [c for c in candidates if bound is None or c[0] <= bound]
             if not candidates:
                 best = min(periods, key=lambda p: int(p["year"]))
                 return {

@@ -37,3 +37,40 @@ def test_old_uyghur_is_a_period_not_a_point_year():
     assert ad.canonical_year("Eski Uygurca") is None
     assert ad.canonical_year("Eski Uygurca (9.-14. yy), Wilkens 2021, s. 12", None) is None
     assert all(w.precision == "point" for w in ad.POINT_WORKS)
+
+
+def test_old_turkic_inscription_citations_map_to_orhun():
+    """Vikisözlük otk tanık atıfları (İngilizce yazıt adları) Orhun 732'dir;
+    tarihsiz ya da başka yazıt (Ongin, Yenisey) nokta yıl vermez."""
+    for ref in ("8th century CE, Kültegin Inscription, S5", "Kül Tégin Inscription E8",
+                "Bilge Khagan Inscription, N11", "20th of September 735, Bilge Ḳaġan Inscription N6",
+                "c. 716 CE, Bilgä Toɲuquq, Toɲuquq Inscription"):
+        assert ad.canonical_year(ref) == 732, ref
+    assert ad.canonical_year("c. 728 CE, Ongin Inscription line 11") is None
+    assert ad.canonical_year("8-10th century CE, Begre e-11") is None
+    assert ad.canonical_year("Yollïġ Tigin") is None
+
+
+def test_runic_entry_without_dated_citation_is_a_period():
+    """Runik madde yazıt atfı yoksa dönem tanığıdır (üst sınır 1000); daha
+    geç nokta tarih (Codex Cumanicus 1303) ilk tanıklık sayılmaz."""
+    verifier = hav.HistoricalAttestationVerifier()
+    entries = [
+        {"lang_code": "otk", "lang_name": "Eski Türkçe", "word": "𐰖𐰆𐰞", "meaning": "road"},
+        {"lang_code": "qwm", "lang_name": "Kıpçakça (Codex Cumanicus)", "word": "iol", "meaning": "road"},
+    ]
+    out = verifier.verify_attestation("yol", entries)
+    assert out["first_attestation_precision"] == "period"
+    assert out["first_attestation_year"] == 1000
+    assert out["first_attestation_range"] == [700, 1000]
+    # Atıf tarihli yazıtı adlandırıyorsa nokta yıl: Orhun 732.
+    entries[0]["attestation_ref"] = "8th century CE, Kültegin Inscription, S5"
+    out = verifier.verify_attestation("yol", entries)
+    assert (out["first_attestation_year"], out["first_attestation_precision"]) == (732, "point")
+    # Runik tanık yoksa Kumanca tanık 1303 kalır.
+    out = verifier.verify_attestation("yol", entries[1:])
+    assert (out["first_attestation_year"], out["first_attestation_precision"]) == (1303, "point")
+    # Ses varyantıyla bulunan başka kelime (`iz` -> 𐰃𐰾 iş) yıl vermez.
+    other = {"lang_code": "otk", "lang_name": "Eski Türkçe", "word": "𐰃𐰾", "comparison": "iş",
+             "attestation_ref": "8th century CE, Kültegin Inscription, S5"}
+    assert verifier.verify_attestation("iz", [other])["verified"] is False
