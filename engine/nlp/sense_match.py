@@ -27,6 +27,14 @@ Süzgeçler (ön-kayıtlı adaylar; biri seçilmeden üretimde KAPALI):
     boş olmamalı. ``fallback``: sorgu anlamı hiçbir kavrama eşlenmiyorsa
     süzgeç uygulanmaz; ``strict``: o zaman aday kalmaz.
 
+⚠️ ÖLÇÜLDÜ, ön-kayıtlı, KABUL EDİLMEDİ (R1 bir kez, n=684; taban F 0,7654):
+``s1:0.88`` ΔF −0,008 [−0,038, +0,022]; ``s2:5`` +0,013 [−0,008, +0,034]
+(Holm p 0,23); ``s3:fallback`` +0,025 [−0,002, +0,053] (Holm p 0,098;
+doğruluk +0,045 [+0,014, +0,079], yalnız-yakınlık kesinliği +0,074).
+Mekanizmanın rampa kısmı üçünde de TERS: mirasta rampa ateşlenmesi 171 ->
+198–208 (süzülmüş küçük havuzda en yakın madde eşikten rampaya kayıyor).
+Güç yetersiz (MDE 0,038–0,053) -> ret "belirsiz". Bayrak kapalı kalır.
+
 Bayrak: ``ETY_DONOR_SENSE_FILTER`` — boş/``0``/``off`` kapalı; ``1``/``on``
 kabul edilen tanım (:data:`ACCEPTED_SPEC`; yoksa kapalı); ya da açık bir
 tanım (``s1:0.86``).

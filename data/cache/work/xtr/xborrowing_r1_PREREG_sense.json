@@ -1,0 +1,742 @@
+{
+ "split": "r1",
+ "prereg": "data/cache/work/xtr/PREREG_sense.md",
+ "base": "sca",
+ "n": 684,
+ "systems": {
+  "sca": {
+   "engine_trained": {
+    "precision": 0.6838,
+    "recall": 0.869,
+    "fscore": 0.7654,
+    "accuracy": 0.7383,
+    "tp": 292,
+    "fp": 135,
+    "fn": 44,
+    "tn": 213
+   },
+   "donor_proximity_only": {
+    "precision": 0.7599,
+    "recall": 0.744,
+    "fscore": 0.7519,
+    "accuracy": 0.7588,
+    "tp": 250,
+    "fp": 79,
+    "fn": 86,
+    "tn": 269
+   },
+   "donor_identification": {
+    "n": 281,
+    "accuracy": 0.573,
+    "confusion": {
+     "ar->fa": 68,
+     "fa->fa": 64,
+     "ru->ru": 56,
+     "ar->ar": 38,
+     "fa->ar": 16,
+     "ar->ru": 10,
+     "ru->fa": 6,
+     "mn->ar": 6,
+     "fa->ru": 3,
+     "mn->ru": 3,
+     "mn->mn": 3,
+     "ar->mn": 2,
+     "ru->mn": 2,
+     "ru->ar": 2,
+     "mn->fa": 1,
+     "fa->mn": 1
+    }
+   },
+   "ramp_rate_inherited": 0.4914,
+   "ramp_rate_borrowed": 0.1518,
+   "breakdowns": {
+    "by_lang": {
+     "ba": {
+      "precision": 0.7917,
+      "recall": 0.76,
+      "fscore": 0.7755,
+      "accuracy": 0.78,
+      "tp": 38,
+      "fp": 10,
+      "fn": 12,
+      "tn": 40
+     },
+     "kk": {
+      "precision": 0.6825,
+      "recall": 0.86,
+      "fscore": 0.7611,
+      "accuracy": 0.73,
+      "tp": 43,
+      "fp": 20,
+      "fn": 7,
+      "tn": 30
+     },
+     "ky": {
+      "precision": 0.7069,
+      "recall": 0.82,
+      "fscore": 0.7593,
+      "accuracy": 0.74,
+      "tp": 41,
+      "fp": 17,
+      "fn": 9,
+      "tn": 33
+     },
+     "tk": {
+      "precision": 0.6615,
+      "recall": 0.86,
+      "fscore": 0.7478,
+      "accuracy": 0.7041,
+      "tp": 43,
+      "fp": 22,
+      "fn": 7,
+      "tn": 26
+     },
+     "tt": {
+      "precision": 0.6071,
+      "recall": 0.9444,
+      "fscore": 0.7391,
+      "accuracy": 0.7209,
+      "tp": 34,
+      "fp": 22,
+      "fn": 2,
+      "tn": 28
+     },
+     "ug": {
+      "precision": 0.6818,
+      "recall": 0.9,
+      "fscore": 0.7759,
+      "accuracy": 0.74,
+      "tp": 45,
+      "fp": 21,
+      "fn": 5,
+      "tn": 29
+     },
+     "uz": {
+      "precision": 0.6761,
+      "recall": 0.96,
+      "fscore": 0.7934,
+      "accuracy": 0.75,
+      "tp": 48,
+      "fp": 23,
+      "fn": 2,
+      "tn": 27
+     }
+    },
+    "recall_by_donor": {
+     "ru": {
+      "n": 76,
+      "recall": 0.9474
+     },
+     "ar": {
+      "n": 133,
+      "recall": 0.9023
+     },
+     "fa": {
+      "n": 106,
+      "recall": 0.8113
+     },
+     "mn": {
+      "n": 20,
+      "recall": 0.65
+     },
+     "diğer": {
+      "n": 1,
+      "recall": 1.0
+     }
+    },
+    "easy_hard": {
+     "kolay": {
+      "n": 148,
+      "recall": 0.9797
+     },
+     "zor": {
+      "n": 188,
+      "recall": 0.7819
+     },
+     "miras_özgüllük": {
+      "n": 348,
+      "specificity": 0.6121
+     }
+    }
+   }
+  },
+  "sense_s10.88": {
+   "engine_trained": {
+    "precision": 0.7051,
+    "recall": 0.8185,
+    "fscore": 0.7576,
+    "accuracy": 0.7427,
+    "tp": 275,
+    "fp": 115,
+    "fn": 61,
+    "tn": 233
+   },
+   "donor_proximity_only": {
+    "precision": 0.8148,
+    "recall": 0.6548,
+    "fscore": 0.7261,
+    "accuracy": 0.7573,
+    "tp": 220,
+    "fp": 50,
+    "fn": 116,
+    "tn": 298
+   },
+   "donor_identification": {
+    "n": 256,
+    "accuracy": 0.5703,
+    "confusion": {
+     "ar->fa": 71,
+     "ru->ru": 58,
+     "fa->fa": 53,
+     "ar->ar": 32,
+     "fa->ar": 14,
+     "ar->ru": 7,
+     "fa->ru": 6,
+     "mn->mn": 3,
+     "ru->ar": 3,
+     "mn->ar": 2,
+     "ru->fa": 2,
+     "mn->fa": 2,
+     "ru->mn": 1,
+     "ar->mn": 1,
+     "mn->ru": 1
+    }
+   },
+   "ramp_rate_inherited": 0.569,
+   "ramp_rate_borrowed": 0.1994,
+   "breakdowns": {
+    "by_lang": {
+     "ba": {
+      "precision": 0.7805,
+      "recall": 0.64,
+      "fscore": 0.7033,
+      "accuracy": 0.73,
+      "tp": 32,
+      "fp": 9,
+      "fn": 18,
+      "tn": 41
+     },
+     "kk": {
+      "precision": 0.6842,
+      "recall": 0.78,
+      "fscore": 0.729,
+      "accuracy": 0.71,
+      "tp": 39,
+      "fp": 18,
+      "fn": 11,
+      "tn": 32
+     },
+     "ky": {
+      "precision": 0.6545,
+      "recall": 0.72,
+      "fscore": 0.6857,
+      "accuracy": 0.67,
+      "tp": 36,
+      "fp": 19,
+      "fn": 14,
+      "tn": 31
+     },
+     "tk": {
+      "precision": 0.6833,
+      "recall": 0.82,
+      "fscore": 0.7455,
+      "accuracy": 0.7143,
+      "tp": 41,
+      "fp": 19,
+      "fn": 9,
+      "tn": 29
+     },
+     "tt": {
+      "precision": 0.68,
+      "recall": 0.9444,
+      "fscore": 0.7907,
+      "accuracy": 0.7907,
+      "tp": 34,
+      "fp": 16,
+      "fn": 2,
+      "tn": 34
+     },
+     "ug": {
+      "precision": 0.75,
+      "recall": 0.9,
+      "fscore": 0.8182,
+      "accuracy": 0.8,
+      "tp": 45,
+      "fp": 15,
+      "fn": 5,
+      "tn": 35
+     },
+     "uz": {
+      "precision": 0.7164,
+      "recall": 0.96,
+      "fscore": 0.8205,
+      "accuracy": 0.79,
+      "tp": 48,
+      "fp": 19,
+      "fn": 2,
+      "tn": 31
+     }
+    },
+    "recall_by_donor": {
+     "ru": {
+      "n": 76,
+      "recall": 0.9474
+     },
+     "ar": {
+      "n": 133,
+      "recall": 0.8722
+     },
+     "fa": {
+      "n": 106,
+      "recall": 0.717
+     },
+     "mn": {
+      "n": 20,
+      "recall": 0.5
+     },
+     "diğer": {
+      "n": 1,
+      "recall": 1.0
+     }
+    },
+    "easy_hard": {
+     "kolay": {
+      "n": 148,
+      "recall": 0.9662
+     },
+     "zor": {
+      "n": 188,
+      "recall": 0.7021
+     },
+     "miras_özgüllük": {
+      "n": 348,
+      "specificity": 0.6695
+     }
+    }
+   }
+  },
+  "sense_s25": {
+   "engine_trained": {
+    "precision": 0.6956,
+    "recall": 0.8839,
+    "fscore": 0.7785,
+    "accuracy": 0.7529,
+    "tp": 297,
+    "fp": 130,
+    "fn": 39,
+    "tn": 218
+   },
+   "donor_proximity_only": {
+    "precision": 0.7743,
+    "recall": 0.7351,
+    "fscore": 0.7542,
+    "accuracy": 0.7646,
+    "tp": 247,
+    "fp": 72,
+    "fn": 89,
+    "tn": 276
+   },
+   "donor_identification": {
+    "n": 286,
+    "accuracy": 0.5769,
+    "confusion": {
+     "ar->fa": 67,
+     "fa->fa": 63,
+     "ru->ru": 56,
+     "ar->ar": 44,
+     "fa->ar": 18,
+     "ar->ru": 12,
+     "ru->fa": 6,
+     "ru->ar": 5,
+     "mn->ar": 4,
+     "fa->ru": 3,
+     "mn->ru": 3,
+     "mn->mn": 2,
+     "mn->fa": 2,
+     "ar->mn": 1
+    }
+   },
+   "ramp_rate_inherited": 0.5718,
+   "ramp_rate_borrowed": 0.1815,
+   "breakdowns": {
+    "by_lang": {
+     "ba": {
+      "precision": 0.8,
+      "recall": 0.8,
+      "fscore": 0.8,
+      "accuracy": 0.8,
+      "tp": 40,
+      "fp": 10,
+      "fn": 10,
+      "tn": 40
+     },
+     "kk": {
+      "precision": 0.6377,
+      "recall": 0.88,
+      "fscore": 0.7395,
+      "accuracy": 0.69,
+      "tp": 44,
+      "fp": 25,
+      "fn": 6,
+      "tn": 25
+     },
+     "ky": {
+      "precision": 0.7091,
+      "recall": 0.78,
+      "fscore": 0.7429,
+      "accuracy": 0.73,
+      "tp": 39,
+      "fp": 16,
+      "fn": 11,
+      "tn": 34
+     },
+     "tk": {
+      "precision": 0.7258,
+      "recall": 0.9,
+      "fscore": 0.8036,
+      "accuracy": 0.7755,
+      "tp": 45,
+      "fp": 17,
+      "fn": 5,
+      "tn": 31
+     },
+     "tt": {
+      "precision": 0.6296,
+      "recall": 0.9444,
+      "fscore": 0.7556,
+      "accuracy": 0.7442,
+      "tp": 34,
+      "fp": 20,
+      "fn": 2,
+      "tn": 30
+     },
+     "ug": {
+      "precision": 0.697,
+      "recall": 0.92,
+      "fscore": 0.7931,
+      "accuracy": 0.76,
+      "tp": 46,
+      "fp": 20,
+      "fn": 4,
+      "tn": 30
+     },
+     "uz": {
+      "precision": 0.6901,
+      "recall": 0.98,
+      "fscore": 0.8099,
+      "accuracy": 0.77,
+      "tp": 49,
+      "fp": 22,
+      "fn": 1,
+      "tn": 28
+     }
+    },
+    "recall_by_donor": {
+     "ru": {
+      "n": 76,
+      "recall": 0.9605
+     },
+     "ar": {
+      "n": 133,
+      "recall": 0.9398
+     },
+     "fa": {
+      "n": 106,
+      "recall": 0.8113
+     },
+     "mn": {
+      "n": 20,
+      "recall": 0.6
+     },
+     "diğer": {
+      "n": 1,
+      "recall": 1.0
+     }
+    },
+    "easy_hard": {
+     "kolay": {
+      "n": 148,
+      "recall": 0.9865
+     },
+     "zor": {
+      "n": 188,
+      "recall": 0.8032
+     },
+     "miras_özgüllük": {
+      "n": 348,
+      "specificity": 0.6264
+     }
+    }
+   }
+  },
+  "sense_s3fallback": {
+   "engine_trained": {
+    "precision": 0.7541,
+    "recall": 0.8304,
+    "fscore": 0.7904,
+    "accuracy": 0.7836,
+    "tp": 279,
+    "fp": 91,
+    "fn": 57,
+    "tn": 257
+   },
+   "donor_proximity_only": {
+    "precision": 0.8339,
+    "recall": 0.7321,
+    "fscore": 0.7797,
+    "accuracy": 0.7968,
+    "tp": 246,
+    "fp": 49,
+    "fn": 90,
+    "tn": 299
+   },
+   "donor_identification": {
+    "n": 276,
+    "accuracy": 0.5978,
+    "confusion": {
+     "ar->fa": 64,
+     "ru->ru": 57,
+     "fa->fa": 57,
+     "ar->ar": 47,
+     "fa->ar": 18,
+     "ar->ru": 9,
+     "fa->ru": 5,
+     "ru->fa": 4,
+     "mn->mn": 4,
+     "mn->ar": 3,
+     "ru->ar": 3,
+     "mn->ru": 2,
+     "ru->mn": 1,
+     "mn->fa": 1,
+     "ar->mn": 1
+    }
+   },
+   "ramp_rate_inherited": 0.5977,
+   "ramp_rate_borrowed": 0.1667,
+   "breakdowns": {
+    "by_lang": {
+     "ba": {
+      "precision": 0.8,
+      "recall": 0.72,
+      "fscore": 0.7579,
+      "accuracy": 0.77,
+      "tp": 36,
+      "fp": 9,
+      "fn": 14,
+      "tn": 41
+     },
+     "kk": {
+      "precision": 0.7308,
+      "recall": 0.76,
+      "fscore": 0.7451,
+      "accuracy": 0.74,
+      "tp": 38,
+      "fp": 14,
+      "fn": 12,
+      "tn": 36
+     },
+     "ky": {
+      "precision": 0.7308,
+      "recall": 0.76,
+      "fscore": 0.7451,
+      "accuracy": 0.74,
+      "tp": 38,
+      "fp": 14,
+      "fn": 12,
+      "tn": 36
+     },
+     "tk": {
+      "precision": 0.7414,
+      "recall": 0.86,
+      "fscore": 0.7963,
+      "accuracy": 0.7755,
+      "tp": 43,
+      "fp": 15,
+      "fn": 7,
+      "tn": 33
+     },
+     "tt": {
+      "precision": 0.7234,
+      "recall": 0.9444,
+      "fscore": 0.8193,
+      "accuracy": 0.8256,
+      "tp": 34,
+      "fp": 13,
+      "fn": 2,
+      "tn": 37
+     },
+     "ug": {
+      "precision": 0.7963,
+      "recall": 0.86,
+      "fscore": 0.8269,
+      "accuracy": 0.82,
+      "tp": 43,
+      "fp": 11,
+      "fn": 7,
+      "tn": 39
+     },
+     "uz": {
+      "precision": 0.7581,
+      "recall": 0.94,
+      "fscore": 0.8393,
+      "accuracy": 0.82,
+      "tp": 47,
+      "fp": 15,
+      "fn": 3,
+      "tn": 35
+     }
+    },
+    "recall_by_donor": {
+     "ru": {
+      "n": 76,
+      "recall": 0.8816
+     },
+     "ar": {
+      "n": 133,
+      "recall": 0.9173
+     },
+     "fa": {
+      "n": 106,
+      "recall": 0.7547
+     },
+     "mn": {
+      "n": 20,
+      "recall": 0.5
+     },
+     "diğer": {
+      "n": 1,
+      "recall": 0.0
+     }
+    },
+    "easy_hard": {
+     "kolay": {
+      "n": 148,
+      "recall": 0.9257
+     },
+     "zor": {
+      "n": 188,
+      "recall": 0.7553
+     },
+     "miras_özgüllük": {
+      "n": 348,
+      "specificity": 0.7385
+     }
+    }
+   }
+  }
+ },
+ "comparisons": {
+  "sense_s10.88": {
+   "F_engine_trained": {
+    "value": -0.0078,
+    "ci95": [
+     -0.038,
+     0.0217
+    ],
+    "p_one_sided": 0.6855,
+    "clusters": 445,
+    "p_holm": 0.6855
+   },
+   "accuracy_engine_trained": {
+    "value": 0.0044,
+    "ci95": [
+     -0.0305,
+     0.0394
+    ],
+    "p_one_sided": 0.42,
+    "clusters": 445
+   },
+   "precision_donor_proximity_only": {
+    "value": 0.0549,
+    "ci95": [
+     0.0095,
+     0.1035
+    ],
+    "p_one_sided": 0.0115,
+    "clusters": 445
+   },
+   "ramp_inherited_mcnemar": {
+    "before": 171,
+    "after": 198,
+    "lost": 37,
+    "gained": 64,
+    "p_one_sided": 0.997461
+   }
+  },
+  "sense_s25": {
+   "F_engine_trained": {
+    "value": 0.0131,
+    "ci95": [
+     -0.0081,
+     0.0343
+    ],
+    "p_one_sided": 0.1135,
+    "clusters": 445,
+    "p_holm": 0.227
+   },
+   "accuracy_engine_trained": {
+    "value": 0.0146,
+    "ci95": [
+     -0.0123,
+     0.0417
+    ],
+    "p_one_sided": 0.1505,
+    "clusters": 445
+   },
+   "precision_donor_proximity_only": {
+    "value": 0.0144,
+    "ci95": [
+     -0.0236,
+     0.0492
+    ],
+    "p_one_sided": 0.212,
+    "clusters": 445
+   },
+   "ramp_inherited_mcnemar": {
+    "before": 171,
+    "after": 199,
+    "lost": 9,
+    "gained": 37,
+    "p_one_sided": 0.999995
+   }
+  },
+  "sense_s3fallback": {
+   "F_engine_trained": {
+    "value": 0.025,
+    "ci95": [
+     -0.0018,
+     0.053
+    ],
+    "p_one_sided": 0.0325,
+    "clusters": 445,
+    "p_holm": 0.0975
+   },
+   "accuracy_engine_trained": {
+    "value": 0.0453,
+    "ci95": [
+     0.0141,
+     0.0785
+    ],
+    "p_one_sided": 0.0025,
+    "clusters": 445
+   },
+   "precision_donor_proximity_only": {
+    "value": 0.074,
+    "ci95": [
+     0.0327,
+     0.1183
+    ],
+    "p_one_sided": 0.0005,
+    "clusters": 445
+   },
+   "ramp_inherited_mcnemar": {
+    "before": 171,
+    "after": 208,
+    "lost": 27,
+    "gained": 64,
+    "p_one_sided": 0.999973
+   }
+  }
+ },
+ "code_commit": "973e9a0956cf6dc8dcb048833da5ea19af34e9a3"
+}

@@ -233,6 +233,13 @@ def _best(
 #:
 #: Ölçüt 1 (GA sıfırı dışlasın) TUTMADI, ölçüt 2 (Türkçe F düşmesin) tuttu;
 #: üretim değişmedi. Yalnız PMI ayar yarısında SCA'nın altında (F 0,515).
+#:
+#: ⚠️ Bağımsız Türk dilleri arası altında yeniden sınandı (X2, ön-kayıt
+#: ``data/cache/work/xtr/PREREG_pmi.md``, R1 bir kez, n=684, kör indeks +
+#: zincir kapalı): engine_trained F 0,7654 -> 0,7868, fark +0,021
+#: [−0,003, +0,045]; doğruluk +0,025; verici tanıma 0,573 -> 0,563.
+#: Birincil ölçüt (GA alt ucu > 0) TUTMADI -> sonuç BELİRSİZ (güç yetersiz:
+#: MDE 0,038 önceden yazılmıştı). C1 kapandı; üretim ``sca``.
 STRENGTH_DISTANCE = "sca"
 
 

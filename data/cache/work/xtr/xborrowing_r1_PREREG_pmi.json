@@ -1,0 +1,358 @@
+{
+ "split": "r1",
+ "prereg": "data/cache/work/xtr/PREREG_pmi.md",
+ "base": "sca",
+ "n": 684,
+ "systems": {
+  "sca": {
+   "engine_trained": {
+    "precision": 0.6838,
+    "recall": 0.869,
+    "fscore": 0.7654,
+    "accuracy": 0.7383,
+    "tp": 292,
+    "fp": 135,
+    "fn": 44,
+    "tn": 213
+   },
+   "donor_proximity_only": {
+    "precision": 0.7599,
+    "recall": 0.744,
+    "fscore": 0.7519,
+    "accuracy": 0.7588,
+    "tp": 250,
+    "fp": 79,
+    "fn": 86,
+    "tn": 269
+   },
+   "donor_identification": {
+    "n": 281,
+    "accuracy": 0.573,
+    "confusion": {
+     "ar->fa": 68,
+     "fa->fa": 64,
+     "ru->ru": 56,
+     "ar->ar": 38,
+     "fa->ar": 16,
+     "ar->ru": 10,
+     "ru->fa": 6,
+     "mn->ar": 6,
+     "fa->ru": 3,
+     "mn->ru": 3,
+     "mn->mn": 3,
+     "ar->mn": 2,
+     "ru->mn": 2,
+     "ru->ar": 2,
+     "mn->fa": 1,
+     "fa->mn": 1
+    }
+   },
+   "ramp_rate_inherited": 0.4914,
+   "ramp_rate_borrowed": 0.1518,
+   "breakdowns": {
+    "by_lang": {
+     "ba": {
+      "precision": 0.7917,
+      "recall": 0.76,
+      "fscore": 0.7755,
+      "accuracy": 0.78,
+      "tp": 38,
+      "fp": 10,
+      "fn": 12,
+      "tn": 40
+     },
+     "kk": {
+      "precision": 0.6825,
+      "recall": 0.86,
+      "fscore": 0.7611,
+      "accuracy": 0.73,
+      "tp": 43,
+      "fp": 20,
+      "fn": 7,
+      "tn": 30
+     },
+     "ky": {
+      "precision": 0.7069,
+      "recall": 0.82,
+      "fscore": 0.7593,
+      "accuracy": 0.74,
+      "tp": 41,
+      "fp": 17,
+      "fn": 9,
+      "tn": 33
+     },
+     "tk": {
+      "precision": 0.6615,
+      "recall": 0.86,
+      "fscore": 0.7478,
+      "accuracy": 0.7041,
+      "tp": 43,
+      "fp": 22,
+      "fn": 7,
+      "tn": 26
+     },
+     "tt": {
+      "precision": 0.6071,
+      "recall": 0.9444,
+      "fscore": 0.7391,
+      "accuracy": 0.7209,
+      "tp": 34,
+      "fp": 22,
+      "fn": 2,
+      "tn": 28
+     },
+     "ug": {
+      "precision": 0.6818,
+      "recall": 0.9,
+      "fscore": 0.7759,
+      "accuracy": 0.74,
+      "tp": 45,
+      "fp": 21,
+      "fn": 5,
+      "tn": 29
+     },
+     "uz": {
+      "precision": 0.6761,
+      "recall": 0.96,
+      "fscore": 0.7934,
+      "accuracy": 0.75,
+      "tp": 48,
+      "fp": 23,
+      "fn": 2,
+      "tn": 27
+     }
+    },
+    "recall_by_donor": {
+     "ru": {
+      "n": 76,
+      "recall": 0.9474
+     },
+     "ar": {
+      "n": 133,
+      "recall": 0.9023
+     },
+     "fa": {
+      "n": 106,
+      "recall": 0.8113
+     },
+     "mn": {
+      "n": 20,
+      "recall": 0.65
+     },
+     "diğer": {
+      "n": 1,
+      "recall": 1.0
+     }
+    },
+    "easy_hard": {
+     "kolay": {
+      "n": 148,
+      "recall": 0.9797
+     },
+     "zor": {
+      "n": 188,
+      "recall": 0.7819
+     },
+     "miras_özgüllük": {
+      "n": 348,
+      "specificity": 0.6121
+     }
+    }
+   }
+  },
+  "mean": {
+   "engine_trained": {
+    "precision": 0.7052,
+    "recall": 0.8899,
+    "fscore": 0.7868,
+    "accuracy": 0.7632,
+    "tp": 299,
+    "fp": 125,
+    "fn": 37,
+    "tn": 223
+   },
+   "donor_proximity_only": {
+    "precision": 0.8317,
+    "recall": 0.75,
+    "fscore": 0.7887,
+    "accuracy": 0.8026,
+    "tp": 252,
+    "fp": 51,
+    "fn": 84,
+    "tn": 297
+   },
+   "donor_identification": {
+    "n": 288,
+    "accuracy": 0.5625,
+    "confusion": {
+     "ar->fa": 71,
+     "fa->fa": 63,
+     "ru->ru": 56,
+     "ar->ar": 40,
+     "fa->ar": 20,
+     "ar->ru": 9,
+     "ru->fa": 6,
+     "mn->ar": 5,
+     "fa->ru": 4,
+     "mn->ru": 3,
+     "mn->mn": 3,
+     "ru->ar": 3,
+     "ar->mn": 2,
+     "ru->mn": 2,
+     "mn->fa": 1
+    }
+   },
+   "ramp_rate_inherited": 0.7098,
+   "ramp_rate_borrowed": 0.1726,
+   "breakdowns": {
+    "by_lang": {
+     "ba": {
+      "precision": 0.875,
+      "recall": 0.84,
+      "fscore": 0.8571,
+      "accuracy": 0.86,
+      "tp": 42,
+      "fp": 6,
+      "fn": 8,
+      "tn": 44
+     },
+     "kk": {
+      "precision": 0.6984,
+      "recall": 0.88,
+      "fscore": 0.7788,
+      "accuracy": 0.75,
+      "tp": 44,
+      "fp": 19,
+      "fn": 6,
+      "tn": 31
+     },
+     "ky": {
+      "precision": 0.717,
+      "recall": 0.76,
+      "fscore": 0.7379,
+      "accuracy": 0.73,
+      "tp": 38,
+      "fp": 15,
+      "fn": 12,
+      "tn": 35
+     },
+     "tk": {
+      "precision": 0.6567,
+      "recall": 0.88,
+      "fscore": 0.7521,
+      "accuracy": 0.7041,
+      "tp": 44,
+      "fp": 23,
+      "fn": 6,
+      "tn": 25
+     },
+     "tt": {
+      "precision": 0.6415,
+      "recall": 0.9444,
+      "fscore": 0.764,
+      "accuracy": 0.7558,
+      "tp": 34,
+      "fp": 19,
+      "fn": 2,
+      "tn": 31
+     },
+     "ug": {
+      "precision": 0.746,
+      "recall": 0.94,
+      "fscore": 0.8319,
+      "accuracy": 0.81,
+      "tp": 47,
+      "fp": 16,
+      "fn": 3,
+      "tn": 34
+     },
+     "uz": {
+      "precision": 0.6494,
+      "recall": 1.0,
+      "fscore": 0.7874,
+      "accuracy": 0.73,
+      "tp": 50,
+      "fp": 27,
+      "fn": 0,
+      "tn": 23
+     }
+    },
+    "recall_by_donor": {
+     "ru": {
+      "n": 76,
+      "recall": 0.9605
+     },
+     "ar": {
+      "n": 133,
+      "recall": 0.9398
+     },
+     "fa": {
+      "n": 106,
+      "recall": 0.8302
+     },
+     "mn": {
+      "n": 20,
+      "recall": 0.6
+     },
+     "diğer": {
+      "n": 1,
+      "recall": 1.0
+     }
+    },
+    "easy_hard": {
+     "kolay": {
+      "n": 148,
+      "recall": 0.9865
+     },
+     "zor": {
+      "n": 188,
+      "recall": 0.8138
+     },
+     "miras_özgüllük": {
+      "n": 348,
+      "specificity": 0.6408
+     }
+    }
+   }
+  }
+ },
+ "comparisons": {
+  "mean": {
+   "F_engine_trained": {
+    "value": 0.0214,
+    "ci95": [
+     -0.0026,
+     0.0453
+    ],
+    "p_one_sided": 0.0405,
+    "clusters": 445
+   },
+   "accuracy_engine_trained": {
+    "value": 0.0249,
+    "ci95": [
+     -0.0062,
+     0.0568
+    ],
+    "p_one_sided": 0.07,
+    "clusters": 445
+   },
+   "precision_donor_proximity_only": {
+    "value": 0.0718,
+    "ci95": [
+     0.0181,
+     0.1242
+    ],
+    "p_one_sided": 0.008,
+    "clusters": 445
+   },
+   "ramp_inherited_mcnemar": {
+    "before": 171,
+    "after": 247,
+    "lost": 7,
+    "gained": 83,
+    "p_one_sided": 1.0
+   }
+  }
+ },
+ "code_commit": "973e9a0956cf6dc8dcb048833da5ea19af34e9a3"
+}
