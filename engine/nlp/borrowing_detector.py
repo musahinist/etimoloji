@@ -37,6 +37,7 @@ from collections import Counter
 from dataclasses import dataclass, field
 from typing import Any
 
+from engine.config import SEARCH_DONOR_PROXIMITY
 from engine.logging_setup import get_logger
 from engine.nlp.donor_proximity import attribute_donor, nearest_donor, proximity_strength
 from engine.nlp.proto_phonology import PROHIBITED_INITIALS
@@ -967,7 +968,13 @@ class BorrowingDetector:
         :param donors: bakılacak verici dil kodları. ``None`` ise dilin
             ölçüm hattındaki kümesi (:func:`default_donors`).
         """
-        if not sense:
+        # ⚠️ Arama yolunda anlam doldurulmaz (ETY_SEARCH_DONOR_PROXIMITY=1
+        # ile açılır). 150 kelimede ölçüldü (data/cache/work/searchfp,
+        # c0e8dd7): sıralayıcı × altın uyumu kapalıyken 110/150, açıkken
+        # 100/150 — sıralayıcı birleştiriciyi değil elle ağırlıklı toplamı
+        # kullandığından 0,35–0,60 rampası mirasları ALINTI'ya çeviriyor.
+        # Kalıcı çözüm: sıralayıcının eğitilmiş birleştiriciyi kullanması.
+        if not sense and SEARCH_DONOR_PROXIMITY:
             sense = own_sense(word, lang)
         if donors is None:
             donors = default_donors(lang)

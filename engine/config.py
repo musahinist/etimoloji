@@ -106,6 +106,9 @@ LIVE_WIKTIONARY = _env_bool("LIVE_WIKTIONARY", False)
 # veri her zaman okunur; canlı yol ölçümde sıcak aramanın 6,1/6,3 s'sini
 # yiyordu (4 varyant × istek) ve eşleştirmesi gürültülüydü.
 LIVE_ISAM = _env_bool("LIVE_ISAM", False)
+# Arama yolunda verici yakınlığı (anlamı indeksten doldurarak). Kapalı: 150
+# kelimede sıralayıcı uyumu 110 vs açıkken 100 (c0e8dd7). Ölçüm hattını etkilemez.
+SEARCH_DONOR_PROXIMITY = _env_bool("SEARCH_DONOR_PROXIMITY", False)
 # Archive.org tam metin araması. Varsayılan KAPALI: ölçümlerde tanık üretmedi.
 LIVE_ARCHIVE_ORG = _env_bool("LIVE_ARCHIVE_ORG", False)
 CACHE_TTL_SECONDS = _env_int("CACHE_TTL_SECONDS", 7 * 24 * 3600)

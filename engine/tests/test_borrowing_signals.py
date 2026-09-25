@@ -133,7 +133,7 @@ class TestChainHomonyms(unittest.TestCase):
 
 
 class TestProductionPassesSense(unittest.TestCase):
-    def test_missing_sense_is_read_from_the_index(self):
+    def _detect_kitap(self, flag):
         seen = {}
 
         def donor_signal(word, sense, donors):
@@ -141,15 +141,25 @@ class TestProductionPassesSense(unittest.TestCase):
             return bd.Signal("verici_yakınlığı", False, 0.0, "")
 
         detector = bd.BorrowingDetector(index=mock.Mock(exists=False), predictor=mock.Mock())
-        with mock.patch.object(bd, "own_sense", lambda word, lang: "book"), \
+        with mock.patch.object(bd, "SEARCH_DONOR_PROXIMITY", flag), \
+                mock.patch.object(bd, "own_sense", lambda word, lang: "book"), \
                 mock.patch.object(bd.BorrowingDetector, "_donor_signal", staticmethod(donor_signal)), \
                 mock.patch.object(bd.BorrowingDetector, "_sound_law_signal",
                                   lambda self, w, wit, lang="tr": (bd.Signal("ses_kanunu_ihlali", False, 0.0, ""), "")), \
                 mock.patch.object(bd.BorrowingDetector, "_phonotactic_model_signal",
                                   staticmethod(lambda w, lang: bd.Signal("fonotaktik_model", False, 0.0, ""))):
             detector.detect("kitap")
-        self.assertEqual(seen["sense"], "book")
+        return seen
+
+    def test_search_path_sense_is_off_by_default(self):
+        """Arama yolunda anlam doldurulmaz: 150 kelimede uyum 110 vs 100 (c0e8dd7)."""
+        seen = self._detect_kitap(False)
+        self.assertEqual(seen["sense"], "")
         self.assertEqual(seen["donors"], ["ar", "fa", "el", "hy", "fr", "it"])
+
+    def test_missing_sense_is_read_from_the_index_when_enabled(self):
+        seen = self._detect_kitap(True)
+        self.assertEqual(seen["sense"], "book")
 
     def test_explicit_sense_is_kept(self):
         seen = {}
