@@ -22,32 +22,32 @@ ilk büyük yeniden yapılanmadır ve "o zamandan beri dokunulmadı" demektir.
 | `BADGE_THRESHOLDS["validated"]` | config.py:162 | 0.75 (env `ETY_AHVP_T_VALIDATED`) | A-HVP rozeti 🟢 | elle; rozet kalibrasyonu `make eval-badge` ile izleniyor | dddf52c |
 | `BADGE_THRESHOLDS["needs_review"]` | config.py:163 | 0.50 | A-HVP rozeti 🟡 | elle | dddf52c |
 | `MIN_EVIDENCE_COVERAGE` | config.py:168 | 0.50 | kanıtlanan aşama ağırlığı bunun altındaysa rozet en çok "yetersiz kanıt" | elle | dddf52c |
-| (metin) | cli.py:133 | "0.75 / 0.50" | rozet eşikleri çıktı metnine GÖMÜLÜ | — | 92562c1 |
+| (metin) | cli.py:134 | `BADGE_THRESHOLDS`'tan biçimlenir | aşama kararı eşikleri çıktı metninde (eskiden "0.75 / 0.50" gömülüydü; metin gösterilen rozetin verdict_badge olduğunu da söyler) | — | bu commit |
 | `BORROWING_THRESHOLD` | nlp/borrowing_detector.py:149 | 0.45 | el skoru ≥ → "alıntı" (yalnız birleştirici modeli yoksa) | elle | 02ae367 |
 | `BLOCK_THRESHOLD` | nlp/borrowing_detector.py:162 | 0.55 | el skoru ≥ → miras rekonstrüksiyonu hiç yapılmaz (model yüklüyken de) | iki ayrı eşik gerekçesi ölçüldü (26/400 yanlış engelleme); değerin kendisi elle | 02ae367 |
 | birleştirici `threshold` | data/models/borrowing_combiner.json | 0.39 | eğitilmiş olasılık ≥ → "alıntı"; ≥ 0.195 "belirsiz" | ölçüldü (wold/sah/tune, F hedefi) | model dosyası |
 | `UNIFORMITY_SUSPICION` | nlp/borrowing_detector.py:328 | 0.85 | Türki tanıklar arası ortalama benzerlik ≥ → `değişimsiz_yayılım` ateşlenir | elle | 02ae367 |
 | `NATIVE_THRESHOLD` | nlp/loanword_classifier.py:74 | 0.55 | p_native > → "asli Öz Türkçe" | elle | dddf52c |
-| (satır içi) | nlp/loanword_detector.py:162 / :164 | 0.70 / 0.35 | p_native ≥ 0.70 "native", ≤ 0.35 "loanword" | elle | dddf52c |
+| `DETECTOR_NATIVE_FLOOR` / `DETECTOR_LOAN_CEILING` | nlp/loanword_classifier.py (dedektör içe aktarır) | 0.70 / 0.35 | p_native ≥ 0.70 "native", ≤ 0.35 "loanword", arası "uncertain" (yalnız `verdict` etiketi) | elle | dddf52c |
 | `NATIVE_SPREAD_THRESHOLD` | nlp/cognate_alignment.py:32 | 0.70 | Türki yayılım > → asli | plan belgesi | dddf52c |
 | `LOAN_SPREAD_THRESHOLD` | nlp/cognate_alignment.py:34 | 0.20 | Türki yayılım < → yeni alıntı | plan belgesi | dddf52c |
-| (satır içi) | nlp/loanword_classifier.py:321 / :324 | 0.40 / 0.12 | yayılım ≥ 0.40 asli puanı, ≤ 0.12 alıntı puanı | elle | dddf52c |
-| (satır içi) | nlp/hypothesis_validation_protocol.py:393 | `spread / 0.4` | A-HVP 4. aşama: yayılım 0.40'ta doyar | elle | dddf52c |
-| `HOMONYM_SIMILARITY_FLOOR` | search_engine.py:270 | 0.30 | tanığın anlamı sorguya bundan uzaksa eşseslinin akrabası sayılır | ölçüldü (MiniLM; eşsesliler 0,13–0,27, gerçekler 0,385+) | 3521bd5 |
+| `SPREAD_NATIVE_EVIDENCE` / `SPREAD_LOAN_EVIDENCE` | nlp/loanword_classifier.py | 0.40 / 0.12 | yayılım ≥ 0.40 asli puanı, ≤ 0.12 alıntı puanı | elle; 0,70/0,20'ye geçiş ölçüldü (§2) | dddf52c |
+| (`SPREAD_NATIVE_EVIDENCE`) | nlp/hypothesis_validation_protocol.py | `spread / SPREAD_NATIVE_EVIDENCE` | A-HVP 4. aşama: yayılım 0.40'ta doyar (sınıflayıcıyla aynı sabit) | elle | dddf52c |
+| `HOMONYM_SIMILARITY_FLOOR` | search_engine.py:272 (= `config.MEANING_SIMILARITY_FLOOR`) | 0.30 | tanığın anlamı sorguya bundan uzaksa eşseslinin akrabası sayılır | ölçüldü (MiniLM; eşsesliler 0,13–0,27, gerçekler 0,385+) | 3521bd5 |
 | `LOCAL_WITNESS_FLOOR` | search_engine.py:280 | 0.50 | yerel çağdaş dil adayı için anlam tabanı | ölçüldü (50 kelime elle sayım) | a38a9b0 |
 | `LOCAL_WITNESS_MARGIN` | search_engine.py:284 | 0.35 | en iyi adaydan bu kadar geride kalan yerel aday elenir | elle | a38a9b0 |
 | `_SAME_SENSE_MARGIN` | search_engine.py:601 | 0.10 | en iyi anlamla "aynı anlam grubu" farkı | elle | a38a9b0 |
 | `_OTHER_SENSE_MARGIN` | search_engine.py:634 | 0.10 | tanık başka etimolojinin anlamına bu kadar yakınsa eşsesli | elle | 251c63d |
 | `_SAME_SENSE_FLOOR` | search_engine.py:637 | 0.50 | iki kendi kaydı bu benzerliğin üstünde → aynı anlam | elle ("ölçümden önce seçildi") | 251c63d |
-| `MEANING_FLOOR` | fetchers/starling.py:24 | 0.30 | Starling adayı sorgunun anlamını taşıyor mu | HOMONYM_SIMILARITY_FLOOR ölçümü devralındı | acbdd41 |
+| `MEANING_FLOOR` | fetchers/starling.py:25 (= `config.MEANING_SIMILARITY_FLOOR`) | 0.30 | Starling adayı sorgunun anlamını taşıyor mu | HOMONYM_SIMILARITY_FLOOR ölçümü (artık aynı sabit) | acbdd41 |
 | `MEANING_MARGIN` | fetchers/starling.py:27 | 0.15 | eşsesli Starling kökleri arasında seçim marjı | elle | acbdd41 |
 | `THETA_THRESHOLD` | nlp/diachronic_semantic_engine.py:298 | 0.70 | anlam mesafesi > → anlamlar kopuk (A-HVP 3. aşama) | ölçüldü (254 kavram kalibrasyonu) | d6478e4 |
 | `COGNATE_THRESHOLD` | nlp/cognate_clustering.py:74 | 0.50 | düzenleme benzerliği > → aynı akraba kümesi (northeuralex da kullanır) | ölçüldü (`make eval-cognates`, train tarandı, dev raporlandı) | debc6c9 |
 | `LANGUAGE_THRESHOLDS["cv"]` | fetchers/apertium.py:48 | 0.66 | Çuvaşça akraba benzerlik eşiği | ölçüldü (400 kelime, 47 aday elle) | 62d0eb8 |
-| `SIMILARITY_THRESHOLD` | fetchers/khakas_dict.py:48 | 0.50 | Hakasça aday benzerlik eşiği (COGNATE_THRESHOLD'un ayrı kopyası) | elle | 90c17a6 |
+| `SIMILARITY_THRESHOLD` | fetchers/khakas_dict.py:51 (= `COGNATE_THRESHOLD`) | 0.50 | Hakasça aday benzerlik eşiği | COGNATE_THRESHOLD ölçümü | 90c17a6 |
 | `DONOR_DISTANCE_THRESHOLD` | nlp/donor_proximity.py:45 | 0.35 | SCA mesafesi < → verici yakınlığı alıntı kanıtı | ölçüldü (borrowing_eval ayar yarısı) | 1a8d73e |
 | `DONOR_DISTANCE_CEILING` | nlp/donor_proximity.py:48 | 0.60 | sinyal gücü bu mesafede sıfır | elle | 1a8d73e |
-| `RUSSIAN_LOAN_DISTANCE` | db/concept_donors.py:53 | 0.35 | Rusça alıntı süzgeci (DONOR_DISTANCE_THRESHOLD ile aynı değer, ayrı sabit) | devralındı | 2e24f81 |
+| `RUSSIAN_LOAN_DISTANCE` | db/concept_donors.py:55 (= `DONOR_DISTANCE_THRESHOLD`) | 0.35 | Rusça alıntı süzgeci | DONOR_DISTANCE_THRESHOLD ölçümü | 2e24f81 |
 | `DEFAULT_PLAUSIBILITY_FLOOR` | nlp/confidence.py:52 | 0.35 | ata biçim makullüğü < → çekimser | ölçüldü | 104fb57 |
 | `REJECTED_LOAN_CEILING` | nlp/hypothesis_ranking.py:185 | 0.10 | birleştirici alıntıyı reddedince alıntı skoru tavanı | elle | 396affe |
 | `LOAN_REJECTED_INHERITED_FLOOR` | nlp/hypothesis_ranking.py:189 | 0.20 | aynı durumda miras hipotezi tabanı | elle | 396affe |
@@ -56,44 +56,65 @@ ilk büyük yeniden yapılanmadır ve "o zamandan beri dokunulmadı" demektir.
 
 ## 2. Aynı kavram, farklı değer
 
-Aşağıdakiler **yalnız öneridir**; hiçbir değer değiştirilmedi. Değer
-değiştirmek davranış değiştirir ve ilgili eval'le yeniden ölçülmelidir.
+İlk envanter (638fc7a) yalnız öneriydi. 2026-09-25'te her çakışma kod
+okunarak ayrıldı; aynı kavram + aynı değer olanlar tek sabite bağlandı
+(davranış birebir aynı, pytest), değer değiştirecek tek aday ölçüldü
+(ön-kayıt ve sonuç: `data/cache/work/thresholds/PREREG.md`).
 
-1. **Alıntı/yerli kararı** — dört ayrı eşik, iki ayrı olasılık ölçeği:
-   birleştirici 0,39 (ölçüldü), `BORROWING_THRESHOLD` 0,45, `BLOCK_THRESHOLD`
-   0,55 (detector el skoru); `NATIVE_THRESHOLD` 0,55 (classifier p_native);
-   loanword_detector 0,70 / 0,35 (aynı p_native üzerinde ikinci bir
-   üçlü karar). Detector ile classifier farklı skorlar olduğundan sayılar
-   doğrudan kıyaslanamaz. *Öneri:* classifier ve loanword_detector'ın
-   p_native eşiklerini tek yerde (tek sabit çifti) tanımlamak; 0,55 ile
-   0,70/0,35 arasındaki ilişki (tek eşik mi, belirsiz bant mı) belgelenip
-   bir alıntı eval'inde (`make eval-borrowing`) ölçülmeli. `BORROWING_THRESHOLD`
-   yalnız model dosyası yokken devrede; bu yol pratikte ölçülmüyor.
-2. **Türki yayılım oranı** — cognate_alignment 0,70/0,20 (plan belgesi),
-   loanword_classifier 0,40/0,12, A-HVP `spread / 0,4` doygunluğu. Üçü de
-   `TURKIC_LANGUAGE_COUNT`'a bölünmüş aynı orana bakıyor. *Öneri:* tek bir
-   "yayılım" sabit kümesi (`config` ya da `cognate_alignment`) ve bir
-   ölçüm; hiçbirinin ölçüm kaydı yok.
-3. **Anlam benzerliği tabanı** — 0,30 (`HOMONYM_SIMILARITY_FLOOR`,
-   `starling.MEANING_FLOOR`: aynı ölçüm, iki sabit), 0,50
-   (`LOCAL_WITNESS_FLOOR`, `_SAME_SENSE_FLOOR`), θ 0,70 (diachronic, ters
-   yönlü mesafe). Marjlar 0,35 / 0,15 / 0,10 / 0,10. *Öneri:*
-   `starling.MEANING_FLOOR` değeri `search_engine.HOMONYM_SIMILARITY_FLOOR`'dan
-   okunsun (yorum zaten "aynı ölçüt" diyor); marjlar ayrı kavramlar,
-   birleştirilmemeli.
-4. **Akraba benzerliği** — genel 0,50 (`COGNATE_THRESHOLD`), Çuvaşça 0,66
-   (apertium, ölçülü), khakas_dict'te ayrı bir 0,50. *Öneri:* khakas_dict
-   `COGNATE_THRESHOLD`'u içe aktarsın (değer aynı, davranış değişmez).
-5. **Verici SCA eşiği** — `DONOR_DISTANCE_THRESHOLD` 0,35 ile
-   `RUSSIAN_LOAN_DISTANCE` 0,35 aynı değer, ayrı sabit ("üretim eşiğiyle
-   aynı" diye belgelenmiş). *Öneri:* biri ötekinden okunsun.
-6. **Rozet metni** — `cli.py:133` "0.75 / 0.50" metnini gömüyor; config
-   env ile değişirse rapor yanlış olur. *Öneri:* metin `BADGE_THRESHOLDS`'tan
-   biçimlensin (çıktı metni değişmez).
-7. **A-HVP docstring'i** — `hypothesis_validation_protocol.py:17-18` hâlâ
-   eski varsayılanları (semantik 0,85, triangulation "daima 0,95")
-   anlatıyor; kod bunları artık üretmiyor (bkz. aynı dosya :349).
-   *Öneri:* docstring güncellensin.
+1. **Alıntı/yerli kararı** — *çoğu farklı kavram.* Birleştirici 0,39
+   eğitilmiş olasılıktır, `BORROWING_THRESHOLD` 0,45 / `BLOCK_THRESHOLD`
+   0,55 el skorudur (ölçek farklı; 0,45/0,55 bilinçli iki eşik: etiket vs.
+   rekonstrüksiyonu engelleme). Sınıflayıcı `NATIVE_THRESHOLD` 0,55 ile
+   dedektörün 0,70/0,35'i **aynı p_native** üzerindedir ama farklı karar
+   türüdür: 0,55 ikili, 0,70/0,35 üçlü (belirsiz bantlı) ve 0,55 bandın
+   içindedir → iki modül hiçbir kelimede zıt hüküm veremez. Dedektörün güveni
+   her dalda max(p, 1−p) olduğundan bant rozet girdisini (`detect_conf`)
+   etkilemez; yalnız `verdict` etiketini belirler ve hiçbir eval bunu okumaz.
+   **Yapılan:** bant `DETECTOR_NATIVE_FLOOR` / `DETECTOR_LOAN_CEILING` adıyla
+   `loanword_classifier`'a taşındı, dedektör içe aktarır (değer aynı).
+   Değer değişikliği önerilmiyor: ölçülebilir etkisi yok.
+2. **Türki yayılım oranı** — *aynı kavram, ölçüldü.* Sınıflayıcının
+   0,40/0,12'si ve A-HVP'nin `spread / 0.4` doygunluğu aynı "geniş yayılım"
+   eşiğidir → tek sabit `SPREAD_NATIVE_EVIDENCE` (A-HVP içe aktarır;
+   birebir). `cognate_alignment`'ın 0,70/0,20'si (plan belgesi) yalnız
+   `assessment` metnini seçer, hiçbir karara girmez. **Ölçüm (aday S):**
+   0,40/0,12 → 0,70/0,20 (sınıflayıcı + doygunluk). Etkilediği tek ölçüt
+   `eval-badge` (sınıflayıcı çıktısı yalnız rozet girdilerine, A-HVP skoru
+   yalnız eski aşama kararına gider; borrowing / sıralayıcı / headline /
+   homonym girdileri değişmez). Train (n=438): rozet AUC 0,8871 → 0,8816
+   (Δ %95 [−0,017, 0]), aşama sırası AUC 0,449 → 0,454 ([−0,025, 0,056]),
+   aşama skoru AUC 0,557 → 0,553; hiçbir rozet kodu değişmedi. **Reddedildi**
+   — değerler 0,40/0,12 kalır. Rapor (bir kez): dev değişmedi (0,9844),
+   savelyev_dev rozet AUC 0,648 → 0,614. Metin eşikleri (0,70/0,20)
+   karar olmadığı için bırakıldı; "orta" bant metni sınıflayıcının "geniş
+   yayılım" notuyla 0,40–0,70 arasında çelişik okunabilir (yalnız metin).
+   *Yan bulgu (düzeltilmedi, davranış değişikliği):* `search_engine`
+   sınıflayıcıya Türki tanık yokken yayılım **0,0** geçiriyor (→ "dar yayılım"
+   alıntı kanıtı), dedektör aynı durumda `None` geçiriyor (kanıt yok).
+3. **Anlam benzerliği tabanı** — `HOMONYM_SIMILARITY_FLOOR` ≡
+   `starling.MEANING_FLOOR` (aynı MiniLM ölçütü, aynı ölçüm) → ikisi de
+   `config.MEANING_SIMILARITY_FLOOR`'dan okur (birebir). 0,50'ler farklı
+   kavram: `LOCAL_WITNESS_FLOOR` yerel aday tabanı (ölçüldü),
+   `_SAME_SENSE_FLOOR` iki kendi kaydının aynı anlam sayılması; θ 0,70 ters
+   yönlü mesafe; marjlar (0,35 / 0,15 / 0,10 / 0,10) ayrı kararlar. Belgelendi.
+4. **Akraba benzerliği** — khakas_dict 0,50 ≡ `COGNATE_THRESHOLD` (aynı
+   ölçü 1 − Levenshtein/uzun, NorthEuraLex de aynısını kullanır) →
+   `SIMILARITY_THRESHOLD = COGNATE_THRESHOLD` (birebir). Çuvaşça 0,66 dile
+   özgü, ayrıca ölçülmüş (400 kelime, 47 aday elle) daha sıkı eşik;
+   birleştirilmez.
+5. **Verici SCA eşiği** — `RUSSIAN_LOAN_DISTANCE = DONOR_DISTANCE_THRESHOLD`
+   (aynı kavram, aynı değer; birebir).
+6. **Rozet metni** — `cli.py` artık `BADGE_THRESHOLDS`'tan biçimler ve
+   bunun A-HVP *aşama* kararı olduğunu, gösterilen rozetin `verdict_badge`
+   (TUTARLI / ŞÜPHELİ / DEĞERLENDİRİLMEDİ) olduğunu söyler; eski metin
+   "rozet bu sayıya göre verilir" diyordu (rozet v2'den beri yanlış).
+7. **A-HVP docstring'i** — eski cömert varsayılanlar tarihçe olarak kaldı;
+   bugünkü değerler (ağırlıklar, semantik `1 − mesafe`/θ, triangulation
+   formülü ve 0,40 doygunluğu, aşama kararı ≠ gösterilen rozet) eklendi.
+8. **NED kopyaları** — `iterative_hypothesis_engine` (tanık biçimi mesafesi)
+   ve `northeuralex._similarity` artık `engine.utils.edit_distance.
+   normalized_edit_distance` kullanır; boş dizge durumları dâhil 5000 rastgele
+   çiftte birebir aynı sonuç.
 
 ## 3. Bütün modül düzeyi sayısal sabitler
 
@@ -122,7 +143,7 @@ satırları başka bir çalışmanın commitlenmemiş değişikliğidir.
 | `MAX_UNTRUSTED_CHARS` | config.py:136 | 1500 (env ETY_MAX_UNTRUSTED_CHARS) | Kazınmış içeriğin isteme girebileceği azami karakter (prompt injection yüzeyini daraltır). | elle/belirtilmemiş | dddf52c |
 | `API_PORT` | config.py:142 | 8000 (env ETY_API_PORT) |  | elle/belirtilmemiş | dddf52c |
 | `MIN_EVIDENCE_COVERAGE` | config.py:168 | 0.5 (env ETY_AHVP_MIN_EVIDENCE_COVERAGE) | Kanıtlanan aşama ağırlığı bu oranın altındaysa rozet en fazla INSUFFICIENT_EVIDENCE olabilir. | elle/belirtilmemiş | dddf52c |
-| `RUSSIAN_LOAN_DISTANCE` | db/concept_donors.py:53 | 0.35 | Rusça alıntı süzgecinin SCA eşiği (alıntı gücünün üretim eşiğiyle aynı). | elle/belirtilmemiş | 2e24f81 |
+| `RUSSIAN_LOAN_DISTANCE` | db/concept_donors.py:55 | = `DONOR_DISTANCE_THRESHOLD` (0.35) | Rusça alıntı süzgecinin SCA eşiği. | ölçüldü (devralındı) | 2e24f81 |
 | `MIN_LENGTH` | db/donor_index.py:101 | 2 | Anlamsız/çok kısa biçimler indekse alınmaz: | elle/belirtilmemiş | 1a8d73e |
 | `MAX_LENGTH` | db/donor_index.py:104 | 24 | Çok uzun maddeler (deyim, çok kelimeli birim) alıntı adayı değildir. | elle/belirtilmemiş | 1a8d73e |
 | `_DOUBLE_BYTE_START` | db/starling.py:61 | 1 |  | elle/belirtilmemiş | 92f9fbf |
@@ -149,11 +170,11 @@ satırları başka bir çalışmanın commitlenmemiş değişikliğidir.
 | `MIN_REFS` | evaluation/regularity.py:46 | 3 | CoPaR'ın bir örüntüyü "düzenli" sayması için gereken asgari sütun sayısı. | elle/belirtilmemiş | d17ad87 |
 | `MAX_LOCAL_VARIANTS` | fetchers/historical_index.py:45 | 24 | Yerel taramada denenecek en çok ses varyantı. | ölçüldü | 4852a2c |
 | `MAX_PER_LANGUAGE` | fetchers/historical_index.py:57 | 3 | Tek bir dil için en çok kaç tanık alınsın. | elle/belirtilmemiş | 4852a2c |
-| `SIMILARITY_THRESHOLD` | fetchers/khakas_dict.py:48 | 0.5 |  | elle/belirtilmemiş | 90c17a6 |
+| `SIMILARITY_THRESHOLD` | fetchers/khakas_dict.py:51 | = `COGNATE_THRESHOLD` (0.5) | Aday benzerlik eşiği. | ölçüldü (devralındı) | 90c17a6 |
 | `MAX_CANDIDATES` | fetchers/khakas_dict.py:50 | 40 | Aynı sorgu için en çok bu kadar aday (en benzerler); anlam süzgeci pahalı. | elle/belirtilmemiş | 90c17a6 |
 | `CONTEXT_CHARS` | fetchers/local_pdf_books.py:39 | 160 | Eşleşme çevresinde döndürülecek karakter sayısı | elle/belirtilmemiş | dddf52c |
 | `MAX_MATCHES_PER_BOOK` | fetchers/local_pdf_books.py:41 | 3 | Kitap başına azami eşleşme | elle/belirtilmemiş | dddf52c |
-| `MEANING_FLOOR` | fetchers/starling.py:24 | 0.3 | Adayın sorgunun bir anlamını "taşıdığı" en düşük benzerlik. | ölçüldü | acbdd41 |
+| `MEANING_FLOOR` | fetchers/starling.py:25 | = `config.MEANING_SIMILARITY_FLOOR` (0.3) | Adayın sorgunun bir anlamını "taşıdığı" en düşük benzerlik. | ölçüldü | acbdd41 |
 | `MEANING_MARGIN` | fetchers/starling.py:27 | 0.15 | En iyi aday, ikinciyi bu kadar geçmiyorsa seçim yapılmaz. | elle/belirtilmemiş | acbdd41 |
 | `PERIOD_START` | fetchers/wilkens_old_uyghur.py:70 | 800 | Dönemin yıl aralığı: | elle/belirtilmemiş | d43c483 |
 | `FORM_THRESHOLD` | fetchers/wilkens_old_uyghur.py:74 | 0.6 | Madde başı ile sorgu (ya da tahmini Eski Türkçe biçim) arasındaki en düşük yazılış benzerliği (1 - Levenshtein / uzunluk). | elle/belirtilmemiş | 7e57a35 |
@@ -193,7 +214,11 @@ satırları başka bir çalışmanın commitlenmemiş değişikliğidir.
 | `MAX_DEPTH` | nlp/historical_morphology.py:70 | 4 | Azami türetme derinliği (sonsuz döngü koruması). | elle/belirtilmemiş | dddf52c |
 | `REJECTED_LOAN_CEILING` | nlp/hypothesis_ranking.py:185 | 0.1 | Birleştirici alıntıyı reddedince (p < eşik) alıntı skoru bu tavanın altında kalır: | elle/belirtilmemiş | 396affe |
 | `LOAN_REJECTED_INHERITED_FLOOR` | nlp/hypothesis_ranking.py:189 | 0.2 | Birleştirici alıntıyı reddedince miras hipotezinin tabanı: | elle/belirtilmemiş | 396affe |
-| `NATIVE_THRESHOLD` | nlp/loanword_classifier.py:74 | 0.55 | p_native bu değerin üzerindeyse "asli Öz Türkçe" sayılır. | elle/belirtilmemiş | dddf52c |
+| `NATIVE_THRESHOLD` | nlp/loanword_classifier.py:74 | 0.55 | p_native bu değerin üzerindeyse "asli Öz Türkçe" sayılır (ikili karar). | elle/belirtilmemiş | dddf52c |
+| `DETECTOR_NATIVE_FLOOR` | nlp/loanword_classifier.py:83 | 0.7 | Dedektörün üçlü kararında "native" alt sınırı. | elle/belirtilmemiş | dddf52c |
+| `DETECTOR_LOAN_CEILING` | nlp/loanword_classifier.py:84 | 0.35 | Dedektörün üçlü kararında "loanword" üst sınırı. | elle/belirtilmemiş | dddf52c |
+| `SPREAD_NATIVE_EVIDENCE` | nlp/loanword_classifier.py:92 | 0.4 | Katman 2 yayılımı ≥ → asli kanıtı; A-HVP 4. aşama doygunluğu. | elle/belirtilmemiş | dddf52c |
+| `SPREAD_LOAN_EVIDENCE` | nlp/loanword_classifier.py:93 | 0.12 | Katman 2 yayılımı ≤ → alıntı kanıtı. | elle/belirtilmemiş | dddf52c |
 | `TRIM_THRESHOLD` | nlp/multi_alignment.py:200 | 0.5 | Budama eşiği: | elle/belirtilmemiş | f39bbcf |
 | `MAX_PER_COLUMN` | nlp/nbest_reranking.py:82 | 3 | Sütun başına en çok kaç aday taşınır?  ⚠️ Sayı kombinatoriktir: | elle/belirtilmemiş | 75c82f7 |
 | `MAX_CANDIDATES` | nlp/nbest_reranking.py:85 | 64 | Toplam aday sayısı tavanı. | elle/belirtilmemiş | 75c82f7 |
@@ -223,7 +248,7 @@ satırları başka bir çalışmanın commitlenmemiş değişikliğidir.
 | `DEFAULT_WEIGHT` | nlp/proto_phonology.py:98 | 1.0 |  | elle/belirtilmemiş | fa6937a |
 | `LEARNED_MIN_CONFIDENCE` | nlp/proto_phonology.py:153 | 0.5 | Öğrenilmiş örüntü oyunun devreye girmesi için gereken güven. | ölçüldü | ebb54bc |
 | `LENGTH_THRESHOLD` | nlp/vowel_length.py:58 | 0.9 | Ata biçimde uzunluk iddia etmek için gereken asgari ağırlıklı tanık gücü. | elle/belirtilmemiş | f1212e7 |
-| `HOMONYM_SIMILARITY_FLOOR` | search_engine.py:270 | 0.3 | Semantik benzerlik alt sınırı: | ölçüldü | 3521bd5 |
+| `HOMONYM_SIMILARITY_FLOOR` | search_engine.py:272 | = `config.MEANING_SIMILARITY_FLOOR` (0.3) | Semantik benzerlik alt sınırı: | ölçüldü | 3521bd5 |
 | `LOCAL_WITNESS_FLOOR` | search_engine.py:280 | 0.5 | Yerel çağdaş dil adayları (yazılışla bulunur) için ANLAM alt sınırı. | elle/belirtilmemiş | a38a9b0 |
 | `LOCAL_WITNESS_MARGIN` | search_engine.py:284 | 0.35 | Yerel çağdaş dil adayı, en iyi eşleşen adayın bu kadar altındaysa elenir (başka anlamın, yani eşseslinin kaydıdır). | elle/belirtilmemiş | a38a9b0 |
 | `_SAME_SENSE_MARGIN` | search_engine.py:601 | 0.1 | En iyi anlamla "aynı anlam grubu" sayılan benzerlik farkı. | elle/belirtilmemiş | a38a9b0 |
