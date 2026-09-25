@@ -98,6 +98,15 @@ logger = get_logger(__name__)
 #: (``borrowing_combiner``); bu ağırlıklar yalnız model dosyası yokken
 #: kullanılır ve o durum ``verdict.is_trained == False`` ile ilan edilir.
 #:
+#: ⚠️ Burada ağırlığı 0 olan sinyaller **ölü değildir**, her sorguda
+#: hesaplanmaları gerekir: yüklü birleştirici modelinde (``borrowing_combiner.json``,
+#: l1=0, altı sinyal de etkin) katsayıları sıfır değildir — ``fonotaktik_model``
+#: +0,85, ``ses_kanunu_ihlali`` -0,23, ``değişimsiz_yayılım`` -0,04
+#: (2026-09-25 denetimi). ``ses_kanunu_ihlali`` ayrıca ``expected_if_inherited``
+#: bilgisini üretir. ``ters_uyum``/``söz_sonu_ünsüz_kümesi`` bayrakla kapalıdır.
+#: Not: "yedek yol" tam doğru değildir — el skoru model yüklüyken de
+#: ``blocks_inherited_reconstruction`` (``BLOCK_THRESHOLD``) kararını verir.
+#:
 #: ⚠️ ``fonotaktik_model`` ağırlığı **sıfırdır** ve bu bilinçlidir. Sinyal
 #: eğitilmiş birleştiriciye girer (orada +0,878 katsayı alır) ama elle
 #: ağırlıklandırılmış toplama girmez. Ölçüldü (WOLD/Sakha, n=769)::

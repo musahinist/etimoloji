@@ -43,7 +43,6 @@ OGHUR_CODES = frozenset({"cv", "wot"})
 #: Oğur kolunun **yaşayan** (atteste) tanığı. ``wot`` bir rekonstrüksiyondur;
 #: tanısal denkliği destekler ama tek başına ``*PT`` düğümünü taşımaz —
 #: rekonstrüksiyondan rekonstrüksiyon türetmek zincirleme belirsizliktir.
-#: Bkz. ``west_old_turkic.PT_REQUIRES_LIVE_OGHUR``.
 LIVE_OGHUR_CODES = frozenset({"cv"})
 
 #: Arkaiklik ağırlıkları — bir tanığın oyunun kaç sayılacağı.

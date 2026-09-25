@@ -58,7 +58,8 @@ TURKIC_LANGUAGES_MAP: dict[str, str] = {
     # --- Oğur kolunun ikinci kaynağı ----------------------------------------
     # ⚠️ ATTESTE DEĞİL: Róna-Tas & Berta (2011) Macarcadaki Türki alıntılardan
     # geri kurmuştur. ``cv`` ile karıştırılmaması için ayrı kod; ağırlığı da
-    # Çuvaşçadan düşüktür. Bkz. `engine/db/west_old_turkic.py`.
+    # Çuvaşçadan düşüktür. Bağlayıcı (``db/west_old_turkic``, 4bf30e3) ölçüldü,
+    # kazanç yok; kaldırıldı.
     "wot": "Batı Eski Türkçe (Oğur, geri kurulmuş)",
 }
 

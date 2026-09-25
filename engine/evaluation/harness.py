@@ -26,7 +26,6 @@ from typing import Any
 
 from engine.db.cldf_wordlist import CldfWordlist
 from engine.db.language_mapping import build_mapping
-from engine.db.west_old_turkic import USE_WEST_OLD_TURKIC, WOT_CODE, link_witness
 from engine.evaluation.gold import GoldItem, GoldStandard
 from engine.evaluation.metrics import (
     ReconstructionScore,
@@ -112,9 +111,7 @@ def classify_error(predicted: str, gold: str, item: GoldItem) -> str:
     return "ses_hatasi"
 
 
-def _witnesses_for(
-    item: GoldItem, mapping: dict[str, str], *, with_wot: bool = USE_WEST_OLD_TURKIC
-) -> list[Witness]:
+def _witnesses_for(item: GoldItem, mapping: dict[str, str]) -> list[Witness]:
     """Altın maddeyi motorun göreceği biçime çevirir — **cevap sızdırmadan**."""
     out: list[Witness] = []
     for cldf_lang, form in sorted(item.witnesses.items()):
@@ -122,14 +119,6 @@ def _witnesses_for(
         if not code or not form:
             continue
         out.append({"lang_code": code, "word": form, "source": "gold-harness"})
-    if with_wot:
-        # ⚠️ Bağlama YALNIZ tanıklara bakar; altın ``Root`` girmez.
-        # Bkz. `engine/db/west_old_turkic.link_witness`.
-        linked = link_witness(item.concepticon_gloss, item.witnesses)
-        if linked is not None:
-            out.append(
-                {"lang_code": WOT_CODE, "word": linked.form, "source": "wot-linked"}
-            )
     return out
 
 

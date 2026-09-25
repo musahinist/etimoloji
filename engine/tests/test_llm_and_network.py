@@ -26,7 +26,6 @@ from engine.llm.qwen_agent import (
     _untrusted_block,
 )
 from engine.llm.research_tools import tool_extract_suffixes, tool_web_search
-from engine.nlp.trusted_whitelisted_scraper import scrape_whitelisted_academic_sources
 from engine.utils import network
 from engine.utils.network import (
     Diagnostics,
@@ -291,25 +290,6 @@ class TestLlmTools(unittest.TestCase):
         responses.add(responses.GET, re.compile(r".*"), status=500)
         self.assertIsInstance(tool_web_search(""), list)
         self.assertIsInstance(tool_web_search("   "), list)
-
-
-class TestTrustedScraper(unittest.TestCase):
-    @responses.activate
-    def test_survives_network_failure(self):
-        network.reset_session()
-        responses.add(responses.GET, re.compile(r".*"), status=500)
-        self.assertIsInstance(scrape_whitelisted_academic_sources("göz"), list)
-
-    @responses.activate
-    def test_parses_nisanyan_payload(self):
-        network.reset_session()
-        responses.add(
-            responses.GET, re.compile(r".*nisanyansozluk.*"),
-            body='<div class="etym">Eski Türkçe köz</div>', status=200,
-            content_type="text/html",
-        )
-        responses.add(responses.GET, re.compile(r".*"), status=500)
-        self.assertIsInstance(scrape_whitelisted_academic_sources("göz"), list)
 
 
 class TestConfig(unittest.TestCase):

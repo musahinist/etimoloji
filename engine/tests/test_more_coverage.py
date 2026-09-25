@@ -25,7 +25,6 @@ from engine.nlp.diachronic_semantic_engine import (
     has_semantic_model,
 )
 from engine.nlp.phonological_feature_engine import PhonologicalFeatureEngine
-from engine.nlp.trusted_whitelisted_scraper import scrape_whitelisted_academic_sources
 from engine.utils import network
 
 
@@ -275,27 +274,6 @@ class TestPhonologicalFallback(unittest.TestCase):
             self.assertTrue(res["evidence_available"])
         finally:
             mod._DISTANCE = original
-
-
-class TestTrustedScraperPaths(unittest.TestCase):
-    @responses.activate
-    def test_scrapes_all_whitelisted_sources(self):
-        network.reset_session()
-        responses.add(
-            responses.GET, re.compile(r".*"),
-            body='<div class="etym">Eski Türkçe köz biçiminden</div>'
-                 '<a class="card-title">Akademik makale başlığı</a>',
-            status=200, content_type="text/html",
-        )
-        out = scrape_whitelisted_academic_sources("göz")
-        self.assertIsInstance(out, list)
-
-    @responses.activate
-    def test_partial_failures_are_isolated(self):
-        network.reset_session()
-        responses.add(responses.GET, re.compile(r".*nisanyan.*"), status=500)
-        responses.add(responses.GET, re.compile(r".*"), body="<html></html>", status=200)
-        self.assertIsInstance(scrape_whitelisted_academic_sources("göz"), list)
 
 
 class TestQwenPromptConstruction(unittest.TestCase):
