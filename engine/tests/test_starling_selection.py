@@ -118,3 +118,37 @@ class TestStarlingFetcherContract(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestReflexWitnesses(unittest.TestCase):
+    """Starling tanıkları: anlam numarası, ad/fiil ve türev süzgeci."""
+
+    EYE = StarlingEtymology(
+        1, "*göŕ / *gör-", "1 eye 2 to see",
+        {"TRK": "göz 1, gör- 2", "DOLG": "kör- 2; köhün- 'to be seen'",
+         "TOF": "kösküt- 'to show', kör- 2", "SJG": "köz 1, gör- 1",
+         "CHG": "göz", "UIG": "qi(r)q", "KHAL": "*munǯuq", "KRMX": "Guš (< Az.)"},
+    )
+
+    def _forms(self, word):
+        return {w["lang_code"]: w["word"] for w in db.reflex_witnesses(self.EYE, word)}
+
+    def test_sense_and_kind(self):
+        forms = self._forms("göz")
+        self.assertEqual(forms["ybe"], "köz")
+        self.assertNotIn("dlg", forms)  # yalnız 2. anlam (görmek) ve türev
+        self.assertNotIn("kim", forms)
+        self.assertEqual(self._forms("görmek")["dlg"], "kör-")
+        self.assertNotIn("chg", self._forms("görmek"))  # ad biçimi fiile tanık olmaz
+
+    def test_optional_sound_reconstruction_and_loan(self):
+        forms = self._forms("göz")
+        self.assertEqual(forms["ug"], "qirq")
+        self.assertNotIn("klj", forms)  # yeniden kurulmuş biçim
+        self.assertNotIn("crh", forms)  # alıntı işaretli
+
+    def test_derivative_turkish_form_gives_nothing(self):
+        etym = StarlingEtymology(2, "*dāt-", "1 to taste 2 taste",
+                                 {"TRK": "tat- 1, tadɨm, tatɨk 2", "KRG": "tatɨq 2"})
+        self.assertEqual(db.reflex_witnesses(etym, "tadım"), [])
+        self.assertEqual(db.reflex_witnesses(etym, "tatık")[0]["word"], "tatɨq")

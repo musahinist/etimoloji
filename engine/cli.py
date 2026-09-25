@@ -200,6 +200,17 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
                 word = f"{word} {entry['comparison']}"
             print(f"  • {entry.get('lang_name', ''):<30} : {word:<24} [{_witness_meaning(entry, finding)}]")
 
+    starling_witnesses = finding.get("starling_witnesses") or []
+    if starling_witnesses:
+        print("\n" + "─" * 80)
+        print(
+            f" 📚 STARLING TANIKLARI ({len(starling_witnesses)} dil; sözlük indeksinde tanığı olmayan diller,"
+            " başlık kökünün kaydından — yayılıma sayılmaz)"
+        )
+        print("─" * 80)
+        for w in starling_witnesses:
+            print(f"  • {w.get('lang_name', ''):<30} : {w.get('word', ''):<24} [{w.get('source', '')}]")
+
     mentions = finding.get("etymology_mentions") or {}
     if mentions.get("items"):
         print("\n" + "─" * 80)

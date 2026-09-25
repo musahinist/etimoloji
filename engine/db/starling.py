@@ -255,6 +255,94 @@ def lookup_turkish(word: str) -> tuple[StarlingEtymology, ...]:
 
 
 # ---------------------------------------------------------------------------
+# Starling tanıkları (YALNIZ GÖSTERİM)
+# ---------------------------------------------------------------------------
+
+#: Bir alan parçası: "köz 1", "kör- 2", "kösküt- 'to show'", "Guš (< Az.)".
+_REFLEX_SPLIT = re.compile(r"[,;](?![^(]*\))(?![^']*'(?:[^']*'[^']*')*[^']*$)")
+
+
+def _reflex_tokens(field_text: str) -> list[tuple[str, frozenset[str], str]]:
+    """Alan -> [(biçim, anlam numaraları, tırnaklı anlam)].
+
+    Alıntı işaretli parça (``(< Az.)``, ``< Pers.``) atılır: alıntı kök
+    tanığı değildir.
+    """
+    out = []
+    for part in _REFLEX_SPLIT.split(field_text or ""):
+        part = part.strip()
+        if not part or "<" in part:
+            continue
+        gloss = " ".join(re.findall(r"'([^']*)'", part))
+        # Kelimeye bitişik ayraç isteğe bağlı sestir: qi(r)q -> qirq.
+        part = re.sub(r"(?<=[^\s'(])\(([^)<]*)\)", r"\1", part)
+        bare = re.sub(r"'[^']*'|\([^)]*\)", " ", part).split()
+        if not bare:
+            continue
+        form = bare[0].strip(".,")
+        if form in {"dial.", "dial", "?"} and len(bare) > 1:
+            form = bare[1]
+        nums = frozenset(t for t in bare[1:] if t.isdigit())
+        if form and not form[0].isdigit():
+            out.append((form, nums, gloss))
+    return out
+
+
+def reflex_witnesses(etym: StarlingEtymology, word: str) -> list[dict[str, str]]:
+    """Seçilmiş Starling kökünün öbür dillerdeki biçimleri (dil kodu, biçim, anlam).
+
+    Kökün numaralı anlamları varsa (*göŕ "1 eye 2 to see") sorgunun TRK
+    alanındaki numarası seçilir; yalnız başka numaralı biçimi olan dil
+    atlanır (`göz` için Dolganca kör- "2 to see" değil). Tırnaklı anlam
+    taşıyan parça (türev ya da anlam kayması: kösküt- 'to show') atlanır.
+
+    ⚠️ DÖNGÜSELLİK: bu biçimler başlık kökünü veren AYNI Starling
+    kaydından gelir. Yayılım sayımına, A-HVP'ye, skora ve rekonstrüksiyon
+    tanıklarına KATILMAZ; yalnız raporda "Starling tanığı" diye gösterilir.
+    (Sütun modeli Starling alanlarıyla zaten ayrıca eğitilir.)
+    """
+    key = to_turkish_key(word)
+    stem = re.sub(r"m[ae]k$", "", key)
+    senses: set[str] = set()
+    kinds: set[bool] = set()  # eşleşen TRK biçimi fiil mi (tireli)
+    turkish = _reflex_tokens(etym.reflexes.get("TRK", ""))
+    numbered = any(nums for _, nums, _ in turkish)
+    for form, nums, gloss in turkish:
+        verb = form.endswith("-")
+        if to_turkish_key(form) != (stem if verb and stem != key else key):
+            continue
+        # Türkçe biçim kökün kendisi değil de yanına yazılmış bir türevse
+        # (numarasız `tadɨm` "1 to taste" satırında) ya da anlamı kaymışsa
+        # (`susak 'jar'`), öbür dillerin ilk biçimi o türevin akrabası olmaz.
+        if gloss or (numbered and not nums):
+            continue
+        senses |= nums
+        kinds.add(verb)
+    if not kinds:
+        return []
+    out = []
+    for field_name, code in FIELD_LANGUAGES.items():
+        if code == "tr":
+            continue
+        for form, nums, gloss in _reflex_tokens(etym.reflexes.get(field_name, "")):
+            # Başka numaralı anlam, ayrı anlamlı türev ('to show'), yeniden
+            # kurulmuş (*) biçim ya da sorgunun türünden (ad/fiil) başka
+            # biçim gösterilmez (`görmek` için Çağatayca göz değil).
+            if (senses and nums and not nums & senses) or gloss or form.startswith("*"):
+                continue
+            if len(kinds) == 1 and form.endswith("-") not in kinds:
+                continue
+            out.append({"lang_code": code, "word": form, "gloss": gloss})
+            break
+    return out
+
+
+def to_turkish_key(text: str) -> str:
+    """Starling biçimi -> TRK eşlemesindeki anahtar (tire ve numara atılır)."""
+    return (text or "").translate(_TO_TURKISH).lower().strip(".-0123456789 ")
+
+
+# ---------------------------------------------------------------------------
 # Moğol tablosu (``monget``) — YALNIZ verici dil ETİKETİ için
 # ---------------------------------------------------------------------------
 

@@ -1282,6 +1282,9 @@ class SearchEngine:
         # Starling'in Proto-Türkçe biçimi (kelimenin kendi sözlük kaydı biçim
         # vermiyorsa başlıkta gösterilir; bkz. aşağıdaki kaynak kökü adımı).
         starling_root = ""
+        # Aynı Starling kaydının öbür dillerdeki biçimleri: YALNIZ gösterim
+        # (başlık kökü de o kayıttan; yayılım/A-HVP/skora girerse döngüsel).
+        starling_witnesses: list[dict[str, Any]] = []
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=config.MAX_WORKERS) as executor:
             # Sonuçlar PORTFÖY SIRASIYLA işlenir, bitiş sırasıyla değil.
@@ -1309,6 +1312,7 @@ class SearchEngine:
                         # sorgunun kökü değildir.
                         if root_info.get("starling_proto") and not starling_root and variant == word_clean:
                             starling_root = str(root_info.get("proto_turkic") or "")
+                            starling_witnesses = list(root_info.get("starling_witnesses") or [])
                         if root_info.get("proto_turkic") and not proto_root:
                             proto_root = root_info.get("proto_turkic")
                             proto_root_provenance = f"tanıklı — {fetcher.source_name}"
@@ -1934,6 +1938,13 @@ class SearchEngine:
             "morphology": morphology_info,
             "turkic_languages": sorted_entries,
             "etymology_mentions": etymology_mentions,
+            # İndekste tanığı OLMAYAN diller için Starling biçimleri (Dolganca,
+            # Tofaca, Sarı Uygurca...). Sayılmaz: bkz. `reflex_witnesses`.
+            "starling_witnesses": [
+                w for w in starling_witnesses
+                if _sel_kind != "borrowed"
+                and w["lang_code"] not in {e.get("lang_code") for e in sorted_entries}
+            ],
             "root": {
                 "proto_turkic": proto_root or word_clean,
                 "meaning": display_meaning,

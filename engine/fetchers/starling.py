@@ -140,9 +140,13 @@ class StarlingFetcher(BaseFetcher):
 
         Starling tanıkları kendi transkripsiyonundadır (`qɨrq`, `mončuq`);
         sözlük indeksindeki Kiril/Latin biçimlerle yan yana tanık sayılırsa
-        aynı dil iki kez görünür. Tanık olarak kullanımı ayrıca ölçülmeli.
+        aynı dil iki kez görünür. Bu yüzden ``turkic_languages``e girmez;
+        ``root.starling_witnesses`` içinde döner ve arama motoru onları
+        yalnız indekste tanığı OLMAYAN diller için, yayılım/A-HVP/skor
+        dışında "Starling tanığı" olarak gösterir (döngüsellik: başlık kökü
+        de aynı kayıttan gelir; bkz. ``engine.db.starling.reflex_witnesses``).
         """
-        from engine.db.starling import lookup_turkish
+        from engine.db.starling import lookup_turkish, reflex_witnesses
 
         result = self.empty_result()
         matches = lookup_turkish(word)
@@ -167,6 +171,11 @@ class StarlingFetcher(BaseFetcher):
         result["root"]["proto_turkic"] = proto.group(0) if proto else etym.proto
         result["root"]["starling_proto"] = etym.proto
         result["root"]["meaning"] = etym.meaning
+        result["root"]["starling_witnesses"] = [
+            {**w, "lang_name": TURKIC_LANGUAGES_MAP.get(w["lang_code"], w["lang_code"]),
+             "source": f"Starling #{etym.number}"}
+            for w in reflex_witnesses(etym, word)
+        ]
         old_turkic = etym.reflexes.get("ATU", "")
         result["root"]["reconstruction_notes"] = (
             f"Starling #{etym.number}: {etym.proto} “{etym.meaning}”"
