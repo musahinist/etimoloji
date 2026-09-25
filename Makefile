@@ -202,6 +202,12 @@ eval-chronology:
 eval-badge: gold
 	.venv/bin/python -m engine.evaluation.badge_eval
 
+# Eşsesli ayrımı: kaikki "Etymology N" bölümleri altın etiket; en fazla 150
+# kelime, Starling açık ve kapalı (yalnız yerel kaynaklar). Önbellek HEAD'e bağlı.
+.PHONY: eval-homonym
+eval-homonym:
+	.venv/bin/python -m engine.evaluation.homonym_eval
+
 eval-calibration: gold
 	.venv/bin/python -m engine.evaluation.calibration --split train+dev
 
