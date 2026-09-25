@@ -125,6 +125,25 @@ eval-cognates: data
 eval-borrowing: data lexicon-index donors
 	.venv/bin/python -m engine.evaluation.borrowing_eval
 
+# Türk dilleri arası bağımsız alıntı altını (plan X1). Test bölümü mühürlü;
+# R1/R2 yalnız commit edilmiş --prereg ile, birer kez (bkz. xborrowing_eval).
+.PHONY: xturkic-gold eval-xborrowing eval-xborrowing-report
+XTR_BLIND := data/cache/work/xtr/index_blind.db
+
+xturkic-gold:
+	.venv/bin/python -m engine.evaluation.xturkic_gold build
+	.venv/bin/python -m engine.evaluation.xturkic_gold verify
+
+$(XTR_BLIND): data/lexicons/index.db scripts/build_blind_index.py
+	.venv/bin/python scripts/build_blind_index.py --out $(XTR_BLIND)
+
+# Ana ölçüm: kör indeks + zincir kapalı; sinyaller ayar bölümünde yakalanır.
+eval-xborrowing: $(XTR_BLIND)
+	ETY_LEXICON_INDEX=$(CURDIR)/$(XTR_BLIND) data/cache/work/heavy.sh .venv/bin/python -m engine.evaluation.xborrowing_eval capture --split tune
+
+eval-xborrowing-report:
+	.venv/bin/python -m engine.evaluation.xborrowing_eval replay --split tune
+
 lexicons:
 	.venv/bin/python scripts/download_lexicons.py --all
 	# ⚠️ Rusça sürüm (~2,8 MB): İngilizce sürümde olmayan diller
