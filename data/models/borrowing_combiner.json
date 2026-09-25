@@ -6,17 +6,21 @@
     "fonotaktik_model",
     "ses_kanunu_ihlali",
     "fonotaktik_ihlal",
-    "değişimsiz_yayılım"
+    "değişimsiz_yayılım",
+    "ters_uyum",
+    "söz_sonu_ünsüz_kümesi"
   ],
   "weights": {
-    "zincir_kanıtı": 1.164909,
-    "verici_yakınlığı": 1.543232,
-    "fonotaktik_model": 0.849852,
-    "ses_kanunu_ihlali": -0.228371,
-    "fonotaktik_ihlal": 0.492828,
-    "değişimsiz_yayılım": -0.042591
+    "zincir_kanıtı": 1.197633,
+    "verici_yakınlığı": 1.533655,
+    "fonotaktik_model": 0.844203,
+    "ses_kanunu_ihlali": -0.267931,
+    "fonotaktik_ihlal": 0.491338,
+    "değişimsiz_yayılım": -0.077326,
+    "ters_uyum": 0.0,
+    "söz_sonu_ünsüz_kümesi": 0.0
   },
-  "bias": -1.974318,
+  "bias": -1.965642,
   "threshold": 0.39,
   "objective": "fscore",
   "l1": 0.0,
@@ -26,10 +30,12 @@
     "fonotaktik_model",
     "ses_kanunu_ihlali",
     "fonotaktik_ihlal",
-    "değişimsiz_yayılım"
+    "değişimsiz_yayılım",
+    "ters_uyum",
+    "söz_sonu_ünsüz_kümesi"
   ],
   "selection": {},
   "trained_on": "wold/sah/tune",
   "n": 385,
-  "trained_at": "2026-09-24T17:57:48+00:00"
+  "trained_at": "2026-09-25T22:55:32+00:00"
 }
