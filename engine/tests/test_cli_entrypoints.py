@@ -149,9 +149,9 @@ class TestStandaloneEntrypoints(CliCase):
             self.assertEqual(battery["strong_claim_rate"], 0.0, battery["battery"])
 
     def test_borrowing_detector_controls_run(self):
-        from engine.nlp import borrowing_detector
+        from engine.evaluation import negative_controls
 
-        self.run_main(borrowing_detector, ["--controls"])
+        self.run_main(negative_controls, ["--borrowing-detector"])
 
     def test_borrowing_detector_explains_words(self):
         from engine.nlp import borrowing_detector

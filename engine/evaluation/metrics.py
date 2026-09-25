@@ -34,20 +34,15 @@ from collections import defaultdict
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass, field
 
-#: Rekonstrüksiyon karşılaştırmasında yok sayılan işaretler. Ata biçim
-#: gösteriminde ``*`` yalnızca "bu bir rekonstrüksiyondur" demektir, sesin
-#: parçası değildir; parantez ise belirsizlik/isteğe bağlılık işaretidir.
-#: ⚠️ Tire de atılır. Kaynaklar biçimbirim sınırını tireyle işaretler
-#: (``*ḳalï-``, ``*āt-la-``), motor ise hiçbir zaman tire üretmez; tire
-#: fonolojik içerik değil **yazım kuralıdır** ve karşılaştırmada kalırsa
-#: doğru bir rekonstrüksiyonu yapısı gereği tutturulamaz kılar.
-#:
-#: Etkisi ölçüldü (savelyevturkic, dev, n=83): NED 0,306 -> 0,304,
-#: ED 1,4819 -> 1,4699, FER 0,2627 -> 0,2606, tam 0,3855 -> 0,3976.
-#: Hiçbir ölçüt kötüleşmiyor. Küçük ama GERÇEK bir taban değişikliğidir:
-#: savelyev'de tire içeren altın madde yalnız 1/400 olduğu için etki
-#: tek maddeliktir.
-_STRIP_CHARS = "*()[]{}?-"
+# Ata biçim normalizasyonu ve Levenshtein üretim tarafındadır
+# (``engine.utils``); ölçüm aynı fonksiyonları kullanır. Adlar geriye dönük
+# uyumluluk için buradan da dışa verilir.
+from engine.utils.edit_distance import edit_distance as edit_distance
+from engine.utils.edit_distance import normalized_edit_distance as normalized_edit_distance
+from engine.utils.proto_notation import STRIP_CHARS as _STRIP_CHARS
+from engine.utils.proto_notation import TRANSCRIPTION_VARIANTS as TRANSCRIPTION_VARIANTS
+from engine.utils.proto_notation import fold_transcription as _fold_transcription  # noqa: F401
+from engine.utils.proto_notation import normalize_proto as normalize_proto
 
 #: Cevaplanmayan bir madde ED ortalamasına ne kadar katkı yapsın?
 #: Altın biçimlerin ortalama uzunluğu ~5; boş cevabın ED'si o uzunluktur.
@@ -68,85 +63,6 @@ ARCHIPHONEME_EQUIVALENTS: dict[str, frozenset[str]] = {
     "I": frozenset({"ı", "i", "ɨ"}),
     "O": frozenset("oö"),
 }
-
-
-#: **Salt yazım geleneği farkları.** Aynı sesi farklı yazan okulların
-#: uzlaştırılması. Bunlar EXACT ölçümde de eşitlenir: ``*yol`` ile ``*jol``
-#: aynı rekonstrüksiyondur, farklı yazımdır. Bunları hata saymak dilbilimi
-#: değil, çeviriyazı geleneğini ölçmek olurdu.
-#:
-#: Ölçüldü: "söz başı yanlış" sayılan 93 hatanın 31'i yalnız buydu
-#: (``y``/``j`` 18, ``c``/``č`` 5, ``ı``/``ï`` 3, ``k``/``ḳ`` 2 …).
-TRANSCRIPTION_VARIANTS: dict[str, str] = {
-    "ï": "ı", "ɨ": "ı", "ɯ": "ı",
-    "y": "j", "ǰ": "j", "ɟ": "j",
-    "č": "ç", "c": "ç", "ʧ": "ç",
-    "š": "ş", "ʃ": "ş",
-    "ñ": "ŋ", "ń": "ŋ", "ṅ": "ŋ",
-    "ḳ": "k", "q": "k", "ḵ": "k",
-    "ġ": "g", "ǧ": "ğ", "ɣ": "ğ",
-    "ẹ": "e", "ė": "e", "ạ": "a", "ǝ": "e", "ə": "e",
-    "ẓ": "z", "ṣ": "s", "ṭ": "t", "ḏ": "d",
-    "ʼ": "", "ʔ": "", "ʲ": "", "ˊ": "", "'": "", "ʻ": "",
-}
-
-
-def _fold_transcription(text: str) -> str:
-    return "".join(TRANSCRIPTION_VARIANTS.get(ch, ch) for ch in text)
-
-
-def normalize_proto(form: str, *, strip_length: bool = False) -> str:
-    """Ata biçmi karşılaştırılabilir hâle getirir.
-
-    ``*Kāpuk`` -> ``kāpuk``. ``strip_length=True`` ise uzunluk da atılır
-    (``kapuk``) — "uzunluk dışında doğru mu?" sorusunu ayrıca ölçmek için.
-
-    Yazım geleneği farkları (:data:`TRANSCRIPTION_VARIANTS`) burada eşitlenir.
-    ⚠️ ``ŕ`` ve ``ĺ`` **eşitlenmez**: Türkolojide bunlar ``r``/``l``den ayrı
-    sesbirimlerdir; birleştirmek ``*ar`` ile ``*aŕ``ı aynı sayardı.
-    """
-    text = unicodedata.normalize("NFC", form.strip())
-    for ch in _STRIP_CHARS:
-        text = text.replace(ch, "")
-    text = text.split(",")[0].split("/")[0].strip()  # "*Kūrɨk,gak" -> "*Kūrɨk"
-    text = _fold_transcription(text.casefold())
-    if strip_length:
-        decomposed = unicodedata.normalize("NFD", text)
-        text = unicodedata.normalize("NFC", "".join(c for c in decomposed if c != "̄")).replace("ː", "")
-    return text
-
-
-def edit_distance(a: str, b: str) -> int:
-    """Levenshtein uzaklığı. Sürüm bağımlılığı olmasın diye elde yazılmıştır."""
-    if a == b:
-        return 0
-    if not a:
-        return len(b)
-    if not b:
-        return len(a)
-    previous = list(range(len(b) + 1))
-    for i, ca in enumerate(a, start=1):
-        current = [i]
-        for j, cb in enumerate(b, start=1):
-            current.append(
-                min(
-                    previous[j] + 1,  # silme
-                    current[j - 1] + 1,  # ekleme
-                    previous[j - 1] + (ca != cb),  # değiştirme
-                )
-            )
-        previous = current
-    return previous[-1]
-
-
-def normalized_edit_distance(a: str, b: str) -> float:
-    """ED'yi daha uzun dizginin uzunluğuna böler → [0, 1].
-
-    Normalizasyon olmadan uzun kelimeler kısa kelimelerden "daha kötü"
-    görünür ve veri kümeleri arası karşılaştırma anlamsızlaşır (List 2019).
-    """
-    longest = max(len(a), len(b))
-    return edit_distance(a, b) / longest if longest else 0.0
 
 
 #: **Salt gösterim farkları.** Aynı sesi farklı yazan geleneklerin

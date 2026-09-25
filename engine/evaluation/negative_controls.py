@@ -463,6 +463,32 @@ def run_battery(reconstructor, items: tuple[ControlItem, ...], name: str) -> Bat
     return result
 
 
+def borrowing_detector_report() -> int:
+    """Alıntı tespitçisini her bataryada koşar, madde madde yazdırır.
+
+    Önceden ``borrowing_detector --controls`` idi; üretim modülü ölçüm
+    bataryasını içe aktarmasın diye buraya taşındı.
+    """
+    from engine.nlp.borrowing_detector import BorrowingDetector
+
+    detector = BorrowingDetector()
+    for name, items in ALL_BATTERIES.items():
+        print(f"\n--- {name}")
+        for item in items:
+            entries = [{"lang_code": c, "word": w} for c, w in item.witnesses]
+            verdict = detector.detect(item.query, entries)
+            if name == "alinti_tuzagi":
+                expected = verdict.is_borrowed
+            elif name == "eşadlı":
+                # Eşadlıda doğru cevap KESİN KARAR DEĞİL, belirsizliktir.
+                expected = not verdict.blocks_inherited_reconstruction
+            else:
+                expected = not verdict.is_borrowed
+            mark = "OK " if expected else "!! "
+            print(f"  {mark}{verdict.word:10} {verdict.verdict:12} {verdict.score:.2f}")
+    return 0
+
+
 def main() -> int:
     import argparse
 
@@ -477,7 +503,15 @@ def main() -> int:
         action="store_true",
         help="GENERATED_FAKES listesini fonotaktik modelden yeniden üret ve yazdır",
     )
+    ap.add_argument(
+        "--borrowing-detector",
+        action="store_true",
+        help="alıntı tespitçisini bataryalarda koş (eski borrowing_detector --controls)",
+    )
     args = ap.parse_args()
+
+    if args.borrowing_detector:
+        return borrowing_detector_report()
 
     if args.regenerate_fakes:
         print(generate_phonotactic_fakes(model_file=args.model))

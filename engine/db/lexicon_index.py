@@ -1034,7 +1034,7 @@ class LexiconIndex:
             query += f" AND lang_code IN ({','.join('?' * len(languages))})"
             params.extend(languages)
 
-        from engine.evaluation.metrics import edit_distance
+        from engine.utils.edit_distance import edit_distance
 
         # ⚠️ Tam Levenshtein tablosu her aday için hesaplanıyordu: ölçüldü,
         # 30 kelimede 1.041.766 çağrı, sürenin %97'si (indeks 449 bin kayıt;

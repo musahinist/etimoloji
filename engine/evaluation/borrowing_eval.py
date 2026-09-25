@@ -41,6 +41,14 @@ from typing import Any
 
 from engine.config import CLDF_DIR
 from engine.logging_setup import get_logger
+
+# Verici kümeleri üretim tarafındadır (motor ölçümle AYNI kümeyle çalışsın);
+# ölçüm oradan okur.
+from engine.nlp.borrowing_detector import (  # noqa: F401
+    SAKHA_DONORS,
+    TURKISH_DONORS,
+    donors_for,
+)
 from engine.utils.orthography import to_comparison_form
 
 logger = get_logger(__name__)
@@ -443,29 +451,6 @@ def always_inherited(case: BorrowingCase) -> bool:
 
 def always_borrowed(case: BorrowingCase) -> bool:
     return True
-
-
-#: Hangi verici dillere bakılacak? Ölçüt Sakha olduğu için WOLD'da ölçülen
-#: gerçek kaynak dağılımı kullanılır: Rusça 284 · Moğolca 253 · Evenkice 19.
-SAKHA_DONORS = ["ru", "mn", "evn"]
-
-#: Türkçenin tarihsel vericileri. Sakha'dan bambaşka bir kümedir; aynı
-#: listeyi iki dile birden vermek her iki ölçümü de bozar.
-TURKISH_DONORS = ["ar", "fa", "el", "hy", "fr", "it"]
-
-
-def donors_for(lang_code: str) -> list[str] | None:
-    """Bu dil için hangi verici sözlüklerine bakılacak?
-
-    ⚠️ Verici kümesi dile göre değişir ve bu **ölçümü belirler**: havuz
-    büyüdükçe şans benzerliği artar. Sakha'ya Fransızca sözlüğü açmak
-    yalnız gürültü ekler.
-    """
-    if lang_code == "sah":
-        return SAKHA_DONORS
-    if lang_code in ("tr", "ota"):
-        return TURKISH_DONORS
-    return None
 
 
 def score_of(

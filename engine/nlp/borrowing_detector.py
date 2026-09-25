@@ -379,6 +379,30 @@ def own_sense(word: str, lang: str) -> str:
         return ""
 
 
+#: Hangi verici dillere bakılacak? Ölçüt Sakha olduğu için WOLD'da ölçülen
+#: gerçek kaynak dağılımı kullanılır: Rusça 284 · Moğolca 253 · Evenkice 19.
+SAKHA_DONORS = ["ru", "mn", "evn"]
+
+#: Türkçenin tarihsel vericileri. Sakha'dan bambaşka bir kümedir; aynı
+#: listeyi iki dile birden vermek her iki ölçümü de bozar.
+TURKISH_DONORS = ["ar", "fa", "el", "hy", "fr", "it"]
+
+
+def donors_for(lang_code: str) -> list[str] | None:
+    """Bu dil için hangi verici sözlüklerine bakılacak?
+
+    ⚠️ Verici kümesi dile göre değişir ve bu **ölçümü belirler**: havuz
+    büyüdükçe şans benzerliği artar. Sakha'ya Fransızca sözlüğü açmak
+    yalnız gürültü ekler. Ölçüm hattı (``borrowing_eval``) bu fonksiyonu
+    buradan okur.
+    """
+    if lang_code == "sah":
+        return SAKHA_DONORS
+    if lang_code in ("tr", "ota"):
+        return TURKISH_DONORS
+    return None
+
+
 def default_donors(lang: str) -> list[str] | None:
     """Dilin verici sözlükleri — ölçüm hattıyla aynı küme.
 
@@ -387,8 +411,6 @@ def default_donors(lang: str) -> list[str] | None:
     Üretim ``None`` ile, ölçüm ``donors_for(lang)`` ile çalışsaydı ölçülen
     sinyal üretimdekiyle aynı sinyal olmazdı.
     """
-    from engine.evaluation.borrowing_eval import donors_for
-
     return donors_for(lang)
 
 
@@ -840,7 +862,7 @@ class BorrowingDetector:
         if len(forms) < 3:
             return Signal("değişimsiz_yayılım", False, 0.0, "yeterli tanık yok", {"no_data": True})
 
-        from engine.evaluation.metrics import normalized_edit_distance
+        from engine.utils.edit_distance import normalized_edit_distance
 
         pairs = [
             1.0 - normalized_edit_distance(a, b)
@@ -1117,31 +1139,13 @@ class BorrowingDetector:
 def main() -> int:
     import argparse
 
+    # Negatif kontrol bataryası: ``python -m engine.evaluation.negative_controls
+    # --borrowing-detector`` (üretim kodu ölçüm bataryasını içe aktarmaz).
     ap = argparse.ArgumentParser(description="Açıklamalı alıntı tespiti")
     ap.add_argument("words", nargs="*", default=[])
-    ap.add_argument("--controls", action="store_true", help="negatif kontrol bataryasını koş")
     args = ap.parse_args()
 
     detector = BorrowingDetector()
-
-    if args.controls:
-        from engine.evaluation.negative_controls import ALL_BATTERIES
-
-        for name, items in ALL_BATTERIES.items():
-            print(f"\n--- {name}")
-            for item in items:
-                entries = [{"lang_code": c, "word": w} for c, w in item.witnesses]
-                verdict = detector.detect(item.query, entries)
-                if name == "alinti_tuzagi":
-                    expected = verdict.is_borrowed
-                elif name == "eşadlı":
-                    # Eşadlıda doğru cevap KESİN KARAR DEĞİL, belirsizliktir.
-                    expected = not verdict.blocks_inherited_reconstruction
-                else:
-                    expected = not verdict.is_borrowed
-                mark = "OK " if expected else "!! "
-                print(f"  {mark}{verdict.word:10} {verdict.verdict:12} {verdict.score:.2f}")
-        return 0
 
     for word in args.words or ["kitap", "göz", "çorap", "deniz", "sabun", "yol"]:
         print(detector.detect(word).explain())

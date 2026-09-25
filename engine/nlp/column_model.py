@@ -103,7 +103,7 @@ _ANCHOR_PREFERENCE = ("tr", "az", "tk", "gag", "kk", "ky", "tt", "uz", "ug")
 
 # --- ses yardımcıları -------------------------------------------------------
 def norm(sound: str) -> str:
-    from engine.evaluation.metrics import normalize_proto
+    from engine.utils.proto_notation import normalize_proto
 
     return normalize_proto(sound, strip_length=True)
 
@@ -120,7 +120,7 @@ def graphemes(text: str) -> list[str]:
 
 
 def base(sound: str) -> str:
-    from engine.evaluation.metrics import _fold_transcription
+    from engine.utils.proto_notation import fold_transcription as _fold_transcription
 
     decomposed = unicodedata.normalize("NFD", _fold_transcription(sound.casefold()))
     return "".join(c for c in decomposed if not unicodedata.combining(c))
