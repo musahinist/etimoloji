@@ -56,7 +56,7 @@ def _form_distance(query: str, witness_form: str) -> float:
     """
     import re
 
-    from engine.nlp.donor_lexicon import levenshtein
+    from engine.utils.edit_distance import normalized_edit_distance
     from engine.utils.orthography import to_comparison_form
 
     q = to_comparison_form(query or "")
@@ -69,7 +69,7 @@ def _form_distance(query: str, witness_form: str) -> float:
         f = to_comparison_form(piece.strip().strip("()*-"))
         if not f:
             continue
-        best = min(best, levenshtein(q, f) / max(len(q), len(f), 1))
+        best = min(best, normalized_edit_distance(q, f))
     return best
 
 

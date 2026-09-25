@@ -25,7 +25,7 @@ from engine.config import CLDF_DIR
 from engine.fetchers.base import TURKIC_LANGUAGES_MAP, BaseFetcher, detect_script
 from engine.logging_setup import get_logger
 from engine.nlp.cognate_clustering import COGNATE_THRESHOLD
-from engine.nlp.donor_lexicon import levenshtein
+from engine.utils.edit_distance import normalized_edit_distance
 from engine.utils.orthography import to_comparison_form
 
 logger = get_logger(__name__)
@@ -40,8 +40,7 @@ LANGUAGES = {
 
 
 def _similarity(a: str, b: str) -> float:
-    longest = max(len(a), len(b)) or 1
-    return 1 - levenshtein(a, b) / longest
+    return 1 - normalized_edit_distance(a, b)
 
 
 @lru_cache(maxsize=1)
