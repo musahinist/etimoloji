@@ -1,5 +1,5 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-cv audit eval-llm eval-prediction eval-headline eval-donor eval-chronology starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify apertium wilkens semantic dialect bootstrap column-model
+        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-cv eval-cv-neural audit eval-llm eval-prediction eval-headline eval-donor eval-chronology starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify apertium wilkens semantic dialect bootstrap column-model
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -38,6 +38,7 @@ help:
 	@echo "eval-controls  - Negatif kontrol bataryası (sahte kök, alıntı tuzağı)"
 	@echo "audit          - Arama çıktısı tutarlılık denetimi (60 kelime)"
 	@echo "eval-cv        - Rekonstrüksiyon 5 katlı çapraz doğrulama (train+dev, n≈320)"
+	@echo "eval-cv-neural - eval-cv + sinir ağı ikinci üreteç (torch, kat başına ~10 dk)"
 	@echo "eval-llm       - Yalnız-LLM alıntı taban çizgisi (PROVIDER=ollama|claude)"
 	@echo "eval-headline  - Başlık kökü × Starling ve savelyev dev (yalnız yerel kaynaklar)"
 	@echo "eval-donor     - Verici dil tanıma × WOLD Sakha (Rusça/Moğolca/Tunguzca)"
@@ -102,6 +103,9 @@ audit:
 # Rekonstrüksiyon: train+dev üzerinde 5 katlı çapraz doğrulama (n≈320).
 eval-cv: gold
 	.venv/bin/python -m engine.evaluation.crossval
+
+eval-cv-neural: gold
+	CV_NEURAL=1 .venv/bin/python -m engine.evaluation.crossval
 
 expert-review:
 	.venv/bin/python -m engine.evaluation.expert_review

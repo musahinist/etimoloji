@@ -57,10 +57,20 @@ listesinde bulunma oranı 5 adayda 0,309, 20'de 0,316, 100'de 0,334, 500'de
 üretildiği için uzunluk hatalarını (%35) hiç kapsamaz; "%80 kapsama
 garantili" aday kümesi bu üreteçle MÜMKÜN DEĞİLDİR. Darboğaz küme seçimi
 değil, aday üretimidir.
+
+Sinir ağı ikinci üreteç (``neural_reconstruction``, ``make eval-cv-neural``,
+2026-09-25, ön kayıt ``data/cache/work/neural/PREREG.md``): kaynak
+belirteçli küçük karakter Transformer, TRAIN + Starling (aynı sızıntı
+süzgeci). Sütun modeline karşı NED +0,011 GA[−0,014, +0,037], tam
+−0,022, BCFS −0,036 GA[−0,061, −0,008] -> RED. Işın log-olasılığıyla
+yeniden sıralama birleşimi sinir top-1'iyle aynı -> RED. Ancak ışın-5
+kapsamı 0,472 (sütun N-best tavanı 500'de 0,338): üreteç olarak umut
+verici, seçici olarak değil.
 """
 
 from __future__ import annotations
 
+import os
 import random
 import zlib
 from collections import Counter
@@ -197,6 +207,32 @@ def bootstrap_bcubed_difference(
     }
 
 
+def paired_bootstrap_p(a: Sequence[float], b: Sequence[float], iterations: int = 10000) -> float:
+    """Eşleşmiş bootstrap ile iki yönlü p: ortalama(a − b) örneklerinin sıfırın öbür yanındaki payı."""
+    from engine.evaluation.significance import SIGNIFICANCE_SEED
+
+    diffs = [x - y for x, y in zip(a, b, strict=True)]
+    if not diffs:
+        return 1.0
+    rng = random.Random(SIGNIFICANCE_SEED)
+    size = len(diffs)
+    means = [sum(diffs[rng.randrange(size)] for _ in range(size)) / size for _ in range(iterations)]
+    below = sum(m <= 0 for m in means) / iterations
+    above = sum(m >= 0 for m in means) / iterations
+    return round(min(1.0, 2 * min(below, above)), 5)
+
+
+def holm_adjust(p: dict[str, float]) -> dict[str, float]:
+    """Holm–Bonferroni düzeltmesi (tekdüze)."""
+    ordered = sorted(p, key=p.get)
+    out: dict[str, float] = {}
+    running = 0.0
+    for rank, key in enumerate(ordered):
+        running = max(running, min(1.0, (len(ordered) - rank) * p[key]))
+        out[key] = round(running, 5)
+    return out
+
+
 def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
     from engine.db.cldf_wordlist import CldfWordlist
     from engine.db.language_mapping import build_mapping
@@ -225,6 +261,15 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
     if not starling_sets:
         logger.warning("Starling turcet yok; column_model sistemi atlanıyor (`make starling`)")
     systems = ("rules", "learned_table", "majority_character") + (("column_model",) if starling_sets else ())
+    # Sinir ağı ikinci üreteç (``neural_reconstruction``) — torch ve Starling
+    # gerekir, kat başına ~10 dk; yalnız ``CV_NEURAL=1`` (``make eval-cv-neural``).
+    neural_enabled = bool(starling_sets) and os.environ.get("CV_NEURAL") == "1"
+    if neural_enabled:
+        from engine.nlp import neural_reconstruction as neural
+
+        neural_starling = neural.prepare_starling()
+        systems += ("neural", "neural_rerank")
+    neural_meta: dict[str, Any] = {"seconds_per_fold": [], "maxrss_mb": 0.0, "beam_coverage": []}
     starling_used: list[int] = []
     correct: dict[str, list[bool]] = {s: [] for s in systems}
     ned: dict[str, list[float]] = {s: [] for s in systems}
@@ -241,6 +286,47 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
             correct[name] += result.item_correct
             ned[name] += result.item_ned
             pairs[name].append(result.pairs[0] if result.pairs else None)
+
+    def _neural_fold(fold: int, held_items: list[Any], train_items: list[Any]) -> None:
+        import resource
+        import time
+
+        from engine.evaluation.metrics import best_match
+
+        start = time.time()
+        excluded_tr = set().union(*(gold_sets[it.set_id].turkish for it in held_items)) | test_turkish
+        excluded_protos = {proto_norm(g) for it in held_items for g in it.gold_candidates}
+        examples = [e for e in (neural.gold_example(it, mapping) for it in train_items) if e]
+        examples += neural.starling_allowed(neural_starling, excluded_tr, excluded_protos)
+        model = neural.train(examples, seed=fold)
+        # Sütun modelinin bu kattaki tahminleri (son len(held) madde).
+        column_preds = pairs["column_model"][-len(held_items):]
+        for item, column_pair in zip(held_items, column_preds, strict=True):
+            beams: dict[str, list[tuple[float, str]]] = {}
+
+            def rerank(
+                word: str, entries: list[Any], column_pair: Any = column_pair, beams: dict[str, Any] = beams
+            ) -> dict[str, Any]:
+                beam = model.beam(word, entries)
+                beams["b"] = beam
+                scored = [(score, "*" + text) for score, text in beam]
+                if column_pair is not None:
+                    scored.append((model.score(word, entries, column_pair[0]), column_pair[0]))
+                if not scored:
+                    return {"reconstructed_root": "", "is_reconstructible": False}
+                return {"reconstructed_root": max(scored)[1], "is_reconstructible": True}
+
+            for name, rec in (("neural", model.reconstruct), ("neural_rerank", rerank)):
+                result = harness.run(rec, [item], mapping=mapping)
+                correct[name] += result.item_correct
+                ned[name] += result.item_ned
+                pairs[name].append(result.pairs[0] if result.pairs else None)
+            neural_meta["beam_coverage"].append(
+                any(best_match("*" + t, item.gold_candidates)[1] for _, t in beams.get("b", []))
+            )
+        neural_meta["seconds_per_fold"].append(round(time.time() - start))
+        neural_meta["maxrss_mb"] = round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1e6)
+        logger.info("neural kat %d: %d örnek, %.0f sn", fold, len(examples), time.time() - start)
 
     try:
         for fold in range(k):
@@ -270,6 +356,8 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
                 proto_phonology._PATTERN_TABLE_LOADED = True
                 column_model.set_model(model)
                 _collect("column_model", harness.comparative_reconstructor(), {})
+            if neural_enabled:
+                _neural_fold(fold, held, train)
     finally:
         # Diskteki (train'de öğrenilmiş) tablo ve sütun modeli bir sonraki kullanımda yeniden yüklensin.
         proto_phonology.reset_pattern_cache()
@@ -290,11 +378,33 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
     pairs_to_compare = [("learned_table", "majority_character"), ("learned_table", "rules")]
     if "column_model" in systems:
         pairs_to_compare.append(("column_model", "learned_table"))
+    if neural_enabled:
+        pairs_to_compare += [("neural", "column_model"), ("neural_rerank", "column_model")]
     for a, b in pairs_to_compare:
         exact = bootstrap_metric_difference([float(x) for x in correct[a]], [float(x) for x in correct[b]])
         dist = bootstrap_metric_difference(ned[a], ned[b], lower_is_better=True)
         bcfs = bootstrap_bcubed_difference(columns[a], columns[b])
         comparisons[f"{a}-{b}"] = {"exact": exact, "ned": dist, "bcfs": bcfs}
+    neural_result = None
+    if neural_enabled:
+        # PREREG (data/cache/work/neural/PREREG.md): NED farkı GA üst ucu < 0
+        # VE iki aday üzerinde Holm sonrası p < 0,05.
+        raw = {c: paired_bootstrap_p(ned[c], ned["column_model"]) for c in ("neural", "neural_rerank")}
+        holm = holm_adjust(raw)
+        neural_result = {
+            **neural_meta,
+            "beam_coverage": round(sum(neural_meta["beam_coverage"]) / n, 4),
+            "prereg": {
+                c: {
+                    "ned_diff": comparisons[f"{c}-column_model"]["ned"]["difference"],
+                    "ci95": comparisons[f"{c}-column_model"]["ned"]["ci95"],
+                    "p": raw[c],
+                    "p_holm": holm[c],
+                    "accepted": bool(comparisons[f"{c}-column_model"]["ned"]["ci95"][1] < 0 and holm[c] < 0.05),
+                }
+                for c in raw
+            },
+        }
     h2 = comparisons["learned_table-majority_character"]["bcfs"]
     return {
         "dataset": dataset,
@@ -303,6 +413,7 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
         "systems": summary,
         "comparisons": comparisons,
         "column_model_starling_per_fold": starling_used,
+        "neural": neural_result,
         # PREREGISTRATION H2: motor majority_character'ı B-Cubed F'de geçer —
         # eşleşmiş bootstrap %95 GA sıfırı dışlar, motor lehine.
         "h2": {
@@ -330,6 +441,13 @@ def main() -> int:
     h2 = payload["h2"]
     print(f"\n  H2 (ön kayıt, BCFS'de majority_character'ı geçer): "
           f"{'EVET — destekleniyor' if h2['supported'] else 'HAYIR — desteklenmiyor'}")
+    if payload.get("neural"):
+        nr = payload["neural"]
+        print(f"\n  neural: kat başına sn {nr['seconds_per_fold']} · maxrss {nr['maxrss_mb']} MB · "
+              f"ışın-5 kapsamı {nr['beam_coverage']:.4f}")
+        for c, r in nr["prereg"].items():
+            print(f"  PREREG {c}: NED {r['ned_diff']:+.4f} GA{r['ci95']} p={r['p']} Holm p={r['p_holm']} "
+                  f"-> {'KABUL' if r['accepted'] else 'RED'}")
     out = EVAL_DIR / "crossval.json"
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     print(f"\nJSON: {out}")
