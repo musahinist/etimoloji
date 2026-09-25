@@ -32,6 +32,21 @@
       "exact": 0.275,
       "ned": 0.3394,
       "bcfs": 0.5206
+    },
+    "nsel_column": {
+      "exact": 0.2938,
+      "ned": 0.3134,
+      "bcfs": 0.5589
+    },
+    "nsel_ranker": {
+      "exact": 0.3219,
+      "ned": 0.31,
+      "bcfs": 0.5685
+    },
+    "nsel_vote": {
+      "exact": 0.3,
+      "ned": 0.3291,
+      "bcfs": 0.5338
     }
   },
   "comparisons": {
@@ -204,6 +219,108 @@
         "a_is_better": false,
         "n": 320
       }
+    },
+    "nsel_column-column_model": {
+      "exact": {
+        "difference": -0.00312,
+        "ci95": [
+          -0.04063,
+          0.03438
+        ],
+        "significant": false,
+        "a_is_better": false,
+        "n": 320,
+        "lower_is_better": false
+      },
+      "ned": {
+        "difference": -0.01487,
+        "ci95": [
+          -0.03649,
+          0.00731
+        ],
+        "significant": false,
+        "a_is_better": false,
+        "n": 320,
+        "lower_is_better": true
+      },
+      "bcfs": {
+        "difference": 0.00238,
+        "ci95": [
+          -0.01863,
+          0.0242
+        ],
+        "significant": false,
+        "a_is_better": false,
+        "n": 320
+      }
+    },
+    "nsel_ranker-column_model": {
+      "exact": {
+        "difference": 0.025,
+        "ci95": [
+          0.00313,
+          0.05
+        ],
+        "significant": true,
+        "a_is_better": true,
+        "n": 320,
+        "lower_is_better": false
+      },
+      "ned": {
+        "difference": -0.01826,
+        "ci95": [
+          -0.03399,
+          -0.00291
+        ],
+        "significant": true,
+        "a_is_better": true,
+        "n": 320,
+        "lower_is_better": true
+      },
+      "bcfs": {
+        "difference": 0.01199,
+        "ci95": [
+          -0.00428,
+          0.02834
+        ],
+        "significant": false,
+        "a_is_better": false,
+        "n": 320
+      }
+    },
+    "nsel_vote-column_model": {
+      "exact": {
+        "difference": 0.00312,
+        "ci95": [
+          -0.03125,
+          0.0375
+        ],
+        "significant": false,
+        "a_is_better": false,
+        "n": 320,
+        "lower_is_better": false
+      },
+      "ned": {
+        "difference": 0.00091,
+        "ci95": [
+          -0.02255,
+          0.02387
+        ],
+        "significant": false,
+        "a_is_better": false,
+        "n": 320,
+        "lower_is_better": true
+      },
+      "bcfs": {
+        "difference": -0.02273,
+        "ci95": [
+          -0.0467,
+          0.00396
+        ],
+        "significant": false,
+        "a_is_better": false,
+        "n": 320
+      }
     }
   },
   "column_model_starling_per_fold": [
@@ -215,20 +332,26 @@
   ],
   "neural": {
     "seconds_per_fold": [
-      145,
-      153,
-      155,
-      148,
-      145
+      586,
+      610,
+      629,
+      605,
+      596
     ],
-    "maxrss_mb": 2882,
-    "beam_coverage": 0.4719,
+    "maxrss_mb": 2761,
+    "beam5": 0.4813,
+    "beam10": 0.5531,
     "prereg": {
       "neural": {
         "ned_diff": 0.01117,
         "ci95": [
           -0.01429,
           0.03708
+        ],
+        "bcfs_diff": -0.03593,
+        "bcfs_ci95": [
+          -0.06133,
+          -0.00829
         ],
         "p": 0.3928,
         "p_holm": 0.7856,
@@ -240,8 +363,60 @@
           -0.01429,
           0.03708
         ],
+        "bcfs_diff": -0.03593,
+        "bcfs_ci95": [
+          -0.06133,
+          -0.00829
+        ],
         "p": 0.3928,
         "p_holm": 0.7856,
+        "accepted": false
+      }
+    },
+    "prereg2": {
+      "nsel_column": {
+        "ned_diff": -0.01487,
+        "ci95": [
+          -0.03649,
+          0.00731
+        ],
+        "bcfs_diff": 0.00238,
+        "bcfs_ci95": [
+          -0.01863,
+          0.0242
+        ],
+        "p": 0.1842,
+        "p_holm": 0.3684,
+        "accepted": false
+      },
+      "nsel_ranker": {
+        "ned_diff": -0.01826,
+        "ci95": [
+          -0.03399,
+          -0.00291
+        ],
+        "bcfs_diff": 0.01199,
+        "bcfs_ci95": [
+          -0.00428,
+          0.02834
+        ],
+        "p": 0.0196,
+        "p_holm": 0.0588,
+        "accepted": false
+      },
+      "nsel_vote": {
+        "ned_diff": 0.00091,
+        "ci95": [
+          -0.02255,
+          0.02387
+        ],
+        "bcfs_diff": -0.02273,
+        "bcfs_ci95": [
+          -0.0467,
+          0.00396
+        ],
+        "p": 0.9248,
+        "p_holm": 0.9248,
         "accepted": false
       }
     }

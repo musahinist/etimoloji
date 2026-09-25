@@ -18,6 +18,28 @@ class CharsTests(unittest.TestCase):
         self.assertEqual(a, b)
 
 
+class SelectionTests(unittest.TestCase):
+    def _cands(self):
+        C = neural.Candidate
+        return [
+            C("*kül", column=-1.0, neural=-0.2, rank=0, in_beam=True),
+            C("*köl", column=-0.5, neural=-0.4, rank=1, in_beam=True),
+            C("*kul", column=-0.1, neural=-2.0, is_column=True),
+        ]
+
+    def test_select_column_only_from_beam(self):
+        self.assertEqual(neural.select_column(self._cands()), "*köl")
+
+    def test_vote_tie_prefers_column(self):
+        # sıralar: sinir kül0 köl1 kul2 · sütun kul0 köl1 kül2 -> kül ve kul eşit, sütun top-1 kazanır
+        self.assertEqual(neural.select_vote(self._cands()), "*kul")
+
+    def test_ranker_uses_weights(self):
+        cands = self._cands()
+        self.assertEqual(neural.select_ranker(cands, {"neural": 5.0}, 0.0, 3, "kül", []), "*kül")
+        self.assertEqual(neural.select_ranker(cands, {"is_column": 5.0}, 0.0, 3, "kül", []), "*kul")
+
+
 @needs_torch
 class TrainSmokeTests(unittest.TestCase):
     def test_tiny_training_returns_candidates(self):

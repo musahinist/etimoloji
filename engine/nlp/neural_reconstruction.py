@@ -38,7 +38,19 @@ kapsayan aday üretimi mümkün — ama top-1 seçimi sütun modelinden kötü.
 Sonraki deneme: sinir ışınını ADAY ÜRETECİ, sütun/özellik tabanlı bir
 sıralayıcıyı SEÇİCİ yapmak (ön kayda yeni aday olarak).
 
-Kat başına eğitim+çıkarım ~150 sn (CPU, 4 iş parçacığı, 15 epok);
+Sinir üretir, sütun modeli seçer (ön kayıt 2, ışın 10; kapsam 5'te 0,481,
+10'da 0,553). Sütun modeline karşı (NED 0,3282)::
+
+    B1 nsel_column  ışın içinden sütun log-olasılığıyla seçim  NED 0,3134  −0,015 GA[−0,036, +0,007]  RED
+    B2 nsel_ranker  lojistik sıralayıcı (TRAIN, 3 iç kat)      NED 0,3100  −0,018 GA[−0,034, −0,003]
+                    tam 0,3219 (+0,025 GA[+0,003, +0,050]) · BCFS +0,012 anlamlı değil
+                    ham p=0,020, Holm (3 aday) p=0,059 -> ön kayıtlı ölçüt SAĞLANMADI, RED
+    B3 nsel_vote    karşılıklı sıra füzyonu                    NED 0,3291  +0,001  RED
+
+B2 umut verici ama kabul edilmedi; doğrulama için tek adaylı YENİ ön kayıt
+gerekir. Kat başına ~600 sn (3 iç + 1 dış sinir eğitimi), tepe 2,8 GB.
+
+Kat başına eğitim+çıkarım (yalnız dış sinir) ~150 sn (CPU, 4 iş parçacığı, 15 epok);
 eval-cv sürecinin tepe belleği 2,9 GB. Üretime BAĞLANMADI.
 
 torch isteğe bağlıdır; yalnız bu modül içe aktarır.
@@ -448,6 +460,121 @@ def choose_epochs(dataset: str = "savelyevturkic", grid: tuple[int, ...] = (15, 
 
     train(examples, epochs=max(grid), checkpoints=grid, on_checkpoint=check)
     return scores
+
+
+# --- sinir üretir, sütun modeli seçer (ön kayıt 2) --------------------------
+SELECT_BEAM = 10
+
+
+@dataclass
+class Candidate:
+    text: str  # "*..." biçiminde
+    column: float = 0.0  # S(c): sütun modeli log-olasılığı
+    unexplained: int = 0
+    neural: float = 0.0  # jeton başına ort. log-olasılık
+    rank: int = SELECT_BEAM  # sinir ışınındaki sıra (0'dan); ışın dışı = SELECT_BEAM
+    in_beam: bool = False
+    is_column: bool = False
+
+
+def column_score(scored: list[list[tuple[float, str]]], informative: list[Any], candidate: str) -> tuple[float, int]:
+    """Adayın sütun modeli log-olasılığı ve sütunlara oturmayan ses sayısı.
+
+    Aday ``label_columns`` ile sütunlara hizalanır; sütun başına etiket
+    olasılığı sütunun aday kümesinde normalize edilir, kümede olmayan etiket
+    1e-4 alır; oturmayan her ses log(0,01) cezası.
+    """
+    from engine.nlp.column_model import NULL, graphemes, label_columns, norm
+
+    sounds = len(graphemes(norm(candidate)))
+    labels = label_columns([candidate], informative) if informative else None
+    if labels is None:
+        return sounds * math.log(0.01), sounds
+    total = 0.0
+    for label, column in zip(labels, scored, strict=True):
+        z = sum(p for p, _ in column) or 1.0
+        p = next((p for p, s in column if s == label), 0.0)
+        total += math.log(p / z) if p > 0 else math.log(1e-4)
+    unexplained = max(0, sounds - sum(label != NULL for label in labels))
+    return total + unexplained * math.log(0.01), unexplained
+
+
+def build_candidates(
+    model: NeuralReconstructor,
+    scored: list[list[tuple[float, str]]],
+    informative: list[Any],
+    word: str,
+    entries: list[dict[str, str]],
+    column_prediction: str | None,
+) -> list[Candidate]:
+    """Sinir ışını-10 ∪ {sütun top-1}, her aday puanlanmış."""
+    from engine.evaluation.metrics import normalize_proto
+
+    out: dict[str, Candidate] = {}
+    for rank, (lp, text) in enumerate(model.beam(word, entries, k=SELECT_BEAM)):
+        key = normalize_proto(text)
+        if key and key not in out:
+            out[key] = Candidate("*" + text, neural=lp, rank=rank, in_beam=True)
+    if column_prediction:
+        key = normalize_proto(column_prediction)
+        if key in out:
+            out[key].is_column = True
+        elif key:
+            out[key] = Candidate(column_prediction, neural=model.score(word, entries, column_prediction), is_column=True)
+    for cand in out.values():
+        cand.column, cand.unexplained = column_score(scored, informative, cand.text)
+    return list(out.values())
+
+
+def candidate_features(cand: Candidate, n_columns: int, word: str, entries: list[dict[str, str]]) -> dict[str, float]:
+    from engine.evaluation.metrics import normalize_proto, normalized_edit_distance
+    from engine.utils.orthography import to_comparison_form
+
+    text = normalize_proto(cand.text)
+    forms = [to_comparison_form(w.get("word") or "") for w in entries] + [to_comparison_form(word)]
+    forms = [f for f in forms if f] or [text]
+    lengths = sorted(len(f) for f in forms)
+    return {
+        "column": cand.column / 10.0,
+        "column_mean": cand.column / max(1, n_columns),
+        "unexplained": float(cand.unexplained),
+        "neural": cand.neural,
+        "rank": cand.rank / SELECT_BEAM,
+        "in_beam": float(cand.in_beam),
+        "is_column": float(cand.is_column),
+        "len_anchor": abs(len(text) - len(to_comparison_form(word))) / 3.0,
+        "len_median": (len(text) - lengths[len(lengths) // 2]) / 3.0,
+        "ned_witness": sum(normalized_edit_distance(text, f) for f in forms) / len(forms),
+    }
+
+
+def select_column(cands: list[Candidate]) -> str | None:
+    """B1: yalnız sinir ışını içinden, sütun skoru en yüksek."""
+    beam = [c for c in cands if c.in_beam]
+    return max(beam, key=lambda c: (c.column, -c.rank)).text if beam else None
+
+
+def select_vote(cands: list[Candidate]) -> str | None:
+    """B3: karşılıklı sıra füzyonu; eşitlikte sütun top-1."""
+    if not cands:
+        return None
+    by_neural = sorted(cands, key=lambda c: -c.neural)
+    by_column = sorted(cands, key=lambda c: (-c.column, not c.is_column))
+    score = {id(c): 1 / (1 + by_neural.index(c)) + 1 / (1 + by_column.index(c)) for c in cands}
+    return max(cands, key=lambda c: (round(score[id(c)], 9), c.is_column, -by_neural.index(c))).text
+
+
+def select_ranker(cands: list[Candidate], weights: dict[str, float], intercept: float,
+                  n_columns: int, word: str, entries: list[dict[str, str]]) -> str | None:
+    """B2: öğrenilmiş lojistik sıralayıcı."""
+    if not cands:
+        return None
+
+    def z(c: Candidate) -> float:
+        feats = candidate_features(c, n_columns, word, entries)
+        return intercept + sum(v * weights.get(k, 0.0) for k, v in feats.items())
+
+    return max(cands, key=lambda c: (z(c), c.is_column)).text
 
 
 if __name__ == "__main__":

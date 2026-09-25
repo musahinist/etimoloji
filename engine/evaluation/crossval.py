@@ -66,6 +66,14 @@ süzgeci). Sütun modeline karşı NED +0,011 GA[−0,014, +0,037], tam
 yeniden sıralama birleşimi sinir top-1'iyle aynı -> RED. Ancak ışın-5
 kapsamı 0,472 (sütun N-best tavanı 500'de 0,338): üreteç olarak umut
 verici, seçici olarak değil.
+
+Sinir üretir, sütun seçer (ön kayıt 2, 3 aday, Holm): B2 ``nsel_ranker``
+(TRAIN'de 3 iç katla öğrenilen lojistik sıralayıcı, ışın-10 ∪ sütun top-1)
+NED 0,3100 vs 0,3282, fark −0,018 GA[−0,034, −0,003], tam +0,025
+GA[+0,003, +0,050], BCFS +0,012 (anlamlı değil) — ham p=0,020, Holm
+p=0,059 -> ön kayıtlı ölçüt sağlanmadı, RED. B1 (sütun log-olasılığı)
+−0,015 anlamlı değil; B3 (sıra füzyonu) +0,001. Işın kapsamı 5'te 0,481,
+10'da 0,553. Üretime bağlanmadı.
 """
 
 from __future__ import annotations
@@ -268,8 +276,8 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
         from engine.nlp import neural_reconstruction as neural
 
         neural_starling = neural.prepare_starling()
-        systems += ("neural", "neural_rerank")
-    neural_meta: dict[str, Any] = {"seconds_per_fold": [], "maxrss_mb": 0.0, "beam_coverage": []}
+        systems += ("neural", "neural_rerank", "nsel_column", "nsel_ranker", "nsel_vote")
+    neural_meta: dict[str, Any] = {"seconds_per_fold": [], "maxrss_mb": 0.0, "beam5": [], "beam10": []}
     starling_used: list[int] = []
     correct: dict[str, list[bool]] = {s: [] for s in systems}
     ned: dict[str, list[float]] = {s: [] for s in systems}
@@ -287,43 +295,128 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
             ned[name] += result.item_ned
             pairs[name].append(result.pairs[0] if result.pairs else None)
 
-    def _neural_fold(fold: int, held_items: list[Any], train_items: list[Any]) -> None:
+    def _neural_inputs(item: Any) -> tuple[str, list[Any]] | None:
+        """Harness'in motora verdiği ``(çapa, tanıklar)`` — çapa dili çıkarılmış."""
+        witnesses = harness._witnesses_for(item, mapping)
+        anchor, anchor_lang = harness._anchor_for(witnesses)
+        if not anchor:
+            return None
+        return anchor, [w for w in witnesses if w["lang_code"] != anchor_lang]
+
+    def _neural_examples(train_items: list[Any], excluded_items: list[Any]) -> list[Any]:
+        excluded_tr = set().union(*(gold_sets[it.set_id].turkish for it in excluded_items)) | test_turkish
+        excluded_protos = {proto_norm(g) for it in excluded_items for g in it.gold_candidates}
+        examples = [e for e in (neural.gold_example(it, mapping) for it in train_items) if e]
+        return examples + neural.starling_allowed(neural_starling, excluded_tr, excluded_protos)
+
+    def _ranker(fold: int, held_items: list[Any], train_items: list[Any]) -> tuple[dict[str, float], float]:
+        """B2 sıralayıcı: YALNIZ TRAIN, 3 iç kat (ön kayıt 2)."""
+        import gc
+
+        from engine.evaluation.metrics import best_match
+
+        rows: list[tuple[dict[str, float], int]] = []
+        for g in range(3):
+            inner_held = [it for it in train_items if fold_of(it.concept + "#rank", 3) == g]
+            inner_train = [it for it in train_items if fold_of(it.concept + "#rank", 3) != g]
+            excluded = held_items + inner_held
+            inner_table = learn_table([
+                (it.gold_form, {mapping[lang]: f for lang, f in it.witnesses.items() if lang in mapping})
+                for it in inner_train
+            ])
+            allowed = column_model.starling_allowed(
+                starling_sets,
+                set().union(*(gold_sets[it.set_id].turkish for it in excluded)) | test_turkish,
+                {proto_norm(x) for it in excluded for x in it.gold_candidates},
+            )
+            inner_col, _ = column_model.train(
+                gold_sets, [it.set_id for it in inner_train], allowed, inner_table, fold_of=fold_of
+            )
+            inner_neural = neural.train(_neural_examples(inner_train, excluded), seed=100 + 3 * fold + g)
+            proto_phonology._PATTERN_TABLE = inner_table
+            proto_phonology._PATTERN_TABLE_LOADED = True
+            column_model.set_model(inner_col)
+            recon = harness.comparative_reconstructor()
+            for item in inner_held:
+                inputs = _neural_inputs(item)
+                if inputs is None:
+                    continue
+                word, entries = inputs
+                result = harness.run(recon, [item], mapping=mapping)
+                column_pred = result.pairs[0][0] if result.pairs else None
+                informative = gold_sets[item.set_id].informative
+                scored = inner_col.score_columns(informative, inner_table)[1] if informative else []
+                cands = neural.build_candidates(inner_neural, scored, informative, word, entries, column_pred)
+                for c in cands:
+                    feats = neural.candidate_features(c, len(informative), word, entries)
+                    rows.append((feats, int(best_match(c.text, item.gold_candidates)[1])))
+            del inner_neural
+            gc.collect()
+        weights, intercept = column_model.fit_logistic(rows)
+        logger.info("sıralayıcı kat %d: %d satır, ağırlıklar %s", fold, len(rows), weights)
+        return weights, intercept
+
+    def _neural_fold(fold: int, held_items: list[Any], train_items: list[Any], col_model: Any, table: Any) -> None:
+        import gc
         import resource
         import time
 
         from engine.evaluation.metrics import best_match
 
         start = time.time()
-        excluded_tr = set().union(*(gold_sets[it.set_id].turkish for it in held_items)) | test_turkish
-        excluded_protos = {proto_norm(g) for it in held_items for g in it.gold_candidates}
-        examples = [e for e in (neural.gold_example(it, mapping) for it in train_items) if e]
-        examples += neural.starling_allowed(neural_starling, excluded_tr, excluded_protos)
-        model = neural.train(examples, seed=fold)
         # Sütun modelinin bu kattaki tahminleri (son len(held) madde).
         column_preds = pairs["column_model"][-len(held_items):]
+        weights, intercept = _ranker(fold, held_items, train_items)
+        proto_phonology._PATTERN_TABLE = table
+        proto_phonology._PATTERN_TABLE_LOADED = True
+        column_model.set_model(col_model)
+        examples = _neural_examples(train_items, held_items)
+        model = neural.train(examples, seed=fold)
         for item, column_pair in zip(held_items, column_preds, strict=True):
-            beams: dict[str, list[tuple[float, str]]] = {}
+            column_pred = column_pair[0] if column_pair else None
+            informative = gold_sets[item.set_id].informative
+            scored = col_model.score_columns(informative, table)[1] if informative else []
+            memo: dict[str, Any] = {}
 
-            def rerank(
-                word: str, entries: list[Any], column_pair: Any = column_pair, beams: dict[str, Any] = beams
-            ) -> dict[str, Any]:
-                beam = model.beam(word, entries)
-                beams["b"] = beam
-                scored = [(score, "*" + text) for score, text in beam]
-                if column_pair is not None:
-                    scored.append((model.score(word, entries, column_pair[0]), column_pair[0]))
-                if not scored:
+            def candidates(word: str, entries: list[Any], memo: dict[str, Any] = memo,
+                           informative: list[Any] = informative, scored: Any = scored,
+                           column_pred: str | None = column_pred) -> list[Any]:
+                if "c" not in memo:
+                    memo["c"] = neural.build_candidates(model, scored, informative, word, entries, column_pred)
+                return memo["c"]
+
+            def wrap(select: Any, candidates: Any = candidates) -> Any:
+                def chooser(word: str, entries: list[Any]) -> dict[str, Any]:
+                    chosen = select(candidates(word, entries), word, entries)
+                    return {"reconstructed_root": chosen or "", "is_reconstructible": bool(chosen)}
+                return chooser
+
+            def rerank(word: str, entries: list[Any], column_pred: str | None = column_pred) -> dict[str, Any]:
+                scored_nb = [(lp, "*" + text) for lp, text in model.beam(word, entries)]
+                if column_pred:
+                    scored_nb.append((model.score(word, entries, column_pred), column_pred))
+                if not scored_nb:
                     return {"reconstructed_root": "", "is_reconstructible": False}
-                return {"reconstructed_root": max(scored)[1], "is_reconstructible": True}
+                return {"reconstructed_root": max(scored_nb)[1], "is_reconstructible": True}
 
-            for name, rec in (("neural", model.reconstruct), ("neural_rerank", rerank)):
+            n_cols = len(informative)
+            for name, rec in (
+                ("neural", model.reconstruct),
+                ("neural_rerank", rerank),
+                ("nsel_column", wrap(lambda c, w, e: neural.select_column(c))),
+                ("nsel_ranker", wrap(lambda c, w, e, n_cols=n_cols: neural.select_ranker(c, weights, intercept, n_cols, w, e))),
+                ("nsel_vote", wrap(lambda c, w, e: neural.select_vote(c))),
+            ):
                 result = harness.run(rec, [item], mapping=mapping)
                 correct[name] += result.item_correct
                 ned[name] += result.item_ned
                 pairs[name].append(result.pairs[0] if result.pairs else None)
-            neural_meta["beam_coverage"].append(
-                any(best_match("*" + t, item.gold_candidates)[1] for _, t in beams.get("b", []))
-            )
+            beam = sorted((c for c in memo.get("c", []) if c.in_beam), key=lambda c: c.rank)
+            for width in (5, 10):
+                neural_meta[f"beam{width}"].append(
+                    any(best_match(c.text, item.gold_candidates)[1] for c in beam[:width])
+                )
+        gc.collect()
         neural_meta["seconds_per_fold"].append(round(time.time() - start))
         neural_meta["maxrss_mb"] = round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1e6)
         logger.info("neural kat %d: %d örnek, %.0f sn", fold, len(examples), time.time() - start)
@@ -357,7 +450,7 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
                 column_model.set_model(model)
                 _collect("column_model", harness.comparative_reconstructor(), {})
             if neural_enabled:
-                _neural_fold(fold, held, train)
+                _neural_fold(fold, held, train, model, table)
     finally:
         # Diskteki (train'de öğrenilmiş) tablo ve sütun modeli bir sonraki kullanımda yeniden yüklensin.
         proto_phonology.reset_pattern_cache()
@@ -379,7 +472,7 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
     if "column_model" in systems:
         pairs_to_compare.append(("column_model", "learned_table"))
     if neural_enabled:
-        pairs_to_compare += [("neural", "column_model"), ("neural_rerank", "column_model")]
+        pairs_to_compare += [(c, "column_model") for c in systems if c.startswith(("neural", "nsel_"))]
     for a, b in pairs_to_compare:
         exact = bootstrap_metric_difference([float(x) for x in correct[a]], [float(x) for x in correct[b]])
         dist = bootstrap_metric_difference(ned[a], ned[b], lower_is_better=True)
@@ -389,21 +482,31 @@ def run(dataset: str = "savelyevturkic", k: int = K) -> dict[str, Any]:
     if neural_enabled:
         # PREREG (data/cache/work/neural/PREREG.md): NED farkı GA üst ucu < 0
         # VE iki aday üzerinde Holm sonrası p < 0,05.
-        raw = {c: paired_bootstrap_p(ned[c], ned["column_model"]) for c in ("neural", "neural_rerank")}
-        holm = holm_adjust(raw)
-        neural_result = {
-            **neural_meta,
-            "beam_coverage": round(sum(neural_meta["beam_coverage"]) / n, 4),
-            "prereg": {
-                c: {
-                    "ned_diff": comparisons[f"{c}-column_model"]["ned"]["difference"],
-                    "ci95": comparisons[f"{c}-column_model"]["ned"]["ci95"],
+        def _prereg(cands: tuple[str, ...]) -> dict[str, Any]:
+            raw = {c: paired_bootstrap_p(ned[c], ned["column_model"]) for c in cands}
+            holm = holm_adjust(raw)
+            out = {}
+            for c in cands:
+                cmp = comparisons[f"{c}-column_model"]
+                out[c] = {
+                    "ned_diff": cmp["ned"]["difference"],
+                    "ci95": cmp["ned"]["ci95"],
+                    "bcfs_diff": cmp["bcfs"]["difference"],
+                    "bcfs_ci95": cmp["bcfs"]["ci95"],
                     "p": raw[c],
                     "p_holm": holm[c],
-                    "accepted": bool(comparisons[f"{c}-column_model"]["ned"]["ci95"][1] < 0 and holm[c] < 0.05),
+                    "accepted": bool(cmp["ned"]["ci95"][1] < 0 and holm[c] < 0.05 and cmp["bcfs"]["ci95"][1] >= 0),
                 }
-                for c in raw
-            },
+            return out
+
+        neural_result = {
+            **neural_meta,
+            "beam5": round(sum(neural_meta["beam5"]) / n, 4),
+            "beam10": round(sum(neural_meta["beam10"]) / n, 4),
+            # Ön kayıt 1: sinir tek başına / sinir yeniden sıralama (Holm, 2 aday).
+            "prereg": _prereg(("neural", "neural_rerank")),
+            # Ön kayıt 2: sinir üretir, sütun seçer (Holm, 3 aday; BCFS anlamlı kötüleşmez).
+            "prereg2": _prereg(("nsel_column", "nsel_ranker", "nsel_vote")),
         }
     h2 = comparisons["learned_table-majority_character"]["bcfs"]
     return {
@@ -444,10 +547,11 @@ def main() -> int:
     if payload.get("neural"):
         nr = payload["neural"]
         print(f"\n  neural: kat başına sn {nr['seconds_per_fold']} · maxrss {nr['maxrss_mb']} MB · "
-              f"ışın-5 kapsamı {nr['beam_coverage']:.4f}")
-        for c, r in nr["prereg"].items():
-            print(f"  PREREG {c}: NED {r['ned_diff']:+.4f} GA{r['ci95']} p={r['p']} Holm p={r['p_holm']} "
-                  f"-> {'KABUL' if r['accepted'] else 'RED'}")
+              f"ışın-5 kapsamı {nr['beam5']:.4f} · ışın-10 {nr['beam10']:.4f}")
+        for key in ("prereg", "prereg2"):
+            for c, r in nr[key].items():
+                print(f"  {key.upper()} {c}: NED {r['ned_diff']:+.4f} GA{r['ci95']} p={r['p']} Holm p={r['p_holm']} "
+                      f"BCFS {r['bcfs_diff']:+.4f} GA{r['bcfs_ci95']} -> {'KABUL' if r['accepted'] else 'RED'}")
     out = EVAL_DIR / "crossval.json"
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     print(f"\nJSON: {out}")
