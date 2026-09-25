@@ -556,6 +556,10 @@ class DonorAttribution:
     source: str = "kaikki"
     #: Öbür dillerin (dil, mesafe, null) değerleri — şeffaflık için.
     alternatives: tuple[tuple[str, float, float], ...] = ()
+    #: Aracı dil: en yakın biçim bu dildeydi ama o biçim ``lang_code``dan
+    #: alıntı (ör. Farsçadaki Arapça alıntı -> ``ar``, ``via="fa"``). Bkz.
+    #: :data:`ARABIC_VIA_RULE`.
+    via: str = ""
 
     @property
     def adjusted(self) -> float:
@@ -572,9 +576,14 @@ class DonorAttribution:
             "robbeetstriangulation": ", robbeetstriangulation",
         }.get(self.source, "")
         note = " ⚠️ verici belirsiz" if self.uncertain else ""
+        via = ""
+        if self.via:
+            from engine.nlp.borrowing_chain import language_name
+
+            via = f" — {language_name(self.lang_code)} ({language_name(self.via)} aracılığıyla)"
         return (
             f"{self.lang_code} {self.word} ({self.comparison}) SCA {self.distance:.3f}, "
-            f"dil null'ı {self.null_distance:.3f}{source}{note}"
+            f"dil null'ı {self.null_distance:.3f}{source}{note}{via}"
         )
 
     def as_dict(self) -> dict[str, Any]:
@@ -586,6 +595,7 @@ class DonorAttribution:
             "donor_null_distance": round(self.null_distance, 4),
             "donor_source": self.source,
             "donor_uncertain": self.uncertain,
+            "donor_via": self.via,
             "donor_alternatives": [
                 {"lang": lang, "sca_distance": round(d, 4), "null_distance": round(n, 4)}
                 for lang, d, n in self.alternatives
@@ -784,6 +794,16 @@ def attribute_donor(
         return None
     scored.sort(key=lambda item: (item[0], item[1], item[2]))
     _, distance, lang, row, null = scored[0]
+    via = ""
+    if ARABIC_VIA_RULE != "off" and (languages is None or ARABIC in languages):
+        switched = _arabic_via(comparison, lang, row, groups.get(ARABIC) or [])
+        if switched is not None:
+            via = lang if lang == PERSIAN else ""
+            row, distance = switched
+            if row["lang_code"] == ARABIC:
+                ar_pool = tuple(sorted({r["comparison"] for r in groups[ARABIC] if r["comparison"]}))
+                null = _null_distance(len(comparison), ar_pool)
+            lang = ARABIC
     return DonorAttribution(
         lang_code=lang,
         word=row["word"],
@@ -792,5 +812,114 @@ def attribute_donor(
         distance=distance,
         null_distance=null,
         source=(row.get("source") if isinstance(row, dict) else None) or sources.get(lang, "kaikki"),
-        alternatives=tuple((item[2], item[1], item[4]) for item in scored[1:]),
+        alternatives=tuple((item[2], item[1], item[4]) for item in scored[1:] if item[2] != lang),
+        via=via,
     )
+
+
+# --- Farsça üzerinden Arapça (9d) -------------------------------------------------
+
+ARABIC = "ar"
+PERSIAN = "fa"
+
+#: Etiket adımında "Farsça üzerinden Arapça" kuralı: ``off``, ``d1`` (Farsça
+#: kazanan aday Arapçadan alıntı işaretli ya da Arapça havuzda aynı yazı
+#: iskeletli karşılığı var), ``d2`` (sorgunun ünsüz iskeleti bir Arapça
+#: adayınkiyle aynı), ``d3`` (ikisi). Yalnız ETİKET; alıntı gücü değişmez.
+ARABIC_VIA_RULE = "off"
+
+_HARAKAT = re.compile("[\u064b-\u065f\u0670\u0640\u200c\u200d]")
+_SCRIPT_MAP = str.maketrans({"ة": "ت", "ى": "ي", "ی": "ي", "ک": "ك", "أ": "ا", "إ": "ا", "آ": "ا",
+                             "ٱ": "ا", "ؤ": "و", "ئ": "ي", "ۀ": "ه", "ء": None, "ا": None})
+
+
+def script_skeleton(word: str) -> str:
+    """Arap yazısı iskeleti: harekesiz, ة=ت, elif/hemze atılmış (Farsça = Arapça yazımı)."""
+    return _HARAKAT.sub("", word or "").translate(_SCRIPT_MAP).replace(" ", "")
+
+
+#: Latin karşılaştırma biçiminde ünsüz sınıfları. Osmanlıca/Türkçe biçim ile
+#: Arapça çevriyazı arasında düzenli denklikler: ḍ/ḏ -> d ama Türkçe z
+#: (gazap~gadab, zikir~dikr), ṯ -> t ama Türkçe s (servet~tarva), ḵ -> k ama
+#: Türkçe h (haber~kabar), söz sonu ötümsüzleşme (gazap~gadab).
+_SKELETON_CLASS = {
+    **dict.fromkeys("dtsz", "D"), **dict.fromkeys("bp", "B"), **dict.fromkeys("kgğhqx", "K"),
+    **dict.fromkeys("cçj", "C"), "v": "V", "w": "V", "ş": "Ş", "f": "F", "l": "L", "r": "R",
+    "m": "M", "n": "N", "y": "Y",
+}
+
+
+def consonant_skeleton(comparison: str) -> str:
+    """Ünsüz iskeleti (ünlüsüz, sınıflanmış, ikizler tekleşmiş)."""
+    out: list[str] = []
+    for ch in comparison or "":
+        cls = _SKELETON_CLASS.get(ch)
+        if cls and (not out or out[-1] != cls):
+            out.append(cls)
+    return "".join(out)
+
+
+def _query_skeletons(comparison: str) -> set[str]:
+    """Sorgunun iskeletleri; Osmanlıca -et/-at (tā' marbūṭa) sonu atılmış biçim de."""
+    out = {consonant_skeleton(comparison)}
+    if re.search(r"[aeıiouöü]t$", comparison or ""):
+        out.add(consonant_skeleton(comparison[:-1]))
+    return {s for s in out if len(s) >= 2}
+
+
+@lru_cache(maxsize=1)
+def persian_arabic_loans() -> frozenset[tuple[str, str]]:
+    """Farsça dökümde etimolojisi "from Arabic" olan (madde, anlam) çiftleri.
+
+    Anahtar ``donors.db``deki ``(word, gloss)`` ile aynı kurala göre kurulur
+    (:func:`engine.db.donor_index._glosses`); eşsesli yerli Farsça madde
+    işaretlenmez. Döküm yoksa boş küme.
+    """
+    import gzip
+    import json
+
+    from engine.db.donor_index import DONOR_DIR, _glosses
+
+    path = DONOR_DIR / "fa.jsonl.gz"
+    if not path.exists():
+        path = DONOR_DIR / "fa.jsonl"
+        if not path.exists():
+            return frozenset()
+    opener = gzip.open if path.suffix == ".gz" else open
+    out: set[tuple[str, str]] = set()
+    with opener(path, "rt", encoding="utf-8") as handle:  # type: ignore[operator]
+        for line in handle:
+            try:
+                record = json.loads(line)
+            except (json.JSONDecodeError, UnicodeDecodeError):
+                continue
+            text = (record.get("etymology_text") or "").lower()
+            if "from arabic" in text:
+                out.add(((record.get("word") or "").strip(), _glosses(record)))
+    return frozenset(out)
+
+
+def _arabic_via(comparison: str, lang: str, row: Any, arabic: list[Any]) -> tuple[Any, float] | None:
+    """Etiket Arapçaya çevrilmeli mi? Evetse (temsilci satır, mesafe)."""
+    rule = ARABIC_VIA_RULE
+    arabic = [r for r in arabic if r["comparison"]]
+
+    def closest(members: list[Any]) -> tuple[Any, float]:
+        best = min(members, key=lambda r: (label_distance(comparison, r["comparison"]), r["comparison"]))
+        return best, label_distance(comparison, best["comparison"])
+
+    if lang == ARABIC:
+        return None
+    if rule in ("d1", "d3") and lang == PERSIAN:
+        skeleton = script_skeleton(row["word"])
+        same = [r for r in arabic if skeleton and script_skeleton(r["word"]) == skeleton]
+        if same:
+            return closest(same)
+        if (row["word"], row["gloss"] or "") in persian_arabic_loans():
+            return closest(arabic) if arabic else (row, label_distance(comparison, row["comparison"]))
+    if rule in ("d2", "d3"):
+        skeletons = _query_skeletons(comparison)
+        same = [r for r in arabic if consonant_skeleton(r["comparison"]) in skeletons]
+        if same:
+            return closest(same)
+    return None
