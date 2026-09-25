@@ -241,7 +241,7 @@ CREATE TABLE IF NOT EXISTS entries (
     ipa           TEXT,
     etymology     TEXT,
     long_vowels   TEXT,          -- IPA'dan çıkarılmış uzun ünlüler
-    origin        TEXT,          -- 'alıntı' | 'miras' | NULL
+    origin        TEXT,          -- 'alıntı' | 'miras' | 'diriltme' | NULL
     donor_lang    TEXT,
     donor_form    TEXT,
     formation     TEXT,          -- kendi dilindeki yapım: "biti- + -g"
@@ -440,6 +440,44 @@ TURKIC_FAMILY_CODES = frozenset(
 )
 
 
+#: Türk dilinin TARİHÎ/ATA evreleri: bunlardan "alıntı" dil içi diriltmedir
+#: (`betik` "learned borrowing from Old Turkic 𐰋𐰃𐱅𐰏", `bilge`, `tin`,
+#: `başkan`), yabancı alıntı değildir. ``oui`` (Eski Uygurca), ``xqa``
+#: (Karahanlıca) ve ``okm`` aile kodlarında yoktu; tek başına onlardan
+#: "alıntı" aile dışına çıkış sayılıyordu. ``ota``/``chg`` BİLEREK yok:
+#: Kırım Tatarcası ~ Osmanlıca (60 kayıt) gerçek Türk dilleri arası
+#: alıntıdır; yalnız ÖĞRENİLMİŞ alıntı şablonuyla gelince diriltmedir
+#: (`kamu` "learned borrowing from Ottoman Turkish قمو").
+HISTORICAL_TURKIC_STAGES = frozenset(
+    {"otk", "oui", "xqa", "okm", "trk-pro", "trk-cmn-pro", "trk-ogz-pro", "trk-oat", "trk-eog"}
+)
+
+#: Öğrenilmiş (bilinçli) alıntı şablonları.
+LEARNED_BORROWING_TEMPLATES = frozenset({"lbor", "slbor"})
+
+#: Türk dili İÇİ bilinçli diriltmenin köken etiketi: ne yabancı alıntı ne
+#: kesintisiz miras. Alıntı sinyalleri bunu alıntı SAYMAZ
+#: (bkz. `borrowing_detector._lexical_origin_rows`).
+REVIVAL_ORIGIN = "diriltme"
+
+
+def _is_revival(steps: list[tuple[str, str, str]]) -> bool:
+    """Şablon zinciri Türk dilinin kendi tarihî evresinden bilinçli alıntı mı.
+
+    Zincirin hiçbir halkası aile dışına çıkmaz ve her alıntı halkası ya ata/
+    tarihî evreden (``HISTORICAL_TURKIC_STAGES``) ya da öğrenilmiş alıntı
+    şablonuyla bir Türk dilinden gelir.
+    """
+    def turkic(code: str) -> bool:
+        return code in TURKIC_FAMILY_CODES or code in HISTORICAL_TURKIC_STAGES or code.startswith("trk-")
+
+    loans = [(name, donor) for name, donor, _ in steps if name in BORROWING_TEMPLATES]
+    return bool(loans) and all(turkic(donor) for _, donor, _ in steps) and all(
+        donor in HISTORICAL_TURKIC_STAGES or name in LEARNED_BORROWING_TEMPLATES
+        for name, donor in loans
+    )
+
+
 def _origin_from_templates(record: dict[str, Any]) -> tuple[str | None, str, str]:
     """``etymology_templates``ten köken, NİHAİ verici dil ve özgün biçmi çıkarır.
 
@@ -484,6 +522,15 @@ def _origin_from_templates(record: dict[str, Any]) -> tuple[str | None, str, str
 
     # Nihai kaynak: zincirin en uzak ucundaki dil.
     final_lang, final_form = steps[-1][1], steps[-1][2]
+    # Türk dili içi diriltme: verici alanları eskisi gibi (zincirin ucu)
+    # kalır, yalnız köken sınıfı ayrılır. Eskiden `betik` "alıntı, verici
+    # trk-pro" idi; soy koduyla süzen tüketiciler dışında her yerde yabancı
+    # alıntı gibi görünüyordu. Metin aile dışı verici gösteriyorsa
+    # (şablona yazılmamış uzak halka) diriltme değildir.
+    if _is_revival(steps) and not (
+        text_donor and text_donor not in TURKIC_FAMILY_CODES and text_donor not in HISTORICAL_TURKIC_STAGES
+    ):
+        return REVIVAL_ORIGIN, final_lang, final_form
     if explicit_borrowing or leaves_family:
         # Aile dışına ilk çıkan halka gerçek vericidir.
         for _, donor, form in steps:

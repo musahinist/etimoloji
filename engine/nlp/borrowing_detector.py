@@ -221,7 +221,9 @@ def _lexical_origin_rows(
         return r.get("origin") == "alıntı" and bool(donor) and donor not in TURKIC_LINEAGE_CODES
 
     def is_inherited(r: dict[str, Any]) -> bool:
-        return r.get("origin") == "miras" or (
+        # Türk dili içi diriltme (`betik` < Eski Türkçe bitig) miras
+        # malzemesidir (bkz. `lexicon_index.REVIVAL_ORIGIN`).
+        return r.get("origin") in ("miras", "diriltme") or (
             r.get("origin") == "alıntı"
             and str(r.get("donor_lang") or "") in TURKIC_LINEAGE_CODES
         )

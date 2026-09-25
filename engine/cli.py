@@ -250,7 +250,8 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
         for step in timeline:
             print(f"  • {step}")
 
-    if related_cognates:
+    suspect_cognates = finding.get("suspect_cognates") or []
+    if related_cognates or suspect_cognates:
         from engine.utils.cognates import cognate_heading
 
         # Alıntıda liste "aynı kökten akraba" değil, paralel alıntıdır.
@@ -258,7 +259,11 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
         print("\n" + "─" * 80)
         print(f" 🔗 {heading}")
         print("─" * 80)
-        print(f"  • {label}: {', '.join(related_cognates)}")
+        if related_cognates:
+            print(f"  • {label}: {', '.join(related_cognates)}")
+        # Akraba kümelemesinin tek başına bıraktığı biçimler.
+        if suspect_cognates:
+            print(f"  • Şüpheli (küme aykırısı): {', '.join(suspect_cognates)}")
 
     # 6. HESAPLAMALI NLP ALINTI & REKONSTRÜKSİYON ANALİZİ
     if nlp_analysis:

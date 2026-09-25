@@ -213,6 +213,15 @@ def _origin_layers(
         if not _is_own_record(entry, word):
             continue
         donor = str(entry.get("donor_lang") or "")
+        if entry.get("lexicon_origin") == "diriltme" and donor:
+            # Yabancı alıntı değil: dilin kendi eski evresinden bilinçli
+            # diriltme (`betik` < Eski Türkçe bitig).
+            form = re.sub(r"<[^<>]*>", "", str(entry.get("donor_form") or "")).strip()
+            layers.append(
+                f"Sözlük kaydı: Türk dili içi diriltme — {language_name(donor)} {form} "
+                f"({entry.get('lang_name') or entry.get('lang_code')})"
+            )
+            break
         if entry.get("lexicon_origin") != "alıntı" or not donor or donor in TURKIC_LINEAGE_CODES:
             continue
         form = re.sub(r"<[^<>]*>", "", str(entry.get("donor_form") or "")).strip()
@@ -530,10 +539,31 @@ def _drop_tautological_meanings(word: str, entries: list[dict[str, Any]]) -> Non
 PARALLEL_LOAN_LABEL = "paralel alıntı"
 
 
+def _is_foreign_loan_record(entry: dict[str, Any]) -> bool:
+    """Sözlük kaydı kendisi için aile DIŞI bir vericiden alıntı diyor mu.
+
+    Osmanlıca پتك `petek` "hive" ("Borrowed from Armenian փեթակ") `betik`
+    aramasında `betek` ses varyantıyla bulunuyor ve Eski Türkçe `bitig`in
+    torunu `betik`e akraba tanığı sayılıyordu. Soy kodlu verici (`trk-pro`,
+    `otk`...) ve Türk dili içi diriltme (`lexicon_origin="diriltme"`)
+    yabancı alıntı değildir.
+    """
+    from engine.db.lexicon_index import TURKIC_FAMILY_CODES
+    from engine.nlp.borrowing_chain import TURKIC_LINEAGE_CODES
+
+    donor = str(entry.get("donor_lang") or "")
+    return (
+        entry.get("lexicon_origin") == "alıntı" and bool(donor)
+        and donor not in TURKIC_FAMILY_CODES and donor not in TURKIC_LINEAGE_CODES
+        and not donor.startswith("trk-")
+    )
+
+
 def _mark_parallel_loans(
-    entries: list[dict[str, Any]], translation_sources: set[str]
+    entries: list[dict[str, Any]], translation_sources: set[str], word: str = "", *, borrowed: bool = True
 ) -> list[dict[str, Any]]:
-    """Alıntı kelimede çeviri/indeks tanıklarını paralel alıntı diye işaretler.
+    """Alıntı kayıtlarını ve (alıntı hükmünde) çeviri/indeks tanıklarını
+    paralel alıntı diye işaretler.
 
     Apertium çevirisi, NorthEuraLex kavramı ve çağdaş dil indeksindeki
     eşyazımlı madde yalnız BİÇİMCE benzer karşılıktır. Kelime alıntıysa bu
@@ -543,21 +573,111 @@ def _mark_parallel_loans(
     kanıtı sayılmaz. Kaynağın açık akrabalık beyanı (`asserted_cognate`) ve
     sorgunun kendi dil çizgisinin kaydı işaretlenmez.
 
+    Hükümden BAĞIMSIZ olarak, sözlüğün kendisinin aile dışı bir vericiden
+    alıntı dediği başka kelime kaydı da ayrılır (bkz.
+    `_is_foreign_loan_record`): miras hükmünde akraba olamaz, alıntı
+    hükmünde de ancak paralel alıntıdır. Ölçüldü (121 kelime, yalnız yerel
+    kaynak): 7 tanık / 6 kelime — `betik` ~ petek "hive" (Ermenice), `kazma`
+    ~ gaz "gas" (Fransızca), `tutku` ~ tut "mulberry" (Farsça), `kalcı` ~
+    kal (Arapça). Sorgunun KENDİ kaydı (Osmanlıca كتاب `kitap`) işaretlenmez;
+    alıntı hükmünün kanıtıdır.
+
     İşaretlenmeyen (kanıt sayılacak) kayıtları döndürür.
     """
     evidence: list[dict[str, Any]] = []
     for entry in entries:
-        if (
-            entry.get("source") in translation_sources
+        translation_parallel = (
+            borrowed
+            and entry.get("source") in translation_sources
             and entry.get("lang_code") in TURKIC_LANGUAGES_MAP
             and entry.get("lang_code") not in OWN_LINE_CODES
             and not entry.get("asserted_cognate")
-        ):
+        )
+        foreign_loan = (
+            entry.get("lang_code") in TURKIC_LANGUAGES_MAP
+            and _is_foreign_loan_record(entry)
+            and not entry.get("asserted_cognate")
+            and not (word and _is_own_record(entry, word))
+        )
+        if translation_parallel or foreign_loan:
             entry["parallel_loan"] = True
             entry["witness_role"] = PARALLEL_LOAN_LABEL
         else:
             evidence.append(entry)
     return evidence
+
+
+#: Küme aykırısı tanığın rapordaki rolü (akraba listesinde ayrı gösterilir).
+CLUSTER_OUTLIER_LABEL = "şüpheli (küme aykırısı)"
+
+
+def _mark_cluster_outliers(
+    entries: list[dict[str, Any]], clusters: dict[str, Any] | None
+) -> list[str]:
+    """Kümelemenin tek başına bıraktığı biçimleri şüpheli diye işaretler.
+
+    Yalnız en az iki üyeli bir akraba kümesi VARKEN: o kümeye biçimce hiç
+    bağlanamayan tek kayıt (`betik` aramasında Eski Türkçe `büt-`
+    "tamamlanmak", yanında bitig/bitik/битик kümesi) akraba listesinde ayrı,
+    "şüpheli" diye gösterilir. Kanıttan çıkarılmaz: tek başına kalan biçim
+    gerçek ama ses değişimi büyük bir akraba da olabilir (Kırgızca жүргүз ~
+    `yürütmek`); anlamca doğrulanmış biçim hiç işaretlenmez. İşaretlenen
+    biçimleri döndürür.
+    """
+    groups = (clusters or {}).get("clusters") or []
+    if not any(c.get("size", 0) >= 2 for c in groups):
+        return []
+    lonely = {
+        (f.get("lang_code"), f.get("word"))
+        for c in (clusters or {}).get("outliers") or [] for f in c.get("forms") or []
+    }
+    marked: list[str] = []
+    for entry in entries:
+        # Anlamca doğrulanmış (≥ `LOCAL_WITNESS_FLOOR`) tek biçim şüpheli
+        # değildir: ölçüldü (121 kelime), aykırıların 3/5'i buydu ve hepsi
+        # gerçek akrabaydı — `süpürmek` ~ Kırgızca шыпыруу "to sweep" 1,0,
+        # Çuvaşça шӑпӑр "broom" 0,82.
+        if (entry.get("meaning_similarity") or 0.0) >= LOCAL_WITNESS_FLOOR:
+            continue
+        if (entry.get("lang_code"), entry.get("word")) in lonely and not entry.get("parallel_loan"):
+            entry["cluster_outlier"] = True
+            entry.setdefault("witness_role", CLUSTER_OUTLIER_LABEL)
+            if entry.get("word") and entry["word"] not in marked:
+                marked.append(entry["word"])
+    return marked
+
+
+def _names_query(entry: dict[str, Any], word: str) -> bool:
+    """Kayıt sorgunun kendisini adlandırıyor mu (yazılış ya da karşılaştırma biçimi)."""
+    return _names_word(entry.get("attested_as") or entry.get("word") or "", word) or (
+        bool(entry.get("comparison")) and entry["comparison"] == to_comparison_form(word)
+    )
+
+
+def _needs_meaning_check(fetcher: Any, variant: str, word: str, entry: dict[str, Any]) -> bool:
+    """Kayıt sorgunun anlamıyla doğrulanmadan tanık olmamalı mı.
+
+    Biçimle (ses/kök varyantıyla) bulunan ve sorgunun kendisini
+    adlandırmayan kayıtlar: yerel sözlük indeksinin tarihî katmanı, tohum
+    kaynakları ve sorgunun kendisi yerine bir VARYANTLA sorgulanan her
+    kaynağın kaydı. Ölçüldü (121 kelime, yalnız yerel kaynak): anlamla hiç
+    sınanmayan 29 tarihî katman kaydı — `kazma` ~ kar "snow", kaş
+    "eyebrow"; `sultan` ~ sol "left"; `ilim` ~ Eski Türkçe -elim eki.
+    Ağ kaynağında da aynısı: `betik` aramasında Nişanyan'ın `büt-`
+    "tamamlanmak" kaydı `bitik` varyantının (bitmek) sayfasından geliyordu.
+
+    Çeviri kaynakları (Apertium, NorthEuraLex) kavramla hizalıdır, varyant
+    sorgusu almazlar; onlara uygulanmaz.
+    """
+    if entry.get("meaning_check") or entry.get("lang_code") in ("donor", "ai") or _names_query(entry, word):
+        return False
+    if isinstance(fetcher, (ApertiumFetcher, NorthEuraLexFetcher)):
+        return False
+    return (
+        type(fetcher) is HistoricalIndexFetcher
+        or bool(getattr(fetcher, "is_seed_source", False))
+        or variant != word
+    )
 
 
 def _rank_own_by_meaning(word: str, entries: list[dict[str, Any]], primary: str) -> list[tuple[float, dict[str, Any]]]:
@@ -671,7 +791,7 @@ def _own_sense_records(word: str, entries: list[dict[str, Any]]) -> list[dict[st
     for r in rows:
         meaning = str(r.get("meaning") or "").strip()
         if (not meaning or is_inflection_gloss(meaning) or _REDIRECT_GLOSS.search(meaning)
-                or r.get("lexicon_origin") not in ("miras", "alıntı")):
+                or r.get("lexicon_origin") not in ("miras", "alıntı", "diriltme")):
             continue
         key = (r.get("lang_code"), meaning, r.get("donor_form"))
         if key not in seen:
@@ -1329,6 +1449,20 @@ class SearchEngine:
                                 _add_meaning(source_meanings, translate_meaning(m))
 
                         for entry in res.get("turkic_languages", []):
+                            # Kaydı getiren fetcher ve hangi sorgu biçimiyle
+                            # getirildiği. `source` alanını her fetcher yazmıyor
+                            # (Nişanyan'ın `büt-` kaydı `betik` aramasında
+                            # `bitik` varyantıyla geliyordu, kaynaksız); anlam
+                            # doğrulaması ve denetim bunlara bakar.
+                            entry.setdefault("fetched_by", fetcher.source_name)
+                            entry.setdefault("queried_as", variant)
+                            if _needs_meaning_check(fetcher, variant, word_clean, entry):
+                                entry["meaning_check"] = True
+                                # Anlamı ya da ölçütü olmayan kayıt (model
+                                # yok, sorgu anlamı yok) elenmez: çağdaş
+                                # indeks adayından farklı olarak bu kaynaklar
+                                # eskiden süzgeçsiz tanıktı.
+                                entry["meaning_check_lenient"] = True
                             entry["meaning"] = translate_meaning(entry.get("meaning", ""))
                             entry["phonetic_shift"] = analyze_phonetic_shifts(
                                 word_clean, entry.get("word", ""), entry.get("lang_name", "")
@@ -1423,6 +1557,7 @@ class SearchEngine:
         # ANLAMLA doğrulanır (bkz. `ModernIndexFetcher`). Doğrulanamayan
         # (anlamsız kayıt, model ya da sorgu anlamı yok) tanık OLMAZ.
         unverified = [e for e in turkic_entries_map.values() if e.get("meaning_check")]
+        meaning_rejected: list[dict[str, Any]] = []
         if unverified:
             glossed = [e for e in unverified if e.get("meaning")]
             kept, _ = _homonym_filter(glossed, query_meanings) if glossed else ([], [])
@@ -1432,6 +1567,11 @@ class SearchEngine:
             best = max((e["meaning_similarity"] for e in scored), default=0.0)
             floor = max(LOCAL_WITNESS_FLOOR, best - LOCAL_WITNESS_MARGIN)
             verified = {id(e) for e in scored if e["meaning_similarity"] >= floor}
+            # Hoşgörülü kayıt yalnız ÖLÇÜLÜP düşükse elenir; ölçülemediyse kalır.
+            verified |= {
+                id(e) for e in unverified
+                if e.get("meaning_check_lenient") and "meaning_similarity" not in e
+            }
             # Ağız kaydı biçimce sorguya bağlanıyor VE sözlük anlamını sorgunun
             # kendisi olarak veriyorsa doğrulanmıştır (bkz.
             # `witness_variants.dialect_names_query`).
@@ -1445,6 +1585,17 @@ class SearchEngine:
                 k: v for k, v in turkic_entries_map.items()
                 if not v.get("meaning_check") or id(v) in verified
             }
+            # Sorgunun kendi dil çizgisinde anlamca elenen biçimdeş kayıt
+            # (`ban` ~ Osmanlıca وان "Van", `bel` ~ بیل "spade") eşsesli
+            # uyarısı olarak kalır: eskiden süzgeçsiz tanık olup eşsesli
+            # anlam ayrımında (`_reconcile_homonym_senses`) raporlanıyordu;
+            # yalnız silinseydi `make eval-homonym` tanık uyarısını 8 kelimede
+            # kaybediyordu (ölçüldü).
+            meaning_rejected = [
+                e for e in unverified
+                if e.get("meaning_check_lenient") and id(e) not in verified
+                and "meaning_similarity" in e and e.get("lang_code") in OWN_LINE_CODES
+            ]
             etymology_mentions["local_witnesses"] = {
                 "found": len(unverified), "verified": len(verified),
             }
@@ -1455,6 +1606,10 @@ class SearchEngine:
             {"lang_name": h["lang_name"], "word": h["word"], "meaning": h["meaning"],
              "similarity": h.get("meaning_similarity")}
             for h in homonyms
+        ] + [
+            {"lang_name": h.get("lang_name"), "word": h.get("word"), "meaning": h.get("meaning"),
+             "similarity": h.get("meaning_similarity"), "meaning_filtered": True}
+            for h in meaning_rejected
         ]
         for entry in asserted:
             key = (entry["lang_code"], entry["word"], False)
@@ -1623,18 +1778,23 @@ class SearchEngine:
         # Hüküm alıntıysa çeviri/indeks tanıkları paralel alıntıdır: bundan
         # sonraki miras/yayılım kanıtına (A-HVP üçgenlemesi, ses kanunu
         # indüksiyonu, akraba listesi, yayılım raporu) girmez.
-        evidence_entries = sorted_entries
-        if ((ranked_hypotheses or {}).get("selected") or {}).get("kind") == "borrowed":
-            evidence_entries = _mark_parallel_loans(sorted_entries, {
+        # Hükümden bağımsız: sözlüğün aile dışı alıntı dediği başka kelime
+        # kaydı da akraba tanığı olmaz (bkz. `_mark_parallel_loans`).
+        evidence_entries = _mark_parallel_loans(
+            sorted_entries,
+            {
                 f.source_name for f in self.fetchers
                 if isinstance(f, (ApertiumFetcher, NorthEuraLexFetcher, ModernIndexFetcher))
-            })
-            parallel_count = len(sorted_entries) - len(evidence_entries)
-            if parallel_count:
-                cognate_eval = self.cognate_alignment_engine.evaluate_cognate_distribution(
-                    word_clean, evidence_entries
-                )
-                cognate_eval["parallel_loans_excluded"] = parallel_count
+            },
+            word_clean,
+            borrowed=((ranked_hypotheses or {}).get("selected") or {}).get("kind") == "borrowed",
+        )
+        parallel_count = len(sorted_entries) - len(evidence_entries)
+        if parallel_count:
+            cognate_eval = self.cognate_alignment_engine.evaluate_cognate_distribution(
+                word_clean, evidence_entries
+            )
+            cognate_eval["parallel_loans_excluded"] = parallel_count
         donor_eval = self.donor_search_engine.search_donor_neighbors(word_clean)
 
         finding_temp = {"root": {"proto_turkic": proto_root, "meaning": root_meaning}}
@@ -1792,7 +1952,17 @@ class SearchEngine:
             # Kural tabanlı çözümleyici Eski Türkçe eklerini tanımıyor (`bitig`
             # -> "Yalın Kök"); sözlük maddesi yapıyı açıkça veriyorsa o yazılır.
             morphology_info = f"{formation_entry['formation']} (sözlük maddesine göre)"
-        related_cognates = get_related_cognates(word_clean, evidence_entries)
+        # Kümelemenin tek başına bıraktığı biçim akraba listesinde ayrı,
+        # "şüpheli" diye gösterilir (bkz. `_mark_cluster_outliers`).
+        _mark_cluster_outliers(evidence_entries, cognate_clusters)
+        related_cognates = get_related_cognates(
+            word_clean, [e for e in evidence_entries if not e.get("cluster_outlier")]
+        )
+        suspect_cognates = [
+            w for w in get_related_cognates(
+                word_clean, [e for e in evidence_entries if e.get("cluster_outlier")]
+            ) if w not in related_cognates
+        ]
 
         _lap("report")
         # 5. Neo4j Uyumlu Graf Veritabanı Düğüm Şeması Oluşturma
@@ -2006,6 +2176,7 @@ class SearchEngine:
             "graph_database": graph_export,
             "timeline": list(dict.fromkeys(timeline)),
             "related_cognates": related_cognates,
+            "suspect_cognates": suspect_cognates,
             "sources": sorted(set(sources)),
             "from_cache": False,
         }

@@ -180,6 +180,35 @@ class TestOriginDetection(unittest.TestCase):
         for code in ("ota", "otk", "trk-pro", "cv", "sah"):
             self.assertIn(code, TURKIC_FAMILY_CODES, code)
 
+    def test_learned_borrowing_from_old_turkic_is_revival(self):
+        """`betik`: "Learned borrowing from Old Turkic 𐰋𐰃𐱅𐰏, from Proto-Turkic
+        *bitig" — Türk dili içi diriltme, yabancı alıntı değil; verici alanları
+        eskisi gibi zincirin ucudur."""
+        from engine.db.lexicon_index import _origin_from_templates
+
+        rec = record("betik", [
+            {"name": "lbor", "args": {"1": "tr", "2": "otk", "3": "𐰋𐰃𐱅𐰏"}},
+            {"name": "inh", "args": {"1": "otk", "2": "trk-pro", "3": "*bitig"}},
+        ], etymology="Learned borrowing from Old Turkic 𐰋𐰃𐱅𐰏, from Proto-Turkic *bitig.")
+        self.assertEqual(_origin_from_templates(rec), ("diriltme", "trk-pro", "*bitig"))
+        self.assertEqual(self._origin(rec), "diriltme")
+
+    def test_revival_classes(self):
+        from engine.db.lexicon_index import _origin_from_templates
+
+        def origin(templates):
+            return _origin_from_templates(record("x", templates))[0]
+
+        # Eski Uygurcadan düz alıntı: tarihî evre -> diriltme.
+        self.assertEqual(origin([{"name": "bor", "args": {"2": "oui", "3": "y"}}]), "diriltme")
+        # `kamu` "learned borrowing from Ottoman Turkish قمو".
+        self.assertEqual(origin([{"name": "lbor", "args": {"2": "ota", "3": "قمو"}}]), "diriltme")
+        # Kırım Tatarcası < Osmanlıca (öğrenilmemiş) gerçek Türk dilleri arası alıntıdır.
+        self.assertEqual(origin([{"name": "bor", "args": {"2": "ota", "3": "y"}}]), "alıntı")
+        # Zincir aile dışına çıkıyorsa diriltme değildir.
+        self.assertEqual(origin([{"name": "lbor", "args": {"2": "otk", "3": "y"}},
+                                 {"name": "der", "args": {"2": "ltc", "3": "筆"}}]), "alıntı")
+
 
 class TestIndexOperations(unittest.TestCase):
     def setUp(self):

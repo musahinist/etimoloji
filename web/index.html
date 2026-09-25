@@ -699,9 +699,13 @@
             document.getElementById('relatedTitle').textContent = relatedKind === "borrowed"
                 ? "🔗 Paralel alıntılar (aynı vericiden başka Türk dillerine)"
                 : "🔗 Kök akraba sözcük ağı";
+            // Kümelemenin tek başına bıraktığı biçimler ayrı, "şüpheli" etiketiyle.
+            const suspect = data.suspect_cognates || [];
             document.getElementById('relatedList').innerHTML = related.map(r =>
-                `<span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-teal-300">${esc(r)}</span>`).join("");
-            toggle('relatedBox', related.length > 0);
+                `<span class="px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-teal-300">${esc(r)}</span>`).join("")
+                + suspect.map(r =>
+                `<span class="px-2 py-0.5 rounded bg-slate-900 border border-dashed border-orange-700 text-orange-300/80" title="küme aykırısı">${esc(r)} · şüpheli</span>`).join("");
+            toggle('relatedBox', related.length + suspect.length > 0);
 
             toggle('extraCard', hasClass || !!attHtml || timeline.length > 0 || related.length > 0);
 

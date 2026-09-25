@@ -101,6 +101,11 @@ _LEMMA_POINTER = "See the etymology of the corresponding lemma"
 # --- altın küme: kaikki "Etymology N" -----------------------------------------------
 
 
+#: Vericisi olan köken sınıfları: yabancı alıntı ve Türk dili içi diriltme
+#: (`lexicon_index.REVIVAL_ORIGIN`).
+_DONOR_ORIGINS = ("alıntı", "diriltme")
+
+
 def _is_form_of(record: dict[str, Any]) -> bool:
     senses = record.get("senses") or []
     if senses and all(s.get("form_of") or "form-of" in (s.get("tags") or []) for s in senses):
@@ -198,7 +203,10 @@ def is_distinguishable(etyms: Sequence[dict[str, Any]]) -> bool:
                 continue
             roots_seen.append(roots)
             signatures.add(("kök", tuple(sorted(roots))))
-        elif e.get("origin") == "alıntı" and e.get("donor_lang"):
+        # Türk dili içi diriltme (`anık` < Eski Uygurca) de vericili bir
+        # etimolojidir; imzası alıntınınkiyle aynı kurulur (örneklem, köken
+        # sınıfı ayrılmadan önceki hâliyle aynı kalır).
+        elif e.get("origin") in _DONOR_ORIGINS and e.get("donor_lang"):
             signatures.add(("alıntı", e["donor_lang"], e.get("donor_form", "")))
     return len(signatures) >= 2
 
@@ -315,7 +323,7 @@ def donor_etymologies(claims: Sequence[str], etymologies: Sequence[dict[str, Any
     text = " ".join(claims)
     out = []
     for e in etymologies:
-        if e.get("origin") != "alıntı":
+        if e.get("origin") not in _DONOR_ORIGINS:
             continue
         name = DONOR_LANGUAGE_NAMES.get(e.get("donor_lang", ""), "")
         form = e.get("donor_form", "")
@@ -448,7 +456,7 @@ def score_word(item: dict[str, Any], summary: dict[str, Any]) -> dict[str, Any]:
     if head_etym == "hiçbiri" and summary.get("verdict_kind") == "borrowed":
         # Alıntı başlığı "Verici özgün-biçim"dir: önce özgün biçim, sonra dil adı.
         hits = [e["number"] for e in etyms
-                if e.get("origin") == "alıntı" and e.get("donor_form") and e["donor_form"] in headline]
+                if e.get("origin") in _DONOR_ORIGINS and e.get("donor_form") and e["donor_form"] in headline]
         hits = hits or donor_etymologies([headline] + list(summary.get("borrowed_claims") or []), etyms)
         if hits:
             head_etym = hits[0] if len(hits) == 1 else "belirsiz"

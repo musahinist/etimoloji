@@ -399,6 +399,55 @@ class TestSourceStatus(unittest.TestCase):
 
 
 class TestParallelLoans(unittest.TestCase):
+    def test_foreign_loan_record_is_not_cognate_of_inherited_word(self):
+        """`betik` (miras) ~ Osmanlıca پتك petek "hive" < Ermenice: akraba değil."""
+        from engine.search_engine import PARALLEL_LOAN_LABEL, _mark_parallel_loans
+
+        entries = [
+            {"lang_code": "ota", "word": "پتك", "comparison": "petek", "lexicon_origin": "alıntı", "donor_lang": "hy"},
+            {"lang_code": "ota", "word": "بتك", "comparison": "betik", "lexicon_origin": "alıntı", "donor_lang": "ar"},
+            {"lang_code": "az", "word": "bitik", "lexicon_origin": "alıntı", "donor_lang": "trk-pro"},
+            {"lang_code": "tr", "word": "bilge", "lexicon_origin": "diriltme", "donor_lang": "otk"},
+            {"lang_code": "kdr", "word": "битик", "source": "Apertium"},
+        ]
+        evidence = _mark_parallel_loans(entries, {"Apertium"}, "betik", borrowed=False)
+        self.assertEqual([e["word"] for e in entries if e.get("parallel_loan")], ["پتك"])
+        self.assertEqual(entries[0]["witness_role"], PARALLEL_LOAN_LABEL)
+        self.assertEqual(len(evidence), 4)
+
+    def test_cluster_outlier_is_marked_only_beside_a_real_cluster(self):
+        from engine.search_engine import CLUSTER_OUTLIER_LABEL, _mark_cluster_outliers
+
+        entries = [{"lang_code": "otk", "word": "bitig"}, {"lang_code": "az", "word": "bitik"},
+                   {"lang_code": "otk", "word": "büt-"}]
+        clusters = {
+            "clusters": [{"size": 2, "forms": entries[:2]}, {"size": 1, "forms": [entries[2]]}],
+            "outliers": [{"size": 1, "forms": [entries[2]]}],
+        }
+        self.assertEqual(_mark_cluster_outliers(entries, clusters), ["büt-"])
+        self.assertEqual(entries[2]["witness_role"], CLUSTER_OUTLIER_LABEL)
+        lone = [{"lang_code": "az", "word": "x"}, {"lang_code": "kk", "word": "y"}]
+        singles = {"clusters": [{"size": 1, "forms": [lone[0]]}, {"size": 1, "forms": [lone[1]]}],
+                   "outliers": [{"size": 1, "forms": [lone[0]]}, {"size": 1, "forms": [lone[1]]}]}
+        self.assertEqual(_mark_cluster_outliers(lone, singles), [])
+
+    def test_form_found_witnesses_need_meaning_check(self):
+        """Tarihî katman, tohum ve varyantla gelen kayıt anlamla doğrulanır;
+        sorgunun kendi kaydı ve çeviri kaynağı doğrulanmaz."""
+        from engine.fetchers.apertium import ApertiumFetcher
+        from engine.fetchers.historical_index import HistoricalIndexFetcher, ModernIndexFetcher
+        from engine.search_engine import _needs_meaning_check
+
+        hist, modern = HistoricalIndexFetcher(), ModernIndexFetcher()
+        petek = {"lang_code": "ota", "word": "پتك", "comparison": "petek"}
+        self.assertTrue(_needs_meaning_check(hist, "betik", "betik", petek))
+        self.assertFalse(_needs_meaning_check(hist, "betik", "betik", {"lang_code": "ota", "word": "بتك", "comparison": "betik"}))
+        # Nişanyan'ın `bitik` varyantı sayfasından gelen Eski Türkçe `büt-`.
+        self.assertTrue(_needs_meaning_check(FakeFetcher(), "bitik", "betik", {"lang_code": "otk", "word": "büt-"}))
+        self.assertFalse(_needs_meaning_check(FakeFetcher(), "betik", "betik", {"lang_code": "otk", "word": "bitig"}))
+        self.assertFalse(_needs_meaning_check(ApertiumFetcher(), "betek", "betik", {"lang_code": "kk", "word": "бетік"}))
+        self.assertFalse(_needs_meaning_check(modern, "betik", "betik", {"lang_code": "az", "word": "bitik", "meaning_check": True}))
+
     def test_translation_witnesses_are_marked_in_borrowed_word(self):
         from engine.search_engine import PARALLEL_LOAN_LABEL, _mark_parallel_loans
 
