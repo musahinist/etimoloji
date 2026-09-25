@@ -14,7 +14,8 @@ from unittest import mock
 
 from engine.db.lexicon_index import TURKIC_FAMILY_CODES, _cognates_from_templates, _origin_from_templates
 from engine.fetchers import proto_turkic_local as ptl
-from engine.fetchers.base import TURKIC_LANGUAGES_MAP, lang_code_from_wiktionary
+from engine.db.lexicon_index import discover_lexicons, iter_entries
+from engine.fetchers.base import TURKIC_LANGUAGES_MAP, lang_code_from_wiktionary, lang_code_from_wiktionary_header
 
 SCRIPTS = Path(__file__).resolve().parents[2] / "scripts"
 
@@ -74,6 +75,49 @@ class TestLexiconIndexCodes(unittest.TestCase):
         self.assertNotIn("khk", TURKIC_FAMILY_CODES)  # Wiktionary'de Halha Moğolcası
 
 
+def _load_download_script(name: str):
+    spec = importlib.util.spec_from_file_location(name, SCRIPTS / "download_lexicons.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+class TestNorthernAltai(unittest.TestCase):
+    """Kuzey Altayca (``atv``) ayrı dildir; Güney Altaycaya (``alt``) katılmaz."""
+
+    def test_code_is_separate_and_unmapped(self):
+        self.assertIn("atv", TURKIC_LANGUAGES_MAP)
+        self.assertEqual(lang_code_from_wiktionary("atv"), "atv")
+        self.assertEqual(lang_code_from_wiktionary("alt"), "alt")
+        self.assertEqual(lang_code_from_wiktionary_header("==Northern Altai=="), "atv")
+        self.assertEqual(lang_code_from_wiktionary_header("Southern Altai"), "alt")
+
+    def test_download_script_lists_it(self):
+        module = _load_download_script("_download_lexicons_atv")
+        self.assertEqual(module.LEXICONS["Northern_Altai"], "atv")
+        self.assertEqual(
+            module.kaikki_url("Northern_Altai"),
+            "https://kaikki.org/dictionary/Northern%20Altai/kaikki.org-dictionary-NorthernAltai.jsonl",
+        )
+
+    def test_dump_is_discovered_and_parsed(self):
+        from engine.db import lexicon_index
+
+        rec = {"word": "кӧл", "lang_code": "atv", "pos": "noun",
+               "etymology_text": "From Proto-Turkic *kȫl.",
+               "etymology_templates": [{"name": "inh", "args": {"1": "atv", "2": "trk-pro", "3": "*kȫl"}}],
+               "senses": [{"glosses": ["lake"]}]}
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "atv.jsonl.gz"
+            with gzip.open(path, "wt", encoding="utf-8") as handle:
+                handle.write(json.dumps(rec, ensure_ascii=False) + "\n")
+            with mock.patch.object(lexicon_index, "LEXICON_DIR", Path(tmp)):
+                self.assertEqual(discover_lexicons(), {"atv": path})
+            entry = next(iter_entries(path, "atv"))
+        self.assertEqual((entry.lang_code, entry.comparison, entry.gloss), ("atv", "köl", "lake"))
+        self.assertEqual((entry.origin, entry.donor_lang), ("miras", "trk-pro"))
+
+
 class _Response:
     def __init__(self, payload: bytes) -> None:
         self._payload = payload
@@ -93,9 +137,7 @@ class _Response:
 
 class TestTrEditionSplit(unittest.TestCase):
     def test_split_maps_codes(self):
-        spec = importlib.util.spec_from_file_location("_download_lexicons_codes", SCRIPTS / "download_lexicons.py")
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
+        module = _load_download_script("_download_lexicons_codes")
         lines = [{"lang_code": "kjh", "word": "хараң"}, {"lang_code": "slr", "word": "göz"},
                  {"lang_code": "khk", "word": "хар"}, {"lang_code": "tr", "word": "göz"}]
         buffer = io.BytesIO()

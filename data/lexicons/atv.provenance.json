@@ -1,0 +1,15 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Northern_Altai",
+  "code": "atv",
+  "donor": false,
+  "ru_edition": false,
+  "url": "https://kaikki.org/dictionary/Northern%20Altai/kaikki.org-dictionary-NorthernAltai.jsonl",
+  "retrieved_at": "2026-09-25T20:55:06+00:00",
+  "raw_bytes": 1604382,
+  "stored_bytes": 182832,
+  "entries": 1259,
+  "compressed": true,
+  "sha256_stored": "7336f3318badd5452a2d40ee21eb0ea607a52f8f68bf95643fe79362118d1ef8",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

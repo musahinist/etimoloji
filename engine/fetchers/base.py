@@ -122,6 +122,7 @@ WIKTIONARY_LANG_HEADERS: dict[str, str] = {
     "tuvan": "tyv",
     "altai": "alt",
     "southern altai": "alt",
+    "northern altai": "atv",
     "khakas": "khk",
     "shor": "cjs",
     "salar": "slq",

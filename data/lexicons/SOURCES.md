@@ -6,11 +6,12 @@
 buradan verilmez; Wiktionary türevi akraba kümeleri altın standart
 ağaçlarla tutarsız çıkıyor (Häuser & Stamatakis 2025).
 
-Toplam: **26 dil · 128,068 kayıt**
+Toplam: **27 dil · 129,327 kayıt**
 
 | Dil | Kod | Kayıt | Ham boyut | İndirilme |
 |---|---|---|---|---|
 | [Southern_Altai](https://kaikki.org/dictionary/Southern%20Altai/kaikki.org-dictionary-SouthernAltai.jsonl) | `alt` | 1,914 | 11.0 MB | 2026-09-21 |
+| [Northern_Altai](https://kaikki.org/dictionary/Northern%20Altai/kaikki.org-dictionary-NorthernAltai.jsonl) | `atv` | 1,259 | 1.5 MB | 2026-09-25 |
 | [Azerbaijani](https://kaikki.org/dictionary/Azerbaijani/kaikki.org-dictionary-Azerbaijani.jsonl) | `az` | 16,340 | 179.8 MB | 2026-08-27 |
 | [Bashkir](https://kaikki.org/dictionary/Bashkir/kaikki.org-dictionary-Bashkir.jsonl) | `ba` | 3,379 | 10.6 MB | 2026-08-27 |
 | [Chagatai](https://kaikki.org/dictionary/Chagatai/kaikki.org-dictionary-Chagatai.jsonl) | `chg` | 599 | 2.8 MB | 2026-08-27 |

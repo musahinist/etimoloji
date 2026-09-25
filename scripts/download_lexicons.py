@@ -76,6 +76,11 @@ LEXICONS: dict[str, str] = {
     "Yakut": "sah",
     "Tuvan": "tyv",
     "Southern_Altai": "alt",
+    # Kuzey Altayca (Kumandı/Çalkan/Tuba) AYRI dildir, `alt`a katılmaz:
+    # Güney Altaycadan (Kıpçak) farklı olarak Şorca/Hakasçaya yakındır;
+    # birleştirilse yayılım sayımı iki dili tek tanık sayardı. Wiktionary
+    # kodu da motor kodu da ``atv`` (eşleme gerekmez).
+    "Northern_Altai": "atv",
     "Khakas": "khk",
     "Shor": "cjs",
     "Salar": "slq",
