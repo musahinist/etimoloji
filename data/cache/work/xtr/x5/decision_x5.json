@@ -1,0 +1,93 @@
+{
+ "_schema": "xtr-x5-decision/v1",
+ "prereg": "data/cache/work/xtr/PREREG_x5.md",
+ "split": "r3",
+ "n": 3706,
+ "result_file": "data/cache/work/xtr/xborrowing_r3_PREREG_x5.json",
+ "criteria": {
+  "1_primary_F_ci_lower_gt_0": {
+   "value": 0.017,
+   "ci95": [
+    0.0064,
+    0.0288
+   ],
+   "pass": true
+  },
+  "2_mechanism_ramp_inherited_decreases": {
+   "before": 822,
+   "after": 984,
+   "lost": 223,
+   "gained": 385,
+   "p_one_sided": 1.0,
+   "pass": false
+  },
+  "3_donor_identification": {
+   "sca": 0.5952,
+   "x5c": 0.6229,
+   "pass": true
+  },
+  "4_guard": {
+   "wold_engine_trained_F": 0.6636,
+   "turkish_engine_trained_F": 0.8883,
+   "search_dev_off": "129/135",
+   "search_dev_on": "122/135 (arama yolu bayrağı kapalı kalır)",
+   "pass": true
+  }
+ },
+ "decision": "KABUL EDİLMEDİ — mekanizma ölçütü tutmadı (önceden yazılmıştı); üretim varsayılanları kapalı",
+ "components_info": {
+  "x4a2": {
+   "dF": 0.0071,
+   "ci95": [
+    0.0004,
+    0.0136
+   ],
+   "ramp_inh": [
+    822,
+    592
+   ]
+  },
+  "mean": {
+   "dF": 0.0189,
+   "ci95": [
+    0.0107,
+    0.0274
+   ],
+   "ramp_inh": [
+    822,
+    1122
+   ]
+  },
+  "sense_s3fallback": {
+   "dF": -0.003,
+   "ci95": [
+    -0.0117,
+    0.0062
+   ],
+   "ramp_inh": [
+    822,
+    922
+   ]
+  }
+ },
+ "subsets_x5c": {
+  "yeni_dil": {
+   "value": 0.0465,
+   "ci95": [
+    0.0276,
+    0.0656
+   ],
+   "p_one_sided": 0.0,
+   "clusters": 1485
+  },
+  "x1_artık": {
+   "value": -0.0012,
+   "ci95": [
+    -0.0144,
+    0.0126
+   ],
+   "p_one_sided": 0.5505,
+   "clusters": 1559
+  }
+ }
+}

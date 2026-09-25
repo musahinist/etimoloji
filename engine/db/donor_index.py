@@ -251,6 +251,9 @@ def content_tokens(sense: str) -> list[str]:
 #: [−0,003, +0,031] (Holm p 0,11), doğruluk +0,026 [+0,006, +0,048], rampa
 #: 169 -> 129 (p<0,001). Birincil ölçüt ikisinde de tutmadı; güç yetersiz
 #: (MDE 0,038–0,053) -> "belirsiz". Varsayılan KAPALI.
+#: X5 (PREREG_x5.md, R3 n=3.706): birleşik aday (bu temizlik + rampa + mean +
+#: s3:fallback) ΔF +0,017 [+0,006, +0,029] ama mirasta rampa 822 -> 984
+#: (mekanizma tutmadı) -> kabul edilmedi; ayrıntı donor_proximity.STRENGTH_DISTANCE.
 CLEAN_DEFAULT = False
 
 #: (c) sıralı sorguda süzgeç öncesi okunan en çok satır.

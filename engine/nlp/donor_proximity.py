@@ -245,6 +245,17 @@ def _best(
 #: [−0,003, +0,045]; doğruluk +0,025; verici tanıma 0,573 -> 0,563.
 #: Birincil ölçüt (GA alt ucu > 0) TUTMADI -> sonuç BELİRSİZ (güç yetersiz:
 #: MDE 0,038 önceden yazılmıştı). C1 kapandı; üretim ``sca``.
+#:
+#: ⚠️ X5 (ön-kayıt ``data/cache/work/xtr/PREREG_x5.md``, R3 bir kez, n=3.706,
+#: kör indeks + zincir kapalı): birleşik tek aday (temizlik + rampa şans
+#: denetimi + ``mean`` 0,60/0,85 + anlam süzgeci s3:fallback) engine_trained
+#: F 0,8397 -> 0,8567, fark +0,017 [+0,006, +0,029] (birincil TUTTU);
+#: verici tanıma 0,595 -> 0,623 (tuttu); koruma WOLD 0,6636, Türkçe 0,8883,
+#: arama dev 129/135 (tuttu). Mekanizma ölçütü TUTMADI: mirasta rampa
+#: 822 -> 984 (mean'in geniş bandı; önceden yazılmıştı) -> KABUL EDİLMEDİ,
+#: varsayılanlar KAPALI. Bilgi (karar değil): tek başına ``mean`` +0,019
+#: [+0,011, +0,027], A2 +0,007 [+0,000, +0,014] (rampa 822 -> 592),
+#: S3 −0,003 [−0,012, +0,006]. Yeni ön kayıt ister.
 STRENGTH_DISTANCE = "sca"
 
 
@@ -319,6 +330,7 @@ def _sense_filter(sense_filter: Any) -> Any:
 #: Rampa şans denetiminin varsayılanı (``ETY_DONOR_RAMP_CHANCE`` verilmezse).
 #: Bkz. ``data/cache/work/xtr/PREREG_x4.md``; sonuç ``donor_index.CLEAN_DEFAULT``
 #: notunda (A2: mekanizma tuttu, birincil F ölçütü tutmadı). Varsayılan KAPALI.
+#: X5 (R3): birleşik aday kabul edilmedi — bkz. :data:`STRENGTH_DISTANCE` notu.
 RAMP_CHANCE_DEFAULT = False
 
 

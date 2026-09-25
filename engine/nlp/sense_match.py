@@ -69,6 +69,8 @@ CONCEPT_SOURCES = (
 
 #: Ön-kayıtlı R1 sınamasında kabul edilen tanım; ``None`` = hiçbiri kabul
 #: edilmedi, ``ETY_DONOR_SENSE_FILTER=1`` süzgeci AÇMAZ.
+#: X5 (PREREG_x5.md, R3): s3:fallback birleşik adayın parçası olarak kabul
+#: edilmedi (mekanizma ölçütü); tek başına R3 ΔF −0,003 [−0,012, +0,006].
 ACCEPTED_SPEC: str | None = None
 
 #: Anlam metni bu uzunlukta kırpılır (kaikki anlamları çok uzun olabiliyor).
