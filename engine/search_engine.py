@@ -618,11 +618,203 @@ def _query_source_proto(word: str, entries: list[dict[str, Any]], primary: str =
         form = re.sub(r"<[^<>]*>", "", str(entry.get("donor_form") or "")).strip()
         # Harfsiz biçim (`*-`, indeksteki boş şablon) kök değildir: `kavuk`
         # başlığı "*-" basıyordu.
+        # Ek kökü (`*-en` "dönüşlü fiil yapar") serbest kelimenin kökü
+        # değildir: `en` 'genişlik' başlığı otk ek kaydından *-en basıyordu.
         if (entry.get("lexicon_origin") == "miras" and entry.get("donor_lang") == "trk-pro"
-                and re.search(r"\w", form.strip("*-"))):
+                and re.search(r"\w", form.strip("*-"))
+                and (word.startswith("-") or not form.lstrip("*").startswith("-"))):
             return (form if form.startswith("*") else f"*{form}",
                     str(entry.get("lang_name") or entry.get("lang_code")))
     return "", ""
+
+
+#: Tanık başka bir etimolojinin anlamına başlığınkinden EN AZ bu kadar yakınsa
+#: eşsesli sayılır (göreli; mutlak eşik yok — bkz. `_rank_own_by_meaning`).
+_OTHER_SENSE_MARGIN = 0.10
+#: İki kendi kaydı bu benzerliğin üstündeyse aynı anlamdır ('I' ~ 'I, me',
+#: 'starch for clothes…' ~ 'laundry starch…'); ölçümden önce seçildi.
+_SAME_SENSE_FLOOR = 0.50
+
+
+def _own_sense_records(word: str, entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Sorgunun KÖKENİ BELLİ kendi kayıtları (tr/ota): indeks + gelen tanıklar.
+
+    Her kayıt bir etimolojinin (Wiktionary "Etymology N") anlamını ve kökenini
+    taşır; eşsesli ayrımının dayanağıdır. Fetcher'lar `tr` kaydını getirmediği
+    için indekse ayrıca bakılır (bkz. `_index_source_proto`).
+    """
+    own = to_comparison_form(word)
+    rows: list[dict[str, Any]] = [
+        e for e in entries
+        if e.get("lang_code") in ("tr", "ota") and e.get("lexicon_origin")
+        and (_names_word(e.get("word") or "", word) or e.get("comparison") == own)
+    ]
+    try:
+        from engine.db.lexicon_index import LexiconIndex
+
+        index = LexiconIndex()
+        if index.exists:
+            rows += [
+                {"word": r.get("word") or "", "lang_code": r.get("lang_code"), "meaning": r.get("gloss") or "",
+                 "lexicon_origin": r.get("origin"), "donor_lang": r.get("donor_lang"),
+                 "donor_form": r.get("donor_form")}
+                for r in index.lookup(own, languages=["tr", "ota"], limit=20)
+                if r.get("origin") and not str(r.get("word") or "").strip().startswith("-")
+                and not str(r.get("word") or "").strip().endswith("-")
+            ]
+    except Exception:
+        logger.debug("İndeks eşsesli kayıtları okunamadı: %s", word, exc_info=True)
+    out, seen = [], set()
+    for r in rows:
+        meaning = str(r.get("meaning") or "").strip()
+        if (not meaning or is_inflection_gloss(meaning) or _REDIRECT_GLOSS.search(meaning)
+                or r.get("lexicon_origin") not in ("miras", "alıntı")):
+            continue
+        key = (r.get("lang_code"), meaning, r.get("donor_form"))
+        if key not in seen:
+            seen.add(key)
+            out.append(r)
+    return out
+
+
+def _sense_signature(record: dict[str, Any]) -> tuple[str, str]:
+    """Etimoloji imzası: köken + (Proto-Türkçe kök ya da verici biçim)."""
+    form = re.sub(r"<[^<>]*>", "", str(record.get("donor_form") or "")).strip().strip("*-")
+    return str(record.get("lexicon_origin") or ""), to_comparison_form(form) or form
+
+
+def _similarity_matrix(texts: list[str], refs: list[str]) -> list[list[float]] | None:
+    try:
+        from engine.nlp.diachronic_semantic_engine import get_sentence_transformer, has_semantic_model
+
+        if not texts or not refs or not has_semantic_model():
+            return None
+        from sentence_transformers.util import cos_sim
+
+        model = get_sentence_transformer()
+        return cos_sim(model.encode(texts, show_progress_bar=False),
+                       model.encode(refs, show_progress_bar=False)).tolist()
+    except Exception:
+        logger.warning("Eşsesli anlam benzerliği hesaplanamadı", exc_info=True)
+        return None
+
+
+def _reconcile_homonym_senses(
+    word: str, entries: list[dict[str, Any]], primary: str, headline: str, selected_kind: str | None,
+    held_out: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Başlık kökü, gösterilen anlam ve tanıkları TEK anlam çapasına bağlar.
+
+    Ölçüldü (`make eval-homonym`, a9af713): eşsesli kelimede başlık kökü,
+    tarihsel anlam ve tanıklar farklı etimolojilerden geliyordu — `değin`
+    başlığı *teg- 'kadar', tarihsel anlam ve tanıkların yarısı 'sincap';
+    `kola` başlığı "İngilizce cola" (sözlüğün İLK alıntı kaydı), anlam
+    'çamaşır kolası' (İtalyanca colla); `ben` *bẹ 'ben' ama 'doğum lekesi'
+    tanıkları.
+
+    Çapa: başlık kökünün etimolojisi (kök kendi kayıtlarından birine
+    oturuyorsa), yoksa ana anlama (`primary`; kök seçimiyle AYNI çapa, bkz.
+    `_query_source_proto`) en yakın kayıt; ana anlam yoksa kayıt sırası.
+    Sıralayıcı ALINTI dediyse verici kaydı da ana anlama göre seçilir
+    (dedektör sözlüğün ilk alıntı kaydını alır, anlama bakmaz).
+
+    Tanık yalnız başka bir etimolojinin anlamına çapadan AÇIKÇA yakınsa
+    (`_OTHER_SENSE_MARGIN`) ayrılır; anlamsız tanık kalır. Kendi kayıtları
+    tek etimolojiyse hiçbir şey yapmaz. Yalnız RAPORDUR: skorlar hesaplandı.
+
+    ``held_out``: erken eşsesli süzgecinin (ana anlamla) ayırdığı akrabalar;
+    çapaya AÇIKÇA yakın olanlar geri alınır (`ırak`: ana anlam 'makam', başlık
+    *ïrak 'uzak' — "far" anlamlı akrabalar ayrılmıştı).
+
+    Dönüş: ``headline`` (değiştiyse yeni başlık, yoksa ""), ``donor_note``,
+    ``kept`` / ``dropped`` / ``readmitted`` tanıklar, ``anchor`` / ``other``.
+    """
+    out: dict[str, Any] = {"headline": "", "donor_note": "", "kept": entries, "dropped": [],
+                           "readmitted": [], "anchor": [], "other": []}
+    records = _own_sense_records(word, entries)
+    if len({_sense_signature(r) for r in records}) < 2:
+        return out
+    glosses = [str(r["meaning"]) for r in records]
+    if primary:
+        sims = _similarity_matrix(glosses, [primary])
+        if sims is None:
+            return out
+        prim = [row[0] for row in sims]
+    else:
+        prim = [1.0 - 0.01 * i for i in range(len(records))]  # kayıt sırası
+
+    # Başlık alıntıysa verici kaydı ana anlama göre.
+    if selected_kind == "borrowed":
+        from engine.nlp.borrowing_chain import language_name
+
+        loans = [(s, r) for s, r in zip(prim, records, strict=True)
+                 if r["lexicon_origin"] == "alıntı" and r.get("donor_form")]
+        current = [(s, r) for s, r in loans if str(r["donor_form"]) in headline]
+        if loans:
+            # Eşit anlamda Türkiye Türkçesi kaydı Osmanlıca atasından önce gelir
+            # (`ban`: tr Sırpça-Hırvatça bȃn ~ ota Ana Slavca *banъ).
+            best_s, best = max(loans, key=lambda p: (round(p[0], 3), p[1].get("lang_code") == "tr"))
+            cur_s = max((s for s, _ in current), default=None)
+            if cur_s is not None and best_s - cur_s > _SAME_SENSE_MARGIN:
+                new = f"{language_name(str(best.get('donor_lang') or ''))} {best['donor_form']}"
+                out["headline"] = new
+                out["donor_note"] = (
+                    f"verici kaydı ana anlama göre seçildi: {new} ('{best['meaning'][:60]}'); "
+                    f"sözlüğün ilk alıntı kaydı {headline} başka bir eşseslinin"
+                )
+                headline = new
+
+    # Çapa etimolojisi: başlığa oturan kayıtlar, yoksa ana anlama en yakınlar.
+    head_key = to_comparison_form(headline.strip().strip("*-")) if headline.startswith("*") else ""
+    head_sigs = {
+        _sense_signature(r) for r in records
+        if (head_key and r["lexicon_origin"] == "miras" and _sense_signature(r)[1] == head_key)
+        or (not headline.startswith("*") and r["lexicon_origin"] == "alıntı"
+            and r.get("donor_form") and str(r["donor_form"]) in headline)
+    }
+    best = max(prim)
+    near = {_sense_signature(r) for s, r in zip(prim, records, strict=True) if best - s <= _SAME_SENSE_MARGIN}
+    if not head_sigs:
+        head_sigs = near
+    # Aynı anlamın başka imzalı kaydı (ota *el 'hand' ~ tr *al- 'hand';
+    # ota بن 'I' ~ tr *bẹ 'I, me') çapaya katılır; katılan kaydın imzası da
+    # (tr *bẹ 'ego'). Yalnız çapaya UZAK kayıtlar "başka anlam"dır.
+    matrix = _similarity_matrix(glosses, glosses)
+    if matrix is None:
+        return out
+    for _ in range(2):
+        members = [i for i, r in enumerate(records) if _sense_signature(r) in head_sigs]
+        head_sigs |= {
+            _sense_signature(r) for i, r in enumerate(records)
+            if max(matrix[i][j] for j in members) >= _SAME_SENSE_FLOOR
+        }
+    anchor_idx = [i for i, r in enumerate(records) if _sense_signature(r) in head_sigs]
+    anchor = [glosses[i] for i in anchor_idx]
+    other = [g for i, g in enumerate(glosses) if i not in anchor_idx]
+    if primary and max(prim[i] for i in anchor_idx) >= best - _SAME_SENSE_MARGIN:
+        anchor.append(primary)
+    out["anchor"], out["other"] = anchor, other
+    if not other:
+        return out
+
+    glossed = [e for e in entries if str(e.get("meaning") or "").strip() and e.get("lang_code") != "donor"]
+    held = [e for e in held_out or [] if str(e.get("meaning") or "").strip()]
+    matrix = _similarity_matrix([str(e["meaning"]) for e in glossed + held], anchor + other)
+    if matrix is None:
+        return out
+    for entry, row in zip(held, matrix[len(glossed):], strict=True):
+        if max(row[: len(anchor)]) - max(row[len(anchor):]) > _OTHER_SENSE_MARGIN:
+            out["readmitted"].append(entry)
+    dropped_ids = set()
+    for entry, row in zip(glossed, matrix[: len(glossed)], strict=True):
+        s_anchor, s_other = max(row[: len(anchor)]), max(row[len(anchor):])
+        if s_other - s_anchor > _OTHER_SENSE_MARGIN:
+            entry["meaning_similarity"] = round(float(s_anchor), 3)
+            entry["other_sense_similarity"] = round(float(s_other), 3)
+            dropped_ids.add(id(entry))
+    out["kept"] = [e for e in entries if id(e) not in dropped_ids]
+    out["dropped"] = [e for e in entries if id(e) in dropped_ids]
+    return out
 
 
 _ENGLISH_GLOSS = re.compile(
@@ -637,7 +829,7 @@ def looks_english(text: str) -> bool:
     return bool(_ENGLISH_GLOSS.search(text.strip()))
 
 
-def _index_turkish_gloss(word: str) -> str:
+def _index_turkish_gloss(word: str, anchors: list[str] | None = None) -> str:
     """Sorgunun indeksteki Türkçe kaydının (Türkçe Vikisözlük) ilk TÜRKÇE anlamı.
 
     TDK cevap vermeyince başlık anlamı ya boş (kelimenin kendisi) ya da
@@ -645,6 +837,10 @@ def _index_turkish_gloss(word: str) -> str:
     hiç okunmuyordu (105 kelimelik denetim, yalnız yerel kaynak: 76 boş,
     27 İngilizce, 2 Türkçe). Yalnız sorgunun kendisi (`kâr` ≠ `kar`),
     özel ad, ağız kaydı ve yönlendirme olmayan anlam.
+
+    ``anchors`` (eşsesli çapası, bkz. `_reconcile_homonym_senses`) verilirse
+    ilk değil çapaya EN YAKIN Türkçe anlam alınır: `sedir` başlığı Arapça
+    'divan' iken gösterilen anlam 'kozalaklı ağaç' oluyordu.
     """
     try:
         from engine.db.lexicon_index import LexiconIndex
@@ -652,13 +848,21 @@ def _index_turkish_gloss(word: str) -> str:
         index = LexiconIndex()
         if not index.exists:
             return ""
+        found: list[str] = []
         for row in index.lookup(word, languages=["tr"], limit=30):
             gloss = str(row.get("gloss") or "").strip()
             if (row.get("word") != word or row.get("pos") == "name" or not gloss
                     or looks_english(gloss) or _DIALECT_GLOSS.match(gloss)
                     or is_cross_reference(gloss) or is_inflection_gloss(gloss)):
                 continue
-            return gloss
+            if not anchors:
+                return gloss
+            found.append(gloss)
+        if found:
+            sims = _similarity_matrix(found, anchors) if len(found) > 1 else None
+            if not sims:
+                return found[0]
+            return max(zip(found, sims, strict=True), key=lambda p: max(p[1]))[0]
     except Exception:
         logger.debug("İndeks Türkçe anlamı okunamadı: %s", word, exc_info=True)
     return ""
@@ -1666,6 +1870,41 @@ class SearchEngine:
                     f"sözlük maddesinin verdiği yapıdan alındı: {formation_entry['formation']}."
                 )
 
+        # Eşsesli: başlık, tarihsel anlam ve tanıklar TEK etimolojiye bağlanır
+        # (bkz. `_reconcile_homonym_senses`). Yalnız rapor; skorlar yukarıda.
+        senses = _reconcile_homonym_senses(
+            word_clean, sorted_entries, (meanings_by_source.get(primary_source) or [""])[0],
+            str(proto_root or ""), _sel_kind, held_out=homonyms,
+        )
+        if senses["headline"]:
+            proto_root = senses["headline"]
+            proto_root_provenance = f"{proto_root_provenance}; {senses['donor_note']}"
+        if senses["dropped"]:
+            sorted_entries = senses["kept"]
+            etymology_mentions["homonym_cognates"] = [
+                *etymology_mentions.get("homonym_cognates", []),
+                *({"lang_name": h.get("lang_name"), "word": h.get("word"), "meaning": h.get("meaning"),
+                   "similarity": h.get("meaning_similarity"), "other_sense": True} for h in senses["dropped"]),
+            ]
+        if senses["readmitted"]:
+            back = {id(e) for e in senses["readmitted"]}
+            for entry in senses["readmitted"]:
+                entry["phonetic_shift"] = analyze_phonetic_shifts(word_clean, entry["word"], entry["lang_name"])
+                if entry.get("script") in ("Cyrillic", "Arabic", "Runic"):
+                    entry["latin_transliteration"] = transliterate_to_latin(entry["word"])
+            sorted_entries = [*sorted_entries, *senses["readmitted"]]
+            etymology_mentions["homonym_cognates"] = [
+                h for h, e in zip(etymology_mentions["homonym_cognates"][: len(homonyms)], homonyms, strict=True)
+                if id(e) not in back
+            ] + etymology_mentions["homonym_cognates"][len(homonyms):]
+        if senses["dropped"] or senses["readmitted"]:
+            historical_meaning = _historical_gloss(sorted_entries, word_clean)
+        if senses["other"] and hypothesis_historical_meaning:
+            sims = _similarity_matrix([hypothesis_historical_meaning], senses["anchor"] + senses["other"])
+            if sims and (max(sims[0][len(senses["anchor"]):]) - max(sims[0][: len(senses["anchor"])])
+                         > _OTHER_SENSE_MARGIN):
+                hypothesis_historical_meaning = ""
+
         origin_layers = _origin_layers(sorted_entries, word_clean, formation_entry)
         source_proto = _source_proto_forms(sorted_entries)
 
@@ -1685,7 +1924,7 @@ class SearchEngine:
         if primary_source != _PRIMARY_MEANING_SOURCE and (
             display_meaning == word_clean or looks_english(display_meaning)
         ):
-            turkish_gloss = _index_turkish_gloss(word_clean)
+            turkish_gloss = _index_turkish_gloss(word_clean, senses["anchor"] if senses["other"] else None)
             if turkish_gloss:
                 display_meaning = turkish_gloss
                 _add_meaning(meanings_by_source.setdefault(_INDEX_TR_MEANING_SOURCE, []), turkish_gloss)
