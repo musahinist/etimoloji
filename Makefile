@@ -233,6 +233,17 @@ eval-headline: gold
 eval-donor: data lexicon-index donors
 	.venv/bin/python -m engine.evaluation.donor_id_eval
 
+# Türkçe verici dil × TDK+Nişanyan altını (train+dev; "Wiktionary↔TDK uyumu").
+# (b) tam indeks, (c) kör indeks; A2 bayrakları kapalı ve açık. Önbellek
+# data/cache/work/trdonor (kaldığı yerden sürer; commit değişince elle silinir).
+.PHONY: eval-tr-donor
+eval-tr-donor:
+	for a2 in off on; do v=$$([ $$a2 = on ] && echo 1 || echo 0); \
+	  ETY_DONOR_CLEAN=$$v ETY_DONOR_RAMP_CHANCE=$$v caffeinate -i data/cache/work/heavy.sh .venv/bin/python -m engine.evaluation.tr_donor_eval capture --index full --a2 $$a2 || exit 1; \
+	  ETY_DONOR_CLEAN=$$v ETY_DONOR_RAMP_CHANCE=$$v ETY_LEXICON_INDEX=$(CURDIR)/$(XTR_BLIND) caffeinate -i data/cache/work/heavy.sh .venv/bin/python -m engine.evaluation.tr_donor_eval capture --index blind --a2 $$a2 || exit 1; \
+	done
+	.venv/bin/python -m engine.evaluation.tr_donor_eval report
+
 eval-chronology:
 	.venv/bin/python -m engine.evaluation.chronology_eval
 
