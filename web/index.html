@@ -472,7 +472,7 @@
             const hyp = nlp.proven_hypothesis || {};
             const val = hyp.validation_report || {};
 
-            document.getElementById('ahvpBadge').textContent = val.badge || "⚪ Hipotez üretilmedi";
+            document.getElementById('ahvpBadge').textContent = val.badge || (nlp.verdict_badge || {}).label || "∅ DEĞERLENDİRİLMEDİ (sınanacak hipotez yok)";
             document.getElementById('ahvpScore').textContent = val.score_percentage || "—";
             document.getElementById('ahvpCoverage').textContent =
                 val.evidence_coverage !== undefined ? `%${Math.round(val.evidence_coverage * 100)}` : "—";

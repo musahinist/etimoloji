@@ -47,6 +47,7 @@ from engine.nlp.loanword_classifier import LoanwordClassifier
 from engine.nlp.loanword_detector import LoanwordDetector
 from engine.nlp.reconstruction import ProtoTurkicReconstructor
 from engine.nlp.sound_law_induction import SoundLawInductionEngine
+from engine.nlp import verdict_badge
 from engine.utils.cognates import get_related_cognates
 from engine.utils.geo_tagger import tag_geographical_region
 from engine.utils.morphology import analyze_morphology, is_inflection_gloss
@@ -1000,6 +1001,9 @@ class SearchEngine:
             cached = self.db.get_finding(word_clean, max_age_seconds=config.CACHE_TTL_SECONDS)
             if cached:
                 cached["from_cache"] = True
+                # Rozet kuralı önbellekten bağımsızdır; eski kayıt da aynı rozeti alır.
+                if isinstance(cached.get("nlp_analysis"), dict):
+                    verdict_badge.apply(cached["nlp_analysis"])
                 logger.info("Önbellekten döndürüldü: %r", word_clean)
                 return cached
         _lap("cache_lookup")
@@ -1734,6 +1738,9 @@ class SearchEngine:
             "from_cache": False,
         }
 
+        # Gösterilen rozet A-HVP aşama kararı değil: o karar doğruyu yanlıştan
+        # ayırmıyordu (AUC 0,49). Ölçülmüş iki sınıf + "değerlendirilmedi".
+        verdict_badge.apply(finding["nlp_analysis"])
         _lap("assemble")
         if use_qwen_agent:
             finding = self.qwen_agent.research_and_enrich(word_clean, finding)

@@ -515,7 +515,13 @@ class HypothesisValidationProtocol:
     @staticmethod
     def _decide(stage_score: float, coverage: float, rejections: list[str]) -> tuple[str, str]:
         """
-        Rozet kararı.
+        Rozet kararı — A-HVP AŞAMA kararı; kullanıcıya gösterilen rozet DEĞİL.
+
+        ⚠️ Ölçüldü (``make eval-badge``, adb167d): bu karar doğruyu yanlıştan
+        ayırmıyor (Türkçe altın AUC 0,494, savelyev dev 0,458; 🔴 🟢'dan kötü
+        değil). Aşama skorları, kapsam ve üçgenleme tek başına da ayırmıyor
+        (AUC 0,47–0,55). Gösterilen rozet artık ``engine.nlp.verdict_badge``;
+        bu kod ``status_code`` ve ``stage_badge`` olarak iç kararlarda kalır.
 
         Karar ``stage_score`` (ölçülebilen kanıtın KALİTESİ) üzerinden verilir;
         ``coverage`` ise bir KAPI görevi görür. Böylece:

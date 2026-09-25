@@ -90,11 +90,16 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
     # 2. A-HVP (YAPAY ZEKA HİPOTEZ DOĞRULAMA VE HAKEMLİK PROTOKOLÜ) ÇIKTISI
     proven_hypo = nlp_analysis.get("proven_hypothesis") or {}
     val_report = proven_hypo.get("validation_report") or {}
+    if not val_report:
+        badge = (nlp_analysis.get("verdict_badge") or {}).get("label") or "∅ DEĞERLENDİRİLMEDİ"
+        print(f"\n ⚖️  A-HVP Rozeti              : {badge}")
     if val_report:
         print("\n" + "─" * 80)
         print(" ⚖️  A-HVP (AI HYPOTHESIS VALIDATION PROTOCOL) HAKEM RAPORU")
         print("─" * 80)
         print(f"  • Hakem Kararı & Rozet      : {val_report.get('badge')}")
+        if val_report.get("stage_badge"):
+            print(f"  • A-HVP aşama kararı         : {val_report['stage_badge']} (doğruyu yanlıştan ayırmıyor, AUC 0,49; bkz. verdict_badge)")
         print(f"  • Genel Güven Skoru          : {val_report.get('score_percentage')} ({val_report.get('final_confidence_score')})")
         print(f"  • Hipotez Türü              : {proven_hypo.get('hypothesis_type')}")
         print(f"  • Kaynak Form / Ata Biçim    : {proven_hypo.get('origin_form')}")

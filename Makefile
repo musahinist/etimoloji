@@ -42,7 +42,7 @@ help:
 	@echo "eval-headline  - Başlık kökü × Starling ve savelyev dev (yalnız yerel kaynaklar)"
 	@echo "eval-donor     - Verici dil tanıma × WOLD Sakha (Rusça/Moğolca/Tunguzca)"
 	@echo "eval-chronology - A-HVP 2. aşama yılı × Starling tarihli kaynak etiketleri"
-	@echo "eval-badge     - A-HVP rozeti × doğruluk (rozet kalibrasyonu; Starling kapalı)"
+	@echo "eval-badge     - hüküm rozeti × doğruluk (train=ayar, dev=rapor; Starling kapalı)"
 	@echo "apertium       - Apertium iki dilli Türk dili sözlüklerini indir"
 	@echo "khakas         - Hakasça–Rusça ve açıklamalı sözlüğü indir (HF, CC-BY-4.0; portföyde değil)"
 	@echo "wilkens        - Wilkens 2021 Eski Uygurca sözlüğünü indir ve ayrıştır (CC BY-SA 4.0; .[pdf] gerekir)"

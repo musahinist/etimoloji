@@ -231,6 +231,8 @@ def summarize_finding(finding: dict[str, Any]) -> dict[str, Any]:
         "attestation_record": record,
         "attestation_precision": precision,
         "badge": report.get("status_code"),
+        "verdict_badge": (nlp.get("verdict_badge") or {}).get("code"),
+        "verdict_badge_score": (nlp.get("verdict_badge") or {}).get("score"),
         "badge_score": report.get("final_confidence_score"),
         "hypothesis_donor": hypothesis.get("donor_language"),
         "hypothesis_form": hypothesis.get("origin_form"),
@@ -241,7 +243,7 @@ def summarize_finding(finding: dict[str, Any]) -> dict[str, Any]:
 
 
 #: Önbellekte bu alan yoksa madde eski bir özet biçimindedir; yeniden koşar.
-SUMMARY_KEYS = ("badge",)
+SUMMARY_KEYS = ("badge", "verdict_badge")
 
 
 def run_engine(words: Iterable[str], *, ablate_starling: bool, fresh: bool = False) -> dict[str, dict[str, Any]]:
@@ -273,7 +275,7 @@ def run_engine(words: Iterable[str], *, ablate_starling: bool, fresh: bool = Fal
         except Exception as exc:  # tek kelime hattı durdurmasın; görünür kalsın
             logger.warning("Arama başarısız: %s", word, exc_info=True)
             cache[word] = {"headline": "", "provenance": "", "attestation_year": None,
-                           "attestation_record": None, "badge": None,
+                           "attestation_record": None, "badge": None, "verdict_badge": None,
                            "error": f"{type(exc).__name__}: {exc}"}
         if i % 25 == 0:
             logger.info("%s: %d/%d", config, i, len(todo))
