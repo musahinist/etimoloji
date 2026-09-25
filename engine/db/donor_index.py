@@ -254,6 +254,11 @@ def content_tokens(sense: str) -> list[str]:
 #: X5 (PREREG_x5.md, R3 n=3.706): birleşik aday (bu temizlik + rampa + mean +
 #: s3:fallback) ΔF +0,017 [+0,006, +0,029] ama mirasta rampa 822 -> 984
 #: (mekanizma tutmadı) -> kabul edilmedi; ayrıntı donor_proximity.STRENGTH_DISTANCE.
+#: 2026-09-26 birikmiş kanıtla (R2+R3; ön kayıtsız) A2'yi varsayılan açma
+#: denemesi KORUMADA DÜŞTÜ -> kapalı kaldı: A2 açık (sca) eval-borrowing WOLD
+#: engine_trained F 0,6565 (≥0,6482 tuttu) ama Türkçe F 0,8735 < 0,8773
+#: (fp 18 -> 27; tp 181 -> 183); arama yolu dev uyumu 129/135 (tuttu).
+#: Betik/çıktı: data/cache/work/a2/ (guard.py on borrowing|replay).
 CLEAN_DEFAULT = False
 
 #: (c) sıralı sorguda süzgeç öncesi okunan en çok satır.

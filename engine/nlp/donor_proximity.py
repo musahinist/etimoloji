@@ -331,6 +331,8 @@ def _sense_filter(sense_filter: Any) -> Any:
 #: Bkz. ``data/cache/work/xtr/PREREG_x4.md``; sonuç ``donor_index.CLEAN_DEFAULT``
 #: notunda (A2: mekanizma tuttu, birincil F ölçütü tutmadı). Varsayılan KAPALI.
 #: X5 (R3): birleşik aday kabul edilmedi — bkz. :data:`STRENGTH_DISTANCE` notu.
+#: 2026-09-26: A2'yi birikmiş kanıtla açma denemesi Türkçe koruma eşiğinde
+#: düştü (F 0,8735 < 0,8773) -> kapalı; bkz. ``donor_index.CLEAN_DEFAULT``.
 RAMP_CHANCE_DEFAULT = False
 
 
