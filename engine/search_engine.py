@@ -269,7 +269,7 @@ _ATTRIBUTED_FORM = (
 #: Pay dar (0.27 ile 0.385) ve örnek 22 çift; eşik gözden geçirilmeli.
 #: Türevler (göz~"mirror" 0.47, göz~"to see" 0.41) geçer — eşsesli değil,
 #: anlamca bağlı kelimelerdir.
-HOMONYM_SIMILARITY_FLOOR = 0.30
+HOMONYM_SIMILARITY_FLOOR = config.MEANING_SIMILARITY_FLOOR  # engine.config (Starling ile ortak)
 
 #: Yerel çağdaş dil adayları (yazılışla bulunur) için ANLAM alt sınırı.
 #: Eşsesli süzgecinin 0,30'u burada yetmiyor. 50 kelimede elle sayıldı

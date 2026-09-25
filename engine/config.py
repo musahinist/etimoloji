@@ -167,6 +167,15 @@ BADGE_THRESHOLDS = {
 # INSUFFICIENT_EVIDENCE olabilir. "Kanıt yoksa puan da yok" ilkesi.
 MIN_EVIDENCE_COVERAGE = _env_float("AHVP_MIN_EVIDENCE_COVERAGE", 0.50)
 
+# --- Anlam benzerliği -------------------------------------------------------
+
+# Bir biçimin (tanık / Starling adayı) sorgunun bir anlamını "taşıdığı" en
+# düşük MiniLM benzerliği. Arama motorunun eşsesli süzgeci
+# (``search_engine.HOMONYM_SIMILARITY_FLOOR``) ile Starling aday seçimi
+# (``fetchers.starling.MEANING_FLOOR``) aynı ölçüte bakar; ölçüm ve gerekçe
+# ``search_engine.py``'dedir (eşsesliler 0,13-0,27, gerçek anlamlar 0,385+).
+MEANING_SIMILARITY_FLOOR = 0.30
+
 # --- Kazıma güvenliği ------------------------------------------------------
 
 TRUSTED_DOMAINS = tuple(

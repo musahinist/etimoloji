@@ -36,6 +36,7 @@ from engine.logging_setup import get_logger
 from engine.nlp.cldf_lingpy_aligner import CldfLingPyAligner
 from engine.nlp.diachronic_semantic_engine import DiachronicSemanticEngine
 from engine.nlp.historical_attestation_verifier import HistoricalAttestationVerifier
+from engine.nlp.loanword_classifier import SPREAD_NATIVE_EVIDENCE
 from engine.utils.phonetic_rules import verify_phonetic_chain
 
 logger = get_logger(__name__)
@@ -390,7 +391,7 @@ class CrossCognateTriangulator:
         # Ağırlıklar eski 0,55 / 0,25 oranında, toplam 1'e yeniden ölçeklendi
         # (bkz. `TRIANGULATION_WEIGHTS`).
         score = round(
-            TRIANGULATION_WEIGHTS["spread"] * min(1.0, spread / 0.4)
+            TRIANGULATION_WEIGHTS["spread"] * min(1.0, spread / SPREAD_NATIVE_EVIDENCE)
             + TRIANGULATION_WEIGHTS["sources"] * source_factor,
             3,
         )

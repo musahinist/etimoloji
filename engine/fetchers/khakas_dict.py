@@ -41,11 +41,14 @@ from typing import Any
 from engine.config import PROJECT_ROOT
 from engine.fetchers.base import BaseFetcher, detect_script
 from engine.fetchers.northeuralex import _predicted_forms, _similarity
+from engine.nlp.cognate_clustering import COGNATE_THRESHOLD
 from engine.utils.orthography import to_comparison_form
 
 DATA_DIR = PROJECT_ROOT / "data" / "khakas"
 LANG = "khk"
-SIMILARITY_THRESHOLD = 0.50
+#: Aday benzerlik eşiği: NorthEuraLex ile aynı ölçü (1 - Levenshtein/uzun) ve
+#: aynı eşik (``COGNATE_THRESHOLD``, ``make eval-cognates`` ile ölçüldü).
+SIMILARITY_THRESHOLD = COGNATE_THRESHOLD
 #: Aynı sorgu için en çok bu kadar aday (en benzerler); anlam süzgeci pahalı.
 MAX_CANDIDATES = 40
 

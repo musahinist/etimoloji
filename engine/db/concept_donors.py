@@ -38,6 +38,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from engine.config import CLDF_DIR
+from engine.nlp.donor_proximity import DONOR_DISTANCE_THRESHOLD
 from engine.utils.orthography import to_comparison_form
 
 #: NorthEuraLex dil kimliği -> motor verici havuzu.
@@ -49,8 +50,9 @@ NORTHEURALEX_POOLS = {
     "gld": "evn",
 }
 
-#: Rusça alıntı süzgecinin SCA eşiği (alıntı gücünün üretim eşiğiyle aynı).
-RUSSIAN_LOAN_DISTANCE = 0.35
+#: Rusça alıntı süzgecinin SCA eşiği: üretimdeki verici yakınlığı eşiğinin
+#: kendisi (aynı kavram — "SCA mesafesi bu kadar yakınsa alıntı").
+RUSSIAN_LOAN_DISTANCE = DONOR_DISTANCE_THRESHOLD
 
 #: robbeetstriangulation ``Family`` sütunu -> motor verici havuzu.
 ROBBEETS_POOLS = {"Mongolic": "mn", "Tungusic": "evn"}

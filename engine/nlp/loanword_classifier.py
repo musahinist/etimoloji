@@ -70,8 +70,29 @@ CLASSIFICATION_LABELS = {
     "western": "Batı Dilleri Alıntısı (Fransızca / İngilizce / İtalyanca)",
 }
 
-#: p_native bu değerin üzerindeyse "asli Öz Türkçe" sayılır.
+#: p_native bu değerin üzerindeyse "asli Öz Türkçe" sayılır (ikili karar).
 NATIVE_THRESHOLD = 0.55
+
+#: ``LoanwordDetector`` aynı p_native üzerinde ÜÇLÜ karar verir: bu bandın
+#: üstü "native", altı "loanword", arası "uncertain". Ikili eşik
+#: (``NATIVE_THRESHOLD``) bandın İÇİNDEdir; bu yüzden iki modül hiçbir
+#: kelimede zıt hüküm vermez (sınıflayıcı "asli" derken dedektör en kötü
+#: "belirsiz" der). Dedektörün güveni her durumda max(p, 1-p) olduğundan
+#: bant sınırları rozet girdisini (``detect_conf``) DEĞİŞTİRMEZ; yalnız
+#: ``verdict`` etiketini belirler (bkz. docs/THRESHOLDS.md §2).
+DETECTOR_NATIVE_FLOOR = 0.70
+DETECTOR_LOAN_CEILING = 0.35
+
+#: Katman 2 — çapraz Türki yayılım oranı (``TURKIC_LANGUAGE_COUNT``'a
+#: bölünmüş). ≥ ``SPREAD_NATIVE_EVIDENCE`` asli kanıtı (p_native'e artı),
+#: ≤ ``SPREAD_LOAN_EVIDENCE`` alıntı kanıtı. A-HVP 4. aşaması yayılım
+#: puanını aynı ``SPREAD_NATIVE_EVIDENCE``'ta doyurur.
+#: ``cognate_alignment``'ın 0,70 / 0,20'si yalnız açıklama METNİdir (hiçbir
+#: karara girmez). Bu iki sabiti 0,70 / 0,20'ye çekmek ölçüldü (eval-badge,
+#: ön-kayıt data/cache/work/thresholds/PREREG.md): train'de rozet AUC 0,8871 →
+#: 0,8816, hiçbir ölçüt anlamlı artmadı → kabul edilmedi (THRESHOLDS §2).
+SPREAD_NATIVE_EVIDENCE = 0.40
+SPREAD_LOAN_EVIDENCE = 0.12
 
 #: Sözlükteki `donor_lang` kodu -> kaynak dil ailesi kovası.
 DONOR_CODE_FAMILY: dict[str, str] = {
@@ -318,10 +339,10 @@ class LoanwordClassifier:
         # --- Katman 2: çapraz Türki lehçe yayılımı ---
         spread_note = None
         if spreading_ratio is not None:
-            if spreading_ratio >= 0.40:
+            if spreading_ratio >= SPREAD_NATIVE_EVIDENCE:
                 nativeness += 0.35 * spreading_ratio
                 spread_note = f"Geniş çapraz-lehçe yayılımı (%{spreading_ratio * 100:.0f}) öz Türkçe kanıtı"
-            elif spreading_ratio <= 0.12:
+            elif spreading_ratio <= SPREAD_LOAN_EVIDENCE:
                 nativeness -= 0.15
                 add(("arabic_persian", "western", "greek_latin"), 1.5)
                 spread_note = f"Dar yayılım (%{spreading_ratio * 100:.0f}) alıntı göstergesi"

@@ -27,7 +27,7 @@ from typing import Any
 from engine.logging_setup import get_logger
 from engine.nlp.cognate_alignment import CognateAlignmentEngine
 from engine.nlp.donor_lexicon import DonorLexicon
-from engine.nlp.loanword_classifier import LoanwordClassifier
+from engine.nlp.loanword_classifier import DETECTOR_LOAN_CEILING, DETECTOR_NATIVE_FLOOR, LoanwordClassifier
 
 logger = get_logger(__name__)
 
@@ -159,8 +159,8 @@ class LoanwordDetector:
         else:
             rationale.append("Katman 1: fonotaktik ihlal yok")
 
-        if p_native >= 0.70:
+        if p_native >= DETECTOR_NATIVE_FLOOR:
             return "native", round(p_native, 3), rationale
-        if p_native <= 0.35:
+        if p_native <= DETECTOR_LOAN_CEILING:
             return "loanword", round(1.0 - p_native, 3), rationale
         return "uncertain", round(max(p_native, 1.0 - p_native), 3), rationale

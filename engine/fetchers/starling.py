@@ -1,6 +1,7 @@
 import re
 from typing import Any
 
+from engine.config import MEANING_SIMILARITY_FLOOR
 from engine.fetchers.base import TURKIC_LANGUAGES_MAP, BaseFetcher
 from engine.logging_setup import get_logger
 from engine.utils.seed import load_seed_entries, seed_source_label
@@ -21,7 +22,7 @@ _FIRST_PROTO = re.compile(r"\*[^\s,/();]+")
 #: motorunun eşsesli süzgeciyle aynı ölçüt (``HOMONYM_SIMILARITY_FLOOR``,
 #: paraphrase-multilingual-MiniLM); orada ölçüldü: eşsesliler 0,13-0,27,
 #: gerçek anlamlar 0,385+.
-MEANING_FLOOR = 0.30
+MEANING_FLOOR = MEANING_SIMILARITY_FLOOR
 
 #: En iyi aday, ikinciyi bu kadar geçmiyorsa seçim yapılmaz.
 MEANING_MARGIN = 0.15
