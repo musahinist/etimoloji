@@ -59,12 +59,23 @@ değil; bu yüzden motorda bayrakla bağlı, varsayılan KAPALI
 Kat başına eğitim+çıkarım (yalnız dış sinir) ~150 sn (CPU, 4 iş parçacığı, 15 epok);
 eval-cv sürecinin tepe belleği 2,9 GB. Üretime BAĞLANMADI.
 
+Eğitim cihazı (ön kayıt 5, plan 5): MPS varsa MPS (``ETIM_NEURAL_DEVICE=cpu``
+eskiyi verir), uzunluk kovasıyla (MPS biçim başına grafik önbelleği tutar;
+kovasız tepe RSS 3,2 GB, kovalı 0,56 GB). Tek eğitim 162 -> 77 sn; ÇD kat
+başına 551–588 -> 320–361 sn, tepe 3,04 -> 2,54 GB; B2 NED tohum 1'de 0,3115
+-> 0,3134, fark +0,002 GA[−0,011, +0,015] -> eşdeğer. MPS bit düzeyinde
+deterministik DEĞİL (aynı tohumla iki koşu ağırlıkta ~4e-5 fark; CPU'ya göre
+aynı tohum başka bir ağ verir, tahminlerin %82'si aynı). Batch 128 eşdeğerdi
+ama 45 epok gerektirdi ve 3× yavaştı -> alınmadı. Yayın modeli ~5 dk.
+
 torch isteğe bağlıdır; yalnız bu modül içe aktarır.
 """
 
 from __future__ import annotations
 
+import copy
 import math
+import os
 import random
 import time
 import unicodedata
@@ -81,6 +92,8 @@ HEADS = 4
 LAYERS = 2
 FF = 256
 DROPOUT = 0.25
+#: Batch 32. Batch 128 sınandı (ön kayıt 5): ÇD'de eşdeğer (B2 NED 0,3119 vs
+#: 0,3115) ama epok ayarı 45 çıktı ve eğitim b32/15 epoktan 3× YAVAŞ -> alınmadı.
 BATCH = 32
 LR = 1e-3
 GOLD_WEIGHT = 3
@@ -89,8 +102,29 @@ BEAM = 5
 MAX_SRC = 256
 MAX_TGT = 20
 #: Epok sayısı — kat 0 TRAIN'inin iç ayrımında seçildi (bkz. ``choose_epochs``).
+#: Batch 128 için iç ayrım (ön kayıt 5): lr 1e-3 {15: 0,354, 30: 0,358,
+#: 45: 0,328, 60: 0,347, 90: 0,377}; lr 2e-3 {15: 0,346, 30: 0,355, 45: 0,353,
+#: 60: 0,373, 90: 0,335} -> 45 epok gerekirdi (batch 32'de 15 epok: 0,313).
 EPOCHS = 15
 THREADS = 4
+#: Eğitim cihazı: ``ETIM_NEURAL_DEVICE`` = ``auto`` (MPS varsa MPS, yoksa CPU),
+#: ``cpu`` veya ``mps``. Çıkarım (ışın, puan) her zaman CPU'da — küçük adımlarda
+#: MPS çağrı yükü baskın; ayrıca yayın modeli cihazdan bağımsız yüklenir.
+DEVICE_ENV = "ETIM_NEURAL_DEVICE"
+#: MPS'te kaynak uzunluğu kovası (bkz. ``train``).
+SRC_BUCKET = 32
+
+
+def train_device() -> str:
+    import torch
+
+    choice = os.environ.get(DEVICE_ENV, "auto").strip().lower()
+    mps = torch.backends.mps.is_available()
+    if choice == "mps" and not mps:
+        raise RuntimeError(f"{DEVICE_ENV}=mps ama MPS kullanılamıyor")
+    if choice in ("cpu", "mps"):
+        return choice
+    return "mps" if mps else "cpu"
 
 PAD, BOS, EOS, UNK = "<pad>", "<bos>", "<eos>", "<unk>"
 SRC_SAV, SRC_STA = "<src=sav>", "<src=sta>"
@@ -379,17 +413,26 @@ def train(
     seed: int = 0,
     checkpoints: tuple[int, ...] = (),
     on_checkpoint: Any = None,
+    batch_size: int | None = None,
+    lr: float | None = None,
+    device: str | None = None,
 ) -> NeuralReconstructor:
-    """Modeli eğitir (CPU, ``THREADS`` iş parçacığı)."""
+    """Modeli eğitir (``train_device()``; CPU'da ``THREADS`` iş parçacığı).
+
+    Dönen model her zaman CPU'dadır.
+    """
     import torch
 
+    batch_size = batch_size or BATCH
+    lr = lr or LR
+    device = device or train_device()
     torch.set_num_threads(THREADS)
     torch.manual_seed(seed)
     rng = random.Random(seed)
     vocab = _vocab_for(examples)
-    net = _build_net(len(vocab.itos))
-    opt = torch.optim.AdamW(net.parameters(), lr=LR, weight_decay=0.01)
-    steps_per_epoch = math.ceil(len(_instances(examples, random.Random(0))) / BATCH)
+    net = _build_net(len(vocab.itos)).to(device)
+    opt = torch.optim.AdamW(net.parameters(), lr=lr, weight_decay=0.01)
+    steps_per_epoch = math.ceil(len(_instances(examples, random.Random(0))) / batch_size)
     total = steps_per_epoch * epochs
     warm = max(1, min(400, total // 10))
     # Isınmadan sonra sabit öğrenme hızı: ara denetim noktası, o epok sayısıyla
@@ -401,11 +444,17 @@ def train(
         net.train()
         data = _instances(examples, rng)
         rng.shuffle(data)
-        epoch_loss = 0.0
-        for b in range(0, len(data), BATCH):
-            batch = data[b : b + BATCH]
+        epoch_loss = torch.zeros((), device=device)
+        for b in range(0, len(data), batch_size):
+            batch = data[b : b + batch_size]
             src_len = max(len(s) for s, _ in batch)
             tgt_len = min(MAX_TGT, max(len(t) for _, t in batch)) + 1
+            if device != "cpu":
+                # MPS her yeni tensör biçimi için grafik derler ve önbellekte
+                # tutar; uzunlukları kovalara yuvarlamak biçim sayısını (ve
+                # tepe belleği) düşürür. Dolgu maskelidir: sonuç değişmez.
+                src_len = min(MAX_SRC, -(-src_len // SRC_BUCKET) * SRC_BUCKET)
+                tgt_len = MAX_TGT + 1
             src = torch.zeros(len(batch), src_len, dtype=torch.long)
             tin = torch.zeros(len(batch), tgt_len, dtype=torch.long)
             tout = torch.zeros(len(batch), tgt_len, dtype=torch.long)
@@ -415,6 +464,7 @@ def train(
                 tids = vocab.ids(t[: tgt_len - 1])
                 tin[i, : len(tids) + 1] = torch.tensor([1] + tids)
                 tout[i, : len(tids) + 1] = torch.tensor(tids + [vocab.stoi[EOS]])
+            src, tin, tout = src.to(device), tin.to(device), tout.to(device)
             memory, mask = net.encode(src)
             logits = net.decode(memory, mask, tin)
             loss = loss_fn(logits.reshape(-1, logits.size(-1)), tout.reshape(-1))
@@ -423,16 +473,20 @@ def train(
             torch.nn.utils.clip_grad_norm_(net.parameters(), 1.0)
             opt.step()
             sched.step()
-            epoch_loss += loss.item() * len(batch)
+            epoch_loss += loss.detach() * len(batch)
         if epoch % 10 == 0 or epoch == 1:
-            logger.info("neural epok %d/%d kayıp %.4f (%.0f sn)", epoch, epochs, epoch_loss / len(data), time.time() - start)
+            logger.info("neural epok %d/%d kayıp %.4f (%.0f sn, %s)", epoch, epochs,
+                        epoch_loss.item() / len(data), time.time() - start, device)
         if epoch in checkpoints and on_checkpoint is not None:
-            net.eval()
-            on_checkpoint(epoch, NeuralReconstructor(vocab, net))
+            on_checkpoint(epoch, NeuralReconstructor(vocab, copy.deepcopy(net).cpu()))
+    net = net.cpu()
+    if device == "mps":
+        torch.mps.empty_cache()  # birikmiş MPS önbelleği ardışık eğitimlerde tepe belleği şişirir
     return NeuralReconstructor(vocab, net)
 
 
-def choose_epochs(dataset: str = "savelyevturkic", grid: tuple[int, ...] = (15, 30, 45, 60)) -> dict[int, float]:
+def choose_epochs(dataset: str = "savelyevturkic", grid: tuple[int, ...] = (15, 30, 45, 60),
+                  batch_size: int | None = None, lr: float | None = None) -> dict[int, float]:
     """Epok seçimi: YALNIZ çapraz doğrulama kat 0'ının TRAIN kısmı, iç ayrımla.
 
     Sınanan katların hiçbir maddesi ve test altın kökleri görülmez.
@@ -464,7 +518,7 @@ def choose_epochs(dataset: str = "savelyevturkic", grid: tuple[int, ...] = (15, 
         scores[epoch] = round(sum(result.item_ned) / len(result.item_ned), 4)
         print(f"epok {epoch}: iç NED {scores[epoch]} tam {sum(result.item_correct) / len(inner_held):.4f}", flush=True)
 
-    train(examples, epochs=max(grid), checkpoints=grid, on_checkpoint=check)
+    train(examples, epochs=max(grid), checkpoints=grid, on_checkpoint=check, batch_size=batch_size, lr=lr)
     return scores
 
 
@@ -808,4 +862,9 @@ if __name__ == "__main__":
         selector = train_release()
         print(f"Kaydedildi: {save_selector(selector)} · {selector.meta}")
     else:
-        print(choose_epochs())
+        # ``--batch 128 --lr 2e-3 --grid 15,30,45,60`` (epok/lr ayarı; yalnız kat 0 TRAIN)
+        def _arg(name: str, default: str) -> str:
+            return sys.argv[sys.argv.index(name) + 1] if name in sys.argv else default
+
+        print(choose_epochs(grid=tuple(int(x) for x in _arg("--grid", "15,30,45,60").split(",")),
+                            batch_size=int(_arg("--batch", str(BATCH))), lr=float(_arg("--lr", str(LR)))))

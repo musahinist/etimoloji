@@ -16,7 +16,7 @@ help:
 	@echo "eval-baseline  - Taban çizgisi: motor vs trivial sistemler (dev bölümü)"
 	@echo "patterns       - Ata ses örüntü tablosunu TRAIN'den öğren (denetimli katman)"
 	@echo "column-model   - Sütun modelini (ata ses / ∅) TRAIN + Starling'den öğren"
-	@echo "neural-selector - Sinir aday üreteci + B2 sıralayıcı (torch, ~55 dk CPU; TRAIN + Starling)"
+	@echo "neural-selector - Sinir aday üreteci + B2 sıralayıcı (torch, ~5 dk MPS; TRAIN + Starling)"
 	@echo "eval           - Rekonstrüksiyon ölçümü (dev bölümü)"
 	@echo "eval-cognates  - Akraba tespiti B-Cubed F (LexStat-Infomap taban çizgisine karşı)"
 	@echo "regularity     - CoPaR: verinin ne kadarı düzenli denkliklerle açıklanıyor (üst sınır)"
