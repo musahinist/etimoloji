@@ -1504,8 +1504,15 @@ class SearchEngine:
 
         # Katman 2 (çapraz lehçe yayılımı) önce hesaplanır; Katman 1'e girdi olur.
         cognate_eval = self.cognate_alignment_engine.evaluate_cognate_distribution(word_clean, sorted_entries)
+        # Türk tanığı yoksa yayılım ÖLÇÜLEMEDİ: 0,0 geçmek "dar yayılım =
+        # alıntı kanıtı" sayılıyordu. Dedektör (loanword_detector) gibi None
+        # geçilir (9b; Türkçe altın TRAIN+DEV 264/573 tanıksız maddede
+        # sınıflandırıcı anahtarı yalnız `tadım`da değişti: arabic_persian -> native).
         loan_eval = self.loanword_classifier.classify(
-            word_clean, spreading_ratio=cognate_eval.get("spreading_ratio")
+            word_clean,
+            spreading_ratio=(
+                cognate_eval.get("spreading_ratio") if cognate_eval.get("evidence_available") else None
+            ),
         )
         _apply_source_loan_family(loan_eval, sorted_entries)
         # 4 katmanlı alıntı keşif hattı (master plan Katman 1-4)
