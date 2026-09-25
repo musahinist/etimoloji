@@ -47,6 +47,7 @@ from engine.nlp.loanword_classifier import LoanwordClassifier
 from engine.nlp.loanword_detector import LoanwordDetector
 from engine.nlp.reconstruction import ProtoTurkicReconstructor
 from engine.nlp.sound_law_induction import SoundLawInductionEngine
+from engine.nlp.witness_variants import dialect_names_query
 from engine.nlp import verdict_badge
 from engine.utils.cognates import get_related_cognates
 from engine.utils.geo_tagger import tag_geographical_region
@@ -150,7 +151,9 @@ def _is_own_record(entry: dict[str, Any], word: str) -> bool:
     """
     if entry.get("lang_code") not in OWN_LINE_CODES or entry.get("dialect"):
         return False
-    return _names_word(entry.get("word") or "", word) or (
+    # Tarama çok biçimli maddesi ayrıştırılır (`attested_as` hamı taşır):
+    # `gez (I), (kez)` sorgu `kez`in kaydıdır.
+    return _names_word(entry.get("attested_as") or entry.get("word") or "", word) or (
         bool(entry.get("comparison")) and entry["comparison"] == to_comparison_form(word)
     )
 
@@ -1353,7 +1356,10 @@ class SearchEngine:
                             # Ağız kaydı ile ölçünlü dil kaydı aynı (dil, kelime)
                             # çiftini taşıyabiliyor; ayrı tutulmazsa hangisinin
                             # kalacağını bitiş sırası belirliyordu.
-                            key = (entry["lang_code"], entry["word"], bool(entry.get("dialect")))
+                            # Ayrıştırılmış Tarama maddesi ham adımıyla anahtarlanır:
+                            # ana biçimi (`uçmak`) başka kaynağın aynı yazımlı
+                            # kaydıyla çakışıp bitiş sırasına göre düşmesin.
+                            key = (entry["lang_code"], entry.get("attested_as") or entry["word"], bool(entry.get("dialect")))
                             if key not in turkic_entries_map:
                                 turkic_entries_map[key] = entry
                             elif turkic_entries_map[key].get("meaning") in ["", f"Online {TURKIC_LANGUAGES_MAP.get(entry['lang_code'], '')} Sözlük kaydı"]:
@@ -1426,6 +1432,15 @@ class SearchEngine:
             best = max((e["meaning_similarity"] for e in scored), default=0.0)
             floor = max(LOCAL_WITNESS_FLOOR, best - LOCAL_WITNESS_MARGIN)
             verified = {id(e) for e in scored if e["meaning_similarity"] >= floor}
+            # Ağız kaydı biçimce sorguya bağlanıyor VE sözlük anlamını sorgunun
+            # kendisi olarak veriyorsa doğrulanmıştır (bkz.
+            # `witness_variants.dialect_names_query`).
+            for e in unverified:
+                if e.get("dialect") and id(e) not in verified:
+                    link = dialect_names_query(e.get("word") or "", e.get("meaning") or "", word_clean)
+                    if link is not None:
+                        verified.add(id(e))
+                        e["witness_link"] = {"form": link.form, "target": link.target, "cost": round(link.cost, 2)}
             turkic_entries_map = {
                 k: v for k, v in turkic_entries_map.items()
                 if not v.get("meaning_check") or id(v) in verified

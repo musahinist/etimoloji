@@ -23,6 +23,36 @@ def _clean_region(value: str) -> str:
     return " ".join(_HTML_TAG.sub(" ", value or "").split()).strip(" ,-")
 
 
+def _tarama_forms(raw: str) -> dict[str, Any]:
+    """Tarama'nın çok biçimli adımını ayrı biçimlere böler.
+
+    ``uçmak, (uçmağ, uçmah)`` tek tanık gibi duruyordu ve karşılaştırma biçimi
+    yapışık ``uçmakuçmağuçmah`` oluyordu (rekonstrüksiyon, akraba listesi ve
+    tekrar birleştirme bunu okur). Ölçüldü (94 kelimelik TRAIN+DEV örneklemi,
+    2026-09-25): 56 Tarama kaydının 21'i çok biçimli; audit2'de 210 kelimenin
+    8'inde (G3). Tanık biçimi maddenin ANA (ilk) biçimidir; öbürleri
+    ``variant_forms``ta, ham madde ``attested_as``ta kalır. ⚠️ Aranan varyanta
+    en yakın biçimi seçmek aynı maddeyi iki varyant aramasında (``kez``,
+    ``gez``) iki ayrı tanığa bölüyordu (ölçüldü: `kez`). Yan etki (doğru):
+    ``uçmak`` "Cennet." artık sorgunun kendi kaydı sayılır ve eşsesli ayrımı
+    onu "uçmak (kuşun uçması)" tanığı olmaktan çıkarıp ``homonym_cognates``a
+    taşır (benzerlik 0,19); yapışık biçimle süzgeçten kaçıyordu.
+    """
+    from engine.nlp.witness_variants import split_forms
+    from engine.utils.orthography import to_comparison_form
+
+    forms = split_forms(raw)
+    if not forms or forms == [raw.strip()]:
+        return {"word": raw}
+    main = forms[0]
+    return {
+        "word": main,
+        "comparison": to_comparison_form(main),
+        "variant_forms": [f for f in forms if f != main],
+        "attested_as": raw,
+    }
+
+
 class TdkTaramaFetcher(BaseFetcher):
     @property
     def source_name(self) -> str:
@@ -55,7 +85,7 @@ class TdkTaramaFetcher(BaseFetcher):
                         result["turkic_languages"].append({
                             "lang_code": "otk",
                             "lang_name": "Tarihi Türkçe / Osmanlıca (13.-19. yy)",
-                            "word": hist_word,
+                            **_tarama_forms(hist_word),
                             "meaning": meaning,
                             "script": "Latin"
                         })
