@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import gzip
 import json
+import os
 import re
 import sqlite3
 import unicodedata
@@ -44,7 +45,12 @@ from engine.utils.transliteration import transliterate_to_latin
 
 logger = get_logger(__name__)
 
-INDEX_PATH = PROJECT_ROOT / "data" / "lexicons" / "index.db"
+#: ``ETY_LEXICON_INDEX`` başka bir indeks dosyası gösterir (ör. köken
+#: etiketleri boşaltılmış kör indeks, ``scripts/build_blind_index.py``) —
+#: alıntı ölçümünde döngüsellik denetimi (K2) için. Yoksa varsayılan.
+INDEX_PATH = Path(
+    os.environ.get("ETY_LEXICON_INDEX") or PROJECT_ROOT / "data" / "lexicons" / "index.db"
+)
 
 #: Wiktionary etimoloji şablonlarının anlamı.
 #: ``args["1"]`` alan dil, ``args["2"]`` veren dil, ``args["3"]`` özgün biçim.
