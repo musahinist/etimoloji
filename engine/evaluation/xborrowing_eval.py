@@ -128,8 +128,14 @@ def apply_variant(variant: str) -> None:
 
     from engine.nlp import donor_proximity as dp
 
+    for flag in ("ETY_DONOR_SENSE_FILTER", "ETY_DONOR_CLEAN", "ETY_DONOR_RAMP_CHANCE"):
+        os.environ.pop(flag, None)
     if variant == "sca":
-        os.environ.pop("ETY_DONOR_SENSE_FILTER", None)
+        os.environ["ETY_DONOR_CLEAN"] = "0"
+        os.environ["ETY_DONOR_RAMP_CHANCE"] = "0"
+    elif variant in ("x4a1", "x4a2"):  # X4: temizlik (a+b+c); A2 + rampa şans denetimi
+        os.environ["ETY_DONOR_CLEAN"] = "1"
+        os.environ["ETY_DONOR_RAMP_CHANCE"] = "1" if variant == "x4a2" else "0"
     elif variant == "mean":
         dp.STRENGTH_DISTANCE = "mean"
         dp.DONOR_DISTANCE_THRESHOLD = 0.60

@@ -90,6 +90,10 @@ class DonorMatch:
     #: Aynı havuza karşı ölçülen kontrol kelimelerinin kaçı bu kadar yakın?
     #: ``None`` ise şans denetimi yapılmadı.
     chance_percentile: float | None = None
+    #: Rampa şans denetimi (X4 A2): en yakın maddenin DİLİNİN null'ı
+    #: (kontrol kelimelerinin o dilin süzülmüş havuzuna medyan uzaklığı).
+    #: ``None`` = denetim yapılmadı.
+    ramp_null: float | None = None
 
     @property
     def beats_chance(self) -> bool:
@@ -311,6 +315,28 @@ def _sense_filter(sense_filter: Any) -> Any:
     return filter_from_env()
 
 
+#: Rampa şans denetiminin varsayılanı (``ETY_DONOR_RAMP_CHANCE`` verilmezse).
+#: Bkz. ``data/cache/work/xtr/PREREG_x4.md``.
+RAMP_CHANCE_DEFAULT = False
+
+
+def ramp_chance_enabled() -> bool:
+    """Rampa (eşik–tavan arası) eşleşmesi dilin null'ını geçmeli mi? (X4 A2)
+
+    Null, verici etiketi adımındakiyle aynıdır (:func:`_null_distance`,
+    1facc40): kontrol kelimelerinin en yakın maddenin dilinin havuzuna medyan
+    uzaklığı. Parametre yok.
+    """
+    import os
+
+    value = os.environ.get("ETY_DONOR_RAMP_CHANCE", "").strip().lower()
+    if value in ("1", "on", "true", "yes"):
+        return True
+    if value in ("0", "off", "false", "no"):
+        return False
+    return RAMP_CHANCE_DEFAULT
+
+
 def nearest_donor(
     comparison: str,
     sense: str = "",
@@ -368,6 +394,9 @@ def nearest_donor(
     # Zaten uzak olan bir eşleşme denetimden bağımsız olarak elenir; kontrol
     # hesaplamak ölçüm süresini 24 katına çıkarıp hiçbir kararı değiştirmez.
     if best.distance > DONOR_DISTANCE_THRESHOLD:
+        if best.distance < DONOR_DISTANCE_CEILING and ramp_chance_enabled():
+            own = tuple(sorted(f for f, r in by_form.items() if r["lang_code"] == best.lang_code))
+            return replace(best, ramp_null=_null_distance(len(comparison), own))
         return best
 
     pool = tuple(sorted(by_form))
@@ -416,6 +445,8 @@ def proximity_strength(match: DonorMatch | None) -> float:
         return 1.0
     if match.distance >= DONOR_DISTANCE_CEILING:
         return 0.0
+    if match.ramp_null is not None and match.distance >= match.ramp_null:
+        return 0.0  # X4 A2: rampa eşleşmesi dilin null'ından yakın değil
     span = DONOR_DISTANCE_CEILING - DONOR_DISTANCE_THRESHOLD
     return round((DONOR_DISTANCE_CEILING - match.distance) / span, 4)
 
@@ -603,10 +634,10 @@ def _monget_entries() -> tuple[tuple[str, str, str, frozenset[str]], ...]:
 
 def _monget_rows(sense: str) -> list[dict[str, str]]:
     """Anlamı sorguyla örtüşen monget biçimleri (verici indeksiyle aynı kural)."""
-    from engine.db.donor_index import _sense_tokens
+    from engine.db.donor_index import sense_tokens_for_match
 
-    # ``DonorIndex.by_sense`` ile aynı: 2 harften uzun ilk 6 sözcük, tam eşleşme.
-    tokens = set([t for t in _sense_tokens(sense) if len(t) > 2][:6])
+    # ``DonorIndex.by_sense`` ile aynı anahtar (X4 temizliği açıksa içerik sözcükleri).
+    tokens = set(sense_tokens_for_match(sense))
     if not tokens:
         return []
     return [
@@ -623,9 +654,10 @@ def _concept_rows(sense: str) -> dict[str, list[dict[str, str]]]:
     Eşleşme kuralı :func:`_monget_rows` ile aynıdır.
     """
     from engine.db.concept_donors import load_concept_donors
-    from engine.db.donor_index import _sense_tokens
+    from engine.db.donor_index import sense_tokens_for_match
 
-    tokens = set([t for t in _sense_tokens(sense) if len(t) > 2][:6])
+    # ``DonorIndex.by_sense`` ile aynı anahtar (X4 temizliği açıksa içerik sözcükleri).
+    tokens = set(sense_tokens_for_match(sense))
     if not tokens:
         return {}
     out: dict[str, list[dict[str, str]]] = {}

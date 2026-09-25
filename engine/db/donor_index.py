@@ -170,6 +170,106 @@ def _sense_tokens(sense: str) -> list[str]:
     ]
 
 
+# --- X4 temizliği (``ETY_DONOR_CLEAN``) ----------------------------------------
+#
+# Tanı (Türk dilleri arası altın, ayar bölümü; ``data/cache/work/xtr/PREREG_sense.md``):
+# ``by_sense`` eşleşmesi işlev sözcükleriyle (the, for, make, one …) ve çekim
+# açıklamalarıyla ("genitive plural of …") ateşleniyordu; 290/1.379 sorgu
+# sırasız ``LIMIT 200``e dayanıyordu. Temizlik üç parçadır ve BİRLİKTE açılır:
+#
+# (a) eşleşme anahtarı yalnız İÇERİK sözcükleri (:data:`FUNCTION_WORDS` dışı);
+#     sorgu yalnız işlev sözcüklerinden oluşuyorsa ("all", "much") eski
+#     sözcükler kullanılır — kavramın kendisi işlev sözcüğüdür;
+# (b) anlamı yalnız dilbilgisi açıklaması olan verici maddeleri (çekim/biçim
+#     göndermesi: "genitive plural of X", "alternative form of X") havuzdan
+#     çıkar; ":" sonrasında gerçek anlam taşıyanlar ("diminutive of нос: little
+#     nose") kalır;
+# (c) adaylar FTS ``bm25`` sırasıyla alınır (sırasız ilk 200 yerine en ilgili 200).
+
+#: İngilizce işlev sözcükleri + tanıda eşleşmeyi taşıyan genel sözcükler.
+FUNCTION_WORDS = frozenset("""
+a about above after again against all also am an and another any are as at be because been before
+being below between both but by can cause could did do does doing done down during each either else
+especially etc even every few for from further get gets give given had has have having he her here
+hers him his how however into its itself just kind less made make makes making many may might more
+most much must not now off often once one ones only onto other others our out over own part per
+perhaps person people rather same several she should since some someone something somebody somewhat
+such than that the their them then there these they thing things this those though through thus too
+towards under until upon usually use used very was way were what when where whether which while who
+whom whose why will with within without would yet you your
+""".split())
+
+#: Dilbilgisi açıklaması sözcükleri: bir anlam parçası YALNIZ bunlardan +
+#: "of <gönderme>" oluşuyorsa o parça anlam değildir.
+_GRAMMAR_WORDS = frozenset("""
+nominative genitive dative accusative instrumental prepositional locative vocative ablative partitive
+plural singular dual inflection inflected form forms participle past present future perfective
+imperfective imperative indicative subjunctive conditional infinitive gerund masculine feminine neuter
+animate inanimate short long comparative superlative first second third person active passive
+adverbial verbal noun adjective adverb agent alternative spelling obsolete archaic dated rare
+misspelling abbreviation initialism acronym contraction clipping romanization transliteration
+diminutive augmentative endearing pejorative nonstandard colloquial eye dialect variant of and or the
+a an construct state definite indefinite possessive pronominal suffixed attributive predicative
+dialectal female male equivalent
+""".split())
+
+_SEGMENT_SPLIT = re.compile(r"[;:]")
+_REFERENCE = re.compile(r"\bof\b.*$")
+
+
+def _grammar_words_only(segment: str) -> bool:
+    head = _REFERENCE.sub("", segment.lower())
+    words = [w for w in re.split(r"[^a-z-]+", head) if w and not w.endswith("-person")]
+    return all(w in _GRAMMAR_WORDS for w in words)
+
+
+def is_form_of(gloss: str) -> bool:
+    """Verici anlamı YALNIZ dilbilgisi göndermesi mi? (X4 (b))
+
+    En az bir parça "<dilbilgisi sözcükleri> of <gönderme>" biçiminde ve öbür
+    bütün parçalar yalnız dilbilgisi sözcüklerinden ("nominative plural")
+    oluşuyorsa evet.
+    """
+    segments = [s for s in _SEGMENT_SPLIT.split(gloss or "") if re.sub(r"[\W_]+", "", s)]
+    if not segments:
+        return False
+    has_reference = any(re.search(r"\bof\b", s.lower()) and _grammar_words_only(s) for s in segments)
+    return has_reference and all(_grammar_words_only(s) for s in segments)
+
+
+def content_tokens(sense: str) -> list[str]:
+    """Eşleşme anahtarı: 2 harften uzun İÇERİK sözcükleri (X4 (a))."""
+    tokens = [t for t in _sense_tokens(sense) if len(t) > 2]
+    content = [t for t in tokens if t not in FUNCTION_WORDS]
+    return content or tokens
+
+
+#: Temizliğin varsayılanı (bayrak verilmediğinde). Bkz. PREREG_x4.md.
+CLEAN_DEFAULT = False
+
+#: (c) sıralı sorguda süzgeç öncesi okunan en çok satır.
+CLEAN_FETCH = 4000
+
+
+def clean_enabled() -> bool:
+    """``ETY_DONOR_CLEAN`` (1/0); verilmezse :data:`CLEAN_DEFAULT`."""
+    import os
+
+    value = os.environ.get("ETY_DONOR_CLEAN", "").strip().lower()
+    if value in ("1", "on", "true", "yes"):
+        return True
+    if value in ("0", "off", "false", "no"):
+        return False
+    return CLEAN_DEFAULT
+
+
+def sense_tokens_for_match(sense: str, clean: bool | None = None) -> list[str]:
+    """``by_sense`` ve monget/kavram havuzlarının ortak eşleşme anahtarı."""
+    if clean if clean is not None else clean_enabled():
+        return content_tokens(sense)[:6]
+    return [t for t in _sense_tokens(sense) if len(t) > 2][:6]
+
+
 def _romanisation(record: dict[str, Any]) -> str:
     """kaikki'nin kendi çevriyazısı (``forms[].tags == ["romanization"]``).
 
@@ -350,6 +450,7 @@ class DonorIndex:
         *,
         languages: list[str] | None = None,
         limit: int = 400,
+        clean: bool | None = None,
     ) -> list[sqlite3.Row]:
         """Anlamı sorguyla örtüşen verici maddeleri.
 
@@ -362,10 +463,11 @@ class DonorIndex:
         tam bu kısıttan kaynaklanıyor (verici maddenin anlamı sözlükte başka
         yazılmıştır). Bu yüzden :meth:`candidates` kısıtsız yol olarak durur.
         """
-        tokens = [t for t in _sense_tokens(sense) if len(t) > 2]
+        clean = clean_enabled() if clean is None else clean
+        tokens = sense_tokens_for_match(sense, clean)
         if not tokens or not self.exists:
             return []
-        match = " OR ".join(f'"{t}"' for t in tokens[:6])
+        match = " OR ".join(f'"{t}"' for t in tokens)
         query = (
             "SELECT e.lang_code, e.word, e.comparison, e.gloss"
             " FROM donor_gloss_fts f JOIN donor_entries e ON e.id = f.rowid"
@@ -375,11 +477,16 @@ class DonorIndex:
         if languages:
             query += f" AND e.lang_code IN ({','.join('?' * len(languages))})"
             params += languages
+        if clean:
+            query += " ORDER BY f.rank"
         query += " LIMIT ?"
-        params.append(limit)
+        params.append(CLEAN_FETCH if clean else limit)
         with self._connect() as connection:
             try:
-                return connection.execute(query, params).fetchall()
+                rows = connection.execute(query, params).fetchall()
+                if clean:
+                    rows = [r for r in rows if not is_form_of(r["gloss"] or "")][:limit]
+                return rows
             except sqlite3.OperationalError:
                 # FTS sorgu sözdizimi hatası (tırnaklı garip kavram adı):
                 # sessizce boş dön, ölçüm çökmesin.
