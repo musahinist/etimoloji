@@ -290,6 +290,20 @@ def sca_distance(a: str, b: str) -> float:
         return 1.0
 
 
+def _sense_filter(sense_filter: Any) -> Any:
+    """Açık verilmediyse ``ETY_DONOR_SENSE_FILTER`` bayrağı (varsayılan kapalı).
+
+    ``False`` bayraktan bağımsız olarak kapatır. Bkz. :mod:`engine.nlp.sense_match`.
+    """
+    if sense_filter is False:
+        return None
+    if sense_filter is not None:
+        return sense_filter
+    from engine.nlp.sense_match import filter_from_env
+
+    return filter_from_env()
+
+
 def nearest_donor(
     comparison: str,
     sense: str = "",
@@ -298,6 +312,7 @@ def nearest_donor(
     sense_constrained: bool = True,
     max_candidates: int = 200,
     chance_control: bool = True,
+    sense_filter: Any = None,
 ) -> DonorMatch | None:
     """Verici sözlüklerindeki en yakın maddeyi bulur.
 
@@ -308,6 +323,10 @@ def nearest_donor(
         aranır. ⚠️ Kısıtsız yol şans benzerliğine açıktır; ablasyon içindir.
     :param chance_control: aynı havuza karşı kontrol kelimeleriyle şans
         denetimi yapılsın mı? Bkz. :data:`CHANCE_CONTROL_COUNT`.
+    :param sense_filter: anlam süzgeci (:class:`engine.nlp.sense_match.SenseFilter`);
+        ``None`` = ``ETY_DONOR_SENSE_FILTER`` bayrağı, ``False`` = kapalı.
+        Süzgeç ``by_sense`` adaylarına uygulanır; şans denetimi SÜZÜLMÜŞ
+        havuzla kurulur.
     """
     index = _index()
     if _pairwise() is None or not comparison or not getattr(index, "exists", False):
@@ -315,6 +334,9 @@ def nearest_donor(
 
     if sense_constrained:
         rows = index.by_sense(sense, languages=languages, limit=max_candidates)
+        active = _sense_filter(sense_filter)
+        if active is not None:
+            rows = active.filter(sense, rows)
     else:
         rows = index.candidates(comparison, languages=languages, limit=max_candidates)
     if not rows:
@@ -618,6 +640,7 @@ def attribute_donor(
     *,
     languages: list[str] | None = None,
     max_candidates: int = 200,
+    sense_filter: Any = None,
 ) -> DonorAttribution | None:
     """Alıntı olduğu düşünülen kelimenin verici dilini seçer.
 
@@ -632,12 +655,17 @@ def attribute_donor(
     if _pairwise() is None or not comparison or not getattr(index, "exists", False):
         return None
     rows = index.by_sense(sense, languages=languages, limit=max_candidates)
+    active = _sense_filter(sense_filter)
+    if active is not None:
+        rows = active.filter(sense, rows)
     groups: dict[str, list[Any]] = {}
     for row in rows:
         groups.setdefault(row["lang_code"], []).append(row)
     sources = {lang: "kaikki" for lang in groups}
     if languages is None or MONGOLIAN in languages:
         mongolic = _monget_rows(sense)
+        if active is not None:
+            mongolic = active.filter(sense, mongolic)
         if mongolic or _monget_entries():
             groups.pop(MONGOLIAN, None)
             sources.pop(MONGOLIAN, None)
@@ -646,6 +674,8 @@ def attribute_donor(
             sources[MONGOLIAN] = "starling-monget"
     if CONCEPT_DONOR_LABELS:
         for pool, extra in _concept_rows(sense).items():
+            if active is not None:
+                extra = active.filter(sense, extra)
             if languages is None or pool in languages:
                 groups.setdefault(pool, []).extend(extra)
 
