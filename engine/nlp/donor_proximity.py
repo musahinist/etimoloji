@@ -190,6 +190,7 @@ def reset_cache() -> None:
     _control_distances.cache_clear()
     _attribution_controls.cache_clear()
     _null_distance.cache_clear()
+    _strength_null.cache_clear()
     _control_profile.cache_clear()
     _monget_entries.cache_clear()
 
@@ -397,7 +398,7 @@ def nearest_donor(
     if best.distance > DONOR_DISTANCE_THRESHOLD:
         if best.distance < DONOR_DISTANCE_CEILING and ramp_chance_enabled():
             own = tuple(sorted(f for f, r in by_form.items() if r["lang_code"] == best.lang_code))
-            return replace(best, ramp_null=_null_distance(len(comparison), own))
+            return replace(best, ramp_null=_ramp_null(len(comparison), own))
         return best
 
     pool = tuple(sorted(by_form))
@@ -611,6 +612,33 @@ def _null_distance(length: int, pool: tuple[str, ...]) -> float:
     distances = _control_profile(length, pool)
     if not distances:
         return 0.0
+    middle = len(distances) // 2
+    if len(distances) % 2:
+        return distances[middle]
+    return (distances[middle - 1] + distances[middle]) / 2
+
+
+def _ramp_null(length: int, pool: tuple[str, ...]) -> float:
+    """Rampa şans denetiminin null'ı, alıntı GÜCÜ mesafesinin ölçeğinde (X5).
+
+    ``sca`` (üretim) ile X4 A2'deki :func:`_null_distance` ile BİREBİR aynıdır
+    (etiket mesafesi de SCA). ``STRENGTH_DISTANCE = "mean"`` iken rampa
+    0,60–0,85 ortalama-mesafe ölçeğindedir; SCA null'ı ile karşılaştırmak
+    ölçek karışıklığı olurdu. Null o zaman aynı kontrol kelimelerinin aynı
+    havuza GÜÇ mesafesiyle medyan en yakın uzaklığıdır. Parametre yok;
+    ``PREREG_x5.md``de birleşik aday için ölçümden ÖNCE tanımlandı.
+    """
+    if STRENGTH_DISTANCE == "sca" and LABEL_DISTANCE == "sca":
+        return _null_distance(length, pool)
+    return _strength_null(length, pool)
+
+
+@lru_cache(maxsize=20000)
+def _strength_null(length: int, pool: tuple[str, ...]) -> float:
+    controls = _attribution_controls(length)
+    if not controls or not pool:
+        return 0.0
+    distances = sorted(_strength_best(control, list(pool))[0] for control in controls)
     middle = len(distances) // 2
     if len(distances) % 2:
         return distances[middle]

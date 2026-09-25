@@ -128,15 +128,30 @@ def apply_variant(variant: str) -> None:
 
     from engine.nlp import donor_proximity as dp
 
-    for flag in ("ETY_DONOR_SENSE_FILTER", "ETY_DONOR_CLEAN", "ETY_DONOR_RAMP_CHANCE"):
-        os.environ.pop(flag, None)
+    # Her çeşit AÇIK tabandan başlar (üretim varsayılanları değişse de taban
+    # X1'deki gibi kalsın): sca 0,35/0,60, temizlik/rampa/anlam süzgeci kapalı.
+    os.environ["ETY_DONOR_CLEAN"] = "0"
+    os.environ["ETY_DONOR_RAMP_CHANCE"] = "0"
+    os.environ["ETY_DONOR_SENSE_FILTER"] = "off"
+    dp.STRENGTH_DISTANCE = "sca"
+    dp.DONOR_DISTANCE_THRESHOLD = 0.35
+    dp.DONOR_DISTANCE_CEILING = 0.60
     if variant == "sca":
-        os.environ["ETY_DONOR_CLEAN"] = "0"
-        os.environ["ETY_DONOR_RAMP_CHANCE"] = "0"
+        pass
     elif variant in ("x4a1", "x4a2"):  # X4: temizlik (a+b+c); A2 + rampa şans denetimi
         os.environ["ETY_DONOR_CLEAN"] = "1"
         os.environ["ETY_DONOR_RAMP_CHANCE"] = "1" if variant == "x4a2" else "0"
     elif variant == "mean":
+        dp.STRENGTH_DISTANCE = "mean"
+        dp.DONOR_DISTANCE_THRESHOLD = 0.60
+        dp.DONOR_DISTANCE_CEILING = 0.85
+    elif variant == "x5c":
+        # X5 birleşik tek aday (PREREG_x5.md): X4 A2 + X2 mean + X3 S3 fallback,
+        # her biri kendi ön kaydındaki SABİT ayarıyla. Rampa null'ı güç
+        # mesafesinin ölçeğinde (donor_proximity._ramp_null).
+        os.environ["ETY_DONOR_CLEAN"] = "1"
+        os.environ["ETY_DONOR_RAMP_CHANCE"] = "1"
+        os.environ["ETY_DONOR_SENSE_FILTER"] = "s3:fallback"
         dp.STRENGTH_DISTANCE = "mean"
         dp.DONOR_DISTANCE_THRESHOLD = 0.60
         dp.DONOR_DISTANCE_CEILING = 0.85
@@ -220,7 +235,12 @@ def capture(split: str, *, limit: int = 0, tag: str = "", variant: str = "sca") 
 def load_cache(split: str, tag: str = "") -> list[dict[str, Any]]:
     path = cache_path(split, tag)
     rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
-    admitted = set(admitted_languages())
+    if split == "r3":  # X5: R3'ün dilleri kendi mühürlü istatistiğinde
+        from engine.evaluation.xturkic_gold import r3_languages
+
+        admitted = set(r3_languages())
+    else:
+        admitted = set(admitted_languages())
     return [r for r in rows if r["lang"] in admitted]
 
 
@@ -847,6 +867,16 @@ def compare_variants(split: str, prereg: str | None, base_tag: str, cand_tags: l
             "breakdowns": breakdowns(rows, preds["engine_trained"]),
         }
 
+    def subsets(rows: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+        """R3 (X5): yeni diller / X1 dillerinin artığı ayrı (ikincil, betimsel)."""
+        if split != "r3":
+            return {}
+        from engine.evaluation.xturkic_gold import R3_NEW_LANGUAGES
+
+        new = set(R3_NEW_LANGUAGES)
+        return {"yeni_dil": [r for r in rows if r["lang"] in new],
+                "x1_artık": [r for r in rows if r["lang"] not in new]}
+
     payload: dict[str, Any] = {"split": split, "prereg": prereg, "base": base_tag or "sca",
                                "n": len(base_rows), "systems": {base_tag or "sca": summary(base_rows, base)},
                                "comparisons": {}}
@@ -865,6 +895,11 @@ def compare_variants(split: str, prereg: str | None, base_tag: str, cand_tags: l
             "ramp_inherited_mcnemar": mcnemar_one_sided(
                 [_ramp(r) for r in inherited], [_ramp(by_id[r["id"]]) for r in inherited]),
         }
+        base_by_id = {r["id"]: r for r in base_rows}
+        for name, members in subsets(rows).items():
+            payload["comparisons"][tag][f"F_engine_trained_{name}"] = paired_bootstrap(
+                members, preds["engine_trained"], [base_by_id[r["id"]] for r in members],
+                base["engine_trained"], "F")
     if len(cand_tags) > 1:
         adjusted = holm({t: payload["comparisons"][t]["F_engine_trained"]["p_one_sided"] for t in cand_tags})
         for t in cand_tags:
@@ -905,7 +940,7 @@ def main() -> int:
     cmp_.add_argument("--tags", nargs="+", required=True)
     cmp_.add_argument("--final-report", action="store_true")
     args = ap.parse_args()
-    if args.split not in ("tune", "r1", "r2", "test"):
+    if args.split not in ("tune", "r1", "r2", "r3", "test"):
         raise SystemExit(f"bilinmeyen bölüm {args.split}")
     if args.cmd == "compare":
         compare_variants(args.split, args.prereg, args.base_tag, args.tags, args.final_report)

@@ -1,0 +1,138 @@
+{
+ "_not": "LLM ön-etiketi (Claude, X5 ajanı); motor çıktısı görülmeden, yalnız kanıt kartı (altın etiket + şablon + metin) + dil bilgisi. Örneklem R3 HAVUZUNDAN, yeni diller, dil×sınıf başına 20 (tuz r3audit). Kabul: kesinlik ≥0,90 VE Wilson alt ≥0,80 (n=20'de yalnız 20/20). Kullanıcı ≥%10'u bağımsız denetlemeli (plan). nog/alıntı havuzda 2 madde: R3'e alınmadı (R3_MIN_CELL=20).",
+ "cells": {
+  "alt/alıntı": {
+   "n": 20,
+   "doğru": 18,
+   "yanlış": 2,
+   "precision": 0.9,
+   "wilson95": [
+    0.699,
+    0.9721
+   ],
+   "accepted": false,
+   "stage2": "havuzda yalnız 27 madde: 7 ek maddenin hepsi doğru olsa 25/27, Wilson alt 0,766 < 0,80 -> hücre R3'ten ÇIKARILDI (mühürden önce)"
+  },
+  "alt/miras": {
+   "n": 20,
+   "doğru": 20,
+   "yanlış": 0,
+   "precision": 1.0,
+   "wilson95": [
+    0.8389,
+    1.0
+   ],
+   "accepted": true
+  },
+  "az/alıntı": {
+   "n": 20,
+   "doğru": 20,
+   "yanlış": 0,
+   "precision": 1.0,
+   "wilson95": [
+    0.8389,
+    1.0
+   ],
+   "accepted": true
+  },
+  "az/miras": {
+   "n": 20,
+   "doğru": 20,
+   "yanlış": 0,
+   "precision": 1.0,
+   "wilson95": [
+    0.8389,
+    1.0
+   ],
+   "accepted": true
+  },
+  "crh/alıntı": {
+   "n": 20,
+   "doğru": 20,
+   "yanlış": 0,
+   "precision": 1.0,
+   "wilson95": [
+    0.8389,
+    1.0
+   ],
+   "accepted": true
+  },
+  "crh/miras": {
+   "n": 20,
+   "doğru": 20,
+   "yanlış": 0,
+   "precision": 1.0,
+   "wilson95": [
+    0.8389,
+    1.0
+   ],
+   "accepted": true
+  },
+  "gag/alıntı": {
+   "n": 20,
+   "doğru": 20,
+   "yanlış": 0,
+   "precision": 1.0,
+   "wilson95": [
+    0.8389,
+    1.0
+   ],
+   "accepted": true
+  },
+  "gag/miras": {
+   "n": 20,
+   "doğru": 20,
+   "yanlış": 0,
+   "precision": 1.0,
+   "wilson95": [
+    0.8389,
+    1.0
+   ],
+   "accepted": true
+  },
+  "kum/alıntı": {
+   "n": 20,
+   "doğru": 20,
+   "yanlış": 0,
+   "precision": 1.0,
+   "wilson95": [
+    0.8389,
+    1.0
+   ],
+   "accepted": true
+  },
+  "kum/miras": {
+   "n": 20,
+   "doğru": 20,
+   "yanlış": 0,
+   "precision": 1.0,
+   "wilson95": [
+    0.8389,
+    1.0
+   ],
+   "accepted": true
+  },
+  "nog/alıntı": {
+   "n": 2,
+   "doğru": 2,
+   "yanlış": 0,
+   "precision": 1.0,
+   "wilson95": [
+    0.3424,
+    1.0
+   ],
+   "accepted": false
+  },
+  "nog/miras": {
+   "n": 20,
+   "doğru": 20,
+   "yanlış": 0,
+   "precision": 1.0,
+   "wilson95": [
+    0.8389,
+    1.0
+   ],
+   "accepted": true
+  }
+ }
+}

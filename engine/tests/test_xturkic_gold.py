@@ -141,5 +141,45 @@ class BlindIndexTests(unittest.TestCase):
             json.dumps(report)
 
 
+class R3Tests(unittest.TestCase):
+    """X5: R3 bölümü — güçlendirilmiş melez süzgeci ve mühür/sızıntı."""
+
+    def test_hybrid_filter_foreign_stem_and_text(self):
+        from engine.evaluation.xturkic_gold import hybrid_reason
+
+        # ug نۇقسانسىز: miras (Çağatay) ama yüzey çözümlemesi alıntı kök + -siz
+        record = {
+            "word": "نۇقسانسىز",
+            "etymology_templates": [
+                {"name": "inh", "args": {"1": "ug", "2": "chg", "3": "نقصانسیز"}},
+                {"name": "surf", "args": {"1": "ug", "2": "نۇقسان<t:defect>", "3": "ـسىز<t:-less>"}},
+            ],
+            "etymology_text": "Inherited from Chagatai نقصانسیز. By surface analysis, نۇقسان + ـسىز.",
+        }
+        self.assertEqual(hybrid_reason(record, "miras", {"نۇقسان"}), "melez_kök")
+        self.assertEqual(hybrid_reason(record, "miras", set()), "")
+        chagatai = rec(("inh", "chg", "حرارت"), text="Inherited from Chagatai حرارت, borrowed from Classical Persian.")
+        self.assertEqual(hybrid_reason(chagatai, "miras", set()), "miras_metninde_yabancı_dil")
+        cognate = rec(("inh", "trk-pro", "*kan"), text="From Proto-Turkic *kan. Cognate with Russian x, Mongolian y.")
+        self.assertEqual(hybrid_reason(cognate, "miras", set()), "")
+        hedged = rec(("bor", "ltc", "擺子"), text="Borrowed from Middle Chinese 擺子.\nOr from *bezgäk.")
+        self.assertEqual(hybrid_reason(hedged, "alıntı", set()), "çekince_or")
+
+    def test_r3_seal_and_no_etymon_leak(self):
+        from engine.evaluation.xturkic_gold import R3_SEAL, file_sha256
+
+        seal_path = XTURKIC_DIR / R3_SEAL
+        if not seal_path.exists():
+            self.skipTest("R3 kurulmamış")
+        seal = json.loads(seal_path.read_text(encoding="utf-8"))
+        self.assertEqual(file_sha256(XTURKIC_DIR / seal["file"]), seal["checksum"])
+        x1 = json.loads((XTURKIC_DIR / "SEAL.json").read_text(encoding="utf-8"))["checksums"]
+        self.assertEqual(seal["x1_seal_checksums"], x1)
+        # Etimon sızıntısı: R3 etimonları tune/R1/R2'de yok (test okunmaz; kurulumda denetlendi).
+        r3 = {json.loads(line)["etymon"] for line in (XTURKIC_DIR / seal["file"]).read_text(encoding="utf-8").splitlines()}
+        for split in ("tune", "r1", "r2"):
+            self.assertFalse(r3 & {i["etymon"] for i in load_split(split)}, split)
+
+
 if __name__ == "__main__":
     unittest.main()

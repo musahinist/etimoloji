@@ -1,0 +1,49 @@
+{
+  "_schema": "xturkic-borrowing-gold-r3-seal/v1",
+  "file": "r3.jsonl",
+  "count": 3706,
+  "checksum": "6b1745759406e9f57b44c1320494678bb750d7ebdd9eb4fe8a28012ab962d672",
+  "x1_seal_checksums": {
+    "tune": "35db60bcbafbbd9639ea3a8fb68efdd8bf365bc588042ee62bcacbce80b65c10",
+    "r1": "81f3436a46832eed0a7b6d5f40c16563a4ff85fc2bf99d7d60bb9f44d70df433",
+    "r2": "83104e50ebf63d48e1bc2a0a55637bfa53cc0dc70119ac129bf069e611409f19",
+    "test": "49215488d87b9883812176be1e6f38d3218adf0cc8aec0dc03f392c3252ade48"
+  },
+  "sources": {
+    "x1_languages": [
+      "kk",
+      "ky",
+      "tt",
+      "ba",
+      "uz",
+      "ug",
+      "tk"
+    ],
+    "new_languages": [
+      "az",
+      "crh",
+      "gag",
+      "kum",
+      "nog",
+      "alt"
+    ],
+    "dumps": {
+      "alt": "6691d19e41d3a800c5ba70f6ada2c7c030cd4c691f8b365d6e5e0f7cfcf6e880",
+      "az": "496708581bfbd14449ab7a3d9bf91ec3b3d4e677f95b0fd04f4edf4e3c6ce0d7",
+      "ba": "d9f7624a42551ecc745b2ae7f7fb8f0165a0533e6b6446a67e21960b35944462",
+      "crh": "58f97925c9fa0896d77349222094c031acac1085fd252900488f82fd203049e7",
+      "gag": "25444cfd63b9a1e035c082e5c877e18cd1369dc536a0a397c888a64d5649f486",
+      "kk": "9be0bd816bbfc860d7b5457431e5ce6e0da612d53cdf66992298a2edb63208b8",
+      "kum": "a7d79fb3c2a9eba5794699e4ceb82a35d56ed5cd0385aea20c83ce1c333b384b",
+      "ky": "7857c0f209e133147d53fb151bfe0431f805905e69029dc9d5f8d724d60ccf5a",
+      "nog": "9050fb7d1d047682b5efddb3018e4fde3791e6b9014ce09b69bf97dd0b28fcbc",
+      "tk": "6806857b74416790405112b8b14584b858f6fb003feadc2b8baf173b1bf71bf3",
+      "tt": "1cc7a88fcc23946a68131c0f20c45a6b4d86ef405b24db4ca576538fc391ae2d",
+      "ug": "ccc9a73d490a517efffe72a09b6f9b39569ac71dca3edc11229b94dd1ba42913",
+      "uz": "4755ac7580494d096eb9e5941644d53055f6e4ad8a9ba6b7b452447cd9d5844f"
+    }
+  },
+  "code_commit": "ab9d4f3668d13d0b4beeb552643752c060da29c7",
+  "sealed_at": "2026-09-25T17:03:08+00:00",
+  "note": "R3 yalnız commit edilmiş PREREG_<ad>.md ile BİR KEZ açılır. X1 bölümlerinde (test dahil) bulunan hiçbir etimon grubu R3'te yok (bellekte yeniden hesaplandı)."
+}

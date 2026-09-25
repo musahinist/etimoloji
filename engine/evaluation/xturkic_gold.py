@@ -613,6 +613,8 @@ def load_split(split: str, out_dir: Path = XTURKIC_DIR) -> list[dict[str, Any]]:
     """Bir bölümü okur. ``test`` burada OKUNAMAZ."""
     if split == "test":
         raise PermissionError("test.frozen.jsonl geliştirme boyunca açılmaz")
+    if split == "r3":
+        return load_r3(out_dir)
     if split not in SPLIT_FILES:
         raise ValueError(split)
     path = out_dir / SPLIT_FILES[split]
@@ -830,6 +832,379 @@ def quality(out: Path = WORK_DIR / "quality.json") -> dict[str, Any]:
     return report
 
 
+# --- R3 (plan X5): daha büyük, dokunulmamış rapor bölümü --------------------
+#
+# X1 altını (tune/R1/R2/test) DEĞİŞMEZ; R3 ayrı dosya + ayrı mühürdür
+# (``r3.jsonl``, ``SEAL_r3.json``, ``stats_r3.json``). İki kaynak:
+#
+# (a) X1'de kullanılmayan Türk dilleri: kaikki en dökümü olanlar (az, crh,
+#     gag, kum, nog, alt). kaa: kaikki en dökümü yok (404); krc: yalnız Rusça
+#     sürüm (``gap/``) — plan gereği altın değil. sah: WOLD (Q1'de kullanılır).
+# (b) X1 dillerinde dengeleme sınırı (250) yüzünden seçilmemiş maddeler.
+#
+# Etimon sızıntısı yok: X1 kurulumu bellekte YENİDEN hesaplanır (dosyalar
+# okunmaz; yeniden hesaplanan bölüm içeriklerinin sha256'sı SEAL.json ile
+# birebir aynı olmalı) ve herhangi bir X1 bölümünde (test DAHİL) bulunan
+# her etimon grubu R3'ten dışlanır. R3'ün kendi içinde diller arası aynı
+# etimon zaten tek bölümdedir.
+#
+# Melez türetme süzgeci (X1 kullanıcı denetimi izi; ug نۇقسانسىز) R3'te
+# güçlendirilir — X1 bölümlerine UYGULANMAZ (mühür bozulmasın):
+#   * miras + yapım şablonu (af/suf/surf/com…) bileşeni aynı dökümde
+#     yabancı kökenli bir sözcükse (zincirinde Türk dışı halka, ``root``
+#     şablonu Türk dışı ya da metinde yabancı dil) -> ``melez_kök``;
+#   * miras + etimoloji metninin akraba/karşılaştırma cümleleri DIŞINDA
+#     Türk dışı dil adı (Çağatay aracılı "inherited" alıntılar: uz harorat,
+#     ug مۇسۇلمان) -> ``miras_metninde_yabancı_dil``;
+#   * miras + ``root``/``der`` şablonunda Türk dışı dil -> ``miras_yabancı_kök``.
+
+R3_NEW_LANGUAGES = ("az", "crh", "gag", "kum", "nog", "alt")
+R3_UNAVAILABLE = {
+    "kaa": "kaikki en dökümü yok (Karakalpak, 404; 2026-09-25)",
+    "krc": "yalnız Rusça sürüm (data/lexicons/gap/krc) — plan: ru sürümü altın değil",
+    "sah": "WOLD ile örtüşüyor (Q1'de kullanılır)",
+}
+#: Yeni dillerin verici kümeleri (ön-kayıtlı, X1 deseni): Oğuz -> ar, fa, ru;
+#: Kıpçak + Altay -> ru, ar, fa, mn.
+R3_DONOR_SETS: dict[str, tuple[str, ...]] = {
+    **DONOR_SETS,
+    **{lang: ("ar", "fa", "ru") for lang in ("az", "crh", "gag")},
+    **{lang: ("ru", "ar", "fa", "mn") for lang in ("kum", "nog", "alt")},
+}
+R3_FILE = "r3.jsonl"
+R3_SEAL = "SEAL_r3.json"
+R3_STATS = "stats_r3.json"
+#: R3 dil × sınıf üst sınırı. MDE hesabından (MDE_r3.json) sonra seçildi,
+#: R3 hiç okunmadan; sınıf başına en az ``R3_MIN_CELL`` madde yoksa hücre
+#: alınmaz (Q4 denetlenemez).
+R3_CAP_PER_LANG_CLASS = 350
+R3_MIN_CELL = 20
+#: Q4'ü geçemeyen R3 hücreleri (dil/sınıf) — mühürden ÖNCE çıkarılır.
+R3_EXCLUDED_CELLS: dict[str, str] = {
+    "alt/alıntı": (
+        "Q4 (LLM ön-etiketi): 18/20, Wilson alt 0,699; havuzda 27 madde — hepsi doğru olsa "
+        "25/27, Wilson alt 0,766 < 0,80 (data/cache/work/xtr/x5/Q4_r3.json)"
+    ),
+}
+#: Q4'te (alt безгек) görülen, ``HEDGE``in kaçırdığı çekince: "Or from …",
+#: "or an early borrowing …". Yalnız R3'te uygulanır.
+R3_HEDGE_EXTRA = re.compile(r"(?:^|[.\n]\s*)Or\s+(?:from|a|an|perhaps|via)\b|\bor an? (?:early |late )?borrowing\b")
+
+_FOREIGN_TEXT = re.compile(
+    r"\b(Arabic|Persian|Farsi|Iranian|Russian|Mongol\w*|Chinese|Sanskrit|Sogdian|Tocharian|"
+    r"Greek|Latin|French|German|Tibetan|Hindi|Urdu|Italian|English|Armenian|Georgian|Slavic|"
+    r"Khotanese|Aramaic|Hebrew|Syriac|Polish|Ukrainian)\b"
+)
+_COGNATE_SENTENCE = re.compile(r"^\s*(cognates?|compare|related|see also|see|cf\.?|doublet)\b", re.IGNORECASE)
+
+
+def _non_cognate_foreign(text: str) -> str:
+    """Akraba/karşılaştırma cümleleri dışında geçen ilk Türk dışı dil adı."""
+    for sentence in re.split(r"(?<=[.;\n])\s+", text or ""):
+        if _COGNATE_SENTENCE.match(sentence):
+            continue
+        # "Cognate with …" satırından sonraki liste satırları da atlanır.
+        match = _FOREIGN_TEXT.search(sentence)
+        if match and not re.search(r"\bcognate", sentence, re.IGNORECASE):
+            return match.group(0)
+    return ""
+
+
+def _foreign_templates(record: dict[str, Any]) -> bool:
+    for template in record.get("etymology_templates") or []:
+        name = str(template.get("name", "")).strip().lower()
+        if name in ("root", "der", "der+", "uder", "bor", "bor+", "lbor", "slbor", "inh", "inh+"):
+            code = str((template.get("args") or {}).get("2", "") or "").strip()
+            if code and not is_turkic(code):
+                return True
+    return False
+
+
+def _formation_components(record: dict[str, Any]) -> list[str]:
+    out: list[str] = []
+    for template in record.get("etymology_templates") or []:
+        if str(template.get("name", "")).strip().lower() not in FORMATION:
+            continue
+        for key, value in (template.get("args") or {}).items():
+            if key.isdigit() and int(key) >= 2:
+                comp = str(value or "").split("<")[0].strip().strip("-‐ـ").strip()
+                if comp:
+                    out.append(comp)
+    return out
+
+
+def foreign_origin_words(lang: str, path: Path | None = None) -> set[str]:
+    """Dökümde yabancı kökenli sayılan sözcükler (melez kök denetimi için)."""
+    path = path or LEXICON_DIR / f"{lang}.jsonl.gz"
+    out: set[str] = set()
+    with gzip.open(path, "rt", encoding="utf-8") as handle:
+        for line in handle:
+            if not line.strip():
+                continue
+            record = json.loads(line)
+            word = str(record.get("word", "")).strip()
+            steps, _ = _steps(record)
+            if (
+                any(not is_turkic(code) for _, code, _ in steps)
+                or _foreign_templates(record)
+                or _non_cognate_foreign(_etymology_text(record))
+            ):
+                out.add(word)
+    return out
+
+
+def hybrid_reason(record: dict[str, Any], label: str, foreign_words: set[str]) -> str:
+    """Güçlendirilmiş melez türetme süzgeci (yalnız R3; bkz. bölüm başı)."""
+    if R3_HEDGE_EXTRA.search(_etymology_text(record) or ""):
+        return "çekince_or"
+    if label != "miras":
+        return ""
+    if _foreign_templates(record):
+        return "miras_yabancı_kök"
+    if _non_cognate_foreign(_etymology_text(record)):
+        return "miras_metninde_yabancı_dil"
+    word = str(record.get("word", "")).strip()
+    if any(comp in foreign_words and comp != word for comp in _formation_components(record)):
+        return "melez_kök"
+    return ""
+
+
+def extract_candidates_r3(lang: str) -> tuple[list[dict[str, Any]], Counter]:
+    """``extract_candidates`` + güçlendirilmiş melez süzgeci (yalnız R3)."""
+    path = LEXICON_DIR / f"{lang}.jsonl.gz"
+    items, reasons = extract_candidates(lang, path)
+    foreign = foreign_origin_words(lang, path)
+    hybrid: dict[str, str] = {}
+    with gzip.open(path, "rt", encoding="utf-8") as handle:
+        for line in handle:
+            if not line.strip():
+                continue
+            record = json.loads(line)
+            word = str(record.get("word", "")).strip()
+            lab = label_record(record, lang)
+            if lab.label is None:
+                continue
+            why = hybrid_reason(record, lab.label, foreign)
+            if why:
+                hybrid.setdefault(word, why)
+    kept = []
+    for item in items:
+        why = hybrid.get(item["word"])
+        if why:
+            reasons[why] += 1
+            reasons["_kabul"] -= 1
+            continue
+        kept.append(item)
+    return kept, reasons
+
+
+def x1_used_etymons(out_dir: Path = XTURKIC_DIR) -> tuple[set[str], set[str]]:
+    """X1 bölümlerinin (test DAHİL) etimon grupları ve madde kimlikleri.
+
+    Bölüm dosyaları OKUNMAZ: ``build`` seçimi bellekte yeniden hesaplanır ve
+    içeriklerin sha256'sı ``SEAL.json`` ile karşılaştırılır (yeniden üretim
+    kanıtı). Test maddelerinin yalnız etimon anahtarı kullanılır.
+    """
+    all_items: list[dict[str, Any]] = []
+    for lang in LANGUAGES:
+        if lang in EXCLUDED_AFTER_Q4:
+            continue
+        all_items.extend(extract_candidates(lang)[0])
+    for item in all_items:
+        item["split"] = assign_split(item["etymon"])
+    chosen = balance(all_items)
+    for item in chosen:
+        item["query"] = _query_form(item)
+        item["hard"] = _hard_flag(item)
+        item["donors"] = list(DONOR_SETS[item["lang"]])
+    chosen.sort(key=lambda i: (i["split"], i["lang"], i["label"], i["id"]))
+    seal = json.loads((out_dir / "SEAL.json").read_text(encoding="utf-8"))
+    for split in SPLIT_RATIOS:
+        text = _jsonl([i for i in chosen if i["split"] == split])
+        if hashlib.sha256(text.encode("utf-8")).hexdigest() != seal["checksums"][split]:
+            raise SystemExit(f"X1 yeniden hesaplanamadı ({split} sha256 mühürle aynı değil)")
+    return {i["etymon"] for i in chosen}, {i["id"] for i in chosen}
+
+
+def balance_r3(items: list[dict[str, Any]], cap: int = R3_CAP_PER_LANG_CLASS) -> list[dict[str, Any]]:
+    """R3 dengelemesi: dil × sınıf ≤ cap, Rusça ≤ %50, Moğolcanın hepsi (X1 kuralı)."""
+    groups: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
+    for item in items:
+        groups[(item["lang"], item["label"])].append(item)
+    chosen: list[dict[str, Any]] = []
+    for (_lang, label), pool in sorted(groups.items()):
+        pool = sorted(pool, key=lambda i: _hash01(f"{SPLIT_SALT}:r3sample:{i['id']}"))
+        if label == "miras":
+            picked = pool[:cap]
+        else:
+            picked = [i for i in pool if i["donor_macro"] == "mn"][:cap]
+            ru_max = int(cap * MAX_RUSSIAN_SHARE)
+            ru = 0
+            for item in pool:
+                if len(picked) >= cap:
+                    break
+                if item["donor_macro"] == "mn":
+                    continue
+                if item["donor_macro"] == "ru":
+                    if ru >= ru_max:
+                        continue
+                    ru += 1
+                picked.append(item)
+            while picked and sum(i["donor_macro"] == "ru" for i in picked) > MAX_RUSSIAN_SHARE * len(picked):
+                last_ru = max(j for j, i in enumerate(picked) if i["donor_macro"] == "ru")
+                picked.pop(last_ru)
+        if len(picked) < R3_MIN_CELL:
+            continue
+        chosen.extend(picked)
+    return chosen
+
+
+def r3_pool() -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """R3 aday havuzu (dengeleme öncesi) + dışlama sayıları."""
+    used_etymons, used_ids = x1_used_etymons()
+    pool: list[dict[str, Any]] = []
+    report: dict[str, Any] = {"exclusions": {}, "candidates": {}, "etymon_leak_excluded": {}}
+    for lang in (*admitted_languages(), *R3_NEW_LANGUAGES):
+        items, reasons = extract_candidates_r3(lang)
+        leak = Counter()
+        for item in items:
+            if item["id"] in used_ids:
+                continue
+            if item["etymon"] in used_etymons:
+                leak[item["label"]] += 1
+                continue
+            item["source"] = "yeni_dil" if lang in R3_NEW_LANGUAGES else "x1_artık"
+            pool.append(item)
+        report["exclusions"][lang] = dict(sorted(reasons.items()))
+        report["etymon_leak_excluded"][lang] = dict(leak)
+        report["candidates"][lang] = dict(Counter(i["label"] for i in pool if i["lang"] == lang))
+    return pool, report
+
+
+def load_r3_dataset_from_pool(pool: list[dict[str, Any]], cap: int) -> list[dict[str, Any]]:
+    chosen = [i for i in balance_r3(pool, cap) if f"{i['lang']}/{i['label']}" not in R3_EXCLUDED_CELLS]
+    for item in chosen:
+        item["split"] = "r3"
+        item["query"] = _query_form(item)
+        item["hard"] = _hard_flag(item)
+        item["donors"] = list(R3_DONOR_SETS[item["lang"]])
+    chosen.sort(key=lambda i: (i["lang"], i["label"], i["id"]))
+    return chosen
+
+
+def r3_languages() -> tuple[str, ...]:
+    """R3'teki diller (mühürlü istatistikten)."""
+    stats = json.loads((XTURKIC_DIR / R3_STATS).read_text(encoding="utf-8"))
+    return tuple(stats["languages"])
+
+
+def build_r3(out_dir: Path = XTURKIC_DIR, *, cap: int = R3_CAP_PER_LANG_CLASS, dry: bool = False,
+             force: bool = False) -> dict[str, Any]:
+    pool, report = r3_pool()
+    chosen = load_r3_dataset_from_pool(pool, cap)
+    counts = Counter((i["lang"], i["label"]) for i in chosen)
+    langs = sorted({i["lang"] for i in chosen})
+    stats: dict[str, Any] = {
+        "_schema": "xturkic-borrowing-gold-r3-stats/v1",
+        "total": len(chosen),
+        "languages": langs,
+        "cap_per_lang_class": cap,
+        "by_lang_label": {lang: {lab: counts[(lang, lab)] for lab in ("alıntı", "miras")} for lang in langs},
+        "by_source": dict(Counter(i["source"] for i in chosen)),
+        "donor_macro": dict(Counter(i["donor_macro"] for i in chosen if i["label"] == "alıntı")),
+        "donor_macro_by_lang": {
+            lang: dict(Counter(i["donor_macro"] for i in chosen if i["lang"] == lang and i["label"] == "alıntı"))
+            for lang in langs
+        },
+        "hard_borrowed": {lang: sum(1 for i in chosen if i["lang"] == lang and i["hard"]) for lang in langs},
+        "etymon_groups": len({i["etymon"] for i in chosen}),
+        "pool_before_balance": report["candidates"],
+        # Doğal oran: dilin BÜTÜN etiketli adayları (X1 dilleri için X1 stats ile aynı tanım).
+        "natural_borrowed_rate": {},
+        "exclusions": report["exclusions"],
+        "etymon_leak_excluded": report["etymon_leak_excluded"],
+        "excluded_cells": R3_EXCLUDED_CELLS,
+        "unavailable_languages": R3_UNAVAILABLE,
+        "donor_sets": {lang: list(R3_DONOR_SETS[lang]) for lang in langs},
+    }
+    x1_stats = json.loads((out_dir / "stats.json").read_text(encoding="utf-8"))
+    for lang in langs:
+        if lang in x1_stats["natural_borrowed_rate"]:
+            stats["natural_borrowed_rate"][lang] = x1_stats["natural_borrowed_rate"][lang]
+        else:
+            c = Counter(i["label"] for i in extract_candidates(lang)[0])
+            stats["natural_borrowed_rate"][lang] = round(c.get("alıntı", 0) / max(1, sum(c.values())), 4)
+    if dry:
+        return stats
+    text = _jsonl(chosen)
+    checksum = hashlib.sha256(text.encode("utf-8")).hexdigest()
+    seal_path = out_dir / R3_SEAL
+    if seal_path.exists() and not force:
+        old = json.loads(seal_path.read_text(encoding="utf-8"))
+        if old.get("checksum") != checksum:
+            raise SystemExit("SEAL_r3 farklı: R3 zaten mühürlü ve içerik değişti (--force bilerek)")
+    path = out_dir / R3_FILE
+    if not path.exists() or path.read_text(encoding="utf-8") != text:
+        path.write_text(text, encoding="utf-8")
+    (out_dir / R3_STATS).write_text(json.dumps(stats, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    sealed_at = datetime.now(UTC).isoformat(timespec="seconds")
+    if seal_path.exists():
+        old = json.loads(seal_path.read_text(encoding="utf-8"))
+        if old.get("checksum") == checksum:
+            sealed_at = old.get("sealed_at", sealed_at)
+    seal = {
+        "_schema": "xturkic-borrowing-gold-r3-seal/v1",
+        "file": R3_FILE,
+        "count": len(chosen),
+        "checksum": checksum,
+        "x1_seal_checksums": json.loads((out_dir / "SEAL.json").read_text(encoding="utf-8"))["checksums"],
+        "sources": {
+            "x1_languages": list(admitted_languages()),
+            "new_languages": [lang for lang in R3_NEW_LANGUAGES if lang in langs],
+            "dumps": {
+                lang: file_sha256(LEXICON_DIR / f"{lang}.jsonl.gz") for lang in langs
+            },
+        },
+        "code_commit": _git_head(),
+        "sealed_at": sealed_at,
+        "note": (
+            "R3 yalnız commit edilmiş PREREG_<ad>.md ile BİR KEZ açılır. X1 bölümlerinde "
+            "(test dahil) bulunan hiçbir etimon grubu R3'te yok (bellekte yeniden hesaplandı)."
+        ),
+    }
+    seal_text = json.dumps(seal, ensure_ascii=False, indent=2) + "\n"
+    if not seal_path.exists() or seal_path.read_text(encoding="utf-8") != seal_text:
+        seal_path.write_text(seal_text, encoding="utf-8")
+    return stats
+
+
+def load_r3(out_dir: Path = XTURKIC_DIR) -> list[dict[str, Any]]:
+    path = out_dir / R3_FILE
+    seal = json.loads((out_dir / R3_SEAL).read_text(encoding="utf-8"))
+    if file_sha256(path) != seal["checksum"]:
+        raise RuntimeError("r3.jsonl mühürle uyuşmuyor")
+    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+
+
+def r3_audit_sample(pool: list[dict[str, Any]], langs: tuple[str, ...] = R3_NEW_LANGUAGES,
+                    per_cell: int = AUDIT_PER_CELL) -> list[dict[str, Any]]:
+    """Q4 (R3, yeni diller): dil × sınıf başına ``per_cell`` madde.
+
+    ⚠️ Örneklem R3 HAVUZUNDAN (dengeleme öncesi) çekilir, motor çıktısı
+    görülmeden; yalnız etiket kalitesi içindir (kanıt kartı = altın etiket +
+    şablon + metin). R3'ün değerlendirme açılışı (motor kararları) değildir.
+    """
+    cells: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
+    for item in pool:
+        if item["lang"] in langs:
+            cells[(item["lang"], item["label"])].append(item)
+    out = []
+    for key in sorted(cells):
+        ordered = sorted(cells[key], key=lambda i: _hash01(f"{SPLIT_SALT}:r3audit:{i['id']}"))
+        out.extend(ordered[:per_cell])
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Türk dilleri arası bağımsız alıntı altını")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -838,7 +1213,17 @@ def main() -> int:
     sub.add_parser("audit")
     sub.add_parser("quality")
     sub.add_parser("verify")
+    b3 = sub.add_parser("build-r3", help="X5: R3 bölümü (ayrı dosya + ayrı mühür)")
+    b3.add_argument("--cap", type=int, default=R3_CAP_PER_LANG_CLASS)
+    b3.add_argument("--dry", action="store_true")
+    b3.add_argument("--force", action="store_true")
     args = ap.parse_args()
+    if args.cmd == "build-r3":
+        stats = build_r3(cap=args.cap, dry=args.dry, force=args.force)
+        print(json.dumps({k: stats[k] for k in ("total", "by_lang_label", "by_source", "donor_macro",
+                                                 "etymon_groups", "pool_before_balance")},
+                         ensure_ascii=False, indent=1))
+        return 0
     if args.cmd == "build":
         stats = build(force=args.force)
         print(json.dumps({k: stats[k] for k in ("total", "by_split", "by_lang_label", "donor_macro", "hard_borrowed")},
