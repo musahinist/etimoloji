@@ -1,0 +1,405 @@
+{
+  "_schema": "xturkic-borrowing-gold-stats/v1",
+  "total": 3430,
+  "by_split": {
+    "r1": 684,
+    "r2": 684,
+    "test": 683,
+    "tune": 1379
+  },
+  "by_split_lang_label": {
+    "tune": {
+      "kk": {
+        "alıntı": 100,
+        "miras": 100
+      },
+      "ky": {
+        "alıntı": 100,
+        "miras": 100
+      },
+      "tt": {
+        "alıntı": 79,
+        "miras": 100
+      },
+      "ba": {
+        "alıntı": 100,
+        "miras": 100
+      },
+      "uz": {
+        "alıntı": 100,
+        "miras": 100
+      },
+      "ug": {
+        "alıntı": 100,
+        "miras": 100
+      },
+      "tk": {
+        "alıntı": 100,
+        "miras": 100
+      }
+    },
+    "r1": {
+      "kk": {
+        "alıntı": 50,
+        "miras": 50
+      },
+      "ky": {
+        "alıntı": 50,
+        "miras": 50
+      },
+      "tt": {
+        "alıntı": 36,
+        "miras": 50
+      },
+      "ba": {
+        "alıntı": 50,
+        "miras": 50
+      },
+      "uz": {
+        "alıntı": 50,
+        "miras": 50
+      },
+      "ug": {
+        "alıntı": 50,
+        "miras": 50
+      },
+      "tk": {
+        "alıntı": 50,
+        "miras": 48
+      }
+    },
+    "r2": {
+      "kk": {
+        "alıntı": 50,
+        "miras": 50
+      },
+      "ky": {
+        "alıntı": 50,
+        "miras": 50
+      },
+      "tt": {
+        "alıntı": 39,
+        "miras": 50
+      },
+      "ba": {
+        "alıntı": 50,
+        "miras": 50
+      },
+      "uz": {
+        "alıntı": 50,
+        "miras": 50
+      },
+      "ug": {
+        "alıntı": 50,
+        "miras": 50
+      },
+      "tk": {
+        "alıntı": 50,
+        "miras": 45
+      }
+    },
+    "test": {
+      "kk": {
+        "alıntı": 50,
+        "miras": 50
+      },
+      "ky": {
+        "alıntı": 45,
+        "miras": 50
+      },
+      "tt": {
+        "alıntı": 38,
+        "miras": 50
+      },
+      "ba": {
+        "alıntı": 50,
+        "miras": 50
+      },
+      "uz": {
+        "alıntı": 50,
+        "miras": 50
+      },
+      "ug": {
+        "alıntı": 50,
+        "miras": 50
+      },
+      "tk": {
+        "alıntı": 50,
+        "miras": 50
+      }
+    }
+  },
+  "by_lang_label": {
+    "kk": {
+      "alıntı": 250,
+      "miras": 250
+    },
+    "ky": {
+      "alıntı": 245,
+      "miras": 250
+    },
+    "tt": {
+      "alıntı": 192,
+      "miras": 250
+    },
+    "ba": {
+      "alıntı": 250,
+      "miras": 250
+    },
+    "uz": {
+      "alıntı": 250,
+      "miras": 250
+    },
+    "ug": {
+      "alıntı": 250,
+      "miras": 250
+    },
+    "tk": {
+      "alıntı": 250,
+      "miras": 243
+    }
+  },
+  "donor_macro": {
+    "ru": 446,
+    "fa": 453,
+    "ar": 683,
+    "mn": 84,
+    "diğer": 21
+  },
+  "donor_macro_by_lang": {
+    "kk": {
+      "ru": 125,
+      "fa": 46,
+      "mn": 49,
+      "ar": 28,
+      "diğer": 2
+    },
+    "ky": {
+      "fa": 111,
+      "ru": 76,
+      "ar": 40,
+      "mn": 14,
+      "diğer": 4
+    },
+    "tt": {
+      "fa": 57,
+      "ar": 98,
+      "ru": 32,
+      "diğer": 4,
+      "mn": 1
+    },
+    "ba": {
+      "ru": 52,
+      "fa": 85,
+      "ar": 107,
+      "mn": 5,
+      "diğer": 1
+    },
+    "uz": {
+      "ar": 162,
+      "ru": 57,
+      "fa": 30,
+      "diğer": 1
+    },
+    "ug": {
+      "ru": 59,
+      "mn": 9,
+      "fa": 35,
+      "ar": 139,
+      "diğer": 8
+    },
+    "tk": {
+      "ar": 109,
+      "fa": 89,
+      "ru": 45,
+      "mn": 6,
+      "diğer": 1
+    }
+  },
+  "hard_borrowed": {
+    "kk": 127,
+    "ky": 161,
+    "tt": 90,
+    "ba": 188,
+    "uz": 99,
+    "ug": 80,
+    "tk": 137
+  },
+  "candidates_before_balance": {
+    "kk": {
+      "alıntı": 2754,
+      "miras": 829
+    },
+    "ky": {
+      "miras": 677,
+      "alıntı": 262
+    },
+    "tt": {
+      "miras": 370,
+      "alıntı": 192
+    },
+    "ba": {
+      "miras": 772,
+      "alıntı": 340
+    },
+    "uz": {
+      "alıntı": 1232,
+      "miras": 304
+    },
+    "ug": {
+      "alıntı": 1228,
+      "miras": 530
+    },
+    "tk": {
+      "alıntı": 574,
+      "miras": 277
+    }
+  },
+  "natural_borrowed_rate": {
+    "kk": 0.7686,
+    "ky": 0.279,
+    "tt": 0.3416,
+    "ba": 0.3058,
+    "uz": 0.8021,
+    "ug": 0.6985,
+    "tk": 0.6745
+  },
+  "exclusions": {
+    "kk": {
+      "_kabul": 3583,
+      "aile_dışı_der": 18,
+      "anlam_ipucu_K3": 59,
+      "aracılı_alıntı": 1,
+      "başka_alıntı_türü": 1,
+      "belirsiz": 5,
+      "etimoloji_şablonu_yok": 7202,
+      "form_of": 15,
+      "melez_türetme": 36,
+      "türk_içi_alıntı": 22,
+      "yalnız_der": 1696,
+      "çekince_metni": 210,
+      "çelişen_eşadlı": 48,
+      "çelişen_şablon": 1,
+      "çok_etimonlu": 64,
+      "çok_sözcüklü_veya_kısa": 167,
+      "öyküntü": 29,
+      "özel_ad": 200
+    },
+    "ky": {
+      "_kabul": 939,
+      "aile_dışı_der": 1,
+      "anlam_ipucu_K3": 14,
+      "belirsiz": 1,
+      "etimoloji_şablonu_yok": 2668,
+      "form_of": 3,
+      "melez_türetme": 6,
+      "türk_içi_alıntı": 24,
+      "yalnız_der": 205,
+      "çekince_metni": 20,
+      "çelişen_eşadlı": 7,
+      "çelişen_şablon": 1,
+      "çok_etimonlu": 20,
+      "çok_sözcüklü_veya_kısa": 44,
+      "öyküntü": 25,
+      "özel_ad": 87
+    },
+    "tt": {
+      "_kabul": 562,
+      "anlam_ipucu_K3": 13,
+      "anlamsız": 2,
+      "başka_alıntı_türü": 33,
+      "belirsiz": 1,
+      "etimoloji_şablonu_yok": 1235,
+      "form_of": 7,
+      "melez_türetme": 5,
+      "türk_içi_alıntı": 2,
+      "yalnız_der": 88,
+      "çekince_metni": 6,
+      "çelişen_eşadlı": 4,
+      "çok_etimonlu": 4,
+      "çok_sözcüklü_veya_kısa": 29,
+      "öyküntü": 4,
+      "özel_ad": 34
+    },
+    "ba": {
+      "_kabul": 1112,
+      "aile_dışı_der": 9,
+      "anlam_ipucu_K3": 25,
+      "anlamsız": 2,
+      "aracılı_alıntı": 1,
+      "başka_alıntı_türü": 18,
+      "belirsiz": 7,
+      "etimoloji_şablonu_yok": 1251,
+      "form_of": 2,
+      "melez_türetme": 10,
+      "türk_içi_alıntı": 18,
+      "yalnız_der": 518,
+      "çekince_metni": 89,
+      "çelişen_eşadlı": 6,
+      "çelişen_şablon": 1,
+      "çok_etimonlu": 24,
+      "çok_sözcüklü_veya_kısa": 58,
+      "öyküntü": 12,
+      "özel_ad": 122
+    },
+    "uz": {
+      "_kabul": 1536,
+      "aile_dışı_der": 323,
+      "anlam_ipucu_K3": 52,
+      "anlamsız": 1,
+      "aracılı_alıntı": 3,
+      "belirsiz": 2,
+      "etimoloji_şablonu_yok": 2091,
+      "form_of": 23,
+      "melez_türetme": 82,
+      "türk_içi_alıntı": 5,
+      "yalnız_der": 121,
+      "çekince_metni": 21,
+      "çelişen_eşadlı": 2,
+      "çok_etimonlu": 8,
+      "çok_sözcüklü_veya_kısa": 40,
+      "öyküntü": 9,
+      "özel_ad": 117
+    },
+    "ug": {
+      "_kabul": 1758,
+      "aile_dışı_der": 295,
+      "anlam_ipucu_K3": 24,
+      "aracılı_alıntı": 1,
+      "belirsiz": 2,
+      "ek_veya_simge": 11,
+      "etimoloji_şablonu_yok": 1197,
+      "form_of": 7,
+      "melez_türetme": 43,
+      "türk_içi_alıntı": 4,
+      "yalnız_der": 642,
+      "çekince_metni": 23,
+      "çelişen_eşadlı": 12,
+      "çok_etimonlu": 10,
+      "çok_sözcüklü_veya_kısa": 13,
+      "öyküntü": 7,
+      "özel_ad": 103
+    },
+    "tk": {
+      "_kabul": 851,
+      "aile_dışı_der": 3,
+      "anlam_ipucu_K3": 15,
+      "belirsiz": 3,
+      "etimoloji_şablonu_yok": 838,
+      "form_of": 2,
+      "melez_türetme": 28,
+      "türk_içi_alıntı": 5,
+      "yalnız_der": 161,
+      "çekince_metni": 11,
+      "çelişen_eşadlı": 21,
+      "çok_etimonlu": 28,
+      "çok_sözcüklü_veya_kısa": 26,
+      "öyküntü": 6,
+      "özel_ad": 29
+    }
+  },
+  "etymon_groups": 2233,
+  "excluded_languages": {
+    "tyv": "Q4 (LLM ön-etiketi): tyv/alıntı 16/17 doğru, Wilson alt 0,730 < 0,80; ayar bölümünde genişletilecek başka tyv alıntısı yok"
+  }
+}

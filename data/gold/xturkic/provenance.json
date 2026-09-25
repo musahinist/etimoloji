@@ -1,0 +1,116 @@
+{
+  "_schema": "xturkic-borrowing-gold-provenance/v1",
+  "source": "kaikki.org en (Wiktionary) — etymology_templates",
+  "dumps": {
+    "kk": {
+      "file": "data/lexicons/kk.jsonl.gz",
+      "sha256": "9be0bd816bbfc860d7b5457431e5ce6e0da612d53cdf66992298a2edb63208b8",
+      "url": "https://kaikki.org/dictionary/Kazakh/kaikki.org-dictionary-Kazakh.jsonl",
+      "retrieved_at": "2026-08-27T00:53:30+00:00"
+    },
+    "ky": {
+      "file": "data/lexicons/ky.jsonl.gz",
+      "sha256": "7857c0f209e133147d53fb151bfe0431f805905e69029dc9d5f8d724d60ccf5a",
+      "url": "https://kaikki.org/dictionary/Kyrgyz/kaikki.org-dictionary-Kyrgyz.jsonl",
+      "retrieved_at": "2026-08-27T00:53:32+00:00"
+    },
+    "tt": {
+      "file": "data/lexicons/tt.jsonl.gz",
+      "sha256": "1cc7a88fcc23946a68131c0f20c45a6b4d86ef405b24db4ca576538fc391ae2d",
+      "url": "https://kaikki.org/dictionary/Tatar/kaikki.org-dictionary-Tatar.jsonl",
+      "retrieved_at": "2026-08-27T00:53:32+00:00"
+    },
+    "ba": {
+      "file": "data/lexicons/ba.jsonl.gz",
+      "sha256": "d9f7624a42551ecc745b2ae7f7fb8f0165a0533e6b6446a67e21960b35944462",
+      "url": "https://kaikki.org/dictionary/Bashkir/kaikki.org-dictionary-Bashkir.jsonl",
+      "retrieved_at": "2026-08-27T00:53:33+00:00"
+    },
+    "uz": {
+      "file": "data/lexicons/uz.jsonl.gz",
+      "sha256": "4755ac7580494d096eb9e5941644d53055f6e4ad8a9ba6b7b452447cd9d5844f",
+      "url": "https://kaikki.org/dictionary/Uzbek/kaikki.org-dictionary-Uzbek.jsonl",
+      "retrieved_at": "2026-08-27T00:53:36+00:00"
+    },
+    "ug": {
+      "file": "data/lexicons/ug.jsonl.gz",
+      "sha256": "ccc9a73d490a517efffe72a09b6f9b39569ac71dca3edc11229b94dd1ba42913",
+      "url": "https://kaikki.org/dictionary/Uyghur/kaikki.org-dictionary-Uyghur.jsonl",
+      "retrieved_at": "2026-08-27T00:53:37+00:00"
+    },
+    "tk": {
+      "file": "data/lexicons/tk.jsonl.gz",
+      "sha256": "6806857b74416790405112b8b14584b858f6fb003feadc2b8baf173b1bf71bf3",
+      "url": "https://kaikki.org/dictionary/Turkmen/kaikki.org-dictionary-Turkmen.jsonl",
+      "retrieved_at": "2026-08-27T00:53:28+00:00"
+    }
+  },
+  "code_commit": "8f60d137682bec60ea42486d98d7ed08706971f0",
+  "salt": "xturkic-borrowing-gold-v1",
+  "ratios": {
+    "tune": 0.4,
+    "r1": 0.2,
+    "r2": 0.2,
+    "test": 0.2
+  },
+  "cap_per_lang_class": 250,
+  "max_russian_share": 0.5,
+  "donor_sets": {
+    "kk": [
+      "ru",
+      "ar",
+      "fa",
+      "mn"
+    ],
+    "tyv": [
+      "ru",
+      "ar",
+      "fa",
+      "mn"
+    ],
+    "ky": [
+      "ru",
+      "ar",
+      "fa",
+      "mn"
+    ],
+    "tt": [
+      "ru",
+      "ar",
+      "fa",
+      "mn"
+    ],
+    "ba": [
+      "ru",
+      "ar",
+      "fa",
+      "mn"
+    ],
+    "uz": [
+      "ar",
+      "fa",
+      "ru"
+    ],
+    "ug": [
+      "ar",
+      "fa",
+      "ru"
+    ],
+    "tk": [
+      "ar",
+      "fa",
+      "ru"
+    ]
+  },
+  "excluded_languages": {
+    "tyv": "Q4 (LLM ön-etiketi): tyv/alıntı 16/17 doğru, Wilson alt 0,730 < 0,80; ayar bölümünde genişletilecek başka tyv alıntısı yok"
+  },
+  "rules": {
+    "alıntı": "ilk halka bor|bor+|lbor|slbor, verici Türk dışı; Türk vericili inh yok",
+    "miras": ">=1 inh, bütün halkalar Türk, alıntı şablonu yok",
+    "plan_ekleri": [
+      "çekince_metni dışlanır",
+      "melez_türetme dışlanır"
+    ]
+  }
+}

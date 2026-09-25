@@ -1,0 +1,30 @@
+{
+  "_schema": "xturkic-borrowing-gold-seal/v1",
+  "salt": "xturkic-borrowing-gold-v1",
+  "ratios": {
+    "tune": 0.4,
+    "r1": 0.2,
+    "r2": 0.2,
+    "test": 0.2
+  },
+  "counts": {
+    "r1": 684,
+    "r2": 684,
+    "test": 683,
+    "tune": 1379
+  },
+  "files": {
+    "tune": "tune.jsonl",
+    "r1": "r1.jsonl",
+    "r2": "r2.jsonl",
+    "test": "test.frozen.jsonl"
+  },
+  "checksums": {
+    "tune": "35db60bcbafbbd9639ea3a8fb68efdd8bf365bc588042ee62bcacbce80b65c10",
+    "r1": "81f3436a46832eed0a7b6d5f40c16563a4ff85fc2bf99d7d60bb9f44d70df433",
+    "r2": "83104e50ebf63d48e1bc2a0a55637bfa53cc0dc70119ac129bf069e611409f19",
+    "test": "49215488d87b9883812176be1e6f38d3218adf0cc8aec0dc03f392c3252ade48"
+  },
+  "sealed_at": "2026-09-25T14:15:48+00:00",
+  "note": "test.frozen.jsonl geliştirme boyunca açılmaz (yalnız dalga sonunda --final-report). R1/R2 yalnız commit edilmiş PREREG_<ad>.md ile, birer kez açılır."
+}
