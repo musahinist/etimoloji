@@ -92,7 +92,7 @@ class TestDataEntrypoints(CliCase):
 
         with TemporaryDirectory() as tmp:
             with mock.patch("engine.evaluation.report.EVAL_DIR", Path(tmp)):
-                self.run_main(calibration, ["--split", "all"])
+                self.run_main(calibration, ["--split", "train+dev"])  # "all" test bölümünü açar (270113f)
 
     def test_correspondence_learning_runs(self):
         from engine.nlp import cognate_prediction
