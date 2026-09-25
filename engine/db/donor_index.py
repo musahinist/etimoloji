@@ -259,6 +259,9 @@ def content_tokens(sense: str) -> list[str]:
 #: engine_trained F 0,6565 (≥0,6482 tuttu) ama Türkçe F 0,8735 < 0,8773
 #: (fp 18 -> 27; tp 181 -> 183); arama yolu dev uyumu 129/135 (tuttu).
 #: Betik/çıktı: data/cache/work/a2/ (guard.py on borrowing|replay).
+#: Etiket adımından ayırmak (A2 yalnız alıntı gücünde) kurtarmaz: düşen koruma
+#: eval-borrowing F'dir ve o yalnız güç yolunu ölçer. Etiket adımında da A2
+#: zararlı: tr_donor (ed79519) verici etiketi 0,427 -> 0,365 (p=0,022).
 CLEAN_DEFAULT = False
 
 #: (c) sıralı sorguda süzgeç öncesi okunan en çok satır.
