@@ -451,3 +451,66 @@ class TestSenseBridge9l(unittest.TestCase):
                     mock.patch.object(dp, "EXACT_MATCH_EPS", 0.0):
                 result = dp.attribute_donor("arma", "coat of arms", languages=["ar", "it"])
             self.assertEqual(result.lang_code, "it")
+
+
+class TestFrenchArabicGuard9m(unittest.TestCase):
+    """9m: R1 (H1'den belirsiz sonek çıkarma), R2 (Arapça iskelet koruması)."""
+
+    def setUp(self):
+        dp.reset_cache()
+        if dp._pairwise() is None:
+            self.skipTest("LingPy kurulu değil")
+
+    def tearDown(self):
+        dp.reset_cache()
+
+    def test_defaults_off(self):
+        self.assertEqual(dp.WESTERN_SUFFIX_DROP, ())
+        self.assertFalse(dp.FRENCH_ARABIC_GUARD)
+
+    def test_suffix_drop(self):
+        self.assertEqual(dp._french_suffix_pair("dinamik"), ("ikue",))
+        with mock.patch.object(dp, "WESTERN_SUFFIX_DROP", ("ik",)):
+            self.assertEqual(dp._french_suffix_pair("dinamik"), ())
+            self.assertEqual(dp._french_suffix_pair("aktör"), ("eur",))
+
+    def _run(self, rows, comparison, guard, western=frozenset()):
+        with mock.patch.object(dp, "_index", lambda: _FakeIndex(rows)), \
+                mock.patch.object(dp, "_monget_entries", lambda: ()), \
+                mock.patch.object(dp, "FRENCH_RULE", "f2"), \
+                mock.patch.object(dp, "WESTERN_RULE", "h1"), \
+                mock.patch.object(dp, "FRENCH_ARABIC_GUARD", guard), \
+                mock.patch.object(dp, "FRENCH_ARABIC_GUARD_SKIP_WESTERN", True), \
+                mock.patch.object(dp, "dump_loans",
+                                  lambda lang, phrase: western if lang == "ar" else frozenset()), \
+                mock.patch.object(dp, "_null_distance", lambda length, pool: 0.0):
+            return dp.attribute_donor(comparison, "x", languages=["ar", "fa", "fr", "it"])
+
+    def test_skeleton_match_blocks_suffix_rule(self):
+        rows = [_row("it", "tattico", "tatiko"), _row("fr", "tactique", "taktikue"),
+                _row("ar", "تطبيق", "tatbik")]
+        self.assertEqual(self._run(rows, "tatbik", False).lang_code, "fr")
+        self.assertEqual(self._run(rows, "tatbik", True).lang_code, "ar")
+
+    def test_western_arabic_candidate_does_not_guard(self):
+        rows = [_row("it", "tattico", "tatiko"), _row("fr", "tactique", "taktikue"),
+                _row("ar", "تطبيق", "tatbik", gloss="x")]
+        western = frozenset({("تطبيق", "x")})
+        self.assertEqual(self._run(rows, "tatbik", True, western).lang_code, "fr")
+
+    def test_g2_pool_winner_yields_to_arabic_skeleton(self):
+        class _SharedWithoutFrench(_FakeIndex):
+            def by_sense(self, sense, languages=None, limit=200, per_language=False):
+                if languages == ["fr"]:
+                    return [r for r in self.rows if r["lang_code"] == "fr"]
+                return [r for r in self.rows if r["lang_code"] != "fr"]
+
+        rows = [_row("ar", "معذرة", "madira"), _row("fr", "mazure", "mazure")]
+        for guard, expected in ((False, "fr"), (True, "ar")):
+            with mock.patch.object(dp, "_index", lambda: _SharedWithoutFrench(rows)), \
+                    mock.patch.object(dp, "_monget_entries", lambda: ()), \
+                    mock.patch.object(dp, "FRENCH_RULE", "g2"), \
+                    mock.patch.object(dp, "FRENCH_ARABIC_GUARD", guard), \
+                    mock.patch.object(dp, "dump_loans", lambda lang, phrase: frozenset()), \
+                    mock.patch.object(dp, "_null_distance", lambda length, pool: 0.0):
+                self.assertEqual(dp.attribute_donor("mazur", "x", languages=["ar", "fr"]).lang_code, expected)

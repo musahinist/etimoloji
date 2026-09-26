@@ -1,0 +1,34 @@
+{
+ "n": 600,
+ "blind_label_columns_nonnull": 0,
+ "gloss_identical_blind_full": 600,
+ "labels_identical_blind_full": 600,
+ "gloss_with_language_hint": [
+  [
+   "hasır",
+   "mat woven from reeds, rushes or raffia"
+  ],
+  [
+   "sahtiyan",
+   "morocco, saffian, a soft leather made from goatskins or sheepskins which is later tanned and dyed"
+  ],
+  [
+   "melas",
+   "molasses, a viscous, sweet syrup obtained from the refining of sugar cane or sugar beet"
+  ]
+ ],
+ "pool_languages": [
+  "ar",
+  "el",
+  "evn",
+  "fa",
+  "fr",
+  "hy",
+  "it",
+  "mn",
+  "ru"
+ ],
+ "fetchers_loaded": [],
+ "network": "socket.connect engelli",
+ "pass": true
+}

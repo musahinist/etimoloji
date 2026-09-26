@@ -1,0 +1,145 @@
+{
+ "tr": {
+  "n_ar": 148,
+  "lost": [
+   {
+    "word": "badire",
+    "base": "ar:بحيرة/bahira/0.244/",
+    "prod": "fr:parterre/parterre/0.137/",
+    "cause": "G2 ayrı Fransızca havuzu (kazanan doğrudan havuzdan)",
+    "r2": "fr:parterre/parterre/0.137/"
+   },
+   {
+    "word": "eşhas",
+    "base": "ar:شهد/şuhhad/0.431/",
+    "prod": "fr:exos/ehos/0.144/",
+    "cause": "G2 ayrı Fransızca havuzu (kazanan doğrudan havuzdan)",
+    "r2": "ar:شهد/şuhhad/0.431/"
+   },
+   {
+    "word": "mazur",
+    "base": "ar:مهر/mahara/0.216/",
+    "prod": "fr:essayer/essayer/0.218/",
+    "cause": "G2 ayrı Fransızca havuzu (kazanan doğrudan havuzdan)",
+    "r2": "ar:معذرة/madira/0.310/"
+   },
+   {
+    "word": "menfaat",
+    "base": "ar:انفرد/infarada/0.372/",
+    "prod": "fr:bienfait/bienfait/0.220/",
+    "cause": "G2 ayrı Fransızca havuzu (kazanan doğrudan havuzdan)",
+    "r2": "fr:bienfait/bienfait/0.220/"
+   },
+   {
+    "word": "sultan",
+    "base": "ar:صلى/salla/0.367/",
+    "prod": "fr:question/kuestion/0.380/",
+    "cause": "G2 ayrı Fransızca havuzu (kazanan doğrudan havuzdan)",
+    "r2": "fr:question/kuestion/0.380/"
+   },
+   {
+    "word": "tahvilat",
+    "base": "ar:عاهرات/ahirat/0.341/",
+    "prod": "fr:excellent/ehcellent/0.376/",
+    "cause": "G2 ayrı Fransızca havuzu (kazanan doğrudan havuzdan)",
+    "r2": "fr:excellent/ehcellent/0.376/"
+   },
+   {
+    "word": "velinimet",
+    "base": "ar:أعلن/alana/0.464/",
+    "prod": "fr:vouvoiement/vouvoiement/0.422/",
+    "cause": "G2 ayrı Fransızca havuzu (kazanan doğrudan havuzdan)",
+    "r2": "fr:vouvoiement/vouvoiement/0.422/"
+   }
+  ],
+  "gained": []
+ },
+ "tdk_ayar": {
+  "n_ar": 60,
+  "lost": [
+   {
+    "word": "askerî",
+    "base": "ar:القاهرة/alkahira/0.412/",
+    "prod": "fr:square/skuare/0.214/",
+    "cause": "G2 ayrı Fransızca havuzu (kazanan doğrudan havuzdan)",
+    "r2": "ar:ظهر/zahara/0.407/"
+   },
+   {
+    "word": "imza",
+    "base": "ar:عيسى/isa/0.234/",
+    "prod": "fr:impose/impose/0.284/",
+    "cause": "G2 ayrı Fransızca havuzu (kazanan doğrudan havuzdan)",
+    "r2": "fr:impose/impose/0.284/"
+   },
+   {
+    "word": "itaat",
+    "base": "ar:ذات/dat/0.259/",
+    "prod": "fr:étant/etant/0.196/",
+    "cause": "G2 ayrı Fransızca havuzu (kazanan doğrudan havuzdan)",
+    "r2": "fr:étant/etant/0.196/"
+   },
+   {
+    "word": "kudret",
+    "base": "ar:قطر/katar/0.377/",
+    "prod": "fr:Madrid/madrid/0.240/",
+    "cause": "G2 ayrı Fransızca havuzu (kazanan doğrudan havuzdan)",
+    "r2": "ar:قطر/katar/0.377/"
+   }
+  ],
+  "gained": []
+ },
+ "tettl_ayar": {
+  "n_ar": 60,
+  "lost": [
+   {
+    "word": "fetret",
+    "base": "ar:فخذ/fakid/0.398/",
+    "prod": "fr:être/etre/0.304/",
+    "cause": "G2 ayrı Fransızca havuzu (kazanan doğrudan havuzdan)",
+    "r2": "fr:être/etre/0.304/"
+   },
+   {
+    "word": "gurbet",
+    "base": "ar:قرد/karida/0.281/",
+    "prod": "fr:gourmet/gourmet/0.220/",
+    "cause": "G2 ayrı Fransızca havuzu (kazanan doğrudan havuzdan)",
+    "r2": "ar:هرب/haraba/0.511/"
+   },
+   {
+    "word": "tevatür",
+    "base": "ar:طوق/tavvaka/0.366/",
+    "prod": "fr:épater/epater/0.212/",
+    "cause": "G2 ayrı Fransızca havuzu (kazanan doğrudan havuzdan)",
+    "r2": "fr:épater/epater/0.212/"
+   }
+  ],
+  "gained": []
+ },
+ "9l": {
+  "n_ar": 130,
+  "lost": [
+   {
+    "word": "bilhassa",
+    "base": "ar:بسباس/basbas/0.414/",
+    "prod": "fr:filasse/filasse/0.243/",
+    "cause": "G2 ayrı Fransızca havuzu (kazanan doğrudan havuzdan)",
+    "r2": "fr:filasse/filasse/0.243/"
+   },
+   {
+    "word": "defaat",
+    "base": "ar:آباد/abad/0.303/",
+    "prod": "fr:avant/avant/0.312/",
+    "cause": "G2 ayrı Fransızca havuzu (kazanan doğrudan havuzdan)",
+    "r2": "fr:avant/avant/0.312/"
+   },
+   {
+    "word": "vükela",
+    "base": "ar:وزراء/vuzara/0.333/",
+    "prod": "fr:voyageurs/voyageurs/0.334/",
+    "cause": "G2 ayrı Fransızca havuzu (kazanan doğrudan havuzdan)",
+    "r2": "fr:voyageurs/voyageurs/0.334/"
+   }
+  ],
+  "gained": []
+ }
+}

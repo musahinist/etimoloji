@@ -925,10 +925,12 @@ def attribute_donor(
     sense = bridged_sense(comparison, sense)
     skip = LABEL_FORM_FILTER_LANGS if LABEL_FORM_FILTER else None
     skip_kw = {"skip_form_of": skip} if skip else {}
+    shared: set[tuple[str, str, str]] | None = None
     if FRENCH_RULE in ("f1", "f2"):
         rows = index.by_sense(sense, languages=languages, limit=max_candidates, per_language=True, **skip_kw)
     else:
         rows = index.by_sense(sense, languages=languages, limit=max_candidates, **skip_kw)
+        shared = {(r["lang_code"], r["word"], r["comparison"]) for r in rows}
         if FRENCH_RULE in ("g1", "g2") and (languages is None or FRENCH in languages):
             seen = {(r["lang_code"], r["word"], r["comparison"]) for r in rows}
             rows = list(rows) + [r for r in index.by_sense(sense, languages=[FRENCH], limit=max_candidates)
@@ -1033,8 +1035,21 @@ def attribute_donor(
                 ar_pool = tuple(sorted({r["comparison"] for r in groups[ARABIC] if r["comparison"]}))
                 null = _null_distance(len(comparison), ar_pool)
             lang = ARABIC
+    # 9m R2: Arapça ünsüz iskeleti sorguyla eşleşiyorsa Fransızca kuralları (G2 ayrı havuzu,
+    # Fransızca aracılı, H1) devreye girmez.
+    guard = None
+    if switched is None and FRENCH_ARABIC_GUARD and (languages is None or ARABIC in languages):
+        guard = _arabic_skeleton_match(comparison, groups.get(ARABIC) or [])
+    if guard is not None and lang == FRENCH and shared is not None \
+            and (row["lang_code"], row["word"], row["comparison"]) not in shared:
+        # Fransızca kazanan yalnız G2'nin ayrı havuzundan geldi -> Arapça iskelet eşi.
+        row, distance = guard
+        ar_pool = tuple(sorted({r["comparison"] for r in groups[ARABIC] if r["comparison"]}))
+        null = _null_distance(len(comparison), ar_pool)
+        lang, via = ARABIC, ""
+        switched = guard
     # Fransızca aracılı: Arapça kuralı (D1) önce; ateşlediyse dokunulmaz.
-    if switched is None and FRENCH_RULE in ("f2", "g2") and (languages is None or FRENCH in languages):
+    if switched is None and guard is None and FRENCH_RULE in ("f2", "g2") and (languages is None or FRENCH in languages):
         french = _french_via(comparison, lang, row, distance, groups.get(FRENCH) or [])
         if french is not None:
             via = lang
@@ -1044,7 +1059,8 @@ def attribute_donor(
                 null = _null_distance(len(comparison), fr_pool)
             lang = FRENCH
     # Batı alıntısında Fransızca önceliği (9f): D1 ve G2'den sonra.
-    if switched is None and lang != FRENCH and WESTERN_RULE != "off" and (languages is None or FRENCH in languages):
+    if switched is None and guard is None and lang != FRENCH and WESTERN_RULE != "off" \
+            and (languages is None or FRENCH in languages):
         french = _french_prior(comparison, lang, distance, groups.get(FRENCH) or [])
         if french is not None:
             row, distance = french
@@ -1194,6 +1210,36 @@ def _arabic_via(comparison: str, lang: str, row: Any, arabic: list[Any]) -> tupl
     return None
 
 
+#: 9m R2 — Arapça iskelet koruması: sorgunun ünsüz iskeleti (:func:`_query_skeletons`,
+#: D2 mantığı) Arapça havuzdaki bir adayınkiyle aynıysa ve iskelet en az
+#: :data:`FRENCH_ARABIC_GUARD_MIN` ünsüzse Fransızca kuralları (G2'nin ayrı havuzundan
+#: gelen kazanan, Fransızca aracılı, H1 soneki) devreye girmez. Yalnız ETİKET.
+FRENCH_ARABIC_GUARD = False
+FRENCH_ARABIC_GUARD_MIN = 3
+#: "Güçlü" eşleşme: iskelet eşi Arapça aday sorguya en çok bu SCA uzaklığında (``None`` = sınırsız).
+FRENCH_ARABIC_GUARD_MAX: float | None = None
+#: Arapça dökümde kendisi Batı alıntısı olan aday (``from French/Italian/English``) sayılmaz
+#: (``kobalt`` ~ ``كوبالت``: Arapça da Batıdan almış).
+FRENCH_ARABIC_GUARD_SKIP_WESTERN = False
+
+
+def _arabic_skeleton_match(comparison: str, arabic: list[Any]) -> tuple[Any, float] | None:
+    """R2: sorguyla aynı ünsüz iskeletli en yakın Arapça aday (yoksa None)."""
+    skeletons = {s for s in _query_skeletons(comparison) if len(s) >= FRENCH_ARABIC_GUARD_MIN}
+    same = [r for r in arabic if r["comparison"] and consonant_skeleton(r["comparison"]) in skeletons]
+    if FRENCH_ARABIC_GUARD_SKIP_WESTERN:
+        western = dump_loans(ARABIC, "from french") | dump_loans(ARABIC, "from italian") \
+            | dump_loans(ARABIC, "from english")
+        same = [r for r in same if (r["word"], r["gloss"] or "") not in western]
+    if not same:
+        return None
+    best = min(same, key=lambda r: (label_distance(comparison, r["comparison"]), r["comparison"]))
+    distance = label_distance(comparison, best["comparison"])
+    if FRENCH_ARABIC_GUARD_MAX is not None and distance > FRENCH_ARABIC_GUARD_MAX:
+        return None
+    return best, distance
+
+
 # --- Fransızca havuzu ve Fransızca aracılı (9e) ---------------------------------
 
 FRENCH = "fr"
@@ -1296,8 +1342,15 @@ FRENCH_TIE_EPSILON = 0.05
 WESTERN_RULE = "h1"
 
 
+#: 9m R1 — H1'den çıkarılan Türkçe sonekler (Arapça/Farsça sözcüklerde de görülen
+#: belirsiz sonlar). ``()`` = H1'in tüm sonekleri.
+WESTERN_SUFFIX_DROP: tuple[str, ...] = ()
+
+
 def _french_suffix_pair(comparison: str) -> tuple[str, ...]:
     for turkish, french in FRENCH_SUFFIXES:
+        if turkish in WESTERN_SUFFIX_DROP:
+            continue
         if comparison.endswith(turkish) and len(comparison) > len(turkish) + 1:
             return french
     return ()
