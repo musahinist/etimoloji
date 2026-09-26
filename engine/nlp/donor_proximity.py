@@ -687,6 +687,14 @@ def bridged_sense(comparison: str, sense: str) -> str:
     return english_sense(comparison) or ottoman_sense(comparison) or sense
 
 
+def _sense_overlap(sense: str, gloss: str) -> int:
+    """Sorgu anlamının eşleşme sözcükleri ile verici anlamının ortak İÇERİK sözcüğü sayısı."""
+    from engine.db.donor_index import FUNCTION_WORDS, _sense_tokens, sense_tokens_for_match
+
+    shared = set(sense_tokens_for_match(sense)) & set(_sense_tokens(gloss))
+    return sum(1 for t in shared if t not in FUNCTION_WORDS)
+
+
 _IT_VOWEL = "aeiouöüı"
 
 
@@ -732,6 +740,15 @@ class DonorAttribution:
     #: alıntı (ör. Farsçadaki Arapça alıntı -> ``ar``, ``via="fa"``). Bkz.
     #: :data:`ARABIC_VIA_RULE`.
     via: str = ""
+    #: Şans denetimi (9n): kontrol kelimelerinin (:func:`_attribution_controls`) seçilen dilin
+    #: havuzuna en yakın mesafelerinden bu eşleşmeninkine eşit ya da küçük olanların payı.
+    #: ``0`` = hiçbir rastgele Türkçe biçim o havuzda bu kadar yakın bir şey bulamıyor.
+    chance_percentile: float | None = None
+    #: Sorgu anlamının eşleşme sözcükleriyle seçilen maddenin anlamı arasında ortak İÇERİK
+    #: sözcüğü sayısı (işlev sözcükleri hariç; "the", "one" eşleşmesi sayılmaz).
+    sense_overlap: int = 0
+    #: Seçilen biçimin ünsüz iskeleti sorgunun iskeletiyle aynı mı (:func:`consonant_skeleton`).
+    skeleton_match: bool = False
 
     @property
     def adjusted(self) -> float:
@@ -1068,7 +1085,13 @@ def attribute_donor(
             null = _null_distance(len(comparison), fr_pool)
             via = ""
             lang = FRENCH
+    final_pool = tuple(sorted({r["comparison"] for r in (groups.get(lang) or groups.get(raw_lang) or [])
+                               if r["comparison"]}))
+    profile = _control_profile(len(comparison), final_pool) if final_pool else ()
     return DonorAttribution(
+        chance_percentile=(sum(1 for d in profile if d <= distance) / len(profile)) if profile else None,
+        sense_overlap=_sense_overlap(sense, row["gloss"] or ""),
+        skeleton_match=consonant_skeleton(row["comparison"] or "") in _query_skeletons(comparison),
         lang_code=lang,
         word=row["word"],
         comparison=row["comparison"],
@@ -1388,3 +1411,109 @@ def _french_prior(comparison: str, lang: str, distance: float,
         if d <= distance + FRENCH_TIE_EPSILON:
             return row, d
     return None
+
+
+# --- Dürüst etiket: şans düzeyindeki eşleşmede biçim gösterilmez (9n) -----------------------
+
+#: 9n — şans düzeyindeki verici etiketinin gösterimi (ön kayıt ``data/cache/work/donor9n/PREREG.md``).
+#: ``off``: etiket ve en yakın biçim her zaman gösterilir (4.3.1). Öbürlerinde "kesin" olmayan
+#: (:func:`attribution_certain`) etikette verici BİÇİMİ gösterilmez ("yakın biçim bulunamadı") ve dil:
+#: ``a1`` — yalnız aile düzeyinde (:data:`DONOR_FAMILIES`: "Arapça ya da Farsça", "Batı dili");
+#: ``a2`` — doğal dağılım önseli + biçim ipuçları (:mod:`engine.nlp.donor_prior`), tek dil;
+#: ``a3`` — a2'nin sonsalıyla seçilen AİLE. Yalnız Türkçe verici kümesinde (``TURKISH_DONORS``)
+#: uygulanır (önsel Türkçenin); ``attribute_donor``un kendisi değişmez (Saha/xturkic aynı).
+DONOR_HONEST = "off"
+
+#: Kesin etiket: mesafe en çok bu, şans yüzdeliği 0 ve anlamda ortak içerik sözcüğü var ...
+HONEST_MAX_DISTANCE = 0.25
+#: ... ya da ünsüz iskeleti sorguyla aynı ve mesafe en çok bu (ortak içerik sözcüğüyle).
+HONEST_SKELETON_MAX = 0.35
+#: a2/a3'ün aday dilleri: biçim ipucu modelinde en az 100 eğitim sözcüğü olanlar
+#: (İtalyanca/Yunanca/Ermenice Vikisözlük maddeleri önceki altınlarda tükendi).
+HONEST_PRIOR_LANGS = ("ar", "fa", "fr")
+
+#: Aile düzeyi etiketler (dil kodu -> aile üyeleri, gösterim).
+DONOR_FAMILIES = {
+    "ar": (("ar", "fa"), "Arapça ya da Farsça"), "fa": (("ar", "fa"), "Arapça ya da Farsça"),
+    "fr": (("fr", "it"), "Batı dili (Fransızca ya da İtalyanca)"),
+    "it": (("fr", "it"), "Batı dili (Fransızca ya da İtalyanca)"),
+    "el": (("el", "hy"), "Yunanca ya da Ermenice"), "hy": (("el", "hy"), "Yunanca ya da Ermenice"),
+}
+
+
+def attribution_certain(attribution: DonorAttribution | None) -> bool:
+    """Etiketin gösterdiği biçim şans düzeyinin üstünde mi? (9n tanısında seçilen kural)"""
+    if attribution is None or attribution.sense_overlap < 1:
+        return False
+    if attribution.distance <= HONEST_MAX_DISTANCE and attribution.chance_percentile == 0:
+        return True
+    return attribution.skeleton_match and attribution.distance <= HONEST_SKELETON_MAX
+
+
+@dataclass(frozen=True)
+class HonestDonorLabel:
+    """Kullanıcıya gösterilen verici etiketi (9n)."""
+
+    #: Kesin etiket: dil + en yakın biçim gösterilir.
+    certain: bool
+    #: Tek dil kodu (kesin etikette ya da a2'de); aile etiketinde "".
+    lang_code: str
+    #: Aile etiketinde üyeler (a1/a3); öbür durumda ().
+    family: tuple[str, ...] = ()
+    #: ``yakınlık`` (en yakın biçim), ``önsel`` (a2), ``aile`` (a1), ``önsel-aile`` (a3).
+    basis: str = "yakınlık"
+    probability: float | None = None
+
+    @property
+    def code(self) -> str:
+        """Ölçüm kodu: tek dil kodu ya da ``"ar|fa"``."""
+        return self.lang_code or "|".join(self.family)
+
+    @property
+    def show_form(self) -> bool:
+        return self.certain
+
+    def text(self) -> str:
+        from engine.nlp.borrowing_chain import language_name
+
+        if self.family:
+            return DONOR_FAMILIES[self.family[0]][1]
+        return language_name(self.lang_code)
+
+    def describe(self, attribution: DonorAttribution) -> str:
+        if self.certain:
+            return attribution.describe()
+        why = "verici belirsiz — yakın biçim bulunamadı (en yakın aday şans düzeyinde)"
+        if self.basis == "önsel":
+            p = f" {self.probability:.2f}".replace(".", ",") if self.probability is not None else ""
+            return (f"muhtemelen {self.text()} (Türkçe alıntıların doğal dağılımı + biçim ipuçları,"
+                    f" olasılık{p}); {why}")
+        if self.basis == "önsel-aile":
+            return f"{self.text()} (doğal dağılım + biçim ipuçları); {why}"
+        return f"{self.text()}; {why}"
+
+
+def honest_label(attribution: DonorAttribution, comparison: str, mode: str | None = None) -> HonestDonorLabel:
+    """``attribute_donor`` çıktısının gösterilecek biçimi (bkz. :data:`DONOR_HONEST`)."""
+    mode = DONOR_HONEST if mode is None else mode
+    if mode == "off" or attribution_certain(attribution):
+        return HonestDonorLabel(certain=True, lang_code=attribution.lang_code)
+    if mode == "a1":
+        family = DONOR_FAMILIES.get(attribution.lang_code)
+        if family is None:
+            return HonestDonorLabel(False, attribution.lang_code, basis="yakınlık")
+        return HonestDonorLabel(False, "", family[0], basis="aile")
+    from engine.nlp import donor_prior
+
+    post = donor_prior.posterior(comparison, list(HONEST_PRIOR_LANGS))
+    if mode == "a2":
+        lang = max(post, key=lambda k: (post[k], k))
+        return HonestDonorLabel(False, lang, basis="önsel", probability=post[lang])
+    if mode == "a3":
+        mass: dict[tuple[str, ...], float] = {}
+        for lang, p in post.items():
+            fam = DONOR_FAMILIES[lang][0]
+            mass[fam] = mass.get(fam, 0.0) + p
+        fam = max(mass, key=lambda k: (mass[k], k))
+        return HonestDonorLabel(False, "", fam, basis="önsel-aile", probability=mass[fam])
+    raise ValueError(f"bilinmeyen DONOR_HONEST: {mode}")

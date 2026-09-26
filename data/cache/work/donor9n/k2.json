@@ -1,0 +1,11 @@
+{
+ "n": 600,
+ "blind_label_columns_nonnull": 0,
+ "gloss_identical_blind_full": 600,
+ "labels_identical_blind_full": 600,
+ "cue_model_excludes_9n_gold": true,
+ "gold_words_in_exclusion": 600,
+ "fetchers_loaded": [],
+ "network": "socket.connect engelli",
+ "pass": true
+}

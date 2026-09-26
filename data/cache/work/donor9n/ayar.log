@@ -1,0 +1,30 @@
+=== gold tr
+prod {"acc_nat": 0.602, "acc": 0.6416, "family_acc": 0.6416, "precision": 0.4726, "shown": 292, "shown_correct": 138, "shown_wrong": 154, "coverage": 0.9966, "labelled": 0.9966}
+   per_class {'Arapça': 0.7568, 'Farsça': 0.3125, 'Fransızca': 0.6848, 'Yunanca': 0.2222, 'diğer': 0.0, 'İtalyanca': 0.1667}
+a1 {"acc_nat": 0.5521, "acc": 0.5836, "family_acc": 0.6997, "precision": 0.7353, "shown": 170, "shown_correct": 125, "shown_wrong": 45, "coverage": 0.5802, "labelled": 0.9966, "vs_prod": {"precision_fisher": {"kept": [125, 45], "hidden": [13, 109], "p": 0.0}, "nat_signflip": {"D": -0.04989, "p": 0.000135, "discordant": 68, "a_better": 17, "b_better": 51}}}
+   per_class {'Arapça': 0.6419, 'Farsça': 0.4062, 'Fransızca': 0.6467, 'Yunanca': 0.2222, 'diğer': 0.0, 'İtalyanca': 0.25}
+a2 {"acc_nat": 0.7257, "acc": 0.7816, "family_acc": 0.7816, "precision": 0.7353, "shown": 170, "shown_correct": 125, "shown_wrong": 45, "coverage": 0.5802, "labelled": 0.9966, "vs_prod": {"precision_fisher": {"kept": [125, 45], "hidden": [13, 109], "p": 0.0}, "nat_signflip": {"D": 0.12368, "p": 5e-06, "discordant": 61, "a_better": 51, "b_better": 10}}}
+   per_class {'Arapça': 0.9054, 'Farsça': 0.5938, 'Fransızca': 0.8043, 'Yunanca': 0.2222, 'diğer': 0.0, 'İtalyanca': 0.0}
+a3 {"acc_nat": 0.5989, "acc": 0.6416, "family_acc": 0.8157, "precision": 0.7353, "shown": 170, "shown_correct": 125, "shown_wrong": 45, "coverage": 0.5802, "labelled": 0.9966, "vs_prod": {"precision_fisher": {"kept": [125, 45], "hidden": [13, 109], "p": 0.0}, "nat_signflip": {"D": -0.00313, "p": 0.861231, "discordant": 109, "a_better": 58, "b_better": 51}}}
+   per_class {'Arapça': 0.7095, 'Farsça': 0.5469, 'Fransızca': 0.6902, 'Yunanca': 0.2222, 'diğer': 0.0, 'İtalyanca': 0.0}
+=== gold tdk_ayar
+prod {"acc_nat": 0.4519, "acc": 0.2779, "family_acc": 0.2779, "precision": 0.2737, "shown": 274, "shown_correct": 75, "shown_wrong": 199, "coverage": 0.7153, "labelled": 0.7153}
+   per_class {'Arapça': 0.4667, 'Ermenice': 0.1111, 'Farsça': 0.2833, 'Fransızca': 0.5375, 'Yunanca': 0.0877, 'İtalyanca': 0.1983}
+a1 {"acc_nat": 0.3981, "acc": 0.2631, "family_acc": 0.3576, "precision": 0.4962, "shown": 133, "shown_correct": 66, "shown_wrong": 67, "coverage": 0.3121, "labelled": 0.7153, "vs_prod": {"precision_fisher": {"kept": [66, 67], "hidden": [9, 132], "p": 0.0}, "nat_signflip": {"D": -0.05371, "p": 0.00265, "discordant": 83, "a_better": 35, "b_better": 48}}}
+   per_class {'Arapça': 0.4, 'Ermenice': 0.1111, 'Farsça': 0.3583, 'Fransızca': 0.4562, 'Yunanca': 0.0877, 'İtalyanca': 0.194}
+a2 {"acc_nat": 0.5729, "acc": 0.2916, "family_acc": 0.2916, "precision": 0.4962, "shown": 133, "shown_correct": 66, "shown_wrong": 67, "coverage": 0.3121, "labelled": 0.7153, "vs_prod": {"precision_fisher": {"kept": [66, 67], "hidden": [9, 132], "p": 0.0}, "nat_signflip": {"D": 0.12106, "p": 0.0001, "discordant": 52, "a_better": 29, "b_better": 23}}}
+   per_class {'Arapça': 0.6833, 'Ermenice': 0.1111, 'Farsça': 0.4, 'Fransızca': 0.5875, 'Yunanca': 0.0263, 'İtalyanca': 0.1034}
+a3 {"acc_nat": 0.4453, "acc": 0.2654, "family_acc": 0.3622, "precision": 0.4962, "shown": 133, "shown_correct": 66, "shown_wrong": 67, "coverage": 0.3121, "labelled": 0.7153, "vs_prod": {"precision_fisher": {"kept": [66, 67], "hidden": [9, 132], "p": 0.0}, "nat_signflip": {"D": -0.00656, "p": 0.780606, "discordant": 99, "a_better": 51, "b_better": 48}}}
+   per_class {'Arapça': 0.475, 'Ermenice': 0.1111, 'Farsça': 0.4333, 'Fransızca': 0.4813, 'Yunanca': 0.0263, 'İtalyanca': 0.1681}
+=== gold tettl_ayar
+prod {"acc_nat": 0.5073, "acc": 0.3322, "family_acc": 0.3322, "precision": 0.3295, "shown": 173, "shown_correct": 57, "shown_wrong": 116, "coverage": 0.7797, "labelled": 0.7797}
+   per_class {'Arapça': 0.5667, 'Ermenice': 0.1852, 'Farsça': 0.2, 'Fransızca': 0.6, 'Yunanca': 0.1228, 'İtalyanca': 0.0455}
+a1 {"acc_nat": 0.4525, "acc": 0.3059, "family_acc": 0.3951, "precision": 0.5495, "shown": 91, "shown_correct": 50, "shown_wrong": 41, "coverage": 0.3392, "labelled": 0.7797, "vs_prod": {"precision_fisher": {"kept": [50, 41], "hidden": [7, 75], "p": 0.0}, "nat_signflip": {"D": -0.05478, "p": 0.001175, "discordant": 51, "a_better": 18, "b_better": 33}}}
+   per_class {'Arapça': 0.4667, 'Ermenice': 0.1481, 'Farsça': 0.2333, 'Fransızca': 0.5583, 'Yunanca': 0.0877, 'İtalyanca': 0.1364}
+a2 {"acc_nat": 0.6183, "acc": 0.3706, "family_acc": 0.3706, "precision": 0.5495, "shown": 91, "shown_correct": 50, "shown_wrong": 41, "coverage": 0.3392, "labelled": 0.7797, "vs_prod": {"precision_fisher": {"kept": [50, 41], "hidden": [7, 75], "p": 0.0}, "nat_signflip": {"D": 0.11097, "p": 6e-05, "discordant": 37, "a_better": 24, "b_better": 13}}}
+   per_class {'Arapça': 0.7167, 'Ermenice': 0.037, 'Farsça': 0.3, 'Fransızca': 0.7, 'Yunanca': 0.0175, 'İtalyanca': 0.0455}
+a3 {"acc_nat": 0.5069, "acc": 0.3287, "family_acc": 0.4406, "precision": 0.5495, "shown": 91, "shown_correct": 50, "shown_wrong": 41, "coverage": 0.3392, "labelled": 0.7797, "vs_prod": {"precision_fisher": {"kept": [50, 41], "hidden": [7, 75], "p": 0.0}, "nat_signflip": {"D": -0.00043, "p": 0.985435, "discordant": 76, "a_better": 43, "b_better": 33}}}
+   per_class {'Arapça': 0.5333, 'Ermenice': 0.037, 'Farsça': 0.35, 'Fransızca': 0.6, 'Yunanca': 0.0175, 'İtalyanca': 0.1364}
+=== k2
+{"n": 600, "blind_label_columns_nonnull": 0, "gloss_identical_blind_full": 600, "labels_identical_blind_full": 600, "cue_model_excludes_9n_gold": true, "gold_words_in_exclusion": 600, "fetchers_loaded": [], "network": "socket.connect engelli", "pass": true}
+DONE

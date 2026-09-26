@@ -1,0 +1,124 @@
+{
+ "tr": {
+  "n": 293,
+  "kategori": {
+   "doğru_etimon": 138,
+   "yanlış_dil": 104,
+   "şans_doğru_dil": 50,
+   "etiket_yok": 1
+  },
+  "etiketli_referanslı": 292,
+  "kesin": {
+   "n": 170,
+   "doğru_etimon": 125,
+   "şans_doğru_dil": 12,
+   "yanlış_dil": 33
+  },
+  "belirsiz": {
+   "n": 122,
+   "doğru_etimon": 13,
+   "şans_doğru_dil": 38,
+   "yanlış_dil": 71
+  },
+  "şans_doğru_dil_yol": {
+   "d1/shared": 9,
+   "direct/fr_extra": 5,
+   "direct/shared": 35,
+   "frvia/shared": 1
+  },
+  "şans_doğru_dil_içerik0": 18,
+  "şans_etimon_havuzda": 10
+ },
+ "tdk_ayar": {
+  "n": 439,
+  "kategori": {
+   "şans_doğru_dil": 44,
+   "yanlış_dil": 192,
+   "etiket_yok": 125,
+   "doğru_etimon": 75,
+   "doğru_dil_etimon_bilinmiyor": 3
+  },
+  "etiketli_referanslı": 274,
+  "kesin": {
+   "n": 133,
+   "doğru_etimon": 66,
+   "şans_doğru_dil": 7,
+   "yanlış_dil": 60
+  },
+  "belirsiz": {
+   "n": 141,
+   "doğru_etimon": 9,
+   "şans_doğru_dil": 37,
+   "yanlış_dil": 95
+  },
+  "şans_doğru_dil_yol": {
+   "d1/shared": 2,
+   "direct/shared": 38,
+   "direct/fr_extra": 2,
+   "frvia/shared": 2
+  },
+  "şans_doğru_dil_içerik0": 12,
+  "şans_etimon_havuzda": 7
+ },
+ "tettl_ayar": {
+  "n": 286,
+  "kategori": {
+   "şans_doğru_dil": 26,
+   "etiket_yok": 63,
+   "yanlış_dil": 128,
+   "doğru_dil_etimon_bilinmiyor": 12,
+   "doğru_etimon": 57
+  },
+  "etiketli_referanslı": 173,
+  "kesin": {
+   "n": 91,
+   "doğru_etimon": 50,
+   "şans_doğru_dil": 9,
+   "yanlış_dil": 32
+  },
+  "belirsiz": {
+   "n": 82,
+   "doğru_etimon": 7,
+   "şans_doğru_dil": 17,
+   "yanlış_dil": 58
+  },
+  "şans_doğru_dil_yol": {
+   "d1/shared": 5,
+   "direct/shared": 19,
+   "direct/fr_extra": 2
+  },
+  "şans_doğru_dil_içerik0": 4,
+  "şans_etimon_havuzda": 2
+ },
+ "tümü": {
+  "n": 1018,
+  "kategori": {
+   "doğru_etimon": 270,
+   "yanlış_dil": 424,
+   "şans_doğru_dil": 120,
+   "etiket_yok": 189,
+   "doğru_dil_etimon_bilinmiyor": 15
+  },
+  "etiketli_referanslı": 739,
+  "kesin": {
+   "n": 394,
+   "doğru_etimon": 241,
+   "şans_doğru_dil": 28,
+   "yanlış_dil": 125
+  },
+  "belirsiz": {
+   "n": 345,
+   "doğru_etimon": 29,
+   "şans_doğru_dil": 92,
+   "yanlış_dil": 224
+  },
+  "şans_doğru_dil_yol": {
+   "d1/shared": 16,
+   "direct/fr_extra": 9,
+   "direct/shared": 92,
+   "frvia/shared": 3
+  },
+  "şans_doğru_dil_içerik0": 34,
+  "şans_etimon_havuzda": 19
+ }
+}

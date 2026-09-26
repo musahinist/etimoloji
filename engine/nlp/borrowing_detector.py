@@ -42,6 +42,7 @@ from typing import Any
 
 from engine.config import BORROWING_TR_SOUND_SIGNALS, SEARCH_DONOR_PROXIMITY
 from engine.logging_setup import get_logger
+from engine.nlp import donor_proximity
 from engine.nlp.donor_proximity import attribute_donor, nearest_donor, proximity_strength
 from engine.nlp.proto_phonology import PROHIBITED_INITIALS
 from engine.utils.orthography import to_comparison_form
@@ -1008,15 +1009,34 @@ class BorrowingDetector:
         # tek havuzdaki en yakın maddenin dili Moğolca alıntıların 79/166'sını
         # Rusça etiketliyordu. Etiket GÜCE girmez; güç yukarıda hesaplandı.
         evidence = match.as_dict()
-        explanation = (
-            f"verici sözlüğünde aynı kavramın karşılığı fonetik olarak yakın: "
-            f"{match.describe()}"
-        )
         attribution = attribute_donor(comparison, sense, languages=donors)
+        # 9n: Türkçe verici kümesinde şans düzeyindeki etiket biçimsiz gösterilir
+        # (``donor_proximity.DONOR_HONEST``); dil etiketi ``attribute_donor``da değişmez.
+        label = None
+        if attribution is not None and donor_proximity.DONOR_HONEST != "off" \
+                and donors is not None and set(donors) == set(TURKISH_DONORS):
+            label = donor_proximity.honest_label(attribution, comparison)
+        if label is not None and not label.show_form:
+            explanation = (
+                f"verici sözlüğünde aynı kavramın karşılığı fonetik olarak yakın "
+                f"(SCA {match.distance:.3f}, en yakın biçim şans düzeyinde; gösterilmiyor)"
+            )
+        else:
+            explanation = (
+                f"verici sözlüğünde aynı kavramın karşılığı fonetik olarak yakın: "
+                f"{match.describe()}"
+            )
         if attribution is not None:
-            evidence["attributed_lang"] = attribution.lang_code
+            evidence["attributed_lang"] = label.code if label is not None else attribution.lang_code
             evidence["attribution"] = attribution.as_dict()
-            explanation += f"; verici etiketi: {attribution.describe()}"
+            if label is not None:
+                evidence["attribution"].update({
+                    "donor_certain": label.certain, "donor_label": label.text(),
+                    "donor_label_basis": label.basis, "donor_label_code": label.code,
+                    "donor_label_probability": label.probability,
+                })
+            shown = label.describe(attribution) if label is not None else attribution.describe()
+            explanation += f"; verici etiketi: {shown}"
         return Signal("verici_yakınlığı", True, strength, explanation, evidence)
 
     @staticmethod

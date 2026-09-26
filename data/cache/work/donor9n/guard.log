@@ -1,0 +1,8 @@
+=== xt
+{'prod': {'engine_trained': 0.7459}, 'turkish_donor_set_items': 0}
+=== saha
+prod {'yakınlık': 0.6659, 'motor': 0.7136}
+a1 {'yakınlık': 0.6659, 'motor': 0.7136}
+a2 {'yakınlık': 0.6659, 'motor': 0.7136}
+a3 {'yakınlık': 0.6659, 'motor': 0.7136}
+DONE
