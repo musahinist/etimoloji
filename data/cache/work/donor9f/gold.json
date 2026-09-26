@@ -1,0 +1,1697 @@
+{
+"meta": {
+"salt": "donor9f-v1",
+"source": "data/lexicons/tr.jsonl.gz (kaikki en, tr); 9e havuzu eksi 9e altındaki (dil, etimon) grupları",
+"pool_9e": 6339,
+"available_fresh": {
+"fr": 2060,
+"it": 128
+},
+"counts": {
+"fr": 120,
+"it": 120
+}
+},
+"items": [
+{
+"word": "adenozin",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "adénosine",
+"split": "rapor9f"
+},
+{
+"word": "agresyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "agression",
+"split": "rapor9f"
+},
+{
+"word": "akademisyen",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "académicien",
+"split": "rapor9f"
+},
+{
+"word": "akrobatik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "acrobatique",
+"split": "rapor9f"
+},
+{
+"word": "akromatopsi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "achromatopsie",
+"split": "rapor9f"
+},
+{
+"word": "aktinyum",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "actinium",
+"split": "rapor9f"
+},
+{
+"word": "albüm",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "album",
+"split": "rapor9f"
+},
+{
+"word": "ambiyans",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "ambiance",
+"split": "rapor9f"
+},
+{
+"word": "amper",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "ampère",
+"split": "rapor9f"
+},
+{
+"word": "anabolizma",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "anabolisme",
+"split": "rapor9f"
+},
+{
+"word": "anestezi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "anesthésie",
+"split": "rapor9f"
+},
+{
+"word": "anonsör",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "annonceur",
+"split": "rapor9f"
+},
+{
+"word": "ansiklopedist",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "encyclopédiste",
+"split": "rapor9f"
+},
+{
+"word": "antidot",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "antidote",
+"split": "rapor9f"
+},
+{
+"word": "antre",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "entrée",
+"split": "rapor9f"
+},
+{
+"word": "antrepo",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "entrepôt",
+"split": "rapor9f"
+},
+{
+"word": "antropolog",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "anthropologue",
+"split": "rapor9f"
+},
+{
+"word": "argo",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "argot",
+"split": "rapor9f"
+},
+{
+"word": "asistan",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "assistant",
+"split": "rapor9f"
+},
+{
+"word": "astrofizik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "astrophysique",
+"split": "rapor9f"
+},
+{
+"word": "atmosfer",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "atmosphère",
+"split": "rapor9f"
+},
+{
+"word": "banker",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "banquier",
+"split": "rapor9f"
+},
+{
+"word": "deformasyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "déformation",
+"split": "rapor9f"
+},
+{
+"word": "dekorasyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "décoration",
+"split": "rapor9f"
+},
+{
+"word": "deplasman",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "déplacement",
+"split": "rapor9f"
+},
+{
+"word": "depo",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "dépôt",
+"split": "rapor9f"
+},
+{
+"word": "dezenformasyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "désinformation",
+"split": "rapor9f"
+},
+{
+"word": "disprosyum",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "dysprosium",
+"split": "rapor9f"
+},
+{
+"word": "diyaliz",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "dialyse",
+"split": "rapor9f"
+},
+{
+"word": "diyoptri",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "dioptrie",
+"split": "rapor9f"
+},
+{
+"word": "duy",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "douille",
+"split": "rapor9f"
+},
+{
+"word": "düka",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "ducat",
+"split": "rapor9f"
+},
+{
+"word": "ekinoks",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "équinoxe",
+"split": "rapor9f"
+},
+{
+"word": "elektrodinamometre",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "électrodynamomètre",
+"split": "rapor9f"
+},
+{
+"word": "empotans",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "impotence",
+"split": "rapor9f"
+},
+{
+"word": "empoze",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "imposé",
+"split": "rapor9f"
+},
+{
+"word": "endüstriyel",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "industriel",
+"split": "rapor9f"
+},
+{
+"word": "erbiyum",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "erbium",
+"split": "rapor9f"
+},
+{
+"word": "eşanjör",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "échangeur",
+"split": "rapor9f"
+},
+{
+"word": "fason",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "façon",
+"split": "rapor9f"
+},
+{
+"word": "faşist",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "fasciste",
+"split": "rapor9f"
+},
+{
+"word": "fibrinojen",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "fibrinogène",
+"split": "rapor9f"
+},
+{
+"word": "file",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "filée",
+"split": "rapor9f"
+},
+{
+"word": "fren",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "frein",
+"split": "rapor9f"
+},
+{
+"word": "frijider",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "frigidaire",
+"split": "rapor9f"
+},
+{
+"word": "gamet",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "gamète",
+"split": "rapor9f"
+},
+{
+"word": "glikoz",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "glycose",
+"split": "rapor9f"
+},
+{
+"word": "hipermetrop",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "hypermétrope",
+"split": "rapor9f"
+},
+{
+"word": "hiyerarşi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "hiérarchie",
+"split": "rapor9f"
+},
+{
+"word": "jaluzi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "jalousie",
+"split": "rapor9f"
+},
+{
+"word": "kabare",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "cabaret",
+"split": "rapor9f"
+},
+{
+"word": "kafe",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "café",
+"split": "rapor9f"
+},
+{
+"word": "kafein",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "caféine",
+"split": "rapor9f"
+},
+{
+"word": "kalsiyum",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "calcium",
+"split": "rapor9f"
+},
+{
+"word": "kanserolojik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "cancérologique",
+"split": "rapor9f"
+},
+{
+"word": "karbon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "carbone",
+"split": "rapor9f"
+},
+{
+"word": "kartpostal",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "carte postale",
+"split": "rapor9f"
+},
+{
+"word": "klostrofobi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "claustrophobie",
+"split": "rapor9f"
+},
+{
+"word": "komik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "comique",
+"split": "rapor9f"
+},
+{
+"word": "kondansatör",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "condensateur",
+"split": "rapor9f"
+},
+{
+"word": "kontrplak",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "contreplaque",
+"split": "rapor9f"
+},
+{
+"word": "konyak",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "cognac",
+"split": "rapor9f"
+},
+{
+"word": "kopülasyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "copulation",
+"split": "rapor9f"
+},
+{
+"word": "krema",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "crème",
+"split": "rapor9f"
+},
+{
+"word": "kur",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "cours",
+"split": "rapor9f"
+},
+{
+"word": "lantan",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "lanthane",
+"split": "rapor9f"
+},
+{
+"word": "losyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "lotion",
+"split": "rapor9f"
+},
+{
+"word": "lökoplast",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "leucoplaste",
+"split": "rapor9f"
+},
+{
+"word": "magnezit",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "magnésite",
+"split": "rapor9f"
+},
+{
+"word": "manyok",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "manioc",
+"split": "rapor9f"
+},
+{
+"word": "marş",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "marche",
+"split": "rapor9f"
+},
+{
+"word": "masaj",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "massage",
+"split": "rapor9f"
+},
+{
+"word": "mimoza",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "mimosa",
+"split": "rapor9f"
+},
+{
+"word": "mit",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "mythe",
+"split": "rapor9f"
+},
+{
+"word": "nosyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "notion",
+"split": "rapor9f"
+},
+{
+"word": "noter",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "notaire",
+"split": "rapor9f"
+},
+{
+"word": "obstetrik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "obstétrique",
+"split": "rapor9f"
+},
+{
+"word": "oditoryum",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "auditorium",
+"split": "rapor9f"
+},
+{
+"word": "ondülasyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "ondulation",
+"split": "rapor9f"
+},
+{
+"word": "otopsi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "autopsie",
+"split": "rapor9f"
+},
+{
+"word": "panteist",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "panthéiste",
+"split": "rapor9f"
+},
+{
+"word": "pantolon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "pantalon",
+"split": "rapor9f"
+},
+{
+"word": "papül",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "papule",
+"split": "rapor9f"
+},
+{
+"word": "pert",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "perte",
+"split": "rapor9f"
+},
+{
+"word": "peyzaj",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "paysage",
+"split": "rapor9f"
+},
+{
+"word": "pozitif",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "positif",
+"split": "rapor9f"
+},
+{
+"word": "priz",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "prise",
+"split": "rapor9f"
+},
+{
+"word": "profesyonel",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "professionnel",
+"split": "rapor9f"
+},
+{
+"word": "protaktinyum",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "protactinium",
+"split": "rapor9f"
+},
+{
+"word": "protez",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "prothèse",
+"split": "rapor9f"
+},
+{
+"word": "psikiyatr",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "psychiatre",
+"split": "rapor9f"
+},
+{
+"word": "psikopati",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "psychopathie",
+"split": "rapor9f"
+},
+{
+"word": "psikopatoloji",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "psychopathologie",
+"split": "rapor9f"
+},
+{
+"word": "reforme",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "reformé",
+"split": "rapor9f"
+},
+{
+"word": "refüj",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "refuge",
+"split": "rapor9f"
+},
+{
+"word": "rutin",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "routine",
+"split": "rapor9f"
+},
+{
+"word": "safir",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "saphir",
+"split": "rapor9f"
+},
+{
+"word": "sekülarist",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "séculariste",
+"split": "rapor9f"
+},
+{
+"word": "senkronizasyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "synchronisation",
+"split": "rapor9f"
+},
+{
+"word": "sinema",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "cinéma",
+"split": "rapor9f"
+},
+{
+"word": "sinematograf",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "cinématographe",
+"split": "rapor9f"
+},
+{
+"word": "sistemik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "systémique",
+"split": "rapor9f"
+},
+{
+"word": "sosyal",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "social",
+"split": "rapor9f"
+},
+{
+"word": "subjektif",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "subjectif",
+"split": "rapor9f"
+},
+{
+"word": "tabliye",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "tablier",
+"split": "rapor9f"
+},
+{
+"word": "tansiyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "tension",
+"split": "rapor9f"
+},
+{
+"word": "teoloji",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "théologie",
+"split": "rapor9f"
+},
+{
+"word": "tomofil",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "automobile",
+"split": "rapor9f"
+},
+{
+"word": "traktör",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "tracteur",
+"split": "rapor9f"
+},
+{
+"word": "transliterasyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "translittération",
+"split": "rapor9f"
+},
+{
+"word": "tur",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "tour",
+"split": "rapor9f"
+},
+{
+"word": "vajina",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "vagin",
+"split": "rapor9f"
+},
+{
+"word": "vernaküler",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "vernaculaire",
+"split": "rapor9f"
+},
+{
+"word": "veteriner",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "vétérinaire",
+"split": "rapor9f"
+},
+{
+"word": "viyadük",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "viaduc",
+"split": "rapor9f"
+},
+{
+"word": "vokalist",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "vocaliste",
+"split": "rapor9f"
+},
+{
+"word": "zigot",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "zygote",
+"split": "rapor9f"
+},
+{
+"word": "üniter",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "unitaire",
+"split": "rapor9f"
+},
+{
+"word": "şantiye",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "chantier",
+"split": "rapor9f"
+},
+{
+"word": "şarbon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "charbon",
+"split": "rapor9f"
+},
+{
+"word": "abluka",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "blocco",
+"split": "rapor9f"
+},
+{
+"word": "abosa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "abbozza",
+"split": "rapor9f"
+},
+{
+"word": "acente",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "agente",
+"split": "rapor9f"
+},
+{
+"word": "acyo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "aggio",
+"split": "rapor9f"
+},
+{
+"word": "alarga",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "largo",
+"split": "rapor9f"
+},
+{
+"word": "alaturka",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "alla turca",
+"split": "rapor9f"
+},
+{
+"word": "arma",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "arma",
+"split": "rapor9f"
+},
+{
+"word": "armonika",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "armonica",
+"split": "rapor9f"
+},
+{
+"word": "arya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "aria",
+"split": "rapor9f"
+},
+{
+"word": "balina",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "balena",
+"split": "rapor9f"
+},
+{
+"word": "balo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "ballo",
+"split": "rapor9f"
+},
+{
+"word": "balya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "balla",
+"split": "rapor9f"
+},
+{
+"word": "banko",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "banco",
+"split": "rapor9f"
+},
+{
+"word": "baraka",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "baracca",
+"split": "rapor9f"
+},
+{
+"word": "barlam",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "merlano",
+"split": "rapor9f"
+},
+{
+"word": "baston",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "bastón",
+"split": "rapor9f"
+},
+{
+"word": "bazilika",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "basilique",
+"split": "rapor9f"
+},
+{
+"word": "bezelye",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "pisello, bisello",
+"split": "rapor9f"
+},
+{
+"word": "bilanço",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "bilancio",
+"split": "rapor9f"
+},
+{
+"word": "bilye",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "biglia",
+"split": "rapor9f"
+},
+{
+"word": "bocalamak",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "poggia",
+"split": "rapor9f"
+},
+{
+"word": "boci",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "poggia",
+"split": "rapor9f"
+},
+{
+"word": "bomba",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "bomba",
+"split": "rapor9f"
+},
+{
+"word": "dama",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "dama",
+"split": "rapor9f"
+},
+{
+"word": "diva",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "diva",
+"split": "rapor9f"
+},
+{
+"word": "dukessa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "duchessa",
+"split": "rapor9f"
+},
+{
+"word": "düzine",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "dozzina",
+"split": "rapor9f"
+},
+{
+"word": "fabrika",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "fabbrica",
+"split": "rapor9f"
+},
+{
+"word": "falçata",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "falcetto",
+"split": "rapor9f"
+},
+{
+"word": "fatura",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "fattura",
+"split": "rapor9f"
+},
+{
+"word": "faşizm",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "fascismo",
+"split": "rapor9f"
+},
+{
+"word": "filo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "filo",
+"split": "rapor9f"
+},
+{
+"word": "fino",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "fino",
+"split": "rapor9f"
+},
+{
+"word": "firkete",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "forchetta",
+"split": "rapor9f"
+},
+{
+"word": "fiyaka",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "fiaccola",
+"split": "rapor9f"
+},
+{
+"word": "fora",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "fora",
+"split": "rapor9f"
+},
+{
+"word": "forma",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "forma",
+"split": "rapor9f"
+},
+{
+"word": "fulya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "Puglia",
+"split": "rapor9f"
+},
+{
+"word": "fünye",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "fune",
+"split": "rapor9f"
+},
+{
+"word": "fırtına",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "fortuna",
+"split": "rapor9f"
+},
+{
+"word": "galeta",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "galletta",
+"split": "rapor9f"
+},
+{
+"word": "gancelli",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cancello",
+"split": "rapor9f"
+},
+{
+"word": "gazino",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "casino",
+"split": "rapor9f"
+},
+{
+"word": "gondol",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "góndoła",
+"split": "rapor9f"
+},
+{
+"word": "granduka",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "granduca",
+"split": "rapor9f"
+},
+{
+"word": "göğe",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cocca",
+"split": "rapor9f"
+},
+{
+"word": "izbandut",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "sbandato",
+"split": "rapor9f"
+},
+{
+"word": "kalyon",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "galión",
+"split": "rapor9f"
+},
+{
+"word": "kameriye",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "camarilla",
+"split": "rapor9f"
+},
+{
+"word": "kampanya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "campagna",
+"split": "rapor9f"
+},
+{
+"word": "kanto",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "canto",
+"split": "rapor9f"
+},
+{
+"word": "kapiş",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "capisci",
+"split": "rapor9f"
+},
+{
+"word": "kapora",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "caparra",
+"split": "rapor9f"
+},
+{
+"word": "kaptan",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "capitan",
+"split": "rapor9f"
+},
+{
+"word": "karamela",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "caramello",
+"split": "rapor9f"
+},
+{
+"word": "karantina",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "quarantina",
+"split": "rapor9f"
+},
+{
+"word": "karyola",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "carriola",
+"split": "rapor9f"
+},
+{
+"word": "kaşkaval",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "caciocavallo",
+"split": "rapor9f"
+},
+{
+"word": "kerte",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "quarto",
+"split": "rapor9f"
+},
+{
+"word": "kolonya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "colonia",
+"split": "rapor9f"
+},
+{
+"word": "komposto",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "composto",
+"split": "rapor9f"
+},
+{
+"word": "kumanya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "compagna",
+"split": "rapor9f"
+},
+{
+"word": "kurdele",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cordella",
+"split": "rapor9f"
+},
+{
+"word": "kırlent",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "ghirlanda",
+"split": "rapor9f"
+},
+{
+"word": "lata",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cocoletta",
+"split": "rapor9f"
+},
+{
+"word": "lavanta",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "lavanda",
+"split": "rapor9f"
+},
+{
+"word": "lira",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "lira",
+"split": "rapor9f"
+},
+{
+"word": "lokanta",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "locanda",
+"split": "rapor9f"
+},
+{
+"word": "madalya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "medaglia",
+"split": "rapor9f"
+},
+{
+"word": "maestro",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "maestro",
+"split": "rapor9f"
+},
+{
+"word": "mafya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "mafia",
+"split": "rapor9f"
+},
+{
+"word": "makine",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "macchina",
+"split": "rapor9f"
+},
+{
+"word": "manca",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "mangia",
+"split": "rapor9f"
+},
+{
+"word": "manevra",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "manovra",
+"split": "rapor9f"
+},
+{
+"word": "manika",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "manica",
+"split": "rapor9f"
+},
+{
+"word": "marangoz",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "marangon",
+"split": "rapor9f"
+},
+{
+"word": "marka",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "marca",
+"split": "rapor9f"
+},
+{
+"word": "martı",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "martin pescatore",
+"split": "rapor9f"
+},
+{
+"word": "moda",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "moda",
+"split": "rapor9f"
+},
+{
+"word": "numara",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "numero",
+"split": "rapor9f"
+},
+{
+"word": "orkestra",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "orchestra",
+"split": "rapor9f"
+},
+{
+"word": "papa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "papa",
+"split": "rapor9f"
+},
+{
+"word": "paravana",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "paravento",
+"split": "rapor9f"
+},
+{
+"word": "parola",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "parola",
+"split": "rapor9f"
+},
+{
+"word": "pasta",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "pasta",
+"split": "rapor9f"
+},
+{
+"word": "pena",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "penna",
+"split": "rapor9f"
+},
+{
+"word": "peçete",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "pezzetta",
+"split": "rapor9f"
+},
+{
+"word": "piyano",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "piano",
+"split": "rapor9f"
+},
+{
+"word": "piyasa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "piasa",
+"split": "rapor9f"
+},
+{
+"word": "plaka",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "placca",
+"split": "rapor9f"
+},
+{
+"word": "posta",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "posta",
+"split": "rapor9f"
+},
+{
+"word": "poğaça",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "focaccia",
+"split": "rapor9f"
+},
+{
+"word": "protesto",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "protesto",
+"split": "rapor9f"
+},
+{
+"word": "pruva",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "prua",
+"split": "rapor9f"
+},
+{
+"word": "pusula",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "bussola",
+"split": "rapor9f"
+},
+{
+"word": "racon",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "ragione",
+"split": "rapor9f"
+},
+{
+"word": "replika",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "replica",
+"split": "rapor9f"
+},
+{
+"word": "ringa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "aringa",
+"split": "rapor9f"
+},
+{
+"word": "rota",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "rotta",
+"split": "rapor9f"
+},
+{
+"word": "rövaşata",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "rovesciata",
+"split": "rapor9f"
+},
+{
+"word": "salamura",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "salamora",
+"split": "rapor9f"
+},
+{
+"word": "salata",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "salata",
+"split": "rapor9f"
+},
+{
+"word": "salvo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "salva",
+"split": "rapor9f"
+},
+{
+"word": "sedye",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "sedia",
+"split": "rapor9f"
+},
+{
+"word": "sigorta",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "sicurtà",
+"split": "rapor9f"
+},
+{
+"word": "sinyor",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "signor",
+"split": "rapor9f"
+},
+{
+"word": "sota",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "sotto",
+"split": "rapor9f"
+},
+{
+"word": "tabela",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "tabella",
+"split": "rapor9f"
+},
+{
+"word": "taraça",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "terrazza",
+"split": "rapor9f"
+},
+{
+"word": "tela",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "tela",
+"split": "rapor9f"
+},
+{
+"word": "tente",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "tenda",
+"split": "rapor9f"
+},
+{
+"word": "tiramisu",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "tiramisù",
+"split": "rapor9f"
+},
+{
+"word": "tiyatro",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "teatro",
+"split": "rapor9f"
+},
+{
+"word": "vanilya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "vaniglia",
+"split": "rapor9f"
+},
+{
+"word": "vardakosta",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "guardacoste",
+"split": "rapor9f"
+},
+{
+"word": "vazo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "vaso",
+"split": "rapor9f"
+},
+{
+"word": "villa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "villa",
+"split": "rapor9f"
+},
+{
+"word": "çinko",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "zinco",
+"split": "rapor9f"
+},
+{
+"word": "çımariva",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "ciama arriva",
+"split": "rapor9f"
+},
+{
+"word": "şırınga",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "siringa",
+"split": "rapor9f"
+}
+]
+}

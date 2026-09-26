@@ -822,6 +822,15 @@ def attribute_donor(
                 fr_pool = tuple(sorted({r["comparison"] for r in groups[FRENCH] if r["comparison"]}))
                 null = _null_distance(len(comparison), fr_pool)
             lang = FRENCH
+    # Batı alıntısında Fransızca önceliği (9f): D1 ve G2'den sonra.
+    if switched is None and lang != FRENCH and WESTERN_RULE != "off" and (languages is None or FRENCH in languages):
+        french = _french_prior(comparison, lang, distance, groups.get(FRENCH) or [])
+        if french is not None:
+            row, distance = french
+            fr_pool = tuple(sorted({r["comparison"] for r in groups[FRENCH] if r["comparison"]}))
+            null = _null_distance(len(comparison), fr_pool)
+            via = ""
+            lang = FRENCH
     return DonorAttribution(
         lang_code=lang,
         word=row["word"],
@@ -1018,4 +1027,64 @@ def _french_via(comparison: str, lang: str, row: Any, distance: float,
         return closest(near)
     if (row["word"], row["gloss"] or "") in dump_loans(lang, "from french"):
         return closest(french) if french else (row, label_distance(comparison, row["comparison"]))
+    return None
+
+
+# --- Batı alıntısında Fransızca önceliği (9f) -----------------------------------
+
+ITALIAN = "it"
+#: Türkçe uluslararası sonek -> Fransızca karşılığı (karşılaştırma biçiminde).
+#: Türkçe biçim bu sonekle bitiyor VE Fransızca havuzda karşılık sonekle biten
+#: aday eşiğin (:data:`DONOR_DISTANCE_THRESHOLD`) altındaysa etiket ``fr``.
+#: Gerekçe: Fransız imlası (``-tion``, ``-isme``, ``-ique``) Türkçe sesçil
+#: yazıma İtalyancadan uzak düşer; ``organizasyon`` ~ it ``organizzazione``
+#: 0,059, fr ``organisation`` 0,106. Soneki karşılıklı aramak şans benzerliğini
+#: dışarıda tutar (yalnız biçim yakınlığı değil, biçimbilgisel koşutluk).
+FRENCH_SUFFIXES = (
+    ("syon", ("ion",)), ("zyon", ("ion",)),
+    ("izm", ("isme",)), ("ist", ("iste",)),
+    ("loji", ("logie",)), ("grafi", ("graphie",)), ("graf", ("graphe",)),
+    ("metre", ("metre",)), ("metri", ("metrie",)),
+    ("ör", ("eur",)), ("ik", ("ikue",)),
+)
+#: H2 "yakın beraberlik": İtalyanca kazandıysa ve en yakın Fransızca aday
+#: sorguya en çok bu kadar daha uzaksa -> ``fr`` (Türkçedeki Batı alıntılarının
+#: taban oranı: 9e ayar havuzunda Wiktionary fr 796 / it 89 -> %90 Fransızca).
+FRENCH_TIE_EPSILON = 0.05
+
+#: ``off`` | ``h1`` (sonek) | ``h2`` (yakın beraberlik) | ``h12`` (ikisi).
+#: Ön kayıt ``data/cache/work/donor9f/PREREG.md``. Yalnız ETİKET.
+WESTERN_RULE = "off"
+
+
+def _french_suffix_pair(comparison: str) -> tuple[str, ...]:
+    for turkish, french in FRENCH_SUFFIXES:
+        if comparison.endswith(turkish) and len(comparison) > len(turkish) + 1:
+            return french
+    return ()
+
+
+def _french_prior(comparison: str, lang: str, distance: float,
+                  french: list[Any]) -> tuple[Any, float] | None:
+    """Kazanan Fransızca değilken etiket Fransızcaya çevrilmeli mi (9f)?"""
+    french = [r for r in french if r["comparison"]]
+    if not french:
+        return None
+
+    def closest(members: list[Any]) -> tuple[Any, float]:
+        best = min(members, key=lambda r: (label_distance(comparison, r["comparison"]), r["comparison"]))
+        return best, label_distance(comparison, best["comparison"])
+
+    if WESTERN_RULE in ("h1", "h12"):
+        endings = _french_suffix_pair(comparison)
+        if endings:
+            paired = [r for r in french if r["comparison"].endswith(endings)]
+            if paired:
+                row, d = closest(paired)
+                if d <= DONOR_DISTANCE_THRESHOLD:
+                    return row, d
+    if WESTERN_RULE in ("h2", "h12") and lang == ITALIAN:
+        row, d = closest(french)
+        if d <= distance + FRENCH_TIE_EPSILON:
+            return row, d
     return None

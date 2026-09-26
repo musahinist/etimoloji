@@ -1,0 +1,25 @@
+{
+ "n": 240,
+ "blind_label_columns_nonnull": 0,
+ "gloss_identical_blind_full": 240,
+ "labels_identical_blind_full": 240,
+ "gloss_with_language_hint": [
+  [
+   "adenozin",
+   "adenosine (a nucleoside derived from adenine and ribose, found in striated muscle tissue)"
+  ],
+  [
+   "diyaliz",
+   "dialysis (artificial removal of waste products from the blood)"
+  ],
+  [
+   "noter",
+   "notary public (an officer who can administer oaths and statutory declarations, witness and authenticate documents and perform certain other acts varying from jurisdiction to jurisdiction)"
+  ],
+  [
+   "sinyor",
+   "signor (a courtesy title for a man of Italian origin)"
+  ]
+ ],
+ "pass": true
+}

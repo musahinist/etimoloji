@@ -214,6 +214,47 @@ class TestFrenchVia(unittest.TestCase):
         self.assertEqual((on.lang_code, on.via), ("it", ""))
 
 
+class TestWesternFrenchPrior(unittest.TestCase):
+    """9f: Batı alıntısında Fransızca önceliği — H1 sonek koşutluğu, H2 yakın
+    beraberlik (İtalyanca kazanan, Fransızca ≤ ε daha uzak)."""
+
+    def setUp(self):
+        dp.reset_cache()
+        if dp._pairwise() is None:
+            self.skipTest("LingPy kurulu değil")
+
+    def tearDown(self):
+        dp.reset_cache()
+
+    def _run(self, rows, comparison, rule):
+        with mock.patch.object(dp, "_index", lambda: _FakeIndex(rows)), \
+                mock.patch.object(dp, "_monget_entries", lambda: ()), \
+                mock.patch.object(dp, "WESTERN_RULE", rule), \
+                mock.patch.object(dp, "dump_loans", lambda lang, phrase: frozenset()), \
+                mock.patch.object(dp, "_null_distance",
+                                  lambda length, pool: 0.1 if "posa" in pool else 0.0):
+            return dp.attribute_donor(comparison, "x", languages=["ar", "fa", "hy", "el", "fr", "it"])
+
+    def test_suffix_pair_relabels(self):
+        rows = [_row("it", "organizzazione", "organizzazione"), _row("fr", "organisation", "organisation")]
+        self.assertEqual(self._run(rows, "organizasyon", "off").lang_code, "it")
+        on = self._run(rows, "organizasyon", "h1")
+        self.assertEqual((on.lang_code, on.word, on.via), ("fr", "organisation", ""))
+
+    def test_suffix_needs_french_counterpart(self):
+        rows = [_row("it", "organizzazione", "organizzazione"), _row("fr", "organiser", "organiser")]
+        self.assertEqual(self._run(rows, "organizasyon", "h1").lang_code, "it")
+
+    def test_near_tie_prefers_french(self):
+        rows = [_row("it", "posa", "posa"), _row("fr", "pose", "pose")]
+        self.assertEqual(self._run(rows, "poz", "off").lang_code, "it")
+        self.assertEqual(self._run(rows, "poz", "h2").lang_code, "fr")
+
+    def test_clear_italian_stays(self):
+        rows = [_row("it", "senato", "senato"), _row("fr", "gare", "gar")]
+        self.assertEqual(self._run(rows, "senato", "h12").lang_code, "it")
+
+
 class TestSignalStrengthIsUntouched(unittest.TestCase):
     """⚠️ Etiket güce girerse WOLD "alıntı mı?" F'si değişir."""
 
