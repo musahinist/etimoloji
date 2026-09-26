@@ -1,0 +1,45 @@
+bringing up nodes...
+bringing up nodes...
+
+sssssssss............................................................... [  5%]
+............uuuuuuuuuuu............................uuuuuuuuuuu.......... [  8%]
+........................................................................ [ 13%]
+uuu.......................................................uuuu.......... [ 18%]
+........................................................................ [ 23%]
+.................................uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu [ 25%]
+uuu.....uuuu.uuu.u..u.u..u.uuuuuuuuuuu.uuuuuuuuuuu...................... [ 28%]
+...........................................................u............ [ 33%]
+.................uuuuuuuuu.......uuuu................................... [ 37%]
+........................................................................ [ 42%]
+.uuuu...............................uuuu................................ [ 47%]
+........................................................................ [ 52%]
+...................................................uuuuuuuuuuuuuuuuuuuuu [ 56%]
+uuuuuuuuuuuuuuuuuuuuuuuuuuuuu.uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu [ 56%]
+uuuuuuuu..uuuuu.............uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu.... [ 57%]
+........................................................................ [ 62%]
+.............................uuuuuuuuuuuuuu..uu..uu...uuu.uuuuuuuuu.uuu. [ 65%]
+....uuuuuuuuuuu.....uuuuuuuuuuuuuu.uuu.......u..u.......u...uuu.u.u..... [ 67%]
+.....u.uuu............uuuuu...........u....uuuuuu.uuuuuu.uuuuuu..uuuuuuu [ 70%]
+.....................uuu...uuu.......................................... [ 75%]
+....................................................uuuuu.uuuuu......... [ 79%]
+.................u.uu...u.u...uuuuuuuu.u.uu...........uuuuuuuuuuuuuuu... [ 82%]
+....................................................................uuu. [ 87%]
+........................................................................ [ 92%]
+........................................................................ [ 97%]
+...............................                                          [100%]
+=============================== warnings summary ===============================
+engine/tests/test_advanced_etymology_modules.py::TestAdvancedEtymologyModules::test_cldf_lingpy_sequence_alignment
+engine/tests/test_crossval.py::TestCrossvalBcubed::test_counts_match_reconstruction_bcubed
+  /Users/mshn/Documents/etimoloji/.venv/lib/python3.14/site-packages/lingpy/data/ipa/sampa.py:20: DeprecationWarning: codecs.open() is deprecated. Use open() instead.
+    with codecs.open(data_path('ipa', 'sampa.csv'), 'r', 'utf-8') as handle:
+
+engine/tests/test_neural_reconstruction.py::TrainSmokeTests::test_tiny_training_returns_candidates
+  /Users/mshn/Documents/etimoloji/.venv/lib/python3.14/site-packages/torch/nn/modules/transformer.py:145: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+    self.encoder = TransformerEncoder(
+
+engine/tests/test_neural_reconstruction.py::TrainSmokeTests::test_tiny_training_returns_candidates
+  /Users/mshn/Documents/etimoloji/.venv/lib/python3.14/site-packages/torch/nn/modules/activation.py:1337: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+    key_padding_mask = F._canonical_mask(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1397 passed, 9 skipped, 4 warnings, 425 subtests passed in 72.15s (0:01:12)

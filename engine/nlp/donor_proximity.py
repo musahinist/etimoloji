@@ -1565,7 +1565,22 @@ def honest_label(attribution: DonorAttribution | None, comparison: str, mode: st
 #: ``off`` · ``c1`` (geniş anlam: köprülü anlam + başlık köprüsü + Osmanlıca + özgün anlam,
 #: d ≤ 0,15) · ``c2`` (c1 + Türkçe anlamın sözcük sözcük köprüsü, d ≤ 0,15) · ``c3`` (c2, d ≤ 0,20).
 #: Bkz. ``data/cache/work/donor9o/PREREG.md``.
-DONOR_FORM_FIRST = "off"
+#:
+#: ÖLÇÜLDÜ, ön kayıtlı (1b02f9d), **C2 KABUL**. Yeni doğal oranlı TDK rapor altını (n=600; ar 290,
+#: fr 248, fa 62; önceki tüm altınların dışında, kör indeks, bir kez)::
+#:
+#:            kapsama   kazanç/kayıp (Holm p)   biçim kesinliği (gösterilen/yanlış)   acc_nat
+#:     off    0,375     —                       0,693 (225/69)                         0,590
+#:     c1     0,425     30/0 (2e-9)             0,718 (255/72)  ✗ < 0,72               0,590
+#:     c2     0,458     50/0 (4e-15)            0,720 (275/77)                         0,608 (11/0)
+#:     c3     0,477     61/0 (3e-18)            0,713 (286/82)  ✗ < 0,72               0,615 (15/0)
+#:
+#: Eklenen biçimlerin doğru etimon oranı c1 27/30, c2 42/50, c3 48/61 (hepsi tabanın üstünde; c1 ve c3
+#: ön kayıttaki mutlak 0,72 eşiğini tabanın bu altında 0,693 olması yüzünden geçemedi). Kesin
+#: etiketlerde gösterilen biçim hiç değişmedi; dil a2'ninki (acc_nat yalnız anlam havuzu boş
+#: maddelerde artabilir). Türkçe train+dev (ayar): kapsama 0,580 -> 0,659, kesinlik 0,735 -> 0,736.
+#: Korumalar: Saha ``eval-donor`` ve xturkic dört koşulda aynı (Türkçe verici kümesi dışı).
+DONOR_FORM_FIRST = "c2"
 FORM_FIRST_MAX = {"c1": 0.15, "c2": 0.15, "c3": 0.20}
 #: Aday havuzunun (Arapça yazı eşi araması dahil) mesafe üst sınırı.
 FORM_FIRST_POOL_MAX = 0.30

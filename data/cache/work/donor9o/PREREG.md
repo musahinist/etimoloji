@@ -150,3 +150,45 @@ AYNI (Türkçe verici kümesi dışı; biçim-öncelikli arama uygulanmaz). 9n'd
 commitlenmemiş) etkisidir; koşullar arası fark 0. (Koşu `data/eval/donor_id.json`u yeniden yazdı; bu işin
 commit'ine girmez.) xturkic ayar verici **0,7459** (9n harness `xt`; `attribute_donor` dili, Türkçe verici
 kümesinde 0 madde) — aynı. `eval-borrowing`: güç yolu (`nearest_donor`, `proximity_strength`) değişmedi.
+
+---
+
+## SONUÇ (ön kayıt commit'i 1b02f9d'den sonra, bir kez)
+
+`rapor.log`, `res_9o.json`; mühür doğrulandı (sha256 `a025b38c…02be`). n = 600 (ar 290, fr 248, fa 62);
+etimon referanslı 600, anlamlı 599, `attribute_donor` etiketi 435.
+
+| koşul | **(iii) kapsama** | kazanç/kayıp, Holm p | **(i) biçim kesinliği** | gösterilen (yanlış) | eklenen doğru | **(ii) acc_nat** | (ii) işaret D (iyi/kötü), p |
+|---|---|---|---|---|---|---|---|
+| prod (off) | 0,375 | — | 0,693 (156/225) | 225 (69) | — | 0,5899 | — |
+| C1 | 0,425 | 30/0, 2e-9 | 0,718 (183/255) ✗ | 255 (72) | 27/30 | 0,5899 | 0 (0/0) |
+| **C2** | **0,458** | **50/0, 4e-15** | **0,720** (198/275) | 275 (77) | 42/50 | **0,6082** | +0,018 (11/0), 0,001 |
+| C3 | 0,477 | 61/0, 3e-18 | 0,713 (204/286) ✗ | 286 (82) | 48/61 | 0,6149 | +0,025 (15/0), 6e-5 |
+
+Kesin etiketlerde gösterilen biçim hiçbir koşulda değişmedi (0). C2'nin 50 eklemesinin 12'si anlam havuzu boş
+(etiketsiz) maddelerde; 8 yanlışın 5'i doğru dilde başka sözcük (isim ~ عظم, şiddet ~ شديد türev, mesail ~
+مسألة), 3'ü dil (daye ~ ar داية, neva/zen ~ Farsça sözcüğün Arapça yazı eşi).
+
+**KARAR: C2 KABUL — `DONOR_FORM_FIRST = "c2"` varsayılan.** Koşullar: (iii) 50/0, Holm p = 4e-15 ✓;
+(i) 0,720 ≥ 0,72 ✓ (sınırda: 198/275); (ii) +0,018, düşüş yok ✓; Türkçe train+dev kesinlik 0,736, acc_nat
+aynı ✓; Saha/xturkic aynı ✓. C1 (0,718) ve C3 (0,713) (i)'deki mutlak eşiği geçemedi — ikisinde de eklenen
+biçimler tabanın kesinliğinden (0,693) daha kesin (0,90 / 0,79), ama ön kayıt eşiği bu altında tabanın
+kendisinin 0,72'nin altında olduğunu öngörmemişti; kural gereği red. Not: bu altında taban kesinlik 0,693,
+9n raporundaki 0,757'den düşük (yeni örneklem; biçim ipucu modeli de yeniden eğitildi).
+
+Korumalar (kabul sonrası): `eval-borrowing` (`eval_borrowing.py off|c2`, tam indeks kopyası; JSON
+`evalb/<mod>/borrowing.json`, paralel işin `data/eval/borrowing.json`unu ezmemek için ayrı): iki çıktı
+`trained_at` zaman damgaları dışında aynı (WOLD engine_trained F 0,6582, Türkçe 0,8894 — 9n ile aynı).
+Saha 0,7295 / xturkic 0,7459 dört koşulda aynı (§6).
+
+Kalıcı ölçüt (`make eval-tr-donor` eşdeğeri `trdonor.py`, indeks KOPYALARIYLA — paralel iş canlı kör/tam
+indeksleri yeniden kurdu; `data/eval/tr_donor.json`, Türkçe TDK+Nişanyan train+dev n=293, A2 bayrakları
+kapalı): `(a) etiket (gösterilen)` **0,771** [0,720–0,816], doğal ağırlıklı **0,717** (9n: 0,782 / 0,726 —
+fark biçim ipucu modelinin yeniden eğitiminden; en yakın biçimin dili 0,642 / 0,602 aynı); **biçim
+kesinliği 0,735 (125/170) -> 0,736 (142/193)**, **kapsama 0,580 -> 0,659**. Kör `(c)` 0,707 -> 0,703
+(doğal 0,659 -> 0,656); `(b) dedektör` 0,949 -> 0,952. Önceki önbellek ve rapor `data/cache/work/trdonor_pre9o/`.
+
+Üretim: `DONOR_FORM_FIRST = "c2"`, ENGINE_VERSION bir sonraki yama. Gösterim (CLI/web): biçim-öncelikli
+etikette "ar سلطان (sultan) SCA 0.000, … (biçim-öncelikli arama: anlam havuzu dışından, dil önselle uyumlu)";
+yardımcı dizin `data/lexicons/donors/donor_skeleton.db` ilk kullanımda `donors.db`den kurulur (~3 sn,
+`python -m engine.db.donor_skeleton --build`).

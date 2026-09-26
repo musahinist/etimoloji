@@ -134,7 +134,8 @@ def test_detector_shows_form_first_even_without_sense_pool(env):
         with mock.patch.object(dp, "DONOR_FORM_FIRST", "c1"):
             on = bd.BorrowingDetector._donor_signal("sultan", sense, list(bd.TURKISH_DONORS))
             other = bd.BorrowingDetector._donor_signal("sultan", sense, ["ru", "mn"])
-        off = bd.BorrowingDetector._donor_signal("sultan", sense, list(bd.TURKISH_DONORS))
+        with mock.patch.object(dp, "DONOR_FORM_FIRST", "off"):
+            off = bd.BorrowingDetector._donor_signal("sultan", sense, list(bd.TURKISH_DONORS))
     assert "سلطان" in on.explanation and "biçim-öncelikli" in on.explanation
     assert on.evidence["attributed_lang"] == "ar" and on.evidence["attribution"]["donor_certain"] is True
     assert "attribution" not in off.evidence and "attribution" not in other.evidence
