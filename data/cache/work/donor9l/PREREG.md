@@ -81,3 +81,45 @@ Kabul (aday için hepsi):
 Karar: kabul edilen her aday varsayılan AÇIK. S1 ve S3 ikisi de kabul edilirse birleşik açılır
 (birleşiğin 2–4 korumaları ayarda ölçüldü: 0,6451 / 0,7136 / 0,7677; raporu bilgi); yalnız biri
 kabul edilirse yalnız o. Hiçbiri -> üretim değişmez (bayraklar kapalı, kod ve tablo bayrak arkasında).
+
+---
+
+## SONUÇ (ön kayıt commit'i c2466aa'dan sonra, bir kez)
+
+`rapor.log`, `res_9l_rapor.json`. McNemar "aday yalnız doğru / taban yalnız doğru"; Holm 3 aday.
+
+| koşul | **rapor n=441** | ar | fa | fr | it | el | McN | Holm p | en n=216 | tr n=225 | etiketsiz |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| off (üretim) | **0,3288** (145) | 61 | 36 | 47 | 1/19 | 0/12 | — | — | 130 | 15 | 150 |
+| **S1** | **0,4172** (184) | 71 | 40 | 70 | 2/19 | 1/12 | **39 / 0** | **1,1e-11** | 130 | **54** | 105 |
+| S2 | 0,3243 (143) | 60 | 36 | 46 | 1/19 | 0/12 | 0 / 2 | 1,0 | 128 | 15 | 150 |
+| S3 | 0,3265 (144) | 61 | 36 | 46 | 1/19 | 0/12 | 0 / 1 | 1,0 | 129 | 15 | 150 |
+| S1+S3 (bilgi) | 0,4150 (183) | 71 | 40 | 69 | 2/19 | 1/12 | 39 / 1 | — | 129 | 54 | 105 |
+
+(Anlam dili katmanı `gloss_lang` altında kaydedildiği gibi: en 216 / tr 225.)
+
+Önceki raporlar (önceden açılmış, bilgi; `gold9*.json`):
+
+| rapor | off | S1 | S2 | S3 | S1+S3 |
+|---|---|---|---|---|---|
+| 9j TDK n=710 | 0,2113 | **0,3028** (70/5; it 22->38/200) | 0,2169 (7/3) | 0,2127 (1/0) | 0,3070 (73/5) |
+| 9j TETTL n=573 | 0,2548 | **0,3002** (28/2) | 0,2356 (3/14) | 0,2548 (1/1) | 0,3019 (30/3) |
+| 9f n=240 (İng. anlam) | 0,4375 | 0,4417 (1/0) | 0,4708 (17/9) | 0,4583 (5/0) | 0,4625 (6/0) |
+| 9e n=560 | 0,5875 | 0,5875 (0/0) | 0,5714 (5/14) | 0,5929 (3/0) | 0,5929 (3/0) |
+| 9g n=228 (el+hy) | 0,2851 | 0,2807 (0/1) | 0,2719 (0/3) | 0,2851 (0/0) | 0,2807 (0/1) |
+
+**KARAR: S1 KABUL, varsayılan AÇIK** (`SENSE_BRIDGE = True`): rapor 0,329 -> 0,417, Holm p ≈ 1e-11;
+korumalar ön kayıtta ölçüldüğü gibi — Türkçe train+dev 0,6416 (0 uyuşmazlık), Saha 0,7136,
+xturkic 0,7459; eval-borrowing F'ler aynı (aşağı). **S2 RED** (rapor 0/2; Türkçe koruması 0,6041
+ayarda düşmüştü). **S3 RED** (rapor 0/1, anlamsız). Birleşik açılmaz (S3 reddedildi).
+
+Yorum: Kazanç Türkçe anlamlı maddelerden (15 -> 54/225); İngilizce anlamlıda S1 yapı gereği etkisiz.
+Köprü kapsamı sınırlı (ayar Türkçe anlamlıların ~%32'si); etiketsiz 150 -> 105. İtalyanca yine zayıf
+(yeni raporda n=19, 1 -> 2; 9j TDK raporunda 22 -> 38/200). Kalan başlıca hata: köprü olmayan
+Türkçe anlamlı maddeler (etiketsiz) ve Yunanca -> Arapça/Fransızca. S2'nin ayrı İtalyanca havuzu
+her yerde Fransızca/Arapça alıntıları İtalyancaya çekiyor (9f'de İtalyanca 21 -> 38 ama Fransızca
+84 -> 75); S3 tam eşleşme 9e/9f'de küçük olumlu, yeni raporda etkisiz.
+
+**eval-borrowing doğrulaması** (S1 açık, `python -m engine.evaluation.borrowing_eval`,
+`eval_borrowing.log`): `data/eval/borrowing.json` ve yeniden eğitilen modellerde yalnız
+`trained_at` zaman damgaları değişti — tüm P/R/F aynı (dosyalar geri alındı).

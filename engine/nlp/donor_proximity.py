@@ -649,16 +649,28 @@ ITALO_FAMILY = {"vec": "it", "lij": "it"}
 #: (``sense_bridge.english_sense``; tr->en çeviri bölümü, en->tr çeviri tabloları; yedek:
 #: aynı biçimli Osmanlıca maddenin İngilizce anlamı) yapılır.
 #: Köken alanı ve TDK tanımı kullanılmaz. Yalnız ETİKET; alıntı gücü (``nearest_donor``)
-#: aynı anlamla kalır. Ön kayıt ``data/cache/work/donor9l/PREREG.md``.
-SENSE_BRIDGE = False
+#: aynı anlamla kalır. Ön kayıt ``data/cache/work/donor9l/PREREG.md``. Tablo yoksa
+#: (``python -m engine.db.sense_bridge --build ...``) yalnız Osmanlıca yedeği çalışır.
+#:
+#: ÖLÇÜLDÜ, ön kayıtlı (c2466aa), KABUL. Yeni TDK GTS rapor altını (n=441, önceki tüm
+#: altınların dışında, kör indeks, bir kez): 0,329 -> 0,417 (McNemar 39/0, Holm p ~1e-11;
+#: Türkçe anlamlı katman 15 -> 54/225, etiketsiz 150 -> 105). Korumalar aynı: Türkçe
+#: TDK+Nişanyan train+dev 0,6416 (0 uyuşmazlık), Saha ``eval-donor`` 0,714, xturkic 0,746.
+#: 9j TDK raporu (görülmüş, bilgi) 0,211 -> 0,303 (70/5). S2 (İtalyancaya ayrı sorgu) ve
+#: S3 (tam eşleşmede ham mesafe) RED (rapor 0/2, 0/1; S2 Türkçe korumayı 0,604'e düşürdü).
+SENSE_BRIDGE = True
 
 #: 9l S2 — G2'nin Fransızca için yaptığı ayrı 200'lük anlam sorgusu bu diller için de
 #: (paylaşılan havuz aynen kalır; yalnız eklenir). ``()`` = kapalı.
+#: ⚠️ ÖLÇÜLDÜ (9l), RED: ``("it",)`` rapor 0,329 -> 0,324 (0/2); Türkçe train+dev
+#: 0,642 -> 0,604 (Fransızca -> İtalyanca 11 -> 19, Arapça -> İtalyanca 5 -> 16).
 EXTRA_POOL_LANGS: tuple[str, ...] = ()
 
 #: 9l S3 — en yakın biçimi bu SCA eşiğinin altında (tam ya da tama yakın eşleşme)
 #: olan diller varsa seçim yalnız onların arasında, ham mesafeyle yapılır (null
 #: düzeltmesi tam eşleşmeyi yenemez). ``None`` = kapalı.
+#: ⚠️ ÖLÇÜLDÜ (9l), RED: ε=0,05 rapor 0,329 -> 0,327 (0/1); ayar 2/0, xturkic 0,746 -> 0,768
+#: (bilgi), 9f raporu 0,438 -> 0,458 (5/0, bilgi) — yeni raporda etkisiz.
 EXACT_MATCH_EPS: float | None = None
 
 _LATIN = re.compile(r"^[^\u0370-\u03ff\u0400-\u04ff\u0530-\u058f\u0590-\u06ff]*$")

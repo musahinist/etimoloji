@@ -394,8 +394,8 @@ class TestSenseBridge9l(unittest.TestCase):
 
     _index = TestLabelOnlyPools9g._index
 
-    def test_defaults_off(self):
-        self.assertFalse(dp.SENSE_BRIDGE)
+    def test_defaults(self):
+        self.assertTrue(dp.SENSE_BRIDGE)
         self.assertEqual(dp.EXTRA_POOL_LANGS, ())
         self.assertIsNone(dp.EXACT_MATCH_EPS)
 
@@ -420,7 +420,8 @@ class TestSenseBridge9l(unittest.TestCase):
             self.assertEqual(dp.bridged_sense("bando", "music band"), "music band")
             self.assertEqual(dp.bridged_sense("bando", ""), "")
             self.assertEqual(dp.bridged_sense("bando", "дом"), "дом")
-        self.assertEqual(dp.bridged_sense("bando", "Bir müzik topluluğu"), "Bir müzik topluluğu")
+        with mock.patch.object(dp, "SENSE_BRIDGE", False):
+            self.assertEqual(dp.bridged_sense("bando", "Bir müzik topluluğu"), "Bir müzik topluluğu")
 
     def test_extra_pool_query(self):
         from tempfile import TemporaryDirectory
