@@ -333,6 +333,62 @@ class TestAffricateMapping(unittest.TestCase):
         self.assertEqual(to_comparison_form("käbäl"), "kebel")
 
 
+class TestTurkicCyrillicLetters(unittest.TestCase):
+    """Türk Kiril alfabelerinin özel harfleri silinmemeli / doğru eşlenmeli.
+
+    Regresyon (4.3.2): ``ҥ ҕ ј ҹ ӌ ҝ`` tabloda yoktu ve ayrışmayan tek kod
+    noktası oldukları için karşılaştırma biçiminden SİLİNİYORDU
+    (``чаҥы`` -> ``çaı``); ``ӓ ӳ ў ӂ`` ise aksanı atılıp yanlış ünlüye
+    iniyordu.
+    """
+
+    CASES = {
+        # Yakutça
+        "чаҥы": "çaŋı",
+        "айылҕа": "ayılğa",
+        "таҥара": "taŋara",
+        "һаҥа": "haŋa",
+        # Altayca
+        "јурт": "yurt",
+        "јыл": "yıl",
+        "кӱн": "kün",
+        "тӧрт": "tört",
+        # Azerice (Kiril)
+        "сербҹә": "serbce",
+        "ҝөз": "göz",
+        "јол": "yol",
+        # Hakasça
+        "пірінӌі": "pirinci",
+        "муӊ": "muŋ",
+        # Gagavuzca
+        "гӱӱдӓ": "güüde",
+        "бӓнӂӓ": "bence",
+        # Çuvaşça
+        "ӳсен": "üsen",
+        "ҫул": "sul",
+        "пӗр": "per",
+        "ҫӑмӑл": "samal",
+        # Özbekçe
+        "тўрт": "tort",
+        "ҳаёт": "hayot",
+        # Başkurtça / Kazakça / Tatarca / Kırgızca / Tuvaca
+        "ҡояш": "koyaş",
+        "боҙ": "boz",
+        "қазақ": "kazak",
+        "теңіз": "teŋiz",
+        "җир": "jir",
+        "мең": "meŋ",
+    }
+
+    def test_comparison_form(self):
+        for src, expected in self.CASES.items():
+            self.assertEqual(to_comparison_form(src), expected, src)
+
+    def test_letters_survive_character_class(self):
+        for src in ("чаҥы", "айылҕа", "јурт", "сербҹә", "пірінӌі", "ҝөз", "гӱӱдӓ", "ӳсен", "тўрт", "бӓнӂӓ"):
+            self.assertEqual(strip_non_turkic(src), src, f"{src} budandı")
+
+
 class TestCrossReference(unittest.TestCase):
     def test_bare_references(self):
         from engine.utils.reference_resolver import extract_cross_references, is_cross_reference

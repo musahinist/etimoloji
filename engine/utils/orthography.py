@@ -31,6 +31,10 @@ CYRILLIC_TURKIC = (
     "іӣӯ"  # Kırgızca / diğer
     "ҡҙҭҫ"  # Başkurtça
     "ӧӱ"  # Altayca / Hakasça
+    "ҥҕ"  # Altayca / Yakutça
+    "јҹҝ"  # Azerice (Kiril)
+    "ӌҷӊӈ"  # Hakasça / Şorca
+    "ӓӳўӂӝ"  # Gagavuzca / Çuvaşça / Özbekçe
 )
 
 #: Arap alfabesi (Osmanlıca / Uygurca / Çağatayca)
@@ -130,6 +134,36 @@ LATIN_NORMALISATION = {
     "ӯ": "u",
     "ҙ": "z",
     "ҭ": "t",
+    # ⚠️ Aşağıdaki harfler tabloda yokken SESSİZCE SİLİNİYORDU (ayrışmayan
+    #    tek kod noktaları; NFD kurtarması işlemiyor). İndeksteki kullanım
+    #    (4.3.2): ``ҕ`` sah 478, ``ҥ`` sah 341 + alt 113, ``ј`` alt 273 +
+    #    az 227, ``ҹ`` az 97, ``ӌ`` khk 71, ``ҝ`` az 50::
+    #
+    #        чаҥы -> çaı     таҥара -> taara     айылҕа -> ayıla
+    #        јурт -> urt     сербҹә -> serbe     пірінӌі -> pirini
+    "ҥ": "ŋ",  # Yakutça / Altayca damak n'si (``ң`` ile aynı)
+    "ӈ": "ŋ",
+    "ӊ": "ŋ",
+    "ԣ": "ŋ",
+    "ҕ": "ğ",  # Yakutça /ɣ/ — çeviriyazıdaki ``ɣ`` -> ``ğ`` ile aynı
+    # Azerice Kiril ``ј`` = /j/ = Latin ``y``; Altayca ``ј`` Ortak Türkçe *y-'nin
+    # devamıdır (јурт = yurt, јыл = yıl). Türkçe ``y`` ile hizalanır.
+    "ј": "y",
+    "ҹ": "c",  # Azerice /d͡ʒ/ = Latin ``c``
+    "ӌ": "c",  # Hakasça /d͡ʒ/ (пірінӌі = birinci)
+    "ҷ": "c",
+    "ҝ": "g",  # Azerice /ɟ/ = Latin ``g``
+    "ӄ": "k",
+    "ҟ": "k",
+    "ӆ": "l",
+    "ԡ": "l",
+    # Yanlış eşlenenler (NFD kurtarması aksanı atıp art/düz ünlü veriyordu):
+    "ӓ": "e",  # Gagavuzca ön açık ``ä`` — ``ä`` -> ``e`` kuralıyla aynı
+    "ӳ": "ü",  # Çuvaşça /y/ (ӳсен-) — ``u`` değil
+    "ў": "o",  # Özbekçe ``ў`` = Latin ``oʻ`` (тўрт = toʻrt)
+    "ӂ": "c",  # Gagavuzca /d͡ʒ/ = Latin ``c``
+    "ӝ": "c",
+    "ѳ": "ö",  # fita; Türk verisinde ``ө`` yerine dizgi hatası (йѳзәргә = йөзәргә)
 }
 
 

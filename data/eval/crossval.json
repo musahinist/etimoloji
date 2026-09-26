@@ -5,13 +5,13 @@
   "systems": {
     "rules": {
       "exact": 0.2531,
-      "ned": 0.3674,
-      "bcfs": 0.5332
+      "ned": 0.3693,
+      "bcfs": 0.5303
     },
     "learned_table": {
       "exact": 0.2719,
-      "ned": 0.3417,
-      "bcfs": 0.5427
+      "ned": 0.3436,
+      "bcfs": 0.5399
     },
     "majority_character": {
       "exact": 0.2531,
@@ -20,8 +20,8 @@
     },
     "column_model": {
       "exact": 0.2969,
-      "ned": 0.3273,
-      "bcfs": 0.5556
+      "ned": 0.3285,
+      "bcfs": 0.5541
     }
   },
   "comparisons": {
@@ -38,10 +38,10 @@
         "lower_is_better": false
       },
       "ned": {
-        "difference": -0.02918,
+        "difference": -0.0273,
         "ci95": [
-          -0.04853,
-          -0.00918
+          -0.04635,
+          -0.0076
         ],
         "significant": true,
         "a_is_better": true,
@@ -49,13 +49,13 @@
         "lower_is_better": true
       },
       "bcfs": {
-        "difference": 0.02351,
+        "difference": 0.02068,
         "ci95": [
-          0.00158,
-          0.04295
+          -0.00055,
+          0.03963
         ],
-        "significant": true,
-        "a_is_better": true,
+        "significant": false,
+        "a_is_better": false,
         "n": 320
       }
     },
@@ -83,10 +83,10 @@
         "lower_is_better": true
       },
       "bcfs": {
-        "difference": 0.0095,
+        "difference": 0.0096,
         "ci95": [
-          0.00221,
-          0.017
+          0.00235,
+          0.01708
         ],
         "significant": true,
         "a_is_better": true,
@@ -106,10 +106,10 @@
         "lower_is_better": false
       },
       "ned": {
-        "difference": -0.01443,
+        "difference": -0.01505,
         "ci95": [
-          -0.02574,
-          -0.00371
+          -0.0266,
+          -0.0042
         ],
         "significant": true,
         "a_is_better": true,
@@ -117,10 +117,10 @@
         "lower_is_better": true
       },
       "bcfs": {
-        "difference": 0.0129,
+        "difference": 0.01417,
         "ci95": [
-          0.00102,
-          0.02406
+          0.00186,
+          0.02531
         ],
         "significant": true,
         "a_is_better": true,
@@ -229,7 +229,7 @@
   "h2": {
     "criterion": "BCFS(motor) − BCFS(majority_character), eşleşmiş bootstrap %95 GA sıfırı dışlar, motor lehine",
     "system": "learned_table",
-    "supported": true
+    "supported": false
   },
   "neural_carried_over": [
     "neural",

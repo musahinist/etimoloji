@@ -1,6 +1,6 @@
 {
   "_schema": "donor_id_eval/v2",
-  "commit": "ebb1c62",
+  "commit": "b2ba0e4",
   "reference": "WOLD Sakha, borrowings.csv Source_relation=immediate, Borrowed ∈ {1,2}, Unidentified hariç",
   "n": 440,
   "gold_distribution": {
@@ -12,14 +12,17 @@
   "majority_class": "Rusça",
   "raw_engine_codes": {
     "zincir": {
-      "": 350,
-      "ru": 54,
-      "xgn": 21,
-      "mn": 5,
+      "": 337,
+      "ru": 57,
+      "xgn": 26,
+      "mn": 7,
       "xgn-pro": 4,
       "ar": 3,
       "zle-mru": 2,
-      "sla": 1
+      "xng": 1,
+      "sla": 1,
+      "tuw": 1,
+      "qfa-yen-pro": 1
     },
     "yakınlık": {
       "ru": 282,
@@ -37,34 +40,35 @@
   "systems": {
     "zincir": {
       "n": 440,
-      "accuracy": 0.1977,
+      "accuracy": 0.2227,
       "accuracy_ci95": [
-        0.1632,
-        0.2375
+        0.1863,
+        0.2639
       ],
-      "coverage": 0.2045,
-      "accuracy_when_predicted": 0.9667,
+      "coverage": 0.2341,
+      "accuracy_when_predicted": 0.9515,
       "accuracy_when_predicted_ci95": [
-        0.9065,
-        0.9886
+        0.8914,
+        0.9791
       ],
-      "macro_recall": 0.1015,
+      "macro_recall": 0.1165,
       "per_class_recall": {
-        "Moğolca": 0.1807,
-        "Rusça": 0.2253,
+        "Moğolca": 0.2289,
+        "Rusça": 0.2372,
         "Tunguzca": 0.0,
         "diğer": 0.0
       },
       "confusion": {
         "Rusça": {
-          "—": 195,
-          "Rusça": 57,
+          "—": 192,
+          "Rusça": 60,
           "diğer": 1
         },
         "Moğolca": {
-          "—": 134,
-          "Moğolca": 30,
-          "diğer": 2
+          "—": 124,
+          "Moğolca": 38,
+          "diğer": 3,
+          "Tunguzca": 1
         },
         "Tunguzca": {
           "—": 14
@@ -166,38 +170,38 @@
     },
     "motor": {
       "n": 440,
-      "accuracy": 0.7136,
+      "accuracy": 0.7295,
       "accuracy_ci95": [
-        0.6697,
-        0.7539
+        0.6862,
+        0.7689
       ],
-      "coverage": 0.8955,
-      "accuracy_when_predicted": 0.797,
+      "coverage": 0.9023,
+      "accuracy_when_predicted": 0.8086,
       "accuracy_when_predicted_ci95": [
-        0.7545,
-        0.8337
+        0.767,
+        0.8442
       ],
-      "macro_recall": 0.3691,
+      "macro_recall": 0.3791,
       "per_class_recall": {
-        "Moğolca": 0.488,
-        "Rusça": 0.917,
+        "Moğolca": 0.5241,
+        "Rusça": 0.9209,
         "Tunguzca": 0.0714,
         "diğer": 0.0
       },
       "confusion": {
         "Rusça": {
-          "Rusça": 232,
-          "—": 11,
+          "Rusça": 233,
+          "—": 10,
           "Moğolca": 6,
           "Tunguzca": 3,
           "diğer": 1
         },
         "Moğolca": {
-          "Rusça": 45,
+          "Rusça": 40,
           "Tunguzca": 10,
-          "Moğolca": 81,
-          "—": 28,
-          "diğer": 2
+          "Moğolca": 87,
+          "—": 26,
+          "diğer": 3
         },
         "Tunguzca": {
           "Moğolca": 5,
@@ -213,38 +217,38 @@
     },
     "motor (tek havuz, eski)": {
       "n": 440,
-      "accuracy": 0.6523,
+      "accuracy": 0.6636,
       "accuracy_ci95": [
-        0.6066,
-        0.6953
+        0.6182,
+        0.7062
       ],
-      "coverage": 0.8955,
-      "accuracy_when_predicted": 0.7284,
+      "coverage": 0.9023,
+      "accuracy_when_predicted": 0.7355,
       "accuracy_when_predicted_ci95": [
-        0.6825,
-        0.77
+        0.69,
+        0.7765
       ],
-      "macro_recall": 0.3115,
+      "macro_recall": 0.3186,
       "per_class_recall": {
-        "Moğolca": 0.3253,
-        "Rusça": 0.9209,
+        "Moğolca": 0.3494,
+        "Rusça": 0.9249,
         "Tunguzca": 0.0,
         "diğer": 0.0
       },
       "confusion": {
         "Rusça": {
-          "Rusça": 233,
-          "—": 11,
+          "Rusça": 234,
+          "—": 10,
           "Moğolca": 7,
           "diğer": 1,
           "Tunguzca": 1
         },
         "Moğolca": {
-          "Moğolca": 54,
-          "Rusça": 79,
-          "—": 28,
-          "Tunguzca": 3,
-          "diğer": 2
+          "Moğolca": 58,
+          "Rusça": 75,
+          "—": 26,
+          "Tunguzca": 4,
+          "diğer": 3
         },
         "Tunguzca": {
           "Moğolca": 3,
@@ -260,38 +264,38 @@
     },
     "motor|alıntı_dedi": {
       "n": 440,
-      "accuracy": 0.5955,
+      "accuracy": 0.6136,
       "accuracy_ci95": [
-        0.549,
-        0.6403
+        0.5673,
+        0.658
       ],
-      "coverage": 0.6909,
-      "accuracy_when_predicted": 0.8618,
+      "coverage": 0.7045,
+      "accuracy_when_predicted": 0.871,
       "accuracy_when_predicted_ci95": [
-        0.8185,
-        0.8961
+        0.8291,
+        0.9038
       ],
-      "macro_recall": 0.2996,
+      "macro_recall": 0.3111,
       "per_class_recall": {
-        "Moğolca": 0.2771,
-        "Rusça": 0.8498,
+        "Moğolca": 0.3193,
+        "Rusça": 0.8538,
         "Tunguzca": 0.0714,
         "diğer": 0.0
       },
       "confusion": {
         "Rusça": {
-          "Rusça": 215,
-          "—": 31,
+          "Rusça": 216,
+          "—": 30,
           "Tunguzca": 3,
           "Moğolca": 3,
           "diğer": 1
         },
         "Moğolca": {
-          "—": 89,
-          "Rusça": 26,
-          "Moğolca": 46,
-          "diğer": 2,
-          "Tunguzca": 3
+          "—": 84,
+          "Moğolca": 53,
+          "Rusça": 22,
+          "diğer": 3,
+          "Tunguzca": 4
         },
         "Tunguzca": {
           "—": 12,
@@ -341,35 +345,35 @@
     },
     "motor|alıntı_dedi (değerlendirme yarısı)": {
       "n": 220,
-      "accuracy": 0.6318,
+      "accuracy": 0.6545,
       "accuracy_ci95": [
-        0.5663,
-        0.6928
+        0.5895,
+        0.7142
       ],
-      "coverage": 0.7409,
-      "accuracy_when_predicted": 0.8528,
+      "coverage": 0.7591,
+      "accuracy_when_predicted": 0.8623,
       "accuracy_when_predicted_ci95": [
-        0.7903,
-        0.899
+        0.8018,
+        0.9064
       ],
-      "macro_recall": 0.3418,
+      "macro_recall": 0.3556,
       "per_class_recall": {
-        "Moğolca": 0.3765,
-        "Rusça": 0.848,
+        "Moğolca": 0.4235,
+        "Rusça": 0.856,
         "Tunguzca": 0.1429,
         "diğer": 0.0
       },
       "confusion": {
         "Moğolca": {
-          "—": 37,
-          "Rusça": 13,
-          "Moğolca": 32,
+          "—": 34,
+          "Moğolca": 36,
+          "Rusça": 11,
           "diğer": 1,
-          "Tunguzca": 2
+          "Tunguzca": 3
         },
         "Rusça": {
-          "Rusça": 106,
-          "—": 15,
+          "Rusça": 107,
+          "—": 14,
           "Tunguzca": 2,
           "Moğolca": 2
         },
@@ -385,20 +389,20 @@
     },
     "motor (çift yarı)": {
       "n": 220,
-      "accuracy": 0.6909,
+      "accuracy": 0.7,
       "accuracy_ci95": [
-        0.627,
-        0.7483
+        0.6364,
+        0.7567
       ],
-      "coverage": 0.8773,
-      "accuracy_when_predicted": 0.7876,
+      "coverage": 0.8818,
+      "accuracy_when_predicted": 0.7938,
       "accuracy_when_predicted_ci95": [
-        0.7245,
-        0.8394
+        0.7314,
+        0.8448
       ],
-      "macro_recall": 0.3354,
+      "macro_recall": 0.3416,
       "per_class_recall": {
-        "Moğolca": 0.4198,
+        "Moğolca": 0.4444,
         "Rusça": 0.9219,
         "Tunguzca": 0.0,
         "diğer": 0.0
@@ -417,10 +421,10 @@
         },
         "Moğolca": {
           "Tunguzca": 6,
-          "Rusça": 21,
-          "Moğolca": 34,
-          "—": 19,
-          "diğer": 1
+          "Moğolca": 36,
+          "—": 18,
+          "Rusça": 19,
+          "diğer": 2
         },
         "diğer": {
           "Rusça": 1,
@@ -430,20 +434,20 @@
     },
     "motor (tek havuz, eski) (çift yarı)": {
       "n": 220,
-      "accuracy": 0.6364,
+      "accuracy": 0.6409,
       "accuracy_ci95": [
-        0.571,
-        0.6971
+        0.5756,
+        0.7014
       ],
-      "coverage": 0.8773,
-      "accuracy_when_predicted": 0.7254,
+      "coverage": 0.8818,
+      "accuracy_when_predicted": 0.7268,
       "accuracy_when_predicted_ci95": [
-        0.6585,
-        0.7835
+        0.6602,
+        0.7846
       ],
-      "macro_recall": 0.2973,
+      "macro_recall": 0.3003,
       "per_class_recall": {
-        "Moğolca": 0.2593,
+        "Moğolca": 0.2716,
         "Rusça": 0.9297,
         "Tunguzca": 0.0,
         "diğer": 0.0
@@ -460,11 +464,11 @@
           "Rusça": 5
         },
         "Moğolca": {
-          "Rusça": 39,
-          "Moğolca": 21,
-          "—": 19,
+          "Rusça": 38,
+          "Moğolca": 22,
+          "—": 18,
           "Tunguzca": 1,
-          "diğer": 1
+          "diğer": 2
         },
         "diğer": {
           "Rusça": 1,
@@ -474,35 +478,35 @@
     },
     "motor (tek yarı)": {
       "n": 220,
-      "accuracy": 0.7364,
+      "accuracy": 0.7591,
       "accuracy_ci95": [
-        0.6744,
-        0.7902
+        0.6984,
+        0.8108
       ],
-      "coverage": 0.9136,
-      "accuracy_when_predicted": 0.806,
+      "coverage": 0.9227,
+      "accuracy_when_predicted": 0.8227,
       "accuracy_when_predicted_ci95": [
-        0.7458,
-        0.8547
+        0.7643,
+        0.8691
       ],
-      "macro_recall": 0.4019,
+      "macro_recall": 0.4157,
       "per_class_recall": {
-        "Moğolca": 0.5529,
-        "Rusça": 0.912,
+        "Moğolca": 0.6,
+        "Rusça": 0.92,
         "Tunguzca": 0.1429,
         "diğer": 0.0
       },
       "confusion": {
         "Moğolca": {
-          "Rusça": 24,
-          "Moğolca": 47,
-          "—": 9,
+          "Rusça": 21,
+          "Moğolca": 51,
+          "—": 8,
           "diğer": 1,
           "Tunguzca": 4
         },
         "Rusça": {
-          "Rusça": 114,
-          "—": 6,
+          "Rusça": 115,
+          "—": 5,
           "Tunguzca": 2,
           "Moğolca": 3
         },
@@ -519,35 +523,35 @@
     },
     "motor (tek havuz, eski) (tek yarı)": {
       "n": 220,
-      "accuracy": 0.6682,
+      "accuracy": 0.6864,
       "accuracy_ci95": [
-        0.6035,
-        0.727
+        0.6223,
+        0.744
       ],
-      "coverage": 0.9136,
-      "accuracy_when_predicted": 0.7313,
+      "coverage": 0.9227,
+      "accuracy_when_predicted": 0.7438,
       "accuracy_when_predicted_ci95": [
-        0.6661,
-        0.7879
+        0.6797,
+        0.799
       ],
-      "macro_recall": 0.3251,
+      "macro_recall": 0.3359,
       "per_class_recall": {
-        "Moğolca": 0.3882,
-        "Rusça": 0.912,
+        "Moğolca": 0.4235,
+        "Rusça": 0.92,
         "Tunguzca": 0.0,
         "diğer": 0.0
       },
       "confusion": {
         "Moğolca": {
-          "Moğolca": 33,
-          "Rusça": 40,
-          "—": 9,
-          "Tunguzca": 2,
+          "Moğolca": 36,
+          "Rusça": 37,
+          "—": 8,
+          "Tunguzca": 3,
           "diğer": 1
         },
         "Rusça": {
-          "Rusça": 114,
-          "—": 6,
+          "Rusça": 115,
+          "—": 5,
           "Moğolca": 4,
           "Tunguzca": 1
         },
@@ -563,34 +567,34 @@
       }
     },
     "yakınlık etiketi, kesin": {
-      "n": 195,
-      "accuracy": 0.9026,
+      "n": 191,
+      "accuracy": 0.9058,
       "accuracy_ci95": [
-        0.8528,
-        0.9367
+        0.856,
+        0.9396
       ],
       "coverage": 1.0,
-      "accuracy_when_predicted": 0.9026,
+      "accuracy_when_predicted": 0.9058,
       "accuracy_when_predicted_ci95": [
-        0.8528,
-        0.9367
+        0.856,
+        0.9396
       ],
-      "macro_recall": 0.4265,
+      "macro_recall": 0.4277,
       "per_class_recall": {
-        "Moğolca": 0.7333,
-        "Rusça": 0.9728,
+        "Moğolca": 0.7381,
+        "Rusça": 0.9726,
         "Tunguzca": 0.0,
         "diğer": 0.0
       },
       "confusion": {
         "Rusça": {
-          "Rusça": 143,
+          "Rusça": 142,
           "Tunguzca": 2,
           "Moğolca": 2
         },
         "Moğolca": {
-          "Rusça": 11,
-          "Moğolca": 33,
+          "Moğolca": 31,
+          "Rusça": 10,
           "Tunguzca": 1
         },
         "Tunguzca": {
@@ -602,29 +606,29 @@
       }
     },
     "yakınlık etiketi, belirsiz": {
-      "n": 108,
-      "accuracy": 0.463,
+      "n": 102,
+      "accuracy": 0.4804,
       "accuracy_ci95": [
-        0.3718,
-        0.5567
+        0.3859,
+        0.5763
       ],
       "coverage": 1.0,
-      "accuracy_when_predicted": 0.463,
+      "accuracy_when_predicted": 0.4804,
       "accuracy_when_predicted_ci95": [
-        0.3718,
-        0.5567
+        0.3859,
+        0.5763
       ],
-      "macro_recall": 0.3183,
+      "macro_recall": 0.3238,
       "per_class_recall": {
-        "Moğolca": 0.2833,
-        "Rusça": 0.8649,
+        "Moğolca": 0.3091,
+        "Rusça": 0.8611,
         "Tunguzca": 0.125,
         "diğer": 0.0
       },
       "confusion": {
         "Moğolca": {
-          "Rusça": 34,
-          "Tunguzca": 9,
+          "Rusça": 30,
+          "Tunguzca": 8,
           "Moğolca": 17
         },
         "Tunguzca": {
@@ -633,7 +637,7 @@
           "Tunguzca": 1
         },
         "Rusça": {
-          "Rusça": 32,
+          "Rusça": 31,
           "Moğolca": 4,
           "Tunguzca": 1
         },
@@ -646,11 +650,11 @@
   "vs_majority_mcnemar": {
     "motor": {
       "test": "mcnemar",
-      "statistic": 61.0,
+      "statistic": 68.0,
       "p": 0.0,
-      "n": 103,
+      "n": 108,
       "significant": true,
-      "note": "yalnız A doğru: 82, yalnız B doğru: 21"
+      "note": "yalnız A doğru: 88, yalnız B doğru: 20"
     },
     "yakınlık": {
       "test": "mcnemar",
@@ -662,19 +666,19 @@
     },
     "motor (tek havuz, eski)": {
       "test": "mcnemar",
-      "statistic": 34.0,
-      "p": 0.0001,
-      "n": 74,
+      "statistic": 39.0,
+      "p": 1e-05,
+      "n": 77,
       "significant": true,
-      "note": "yalnız A doğru: 54, yalnız B doğru: 20"
+      "note": "yalnız A doğru: 58, yalnız B doğru: 19"
     },
     "motor vs motor (tek havuz, eski)": {
       "test": "mcnemar",
-      "statistic": 27.0,
-      "p": 0.00027,
-      "n": 53,
+      "statistic": 29.0,
+      "p": 4e-05,
+      "n": 49,
       "significant": true,
-      "note": "yalnız A doğru: 40, yalnız B doğru: 13"
+      "note": "yalnız A doğru: 39, yalnız B doğru: 10"
     }
   },
   "circularity": "Motorun verici tahmini WOLD'dan öğrenilmez (Wiktionary indeksinden). Önsel sızıntı: yakınlık yalnız WOLD'dan seçilmiş ru/mn/evn sözlüklerini arar. 'alıntı_dedi' kapısının birleştiricisi WOLD Sakha ayar yarısında eğitildi. Türkçe altın küme kullanılmaz.",
@@ -854,13 +858,13 @@
       "sense": "LIGHTNING",
       "gold": "Moğolca",
       "wold_languoid": "Mongolic",
-      "zincir": "—",
+      "zincir": "Moğolca",
       "yakınlık": "Rusça",
       "yakınlık (tek havuz, eski)": "Moğolca",
-      "motor": "Rusça",
+      "motor": "Moğolca",
       "motor (tek havuz, eski)": "Moğolca",
-      "motor|alıntı_dedi": "Rusça",
-      "raw_chain": "",
+      "motor|alıntı_dedi": "Moğolca",
+      "raw_chain": "mn",
       "raw_proximity": "ru",
       "raw_nearest": "mn",
       "donor_uncertain": true,
@@ -871,13 +875,13 @@
       "sense": "BOLT (OF LIGHTNING)",
       "gold": "Moğolca",
       "wold_languoid": "Mongolic",
-      "zincir": "—",
+      "zincir": "Moğolca",
       "yakınlık": "Rusça",
       "yakınlık (tek havuz, eski)": "Rusça",
-      "motor": "Rusça",
-      "motor (tek havuz, eski)": "Rusça",
-      "motor|alıntı_dedi": "Rusça",
-      "raw_chain": "",
+      "motor": "Moğolca",
+      "motor (tek havuz, eski)": "Moğolca",
+      "motor|alıntı_dedi": "Moğolca",
+      "raw_chain": "mn",
       "raw_proximity": "ru",
       "raw_nearest": "ru",
       "donor_uncertain": false,
@@ -1772,13 +1776,13 @@
       "sense": "SNAKE",
       "gold": "Moğolca",
       "wold_languoid": "Mongolic",
-      "zincir": "—",
+      "zincir": "Moğolca",
       "yakınlık": "Moğolca",
       "yakınlık (tek havuz, eski)": "Rusça",
       "motor": "Moğolca",
-      "motor (tek havuz, eski)": "Rusça",
+      "motor (tek havuz, eski)": "Moğolca",
       "motor|alıntı_dedi": "Moğolca",
-      "raw_chain": "",
+      "raw_chain": "xgn",
       "raw_proximity": "mn",
       "raw_nearest": "ru",
       "donor_uncertain": false,
@@ -2146,13 +2150,13 @@
       "sense": "BALD",
       "gold": "Moğolca",
       "wold_languoid": "Mongolic",
-      "zincir": "—",
+      "zincir": "Moğolca",
       "yakınlık": "—",
       "yakınlık (tek havuz, eski)": "—",
-      "motor": "—",
-      "motor (tek havuz, eski)": "—",
+      "motor": "Moğolca",
+      "motor (tek havuz, eski)": "Moğolca",
       "motor|alıntı_dedi": "—",
-      "raw_chain": "",
+      "raw_chain": "xng",
       "raw_proximity": "",
       "raw_nearest": "",
       "donor_uncertain": null,
@@ -2163,13 +2167,13 @@
       "sense": "LAME",
       "gold": "Moğolca",
       "wold_languoid": "Mongolic",
-      "zincir": "—",
+      "zincir": "Moğolca",
       "yakınlık": "Rusça",
       "yakınlık (tek havuz, eski)": "Moğolca",
-      "motor": "Rusça",
+      "motor": "Moğolca",
       "motor (tek havuz, eski)": "Moğolca",
-      "motor|alıntı_dedi": "Rusça",
-      "raw_chain": "",
+      "motor|alıntı_dedi": "Moğolca",
+      "raw_chain": "xgn",
       "raw_proximity": "ru",
       "raw_nearest": "mn",
       "donor_uncertain": true,
@@ -3217,30 +3221,30 @@
       "sense": "NECKLACE",
       "gold": "Rusça",
       "wold_languoid": "Russian",
-      "zincir": "—",
+      "zincir": "Rusça",
       "yakınlık": "—",
       "yakınlık (tek havuz, eski)": "—",
-      "motor": "—",
-      "motor (tek havuz, eski)": "—",
-      "motor|alıntı_dedi": "—",
-      "raw_chain": "",
+      "motor": "Rusça",
+      "motor (tek havuz, eski)": "Rusça",
+      "motor|alıntı_dedi": "Rusça",
+      "raw_chain": "ru",
       "raw_proximity": "",
       "raw_nearest": "",
       "donor_uncertain": null,
-      "is_borrowed": false
+      "is_borrowed": true
     },
     {
       "word": "χoruoŋka",
       "sense": "BEAD",
       "gold": "Rusça",
       "wold_languoid": "Russian",
-      "zincir": "—",
+      "zincir": "Rusça",
       "yakınlık": "Rusça",
       "yakınlık (tek havuz, eski)": "Rusça",
       "motor": "Rusça",
       "motor (tek havuz, eski)": "Rusça",
       "motor|alıntı_dedi": "Rusça",
-      "raw_chain": "",
+      "raw_chain": "ru",
       "raw_proximity": "ru",
       "raw_nearest": "ru",
       "donor_uncertain": true,
@@ -3914,13 +3918,13 @@
       "sense": "GARDEN",
       "gold": "Rusça",
       "wold_languoid": "Russian",
-      "zincir": "—",
+      "zincir": "Rusça",
       "yakınlık": "Rusça",
       "yakınlık (tek havuz, eski)": "Rusça",
       "motor": "Rusça",
       "motor (tek havuz, eski)": "Rusça",
       "motor|alıntı_dedi": "Rusça",
-      "raw_chain": "",
+      "raw_chain": "ru",
       "raw_proximity": "ru",
       "raw_nearest": "ru",
       "donor_uncertain": false,
@@ -4815,17 +4819,17 @@
       "sense": "BOAT",
       "gold": "Moğolca",
       "wold_languoid": "Mongolic",
-      "zincir": "—",
+      "zincir": "Moğolca",
       "yakınlık": "Rusça",
       "yakınlık (tek havuz, eski)": "Rusça",
-      "motor": "Rusça",
-      "motor (tek havuz, eski)": "Rusça",
-      "motor|alıntı_dedi": "—",
-      "raw_chain": "",
+      "motor": "Moğolca",
+      "motor (tek havuz, eski)": "Moğolca",
+      "motor|alıntı_dedi": "Moğolca",
+      "raw_chain": "xgn",
       "raw_proximity": "ru",
       "raw_nearest": "ru",
       "donor_uncertain": true,
-      "is_borrowed": false
+      "is_borrowed": true
     },
     {
       "word": "uruːl",
@@ -5223,17 +5227,17 @@
       "sense": "BIG",
       "gold": "Moğolca",
       "wold_languoid": "Mongolic",
-      "zincir": "—",
+      "zincir": "Moğolca",
       "yakınlık": "Tunguzca",
       "yakınlık (tek havuz, eski)": "Rusça",
-      "motor": "Tunguzca",
-      "motor (tek havuz, eski)": "Rusça",
-      "motor|alıntı_dedi": "—",
-      "raw_chain": "",
+      "motor": "Moğolca",
+      "motor (tek havuz, eski)": "Moğolca",
+      "motor|alıntı_dedi": "Moğolca",
+      "raw_chain": "xgn",
       "raw_proximity": "evn",
       "raw_nearest": "ru",
       "donor_uncertain": true,
-      "is_borrowed": false
+      "is_borrowed": true
     },
     {
       "word": "bɨčɨkaːn",
@@ -6158,17 +6162,17 @@
       "sense": "BELIEVE",
       "gold": "Moğolca",
       "wold_languoid": "Mongolic",
-      "zincir": "—",
+      "zincir": "Moğolca",
       "yakınlık": "Moğolca",
       "yakınlık (tek havuz, eski)": "Moğolca",
       "motor": "Moğolca",
       "motor (tek havuz, eski)": "Moğolca",
-      "motor|alıntı_dedi": "—",
-      "raw_chain": "",
+      "motor|alıntı_dedi": "Moğolca",
+      "raw_chain": "xgn",
       "raw_proximity": "mn",
       "raw_nearest": "mn",
       "donor_uncertain": false,
-      "is_borrowed": false
+      "is_borrowed": true
     },
     {
       "word": "taːy",
@@ -6639,12 +6643,12 @@
       "yakınlık (tek havuz, eski)": "—",
       "motor": "Moğolca",
       "motor (tek havuz, eski)": "Moğolca",
-      "motor|alıntı_dedi": "—",
+      "motor|alıntı_dedi": "Moğolca",
       "raw_chain": "xgn",
       "raw_proximity": "",
       "raw_nearest": "",
       "donor_uncertain": null,
-      "is_borrowed": false
+      "is_borrowed": true
     },
     {
       "word": "salay",
@@ -6685,17 +6689,17 @@
       "sense": "FRIEND",
       "gold": "Moğolca",
       "wold_languoid": "Mongolic",
-      "zincir": "—",
+      "zincir": "Tunguzca",
       "yakınlık": "—",
       "yakınlık (tek havuz, eski)": "—",
-      "motor": "—",
-      "motor (tek havuz, eski)": "—",
-      "motor|alıntı_dedi": "—",
-      "raw_chain": "",
+      "motor": "Tunguzca",
+      "motor (tek havuz, eski)": "Tunguzca",
+      "motor|alıntı_dedi": "Tunguzca",
+      "raw_chain": "tuw",
       "raw_proximity": "",
       "raw_nearest": "",
       "donor_uncertain": null,
-      "is_borrowed": false
+      "is_borrowed": true
     },
     {
       "word": "meheydeː",
@@ -8028,13 +8032,13 @@
       "sense": "SLED",
       "gold": "Moğolca",
       "wold_languoid": "Mongolic",
-      "zincir": "—",
+      "zincir": "diğer",
       "yakınlık": "Rusça",
       "yakınlık (tek havuz, eski)": "Moğolca",
-      "motor": "Rusça",
-      "motor (tek havuz, eski)": "Moğolca",
-      "motor|alıntı_dedi": "Rusça",
-      "raw_chain": "",
+      "motor": "diğer",
+      "motor (tek havuz, eski)": "diğer",
+      "motor|alıntı_dedi": "diğer",
+      "raw_chain": "qfa-yen-pro",
       "raw_proximity": "ru",
       "raw_nearest": "mn",
       "donor_uncertain": true,

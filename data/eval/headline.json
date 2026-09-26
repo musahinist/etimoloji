@@ -1,6 +1,6 @@
 {
   "_schema": "headline_eval/v1",
-  "commit": "ebb1c62",
+  "commit": "e42af76",
   "fetchers": "yalnız yerel (tohum/indeks + indirilmiş Starling); ağ kaynakları kapalı",
   "sample": {
     "starling_words": 250,
@@ -476,7 +476,7 @@
           "reference": [
             "*biarŋak"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *biarŋak); motorun rekonstrüksiyonu: *barna",
+          "provenance": "tanıklı — Starling Türk Etimoloji Veritabanı (Dybo & Starostin 2005, yerel)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -620,7 +620,7 @@
           "reference": [
             "*bɨŋ"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *bɨŋ); motorun rekonstrüksiyonu: *beŋ",
+          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *bɨŋ); motorun rekonstrüksiyonu: *büŋ",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -1083,7 +1083,7 @@
             "*ăčaj",
             "*ĕčej"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *ăčaj); motorun rekonstrüksiyonu: *eçe",
+          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *ăčaj); motorun rekonstrüksiyonu: *eça",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -1373,7 +1373,7 @@
           "reference": [
             "*kȫče"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *kȫče); motorun rekonstrüksiyonu: *küçe",
+          "provenance": "tanıklı — Starling Türk Etimoloji Veritabanı (Dybo & Starostin 2005, yerel)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -3029,7 +3029,7 @@
           "reference": [
             "*jubka"
           ],
-          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *yubka); motorun rekonstrüksiyonu: *juka",
+          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *yubka); motorun rekonstrüksiyonu: *jukka",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -4588,7 +4588,7 @@
           "reference": [
             "*jubka"
           ],
-          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *yubka); motorun rekonstrüksiyonu: *juka",
+          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *yubka); motorun rekonstrüksiyonu: *jukka",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -5290,7 +5290,7 @@
           "reference": [
             "*bɨŋ"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *bīn-); motorun rekonstrüksiyonu: *beŋ",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *bīn-); motorun rekonstrüksiyonu: *büŋ",
           "exact": false,
           "acceptable": false,
           "ned": 0.6667,
@@ -7083,7 +7083,7 @@
           "reference": [
             "*soŋ"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *soŋ); motorun rekonstrüksiyonu: *son",
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -7699,7 +7699,7 @@
           "reference": [
             "*jubka"
           ],
-          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *yubka); motorun rekonstrüksiyonu: *juka",
+          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *yubka); motorun rekonstrüksiyonu: *jukka",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -7962,7 +7962,7 @@
           "reference": [
             "*jɨlɨ-g"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *yïlïg); motorun rekonstrüksiyonu: *ılık",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *yïlïg); motorun rekonstrüksiyonu: *jılık",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -8618,7 +8618,7 @@
             "*jaŋï",
             "*jeŋi"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *yaŋï); motorun rekonstrüksiyonu: *jaŋi",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *yaŋï); motorun rekonstrüksiyonu: *jani",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,

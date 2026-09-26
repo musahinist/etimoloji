@@ -1,6 +1,6 @@
 {
   "_schema": "homonym_eval/v1",
-  "commit": "ebb1c62",
+  "commit": "e42af76",
   "circularity": "DÖNGÜSEL KAYNAK: motorun sözlük indeksi (index.db) altın kümeyle AYNI kaikki dökümünden kurulur. Ölçülen, motorun aynı kaynaktaki iki etimolojiyi ayırıp ayıramadığıdır; bağımsız doğruluk değildir. Starling açık düzende başlık Starling'den de gelebilir (Wiktionary Proto-Türkçe biçimleri kısmen EDAL soyundan).",
   "source": "kaikki İngilizce Wiktionary dökümü (data/lexicons/{tr,ota}.jsonl.gz), Etymology N bölümleri",
   "dump": {
@@ -134,7 +134,7 @@
           }
         },
         "c": {
-          "tanik_atanan_payi": 0.4824,
+          "tanik_atanan_payi": 0.4831,
           "karisik": {
             "n": 94,
             "k": 5,
@@ -144,7 +144,7 @@
               0.1185
             ]
           },
-          "yabanci_tanik_payi": 0.0183,
+          "yabanci_tanik_payi": 0.0182,
           "baslik_tanik_catismasi": {
             "n": 77,
             "k": 1,
@@ -1178,7 +1178,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 2,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 38,
+          "c_witnesses": 39,
           "c_assigned": 17,
           "c_by_etym": {
             "2": 17
@@ -1647,9 +1647,9 @@
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
           "c_witnesses": 38,
-          "c_assigned": 30,
+          "c_assigned": 31,
           "c_by_etym": {
-            "1": 30
+            "1": 31
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -1821,9 +1821,9 @@
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
           "c_witnesses": 32,
-          "c_assigned": 21,
+          "c_assigned": 22,
           "c_by_etym": {
-            "1": 21
+            "1": 22
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -1919,7 +1919,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 34,
+          "c_witnesses": 33,
           "c_assigned": 25,
           "c_by_etym": {
             "1": 24,
@@ -3351,9 +3351,9 @@
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
           "c_witnesses": 11,
-          "c_assigned": 6,
+          "c_assigned": 5,
           "c_by_etym": {
-            "2": 6
+            "2": 5
           },
           "c_reference_etym": 2,
           "c_foreign": 0,
@@ -3892,7 +3892,7 @@
           }
         },
         "c": {
-          "tanik_atanan_payi": 0.456,
+          "tanik_atanan_payi": 0.4567,
           "karisik": {
             "n": 93,
             "k": 5,
@@ -4933,7 +4933,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 2,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 38,
+          "c_witnesses": 39,
           "c_assigned": 17,
           "c_by_etym": {
             "2": 17
@@ -5400,9 +5400,9 @@
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
           "c_witnesses": 38,
-          "c_assigned": 30,
+          "c_assigned": 31,
           "c_by_etym": {
-            "1": 30
+            "1": 31
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -5572,9 +5572,9 @@
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
           "c_witnesses": 32,
-          "c_assigned": 21,
+          "c_assigned": 22,
           "c_by_etym": {
-            "1": 21
+            "1": 22
           },
           "c_reference_etym": 1,
           "c_foreign": 0,
@@ -5669,7 +5669,7 @@
           "b_headline_basis": "kök",
           "b_meaning_etym": 1,
           "b_tutarsiz_baslik": false,
-          "c_witnesses": 34,
+          "c_witnesses": 33,
           "c_assigned": 25,
           "c_by_etym": {
             "1": 24,
@@ -7105,9 +7105,9 @@
           "b_meaning_etym": null,
           "b_tutarsiz_baslik": false,
           "c_witnesses": 11,
-          "c_assigned": 6,
+          "c_assigned": 5,
           "c_by_etym": {
-            "2": 6
+            "2": 5
           },
           "c_reference_etym": 2,
           "c_foreign": 0,
