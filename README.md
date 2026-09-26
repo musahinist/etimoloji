@@ -37,26 +37,30 @@ saklanır.
 | Alıntı F — WOLD/Sakha (n=769) | **0,658** | 0,464 hepsi-alıntı | ✅ fonotaktiğe karşı anlamlı (+0,072 doğruluk, GA [+0,033, +0,111], p=0,001) · ⚠️ yalnız verici yakınlığına karşı anlamlı **değil** (−0,004, p=0,80) |
 | Alıntı F — **Türk dilleri arası** (`xturkic` ayar, 7 dil, n=1.379, kör indeks + zincir kapalı) | **0,755** (üretim birleştiricisi) | 0,660 hepsi-alıntı · 0,763 yalnız verici yakınlığı | ⚠️ yalnız verici yakınlığından **ayırt edilemez** (−0,002, küme GA [−0,028, +0,023]) · Wiktionary'den bağımsız değil ama motorun zinciri **kapalı** — zincir açık olsaydı F +0,227 (K1): o sayı döngüseldir, raporlanmaz |
 | Verici dil tanıma — WOLD Saha (n=440) | **0,714** | 0,575 çoğunluk (Rusça) | ✅ anlamlı (McNemar p<0,001) · Moğolca en zayıf (81/166) |
-| Verici dil tanıma — **Türkçe** (TDK+Nişanyan, train+dev n=293) | **0,563** (etiket) | 0,505 çoğunluk | ⚠️ çoğunluğun ancak biraz üstünde · kör indeksle 0,515 · "Wiktionary↔TDK uyumu", bağımsız doğruluk değil (tam indeksle arama/zincir/dedektör 0,92–0,94: indeksin köken etiketini okur) |
-| Verici dil tanıma — `xturkic` ayar (n=551 alıntı) | **0,746** | — | 9d "Farsça üzerinden Arapça" sonrası (önce 0,550) · ayar bölümü, R/test değil |
+| Verici dil tanıma — **Türkçe** (TDK+Nişanyan, train+dev n=293) | **0,642** (etiket, GA [0,585–0,694]) | 0,505 çoğunluk | ✅ çoğunluğun üstünde (GA dışında) · kör indeksle **0,597** [0,540–0,652] · 4.3.0'da 0,563 / kör 0,515: 9e (Fransızca G2), 9f (sonek H1), 9l (anlam köprüsü S1) kuralları · Fransızca duyarlılık 0,36 → 0,68, Arapça 0,80 → 0,76 · dev (n=64) 0,672 · "Wiktionary↔TDK uyumu", bağımsız doğruluk değil (tam indeksle arama 0,918 / zincir 0,921 / dedektör 0,945: indeksin köken etiketini okur) |
+| Verici dil tanıma — `xturkic` ayar (n=551 alıntı) | **0,746** | 0,785 yalnız verici yakınlığı (n=493 tahminli) | 9d "Farsça üzerinden Arapça" sonrası (önce 0,550); 9e/9f/9l koruma ölçümünde ve 4.3.1 koşusunda aynı · ayar bölümü, R/test değil |
+| Verici etiketi — **bağımsız rapor altınları** (her biri ön kayıtlı, rapor bölümü **bir kez** açıldı; sayılar o koşudan) | 9l yeni TDK GTS (n=441): **0,329 → 0,417** | kural kapalı | ✅ 9d Farsça üzerinden Arapça, dev n=64: 0,484 → 0,641 (10/0, Holm p=0,004) · 9e yeni Wiktionary altını (n=560): 0,463 → 0,548 (57/9, Holm p=2e-9) · 9f fr/it altını (n=240): 0,396 → 0,438 (10/0, Holm p=0,004) · 9l S1 anlam köprüsü: 39/0, Holm p≈1e-11 · ⚠️ 9j TDK GTS (n=710) 0,211 ve TETTL (n=573) 0,255 — adaylar red; 9l sonrası aynı bölümler (artık görülmüş, yalnız bilgi) 0,303 / 0,300 · İtalyanca en zayıf sınıf (9j: 22/200) · 9g eski dil havuzu (Rumca/Ermenice) raporda 0,285 → 0,439 ama Türkçe korumada düştü → kapalı |
 | Rekonstrüksiyon NED (dev, n=83, çapa hariç) | **0,308** | 0,339 `majority_character` | ⚠️ anlamlı **değil** (GA [−0,069, +0,007]) |
 | Rekonstrüksiyon tam (dev, çapa hariç) | **0,398** | 0,337 | ⚠️ anlamlı **değil** (p=0,228) |
 | Rekonstrüksiyon NED (5 katlı ÇD, train+dev n=320) — **sütun modeli** (üretim) | **0,327** | 0,342 öğrenilmiş tablo · 0,371 `majority_character` | ✅ tabloya karşı anlamlı (−0,014, GA [−0,026, −0,004]) · tam 0,297 vs 0,272 ✅ · BCFS 0,556 · öğrenilmiş tablo `majority_character`'a karşı BCFS +0,024 ✅ → **H2 destekleniyor** · `make eval-cv` |
 | ↳ B2 sinir seçici (3 tohum, ön kayıt 3) | NED 0,313 | 0,328 sütun | ✅ kabul (−0,016, p=0,026) ama üretim kapsamında (277/320) −0,007 anlamlı değil → bayrakla bağlı, **varsayılan KAPALI** |
-| Başlık kökü tam — Starling **açık** (n=240) | **0,812** | 0,225 özdeşlik | ⚠️ **DÖNGÜSEL**: başlığın %60'ı Starling yedeğinden · Starling'den gelmeyen 100 maddede 0,550 |
-| Başlık kökü tam — Starling **kapalı** (n=240) | **0,417** | 0,225 | NED 0,270 · kısmen bağımsız (yerel Proto-Türkçe biçimleri EDAL soyundan) · savelyev dev (n=32) 0,656 · **gelenekten bağımsız eşdeğerlik** (d1bd6af koşusu; Wiktionary↔Starling/EDAL gösterim tablosu, veriye bakılmadan literatürden): tam 0,408 → **0,554** [0,491–0,616], yarılar A 0,575 / B 0,533 · savelyev dev 0,812 (A 0,875 / B 0,750) · ayrı sütun, tam/NED değişmedi |
-| Tarihleme — yüzyıl içinde (n=200) | 0,95 Starling açık · **0,08** kapalı | 0,755 medyan yıl | ⚠️ açık hâl DÖNGÜSEL (yıl aynı Starling etiketinden) · kapalıyken kapsam 0,48, tabanın **çok altında** |
+| Başlık kökü tam — Starling **açık** (n=240) | **0,812** · gelenek-denk 0,875 | 0,225 özdeşlik (gelenek-denk 0,371) | ⚠️ **DÖNGÜSEL**: başlığın %60'ı Starling yedeğinden · Starling'den gelmeyen 100 maddede tam 0,550 · gelenek-denk 0,700 |
+| Başlık kökü tam — Starling **kapalı** (n=240) | **0,417** [0,356–0,480] · gelenek-denk **0,554** [0,491–0,616] | 0,225 (gelenek-denk 0,371) | NED 0,270 · kısmen bağımsız (yerel Proto-Türkçe biçimleri EDAL soyundan) · yarılar tam A 0,417 / B 0,417, gelenek-denk A 0,575 / B 0,533 · savelyev dev (n=32) tam 0,656, gelenek-denk 0,812 (A 0,875 / B 0,750) · **gelenek-denk**: Wiktionary↔Starling/EDAL gösterim tablosu, veriye bakılmadan literatürden (5c29181); ayrı sütun, tam/NED'i değiştirmez |
+| Tarihleme — yüzyıl içinde (n=200) | 0,95 Starling açık · **0,085** kapalı | 0,755 medyan yıl | ⚠️ açık hâl DÖNGÜSEL (yıl aynı Starling etiketinden) · kapalıyken kapsam 0,49, tabanın **çok altında** |
 | Hüküm rozeti AUC — Türkçe dev (n=65 hipotezli) | **0,984** | 0,5 | 🟢 63 maddede doğruluk 1,000 · ⚠️ kısmen döngüsel · savelyev dev AUC 0,705 (n=31) |
-| Eşsesli fark etme (kaikki "Etymology N", n=150) | **0,767** | — | başlık doğru etimolojide 0,80 (şans 0,48) · tutarsız başlık 0 · ⚠️ altın, indeksle aynı döküm |
+| Eşsesli fark etme (kaikki "Etymology N", n=150) | **0,773** | — | başlık doğru etimolojide 0,80 (şans 0,48) · tutarsız başlık 0 · ⚠️ altın, indeksle aynı döküm |
 | Akraba tespiti B-Cubed F (dev) | 0,931 | 0,934 düzenleme uzaklığı | ⚠️ taban çizgisine **eşit** (kümeleyici artık aynı ölçüyü kullanıyor) |
 | Uzman uyuşmazlık bandı | **0,914** | — | otomatik sistemin gerçekçi tavanı |
 | Denklik düzenliliği (CoPaR, TRAIN) | **0,713** | — | kural tabanlı doğruluğun üst sınırı |
 
-Tablodaki bütün sayılar ENGINE_VERSION 4.3.0'ın 2026-09-26 temiz ağaç
-koşusundandır (`data/eval/*.json`; `xturkic` için
-`data/cache/work/xtr/xborrowing_tune.json`). **Dondurulmuş test bölümleri
-(Türkçe altın test, `xturkic` test, savelyev test) açılmadı**; yukarıdaki
-her şey ayar/dev/train+dev bölümlerindendir.
+Tablodaki sayılar ENGINE_VERSION 4.3.1'in 2026-09-26 temiz ağaç
+koşusundandır (`data/eval/*.json`, ad0a756; `xturkic` için
+`data/cache/work/xtr/xborrowing_tune.json`). İstisna: "bağımsız rapor
+altınları" satırı — o bölümler ön kayıtla **bir kez** açıldı; sayılar o
+koşulardan (22622b3, afabb8b, 79290de, dd630e3, 623ecea) aktarılmıştır, bu
+koşuda yeniden açılmadı. **Dondurulmuş test bölümleri (Türkçe altın test,
+`xturkic` test, savelyev test) açılmadı**; geri kalan her şey
+ayar/dev/train+dev bölümlerindendir.
 
 ⚠️ **Döngüsellik.** Türkçe alıntı ve verici ölçütleri TDK+Nişanyan'a
 dayanır; motor ağ kapalıyken Wiktionary köken etiketini okur ve Wiktionary
@@ -820,6 +824,17 @@ pip install -e ".[dev,phon,pdf]"        # + LingPy, PanPhon, Epitran, pdfminer
 Bu ekstralar kurulu değilse motor çökmez: ilgili aşama **kanıt üretmediğini
 bildirir** ve skora katılmaz.
 
+Yerel veri (git-ignored; künyeler commit'li, indiriciler SHA-256 künyeyle
+aynıysa atlar):
+
+```bash
+make bootstrap           # varsayılan motorun kullandığı her şey: CLDF, kaikki (en/ru/tr),
+                         # indeks, verici havuzu, Starling, Apertium, Wilkens, Zemberek,
+                         # anlam köprüsü (sense-bridge), altın + örüntüler
+make bootstrap-optional  # bayrakla kapalı / bağlanmamış: yalnız-etiket eski dil havuzu
+                         # (label-donors), veri açığı dilleri, Hakasça, Clauson EDT
+```
+
 ## Kullanım
 
 ```bash
@@ -868,7 +883,7 @@ ve Türki dillerin kaikki dökümleri (İngilizce, Türkçe ve Rusça Wiktionary
 sürümleri). SQLite FTS5 arama indeksi **30 dil kodu / 450.528 kayıt** taşır
 (2026-09-26 yeniden kurulumu; Türkçe 256.772 · Azerice 32.833 · Kazakça
 32.279 · … · Kuzey Altayca 1.259 · Hakasça `khk` 1.139 · Salarca `slq` 1.298).
-Köken sütunu: 36.179 `alıntı`, 46 `diriltme` (Öztürkçe diriltme/uydurma:
+Köken sütunu: 36.189 `alıntı`, 36 `diriltme` (Öztürkçe diriltme/uydurma:
 betik, bilge, başkan, kağan… — alıntı sayılmaz), 21.331 `miras`, gerisi boş.
 Her indirme sürüm, tarih ve SHA-256 damgası taşır (`data/SOURCES.md`).
 
@@ -1114,6 +1129,7 @@ make install
 make data              # 5 CLDF veri kümesi (sürüm + SHA-256 damgalı)
 make lexicons          # 23 dilin kaikki dökümü (~60 MB)
 make lexicon-index     # SQLite FTS5 arama indeksi
+make sense-bridge      # Türkçe -> İngilizce anlam köprüsü (verici etiketi, 9l S1)
 make gold              # altın standardı kur, böl, test setini MÜHÜRLE
 make correspondences   # ses denkliklerini TRAIN kavramlarından öğren
 make calibrate         # güven kalibratörünü TRAIN'de eğit
@@ -1137,7 +1153,7 @@ make eval-homonym      # eşsesli ayrımı
 make audit             # 60 kelimelik tutarlılık denetimi
 make dialect           # ağız kelimeleri toplu analizi
 
-make test && make coverage
+make test-all && make coverage   # iki fazlı: paralel + `serial` işaretliler tek süreçte
 ```
 
 **Sızıntı önlemleri.** Test bölümü kavram bazında ayrılır, checksum'la
@@ -1249,7 +1265,9 @@ türetmek.
 | kaikki.org — Eski Uygurca, Eski Anadolu Türkçesi, **Proto-Türkçe** | 446 · 593 · 1.150 madde | ✅ ilk ikisi tanık dili (yayılım paydasına girmez) · Proto-Türkçe sayfaları indekse **girmez**; kök torunları olarak okunur (`LocalProtoTurkicFetcher`) |
 | [Starling](https://starlingdb.org) Türk etimolojisi (`turcet`, Dybo & Starostin 2005, `make starling`) | 2.017 Proto-Türkçe kök · 32 dil alanı · EDT/ЭСТЯ atıfları | ✅ başlık kökü (kaynak biçim yoksa) ve tarihli Eski Türkçe tanık (Orhun 732, DLT 1072) · ⚠️ ölçüldü: örüntü tablosuna ek eğitim verisi olarak **kazanç yok**; Moğolca tablosu verici indeksinde WOLD'u **bozdu**, kullanılmıyor · **Starling tanıkları** (2dc0f04): seçilen kökün indekste tanığı olmayan dillerdeki biçimleri ayrı bölümde gösterilir (131 kelimenin 62'sine 570 tanık; Savelyev'le karşılaştırılabilen 409'un 398'i uyumlu, 0,973) — başlık aynı kayıttan geldiği için yayılıma, A-HVP'ye ve skora **girmez** |
 | [Wilkens 2021](https://doi.org/10.17875/gup2021-1590), *Handwörterbuch des Altuigurischen* (CC BY-SA 4.0, `make wilkens`) | 29.891 madde başı · 19.401 Türkçe anlamlı gerçek madde · 5.307 köken zinciri | ✅ Eski Uygurca tanık (`WilkensOldUyghurFetcher`), dönem "9.-14. yy" (1350) · Starling'siz tarihleme kapsamı 0,06 → 0,455 · ⚠️ nokta yıl vermez; elle 50 örnekte tanık kesinliği 0,86 |
-| [Zemberek-NLP](https://github.com/ahmetaa/zemberek-nlp) sözlüğü (Apache 2.0) | kök ses öznitelikleri (yumuşama, ikizleşme, ünlü düşmesi) | ✅ kök varyant üreteci (`engine/nlp/root_variants.py`) · ⚠️ ölçüldü: başlık kökünde kazanç 0, **bağlanmadı**; ters uyum sinyali olumsuz, bayrak kapalı |
+| [Zemberek-NLP](https://github.com/ahmetaa/zemberek-nlp) sözlüğü (Apache 2.0) | kök ses öznitelikleri (yumuşama, ikizleşme, ünlü düşmesi) | ✅ kök varyant üreteci (`engine/nlp/root_variants.py`); varsayılan aramada ağız tanığı bağında kullanılır (`witness_variants.dialect_names_query`) · ⚠️ ölçüldü: başlık kökünde kazanç 0, **bağlanmadı**; türetme çözümleyicisi (71a6ae4) bağlanmadı; ters uyum sinyali olumsuz, bayrak kapalı · `make zemberek` (bootstrap'ta) |
+| **Türkçe → İngilizce anlam köprüsü** (9l S1, `make sense-bridge`; kaikki Türkçe Vikisözlük ham dökümü + İngilizce Vikisözlük) | 29.346 Türkçe karşılaştırma biçimi → İngilizce karşılıklar · 884.644 İngilizce başlık sözcüğü; yalnız **çeviri** alanları (tr→en, en→tr) ve tek sözcüklük Türkçe tanımlar — köken alanı, TDK tanımı ve İngilizce dışı çeviri okunmaz | ✅ **yalnız verici etiketi** (`SENSE_BRIDGE`, varsayılan açık): Türkçe anlamlı maddelerde verici anlam araması İngilizce karşılıkla; alıntı gücü değişmez · tablo git-ignored, künye (`data/lexicons/sense_bridge/tr_en.provenance.json`: iki dökümün SHA-256'sı + tablo içerik özeti) commit'li; aynı SHA'lı dökümlerden kurulum bayt bayt aynı · tablo yoksa uyarı loglanır |
+| Clauson 1972, *An Etymological Dictionary of Pre-Thirteenth-Century Turkish* (TurkicWorld Unicode HTML, `make clauson`) | EDT madde başları, anlamlar, tanıklar (JSONL'e ayrıştırılır; `engine/db/clauson.py`, `ClausonEDTFetcher`) | ⚠️ modül ve fetcher var, **arama hattına bağlanmadı** (ön kayıtlı ölçümde kabul edilmedi, 148fe1d) · OUP telifli: metin repoya girmez, yalnız künye · `make bootstrap-optional` |
 | kaikki.org — **Kuzey Altayca** (`atv`, 807fe41) | 1.259 madde · 1.332 anlam (904 miras, 107 alıntı) | ✅ ayrı dil olarak indekste; Güney Altaycaya (`alt`) **katılmaz** — birleşse yayılım iki dili tek tanık sayardı |
 | **Türk dilleri arası alıntı altını** (`xturkic`, X1; `make xturkic-gold`) | kk, ky, tt, ba, uz, ug, tk Wiktionary en köken şablonlarından 3.430 madde (ayar 1.379 · R1 684 · R2 684 · test 683 **mühürlü**); R3 3.706 | ✅ Türkçe dışı ilk bağımsız alıntı ölçütü: **kör indeks** (köken sütunları boşaltılmış) + zincir kapalı · ⚠️ etiket Wiktionary'den; motorun zinciri aynı şablonu okur (K1), bu yüzden zincir açık sayı raporlanmaz |
 | [Apertium](https://github.com/apertium) iki dilli sözlükleri (`make apertium`) | Türkçe ↔ Çuvaşça, Kırım Tatarcası, Kırgızca, Tatarca, Özbekçe, Azerice, Türkmence | ✅ tanık (`ApertiumFetcher`) · ⚠️ **çeviri karşılığıdır**, akraba değil (pencere ~ терезе): benzerlik ≥ 0,50, Çuvaşça ≥ 0,66 |
