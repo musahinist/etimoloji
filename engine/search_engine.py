@@ -55,7 +55,7 @@ from engine.utils.morphology import analyze_morphology, is_inflection_gloss
 from engine.utils.network import Diagnostics, RequestRecord, capture_requests, unanswered_status
 from engine.utils.orthography import to_comparison_form
 from engine.utils.phonetic_rules import analyze_phonetic_shifts
-from engine.utils.proto_notation import same_root_across_traditions
+from engine.utils.proto_notation import normalize_proto, same_root_across_traditions
 from engine.utils.reference_resolver import extract_cross_references, is_cross_reference
 from engine.utils.seed import load_seed_entries
 from engine.utils.transliteration import transliterate_to_latin
@@ -2054,7 +2054,9 @@ class SearchEngine:
                 )
             if (
                 wiktionary_root
-                and wiktionary_root != starling_root
+                # Yalnız tire/büyük harf/y~j farkı (ölçümde zaten ``exact``)
+                # satır açmaz: 250 kelimede 66 satırın 41'i buydu.
+                and normalize_proto(wiktionary_root) != normalize_proto(starling_root)
                 and proto_root in (starling_root, wiktionary_root)
                 and same_root_across_traditions(starling_root, wiktionary_root)
             ):
