@@ -273,6 +273,17 @@ def _mean_distance(a: str, b: str) -> float:
 #: mesafeyi görür. ``STRENGTH_DISTANCE = "pred"`` ile açılır (deneme).
 #: ``derivation``/``root_variants`` Türkçe (Zemberek TR) sözlüğüne bağlı —
 #: Türk dilleri arası bölümlere uymadığı için dile bağımsız sondan kırpma.
+#:
+#: ⚠️ ÖLÇÜLDÜ, ön-kayıtlı, OLUMSUZ (2026-09-26; ``data/cache/work/d8/PREREG.md``,
+#: aday C2). Ayar (X1 tune): F 0,7611 -> 0,7622, miras özgüllüğü 0,633 ->
+#: 0,594. Bağımsız R4 (n=1.588, bir kez, kör indeks + zincir kapalı):
+#: engine_trained F 0,8901 -> 0,8771, fark −0,013 [−0,021, −0,005] (Holm
+#: p = 1,0); özgüllük 0,794 -> 0,723 (mirasta YP 49 -> 66); yalnız-yakınlık
+#: kesinliği −0,015; verici tanıma 0,773 -> 0,772. Mirasta rampa 146 -> 117
+#: (kırpma rampadaki mirası YAKIN'a taşıyor). KABUL EDİLMEDİ: sondan cezasız
+#: kırpma, çekimli alıntıyı kurtarmaktan çok miras kelimeye rastlantı eşleşmesi
+#: veriyor. Korumalar da düştü: WOLD F 0,6119 < 0,6482, Türkçe 0,8618 <
+#: 0,8773 (arama dev 129/135). Üretim ``sca``.
 PRED_MAX_TRIM = 4
 PRED_MIN_STEM = 3
 

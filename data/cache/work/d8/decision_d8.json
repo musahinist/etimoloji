@@ -1,0 +1,66 @@
+{
+ "_schema": "d8-decision/v1",
+ "prereg": "data/cache/work/d8/PREREG.md",
+ "split": "r4",
+ "n": 1588,
+ "result_file": "data/cache/work/xtr/xborrowing_r4_PREREG.json",
+ "base": {
+  "precision": 0.9582,
+  "recall": 0.8311,
+  "fscore": 0.8901,
+  "specificity_inherited": 0.7941
+ },
+ "C1_hn2_ramp_thr": {
+  "dF": {
+   "value": -0.1351,
+   "ci95": [
+    -0.1532,
+    -0.1191
+   ],
+   "p_one_sided": 1.0,
+   "clusters": 1454,
+   "p_holm": 1.0
+  },
+  "fp_inherited": {
+   "before": 49,
+   "after": 12,
+   "lost": 37,
+   "gained": 0,
+   "p_one_sided": 0.0
+  },
+  "guard": {
+   "wold_F": 0.6596,
+   "turkish_F": 0.8851,
+   "search_dev_off": "129/135",
+   "pass": true
+  },
+  "decision": "KABUL EDİLMEDİ — birincil F ölçütü tutmadı (özgüllük tuttu)"
+ },
+ "C2_pred": {
+  "dF": {
+   "value": -0.013,
+   "ci95": [
+    -0.0212,
+    -0.0047
+   ],
+   "p_one_sided": 0.9985,
+   "clusters": 1454,
+   "p_holm": 1.0
+  },
+  "fp_inherited": {
+   "before": 49,
+   "after": 66,
+   "lost": 6,
+   "gained": 23,
+   "p_one_sided": 0.999727
+  },
+  "guard": {
+   "wold_F": 0.6119,
+   "turkish_F": 0.8618,
+   "search_dev_off": "129/135",
+   "pass": false
+  },
+  "decision": "KABUL EDİLMEDİ — birincil F, özgüllük ve koruma tutmadı"
+ },
+ "decision": "İki aday da reddedildi; üretim ve data/models/borrowing_combiner.json değişmedi"
+}

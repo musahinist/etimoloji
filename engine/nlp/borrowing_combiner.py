@@ -127,7 +127,26 @@ SIMPLICITY_TOLERANCE = 0.01
 #: ``ramp`` = verici yakınlığı rampada (0 < güç < 1); ``ramp_phon`` = rampa
 #: YA DA fonotaktik ihlal (yabancı ses yapısı). ``ETY_COMBINER_HARD_NEG``
 #: ("<ağırlık>:<kural>[:thr]", "off") deneme içindir; ``thr`` eşik seçimini
-#: de aynı ağırlıkla yapar. Sonuç: ön kayıt ``data/cache/work/d8/PREREG.md``.
+#: de aynı ağırlıkla yapar. Ön kayıt ``data/cache/work/d8/PREREG.md``.
+#:
+#: ⚠️ ÖLÇÜLDÜ, ön-kayıtlı, OLUMSUZ (2026-09-26). Ayar (X1 tune, kat dışı,
+#: n=1.379): ağırlık yalnız kayıpta kalınca eşik onu geri alıyor (YP 257 ->
+#: 256-271, ızgara 2/3/5 × ramp/ramp_phon); eşik de ağırlıklı seçilince
+#: özgüllük 0,63 -> 0,75-0,85 ama duyarlılık düşüyor. Seçilen C1 = 2 · ramp ·
+#: ağırlıklı eşik. Bağımsız R4 (n=1.588, alıntı 1.350 / miras 238, kör indeks
+#: + zincir kapalı, bir kez)::
+#:
+#:                    kes.    duy.    F       miras özgüllüğü
+#:     taban (sca)    0,958   0,831   0,8901  0,794 (YP 49)
+#:     C1 hn2:ramp:thr 0,986  0,612   0,7550  0,950 (YP 12; McNemar p<0,001)
+#:     fark F −0,135 [−0,153, −0,119], Holm p = 1,0 -> KABUL EDİLMEDİ
+#:
+#: Özgüllük ölçütü tuttu, birincil F ölçütü ağır biçimde tutmadı: rampa
+#: özelliği doğrusal modelde alıntı ile mirası AYIRAMIYOR — rampadaki
+#: mirası cezalandırmak rampadaki alıntıları da kaybettiriyor (duyarlılık
+#: −0,22). R4'ün miras payı %15 (ayarda %51; önceden yazılmıştı) bu kaybı
+#: büyütüyor. Korumalar tuttu (WOLD F 0,6596, Türkçe 0,8851, arama dev
+#: 129/135) ama birincil ölçüt gerekli. Üretim DEĞİŞMEDİ (ağırlık 1,0 = kapalı).
 HARD_NEGATIVE_WEIGHT = 1.0
 HARD_NEGATIVE_RULE = "ramp"
 HARD_NEGATIVE_THRESHOLD = False

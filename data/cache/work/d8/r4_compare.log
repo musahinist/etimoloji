@@ -1,0 +1,155 @@
+{
+ "systems": {
+  "d8": {
+   "F": 0.8901,
+   "acc": 0.8256,
+   "dp_P": 0.9611,
+   "donor_id": 0.7728,
+   "ramp_inh": 0.6134,
+   "spec_inh": 0.7941
+  },
+  "d8@hn2:ramp:thr": {
+   "F": 0.755,
+   "acc": 0.6625,
+   "dp_P": 0.9611,
+   "donor_id": 0.7871,
+   "ramp_inh": 0.6134,
+   "spec_inh": 0.9496
+  },
+  "d8pred": {
+   "F": 0.8771,
+   "acc": 0.8048,
+   "dp_P": 0.9464,
+   "donor_id": 0.772,
+   "ramp_inh": 0.4916,
+   "spec_inh": 0.7227
+  }
+ },
+ "comparisons": {
+  "d8@hn2:ramp:thr": {
+   "F_engine_trained": {
+    "value": -0.1351,
+    "ci95": [
+     -0.1532,
+     -0.1191
+    ],
+    "p_one_sided": 1.0,
+    "clusters": 1454,
+    "p_holm": 1.0
+   },
+   "accuracy_engine_trained": {
+    "value": -0.1631,
+    "ci95": [
+     -0.1844,
+     -0.1428
+    ],
+    "p_one_sided": 1.0,
+    "clusters": 1454
+   },
+   "precision_donor_proximity_only": {
+    "value": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "p_one_sided": 1.0,
+    "clusters": 1454
+   },
+   "ramp_inherited_mcnemar": {
+    "before": 146,
+    "after": 146,
+    "lost": 0,
+    "gained": 0,
+    "p_one_sided": 1.0
+   },
+   "fp_inherited_mcnemar": {
+    "before": 49,
+    "after": 12,
+    "lost": 37,
+    "gained": 0,
+    "p_one_sided": 0.0
+   },
+   "F_engine_trained_yeni_dil": {
+    "value": -0.3268,
+    "ci95": [
+     -0.3981,
+     -0.2548
+    ],
+    "p_one_sided": 1.0,
+    "clusters": 421
+   },
+   "F_engine_trained_r3_artık": {
+    "value": -0.1166,
+    "ci95": [
+     -0.133,
+     -0.101
+    ],
+    "p_one_sided": 1.0,
+    "clusters": 1055
+   }
+  },
+  "d8pred": {
+   "F_engine_trained": {
+    "value": -0.013,
+    "ci95": [
+     -0.0212,
+     -0.0047
+    ],
+    "p_one_sided": 0.9985,
+    "clusters": 1454,
+    "p_holm": 1.0
+   },
+   "accuracy_engine_trained": {
+    "value": -0.0208,
+    "ci95": [
+     -0.0333,
+     -0.0082
+    ],
+    "p_one_sided": 0.9995,
+    "clusters": 1454
+   },
+   "precision_donor_proximity_only": {
+    "value": -0.0146,
+    "ci95": [
+     -0.0248,
+     -0.0051
+    ],
+    "p_one_sided": 0.9995,
+    "clusters": 1454
+   },
+   "ramp_inherited_mcnemar": {
+    "before": 146,
+    "after": 117,
+    "lost": 31,
+    "gained": 2,
+    "p_one_sided": 0.0
+   },
+   "fp_inherited_mcnemar": {
+    "before": 49,
+    "after": 66,
+    "lost": 6,
+    "gained": 23,
+    "p_one_sided": 0.999727
+   },
+   "F_engine_trained_yeni_dil": {
+    "value": -0.0197,
+    "ci95": [
+     -0.0499,
+     0.011
+    ],
+    "p_one_sided": 0.91,
+    "clusters": 421
+   },
+   "F_engine_trained_r3_artık": {
+    "value": -0.0097,
+    "ci95": [
+     -0.0176,
+     -0.002
+    ],
+    "p_one_sided": 0.994,
+    "clusters": 1055
+   }
+  }
+ }
+}
+/Users/mshn/Documents/etimoloji/data/cache/work/xtr/xborrowing_r4_PREREG.json
