@@ -1,0 +1,41 @@
+no	kelime	clauson_madde	önek	biçim	anlam	doğru	not
+0	bay	ba:y		1.0	0.919	1	
+1	ayır	adır-	D	1.0	0.651	1	
+2	ana	ana:		1.0	1.0	1	
+3	yumurta	yumurtğa:	(D)	0.88	1.0	1	
+4	guz	kuz		1.0	0.621	1	
+5	tın	tıŋ	VU	1.0	0.726	0	tıŋ kaydı jade/hear karışık
+6	ede	dede:		0.75	0.631	0	dede: başka söz
+7	üç	üč		1.0	1.0	1	
+8	avuç	adut		1.0	0.858	1	
+9	burçak	burčak	?D	1.0	0.505	1	
+10	kın	kin		1.0	0.517	0	kin misk
+11	törpü	törpig	VUD	0.8	0.813	1	
+12	göğüs	kögüz		1.0	0.843	1	
+13	git	ağıt-	D	0.75	0.644	0	ağıt- ilgisiz
+14	bürgü	burkığ	D	0.8	0.663	0	burkığ kırışık
+15	sav	sa:v		1.0	0.56	1	
+16	azı	azığ		1.0	0.65	1	
+17	katır	katır		1.0	1.0	1	
+18	yapış	yağıš	D	0.8	0.519	0	yağıš ilgisiz
+19	öl	öl-		1.0	1.0	1	
+20	etek	etek		1.0	0.963	1	
+21	yufka	yuvğa:		0.8	0.719	1	
+22	çakır	čağır		1.0	0.714	0	čağır şıra; çakır başka
+23	süngü	süŋü:	D	0.8	0.657	1	
+24	dur	turı:	VU	0.75	0.507	0	turı: acı
+25	elik	elgek	D	0.75	0.503	0	elgek elek
+26	böyü	moyum	VUSD	0.8	0.602	0	moyum ilgisiz
+27	uç	uč-		1.0	0.614	0	uč- uçmak; doğrusu u:č uç
+28	kemik	keyik		0.8	0.562	0	keyik ilgisiz
+29	koç	kočŋa:r		1.0	1.0	1	
+30	gün	kün		1.0	0.969	1	
+31	göm	köm-		1.0	0.869	1	
+32	kopuz	kopuz		1.0	0.615	1	
+33	alız	alığ	?S	0.75	0.593	0	alığ ilgisiz
+34	ser	serge:k	D	1.0	0.54	0	serge:k ilgisiz
+35	kuyruk	kudruk	(D)	0.83	0.785	1	
+36	yavan	yavğa:n	D	0.83	0.69	1	
+37	arpa	arpa:	?F	1.0	1.0	1	
+38	bin	biŋ		1.0	0.955	1	
+39	düş	tüš		1.0	0.663	0	tüš konak; doğrusu tü:š düş (eşses)

@@ -49,6 +49,7 @@ help:
 	@echo "gap-lexicons   - Karaçay-Balkarca (ru) + Kumanca (tr) dökümlerini indir (indekse bağlanmaz)"
 	@echo "khakas         - Hakasça–Rusça ve açıklamalı sözlüğü indir (HF, CC-BY-4.0; portföyde değil)"
 	@echo "wilkens        - Wilkens 2021 Eski Uygurca sözlüğünü indir ve ayrıştır (CC BY-SA 4.0; .[pdf] gerekir)"
+	@echo "clauson        - Clauson 1972 EDT'yi (TurkicWorld HTML) indir ve ayrıştır (telifli; repoya girmez)"
 	@echo "starling       - Starling Türk/Moğol etimoloji tablolarını indir (Dybo & Starostin 2005)"
 	@echo "calibrate      - Güven kalibratörünü TRAIN bölümünde eğit"
 	@echo "bootstrap      - Taze klonda tüm veriyi indir ve kur (data+lexicons+tr+index+donors+starling+apertium+gold+patterns)"
@@ -185,6 +186,12 @@ khakas:
 
 wilkens:
 	.venv/bin/python scripts/download_wilkens.py
+
+# Clauson 1972 EDT (TurkicWorld Unicode HTML) — OUP telifli; metin repoya
+# alınmaz, künye commit edilir. Bkz. engine/db/clauson.py.
+.PHONY: clauson
+clauson:
+	.venv/bin/python scripts/download_clauson.py
 
 lexicon-index: lexicons
 	.venv/bin/python -m engine.db.lexicon_index --build

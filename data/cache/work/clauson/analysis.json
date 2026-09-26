@@ -1,0 +1,1716 @@
+{
+ "headline|starling/yerel/tümü|A": {
+  "n": 120,
+  "motor_exact": [
+   95,
+   95,
+   0,
+   0,
+   1.0
+  ],
+  "motor_tradition_equivalent": [
+   104,
+   104,
+   0,
+   0,
+   1.0
+  ]
+ },
+ "headline|starling/yerel/tümü|B": {
+  "n": 120,
+  "motor_exact": [
+   100,
+   100,
+   0,
+   0,
+   1.0
+  ],
+  "motor_tradition_equivalent": [
+   106,
+   106,
+   0,
+   0,
+   1.0
+  ]
+ },
+ "headline|starling/yerel/tümü|all": {
+  "n": 240,
+  "motor_exact": [
+   195,
+   195,
+   0,
+   0,
+   1.0
+  ],
+  "motor_tradition_equivalent": [
+   210,
+   210,
+   0,
+   0,
+   1.0
+  ]
+ },
+ "headline|starling/yerel/starling_dışı|A": {
+  "n": 48,
+  "motor_exact": [
+   27,
+   27,
+   0,
+   0,
+   1.0
+  ],
+  "motor_tradition_equivalent": [
+   34,
+   34,
+   0,
+   0,
+   1.0
+  ]
+ },
+ "headline|starling/yerel/starling_dışı|B": {
+  "n": 50,
+  "motor_exact": [
+   26,
+   26,
+   0,
+   0,
+   1.0
+  ],
+  "motor_tradition_equivalent": [
+   34,
+   34,
+   0,
+   0,
+   1.0
+  ]
+ },
+ "headline|starling/yerel/starling_dışı|all": {
+  "n": 98,
+  "motor_exact": [
+   53,
+   53,
+   0,
+   0,
+   1.0
+  ],
+  "motor_tradition_equivalent": [
+   68,
+   68,
+   0,
+   0,
+   1.0
+  ]
+ },
+ "headline|starling/starling_yok|A": {
+  "n": 120,
+  "motor_exact": [
+   50,
+   51,
+   1,
+   0,
+   1.0
+  ],
+  "motor_tradition_equivalent": [
+   69,
+   69,
+   1,
+   1,
+   1.0
+  ],
+  "etkin_head_exact": [
+   50,
+   51,
+   1,
+   0,
+   1.0
+  ],
+  "etkin_head_tradition_equivalent": [
+   69,
+   69,
+   1,
+   1,
+   1.0
+  ],
+  "etkin_head_changed": [
+   [
+    "sökel",
+    "sökel",
+    true,
+    true
+   ]
+  ],
+  "etkin_base_exact": [
+   50,
+   50,
+   1,
+   1,
+   1.0
+  ],
+  "etkin_base_tradition_equivalent": [
+   69,
+   68,
+   1,
+   2,
+   1.0
+  ],
+  "etkin_base_changed": [
+   [
+    "sökel",
+    "sök-",
+    false,
+    false
+   ]
+  ],
+  "etkin_chain_exact": [
+   50,
+   50,
+   1,
+   1,
+   1.0
+  ],
+  "etkin_chain_tradition_equivalent": [
+   69,
+   68,
+   1,
+   2,
+   1.0
+  ],
+  "etkin_chain_changed": [
+   [
+    "sökel",
+    "sök-",
+    false,
+    false
+   ]
+  ]
+ },
+ "headline|starling/starling_yok|B": {
+  "n": 120,
+  "motor_exact": [
+   50,
+   47,
+   1,
+   4,
+   0.375
+  ],
+  "motor_tradition_equivalent": [
+   64,
+   61,
+   1,
+   4,
+   0.375
+  ],
+  "etkin_head_exact": [
+   50,
+   47,
+   1,
+   4,
+   0.375
+  ],
+  "etkin_head_tradition_equivalent": [
+   64,
+   61,
+   1,
+   4,
+   0.375
+  ],
+  "etkin_head_changed": [],
+  "etkin_base_exact": [
+   50,
+   47,
+   1,
+   4,
+   0.375
+  ],
+  "etkin_base_tradition_equivalent": [
+   64,
+   61,
+   1,
+   4,
+   0.375
+  ],
+  "etkin_base_changed": [],
+  "etkin_chain_exact": [
+   50,
+   47,
+   1,
+   4,
+   0.375
+  ],
+  "etkin_chain_tradition_equivalent": [
+   64,
+   61,
+   1,
+   4,
+   0.375
+  ],
+  "etkin_chain_changed": []
+ },
+ "headline|starling/starling_yok|all": {
+  "n": 240,
+  "motor_exact": [
+   100,
+   98,
+   2,
+   4,
+   0.6875
+  ],
+  "motor_tradition_equivalent": [
+   133,
+   130,
+   2,
+   5,
+   0.4531
+  ],
+  "etkin_head_exact": [
+   100,
+   98,
+   2,
+   4,
+   0.6875
+  ],
+  "etkin_head_tradition_equivalent": [
+   133,
+   130,
+   2,
+   5,
+   0.4531
+  ],
+  "etkin_head_changed": [
+   [
+    "sökel",
+    "sökel",
+    true,
+    true
+   ]
+  ],
+  "etkin_base_exact": [
+   100,
+   97,
+   2,
+   5,
+   0.4531
+  ],
+  "etkin_base_tradition_equivalent": [
+   133,
+   129,
+   2,
+   6,
+   0.2891
+  ],
+  "etkin_base_changed": [
+   [
+    "sökel",
+    "sök-",
+    false,
+    false
+   ]
+  ],
+  "etkin_chain_exact": [
+   100,
+   97,
+   2,
+   5,
+   0.4531
+  ],
+  "etkin_chain_tradition_equivalent": [
+   133,
+   129,
+   2,
+   6,
+   0.2891
+  ],
+  "etkin_chain_changed": [
+   [
+    "sökel",
+    "sök-",
+    false,
+    false
+   ]
+  ]
+ },
+ "headline|savelyev_dev/yerel|A": {
+  "n": 16,
+  "motor_exact": [
+   11,
+   11,
+   0,
+   0,
+   1.0
+  ],
+  "motor_tradition_equivalent": [
+   15,
+   15,
+   0,
+   0,
+   1.0
+  ]
+ },
+ "headline|savelyev_dev/yerel|B": {
+  "n": 16,
+  "motor_exact": [
+   11,
+   11,
+   0,
+   0,
+   1.0
+  ],
+  "motor_tradition_equivalent": [
+   13,
+   13,
+   0,
+   0,
+   1.0
+  ]
+ },
+ "headline|savelyev_dev/yerel|all": {
+  "n": 32,
+  "motor_exact": [
+   22,
+   22,
+   0,
+   0,
+   1.0
+  ],
+  "motor_tradition_equivalent": [
+   28,
+   28,
+   0,
+   0,
+   1.0
+  ]
+ },
+ "headline|savelyev_dev/starling_yok|A": {
+  "n": 16,
+  "motor_exact": [
+   11,
+   11,
+   0,
+   0,
+   1.0
+  ],
+  "motor_tradition_equivalent": [
+   14,
+   14,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_head_exact": [
+   11,
+   11,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_head_tradition_equivalent": [
+   14,
+   14,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_head_changed": [],
+  "etkin_base_exact": [
+   11,
+   11,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_base_tradition_equivalent": [
+   14,
+   14,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_base_changed": [],
+  "etkin_chain_exact": [
+   11,
+   11,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_chain_tradition_equivalent": [
+   14,
+   14,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_chain_changed": []
+ },
+ "headline|savelyev_dev/starling_yok|B": {
+  "n": 16,
+  "motor_exact": [
+   10,
+   10,
+   0,
+   0,
+   1.0
+  ],
+  "motor_tradition_equivalent": [
+   12,
+   12,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_head_exact": [
+   10,
+   10,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_head_tradition_equivalent": [
+   12,
+   12,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_head_changed": [],
+  "etkin_base_exact": [
+   10,
+   10,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_base_tradition_equivalent": [
+   12,
+   12,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_base_changed": [],
+  "etkin_chain_exact": [
+   10,
+   10,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_chain_tradition_equivalent": [
+   12,
+   12,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_chain_changed": []
+ },
+ "headline|savelyev_dev/starling_yok|all": {
+  "n": 32,
+  "motor_exact": [
+   21,
+   21,
+   0,
+   0,
+   1.0
+  ],
+  "motor_tradition_equivalent": [
+   26,
+   26,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_head_exact": [
+   21,
+   21,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_head_tradition_equivalent": [
+   26,
+   26,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_head_changed": [],
+  "etkin_base_exact": [
+   21,
+   21,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_base_tradition_equivalent": [
+   26,
+   26,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_base_changed": [],
+  "etkin_chain_exact": [
+   21,
+   21,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_chain_tradition_equivalent": [
+   26,
+   26,
+   0,
+   0,
+   1.0
+  ],
+  "etkin_chain_changed": []
+ },
+ "noroot": {
+  "n": 49,
+  "n23": 23,
+  "kapsam": 15,
+  "kapsam23": 5,
+  "rows": [
+   {
+    "word": "alık",
+    "w23": false,
+    "match": "alığ",
+    "on_headline": "*alıg",
+    "on_trad": false,
+    "on_prov": "türetilmiş — A-HVP inceleme gerektiren m",
+    "head": [
+     "alığ",
+     false,
+     false
+    ],
+    "base": [
+     "alığ",
+     false,
+     false
+    ],
+    "chain": [
+     "alığ",
+     false,
+     false
+    ]
+   },
+   {
+    "word": "apaçık",
+    "w23": false,
+    "match": null,
+    "on_headline": "apaçık",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "arka",
+    "w23": false,
+    "match": "arka:",
+    "on_headline": "*arka",
+    "on_trad": true,
+    "on_prov": "türetilmiş — A-HVP doğrulanmış miras kök",
+    "head": [
+     "arka:",
+     false,
+     true
+    ],
+    "base": [
+     "arka:",
+     false,
+     true
+    ],
+    "chain": [
+     "arka:",
+     false,
+     true
+    ]
+   },
+   {
+    "word": "ası",
+    "w23": false,
+    "match": null,
+    "on_headline": "ası",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "at",
+    "w23": false,
+    "match": "at",
+    "on_headline": "*at",
+    "on_trad": true,
+    "on_prov": "türetilmiş — A-HVP doğrulanmış miras kök",
+    "head": [
+     "at",
+     false,
+     true
+    ],
+    "base": [
+     "at",
+     false,
+     true
+    ],
+    "chain": [
+     "at",
+     false,
+     true
+    ]
+   },
+   {
+    "word": "barnak",
+    "w23": false,
+    "match": null,
+    "on_headline": "barnak",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "besim",
+    "w23": true,
+    "match": null,
+    "on_headline": "besim",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "bitiş",
+    "w23": false,
+    "match": null,
+    "on_headline": "bitiş",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "boyan",
+    "w23": false,
+    "match": null,
+    "on_headline": "boyan",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "bürgü",
+    "w23": true,
+    "match": "burkığ",
+    "on_headline": "*burgı",
+    "on_trad": false,
+    "on_prov": "türetilmiş — A-HVP inceleme gerektiren m",
+    "head": [
+     "burkığ",
+     false,
+     false
+    ],
+    "base": [
+     "burk-",
+     false,
+     false
+    ],
+    "chain": [
+     "burk-",
+     false,
+     false
+    ]
+   },
+   {
+    "word": "büz",
+    "w23": true,
+    "match": "opuz",
+    "on_headline": "*buŕ",
+    "on_trad": false,
+    "on_prov": "türetilmiş — tanıksız kelime kanıtlayıcı",
+    "head": [
+     "opuz",
+     false,
+     false
+    ],
+    "base": [
+     "o:p-",
+     false,
+     false
+    ],
+    "chain": [
+     "o:p-",
+     false,
+     false
+    ]
+   },
+   {
+    "word": "dala",
+    "w23": true,
+    "match": null,
+    "on_headline": "dala",
+    "on_trad": true,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "dan",
+    "w23": false,
+    "match": null,
+    "on_headline": "*dan",
+    "on_trad": false,
+    "on_prov": "sıralayıcı hükmü — MİRAS — *dan [*PCT]"
+   },
+   {
+    "word": "darga",
+    "w23": true,
+    "match": null,
+    "on_headline": "darga",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "dokun",
+    "w23": false,
+    "match": "bögün-",
+    "on_headline": "*bögün",
+    "on_trad": false,
+    "on_prov": "türetilmiş — tanıksız kelime kanıtlayıcı",
+    "head": [
+     "bögün-",
+     false,
+     false
+    ],
+    "base": [
+     "bög-",
+     false,
+     false
+    ],
+    "chain": [
+     "bög-",
+     false,
+     false
+    ]
+   },
+   {
+    "word": "duma",
+    "w23": true,
+    "match": null,
+    "on_headline": "duma",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "evin",
+    "w23": true,
+    "match": null,
+    "on_headline": "evin",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "göbelek",
+    "w23": true,
+    "match": null,
+    "on_headline": "göbelek",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "güce",
+    "w23": true,
+    "match": null,
+    "on_headline": "güce",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "ip",
+    "w23": false,
+    "match": "yip",
+    "on_headline": "*ip",
+    "on_trad": false,
+    "on_prov": "türetilmiş — A-HVP doğrulanmış miras kök",
+    "head": [
+     "yip",
+     true,
+     true
+    ],
+    "base": [
+     "yip",
+     true,
+     true
+    ],
+    "chain": [
+     "yip",
+     true,
+     true
+    ]
+   },
+   {
+    "word": "ir",
+    "w23": false,
+    "match": null,
+    "on_headline": "ir",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "kala",
+    "w23": false,
+    "match": "kaya:",
+    "on_headline": "*kala",
+    "on_trad": true,
+    "on_prov": "sıralayıcı hükmü — MİRAS — *kala [*PT]",
+    "head": [
+     "kaya:",
+     false,
+     false
+    ],
+    "base": [
+     "kay-",
+     false,
+     false
+    ],
+    "chain": [
+     "kay-",
+     false,
+     false
+    ]
+   },
+   {
+    "word": "kalak",
+    "w23": false,
+    "match": "karak",
+    "on_headline": "*kala",
+    "on_trad": false,
+    "on_prov": "türetilmiş — tanıksız kelime kanıtlayıcı",
+    "head": [
+     "karak",
+     false,
+     false
+    ],
+    "base": [
+     "karak",
+     false,
+     false
+    ],
+    "chain": [
+     "karak",
+     false,
+     false
+    ]
+   },
+   {
+    "word": "karım",
+    "w23": false,
+    "match": null,
+    "on_headline": "karım",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "kavuk",
+    "w23": false,
+    "match": "kavik",
+    "on_headline": "*kavik",
+    "on_trad": false,
+    "on_prov": "türetilmiş — A-HVP inceleme gerektiren m",
+    "head": [
+     "kavik",
+     false,
+     false
+    ],
+    "base": [
+     "kavik",
+     false,
+     false
+    ],
+    "chain": [
+     "kavik",
+     false,
+     false
+    ]
+   },
+   {
+    "word": "keke",
+    "w23": false,
+    "match": "kegde",
+    "on_headline": "*kege",
+    "on_trad": false,
+    "on_prov": "türetilmiş — A-HVP inceleme gerektiren m",
+    "head": [
+     "kegde",
+     false,
+     false
+    ],
+    "base": [
+     "kegde",
+     false,
+     false
+    ],
+    "chain": [
+     "kegde",
+     false,
+     false
+    ]
+   },
+   {
+    "word": "koçkar",
+    "w23": true,
+    "match": null,
+    "on_headline": "koçkar",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "köstek",
+    "w23": false,
+    "match": null,
+    "on_headline": "köstek",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "kün",
+    "w23": false,
+    "match": null,
+    "on_headline": "*kün",
+    "on_trad": false,
+    "on_prov": "türetilmiş — A-HVP doğrulanmış miras kök"
+   },
+   {
+    "word": "obuz",
+    "w23": true,
+    "match": null,
+    "on_headline": "obuz",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "omaca",
+    "w23": false,
+    "match": null,
+    "on_headline": "omaca",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "ordu",
+    "w23": false,
+    "match": null,
+    "on_headline": "*ordu",
+    "on_trad": false,
+    "on_prov": "tanıklı — Osmanlı Türkçesi sözlük kaydı "
+   },
+   {
+    "word": "salgın",
+    "w23": false,
+    "match": null,
+    "on_headline": "salgın",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "savur",
+    "w23": true,
+    "match": "savur-",
+    "on_headline": "*sabur",
+    "on_trad": true,
+    "on_prov": "türetilmiş — A-HVP inceleme gerektiren m",
+    "head": [
+     "savur-",
+     false,
+     false
+    ],
+    "base": [
+     "sav-",
+     false,
+     false
+    ],
+    "chain": [
+     "sav-",
+     false,
+     false
+    ]
+   },
+   {
+    "word": "sincik",
+    "w23": false,
+    "match": null,
+    "on_headline": "sincik",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "sinle",
+    "w23": false,
+    "match": null,
+    "on_headline": "sinle",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "sümek",
+    "w23": true,
+    "match": null,
+    "on_headline": "sümek",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "sümter",
+    "w23": true,
+    "match": null,
+    "on_headline": "sümter",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "tansık",
+    "w23": true,
+    "match": "taŋsuk",
+    "on_headline": "*taŋsuk",
+    "on_trad": false,
+    "on_prov": "türetilmiş — A-HVP inceleme gerektiren m",
+    "head": [
+     "taŋsuk",
+     false,
+     false
+    ],
+    "base": [
+     "taŋ",
+     false,
+     true
+    ],
+    "chain": [
+     "taŋ",
+     false,
+     true
+    ]
+   },
+   {
+    "word": "tatu",
+    "w23": true,
+    "match": null,
+    "on_headline": "tatu",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "tatık",
+    "w23": false,
+    "match": null,
+    "on_headline": "tatık",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "toru",
+    "w23": true,
+    "match": null,
+    "on_headline": "toru",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "tumağan",
+    "w23": true,
+    "match": null,
+    "on_headline": "tumağan",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "tın",
+    "w23": true,
+    "match": "tıŋ",
+    "on_headline": "*tıŋ",
+    "on_trad": false,
+    "on_prov": "türetilmiş — A-HVP inceleme gerektiren m",
+    "head": [
+     "tıŋ",
+     false,
+     false
+    ],
+    "base": [
+     "tıŋ",
+     false,
+     false
+    ],
+    "chain": [
+     "tıŋ",
+     false,
+     false
+    ]
+   },
+   {
+    "word": "uçarı",
+    "w23": true,
+    "match": null,
+    "on_headline": "uçarı",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "yaprağı",
+    "w23": true,
+    "match": null,
+    "on_headline": "yaprağı",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "çapa",
+    "w23": false,
+    "match": "tapa:",
+    "on_headline": "*çap",
+    "on_trad": true,
+    "on_prov": "türetilmiş — tanıksız kelime kanıtlayıcı",
+    "head": [
+     "tapa:",
+     false,
+     false
+    ],
+    "base": [
+     "tap-",
+     false,
+     false
+    ],
+    "chain": [
+     "tap-",
+     false,
+     false
+    ]
+   },
+   {
+    "word": "çaput",
+    "w23": true,
+    "match": null,
+    "on_headline": "çaput",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   },
+   {
+    "word": "öke",
+    "w23": true,
+    "match": null,
+    "on_headline": "öke",
+    "on_trad": false,
+    "on_prov": "yok — kök belirlenemedi"
+   }
+  ]
+ },
+ "chron|yerel|A": {
+  "n": 100,
+  "yüzyıl_içi": [
+   95,
+   89,
+   0,
+   6,
+   0.0312
+  ],
+  "kapsam": [
+   100,
+   100,
+   0,
+   0,
+   1.0
+  ],
+  "nokta_kapsam": [
+   100,
+   100,
+   0,
+   0,
+   1.0
+  ],
+  "aynı_eser": [
+   95,
+   89,
+   0,
+   6,
+   0.0312
+  ]
+ },
+ "chron|yerel|B": {
+  "n": 100,
+  "yüzyıl_içi": [
+   95,
+   93,
+   1,
+   3,
+   0.625
+  ],
+  "kapsam": [
+   100,
+   100,
+   0,
+   0,
+   1.0
+  ],
+  "nokta_kapsam": [
+   99,
+   100,
+   1,
+   0,
+   1.0
+  ],
+  "aynı_eser": [
+   95,
+   93,
+   1,
+   3,
+   0.625
+  ]
+ },
+ "chron|yerel|all": {
+  "n": 200,
+  "yüzyıl_içi": [
+   190,
+   182,
+   1,
+   9,
+   0.0215
+  ],
+  "kapsam": [
+   200,
+   200,
+   0,
+   0,
+   1.0
+  ],
+  "nokta_kapsam": [
+   199,
+   200,
+   1,
+   0,
+   1.0
+  ],
+  "aynı_eser": [
+   190,
+   182,
+   1,
+   9,
+   0.0215
+  ]
+ },
+ "chron|starling_yok|A": {
+  "n": 100,
+  "yüzyıl_içi": [
+   10,
+   63,
+   54,
+   1,
+   0.0
+  ],
+  "kapsam": [
+   50,
+   82,
+   32,
+   0,
+   0.0
+  ],
+  "nokta_kapsam": [
+   4,
+   72,
+   68,
+   0,
+   0.0
+  ],
+  "aynı_eser": [
+   3,
+   63,
+   60,
+   0,
+   0.0
+  ]
+ },
+ "chron|starling_yok|B": {
+  "n": 100,
+  "yüzyıl_içi": [
+   7,
+   56,
+   50,
+   1,
+   0.0
+  ],
+  "kapsam": [
+   48,
+   70,
+   22,
+   0,
+   0.0
+  ],
+  "nokta_kapsam": [
+   6,
+   63,
+   57,
+   0,
+   0.0
+  ],
+  "aynı_eser": [
+   3,
+   55,
+   52,
+   0,
+   0.0
+  ]
+ },
+ "chron|starling_yok|all": {
+  "n": 200,
+  "yüzyıl_içi": [
+   17,
+   119,
+   104,
+   2,
+   0.0
+  ],
+  "kapsam": [
+   98,
+   152,
+   54,
+   0,
+   0.0
+  ],
+  "nokta_kapsam": [
+   10,
+   135,
+   125,
+   0,
+   0.0
+  ],
+  "aynı_eser": [
+   6,
+   118,
+   112,
+   0,
+   0.0
+  ]
+ },
+ "chron_systems": {
+  "off": {
+   "yerel": {
+    "n": 200,
+    "coverage": 1.0,
+    "coverage_ci95": [
+     0.9812,
+     1.0
+    ],
+    "not_later|covered": 0.99,
+    "not_later|covered_ci95": [
+     0.9643,
+     0.9973
+    ],
+    "not_later|all": 0.99,
+    "not_later|all_ci95": [
+     0.9643,
+     0.9973
+    ],
+    "within_century|covered": 0.95,
+    "within_century|covered_ci95": [
+     0.9104,
+     0.9726
+    ],
+    "within_century|all": 0.95,
+    "within_century|all_ci95": [
+     0.9104,
+     0.9726
+    ],
+    "same_source|covered": 0.95,
+    "same_source|covered_ci95": [
+     0.9104,
+     0.9726
+    ],
+    "same_source|all": 0.95,
+    "same_source|all_ci95": [
+     0.9104,
+     0.9726
+    ],
+    "median_abs_diff|covered": 0.0,
+    "engine_record_counts": {
+     "1074": 98,
+     "732": 54,
+     "1069": 45,
+     "1245": 2,
+     "1350": 1
+    },
+    "coverage_point": 0.995,
+    "coverage_period": 0.005,
+    "within_century|point": 0.9548,
+    "within_century|point_ci95": [
+     0.9163,
+     0.976
+    ]
+   },
+   "starling_yok": {
+    "n": 200,
+    "coverage": 0.49,
+    "coverage_ci95": [
+     0.4216,
+     0.5588
+    ],
+    "not_later|covered": 0.1837,
+    "not_later|covered_ci95": [
+     0.1195,
+     0.2718
+    ],
+    "not_later|all": 0.09,
+    "not_later|all_ci95": [
+     0.0577,
+     0.1378
+    ],
+    "within_century|covered": 0.1735,
+    "within_century|covered_ci95": [
+     0.1112,
+     0.2604
+    ],
+    "within_century|all": 0.085,
+    "within_century|all_ci95": [
+     0.0537,
+     0.1319
+    ],
+    "same_source|covered": 0.0612,
+    "same_source|covered_ci95": [
+     0.0284,
+     0.1272
+    ],
+    "same_source|all": 0.03,
+    "same_source|all_ci95": [
+     0.0138,
+     0.0639
+    ],
+    "median_abs_diff|covered": 276.0,
+    "engine_record_counts": {
+     "yok": 102,
+     "1350": 57,
+     "1000": 31,
+     "732": 6,
+     "1303": 3,
+     "1074": 1
+    },
+    "coverage_point": 0.05,
+    "coverage_period": 0.44,
+    "within_century|point": 0.6,
+    "within_century|point_ci95": [
+     0.3127,
+     0.8318
+    ]
+   },
+   "taban_medyan_yıl": {
+    "n": 200,
+    "coverage": 1.0,
+    "coverage_ci95": [
+     0.9812,
+     1.0
+    ],
+    "not_later|covered": 0.765,
+    "not_later|covered_ci95": [
+     0.7016,
+     0.8184
+    ],
+    "not_later|all": 0.765,
+    "not_later|all_ci95": [
+     0.7016,
+     0.8184
+    ],
+    "within_century|covered": 0.755,
+    "within_century|covered_ci95": [
+     0.691,
+     0.8094
+    ],
+    "within_century|all": 0.755,
+    "within_century|all_ci95": [
+     0.691,
+     0.8094
+    ],
+    "same_source|covered": 0.755,
+    "same_source|covered_ci95": [
+     0.691,
+     0.8094
+    ],
+    "same_source|all": 0.755,
+    "same_source|all_ci95": [
+     0.691,
+     0.8094
+    ],
+    "median_abs_diff|covered": 0.0
+   }
+  },
+  "on": {
+   "yerel": {
+    "n": 200,
+    "coverage": 1.0,
+    "coverage_ci95": [
+     0.9812,
+     1.0
+    ],
+    "not_later|covered": 0.995,
+    "not_later|covered_ci95": [
+     0.9722,
+     0.9991
+    ],
+    "not_later|all": 0.995,
+    "not_later|all_ci95": [
+     0.9722,
+     0.9991
+    ],
+    "within_century|covered": 0.91,
+    "within_century|covered_ci95": [
+     0.8622,
+     0.9423
+    ],
+    "within_century|all": 0.91,
+    "within_century|all_ci95": [
+     0.8622,
+     0.9423
+    ],
+    "same_source|covered": 0.91,
+    "same_source|covered_ci95": [
+     0.8622,
+     0.9423
+    ],
+    "same_source|all": 0.91,
+    "same_source|all_ci95": [
+     0.8622,
+     0.9423
+    ],
+    "median_abs_diff|covered": 0.0,
+    "engine_record_counts": {
+     "1074": 75,
+     "732": 63,
+     "1069": 60,
+     "1245": 2
+    },
+    "coverage_point": 1.0,
+    "coverage_period": 0.0,
+    "within_century|point": 0.91,
+    "within_century|point_ci95": [
+     0.8622,
+     0.9423
+    ]
+   },
+   "starling_yok": {
+    "n": 200,
+    "coverage": 0.76,
+    "coverage_ci95": [
+     0.6963,
+     0.8139
+    ],
+    "not_later|covered": 0.8421,
+    "not_later|covered_ci95": [
+     0.7758,
+     0.8915
+    ],
+    "not_later|all": 0.64,
+    "not_later|all_ci95": [
+     0.5714,
+     0.7033
+    ],
+    "within_century|covered": 0.7829,
+    "within_century|covered_ci95": [
+     0.7108,
+     0.841
+    ],
+    "within_century|all": 0.595,
+    "within_century|all_ci95": [
+     0.5258,
+     0.6606
+    ],
+    "same_source|covered": 0.7763,
+    "same_source|covered_ci95": [
+     0.7037,
+     0.8353
+    ],
+    "same_source|all": 0.59,
+    "same_source|all_ci95": [
+     0.5208,
+     0.6558
+    ],
+    "median_abs_diff|covered": 0.0,
+    "engine_record_counts": {
+     "1074": 51,
+     "yok": 48,
+     "1069": 45,
+     "732": 39,
+     "1350": 11,
+     "1000": 3,
+     "1100": 1,
+     "1500": 1,
+     "1400": 1
+    },
+    "coverage_point": 0.675,
+    "coverage_period": 0.085,
+    "within_century|point": 0.8741,
+    "within_century|point_ci95": [
+     0.8076,
+     0.9199
+    ]
+   },
+   "taban_medyan_yıl": {
+    "n": 200,
+    "coverage": 1.0,
+    "coverage_ci95": [
+     0.9812,
+     1.0
+    ],
+    "not_later|covered": 0.765,
+    "not_later|covered_ci95": [
+     0.7016,
+     0.8184
+    ],
+    "not_later|all": 0.765,
+    "not_later|all_ci95": [
+     0.7016,
+     0.8184
+    ],
+    "within_century|covered": 0.755,
+    "within_century|covered_ci95": [
+     0.691,
+     0.8094
+    ],
+    "within_century|all": 0.755,
+    "within_century|all_ci95": [
+     0.691,
+     0.8094
+    ],
+    "same_source|covered": 0.755,
+    "same_source|covered_ci95": [
+     0.691,
+     0.8094
+    ],
+    "same_source|all": 0.755,
+    "same_source|all_ci95": [
+     0.691,
+     0.8094
+    ],
+    "median_abs_diff|covered": 0.0
+   }
+  }
+ },
+ "homonym|yerel": {
+  "a_fark_ediyor": [
+   116,
+   119
+  ],
+  "b_E1_payi": [
+   0.8016,
+   0.8047
+  ],
+  "tutarsiz_baslik": [
+   0,
+   1
+  ],
+  "n": [
+   150,
+   150
+  ]
+ },
+ "homonym|starling_yok": {
+  "a_fark_ediyor": [
+   112,
+   119
+  ],
+  "b_E1_payi": [
+   0.8281,
+   0.8231
+  ],
+  "tutarsiz_baslik": [
+   0,
+   1
+  ],
+  "n": [
+   150,
+   150
+  ]
+ }
+}

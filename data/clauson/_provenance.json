@@ -1,0 +1,74 @@
+{
+  "_schema": "turkic-etymology-clauson-provenance/v1",
+  "retrieved_at": "2026-09-26T08:44:44+00:00",
+  "citation": "Sir Gerard Clauson, An Etymological Dictionary of Pre-Thirteenth-Century Turkish. Oxford: Clarendon Press 1972.",
+  "transcription": "N. Kisamov, TurkicWorld — substantially corrected and annotated Unicode HTML (10 parça)",
+  "landing_page": "http://s155239215.onlinehome.us/turkic/40_Language/ClausonEDT/",
+  "url_pattern": "http://s155239215.onlinehome.us/turkic/40_Language/ClausonEDT/Clauson_EDTp{}.htm",
+  "license": "OUP telifi; metin repoya alınmaz, yalnız yerel kullanım",
+  "note": "Madde başı Eski Türkçe (8.-13. yy) biçimdir, Proto-Türkçe kök değildir. Mavi parantez anlamlar (gloss_tw) Kisamov'un eklemesidir. Starling turcet EDT'ye 1.504 kez atıf yapar (döngüsellik). JSONL, engine/db/clauson.py ayrıştırıcısının çıktısıdır.",
+  "counts": {
+    "entries": 9107,
+    "derived_D": 5851,
+    "with_base": 5242,
+    "cross_references": 899,
+    "foreign_F": 579,
+    "with_attestation": 8032,
+    "top_prefixes": {
+      "D": 5018,
+      "": 1640,
+      "S": 525,
+      "VU": 259,
+      "VUD": 225,
+      "F": 207,
+      "E": 112,
+      "?D": 104
+    }
+  },
+  "files": {
+    "Clauson_EDTp1-100(47-146).htm": {
+      "bytes": 789922,
+      "sha256": "a29ae3e4d94211dad0ab7f0c135df02dcceb75f4872ad0b5f38425cf165ab0cb"
+    },
+    "Clauson_EDTp101-201(147-247).htm": {
+      "bytes": 803926,
+      "sha256": "39f6b4b8cd0cf9054ebb83be4da1636e8fe7aabc322186c4e83135c6e70f15db"
+    },
+    "Clauson_EDTp202-300(248-346).htm": {
+      "bytes": 768577,
+      "sha256": "7b8b5b0000eccb1901920320bc75a0598333465a069cf18528c215662e088761"
+    },
+    "Clauson_EDTp301-400(347-446).htm": {
+      "bytes": 755358,
+      "sha256": "91c7ad71108d8a0cb433a0cbfdca82d1f8786c72f2713c464ba45db32e8aeeee"
+    },
+    "Clauson_EDTp401-500(447-546).htm": {
+      "bytes": 739343,
+      "sha256": "e08f5ad092ff608352a18e07bd8cb6a33cbcea6fdfc360502b04e807136b3ba1"
+    },
+    "Clauson_EDTp501-600(547-646).htm": {
+      "bytes": 747589,
+      "sha256": "49cc198be7fe6da8ce76361bd7ad869ab4cf9c8fee456c007d8973ee277111f8"
+    },
+    "Clauson_EDTp601-700(647-746).htm": {
+      "bytes": 767524,
+      "sha256": "6e28bb72a9de6345c171fc059d05770689f24718234879a41efacc4489e8dc8e"
+    },
+    "Clauson_EDTp701-800(747-846).htm": {
+      "bytes": 759464,
+      "sha256": "153f6f54254693c36fc4c67fb2206cea801fbbdd5ca1883103400ece3e6934d7"
+    },
+    "Clauson_EDTp801-900(847-946).htm": {
+      "bytes": 776629,
+      "sha256": "567f9d8f42edf03e86af2088a1f18a35930f6b1c651e288b0d0cb758e07c9b94"
+    },
+    "Clauson_EDTp901-988(947-1035).htm": {
+      "bytes": 646640,
+      "sha256": "45cc312267a91c99dee45481afad6d0b075d876888cab3a87e23a19f54abcee8"
+    },
+    "clauson_edt.jsonl": {
+      "bytes": 4253627,
+      "sha256": "48256f7312bb82560e0982c7971a940d78dd8f09b55e7a28c0d400fa0a993919"
+    }
+  }
+}

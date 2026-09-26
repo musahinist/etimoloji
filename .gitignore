@@ -125,6 +125,11 @@ data/khakas/*.jsonl
 data/wilkens/*.pdf
 data/wilkens/*.jsonl
 
+# Clauson 1972 EDT (`make clauson`, TurkicWorld HTML): OUP telifli metin —
+# HTML ve JSONL repoya ALINMAZ; künye (SHA-256) commit edilir.
+data/clauson/*.htm
+data/clauson/*.jsonl
+
 # Zemberek kök sözlüğü (`scripts/download_zemberek_lexicon.py`, Apache-2.0):
 # .dict dosyaları repoya alınmaz; künye (SHA-256) commit edilir.
 data/zemberek/*.dict

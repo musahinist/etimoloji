@@ -1,0 +1,54 @@
+diff --git a/engine/evaluation/headline_eval.py b/engine/evaluation/headline_eval.py
+index 286fe9a..183200d 100644
+--- a/engine/evaluation/headline_eval.py
++++ b/engine/evaluation/headline_eval.py
+@@ -232,6 +232,7 @@ def summarize_finding(finding: dict[str, Any]) -> dict[str, Any]:
+         "headline": str(root.get("proto_turkic") or ""),
+         "provenance": str(root.get("provenance") or ""),
+         "tradition_note": str(root.get("tradition_note") or ""),
++        "old_turkic_base": str(root.get("old_turkic_base") or ""),
+         "attestation_year": int(year) if year is not None else None,
+         "attestation_record": record,
+         "attestation_precision": precision,
+diff --git a/engine/search_engine.py b/engine/search_engine.py
+index 68b3056..30430ba 100644
+--- a/engine/search_engine.py
++++ b/engine/search_engine.py
+@@ -1,4 +1,5 @@
+ import concurrent.futures
++import os
+ import re
+ import time
+ from functools import lru_cache
+@@ -11,6 +12,7 @@ from engine.fetchers.academic_turkology import AcademicTurkologyFetcher
+ from engine.fetchers.apertium import ApertiumFetcher
+ from engine.fetchers.archive_org import ArchiveOrgFetcher
+ from engine.fetchers.base import TURKIC_LANGUAGES_MAP, BaseFetcher
++from engine.fetchers.clauson_edt import ClausonEDTFetcher
+ from engine.fetchers.etimoloji_turkce import EtimolojiTurkceFetcher
+ from engine.fetchers.historical_index import HistoricalIndexFetcher, ModernIndexFetcher
+ from engine.fetchers.historical_modern import HistoricalModernLexiconFetcher
+@@ -1174,6 +1176,9 @@ def default_fetchers() -> list[BaseFetcher]:
+         # tanık "9.-14. yy" dönemiyle (1350) tarihlenir. Starling'siz kronoloji
+         # kapsamı 0,06 -> 0,455 (bkz. fetchers/wilkens_old_uyghur.py).
+         WilkensOldUyghurFetcher(),
++        # Eski Türkçe (Clauson 1972 EDT, yerel): biçim + anlam eşleşmesi.
++        # DENEY: yalnız ETY_CLAUSON=1 (ön kayıt data/cache/work/clauson/PREREG.md).
++        *([ClausonEDTFetcher()] if os.environ.get("ETY_CLAUSON") == "1" else []),
+         ModernIndexFetcher(),
+         NorthEuraLexFetcher(),
+         ApertiumFetcher(),
+@@ -2236,6 +2241,13 @@ class SearchEngine:
+                 # Kök hiç atanmadıysa sorgu kelimesi yazılıyor; bu bir bulgu
+                 # değildir, o yüzden damgası da "yok".
+                 "provenance": proto_root_provenance or "yok — kök belirlenemedi",
++                # Kök belirlenemediyse Clauson'un Eski Türkçe taban biçimi —
++                # Proto-Türkçe kök DEĞİL, ayrı alan (bkz. fetchers/clauson_edt.py).
++                "old_turkic_base": (
++                    "" if proto_root_provenance else next(
++                        (f"{res['root']['old_turkic_base']} (Clauson)" for res in raw_fetcher_results
++                         if ((res or {}).get("root") or {}).get("old_turkic_base")), "")
++                ),
+                 "root_note": root_note,
+                 "tradition_note": tradition_note,
+                 "origin_layers": origin_layers,
