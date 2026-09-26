@@ -91,3 +91,35 @@ yüksek olan tek aday. Yalnız biri -> o. Hiçbiri -> `off`. Kabul edilen
 varsayılan açılır (`WESTERN_RULE`).
 
 Mühür: `gold.json` sha256 `31fcb0fa0be0d13a713f11c52a9e9c904501640c932568103d96b74f32f2f31e`.
+
+---
+
+## SONUÇ (ön kayıt commit'i 81fe3af'tan sonra, bir kez)
+
+Yeni rapor (n=240; `harness.py gold9f`, `rapor.log`, `gold9f_rapor.json`),
+etiket doğruluğu, taban üretim (g2, `off`):
+
+| kural | rapor | McNemar (yalnız aday / yalnız off) | ham p | Holm p |
+|---|---|---|---|---|
+| off (üretim) | 0,3958 (95) | — | — | — |
+| **H1** | 0,4375 (105) | 10 / 0 | 0,0020 | 0,0039 |
+| H2 | 0,4000 (96) | 7 / 6 | 1,0 | 1,0 |
+| h12 (bilgi) | 0,4333 (104) | 15 / 6 | 0,078 | — |
+
+Sınıf başına: Fransızca 74 -> H1 84 / H2 81 / h12 89 (120); İtalyanca 21 ->
+H1 21 / H2 15 / h12 15 (120). H2 yeni veride 6 doğru İtalyanca etiketini
+bozuyor: taban oranı önceliği (ayarda fr 100 / it 30) dengeli sınıflarda işe
+yaramadı. Kalan baskın hata artık İtalyanca -> Fransızca (52), -> Arapça (23),
+-> Yunanca (19): motorun İtalyanca kaydı düşük (21/120).
+
+Bilgi (karar ölçütü değil; 9e rapor bölümü görülmüştü, n=560): off 0,5482 ->
+H1 0,5875 (22/0), H2 0,5821 (21/2), h12 0,6054.
+
+Korumalar (H1, önceden ölçüldü): TR train+dev 0,628 -> 0,642; Saha 0,7136;
+xturkic ayar 0,7459 — tuttu. eval-borrowing: aşağıda.
+
+**KARAR: H1 kabul, H2 red -> `WESTERN_RULE = "h1"` varsayılan açık.**
+
+eval-borrowing (`borrowing_eval.main()` aynı süreçte iki kez, `WESTERN_RULE`
+off vs h1; model kaydı devre dışı, çıktı scratch'e — `data/models`e yazılmadı):
+547 sayısal alanın 0'ı değişti (yalnız `trained_at`) — tuttu.

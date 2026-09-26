@@ -1077,8 +1077,25 @@ FRENCH_SUFFIXES = (
 FRENCH_TIE_EPSILON = 0.05
 
 #: ``off`` | ``h1`` (sonek) | ``h2`` (yakın beraberlik) | ``h12`` (ikisi).
-#: Ön kayıt ``data/cache/work/donor9f/PREREG.md``. Yalnız ETİKET.
-WESTERN_RULE = "off"
+#: Ön kayıt ``data/cache/work/donor9f/PREREG.md`` (81fe3af). Yalnız ETİKET.
+#:
+#: ÖLÇÜLDÜ, ön kayıtlı, **H1 KABUL, H2 RED**. Yeni rapor: 9e'de kullanılmamış
+#: (dil, etimon) gruplarından Türkçe Wiktionary fr 120 + it 120 (kör indeks),
+#: bir kez; taban üretim (g2)::
+#:
+#:              9e ayar n=290   YENİ rapor n=240   McNemar (aday/off)   Holm p
+#:     off      0,548           0,396              —                    —
+#:     H1       0,583           0,438              10 / 0               0,004
+#:     H2       0,579           0,400               7 / 6               1,0
+#:     h12      0,600           0,433              15 / 6               (bilgi)
+#:
+#: H2 yeni veride İtalyancayı Fransızcaya çeviriyor (İtalyanca 21 -> 15/120):
+#: taban oranı önceliği dengeli sınıflarda kazanç getirmedi. Korumalar (H1):
+#: Türkçe TDK+Nişanyan etiket train+dev 0,628 -> 0,642; xturkic ayar verici
+#: 0,746 ve Saha ``eval-donor`` 0,714 aynı; 9e raporu (görüldü, bilgi)
+#: 0,548 -> 0,588. Kalan: yeni veride İtalyanca kaydı 21/120 (İtalyanca ->
+#: Fransızca 52, -> Arapça 23, -> Yunanca 19).
+WESTERN_RULE = "h1"
 
 
 def _french_suffix_pair(comparison: str) -> tuple[str, ...]:
