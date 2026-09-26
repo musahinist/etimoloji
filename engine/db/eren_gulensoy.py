@@ -38,6 +38,20 @@ Kök çıkarma kuralları (yalnız kaynağın kendi sesi; reddedilen görüş al
 girmez; yalnız başlık / köken notu kaynağıdır ("Eren: *çap- + -gut").
 Gösterim Türkiye Türkolojisi çeviriyazısıdır (ğ, ŋ, ı), Starling/EDAL
 notasyonu değildir.
+
+ÖLÇÜLDÜ, BAĞLANMADI (ön kayıt ``data/cache/work/erengul/PREREG.md``):
+
+* Ayrıştırma, bakılmamış 30'ar madde: Eren 28/30 = 0,93 (geçti); Gülensoy
+  14/30 = 0,47 (iki sütunlu OCR: ``<`` -> ``>``/``€``/``x``, ``+`` -> ``t``,
+  söz başı ``t`` -> ``f``) — Gülensoy ölçüme alınmadı.
+* "Kök yok" başlığına Eren kökü (Starling kapalı, önbellekli koşu ebb1c62):
+  49 kök-yok maddesinin yalnız 4'ünde Eren kök veriyor (23'lük "yalnız
+  Starling" sınıfında 2: çaput *çap doğru, obuz *ob yanlış). Seçim yarısı A
+  gelenek-denk 69 -> 70, rapor yarısı B 64 -> 64 (değişim yok, p = 1) — KABUL
+  EDİLMEDİ. Eren'in kapsamı dar (2.654 madde, yarısı alıntı; 329 açık kök).
+* İkinci görüş: 240 Starling kelimesinin 24'ünde Eren açık kök veriyor;
+  Starling başvurusuyla gelenek-denk 9/24, önek-uyumlu (Eren daha derin kök:
+  burun < bur-) 16/24.
 """
 
 from __future__ import annotations

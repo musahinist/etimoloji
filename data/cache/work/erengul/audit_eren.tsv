@@ -1,0 +1,31 @@
+no	lemma	çıktı	hüküm
+0	hezan	{'lemma': 'hezan', 'origin': 'loan', 'donor': 'Erm'}	doğru
+1	turna	{'lemma': 'turna', 'origin': 'turkish', 'ot_form': 'turna', 'refs': ['Doerfer: Oriens 18-19 : 432', 'Doerfer: TMEN 1181', 'Clauson: ED 551 b']}	doğru
+2	şebnem	{'lemma': 'şebnem', 'origin': 'loan', 'donor': 'Far'}	doğru
+3	çuval	{'lemma': 'çuval', 'origin': 'loan', 'donor': 'Far'}	doğru
+4	külçe	{'lemma': 'külçe', 'origin': 'loan', 'donor': 'Far', 'refs': ['Räsänen: V 308 a', 'Tietze: WZKM 59-60: 171']}	doğru
+5	üvey	{'lemma': 'üvey', 'origin': 'turkish', 'root': 'ög', 'ot_form': 'ögey', 'see': 'sinek', 'refs': ['Doerfer: TMEN 615', 'Clauson: ED 119 b', 'Clauson: ED 276 b', 'Râsânen: V 524 a']}	doğru
+6	pişirik	{'lemma': 'pişirik', 'origin': 'loan', 'donor': 'Erm', 'see': 'piyade', 'refs': ['Tietze: LFL 498']}	doğru
+7	yer	{'lemma': 'yer', 'origin': 'turkish', 'ot_form': 'yer', 'refs': ['Räsänen: V 198 a', 'Clauson: ED 954']}	doğru
+8	tirsi	{'lemma': 'tirsi', 'origin': 'loan', 'donor': 'R'}	doğru
+9	borazan	{'lemma': 'borazan', 'see': 'boru'}	YANLIŞ: '< boru + Far -zan' tabanı boru kaçtı (OCR + -> *)
+10	vardakosta	{'lemma': 'vardakosta', 'origin': 'loan', 'donor': 'İtal', 'refs': ['Tietze: LFL 690']}	doğru
+11	anavasya	{'lemma': 'anavasya', 'origin': 'loan', 'donor': 'R', 'see': 'katavasya', 'refs': ['Tietze: LFL 731']}	doğru
+12	piladan	{'lemma': 'piladan', 'origin': 'loan', 'donor': 'R', 'see': 'kavlağan'}	doğru
+13	irim	{'lemma': 'irim', 'origin': 'loan', 'donor': 'R'}	doğru
+14	simsek	{'lemma': 'simsek', 'origin': 'turkish', 'root': 'balkı-', 'ot_form': 'yaşın', 'see': 'sisek', 'refs': ['Räsänen: V 192 a']}	YANLIŞ: kök balkı- başka sözün (yıldırım/balkı-) kökü; Eren şimşek için kök vermiyor
+15	hayat	{'lemma': 'hayat', 'origin': 'loan', 'donor': 'Ar', 'refs': ['Tietze: Ar 275']}	doğru
+16	fuska	{'lemma': 'fuska', 'redirect': 'fiske'}	doğru
+17	pinel	{'lemma': 'pinel', 'origin': 'loan', 'donor': 'İtal', 'refs': ['Tietze: LFL 490']}	doğru
+18	şalupa	{'lemma': 'şalupa', 'origin': 'loan', 'donor': 'İtal', 'refs': ['Tietze: LFL 583']}	doğru
+19	şıvgın	{'lemma': 'şıvgın', 'redirect': 'çıvgın'}	doğru
+20	poğada	{'lemma': 'poğada', 'redirect': 'boğada'}	doğru
+21	manyat	{'lemma': 'manyat', 'origin': 'loan', 'donor': 'İtal', 'refs': ['Tietze: LFL 409']}	doğru
+22	zep	{'lemma': 'zep', 'origin': 'loan', 'donor': 'Erm'}	doğru
+23	domuz	{'lemma': 'domuz', 'origin': 'turkish', 'ot_form': 'tonuz', 'refs': ['Doerfer: TMEN 259', 'Râsânen: V 224 a', 'Räsänen: TLT 200', 'Doerfer: TMEN 945']}	doğru
+24	haspa	{'lemma': 'haspa', 'origin': 'loan', 'donor': 'Ar', 'refs': ['Tietze: Ar 273']}	doğru
+25	zamk	{'lemma': 'zamk', 'origin': 'loan', 'donor': 'Ar'}	doğru
+26	doruk	{'lemma': 'doruk', 'origin': 'unknown'}	doğru
+27	sirken	{'lemma': 'sirken', 'origin': 'unknown'}	doğru
+28	loş	{'lemma': 'loş', 'origin': 'unknown', 'refs': ['Räsänen: V 318']}	doğru
+29	anut	{'lemma': 'anut', 'redirect': 'hanut'}	doğru

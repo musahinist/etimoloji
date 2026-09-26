@@ -1,0 +1,31 @@
+no	lemma	çıktı	hüküm
+0	habba	{'lemma': 'habba', 'origin': 'turkish'}	doğru
+1	törpület-	{'lemma': 'törpület-', 'origin': 'turkish', 'root': 'dö:r-', 'suffixes': ['-pütle', '-t', '-(tir'], 'ot_form': 'törpit-'}	OCR kök dö:r- (tör-)
+2	tasarla-	{'lemma': 'tasarla-', 'origin': 'turkish', 'root': 'tas'}	doğru
+3	çıtak	{'lemma': 'çıtak', 'origin': 'turkish', 'root': 'çıt'}	doğru
+4	oncuk	{'lemma': 'oncuk', 'origin': 'turkish', 'root': 'otntcaltcık'}	OCR çöp kök (o+n+ca+cık)
+5	tuyuk	{'lemma': 'tuyuk', 'origin': 'turkish', 'ot_form': 'guyuk'}	kök tuy- kaçtı (OCR f-)
+6	sıvış-	{'lemma': 'sıvış-', 'origin': 'turkish'}	iki çözüm (sıvı / sav-) kaçtı
+7	um-	{'lemma': 'um-', 'origin': 'turkish'}	kök *üm- kaçtı (ilk ses denetimi)
+8	tongallaş-	{'lemma': 'tongallaş-', 'origin': 'turkish', 'root': 'tongal'}	doğru
+9	bıngıl bıngıl	{'lemma': 'bıngıl bıngıl', 'origin': 'turkish', 'root': 'bing'}	OCR kök bing (bıng)
+10	tüğümle-	{'lemma': 'tüğümle-', 'origin': 'turkish', 'root': 'tüg-'}	doğru
+11	aksır-	{'lemma': 'aksır-', 'origin': 'turkish', 'root': 'askur-'}	doğru
+12	yoksullaş-	{'lemma': 'yoksullaş-', 'origin': 'turkish'}	'>' okunmuş türetme kaçtı
+13	sıra	{'lemma': 'sıra', 'origin': 'turkish', 'root': '*sir-', 'suffixes': ['-a']}	doğru
+14	ilke	{'lemma': 'ilke', 'origin': 'turkish', 'root': 'il', 'suffixes': ['-k']}	doğru
+15	tekerle-	{'lemma': 'tekerle-', 'origin': 'turkish', 'root': 'tegir'}	doğru
+16	güneğik	{'lemma': 'güneğik', 'origin': 'turkish', 'root': 'gün'}	doğru
+17	ense	{'lemma': 'ense', 'origin': 'turkish'}	doğru
+18	yamrul-	{'lemma': 'yamrul-', 'origin': 'turkish', 'ot_form': 'yamur-'}	kök yamur- OT biçimine düştü
+19	sırılsıklam	{'lemma': 'sırılsıklam', 'origin': 'turkish'}	kök sır kaçtı (OCR)
+20	tar	{'lemma': 'tar', 'origin': 'turkish', 'ot_form': 'zar'}	OCR okunamaz, kök kaçtı
+21	yoklan-	{'lemma': 'yoklan-', 'origin': 'turkish'}	'>' okunmuş türetme kaçtı
+22	tazak	{'lemma': 'tazak', 'origin': 'turkish', 'root': 'taz'}	doğru
+23	siluk	{'lemma': 'siluk', 'origin': 'turkish', 'ot_form': 'isig'}	kök isig OT biçimine düştü
+24	öpçe	{'lemma': 'öpçe', 'origin': 'turkish', 'ot_form': 'öp'}	yansıma kökü öp kaçtı
+25	uylaş-	{'lemma': 'uylaş-', 'origin': 'turkish', 'root': 'uy-'}	doğru
+26	yularlık	{'lemma': 'yularlık', 'origin': 'turkish', 'ot_form': 'yüli-'}	'>' okunmuş türetme kaçtı
+27	delikanlı	{'lemma': 'delikanlı', 'origin': 'turkish', 'root': 'delikkanrlı'}	OCR çöp kök (delik+kan+lı)
+28	gülümse-	{'lemma': 'gülümse-', 'origin': 'turkish', 'root': 'gül-'}	doğru
+29	uyar-	{'lemma': 'uyar-', 'origin': 'turkish'}	kök odğur- kaçtı (ilk ses denetimi)

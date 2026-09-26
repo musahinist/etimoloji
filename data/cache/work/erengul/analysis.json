@@ -1,0 +1,1495 @@
+{
+ "data_commit": "ebb1c62",
+ "selection": {
+  "R": {
+   "n": 120,
+   "exact": [
+    50,
+    51
+   ],
+   "trad": [
+    69,
+    70
+   ],
+   "win": {
+    "exact": 1,
+    "trad": 1
+   },
+   "loss": {
+    "exact": 0,
+    "trad": 0
+   },
+   "exact_p": 1.0,
+   "trad_p": 1.0
+  },
+  "RO": {
+   "n": 120,
+   "exact": [
+    50,
+    51
+   ],
+   "trad": [
+    69,
+    70
+   ],
+   "win": {
+    "exact": 1,
+    "trad": 1
+   },
+   "loss": {
+    "exact": 0,
+    "trad": 0
+   },
+   "exact_p": 1.0,
+   "trad_p": 1.0
+  }
+ },
+ "chosen_mode": "R",
+ "report": {
+  "starling/yerel/tümü|A": {
+   "n": 120,
+   "exact": [
+    95,
+    95
+   ],
+   "trad": [
+    104,
+    104
+   ],
+   "win": {
+    "exact": 0,
+    "trad": 0
+   },
+   "loss": {
+    "exact": 0,
+    "trad": 0
+   },
+   "changed": [],
+   "exact_p": 1.0,
+   "trad_p": 1.0
+  },
+  "starling/yerel/tümü|B": {
+   "n": 120,
+   "exact": [
+    100,
+    100
+   ],
+   "trad": [
+    106,
+    106
+   ],
+   "win": {
+    "exact": 0,
+    "trad": 0
+   },
+   "loss": {
+    "exact": 0,
+    "trad": 0
+   },
+   "changed": [],
+   "exact_p": 1.0,
+   "trad_p": 1.0
+  },
+  "starling/yerel/tümü|all": {
+   "n": 240,
+   "exact": [
+    195,
+    195
+   ],
+   "trad": [
+    210,
+    210
+   ],
+   "win": {
+    "exact": 0,
+    "trad": 0
+   },
+   "loss": {
+    "exact": 0,
+    "trad": 0
+   },
+   "changed": [],
+   "exact_p": 1.0,
+   "trad_p": 1.0
+  },
+  "starling/yerel/starling_dışı|A": {
+   "n": 50,
+   "exact": [
+    29,
+    29
+   ],
+   "trad": [
+    36,
+    36
+   ],
+   "win": {
+    "exact": 0,
+    "trad": 0
+   },
+   "loss": {
+    "exact": 0,
+    "trad": 0
+   },
+   "changed": [],
+   "exact_p": 1.0,
+   "trad_p": 1.0
+  },
+  "starling/yerel/starling_dışı|B": {
+   "n": 50,
+   "exact": [
+    26,
+    26
+   ],
+   "trad": [
+    34,
+    34
+   ],
+   "win": {
+    "exact": 0,
+    "trad": 0
+   },
+   "loss": {
+    "exact": 0,
+    "trad": 0
+   },
+   "changed": [],
+   "exact_p": 1.0,
+   "trad_p": 1.0
+  },
+  "starling/yerel/starling_dışı|all": {
+   "n": 100,
+   "exact": [
+    55,
+    55
+   ],
+   "trad": [
+    70,
+    70
+   ],
+   "win": {
+    "exact": 0,
+    "trad": 0
+   },
+   "loss": {
+    "exact": 0,
+    "trad": 0
+   },
+   "changed": [],
+   "exact_p": 1.0,
+   "trad_p": 1.0
+  },
+  "starling/starling_yok|A": {
+   "n": 120,
+   "exact": [
+    50,
+    51
+   ],
+   "trad": [
+    69,
+    70
+   ],
+   "win": {
+    "exact": 1,
+    "trad": 1
+   },
+   "loss": {
+    "exact": 0,
+    "trad": 0
+   },
+   "changed": [
+    [
+     "köken",
+     "eren",
+     "kök",
+     "kök",
+     "*kök",
+     [
+      "*kök",
+      "*köken"
+     ],
+     true,
+     true,
+     true,
+     true
+    ],
+    [
+     "köstek",
+     "eren",
+     "kök",
+     "köste",
+     "*köste",
+     [
+      "*kös"
+     ],
+     false,
+     false,
+     false,
+     false
+    ],
+    [
+     "çaput",
+     "eren",
+     "kök",
+     "çap",
+     "*çap",
+     [
+      "*čAp"
+     ],
+     false,
+     true,
+     false,
+     true
+    ]
+   ],
+   "exact_p": 1.0,
+   "trad_p": 1.0
+  },
+  "starling/starling_yok|B": {
+   "n": 120,
+   "exact": [
+    50,
+    50
+   ],
+   "trad": [
+    64,
+    64
+   ],
+   "win": {
+    "exact": 0,
+    "trad": 0
+   },
+   "loss": {
+    "exact": 0,
+    "trad": 0
+   },
+   "changed": [
+    [
+     "obuz",
+     "eren",
+     "kök",
+     "ob",
+     "*ob",
+     [
+      "*ōpuŕ"
+     ],
+     false,
+     false,
+     false,
+     false
+    ]
+   ],
+   "exact_p": 1.0,
+   "trad_p": 1.0
+  },
+  "starling/starling_yok|all": {
+   "n": 240,
+   "exact": [
+    100,
+    101
+   ],
+   "trad": [
+    133,
+    134
+   ],
+   "win": {
+    "exact": 1,
+    "trad": 1
+   },
+   "loss": {
+    "exact": 0,
+    "trad": 0
+   },
+   "changed": [
+    [
+     "köken",
+     "eren",
+     "kök",
+     "kök",
+     "*kök",
+     [
+      "*kök",
+      "*köken"
+     ],
+     true,
+     true,
+     true,
+     true
+    ],
+    [
+     "köstek",
+     "eren",
+     "kök",
+     "köste",
+     "*köste",
+     [
+      "*kös"
+     ],
+     false,
+     false,
+     false,
+     false
+    ],
+    [
+     "obuz",
+     "eren",
+     "kök",
+     "ob",
+     "*ob",
+     [
+      "*ōpuŕ"
+     ],
+     false,
+     false,
+     false,
+     false
+    ],
+    [
+     "çaput",
+     "eren",
+     "kök",
+     "çap",
+     "*çap",
+     [
+      "*čAp"
+     ],
+     false,
+     true,
+     false,
+     true
+    ]
+   ],
+   "exact_p": 1.0,
+   "trad_p": 1.0
+  },
+  "savelyev_dev/yerel|A": {
+   "n": 16,
+   "exact": [
+    11,
+    11
+   ],
+   "trad": [
+    15,
+    15
+   ],
+   "win": {
+    "exact": 0,
+    "trad": 0
+   },
+   "loss": {
+    "exact": 0,
+    "trad": 0
+   },
+   "changed": [],
+   "exact_p": 1.0,
+   "trad_p": 1.0
+  },
+  "savelyev_dev/yerel|B": {
+   "n": 16,
+   "exact": [
+    11,
+    11
+   ],
+   "trad": [
+    13,
+    13
+   ],
+   "win": {
+    "exact": 0,
+    "trad": 0
+   },
+   "loss": {
+    "exact": 0,
+    "trad": 0
+   },
+   "changed": [],
+   "exact_p": 1.0,
+   "trad_p": 1.0
+  },
+  "savelyev_dev/yerel|all": {
+   "n": 32,
+   "exact": [
+    22,
+    22
+   ],
+   "trad": [
+    28,
+    28
+   ],
+   "win": {
+    "exact": 0,
+    "trad": 0
+   },
+   "loss": {
+    "exact": 0,
+    "trad": 0
+   },
+   "changed": [],
+   "exact_p": 1.0,
+   "trad_p": 1.0
+  },
+  "savelyev_dev/starling_yok|A": {
+   "n": 16,
+   "exact": [
+    11,
+    11
+   ],
+   "trad": [
+    14,
+    14
+   ],
+   "win": {
+    "exact": 0,
+    "trad": 0
+   },
+   "loss": {
+    "exact": 0,
+    "trad": 0
+   },
+   "changed": [],
+   "exact_p": 1.0,
+   "trad_p": 1.0
+  },
+  "savelyev_dev/starling_yok|B": {
+   "n": 16,
+   "exact": [
+    10,
+    10
+   ],
+   "trad": [
+    12,
+    12
+   ],
+   "win": {
+    "exact": 0,
+    "trad": 0
+   },
+   "loss": {
+    "exact": 0,
+    "trad": 0
+   },
+   "changed": [],
+   "exact_p": 1.0,
+   "trad_p": 1.0
+  },
+  "savelyev_dev/starling_yok|all": {
+   "n": 32,
+   "exact": [
+    21,
+    21
+   ],
+   "trad": [
+    26,
+    26
+   ],
+   "win": {
+    "exact": 0,
+    "trad": 0
+   },
+   "loss": {
+    "exact": 0,
+    "trad": 0
+   },
+   "changed": [],
+   "exact_p": 1.0,
+   "trad_p": 1.0
+  }
+ },
+ "kök_yok": {
+  "n": 49,
+  "covered": [
+   [
+    "köken",
+    "kök",
+    true,
+    true
+   ],
+   [
+    "köstek",
+    "köste",
+    false,
+    false
+   ],
+   [
+    "obuz",
+    "ob",
+    false,
+    false
+   ],
+   [
+    "çaput",
+    "çap",
+    true,
+    true
+   ]
+  ]
+ },
+ "yalnız_starling_23": {
+  "n": 23,
+  "covered": [
+   [
+    "obuz",
+    "ob",
+    false,
+    false
+   ],
+   [
+    "çaput",
+    "çap",
+    true,
+    true
+   ]
+  ]
+ },
+ "agreement_eren": [
+  [
+   "bacanak",
+   "baca",
+   [
+    "*bāča"
+   ],
+   false,
+   true
+  ],
+  [
+   "balçık",
+   "bal",
+   [
+    "*bạl"
+   ],
+   true,
+   true
+  ],
+  [
+   "bayrak",
+   "batır",
+   [
+    "*bAd-rak",
+    "*bAd-ruk"
+   ],
+   false,
+   false
+  ],
+  [
+   "burun",
+   "bur",
+   [
+    "*burun",
+    "*burɨn"
+   ],
+   false,
+   false
+  ],
+  [
+   "dil",
+   "ti",
+   [
+    "*dɨl",
+    "*dil"
+   ],
+   false,
+   false
+  ],
+  [
+   "dolu",
+   "dolu",
+   [
+    "*dōl",
+    "*dolu"
+   ],
+   true,
+   true
+  ],
+  [
+   "gölük",
+   "köl",
+   [
+    "*gȫl",
+    "*kȫĺek"
+   ],
+   false,
+   true
+  ],
+  [
+   "kapı",
+   "kap",
+   [
+    "*Kap"
+   ],
+   true,
+   true
+  ],
+  [
+   "kar",
+   "ka",
+   [
+    "*Kiār"
+   ],
+   false,
+   false
+  ],
+  [
+   "katır",
+   "kat",
+   [
+    "*KAtɨr"
+   ],
+   false,
+   false
+  ],
+  [
+   "kavak",
+   "kav",
+   [
+    "*Kɨbak",
+    "*Kabak"
+   ],
+   false,
+   false
+  ],
+  [
+   "kurum",
+   "kur",
+   [
+    "*Kurum"
+   ],
+   false,
+   false
+  ],
+  [
+   "köken",
+   "kök",
+   [
+    "*kök",
+    "*köken"
+   ],
+   true,
+   true
+  ],
+  [
+   "köprü",
+   "köpür",
+   [
+    "*köpür"
+   ],
+   true,
+   true
+  ],
+  [
+   "köstek",
+   "köste",
+   [
+    "*kös"
+   ],
+   false,
+   false
+  ],
+  [
+   "obuz",
+   "ob",
+   [
+    "*ōpuŕ"
+   ],
+   false,
+   false
+  ],
+  [
+   "sakak",
+   "sakâ",
+   [
+    "*sakak"
+   ],
+   false,
+   false
+  ],
+  [
+   "seyrek",
+   "seöre",
+   [
+    "*sedre"
+   ],
+   false,
+   false
+  ],
+  [
+   "toprak",
+   "topra",
+   [
+    "*topra-k"
+   ],
+   false,
+   false
+  ],
+  [
+   "yonca",
+   "yor",
+   [
+    "*jon-ɨrčka"
+   ],
+   false,
+   false
+  ],
+  [
+   "yoğurt",
+   "yuğur",
+   [
+    "*jog-urt"
+   ],
+   false,
+   false
+  ],
+  [
+   "çaput",
+   "çap",
+   [
+    "*čAp"
+   ],
+   true,
+   true
+  ],
+  [
+   "öz",
+   "öz",
+   [
+    "*ȫŕ"
+   ],
+   false,
+   true
+  ],
+  [
+   "üzengi",
+   "üz",
+   [
+    "*jüŕ"
+   ],
+   false,
+   false
+  ]
+ ],
+ "agreement_gulensoy": [
+  [
+   "anız",
+   "aytıtz",
+   [
+    "*aŋ"
+   ],
+   false,
+   false
+  ],
+  [
+   "arpa",
+   "arpa",
+   [
+    "*arpa"
+   ],
+   true,
+   true
+  ],
+  [
+   "at",
+   "at",
+   [
+    "*ăt"
+   ],
+   false,
+   true
+  ],
+  [
+   "bak",
+   "ba",
+   [
+    "*bạk"
+   ],
+   false,
+   false
+  ],
+  [
+   "balçık",
+   "bal",
+   [
+    "*bạl"
+   ],
+   true,
+   true
+  ],
+  [
+   "bayrak",
+   "ba",
+   [
+    "*bAd-rak",
+    "*bAd-ruk"
+   ],
+   false,
+   false
+  ],
+  [
+   "bile",
+   "birtil",
+   [
+    "*bile"
+   ],
+   false,
+   false
+  ],
+  [
+   "bitiş",
+   "bit",
+   [
+    "*büt"
+   ],
+   false,
+   false
+  ],
+  [
+   "boynuz",
+   "müyüz",
+   [
+    "*bujŋuŕ",
+    "*büjŋüŕ"
+   ],
+   false,
+   false
+  ],
+  [
+   "boş",
+   "böş",
+   [
+    "*boĺ"
+   ],
+   false,
+   false
+  ],
+  [
+   "bucak",
+   "büç",
+   [
+    "*būč-gak"
+   ],
+   false,
+   false
+  ],
+  [
+   "burun",
+   "bur",
+   [
+    "*burun",
+    "*burɨn"
+   ],
+   false,
+   false
+  ],
+  [
+   "bür",
+   "bö",
+   [
+    "*büŕ",
+    "*bür"
+   ],
+   false,
+   false
+  ],
+  [
+   "bürgü",
+   "bü",
+   [
+    "*bürü",
+    "*bür-ke"
+   ],
+   false,
+   false
+  ],
+  [
+   "dala",
+   "tāla",
+   [
+    "*dāla"
+   ],
+   false,
+   true
+  ],
+  [
+   "dağ",
+   "tüğ",
+   [
+    "*dāg"
+   ],
+   false,
+   false
+  ],
+  [
+   "dokun",
+   "tokf",
+   [
+    "*tokɨ"
+   ],
+   false,
+   false
+  ],
+  [
+   "düz",
+   "tüz",
+   [
+    "*düŕ"
+   ],
+   false,
+   true
+  ],
+  [
+   "ece",
+   "eketçti",
+   [
+    "*ăčaj",
+    "*ĕčej"
+   ],
+   false,
+   false
+  ],
+  [
+   "elgün",
+   "el",
+   [
+    "*Kün"
+   ],
+   false,
+   false
+  ],
+  [
+   "etek",
+   "et",
+   [
+    "*Etek"
+   ],
+   false,
+   false
+  ],
+  [
+   "ev",
+   "ev",
+   [
+    "*eb"
+   ],
+   false,
+   false
+  ],
+  [
+   "gemi",
+   "kömi",
+   [
+    "*gẹ̄mi"
+   ],
+   false,
+   false
+  ],
+  [
+   "genç",
+   "kenç",
+   [
+    "*gEnč"
+   ],
+   false,
+   true
+  ],
+  [
+   "ger",
+   "kere",
+   [
+    "*ger"
+   ],
+   false,
+   false
+  ],
+  [
+   "giz",
+   "kiz",
+   [
+    "*gīŕ"
+   ],
+   false,
+   true
+  ],
+  [
+   "göbelek",
+   "gövtelek",
+   [
+    "*köpek"
+   ],
+   false,
+   false
+  ],
+  [
+   "gölük",
+   "kö",
+   [
+    "*gȫl",
+    "*kȫĺek"
+   ],
+   false,
+   false
+  ],
+  [
+   "göm",
+   "kö",
+   [
+    "*göm"
+   ],
+   false,
+   false
+  ],
+  [
+   "gön",
+   "kö:y",
+   [
+    "*gȫn"
+   ],
+   false,
+   false
+  ],
+  [
+   "göç",
+   "kö",
+   [
+    "*göč"
+   ],
+   false,
+   false
+  ],
+  [
+   "ip",
+   "yp",
+   [
+    "*jɨp",
+    "*jip"
+   ],
+   false,
+   false
+  ],
+  [
+   "kapı",
+   "kapağ",
+   [
+    "*Kap"
+   ],
+   false,
+   false
+  ],
+  [
+   "kar",
+   "kür",
+   [
+    "*Kiār"
+   ],
+   false,
+   false
+  ],
+  [
+   "karım",
+   "kar",
+   [
+    "*KAr"
+   ],
+   true,
+   true
+  ],
+  [
+   "katır",
+   "kat",
+   [
+    "*KAtɨr"
+   ],
+   false,
+   false
+  ],
+  [
+   "kavak",
+   "kabak",
+   [
+    "*Kɨbak",
+    "*Kabak"
+   ],
+   true,
+   true
+  ],
+  [
+   "kavuk",
+   "kāp",
+   [
+    "*KAbuk"
+   ],
+   false,
+   false
+  ],
+  [
+   "komşu",
+   "kon",
+   [
+    "*Kon"
+   ],
+   true,
+   true
+  ],
+  [
+   "koş",
+   "köş",
+   [
+    "*Koĺ"
+   ],
+   false,
+   false
+  ],
+  [
+   "köken",
+   "kök",
+   [
+    "*kök",
+    "*köken"
+   ],
+   true,
+   true
+  ],
+  [
+   "köp",
+   "kö:p",
+   [
+    "*köp"
+   ],
+   true,
+   true
+  ],
+  [
+   "köprü",
+   "köb",
+   [
+    "*köpür"
+   ],
+   false,
+   false
+  ],
+  [
+   "kılıç",
+   "kül",
+   [
+    "*Kɨlɨ̄č"
+   ],
+   false,
+   false
+  ],
+  [
+   "kın",
+   "kin",
+   [
+    "*Kɨ̄n"
+   ],
+   false,
+   false
+  ],
+  [
+   "kısrak",
+   "kısır",
+   [
+    "*Kɨsɨr"
+   ],
+   true,
+   true
+  ],
+  [
+   "ova",
+   "ov",
+   [
+    "*oba"
+   ],
+   false,
+   false
+  ],
+  [
+   "sarp",
+   "sar",
+   [
+    "*sarp"
+   ],
+   false,
+   false
+  ],
+  [
+   "sav",
+   "saw",
+   [
+    "*sāb"
+   ],
+   false,
+   false
+  ],
+  [
+   "savur",
+   "sav",
+   [
+    "*sabur"
+   ],
+   false,
+   false
+  ],
+  [
+   "sağ",
+   "sag",
+   [
+    "*sạg"
+   ],
+   true,
+   true
+  ],
+  [
+   "sek",
+   "sök",
+   [
+    "*sēk"
+   ],
+   false,
+   false
+  ],
+  [
+   "seksen",
+   "sek",
+   [
+    "*ses"
+   ],
+   false,
+   false
+  ],
+  [
+   "seyrek",
+   "se",
+   [
+    "*sedre"
+   ],
+   false,
+   false
+  ],
+  [
+   "sik",
+   "si:",
+   [
+    "*sik"
+   ],
+   false,
+   false
+  ],
+  [
+   "solucan",
+   "soğ",
+   [
+    "*sɨbuĺgan"
+   ],
+   false,
+   false
+  ],
+  [
+   "soy",
+   "söy",
+   [
+    "*soj"
+   ],
+   false,
+   false
+  ],
+  [
+   "sürü",
+   "sü",
+   [
+    "*südre"
+   ],
+   false,
+   false
+  ],
+  [
+   "sıva",
+   "suyy",
+   [
+    "*sɨba"
+   ],
+   false,
+   false
+  ],
+  [
+   "sığ",
+   "sik",
+   [
+    "*sɨg"
+   ],
+   false,
+   false
+  ],
+  [
+   "tansık",
+   "tang",
+   [
+    "*tāŋ"
+   ],
+   false,
+   true
+  ],
+  [
+   "tütün",
+   "tü",
+   [
+    "*tüt-ün",
+    "*tüt-süg"
+   ],
+   false,
+   false
+  ],
+  [
+   "ulu",
+   "ulrkç",
+   [
+    "*ulug"
+   ],
+   false,
+   false
+  ],
+  [
+   "ur",
+   "ur",
+   [
+    "*ur"
+   ],
+   true,
+   true
+  ],
+  [
+   "uyan",
+   "udi",
+   [
+    "*od"
+   ],
+   false,
+   false
+  ],
+  [
+   "uçarı",
+   "uç",
+   [
+    "*uč"
+   ],
+   true,
+   true
+  ],
+  [
+   "yancık",
+   "yântcık",
+   [
+    "*jĀmčɨk",
+    "*jānčɨk"
+   ],
+   false,
+   false
+  ],
+  [
+   "yarın",
+   "ya",
+   [
+    "*jạr-ɨn"
+   ],
+   false,
+   false
+  ],
+  [
+   "yağlık",
+   "yağ",
+   [
+    "*jaglɨk"
+   ],
+   false,
+   false
+  ],
+  [
+   "yen",
+   "yeng",
+   [
+    "*jegn"
+   ],
+   false,
+   false
+  ],
+  [
+   "yeşil",
+   "yaşı",
+   [
+    "*jāĺ-ɨl"
+   ],
+   false,
+   false
+  ],
+  [
+   "yine",
+   "yan",
+   [
+    "*jAn"
+   ],
+   true,
+   true
+  ],
+  [
+   "yoğun",
+   "yo",
+   [
+    "*jogan"
+   ],
+   false,
+   false
+  ],
+  [
+   "yoğurt",
+   "yu",
+   [
+    "*jog-urt"
+   ],
+   false,
+   false
+  ],
+  [
+   "yular",
+   "yul",
+   [
+    "*jular"
+   ],
+   false,
+   false
+  ],
+  [
+   "yum",
+   "yum",
+   [
+    "*jüm",
+    "*jum"
+   ],
+   true,
+   true
+  ],
+  [
+   "çaput",
+   "çap",
+   [
+    "*čAp"
+   ],
+   true,
+   true
+  ],
+  [
+   "çukur",
+   "çok",
+   [
+    "*čok"
+   ],
+   true,
+   true
+  ],
+  [
+   "öfke",
+   "öm",
+   [
+    "*öpke"
+   ],
+   false,
+   false
+  ]
+ ],
+ "fakes": []
+}
