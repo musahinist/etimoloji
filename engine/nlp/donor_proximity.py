@@ -615,6 +615,9 @@ LABEL_FORM_FILTER_LANGS = frozenset({"el", "hy", "grc", "xcl"})
 #: en yakın biçimi bu SCA eşiğinin altındaysa seçilebilir (``None`` = sınırsız,
 #: 9g G1). Gerekçe (9g SONUÇ): ayrı grup Arapça alıntılara uzak rastlantı eşi
 #: veriyordu (Arapça -> Yunanca 6 -> 17). Ön kayıt ``data/cache/work/donor9j/PREREG.md``.
+#:
+#: ⚠️ ÖLÇÜLDÜ (9j, ön kayıt 3056510), RED: TDK rapor 0,2113 -> 0,2113 (2/2);
+#: Türkçe train+dev 0,642 -> 0,625 (Arapça -> Yunanca yine 14).
 OLD_DONOR_MAX: float | None = None
 
 #: 9j I1 — etiket adımında İtalyanca (ve Venedikçe/Cenevizce) adayların
@@ -622,6 +625,10 @@ OLD_DONOR_MAX: float | None = None
 #: ``sci/ce/ci/ge/gi/ch/gh/gli/gn/qu``, çift ünsüz, ``-zione``). Gerekçe: İtalyan
 #: imlası sesi Türkçe alıntıdan farklı yazar (``scialuppa`` ~ ``şalopa``);
 #: Fransızca havuza dokunulmaz. Yalnız ETİKET.
+#:
+#: ⚠️ ÖLÇÜLDÜ (9j), RED: yeni TDK rapor (n=710) 0,2113 -> 0,2028 (3/9, Holm 0,44),
+#: TETTL 0,255 -> 0,251. Tanı: İtalyanca hatasının ana nedeni anlam araması (Türkçe
+#: anlamlı maddelerde aday yok; paylaşılan LIMIT), imla değil.
 ITALIAN_ORTHO = False
 ITALIAN_LANGS = frozenset({"it", "vec", "lij"})
 
@@ -630,6 +637,9 @@ ITALIAN_LANGS = frozenset({"it", "vec", "lij"})
 #: birleşik havuzdan; ayrı "bilet" yok). Seçilirse etiket ``it``, kaynak
 #: ``kaikki-vec``/``kaikki-lij`` ("İtalyanca (Venedikçe biçimi)"). Güç havuzu
 #: (``donors.db``) değişmez.
+#:
+#: ⚠️ ÖLÇÜLDÜ (9j), RED: TDK rapor 0,2113 -> 0,2099 (3/4); Türkçe train+dev
+#: 0,642 -> 0,601 (Fransızca -> İtalyanca 11 -> 22, Arapça -> İtalyanca 15).
 VENETAN_LABELS = False
 ITALO_FAMILY = {"vec": "it", "lij": "it"}
 

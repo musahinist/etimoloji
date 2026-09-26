@@ -145,3 +145,41 @@ I1 < G1' < I2). Hiçbiri -> üretim değişmez (bayraklar kapalı; havuz ve kod 
 
 Mühür: `gold_tdk.json` sha256 `8178db8cf838c892f813a7be1af0d57e553b31a5d1c5fd8682ce3b1326ac7ed1`,
 `gold_tettl.json` sha256 `17533b6638f5535d6af5072bae5532f0d172fca29bb60c91185d814343d2f50a`.
+
+---
+
+## SONUÇ (ön kayıt commit'i 3056510'dan sonra, bir kez)
+
+`rapor.log`, `res_tdk_rapor.json`, `res_tettl_rapor.json`. McNemar "aday yalnız doğru /
+taban yalnız doğru"; Holm 3 aday.
+
+| koşul | **TDK rapor n=710** | it | el | McN | Holm p | TETTL rapor n=573 | it | McN | Holm p |
+|---|---|---|---|---|---|---|---|---|---|
+| off (üretim) | **0,2113** (150) | 22/200 | 12/150 | — | — | **0,2548** (146) | 3/59 | — | — |
+| I1 | 0,2028 (144) | 21/200 | 10/150 | 3 / 9 | 0,44 | 0,2513 | 3/59 | 2 / 4 | 0,86 |
+| I2 | 0,2099 (149) | 23/200 | 12/150 | 3 / 4 | 1,0 | 0,2461 | 10/59 | 7 / 12 | 0,86 |
+| G1' | 0,2113 (150) | 22/200 | 14/150 | 2 / 2 | 1,0 | 0,2443 | 3/59 | 8 / 14 | 0,86 |
+
+Katmanlar (bilgi): TDK İngilizce anlamlı n=217 off 0,521 (I1 0,507, I2 0,516, G1' 0,521);
+Türkçe anlamlı n=493 off **0,075, 337'sinde hiç etiket yok**. TETTL İngilizce n=285 off
+0,453; Türkçe n=288 off 0,059 (185 etiketsiz). el+hy: TDK 12 -> G1' 14 /160; TETTL 14 ->
+G1' 20 /164. TETTL Venedik işaretli 13: off 1, I2 4. Üretimin TDK İtalyanca hataları:
+etiket yok 104, Fransızca 31, Arapça 24, Ermenice 7, Farsça 7, Yunanca 5.
+
+**KARAR: üçü de red. I1: rapor yönü ters (3/9), anlamlı değil; I2 ve G1': rapor
+anlamsız ve Türkçe TDK+Nişanyan koruması ayarda düştü (0,6007 / 0,6246 < 0,6416).
+Üretim değişmez** (`ITALIAN_ORTHO = VENETAN_LABELS = OLD_DONOR_LABELS = False`,
+`OLD_DONOR_MAX = None`). Havuz (vec/lij, donors_label.db) ve kod bayrak arkasında kalır.
+eval-borrowing koruması gerekmedi (varsayılanlar kapalı).
+
+Yorum: Üretimin İtalyanca etiketi bağımsız altında da zayıf (TDK 22/200 = %11; TETTL
+3/59), ama zayıflığın ana nedeni imla ya da kapsam değil, **anlam araması**: TDK'ya özgü
+kelimelerin %69'unun motordaki tek anlamı Türkçe (Vikisözlük) ve verici havuzları
+İngilizce anlamlı -> aday yok. İngilizce anlamlı maddelerde bile 9f'de doğru İtalyanca
+etimon 50/120'de paylaşılan sıralamasız `LIMIT 200`'e girmiyor ve 41/120'de 0,0 mesafeli
+İtalyanca biçim `mesafe − null` ölçütünde Fransızca/Arapça eşe yeniliyor. Sonraki aday
+önerileri (ölçülmedi, ön kayıtsız): (1) Türkçe anlamı İngilizceye çevirme (Vikisözlük
+çeviri bölümü; TDK DEĞİL) ya da Türkçe anlamlı maddede kısıtsız aday + sıkı eşik;
+(2) G2'nin Fransızca için yaptığı ayrı anlam sorgusunu İtalyanca için de yapmak; (3) sıfır
+mesafeli eşitlikte null yerine ham mesafe/taban oranı. G1' (SCA ≤ 0,35) Arapça->Yunanca
+rastlantısını 17'den 14'e indirdi ama korumayı kurtarmadı.
