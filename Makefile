@@ -51,6 +51,7 @@ help:
 	@echo "khakas         - Hakasça–Rusça ve açıklamalı sözlüğü indir (HF, CC-BY-4.0; portföyde değil)"
 	@echo "wilkens        - Wilkens 2021 Eski Uygurca sözlüğünü indir ve ayrıştır (CC BY-SA 4.0; .[pdf] gerekir)"
 	@echo "clauson        - Clauson 1972 EDT'yi (TurkicWorld HTML) indir ve ayrıştır (telifli; repoya girmez)"
+	@echo "erengul        - Eren 1999 + Gülensoy 2007 OCR metnini indir ve ayrıştır (telifli; repoya girmez)"
 	@echo "sense-bridge   - Türkçe -> İngilizce anlam köprüsü (9l S1; kaikki tr+en dökümleri ~550 MB, SHA künyeli)"
 	@echo "zemberek       - Zemberek kök sözlüğünü indir (Apache-2.0; ağız tanığı bağında kök varyantları)"
 	@echo "label-donors   - Yalnız-etiket eski dil havuzu (grc, xcl, vec, lij; bayraklar kapalı) + indeksi"
@@ -197,6 +198,12 @@ wilkens:
 .PHONY: clauson
 clauson:
 	.venv/bin/python scripts/download_clauson.py
+
+# Eren 1999 + Gülensoy 2007 (archive.org OCR) — telifli; metin repoya alınmaz,
+# künye commit edilir. Bkz. engine/db/eren_gulensoy.py.
+.PHONY: erengul
+erengul:
+	.venv/bin/python scripts/download_erengul.py
 
 # Türkçe -> İngilizce anlam köprüsü (9l S1, `SENSE_BRIDGE=True`): iki kaikki
 # dökümünden (~550 MB, kurulumdan sonra silinir) data/lexicons/sense_bridge/tr_en.db.

@@ -1,0 +1,53 @@
+{
+  "_schema": "turkic-etymology-erengul-provenance/v1",
+  "retrieved_at": "2026-09-26T16:17:35+00:00",
+  "citations": {
+    "eren": "Hasan Eren, Türk Dilinin Etimolojik Sözlüğü. Ankara: Bizim Büro 1999.",
+    "gulensoy": "Tuncer Gülensoy, Türkiye Türkçesindeki Türkçe Sözcüklerin Köken Bilgisi Sözlüğü, 2 cilt. Ankara: TDK 2007."
+  },
+  "landing_pages": {
+    "eren_djvu.txt": "https://archive.org/details/turk-dilinin-etimolojik-sozlugu-hasan-eren",
+    "gulensoy1_djvu.txt": "https://archive.org/details/turkiye-turkcesindeki-turkce-sozcuklerin-koken-bilgisi-sozlugu-1.-cilt",
+    "gulensoy2_djvu.txt": "https://archive.org/details/turkiye-turkcesindeki-turkce-sozcuklerin-koken-bilgisi-sozlugu-1.-cilt"
+  },
+  "license": "telifli; archive.org tesseract OCR metni, repoya alınmaz, yalnız yerel kullanım",
+  "note": "Kaynaklar TANIK değildir: yalnız başlık/köken notu (engine/db/eren_gulensoy.py). Eren EDAL'dan (2003) önce yayımlandı; Räsänen/Clauson/ЭСТЯ'ya atıf yapar (Starling de). Gülensoy OCR'ı iki sütunlu düzen yüzünden gürültülü.",
+  "counts": {
+    "eren": {
+      "entries": 2654,
+      "redirects": 292,
+      "with_root": 329,
+      "with_ot_form": 351,
+      "loan": 1371,
+      "turkish": 622,
+      "unknown": 219
+    },
+    "gulensoy": {
+      "entries": 7312,
+      "redirects": 4,
+      "with_root": 4007,
+      "with_ot_form": 1445,
+      "loan": 0,
+      "turkish": 7312,
+      "unknown": 0
+    }
+  },
+  "files": {
+    "eren_djvu.txt": {
+      "bytes": 1725163,
+      "sha256": "34ded94069070ddc3f29ddc7e675933d79c34f81516ac1d33c06d65f62aed8f7"
+    },
+    "gulensoy1_djvu.txt": {
+      "bytes": 1575075,
+      "sha256": "4de16806b6a8de62951b16482c40e10fb9a211e5ad29740bb169ae4a62bcd643"
+    },
+    "gulensoy2_djvu.txt": {
+      "bytes": 1604906,
+      "sha256": "88393b1f7f376a1353334efd8e3ac8ffd4b05bfdfbe51f7e26ccbf42b17fbf3c"
+    },
+    "erengul.jsonl": {
+      "bytes": 2009244,
+      "sha256": "4cbb98eb170f0821e88a950ed3414f1568fe9680eb099511c94abd70ee58a5af"
+    }
+  }
+}

@@ -132,6 +132,11 @@ data/wilkens/*.jsonl
 data/clauson/*.htm
 data/clauson/*.jsonl
 
+# Eren 1999 + Gülensoy 2007 (`make erengul`, archive.org OCR): telifli metin —
+# _djvu.txt ve JSONL repoya ALINMAZ; künye (SHA-256) commit edilir.
+data/erengul/*.txt
+data/erengul/*.jsonl
+
 # Zemberek kök sözlüğü (`scripts/download_zemberek_lexicon.py`, Apache-2.0):
 # .dict dosyaları repoya alınmaz; künye (SHA-256) commit edilir.
 data/zemberek/*.dict
