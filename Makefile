@@ -1,5 +1,6 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
-        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-cv eval-cv-neural eval-cv-neural-validate audit eval-llm eval-prediction eval-headline eval-donor eval-chronology starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify apertium wilkens semantic dialect bootstrap column-model neural-selector
+        data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-cv eval-cv-neural eval-cv-neural-validate audit eval-llm eval-prediction eval-headline eval-donor eval-chronology starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify apertium wilkens semantic dialect bootstrap column-model neural-selector \
+        sense-bridge
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -50,9 +51,10 @@ help:
 	@echo "khakas         - Hakasça–Rusça ve açıklamalı sözlüğü indir (HF, CC-BY-4.0; portföyde değil)"
 	@echo "wilkens        - Wilkens 2021 Eski Uygurca sözlüğünü indir ve ayrıştır (CC BY-SA 4.0; .[pdf] gerekir)"
 	@echo "clauson        - Clauson 1972 EDT'yi (TurkicWorld HTML) indir ve ayrıştır (telifli; repoya girmez)"
+	@echo "sense-bridge   - Türkçe -> İngilizce anlam köprüsü (9l S1; kaikki tr+en dökümleri ~550 MB, SHA künyeli)"
 	@echo "starling       - Starling Türk/Moğol etimoloji tablolarını indir (Dybo & Starostin 2005)"
 	@echo "calibrate      - Güven kalibratörünü TRAIN bölümünde eğit"
-	@echo "bootstrap      - Taze klonda tüm veriyi indir ve kur (data+lexicons+tr+index+donors+starling+apertium+gold+patterns)"
+	@echo "bootstrap      - Taze klonda tüm veriyi indir ve kur (data+lexicons+tr+index+donors+starling+apertium+sense-bridge+gold+patterns)"
 	@echo ""
 	@echo "serve       - REST API sunucusu"
 	@echo "web         - Web panelini yayınla (localhost:3000)"
@@ -193,6 +195,12 @@ wilkens:
 clauson:
 	.venv/bin/python scripts/download_clauson.py
 
+# Türkçe -> İngilizce anlam köprüsü (9l S1, `SENSE_BRIDGE=True`): iki kaikki
+# dökümünden (~550 MB, kurulumdan sonra silinir) data/lexicons/sense_bridge/tr_en.db.
+# Künye (döküm SHA'ları + tablo içerik özeti) commit edilir; tablo güncelse atlanır.
+sense-bridge:
+	.venv/bin/python scripts/download_sense_bridge.py
+
 lexicon-index: lexicons
 	.venv/bin/python -m engine.db.lexicon_index --build
 
@@ -288,7 +296,7 @@ web:
 bootstrap:
 	$(MAKE) data lexicons
 	.venv/bin/python scripts/download_lexicons.py --tr
-	$(MAKE) lexicon-index donors starling apertium gold patterns
+	$(MAKE) lexicon-index donors starling apertium sense-bridge gold patterns
 
 clean:
 	find . -type d -name __pycache__ -prune -exec rm -rf {} +

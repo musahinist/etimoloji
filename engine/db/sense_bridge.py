@@ -17,9 +17,15 @@ karşılıklarını iki sözlük ÇEVİRİ kaynağından toplar:
 Türkçe sözcükler") ve İngilizce dışı çeviriler (İtalyanca, Fransızca ... —
 çoğu zaman etimonun kendisi) okunmaz; TDK tanımı da kullanılmaz. Anahtar
 kelimenin karşılaştırma biçimidir. Sonuç ``data/lexicons/sense_bridge/tr_en.db``
-(git-ignored; künye ``tr_en.provenance.json``).
+(git-ignored; künye ``tr_en.provenance.json`` commit edilir: iki dökümün ve
+tablonun içerik SHA-256'sı).
 
+Kurulum: ``make sense-bridge`` (``scripts/download_sense_bridge.py``; dökümleri
+indirir, künyedeki SHA ile karşılaştırır ve tabloyu kurar). Elle:
 python -m engine.db.sense_bridge --build --trwikt <raw.jsonl.gz> --enwikt <English.jsonl.gz>
+
+⚠️ Tablo yoksa köprü sessizce kapanmaz, ama ETKİSİZ olur: ``is_english_sense``
+her ASCII anlamı İngilizce sayar. Bu yüzden ilk sorguda uyarı loglanır.
 """
 from __future__ import annotations
 
@@ -30,11 +36,15 @@ import json
 import re
 import sqlite3
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from functools import lru_cache
 from pathlib import Path
 
+from engine.logging_setup import get_logger
 from engine.utils.orthography import to_comparison_form
+from engine.utils.provenance import write_if_changed
+
+logger = get_logger(__name__)
 
 BRIDGE_DIR = Path(__file__).resolve().parents[2] / "data" / "lexicons" / "sense_bridge"
 BRIDGE_DB = BRIDGE_DIR / "tr_en.db"
@@ -119,6 +129,29 @@ def _sha(path: Path | None) -> str:
     return h.hexdigest()
 
 
+def table_digest(db: Path) -> str:
+    """Tablonun İÇERİK özeti (SHA-256; iki tablonun sıralı satırları).
+
+    SQLite dosyasının baytları sayfa düzenine bağlıdır; aynı satırları taşıyan
+    iki tabloyu karşılaştırmak için içerik özeti kullanılır (künyede commit edilir)."""
+    h = hashlib.sha256()
+    con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
+    try:
+        for table, query in (("bridge", "SELECT comparison, english FROM bridge ORDER BY comparison"),
+                             ("en_vocab", "SELECT word FROM en_vocab ORDER BY word")):
+            h.update(f"#{table}\n".encode())
+            for row in con.execute(query):
+                h.update(("\t".join(row) + "\n").encode("utf-8"))
+    finally:
+        con.close()
+    return h.hexdigest()
+
+
+def provenance_path(out: Path) -> Path:
+    """``tr_en.db`` -> ``tr_en.provenance.json`` (aynı dizinde)."""
+    return out.with_name(f"{out.stem}.provenance.json")
+
+
 def build(trwikt: Path | None, enwikt: Path | None, out: Path = BRIDGE_DB) -> dict:
     pairs, vocab = collect(trwikt, enwikt)
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -134,7 +167,7 @@ def build(trwikt: Path | None, enwikt: Path | None, out: Path = BRIDGE_DB) -> di
     con.close()
     meta = {
         "_schema": "turkic-etymology-sense-bridge/v1",
-        "built_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "built_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "sources": {
             "trwiktionary": {"url": "https://kaikki.org/trwiktionary/raw-wiktextract-data.jsonl.gz",
                              "sha256": _sha(trwikt)},
@@ -145,14 +178,19 @@ def build(trwikt: Path | None, enwikt: Path | None, out: Path = BRIDGE_DB) -> di
                        "etimoloji/kategori/İngilizce dışı çeviri YOK",
         "entries": len(pairs),
         "en_vocab": len(vocab),
+        "content_sha256": table_digest(out),
     }
-    PROVENANCE.write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    return meta
+    # Aynı dökümlerden aynı tablo: yalnız kurulum zamanı değiştiyse künyeye dokunulmaz.
+    return write_if_changed(provenance_path(out), meta, json.dumps(meta, ensure_ascii=False, indent=2) + "\n",
+                            volatile=("built_at",))
 
 
 @lru_cache(maxsize=1)
 def _connection() -> sqlite3.Connection | None:
     if not BRIDGE_DB.exists():
+        # Sessizce kötüleşmesin: tablo yoksa S1 (SENSE_BRIDGE) fiilen kapalıdır.
+        logger.warning("Anlam köprüsü tablosu yok (%s): Türkçe anlamlı maddelerde verici etiketi "
+                       "köprüsüz kalır; kurmak için `make sense-bridge`", BRIDGE_DB)
         return None
     return sqlite3.connect(f"file:{BRIDGE_DB}?mode=ro", uri=True, check_same_thread=False)
 

@@ -67,6 +67,8 @@ data/lexicons/donors/donors.db
 data/lexicons/donors_label/*.jsonl
 data/lexicons/donors_label/*.jsonl.gz
 data/lexicons/donors_label/*.db
+# Anlam köprüsü (`make sense-bridge`): ham dökümler ve tablo; künye commit edilir.
+data/lexicons/sense_bridge/raw/
 data/lexicons/ru_edition/*.jsonl
 data/lexicons/ru_edition/*.jsonl.gz
 # Zincir dökümü büyük ve türetilmiş; kurallar özet olduğu için commit edilir.

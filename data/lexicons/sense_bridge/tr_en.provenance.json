@@ -13,5 +13,6 @@
   },
   "fields_used": "yalnız çeviri (tr->en, en->tr) ve İngilizce maddelerin tek sözcüklük Türkçe tanımı; etimoloji/kategori/İngilizce dışı çeviri YOK",
   "entries": 29346,
-  "en_vocab": 884644
+  "en_vocab": 884644,
+  "content_sha256": "a91b2a50cb6520ac7bac702edd98c7f9cfc73bf2bda06c0ac6992966dcbfdc80"
 }
