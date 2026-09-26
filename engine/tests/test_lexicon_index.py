@@ -196,11 +196,22 @@ class TestOriginDetection(unittest.TestCase):
     def test_revival_classes(self):
         from engine.db.lexicon_index import _origin_from_templates
 
-        def origin(templates):
-            return _origin_from_templates(record("x", templates))[0]
+        def origin(templates, lang="tr"):
+            return _origin_from_templates(record("x", templates, lang=lang))[0]
 
-        # Eski Uygurcadan düz alıntı: tarihî evre -> diriltme.
-        self.assertEqual(origin([{"name": "bor", "args": {"2": "oui", "3": "y"}}]), "diriltme")
+        # Eski Uygurcadan düz alıntı: alan dil onun torunuysa tarihî evre -> diriltme.
+        self.assertEqual(origin([{"name": "bor", "args": {"2": "oui", "3": "y"}}], lang="ug"), "diriltme")
+        # Salarca (Oğuz) Eski Uygurcanın torunu değil: `eñgek` "Borrowed from
+        # Old Uyghur" Türk dilleri arası temas alıntısıdır, verici oui.
+        self.assertEqual(
+            _origin_from_templates(record("eñgek", [{"name": "bor", "args": {"1": "slq", "2": "oui", "3": "𐽰𐽹𐽲𐽰𐽷"}}],
+                                          etymology="Borrowed from Old Uyghur 𐽰𐽹𐽲𐽰𐽷 (emgek).", lang="slq")),
+            ("alıntı", "oui", "𐽰𐽹𐽲𐽰𐽷"))
+        # Öğrenilmiş şablon soydan bağımsız diriltmedir; ata dil (trk-pro) her zaman.
+        self.assertEqual(origin([{"name": "lbor", "args": {"2": "oui", "3": "y"}}], lang="slq"), "diriltme")
+        self.assertEqual(origin([{"name": "bor", "args": {"2": "trk-pro", "3": "*y"}}], lang="ota"), "diriltme")
+        # Çuvaşça Oğuz evresinin torunu değil (`кӗҫҫе` < Early Old Oghuz).
+        self.assertEqual(origin([{"name": "bor", "args": {"2": "trk-eog", "3": "y"}}], lang="cv"), "alıntı")
         # `kamu` "learned borrowing from Ottoman Turkish قمو".
         self.assertEqual(origin([{"name": "lbor", "args": {"2": "ota", "3": "قمو"}}]), "diriltme")
         # Kırım Tatarcası < Osmanlıca (öğrenilmemiş) gerçek Türk dilleri arası alıntıdır.

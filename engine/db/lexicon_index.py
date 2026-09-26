@@ -452,6 +452,38 @@ HISTORICAL_TURKIC_STAGES = frozenset(
     {"otk", "oui", "xqa", "okm", "trk-pro", "trk-cmn-pro", "trk-ogz-pro", "trk-oat", "trk-eog"}
 )
 
+#: Tarihî evreden ÖĞRENİLMEMİŞ (düz ``bor``) alıntı ancak alan dil o evrenin
+#: soyundan geliyorsa diriltmedir; değilse Türk dilleri arası temas
+#: alıntısıdır. Ölçüldü: Salarca (Oğuz) Eski Uygurcadan 8 kayıt (`eñgek`,
+#: `yalañ-adaq`, `atıq` "Borrowed from Old Uyghur") diriltme çıkıyordu;
+#: Salarca Eski Uygurcanın torunu değildir. Tabloda olmayan evre (ör. ``okm``)
+#: yalnız öğrenilmiş şablonla diriltme olur. ``trk-pro``/``otk`` burada yok:
+#: aile ortak atasıdır (Çuvaşça dahil sayılmaz, bkz. ``_COMMON_TURKIC_ANCESTORS``).
+_OGHUZ_WEST = frozenset({"trk-oat", "ota", "tr", "az", "gag", "crh"})
+HISTORICAL_STAGE_DESCENDANTS: dict[str, frozenset[str]] = {
+    "oui": frozenset({"ug", "ybe"}),
+    "xqa": frozenset({"chg", "uz", "ug"}),
+    "trk-oat": _OGHUZ_WEST,
+    "trk-eog": _OGHUZ_WEST | {"tk", "slq"},
+    "trk-ogz-pro": _OGHUZ_WEST | {"trk-eog", "tk", "slq", "kdr"},
+}
+
+#: Bütün Türk dillerinin (``trk-cmn-pro``/``otk``: Çuvaşça hariç) atası.
+_COMMON_TURKIC_ANCESTORS = frozenset({"trk-pro", "trk-cmn-pro", "otk"})
+
+
+def _stage_is_ancestor(stage: str, lang_code: str) -> bool:
+    """Tarihî evre ``stage`` alan dil ``lang_code``nin atası mı.
+
+    Alan dil bilinmiyorsa (``""``) eski davranış korunur: ata sayılır.
+    """
+    if not lang_code or stage == "trk-pro":
+        return True
+    if stage in _COMMON_TURKIC_ANCESTORS:
+        return lang_code != "cv"
+    return lang_code in HISTORICAL_STAGE_DESCENDANTS.get(stage, frozenset())
+
+
 #: Öğrenilmiş (bilinçli) alıntı şablonları.
 LEARNED_BORROWING_TEMPLATES = frozenset({"lbor", "slbor"})
 
@@ -461,24 +493,25 @@ LEARNED_BORROWING_TEMPLATES = frozenset({"lbor", "slbor"})
 REVIVAL_ORIGIN = "diriltme"
 
 
-def _is_revival(steps: list[tuple[str, str, str]]) -> bool:
+def _is_revival(steps: list[tuple[str, str, str]], lang_code: str = "") -> bool:
     """Şablon zinciri Türk dilinin kendi tarihî evresinden bilinçli alıntı mı.
 
-    Zincirin hiçbir halkası aile dışına çıkmaz ve her alıntı halkası ya ata/
-    tarihî evreden (``HISTORICAL_TURKIC_STAGES``) ya da öğrenilmiş alıntı
-    şablonuyla bir Türk dilinden gelir.
+    Zincirin hiçbir halkası aile dışına çıkmaz ve her alıntı halkası ya alan
+    dilin ATASI olan tarihî evreden (``_stage_is_ancestor``) ya da öğrenilmiş
+    alıntı şablonuyla bir Türk dilinden gelir.
     """
     def turkic(code: str) -> bool:
         return code in TURKIC_FAMILY_CODES or code in HISTORICAL_TURKIC_STAGES or code.startswith("trk-")
 
     loans = [(name, donor) for name, donor, _ in steps if name in BORROWING_TEMPLATES]
     return bool(loans) and all(turkic(donor) for _, donor, _ in steps) and all(
-        donor in HISTORICAL_TURKIC_STAGES or name in LEARNED_BORROWING_TEMPLATES
+        name in LEARNED_BORROWING_TEMPLATES
+        or (donor in HISTORICAL_TURKIC_STAGES and _stage_is_ancestor(donor, lang_code))
         for name, donor in loans
     )
 
 
-def _origin_from_templates(record: dict[str, Any]) -> tuple[str | None, str, str]:
+def _origin_from_templates(record: dict[str, Any], lang_code: str | None = None) -> tuple[str | None, str, str]:
     """``etymology_templates``ten köken, NİHAİ verici dil ve özgün biçmi çıkarır.
 
     ⚠️ **Zincirin tamamı taranır, ilk halkası değil.** Bu ayrım ölçüldü ve
@@ -527,7 +560,8 @@ def _origin_from_templates(record: dict[str, Any]) -> tuple[str | None, str, str
     # trk-pro" idi; soy koduyla süzen tüketiciler dışında her yerde yabancı
     # alıntı gibi görünüyordu. Metin aile dışı verici gösteriyorsa
     # (şablona yazılmamış uzak halka) diriltme değildir.
-    if _is_revival(steps) and not (
+    recipient = str(lang_code if lang_code is not None else record.get("lang_code") or "")
+    if _is_revival(steps, recipient) and not (
         text_donor and text_donor not in TURKIC_FAMILY_CODES and text_donor not in HISTORICAL_TURKIC_STAGES
     ):
         return REVIVAL_ORIGIN, final_lang, final_form
@@ -800,7 +834,7 @@ def iter_entries(path: Path, lang_code: str, *, skip_form_of: bool = False) -> I
 
             if not comparison:
                 continue
-            origin, donor_lang, donor_form = _origin_from_templates(record)
+            origin, donor_lang, donor_form = _origin_from_templates(record, lang_code)
             yield LexiconEntry(
                 lang_code=lang_code,
                 word=word,
