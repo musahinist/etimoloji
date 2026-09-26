@@ -643,6 +643,38 @@ ITALIAN_LANGS = frozenset({"it", "vec", "lij"})
 VENETAN_LABELS = False
 ITALO_FAMILY = {"vec": "it", "lij": "it"}
 
+#: 9l S1 — etiket adımında Türkçe anlam -> İngilizce köprü: anlam metni İngilizce
+#: değilse (Türkçe Vikisözlük tanımı; :func:`engine.db.sense_bridge.is_english_sense`)
+#: ve Latin yazılıysa, verici anlam araması kelimenin Vikisözlük ÇEVİRİ karşılıklarıyla
+#: (``sense_bridge.english_sense``; tr->en çeviri bölümü, en->tr çeviri tabloları; yedek:
+#: aynı biçimli Osmanlıca maddenin İngilizce anlamı) yapılır.
+#: Köken alanı ve TDK tanımı kullanılmaz. Yalnız ETİKET; alıntı gücü (``nearest_donor``)
+#: aynı anlamla kalır. Ön kayıt ``data/cache/work/donor9l/PREREG.md``.
+SENSE_BRIDGE = False
+
+#: 9l S2 — G2'nin Fransızca için yaptığı ayrı 200'lük anlam sorgusu bu diller için de
+#: (paylaşılan havuz aynen kalır; yalnız eklenir). ``()`` = kapalı.
+EXTRA_POOL_LANGS: tuple[str, ...] = ()
+
+#: 9l S3 — en yakın biçimi bu SCA eşiğinin altında (tam ya da tama yakın eşleşme)
+#: olan diller varsa seçim yalnız onların arasında, ham mesafeyle yapılır (null
+#: düzeltmesi tam eşleşmeyi yenemez). ``None`` = kapalı.
+EXACT_MATCH_EPS: float | None = None
+
+_LATIN = re.compile(r"^[^\u0370-\u03ff\u0400-\u04ff\u0530-\u058f\u0590-\u06ff]*$")
+
+
+def bridged_sense(comparison: str, sense: str) -> str:
+    """S1: Türkçe anlamlı maddede İngilizce köprü anlamı; yoksa anlam aynen."""
+    if not SENSE_BRIDGE or not sense.strip() or not _LATIN.match(sense):
+        return sense
+    from engine.db.sense_bridge import english_sense, is_english_sense, ottoman_sense
+
+    if is_english_sense(sense):
+        return sense
+    return english_sense(comparison) or ottoman_sense(comparison) or sense
+
+
 _IT_VOWEL = "aeiouöüı"
 
 
@@ -878,6 +910,7 @@ def attribute_donor(
     index = _index()
     if _pairwise() is None or not comparison or not getattr(index, "exists", False):
         return None
+    sense = bridged_sense(comparison, sense)
     skip = LABEL_FORM_FILTER_LANGS if LABEL_FORM_FILTER else None
     skip_kw = {"skip_form_of": skip} if skip else {}
     if FRENCH_RULE in ("f1", "f2"):
@@ -887,6 +920,12 @@ def attribute_donor(
         if FRENCH_RULE in ("g1", "g2") and (languages is None or FRENCH in languages):
             seen = {(r["lang_code"], r["word"], r["comparison"]) for r in rows}
             rows = list(rows) + [r for r in index.by_sense(sense, languages=[FRENCH], limit=max_candidates)
+                                 if (r["lang_code"], r["word"], r["comparison"]) not in seen]
+        for extra_lang in EXTRA_POOL_LANGS:
+            if languages is not None and extra_lang not in languages:
+                continue
+            seen = {(r["lang_code"], r["word"], r["comparison"]) for r in rows}
+            rows = list(rows) + [r for r in index.by_sense(sense, languages=[extra_lang], limit=max_candidates)
                                  if (r["lang_code"], r["word"], r["comparison"]) not in seen]
     active = _sense_filter(sense_filter)
     if active is not None:
@@ -961,7 +1000,13 @@ def attribute_donor(
         scored.append((key, distance, lang, by_form[form], null))
     if not scored:
         return None
-    scored.sort(key=lambda item: (item[0], item[1], item[2]))
+    if EXACT_MATCH_EPS is not None and any(item[1] <= EXACT_MATCH_EPS for item in scored):
+        exact = sorted((item for item in scored if item[1] <= EXACT_MATCH_EPS),
+                       key=lambda item: (item[1], item[0], item[2]))
+        scored = exact + sorted((item for item in scored if item[1] > EXACT_MATCH_EPS),
+                                key=lambda item: (item[0], item[1], item[2]))
+    else:
+        scored.sort(key=lambda item: (item[0], item[1], item[2]))
     _, distance, lang, row, null = scored[0]
     raw_lang = lang
     lang = OLD_DONOR_FAMILY.get(lang, lang)

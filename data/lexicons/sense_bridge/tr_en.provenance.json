@@ -1,0 +1,17 @@
+{
+  "_schema": "turkic-etymology-sense-bridge/v1",
+  "built_at": "2026-09-26T09:32:45+00:00",
+  "sources": {
+    "trwiktionary": {
+      "url": "https://kaikki.org/trwiktionary/raw-wiktextract-data.jsonl.gz",
+      "sha256": "89cfed60ebbdb99e78e2830f2d6866764ea1d6d2690cfa4a68e23ff084235cff"
+    },
+    "enwiktionary": {
+      "url": "https://kaikki.org/dictionary/English/kaikki.org-dictionary-English.jsonl.gz",
+      "sha256": "de6533a7bc7143167f0b27b4d2b568930436cd20bb5c1ce3cf542c1ec7bbbfec"
+    }
+  },
+  "fields_used": "yalnız çeviri (tr->en, en->tr) ve İngilizce maddelerin tek sözcüklük Türkçe tanımı; etimoloji/kategori/İngilizce dışı çeviri YOK",
+  "entries": 29346,
+  "en_vocab": 884644
+}

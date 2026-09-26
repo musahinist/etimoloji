@@ -387,3 +387,66 @@ class TestItalianLabels9j(unittest.TestCase):
                     mock.patch.object(dp, "OLD_DONOR_MAX", 0.35):
                 result = dp.attribute_donor("lamba", "lamp", languages=["el", "fa"])
             self.assertEqual(result.lang_code, "fa")
+
+
+class TestSenseBridge9l(unittest.TestCase):
+    """9l: Türkçe anlam köprüsü (S1), ayrı dil havuz sorgusu (S2), tam eşleşmede ham mesafe (S3)."""
+
+    _index = TestLabelOnlyPools9g._index
+
+    def test_defaults_off(self):
+        self.assertFalse(dp.SENSE_BRIDGE)
+        self.assertEqual(dp.EXTRA_POOL_LANGS, ())
+        self.assertIsNone(dp.EXACT_MATCH_EPS)
+
+    def test_is_english_sense(self):
+        from engine.db import sense_bridge as sb
+
+        with mock.patch.object(sb, "_known_english", side_effect=lambda t: sum(w in {"lamp"} for w in t)):
+            self.assertTrue(sb.is_english_sense("a kind of boat used for fishing"))
+            self.assertTrue(sb.is_english_sense("lamp"))
+            self.assertFalse(sb.is_english_sense("Bir tür büyük balıkçı teknesi"))
+            self.assertFalse(sb.is_english_sense("kasaphane"))
+            self.assertFalse(sb.is_english_sense(""))
+
+    def test_bridge_only_for_non_english_sense(self):
+        from engine.db import sense_bridge as sb
+
+        with mock.patch.object(dp, "SENSE_BRIDGE", True), \
+                mock.patch.object(sb, "english_sense", return_value="band"), \
+                mock.patch.object(sb, "ottoman_sense", return_value=""), \
+                mock.patch.object(sb, "is_english_sense", side_effect=lambda s: s == "music band"):
+            self.assertEqual(dp.bridged_sense("bando", "Bir müzik topluluğu"), "band")
+            self.assertEqual(dp.bridged_sense("bando", "music band"), "music band")
+            self.assertEqual(dp.bridged_sense("bando", ""), "")
+            self.assertEqual(dp.bridged_sense("bando", "дом"), "дом")
+        self.assertEqual(dp.bridged_sense("bando", "Bir müzik topluluğu"), "Bir müzik topluluğu")
+
+    def test_extra_pool_query(self):
+        from tempfile import TemporaryDirectory
+
+        with TemporaryDirectory() as tmp:
+            index = self._index(tmp, {"it": [("balo", "ball")], "ar": [("xyz", "ball")]})
+            calls = []
+            real = index.by_sense
+
+            def spy(sense, **kw):
+                calls.append(kw.get("languages"))
+                return real(sense, **kw)
+
+            with mock.patch.object(dp, "_index", return_value=index), mock.patch.object(index, "by_sense", spy), \
+                    mock.patch.object(dp, "EXTRA_POOL_LANGS", ("it",)):
+                result = dp.attribute_donor("balo", "ball", languages=["ar", "it", "fr"])
+            self.assertIn(["it"], calls)
+            self.assertEqual(result.lang_code, "it")
+
+    def test_exact_match_beats_null(self):
+        from tempfile import TemporaryDirectory
+
+        with TemporaryDirectory() as tmp:
+            index = self._index(tmp, {"it": [("arma", "coat of arms")], "ar": [("arima", "coat of arms")]})
+            with mock.patch.object(dp, "_index", return_value=index), \
+                    mock.patch.object(dp, "_null_distance", side_effect=lambda n, pool: 0.9 if "arima" in pool else 0.0), \
+                    mock.patch.object(dp, "EXACT_MATCH_EPS", 0.0):
+                result = dp.attribute_donor("arma", "coat of arms", languages=["ar", "it"])
+            self.assertEqual(result.lang_code, "it")

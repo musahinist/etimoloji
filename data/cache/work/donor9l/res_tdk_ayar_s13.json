@@ -1,0 +1,4065 @@
+{
+"summary": {
+"n": 439,
+"off": {
+"acc": 0.2096,
+"hits": 92,
+"mcnemar": {},
+"per_class": {
+"Arapça": "26/60",
+"Ermenice": "1/9",
+"Farsça": "12/60",
+"Fransızca": "31/80",
+"Yunanca": "9/114",
+"İtalyanca": "13/116"
+},
+"errors": {
+"İtalyanca->—": 66,
+"Yunanca->—": 46,
+"Fransızca->—": 31,
+"Yunanca->Arapça": 24,
+"Farsça->—": 18,
+"Arapça->—": 17,
+"Yunanca->Fransızca": 17,
+"Farsça->Arapça": 17,
+"İtalyanca->Fransızca": 14,
+"İtalyanca->Arapça": 12,
+"Arapça->Fransızca": 11,
+"Yunanca->Ermenice": 8,
+"Fransızca->İtalyanca": 8,
+"Fransızca->Arapça": 7,
+"Farsça->Fransızca": 6,
+"İtalyanca->Yunanca": 6,
+"Yunanca->Farsça": 5,
+"Yunanca->İtalyanca": 5,
+"Ermenice->—": 5,
+"Arapça->İtalyanca": 4,
+"Farsça->Yunanca": 3,
+"Farsça->Ermenice": 3,
+"İtalyanca->Ermenice": 3,
+"Arapça->Farsça": 2,
+"Fransızca->Ermenice": 2,
+"İtalyanca->Farsça": 2,
+"Farsça->İtalyanca": 1,
+"Fransızca->Farsça": 1,
+"Ermenice->Arapça": 1,
+"Ermenice->Farsça": 1,
+"Ermenice->İtalyanca": 1
+}
+},
+"s13": {
+"acc": 0.2847,
+"hits": 125,
+"mcnemar": {
+"test": "mcnemar",
+"statistic": 33.0,
+"p": 0.0,
+"n": 35,
+"significant": true,
+"note": "yalnız A doğru: 34, yalnız B doğru: 1"
+},
+"per_class": {
+"Arapça": "28/60",
+"Ermenice": "1/9",
+"Farsça": "17/60",
+"Fransızca": "44/80",
+"Yunanca": "10/114",
+"İtalyanca": "25/116"
+},
+"errors": {
+"İtalyanca->—": 44,
+"Yunanca->—": 37,
+"Yunanca->Arapça": 27,
+"İtalyanca->Fransızca": 25,
+"Yunanca->Fransızca": 19,
+"Fransızca->—": 17,
+"Farsça->Arapça": 16,
+"Arapça->—": 13,
+"Arapça->Fransızca": 12,
+"İtalyanca->Yunanca": 11,
+"Farsça->—": 10,
+"Fransızca->İtalyanca": 10,
+"İtalyanca->Arapça": 9,
+"Yunanca->İtalyanca": 8,
+"Yunanca->Ermenice": 8,
+"Farsça->Fransızca": 7,
+"Arapça->Farsça": 5,
+"Yunanca->Farsça": 5,
+"Fransızca->Arapça": 5,
+"Farsça->Yunanca": 4,
+"Farsça->Ermenice": 4,
+"Ermenice->—": 4,
+"Arapça->İtalyanca": 2,
+"Farsça->İtalyanca": 2,
+"Fransızca->Ermenice": 2,
+"Ermenice->İtalyanca": 2,
+"İtalyanca->Farsça": 2,
+"Fransızca->Yunanca": 1,
+"Fransızca->Farsça": 1,
+"Ermenice->Arapça": 1,
+"Ermenice->Farsça": 1
+}
+},
+"strata": {
+"off/en": "72/157",
+"off/tr": "20/282",
+"off/etiketsiz": 183,
+"s13/en": "74/157",
+"s13/tr": "51/282",
+"s13/etiketsiz": 125
+}
+},
+"rows": [
+{
+"lang": "tr",
+"word": "ahir",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:سحر/sahar/0.189/kaikki/fa",
+"s13": "Arapça",
+"s13_w": "ar:سحر/sahar/0.189/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "askerî",
+"gold": "Arapça",
+"off": "Fransızca",
+"off_w": "fr:square/skuare/0.214/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:square/skuare/0.214/kaikki/"
+},
+{
+"lang": "tr",
+"word": "aşerat",
+"gold": "Arapça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "cezp",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:تعزب/taazzaba/0.379/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:تعزب/taazzaba/0.379/kaikki/"
+},
+{
+"lang": "tr",
+"word": "civar",
+"gold": "Arapça",
+"off": "İtalyanca",
+"off_w": "it:Affori/affori/0.315/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:Affori/affori/0.315/kaikki/"
+},
+{
+"lang": "tr",
+"word": "cünun",
+"gold": "Arapça",
+"off": "Fransızca",
+"off_w": "fr:commander/commander/0.536/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:commander/commander/0.536/kaikki/"
+},
+{
+"lang": "tr",
+"word": "debagat",
+"gold": "Arapça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "dâhi",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:طبيعة/tabia/0.333/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:طبيعة/tabia/0.333/kaikki/"
+},
+{
+"lang": "tr",
+"word": "edebî",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:أدبي/adabiyy/0.057/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:أدبي/adabiyy/0.057/kaikki/"
+},
+{
+"lang": "tr",
+"word": "feyezan",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:فيضان/fayadan/0.225/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:فيضان/fayadan/0.225/kaikki/"
+},
+{
+"lang": "tr",
+"word": "fuzuli",
+"gold": "Arapça",
+"off": "İtalyanca",
+"off_w": "it:fronzolo/fronzolo/0.287/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:fronzolo/fronzolo/0.287/kaikki/"
+},
+{
+"lang": "tr",
+"word": "habip",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:هواء/hava/0.323/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:هواء/hava/0.323/kaikki/"
+},
+{
+"lang": "tr",
+"word": "hadım",
+"gold": "Arapça",
+"off": "Fransızca",
+"off_w": "fr:châtré/chatre/0.444/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:châtré/chatre/0.444/kaikki/"
+},
+{
+"lang": "tr",
+"word": "heccav",
+"gold": "Arapça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "helva",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:حلوى/halva/0.025/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:حلوى/halva/0.025/kaikki/"
+},
+{
+"lang": "tr",
+"word": "hikemî",
+"gold": "Arapça",
+"off": "Fransızca",
+"off_w": "fr:Sucy/sucy/0.525/kaikki/el",
+"s13": "Fransızca",
+"s13_w": "fr:Sucy/sucy/0.525/kaikki/el"
+},
+{
+"lang": "tr",
+"word": "hindiba",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:كتب/kataba/0.357/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:كتب/kataba/0.357/kaikki/"
+},
+{
+"lang": "tr",
+"word": "hülasaten",
+"gold": "Arapça",
+"off": "—",
+"off_w": "",
+"s13": "Farsça",
+"s13_w": "fa:بزودی/bazudi/0.500/kaikki/"
+},
+{
+"lang": "tr",
+"word": "ihlas",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:إخلاص/iklas/0.250/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:إخلاص/iklas/0.250/kaikki/"
+},
+{
+"lang": "tr",
+"word": "imza",
+"gold": "Arapça",
+"off": "Fransızca",
+"off_w": "fr:impose/impose/0.284/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:impose/impose/0.284/kaikki/"
+},
+{
+"lang": "tr",
+"word": "irap",
+"gold": "Arapça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "itaat",
+"gold": "Arapça",
+"off": "Fransızca",
+"off_w": "fr:étant/etant/0.196/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:étant/etant/0.196/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kabir",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:قبور/kubur/0.050/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:قبور/kubur/0.050/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kanara",
+"gold": "Arapça",
+"off": "—",
+"off_w": "",
+"s13": "Farsça",
+"s13_w": "fa:کشتارگاه/koştargah/0.466/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kerh",
+"gold": "Arapça",
+"off": "—",
+"off_w": "",
+"s13": "Arapça",
+"s13_w": "ar:كره/karh/0.029/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "kibrit",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:كبريت/kibrit/0.000/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:كبريت/kibrit/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kudret",
+"gold": "Arapça",
+"off": "Fransızca",
+"off_w": "fr:Madrid/madrid/0.240/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:Madrid/madrid/0.240/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kûfi",
+"gold": "Arapça",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:kufique/kufikue/0.265/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kül",
+"gold": "Arapça",
+"off": "Fransızca",
+"off_w": "fr:gel/gel/0.040/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:gel/gel/0.040/kaikki/"
+},
+{
+"lang": "tr",
+"word": "mesture",
+"gold": "Arapça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "metfun",
+"gold": "Arapça",
+"off": "Farsça",
+"off_w": "fa:فن/fan/0.476/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:فن/fan/0.476/kaikki/"
+},
+{
+"lang": "tr",
+"word": "mezbaha",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:مذبحة/madbaha/0.164/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:مذبحة/madbaha/0.164/kaikki/"
+},
+{
+"lang": "tr",
+"word": "mezbele",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:عبل/abala/0.321/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:عبل/abala/0.321/kaikki/"
+},
+{
+"lang": "tr",
+"word": "meşveret",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:مشاورة/muşavara/0.288/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:مشاورة/muşavara/0.288/kaikki/"
+},
+{
+"lang": "tr",
+"word": "mihrap",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:مصر/misr/0.329/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:مصر/misr/0.329/kaikki/"
+},
+{
+"lang": "tr",
+"word": "muktebes",
+"gold": "Arapça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "musakka",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:مسقعة/musakkaa/0.000/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:مسقعة/musakkaa/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "müezzin",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:مؤذن/muaddin/0.301/kaikki/fa",
+"s13": "Arapça",
+"s13_w": "ar:مؤذن/muaddin/0.301/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "müruriye",
+"gold": "Arapça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "saba",
+"gold": "Arapça",
+"off": "İtalyanca",
+"off_w": "it:turco/turco/0.738/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:هبة/habba/0.133/kaikki/"
+},
+{
+"lang": "tr",
+"word": "sakamet",
+"gold": "Arapça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "salisen",
+"gold": "Arapça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "savap",
+"gold": "Arapça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "semt",
+"gold": "Arapça",
+"off": "Fransızca",
+"off_w": "fr:Hollywood/hollyvood/0.655/kaikki/fa",
+"s13": "Fransızca",
+"s13_w": "fr:Hollywood/hollyvood/0.655/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "setre",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:دحو/dahv/0.800/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:دحو/dahv/0.800/kaikki/"
+},
+{
+"lang": "tr",
+"word": "siftah",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:سكتة/sakta/0.390/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:سكتة/sakta/0.390/kaikki/"
+},
+{
+"lang": "tr",
+"word": "sükûti",
+"gold": "Arapça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "sınai",
+"gold": "Arapça",
+"off": "Fransızca",
+"off_w": "fr:Seine/seine/0.067/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:Seine/seine/0.067/kaikki/"
+},
+{
+"lang": "tr",
+"word": "sınıf",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:صنف/sinf/0.159/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:صنف/sinf/0.159/kaikki/"
+},
+{
+"lang": "tr",
+"word": "tarife",
+"gold": "Arapça",
+"off": "Fransızca",
+"off_w": "fr:tarifé/tarife/0.000/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:tarifé/tarife/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "tenkisat",
+"gold": "Arapça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "teşerrüf",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:ذرا/dara/0.346/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:ذرا/dara/0.346/kaikki/"
+},
+{
+"lang": "tr",
+"word": "yemin",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:يمين/yamin/0.000/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:يمين/yamin/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "özür",
+"gold": "Arapça",
+"off": "Farsça",
+"off_w": "fa:پوزش/poziş/0.387/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:پوزش/poziş/0.387/kaikki/"
+},
+{
+"lang": "tr",
+"word": "ümmet",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:امت/ummat/0.033/kaikki/fa",
+"s13": "Arapça",
+"s13_w": "ar:امت/ummat/0.033/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "ümmi",
+"gold": "Arapça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "şehriye",
+"gold": "Arapça",
+"off": "İtalyanca",
+"off_w": "it:curva/curva/0.576/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:لخشک/lahşak/0.556/kaikki/"
+},
+{
+"lang": "tr",
+"word": "şerare",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:شرر/şarar/0.160/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:شرر/şarar/0.160/kaikki/"
+},
+{
+"lang": "tr",
+"word": "şey",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:شيء/şay/0.200/kaikki/fa",
+"s13": "Arapça",
+"s13_w": "ar:شيء/şay/0.200/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "şeyh",
+"gold": "Arapça",
+"off": "Arapça",
+"off_w": "ar:شيخ/şayk/0.733/kaikki/fa",
+"s13": "Arapça",
+"s13_w": "ar:شيخ/şayk/0.733/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "ablatya",
+"gold": "Yunanca",
+"off": "Fransızca",
+"off_w": "fr:Yèbles/yebles/0.312/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:Yèbles/yebles/0.312/kaikki/"
+},
+{
+"lang": "tr",
+"word": "aksona",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "alamana",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "İtalyanca",
+"s13_w": "it:tartana/tartana/0.512/kaikki/"
+},
+{
+"lang": "tr",
+"word": "anavaşya",
+"gold": "Yunanca",
+"off": "Farsça",
+"off_w": "fa:لانه/lane/0.585/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:لانه/lane/0.585/kaikki/"
+},
+{
+"lang": "tr",
+"word": "andaval",
+"gold": "Yunanca",
+"off": "Fransızca",
+"off_w": "fr:entuber/entuber/0.236/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:entuber/entuber/0.236/kaikki/"
+},
+{
+"lang": "tr",
+"word": "ayandon",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "balyos",
+"gold": "Yunanca",
+"off": "Ermenice",
+"off_w": "hy:ժոխ/zoh/0.759/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:Paris/paris/0.175/kaikki/"
+},
+{
+"lang": "tr",
+"word": "barba",
+"gold": "Yunanca",
+"off": "İtalyanca",
+"off_w": "it:babà/baba/0.167/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:babà/baba/0.167/kaikki/"
+},
+{
+"lang": "tr",
+"word": "barsama",
+"gold": "Yunanca",
+"off": "Farsça",
+"off_w": "fa:نانا/nana/0.800/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:نانا/nana/0.800/kaikki/"
+},
+{
+"lang": "tr",
+"word": "basarna",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "bibliyografya",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "İtalyanca",
+"s13_w": "it:bibliografia/bibliografia/0.012/kaikki/"
+},
+{
+"lang": "tr",
+"word": "bilar",
+"gold": "Yunanca",
+"off": "Fransızca",
+"off_w": "fr:blé dur/bledur/0.398/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:blé dur/bledur/0.398/kaikki/"
+},
+{
+"lang": "tr",
+"word": "bodoslama",
+"gold": "Yunanca",
+"off": "Farsça",
+"off_w": "fa:داعشی‌ها/daişiha/0.675/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:داعشی‌ها/daişiha/0.675/kaikki/"
+},
+{
+"lang": "tr",
+"word": "bulada",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "buzuki",
+"gold": "Yunanca",
+"off": "Yunanca",
+"off_w": "el:μπουζουκιού/bouzoukiou/0.044/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:μπουζουκιού/bouzoukiou/0.044/kaikki/"
+},
+{
+"lang": "tr",
+"word": "dikiz",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:تلصص/talassasa/0.477/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:تلصص/talassasa/0.477/kaikki/"
+},
+{
+"lang": "tr",
+"word": "dilemma",
+"gold": "Yunanca",
+"off": "Fransızca",
+"off_w": "fr:dilemme/dilemme/0.022/kaikki/el",
+"s13": "İtalyanca",
+"s13_w": "it:dilemma/dilemma/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "dineri",
+"gold": "Yunanca",
+"off": "Ermenice",
+"off_w": "hy:Կարո/karo/0.604/kaikki/",
+"s13": "Ermenice",
+"s13_w": "hy:Կարո/karo/0.604/kaikki/"
+},
+{
+"lang": "tr",
+"word": "diyakoz",
+"gold": "Yunanca",
+"off": "Ermenice",
+"off_w": "hy:դղորդ/dgord/0.493/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:διάκονος/diakonos/0.203/kaikki/"
+},
+{
+"lang": "tr",
+"word": "domates",
+"gold": "Yunanca",
+"off": "Fransızca",
+"off_w": "fr:tomate/tomate/0.131/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:tomate/tomate/0.131/kaikki/"
+},
+{
+"lang": "tr",
+"word": "düver",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "düziko",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "entelekya",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:اجتلى/ijtala/0.432/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:اجتلى/ijtala/0.432/kaikki/"
+},
+{
+"lang": "tr",
+"word": "erganun",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "erkete",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "eskatologya",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "etnografya",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "falyanos",
+"gold": "Yunanca",
+"off": "Fransızca",
+"off_w": "fr:Younous/younous/0.375/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:Younous/younous/0.375/kaikki/"
+},
+{
+"lang": "tr",
+"word": "fangri",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "fanti",
+"gold": "Yunanca",
+"off": "Yunanca",
+"off_w": "el:φάντης/fantis/0.145/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:φάντης/fantis/0.145/kaikki/"
+},
+{
+"lang": "tr",
+"word": "fanya",
+"gold": "Yunanca",
+"off": "Ermenice",
+"off_w": "hy:ԻԻՀ/iih/0.874/kaikki/",
+"s13": "Ermenice",
+"s13_w": "hy:ԻԻՀ/iih/0.874/kaikki/"
+},
+{
+"lang": "tr",
+"word": "fasarya",
+"gold": "Yunanca",
+"off": "İtalyanca",
+"off_w": "it:fesseria/fesseria/0.067/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:fesseria/fesseria/0.067/kaikki/"
+},
+{
+"lang": "tr",
+"word": "fava",
+"gold": "Yunanca",
+"off": "Ermenice",
+"off_w": "hy:կիտրոն/kitron/0.856/kaikki/",
+"s13": "Ermenice",
+"s13_w": "hy:կիտրոն/kitron/0.856/kaikki/"
+},
+{
+"lang": "tr",
+"word": "fener",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:فنار/fanar/0.050/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:فنار/fanar/0.050/kaikki/"
+},
+{
+"lang": "tr",
+"word": "fesleğen",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:بوزيدان/buzidan/0.326/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:بوزيدان/buzidan/0.326/kaikki/"
+},
+{
+"lang": "tr",
+"word": "filenk",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "foroz",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "fırın",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:فران/farran/0.050/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:فران/farran/0.050/kaikki/"
+},
+{
+"lang": "tr",
+"word": "gebre",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "Arapça",
+"s13_w": "ar:كبر/kabar/0.250/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "gerdel",
+"gold": "Yunanca",
+"off": "Ermenice",
+"off_w": "hy:ստեր/ster/0.624/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:خردل/kardal/0.040/kaikki/"
+},
+{
+"lang": "tr",
+"word": "gönder",
+"gold": "Yunanca",
+"off": "Fransızca",
+"off_w": "fr:aiguillonner/aiguillonner/0.447/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:aiguillonner/aiguillonner/0.447/kaikki/"
+},
+{
+"lang": "tr",
+"word": "gübre",
+"gold": "Yunanca",
+"off": "Farsça",
+"off_w": "fa:کود/kud/0.575/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:کود/kud/0.575/kaikki/"
+},
+{
+"lang": "tr",
+"word": "harharyas",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "helke",
+"gold": "Yunanca",
+"off": "Ermenice",
+"off_w": "hy:ստեր/ster/0.714/kaikki/",
+"s13": "Ermenice",
+"s13_w": "hy:ստեր/ster/0.714/kaikki/"
+},
+{
+"lang": "tr",
+"word": "horoskop",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "Ermenice",
+"s13_w": "hy:հորոսկոպ/horoskop/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "iskete",
+"gold": "Yunanca",
+"off": "Fransızca",
+"off_w": "fr:mésange/mesange/0.558/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:mésange/mesange/0.558/kaikki/"
+},
+{
+"lang": "tr",
+"word": "ispit",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:السبت/assabt/0.323/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:السبت/assabt/0.323/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kadırga",
+"gold": "Yunanca",
+"off": "Fransızca",
+"off_w": "fr:galère/galere/0.383/kaikki/el",
+"s13": "Fransızca",
+"s13_w": "fr:galère/galere/0.383/kaikki/el"
+},
+{
+"lang": "tr",
+"word": "kalafat",
+"gold": "Yunanca",
+"off": "Fransızca",
+"off_w": "fr:Bellefontaine/bellefontaine/0.473/kaikki/el",
+"s13": "Fransızca",
+"s13_w": "fr:Bellefontaine/bellefontaine/0.473/kaikki/el"
+},
+{
+"lang": "tr",
+"word": "kalinis",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:قميص/kamis/0.393/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:قميص/kamis/0.393/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kalinos",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "karamandola",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:دحو/dahv/0.928/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:دحو/dahv/0.928/kaikki/"
+},
+{
+"lang": "tr",
+"word": "katavaşya",
+"gold": "Yunanca",
+"off": "İtalyanca",
+"off_w": "it:latibolo/latibolo/0.400/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:latibolo/latibolo/0.400/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kibernetik",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "kiklotron",
+"gold": "Yunanca",
+"off": "Fransızca",
+"off_w": "fr:atome/atome/0.724/kaikki/fa",
+"s13": "Fransızca",
+"s13_w": "fr:atome/atome/0.724/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "kimüs",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "kirizma",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "koloridye",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "kopanaki",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:جبل سينا/jabalsina/0.553/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:جبل سينا/jabalsina/0.553/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kundak",
+"gold": "Yunanca",
+"off": "Fransızca",
+"off_w": "fr:guanaco/guanaco/0.313/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:guanaco/guanaco/0.313/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kıtipiyoz",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:اشیاء/aşya/0.875/kaikki/fa",
+"s13": "Arapça",
+"s13_w": "ar:اشیاء/aşya/0.875/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "lahos",
+"gold": "Yunanca",
+"off": "Yunanca",
+"off_w": "el:λαγούς/lagous/0.250/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:λαγούς/lagous/0.250/kaikki/"
+},
+{
+"lang": "tr",
+"word": "lipari",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "liturya",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "mandar",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:مكر/makr/0.513/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:مكر/makr/0.513/kaikki/"
+},
+{
+"lang": "tr",
+"word": "martolos",
+"gold": "Yunanca",
+"off": "Yunanca",
+"off_w": "el:Τουρκαλάς/tourkalas/0.354/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:Τουρκαλάς/tourkalas/0.354/kaikki/"
+},
+{
+"lang": "tr",
+"word": "marya",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "Ermenice",
+"s13_w": "hy:մաքի/maki/0.367/kaikki/"
+},
+{
+"lang": "tr",
+"word": "mastı",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "masura",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:عصا الراعي/asarrai/0.165/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:عصا الراعي/asarrai/0.165/kaikki/"
+},
+{
+"lang": "tr",
+"word": "maydanoz",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:معدونس/madunis/0.055/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:معدونس/madunis/0.055/kaikki/"
+},
+{
+"lang": "tr",
+"word": "mazgal",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:مزغل/mazgal/0.000/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:مزغل/mazgal/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "melanurya",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "merlanos",
+"gold": "Yunanca",
+"off": "İtalyanca",
+"off_w": "it:merlango/merlango/0.211/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:merlango/merlango/0.211/kaikki/"
+},
+{
+"lang": "tr",
+"word": "mersin",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:الصين/assin/0.312/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:الصين/assin/0.312/kaikki/"
+},
+{
+"lang": "tr",
+"word": "minakop",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "mitos",
+"gold": "Yunanca",
+"off": "Fransızca",
+"off_w": "fr:S. M./sm/0.850/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:S. M./sm/0.850/kaikki/"
+},
+{
+"lang": "tr",
+"word": "musandıra",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:سنتير/sintir/0.295/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:سنتير/sintir/0.295/kaikki/"
+},
+{
+"lang": "tr",
+"word": "muşmula",
+"gold": "Yunanca",
+"off": "Yunanca",
+"off_w": "el:μουσμουλιά/mousmoulia/0.160/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:μουσμουλιά/mousmoulia/0.160/kaikki/"
+},
+{
+"lang": "tr",
+"word": "olta",
+"gold": "Yunanca",
+"off": "Yunanca",
+"off_w": "el:αλιεία/alieia/0.366/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:αλιεία/alieia/0.366/kaikki/"
+},
+{
+"lang": "tr",
+"word": "orya",
+"gold": "Yunanca",
+"off": "Ermenice",
+"off_w": "hy:Կարո/karo/0.305/kaikki/",
+"s13": "Ermenice",
+"s13_w": "hy:Կարո/karo/0.305/kaikki/"
+},
+{
+"lang": "tr",
+"word": "pantufla",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:عبا/aba/0.719/kaikki/fa",
+"s13": "Arapça",
+"s13_w": "ar:عبا/aba/0.719/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "parpa",
+"gold": "Yunanca",
+"off": "Fransızca",
+"off_w": "fr:pipe/pipe/0.224/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:pipe/pipe/0.224/kaikki/"
+},
+{
+"lang": "tr",
+"word": "pastra",
+"gold": "Yunanca",
+"off": "Yunanca",
+"off_w": "el:πιστών/piston/0.285/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:πιστών/piston/0.285/kaikki/"
+},
+{
+"lang": "tr",
+"word": "pedavra",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:دوى/davva/0.439/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:بذر/baddara/0.186/kaikki/"
+},
+{
+"lang": "tr",
+"word": "peleme",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "pines",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:دحو/dahv/0.819/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:دحو/dahv/0.819/kaikki/"
+},
+{
+"lang": "tr",
+"word": "piskopos",
+"gold": "Yunanca",
+"off": "Yunanca",
+"off_w": "el:επίσκοπος/episkopos/0.105/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:επίσκοπος/episkopos/0.105/kaikki/"
+},
+{
+"lang": "tr",
+"word": "piyastos",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "planya",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:plane/plane/0.025/kaikki/el"
+},
+{
+"lang": "tr",
+"word": "polim",
+"gold": "Yunanca",
+"off": "Fransızca",
+"off_w": "fr:déso/deso/0.831/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:déso/deso/0.831/kaikki/"
+},
+{
+"lang": "tr",
+"word": "prostela",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "pırnal",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:طور سينا/tursina/0.518/kaikki/fa",
+"s13": "Ermenice",
+"s13_w": "hy:փշարմավ/pşarmav/0.437/kaikki/"
+},
+{
+"lang": "tr",
+"word": "razakı",
+"gold": "Yunanca",
+"off": "Farsça",
+"off_w": "fa:ریزشی/rizeşi/0.175/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:ریزشی/rizeşi/0.175/kaikki/"
+},
+{
+"lang": "tr",
+"word": "sarpa",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "sarpın",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:صومعة/savmaa/0.513/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:صومعة/savmaa/0.513/kaikki/"
+},
+{
+"lang": "tr",
+"word": "sinara",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "sinarit",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "sirto",
+"gold": "Yunanca",
+"off": "İtalyanca",
+"off_w": "it:turco/turco/0.325/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:turco/turco/0.325/kaikki/"
+},
+{
+"lang": "tr",
+"word": "sistire",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "soma",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:سامية/samiya/0.067/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:سامية/samiya/0.067/kaikki/"
+},
+{
+"lang": "tr",
+"word": "somata",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "tarator",
+"gold": "Yunanca",
+"off": "Fransızca",
+"off_w": "fr:ci/ci/0.829/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:سرد/sarada/0.306/kaikki/"
+},
+{
+"lang": "tr",
+"word": "telfin",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "tirsi",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:alose/alose/0.504/kaikki/"
+},
+{
+"lang": "tr",
+"word": "tırpana",
+"gold": "Yunanca",
+"off": "Fransızca",
+"off_w": "fr:Yanan/yanan/0.627/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:طهران/tahran/0.349/kaikki/"
+},
+{
+"lang": "tr",
+"word": "uzo",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:ouzo/ouzo/0.050/kaikki/"
+},
+{
+"lang": "tr",
+"word": "varyos",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:Valois/valois/0.175/kaikki/"
+},
+{
+"lang": "tr",
+"word": "yoma",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "yulaf",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:علف/alaf/0.033/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:علف/alaf/0.033/kaikki/"
+},
+{
+"lang": "tr",
+"word": "zifos",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "çaparız",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "çağanoz",
+"gold": "Yunanca",
+"off": "Yunanca",
+"off_w": "el:καρκίνος/karkinos/0.361/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:καρκίνος/karkinos/0.361/kaikki/"
+},
+{
+"lang": "tr",
+"word": "öreke",
+"gold": "Yunanca",
+"off": "Arapça",
+"off_w": "ar:ورك/vuruk/0.315/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:ورك/vuruk/0.315/kaikki/"
+},
+{
+"lang": "tr",
+"word": "şinik",
+"gold": "Yunanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "ahenk",
+"gold": "Farsça",
+"off": "Farsça",
+"off_w": "fa:آهنگ/ahang/0.025/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:آهنگ/ahang/0.025/kaikki/"
+},
+{
+"lang": "tr",
+"word": "asude",
+"gold": "Farsça",
+"off": "Arapça",
+"off_w": "ar:أسخن/askan/0.565/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:آسوده/asuda/0.029/kaikki/"
+},
+{
+"lang": "tr",
+"word": "bargâh",
+"gold": "Farsça",
+"off": "Fransızca",
+"off_w": "fr:yers/yers/0.602/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:yers/yers/0.602/kaikki/"
+},
+{
+"lang": "tr",
+"word": "buselik",
+"gold": "Farsça",
+"off": "Arapça",
+"off_w": "ar:بسيطة/basita/0.386/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:بسيطة/basita/0.386/kaikki/"
+},
+{
+"lang": "tr",
+"word": "cambaz",
+"gold": "Farsça",
+"off": "Fransızca",
+"off_w": "fr:compilateur/compilateur/0.454/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:compilateur/compilateur/0.454/kaikki/"
+},
+{
+"lang": "tr",
+"word": "cengâver",
+"gold": "Farsça",
+"off": "Arapça",
+"off_w": "ar:عنتر/antara/0.554/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:عنتر/antara/0.554/kaikki/"
+},
+{
+"lang": "tr",
+"word": "cenk",
+"gold": "Farsça",
+"off": "Farsça",
+"off_w": "fa:جنگ/jang/0.314/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:جنگ/jang/0.314/kaikki/"
+},
+{
+"lang": "tr",
+"word": "derdest",
+"gold": "Farsça",
+"off": "—",
+"off_w": "",
+"s13": "Farsça",
+"s13_w": "fa:دست/dast/0.337/kaikki/"
+},
+{
+"lang": "tr",
+"word": "derya",
+"gold": "Farsça",
+"off": "Farsça",
+"off_w": "fa:دریا/darya/0.033/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:دریا/darya/0.033/kaikki/"
+},
+{
+"lang": "tr",
+"word": "dilaver",
+"gold": "Farsça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "diriğ",
+"gold": "Farsça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "duvar",
+"gold": "Farsça",
+"off": "Farsça",
+"off_w": "fa:دیوار/devar/0.025/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:دیوار/devar/0.025/kaikki/"
+},
+{
+"lang": "tr",
+"word": "faş",
+"gold": "Farsça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "füsun",
+"gold": "Farsça",
+"off": "—",
+"off_w": "",
+"s13": "Farsça",
+"s13_w": "fa:افسون/afsun/0.240/kaikki/"
+},
+{
+"lang": "tr",
+"word": "geriz",
+"gold": "Farsça",
+"off": "—",
+"off_w": "",
+"s13": "Yunanca",
+"s13_w": "el:βόθρος/vothros/0.535/kaikki/"
+},
+{
+"lang": "tr",
+"word": "hayli",
+"gold": "Farsça",
+"off": "Arapça",
+"off_w": "ar:حلاف/hallaf/0.209/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:حلاف/hallaf/0.209/kaikki/"
+},
+{
+"lang": "tr",
+"word": "haçvari",
+"gold": "Farsça",
+"off": "Arapça",
+"off_w": "ar:حول/havila/0.277/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:حول/havila/0.277/kaikki/"
+},
+{
+"lang": "tr",
+"word": "hemen",
+"gold": "Farsça",
+"off": "Arapça",
+"off_w": "ar:حتما/hatman/0.229/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:حتما/hatman/0.229/kaikki/"
+},
+{
+"lang": "tr",
+"word": "hengâm",
+"gold": "Farsça",
+"off": "Farsça",
+"off_w": "fa:זמאן/zaman/0.647/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:זמאן/zaman/0.647/kaikki/"
+},
+{
+"lang": "tr",
+"word": "hergele",
+"gold": "Farsça",
+"off": "Yunanca",
+"off_w": "el:φάσκελο/faskelo/0.400/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:φάσκελο/faskelo/0.400/kaikki/"
+},
+{
+"lang": "tr",
+"word": "hidiv",
+"gold": "Farsça",
+"off": "Fransızca",
+"off_w": "fr:husseinite/husseinite/0.542/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:خدیو/hadev/0.050/kaikki/"
+},
+{
+"lang": "tr",
+"word": "hoşnut",
+"gold": "Farsça",
+"off": "Arapça",
+"off_w": "ar:حنك/hanak/0.383/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:خشنود/huşnud/0.025/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kef",
+"gold": "Farsça",
+"off": "Arapça",
+"off_w": "ar:ڧ/kaf/0.040/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:ڧ/kaf/0.040/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kem",
+"gold": "Farsça",
+"off": "Arapça",
+"off_w": "ar:شؤم/şum/0.300/kaikki/fa",
+"s13": "Arapça",
+"s13_w": "ar:شؤم/şum/0.300/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "kereste",
+"gold": "Farsça",
+"off": "Yunanca",
+"off_w": "el:καρυδιά/karydia/0.177/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:καρυδιά/karydia/0.177/kaikki/"
+},
+{
+"lang": "tr",
+"word": "keşkül",
+"gold": "Farsça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "kumru",
+"gold": "Farsça",
+"off": "Arapça",
+"off_w": "ar:قمري/kumriyy/0.025/kaikki/fa",
+"s13": "Arapça",
+"s13_w": "ar:قمري/kumriyy/0.025/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "köşker",
+"gold": "Farsça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "maya",
+"gold": "Farsça",
+"off": "Arapça",
+"off_w": "ar:م/ma/0.000/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:م/ma/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "mihman",
+"gold": "Farsça",
+"off": "Farsça",
+"off_w": "fa:مهمان/mihman/0.000/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:مهمان/mihman/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "mıh",
+"gold": "Farsça",
+"off": "Farsça",
+"off_w": "fa:مه/mih/0.000/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:مه/mih/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "mıskal",
+"gold": "Farsça",
+"off": "Arapça",
+"off_w": "ar:أكلة/akila/0.415/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:أكلة/akila/0.415/kaikki/"
+},
+{
+"lang": "tr",
+"word": "naz",
+"gold": "Farsça",
+"off": "Ermenice",
+"off_w": "hy:նազ/naz/0.000/kaikki/",
+"s13": "Ermenice",
+"s13_w": "hy:նազ/naz/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "nikbin",
+"gold": "Farsça",
+"off": "Farsça",
+"off_w": "fa:خوشبین/hvaşbin/0.497/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:خوشبین/hvaşbin/0.497/kaikki/"
+},
+{
+"lang": "tr",
+"word": "nişasta",
+"gold": "Farsça",
+"off": "Arapça",
+"off_w": "ar:نشاء/naşa/0.488/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:نشاء/naşa/0.488/kaikki/"
+},
+{
+"lang": "tr",
+"word": "pah",
+"gold": "Farsça",
+"off": "—",
+"off_w": "",
+"s13": "İtalyanca",
+"s13_w": "it:puah/puah/0.040/kaikki/"
+},
+{
+"lang": "tr",
+"word": "pamuk",
+"gold": "Farsça",
+"off": "Ermenice",
+"off_w": "hy:բամբակ/bambak/0.181/kaikki/",
+"s13": "Ermenice",
+"s13_w": "hy:բամբակ/bambak/0.181/kaikki/"
+},
+{
+"lang": "tr",
+"word": "perdedar",
+"gold": "Farsça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "postal",
+"gold": "Farsça",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:botte/botte/0.329/kaikki/hy"
+},
+{
+"lang": "tr",
+"word": "putperest",
+"gold": "Farsça",
+"off": "Farsça",
+"off_w": "fa:بت‌پرست/butparast/0.027/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:بت‌پرست/butparast/0.027/kaikki/"
+},
+{
+"lang": "tr",
+"word": "saray",
+"gold": "Farsça",
+"off": "Arapça",
+"off_w": "ar:سراي/saray/0.000/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:سراي/saray/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "saz",
+"gold": "Farsça",
+"off": "Arapça",
+"off_w": "ar:سعد/sud/0.360/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:سعد/sud/0.360/kaikki/"
+},
+{
+"lang": "tr",
+"word": "seza",
+"gold": "Farsça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "sima",
+"gold": "Farsça",
+"off": "—",
+"off_w": "",
+"s13": "Arapça",
+"s13_w": "ar:سهم/sahama/0.284/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "sipahi",
+"gold": "Farsça",
+"off": "İtalyanca",
+"off_w": "it:soppediano/soppediano/0.437/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:soppediano/soppediano/0.437/kaikki/"
+},
+{
+"lang": "tr",
+"word": "tarumar",
+"gold": "Farsça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "tazı",
+"gold": "Farsça",
+"off": "Arapça",
+"off_w": "ar:ضرى/darra/0.367/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:ضرى/darra/0.367/kaikki/"
+},
+{
+"lang": "tr",
+"word": "yave",
+"gold": "Farsça",
+"off": "Fransızca",
+"off_w": "fr:sappan/sappan/0.597/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:sappan/sappan/0.597/kaikki/"
+},
+{
+"lang": "tr",
+"word": "yâran",
+"gold": "Farsça",
+"off": "Yunanca",
+"off_w": "el:παρέα/parea/0.464/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:παρέα/parea/0.464/kaikki/"
+},
+{
+"lang": "tr",
+"word": "yâren",
+"gold": "Farsça",
+"off": "Farsça",
+"off_w": "fa:ایرمان/erman/0.262/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:ایرمان/erman/0.262/kaikki/"
+},
+{
+"lang": "tr",
+"word": "zeyrek",
+"gold": "Farsça",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:batture/batture/0.616/kaikki/"
+},
+{
+"lang": "tr",
+"word": "zurna",
+"gold": "Farsça",
+"off": "Fransızca",
+"off_w": "fr:zourna/zourna/0.025/kaikki/fa",
+"s13": "Fransızca",
+"s13_w": "fr:zourna/zourna/0.025/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "çalak",
+"gold": "Farsça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "çark",
+"gold": "Farsça",
+"off": "Arapça",
+"off_w": "ar:سك/sakka/0.309/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:سك/sakka/0.309/kaikki/"
+},
+{
+"lang": "tr",
+"word": "çengel",
+"gold": "Farsça",
+"off": "Farsça",
+"off_w": "fa:چنگال/çangal/0.040/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:چنگال/çangal/0.040/kaikki/"
+},
+{
+"lang": "tr",
+"word": "çiriş",
+"gold": "Farsça",
+"off": "Fransızca",
+"off_w": "fr:sire/sire/0.077/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:sire/sire/0.077/kaikki/"
+},
+{
+"lang": "tr",
+"word": "çulha",
+"gold": "Farsça",
+"off": "—",
+"off_w": "",
+"s13": "Ermenice",
+"s13_w": "hy:ջուլհակ/culhak/0.234/kaikki/"
+},
+{
+"lang": "tr",
+"word": "şikemperver",
+"gold": "Farsça",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "şikâr",
+"gold": "Farsça",
+"off": "Farsça",
+"off_w": "fa:شکار/şikar/0.000/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:شکار/şikar/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "şirin",
+"gold": "Farsça",
+"off": "Ermenice",
+"off_w": "hy:կարկանդակ/karkandak/0.596/kaikki/",
+"s13": "Ermenice",
+"s13_w": "hy:կարկանդակ/karkandak/0.596/kaikki/"
+},
+{
+"lang": "tr",
+"word": "alkolizm",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:alcoolisme/alcoolisme/0.104/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:alcoolisme/alcoolisme/0.104/kaikki/"
+},
+{
+"lang": "tr",
+"word": "alo",
+"gold": "Fransızca",
+"off": "Arapça",
+"off_w": "ar:ألا/alla/0.050/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:ألا/alla/0.050/kaikki/"
+},
+{
+"lang": "tr",
+"word": "alogami",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "ambargo",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:embargo/embargo/0.018/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:embargo/embargo/0.018/kaikki/"
+},
+{
+"lang": "tr",
+"word": "amor",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:bummer/bummer/0.218/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:bummer/bummer/0.218/kaikki/"
+},
+{
+"lang": "tr",
+"word": "anafilaksi",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "İtalyanca",
+"s13_w": "it:anafilassi/anafilassi/0.119/kaikki/"
+},
+{
+"lang": "tr",
+"word": "analojik",
+"gold": "Fransızca",
+"off": "İtalyanca",
+"off_w": "it:Versailles/versailles/0.658/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:analogique/analogikue/0.227/kaikki/"
+},
+{
+"lang": "tr",
+"word": "anemik",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:anémier/anemier/0.222/kaikki/"
+},
+{
+"lang": "tr",
+"word": "anhidrit",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "apatit",
+"gold": "Fransızca",
+"off": "İtalyanca",
+"off_w": "it:dogale/dogale/0.754/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:apatite/apatite/0.088/kaikki/"
+},
+{
+"lang": "tr",
+"word": "apraksi",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "İtalyanca",
+"s13_w": "it:aprassia/aprassia/0.166/kaikki/"
+},
+{
+"lang": "tr",
+"word": "atlet",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:athlète/athlete/0.213/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:athlète/athlete/0.213/kaikki/"
+},
+{
+"lang": "tr",
+"word": "azotometre",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "barit",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:gri-gris/grigris/0.658/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:gri-gris/grigris/0.658/kaikki/"
+},
+{
+"lang": "tr",
+"word": "blok",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:bloc/bloc/0.114/kaikki/hy",
+"s13": "Fransızca",
+"s13_w": "fr:bloc/bloc/0.114/kaikki/hy"
+},
+{
+"lang": "tr",
+"word": "bopstil",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "bordür",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "deforme",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "deodorant",
+"gold": "Fransızca",
+"off": "İtalyanca",
+"off_w": "it:casus belli/casusbelli/0.711/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:déodorant/deodorant/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "despotizm",
+"gold": "Fransızca",
+"off": "Arapça",
+"off_w": "ar:محطوط/mahtut/0.637/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:despotisme/despotisme/0.039/kaikki/"
+},
+{
+"lang": "tr",
+"word": "dikotomi",
+"gold": "Fransızca",
+"off": "Ermenice",
+"off_w": "hy:Սաթենիկ/satenik/0.612/kaikki/",
+"s13": "Ermenice",
+"s13_w": "hy:Սաթենիկ/satenik/0.612/kaikki/"
+},
+{
+"lang": "tr",
+"word": "distribütör",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:distributeur/distributeur/0.011/kaikki/hy",
+"s13": "Fransızca",
+"s13_w": "fr:distributeur/distributeur/0.011/kaikki/hy"
+},
+{
+"lang": "tr",
+"word": "dramaturji",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:dramaturgie/dramaturgie/0.139/kaikki/"
+},
+{
+"lang": "tr",
+"word": "efemine",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:efféminé/effemine/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "ekstrem",
+"gold": "Fransızca",
+"off": "İtalyanca",
+"off_w": "it:estremo/estremo/0.197/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:estremo/estremo/0.197/kaikki/"
+},
+{
+"lang": "tr",
+"word": "elektromekanik",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:électromécanique/electromecanikue/0.108/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:électromécanique/electromecanikue/0.108/kaikki/"
+},
+{
+"lang": "tr",
+"word": "elipsoit",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "etnik",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:ethnie/ethnie/0.312/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:ethnie/ethnie/0.312/kaikki/"
+},
+{
+"lang": "tr",
+"word": "figür",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:figure/figure/0.099/kaikki/el",
+"s13": "Fransızca",
+"s13_w": "fr:figure/figure/0.099/kaikki/el"
+},
+{
+"lang": "tr",
+"word": "fildekoz",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "fizyoterapist",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "İtalyanca",
+"s13_w": "it:fisioterapista/fisioterapista/0.077/kaikki/"
+},
+{
+"lang": "tr",
+"word": "geometrik",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:géométrique/geometrikue/0.062/kaikki/"
+},
+{
+"lang": "tr",
+"word": "glikojen",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:glycogène/glycogene/0.284/kaikki/el"
+},
+{
+"lang": "tr",
+"word": "hartuç",
+"gold": "Fransızca",
+"off": "Arapça",
+"off_w": "ar:הדׄה/hadihi/0.307/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:הדׄה/hadihi/0.307/kaikki/"
+},
+{
+"lang": "tr",
+"word": "iyodür",
+"gold": "Fransızca",
+"off": "Arapça",
+"off_w": "ar:عنصر/unsur/0.424/kaikki/fa",
+"s13": "İtalyanca",
+"s13_w": "it:ioduro/ioduro/0.129/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kanalize",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "konteyner",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:conteneur/conteneur/0.062/kaikki/hy"
+},
+{
+"lang": "tr",
+"word": "kontuvar",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "korozyon",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:corrosion/corrosion/0.091/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kramp",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "İtalyanca",
+"s13_w": "it:crampo/crampo/0.221/kaikki/"
+},
+{
+"lang": "tr",
+"word": "krater",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "Yunanca",
+"s13_w": "el:Κρατήρ/kratir/0.020/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kruvazör",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:cruiser/cruiser/0.255/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:cruiser/cruiser/0.255/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kulis",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:coulisse/coulisse/0.216/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:coulisse/coulisse/0.216/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kumanda",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:commande/commande/0.109/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:commande/commande/0.109/kaikki/"
+},
+{
+"lang": "tr",
+"word": "lastik",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:élastique/elastikue/0.206/kaikki/fa",
+"s13": "Fransızca",
+"s13_w": "fr:élastique/elastikue/0.206/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "leksikografi",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:lexicographie/lehicographie/0.266/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:lexicographie/lehicographie/0.266/kaikki/"
+},
+{
+"lang": "tr",
+"word": "lineer",
+"gold": "Fransızca",
+"off": "İtalyanca",
+"off_w": "it:lineare/lineare/0.099/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:lineare/lineare/0.099/kaikki/"
+},
+{
+"lang": "tr",
+"word": "lizol",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "majeste",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:majesté/majeste/0.000/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:majesté/majeste/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "makyaj",
+"gold": "Fransızca",
+"off": "Arapça",
+"off_w": "ar:ماكياج/makyaj/0.000/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:ماكياج/makyaj/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "manganez",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:manganèse/manganese/0.062/kaikki/fa",
+"s13": "Fransızca",
+"s13_w": "fr:manganèse/manganese/0.062/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "mikrobiyoloji",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:microbiologie/microbiologie/0.165/kaikki/fa",
+"s13": "Fransızca",
+"s13_w": "fr:microbiologie/microbiologie/0.165/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "morfolojik",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "nüdizm",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:NCSM/ncsm/0.385/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:NCSM/ncsm/0.385/kaikki/"
+},
+{
+"lang": "tr",
+"word": "ons",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:once/once/0.365/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:once/once/0.365/kaikki/"
+},
+{
+"lang": "tr",
+"word": "parafazi",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:déso/deso/0.707/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:déso/deso/0.707/kaikki/"
+},
+{
+"lang": "tr",
+"word": "paraşüt",
+"gold": "Fransızca",
+"off": "Farsça",
+"off_w": "fa:پاراشوت/paraşut/0.000/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:پاراشوت/paraşut/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "pigme",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:Papou/papou/0.512/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:pigmeo/pigmeo/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "piknometre",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:pycnomètre/pycnometre/0.062/kaikki/"
+},
+{
+"lang": "tr",
+"word": "pirogravür",
+"gold": "Fransızca",
+"off": "Arapça",
+"off_w": "ar:تحيت/tuhayta/0.855/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:تحيت/tuhayta/0.855/kaikki/"
+},
+{
+"lang": "tr",
+"word": "piyon",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:pion/pion/0.000/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:pion/pion/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "pomat",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:pommade/pommade/0.099/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:pommade/pommade/0.099/kaikki/"
+},
+{
+"lang": "tr",
+"word": "prefabrik",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "puan",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:won/von/0.200/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:won/von/0.200/kaikki/"
+},
+{
+"lang": "tr",
+"word": "puding",
+"gold": "Fransızca",
+"off": "İtalyanca",
+"off_w": "it:puddingo/puddingo/0.124/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:pouding/pouding/0.020/kaikki/"
+},
+{
+"lang": "tr",
+"word": "radyoelektrik",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:Grande Ile/grandeile/0.522/kaikki/el",
+"s13": "Fransızca",
+"s13_w": "fr:Grande Ile/grandeile/0.522/kaikki/el"
+},
+{
+"lang": "tr",
+"word": "radyogram",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "renovasyon",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:rénovation/renovation/0.129/kaikki/"
+},
+{
+"lang": "tr",
+"word": "senfonik",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:symphonique/symphonikue/0.333/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:symphonique/symphonikue/0.333/kaikki/"
+},
+{
+"lang": "tr",
+"word": "sezaryen",
+"gold": "Fransızca",
+"off": "İtalyanca",
+"off_w": "it:dogale/dogale/0.606/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:césaréen/cesareen/0.091/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "siren",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:sirène/sirene/0.099/kaikki/fa",
+"s13": "Fransızca",
+"s13_w": "fr:sirène/sirene/0.099/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "soket",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "stereografi",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "steril",
+"gold": "Fransızca",
+"off": "İtalyanca",
+"off_w": "it:sterile/sterile/0.080/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:sterile/sterile/0.080/kaikki/"
+},
+{
+"lang": "tr",
+"word": "trajik",
+"gold": "Fransızca",
+"off": "Arapça",
+"off_w": "ar:جائح/jaih/0.772/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:جائح/jaih/0.772/kaikki/"
+},
+{
+"lang": "tr",
+"word": "transseksüel",
+"gold": "Fransızca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "tröst",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:trust/trust/0.022/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:trust/trust/0.022/kaikki/"
+},
+{
+"lang": "tr",
+"word": "vazelin",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:vaseline/vaseline/0.073/kaikki/el",
+"s13": "Fransızca",
+"s13_w": "fr:vaseline/vaseline/0.073/kaikki/el"
+},
+{
+"lang": "tr",
+"word": "vize",
+"gold": "Fransızca",
+"off": "Fransızca",
+"off_w": "fr:visa/visa/0.033/kaikki/fa",
+"s13": "Fransızca",
+"s13_w": "fr:visa/visa/0.033/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "şanzıman",
+"gold": "Fransızca",
+"off": "Ermenice",
+"off_w": "hy:ենթակայան/entakayan/0.375/kaikki/",
+"s13": "Ermenice",
+"s13_w": "hy:ենթակայան/entakayan/0.375/kaikki/"
+},
+{
+"lang": "tr",
+"word": "abra",
+"gold": "Ermenice",
+"off": "Ermenice",
+"off_w": "hy:աբրա/abra/0.000/kaikki/",
+"s13": "Ermenice",
+"s13_w": "hy:աբրա/abra/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "astik",
+"gold": "Ermenice",
+"off": "—",
+"off_w": "",
+"s13": "İtalyanca",
+"s13_w": "it:prosseneta/prosseneta/0.627/kaikki/"
+},
+{
+"lang": "tr",
+"word": "aznif",
+"gold": "Ermenice",
+"off": "Arapça",
+"off_w": "ar:طور سينا/tursina/0.566/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:طور سينا/tursina/0.566/kaikki/"
+},
+{
+"lang": "tr",
+"word": "badik",
+"gold": "Ermenice",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "murç",
+"gold": "Ermenice",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "mıcır",
+"gold": "Ermenice",
+"off": "Farsça",
+"off_w": "fa:ماسه/mase/0.352/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:ماسه/mase/0.352/kaikki/"
+},
+{
+"lang": "tr",
+"word": "pezevenk",
+"gold": "Ermenice",
+"off": "İtalyanca",
+"off_w": "it:pappone/pappone/0.459/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:pappone/pappone/0.459/kaikki/"
+},
+{
+"lang": "tr",
+"word": "çemiç",
+"gold": "Ermenice",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "şif",
+"gold": "Ermenice",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "alesta",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "alto",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:alto/alto/0.000/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "amabile",
+"gold": "İtalyanca",
+"off": "İtalyanca",
+"off_w": "it:cane/cane/0.862/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:cane/cane/0.862/kaikki/"
+},
+{
+"lang": "tr",
+"word": "apiko",
+"gold": "İtalyanca",
+"off": "İtalyanca",
+"off_w": "it:geminina/geminina/0.785/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:geminina/geminina/0.785/kaikki/"
+},
+{
+"lang": "tr",
+"word": "appassionato",
+"gold": "İtalyanca",
+"off": "İtalyanca",
+"off_w": "it:affettüoso/affettüoso/0.483/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:appassionato/appassionato/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "arnika",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:arnica/arnica/0.089/kaikki/"
+},
+{
+"lang": "tr",
+"word": "baderna",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "İtalyanca",
+"s13_w": "it:baderna/baderna/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "bando",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:bande/bande/0.025/kaikki/el"
+},
+{
+"lang": "tr",
+"word": "barata",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "baratarya",
+"gold": "İtalyanca",
+"off": "İtalyanca",
+"off_w": "it:armatori/armatori/0.246/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:armatori/armatori/0.246/kaikki/"
+},
+{
+"lang": "tr",
+"word": "barka",
+"gold": "İtalyanca",
+"off": "Yunanca",
+"off_w": "el:πέδιλο/pedilo/0.567/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:μπάρκο/barko/0.025/kaikki/"
+},
+{
+"lang": "tr",
+"word": "belladonna",
+"gold": "İtalyanca",
+"off": "Farsça",
+"off_w": "fa:اتوها/utuha/0.574/kaikki/",
+"s13": "Farsça",
+"s13_w": "fa:اتوها/utuha/0.574/kaikki/"
+},
+{
+"lang": "tr",
+"word": "bono",
+"gold": "İtalyanca",
+"off": "Yunanca",
+"off_w": "el:βοήθημα/voithima/0.685/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:βοήθημα/voithima/0.685/kaikki/"
+},
+{
+"lang": "tr",
+"word": "borda",
+"gold": "İtalyanca",
+"off": "İtalyanca",
+"off_w": "it:a bordo/abordo/0.191/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:a bordo/abordo/0.191/kaikki/"
+},
+{
+"lang": "tr",
+"word": "borsa",
+"gold": "İtalyanca",
+"off": "İtalyanca",
+"off_w": "it:borsa/borsa/0.000/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:borsa/borsa/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "boğada",
+"gold": "İtalyanca",
+"off": "Fransızca",
+"off_w": "fr:Yvette/yvette/0.389/kaikki/fa",
+"s13": "Fransızca",
+"s13_w": "fr:Yvette/yvette/0.389/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "ciranta",
+"gold": "İtalyanca",
+"off": "Fransızca",
+"off_w": "fr:jardin d'Éden/jardindeden/0.498/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:jardin d'Éden/jardindeden/0.498/kaikki/"
+},
+{
+"lang": "tr",
+"word": "cıvadra",
+"gold": "İtalyanca",
+"off": "Yunanca",
+"off_w": "el:Στρασβούργο/strasvourgo/0.547/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:Στρασβούργο/strasvourgo/0.547/kaikki/"
+},
+{
+"lang": "tr",
+"word": "espresso",
+"gold": "İtalyanca",
+"off": "Ermenice",
+"off_w": "hy:շերտեր/şerter/0.677/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:expresso/ehpresso/0.073/kaikki/el"
+},
+{
+"lang": "tr",
+"word": "falso",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "falya",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "filet",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "firma",
+"gold": "İtalyanca",
+"off": "Fransızca",
+"off_w": "fr:firme/firme/0.025/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:firme/firme/0.025/kaikki/"
+},
+{
+"lang": "tr",
+"word": "fisto",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "İtalyanca",
+"s13_w": "it:festone/festone/0.230/kaikki/"
+},
+{
+"lang": "tr",
+"word": "flama",
+"gold": "İtalyanca",
+"off": "Fransızca",
+"off_w": "fr:flamme/flamme/0.025/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:flamme/flamme/0.025/kaikki/"
+},
+{
+"lang": "tr",
+"word": "fonda",
+"gold": "İtalyanca",
+"off": "İtalyanca",
+"off_w": "it:geminina/geminina/0.732/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:geminina/geminina/0.732/kaikki/"
+},
+{
+"lang": "tr",
+"word": "forte",
+"gold": "İtalyanca",
+"off": "Arapça",
+"off_w": "ar:فردوس/firdavs/0.299/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:forti/forti/0.025/kaikki/"
+},
+{
+"lang": "tr",
+"word": "fota",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "foya",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:faux/fauh/0.319/kaikki/"
+},
+{
+"lang": "tr",
+"word": "francala",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:ficelle/ficelle/0.269/kaikki/"
+},
+{
+"lang": "tr",
+"word": "frişka",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "furya",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "fırkata",
+"gold": "İtalyanca",
+"off": "Arapça",
+"off_w": "ar:طور سينا/tursina/0.545/kaikki/fa",
+"s13": "Arapça",
+"s13_w": "ar:فراش/firaş/0.357/kaikki/"
+},
+{
+"lang": "tr",
+"word": "gabya",
+"gold": "İtalyanca",
+"off": "Fransızca",
+"off_w": "fr:ana-/ana/0.665/kaikki/el",
+"s13": "Yunanca",
+"s13_w": "el:αρμπουρέτο/armpoureto/0.735/kaikki/"
+},
+{
+"lang": "tr",
+"word": "gabyar",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "gladyo",
+"gold": "İtalyanca",
+"off": "Arapça",
+"off_w": "ar:أولى/ula/0.718/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:أولى/ula/0.718/kaikki/"
+},
+{
+"lang": "tr",
+"word": "grandi",
+"gold": "İtalyanca",
+"off": "Farsça",
+"off_w": "fa:بسته/baste/0.591/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:grand mât/grandmat/0.221/kaikki/"
+},
+{
+"lang": "tr",
+"word": "gusto",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "iskalarya",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "iskarpela",
+"gold": "İtalyanca",
+"off": "Ermenice",
+"off_w": "hy:կապար/kapar/0.525/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:scalpello/scalpello/0.255/kaikki/"
+},
+{
+"lang": "tr",
+"word": "iskele",
+"gold": "İtalyanca",
+"off": "Fransızca",
+"off_w": "fr:scille/scille/0.263/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:scille/scille/0.263/kaikki/"
+},
+{
+"lang": "tr",
+"word": "iskota",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "istadya",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "istimator",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "kalantor",
+"gold": "İtalyanca",
+"off": "İtalyanca",
+"off_w": "it:quarantasette/kuarantasette/0.409/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:quarantasette/kuarantasette/0.409/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kanca",
+"gold": "İtalyanca",
+"off": "İtalyanca",
+"off_w": "it:gancio/gancio/0.025/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:gancio/gancio/0.025/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kançılar",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "kapriçyo",
+"gold": "İtalyanca",
+"off": "Fransızca",
+"off_w": "fr:faire sa valise/fairesavalise/0.618/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:capriccio/capriccio/0.164/kaikki/"
+},
+{
+"lang": "tr",
+"word": "karabina",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:carabiné/carabine/0.083/kaikki/el"
+},
+{
+"lang": "tr",
+"word": "karaf",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "karafa",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "karamusal",
+"gold": "İtalyanca",
+"off": "İtalyanca",
+"off_w": "it:geminina/geminina/0.549/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:geminina/geminina/0.549/kaikki/"
+},
+{
+"lang": "tr",
+"word": "karmanyola",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "kartela",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "kasatura",
+"gold": "İtalyanca",
+"off": "İtalyanca",
+"off_w": "it:sbaionettare/sbaionettare/0.432/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:sbaionettare/sbaionettare/0.432/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kastanyola",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "kavela",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "kavilya",
+"gold": "İtalyanca",
+"off": "Arapça",
+"off_w": "ar:كوس/kavs/0.475/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:καβίλια/kavilia/0.022/kaikki/"
+},
+{
+"lang": "tr",
+"word": "konfeti",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:confetti/confetti/0.073/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kontra",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "korna",
+"gold": "İtalyanca",
+"off": "Arapça",
+"off_w": "ar:غرفة/garfa/0.275/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:غرفة/garfa/0.275/kaikki/"
+},
+{
+"lang": "tr",
+"word": "korza",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "kreşendo",
+"gold": "İtalyanca",
+"off": "Arapça",
+"off_w": "ar:دحو/dahv/0.869/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:crescendo/crescendo/0.228/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kuzine",
+"gold": "İtalyanca",
+"off": "Yunanca",
+"off_w": "el:ανασηκώνω/anasikono/0.477/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:ανασηκώνω/anasikono/0.477/kaikki/"
+},
+{
+"lang": "tr",
+"word": "kıranta",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "larghetto",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "liste",
+"gold": "İtalyanca",
+"off": "Fransızca",
+"off_w": "fr:liste/liste/0.000/kaikki/el",
+"s13": "Fransızca",
+"s13_w": "fr:liste/liste/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "longa",
+"gold": "İtalyanca",
+"off": "Arapça",
+"off_w": "ar:تركية/turkiyya/0.550/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:تركية/turkiyya/0.550/kaikki/"
+},
+{
+"lang": "tr",
+"word": "loça",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "İtalyanca",
+"s13_w": "it:cubia/cubia/0.733/kaikki/"
+},
+{
+"lang": "tr",
+"word": "maltız",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "marina",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "matafyon",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "mayna",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "mezura",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:mesure/mesure/0.022/kaikki/"
+},
+{
+"lang": "tr",
+"word": "mira",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "mizana",
+"gold": "İtalyanca",
+"off": "Arapça",
+"off_w": "ar:دحو/dahv/0.838/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:دحو/dahv/0.838/kaikki/"
+},
+{
+"lang": "tr",
+"word": "morto",
+"gold": "İtalyanca",
+"off": "Arapça",
+"off_w": "ar:اولی/oli/0.669/kaikki/fa",
+"s13": "Arapça",
+"s13_w": "ar:اولی/oli/0.669/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "natura",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "orsa",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "parlamento",
+"gold": "İtalyanca",
+"off": "Fransızca",
+"off_w": "fr:parlement/parlement/0.097/kaikki/fa",
+"s13": "Fransızca",
+"s13_w": "fr:parlement/parlement/0.097/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "parmıcan",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "patiska",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "İtalyanca",
+"s13_w": "it:batista/batista/0.182/kaikki/"
+},
+{
+"lang": "tr",
+"word": "pinel",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "Yunanca",
+"s13_w": "el:παγωνιά/pagonia/0.423/kaikki/"
+},
+{
+"lang": "tr",
+"word": "pirzola",
+"gold": "İtalyanca",
+"off": "Arapça",
+"off_w": "ar:عزل/azala/0.299/kaikki/",
+"s13": "Arapça",
+"s13_w": "ar:عزل/azala/0.299/kaikki/"
+},
+{
+"lang": "tr",
+"word": "pompa",
+"gold": "İtalyanca",
+"off": "Ermenice",
+"off_w": "hy:պոմպ/pomp/0.173/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:pompa/pompa/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "pratika",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "pupa",
+"gold": "İtalyanca",
+"off": "İtalyanca",
+"off_w": "it:geminina/geminina/0.885/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:pupa/pupa/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "puro",
+"gold": "İtalyanca",
+"off": "Yunanca",
+"off_w": "el:πούρο/pouro/0.033/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:πούρο/pouro/0.033/kaikki/"
+},
+{
+"lang": "tr",
+"word": "romatizma",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "İtalyanca",
+"s13_w": "it:reumatismo/reumatismo/0.029/kaikki/"
+},
+{
+"lang": "tr",
+"word": "sabura",
+"gold": "İtalyanca",
+"off": "Fransızca",
+"off_w": "fr:gémis/gemis/0.777/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:gémis/gemis/0.777/kaikki/"
+},
+{
+"lang": "tr",
+"word": "salto",
+"gold": "İtalyanca",
+"off": "Fransızca",
+"off_w": "fr:véhicule/vehicule/0.678/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:véhicule/vehicule/0.678/kaikki/"
+},
+{
+"lang": "tr",
+"word": "selviçe",
+"gold": "İtalyanca",
+"off": "Fransızca",
+"off_w": "fr:gémis/gemis/0.590/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:cordages/cordages/0.597/kaikki/"
+},
+{
+"lang": "tr",
+"word": "siroko",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "skala",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "İtalyanca",
+"s13_w": "it:scala/scala/0.100/kaikki/"
+},
+{
+"lang": "tr",
+"word": "soda",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "Arapça",
+"s13_w": "ar:صودا/soda/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "sol",
+"gold": "İtalyanca",
+"off": "Arapça",
+"off_w": "ar:ضلع/dil/0.400/kaikki/fa",
+"s13": "Arapça",
+"s13_w": "ar:ضلع/dil/0.400/kaikki/fa"
+},
+{
+"lang": "tr",
+"word": "solo",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:solo/solo/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "tapa",
+"gold": "İtalyanca",
+"off": "Arapça",
+"off_w": "ar:ديرة/diyara/0.367/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:tappo/tappo/0.033/kaikki/"
+},
+{
+"lang": "tr",
+"word": "telaro",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "tiramola",
+"gold": "İtalyanca",
+"off": "İtalyanca",
+"off_w": "it:geminina/geminina/0.705/kaikki/",
+"s13": "İtalyanca",
+"s13_w": "it:geminina/geminina/0.705/kaikki/"
+},
+{
+"lang": "tr",
+"word": "tonilato",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "trio",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "tropika",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "Fransızca",
+"s13_w": "fr:tropique/tropikue/0.018/kaikki/"
+},
+{
+"lang": "tr",
+"word": "tumba",
+"gold": "İtalyanca",
+"off": "Fransızca",
+"off_w": "fr:t'occupe/toccupe/0.395/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:t'occupe/toccupe/0.395/kaikki/"
+},
+{
+"lang": "tr",
+"word": "usturmaça",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "İtalyanca",
+"s13_w": "it:fermacarro/fermacarro/0.499/kaikki/"
+},
+{
+"lang": "tr",
+"word": "varda",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "Yunanca",
+"s13_w": "el:φρουρά/froura/0.352/kaikki/"
+},
+{
+"lang": "tr",
+"word": "velense",
+"gold": "İtalyanca",
+"off": "Fransızca",
+"off_w": "fr:balançoire/balançoire/0.261/kaikki/",
+"s13": "Fransızca",
+"s13_w": "fr:balançoire/balançoire/0.261/kaikki/"
+},
+{
+"lang": "tr",
+"word": "vido",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "vira",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "viyola",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "Farsça",
+"s13_w": "fa:ویولا/viyola/0.000/kaikki/"
+},
+{
+"lang": "tr",
+"word": "yısa",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "çembalo",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "çimbali",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "çipo",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "Yunanca",
+"s13_w": "el:ούπα/oupa/0.345/kaikki/"
+},
+{
+"lang": "tr",
+"word": "ıskota",
+"gold": "İtalyanca",
+"off": "—",
+"off_w": "",
+"s13": "—",
+"s13_w": ""
+},
+{
+"lang": "tr",
+"word": "şano",
+"gold": "İtalyanca",
+"off": "Yunanca",
+"off_w": "el:ξαίνω/haino/0.200/kaikki/",
+"s13": "Yunanca",
+"s13_w": "el:ξαίνω/haino/0.200/kaikki/"
+}
+]
+}

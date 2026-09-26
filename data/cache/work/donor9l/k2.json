@@ -1,0 +1,81 @@
+{
+ "n": 441,
+ "blind_label_columns_nonnull": 0,
+ "gloss_identical_blind_full": 441,
+ "labels_identical_blind_full": 441,
+ "gloss_with_language_hint": [
+  [
+   "tahin",
+   "tahini, a paste made from ground sesame seeds"
+  ],
+  [
+   "tenzih",
+   "An act of declaring free from defect, absolving."
+  ],
+  [
+   "kehribar",
+   "amber, a yellow to brown fossil resin from extinct coniferous trees, used for jewellery or decoration"
+  ],
+  [
+   "pencere",
+   "window, an opening which allows light and air from the outside to enter a building"
+  ],
+  [
+   "perhizkâr",
+   "abstinent, abstemious, continent, temperate, refraining from the indulgence of appetite"
+  ],
+  [
+   "tımar",
+   "timar, a kind of Ottoman Empire fief granted by the Sultan to a spahi in exchange for his cavalryman service and cultivated by villeins who leased it from him"
+  ]
+ ],
+ "pool_languages": {
+  "donors.db": [
+   "ar",
+   "el",
+   "evn",
+   "fa",
+   "fr",
+   "hy",
+   "it",
+   "mn",
+   "ru"
+  ],
+  "donors_label.db": [
+   "grc",
+   "lij",
+   "vec",
+   "xcl"
+  ]
+ },
+ "bridge_used": 67,
+ "bridge_with_language_hint": [
+  [
+   "tahin",
+   "tahini, a paste made from ground sesame seeds"
+  ],
+  [
+   "tenzih",
+   "An act of declaring free from defect, absolving."
+  ],
+  [
+   "kehribar",
+   "amber, a yellow to brown fossil resin from extinct coniferous trees, used for jewellery or decoration"
+  ],
+  [
+   "pencere",
+   "window, an opening which allows light and air from the outside to enter a building"
+  ],
+  [
+   "perhizkâr",
+   "abstinent, abstemious, continent, temperate, refraining from the indulgence of appetite"
+  ],
+  [
+   "tımar",
+   "timar, a kind of Ottoman Empire fief granted by the Sultan to a spahi in exchange for his cavalryman service and cultivated by villeins who leased it from him"
+  ]
+ ],
+ "fetchers_loaded": [],
+ "network": "socket.connect engelli",
+ "pass": true
+}
