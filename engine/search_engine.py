@@ -295,6 +295,19 @@ LOCAL_WITNESS_FLOOR = 0.50
 #: (başka anlamın, yani eşseslinin kaydıdır).
 LOCAL_WITNESS_MARGIN = 0.35
 
+#: Runik (Eski Türkçe, ``otk``) tanığın anlam alt sınırı; göreli kesim
+#: (``LOCAL_WITNESS_MARGIN``) ona uygulanmaz. 1.200 yıllık anlam kayması
+#: çağdaş adayla aynı ölçülmez: `dam` "roof" ~ Orhun *tam* "wall" 0,467
+#: (Starling kaydı "1 roof 2 wall 3 hut"). Eşik 0,50'de kalınca c3ce35f bu
+#: gerçek tanığı düşürüyordu; betik~büt- (0,1-0,2) gibi sahteler çok altta.
+RUNIC_WITNESS_FLOOR = 0.45
+
+
+def _meaning_verified(entry: dict[str, Any], floor: float) -> bool:
+    """Ölçülmüş anlam benzerliği tanığı doğruluyor mu (runik tanık: sabit 0,45)."""
+    similarity = entry["meaning_similarity"]
+    return similarity >= floor or (entry.get("lang_code") == "otk" and similarity >= RUNIC_WITNESS_FLOOR)
+
 
 def _first_sentence_loan(text: str) -> bool:
     """İlk cümle aile dışı bir dilden "From X" diyor mu (ҡәләм: "From Arabic قَلَم")."""
@@ -1047,9 +1060,54 @@ def _english_query_gloss(word: str, entries: list[dict[str, Any]], primary: str 
     kaydın ilk anlamı alınır: bütün anlamlar eklenirse sorgunun kendi
     eşseslisi (`ekmek` "to sow") süzgeci yeniden gevşetir.
     """
-    for _similarity, entry in _rank_own_by_meaning(word, entries, primary):
-        if entry.get("lang_code") in ("tr", "ota"):
-            return re.split(r"[;(]", str(entry["meaning"]))[0].strip()
+    glosses = [
+        re.split(r"[;(]", str(entry["meaning"]))[0].strip()
+        for _similarity, entry in _rank_own_by_meaning(word, entries, primary)
+        if entry.get("lang_code") in ("tr", "ota")
+    ]
+    # Eşyazımlı birden çok kendi kaydı varsa (`dam`: Farsça دام "net, trap"
+    # ~ طام "roof") sıra ana anlama göre, ana anlam da indeks sırasıyla
+    # gelen ilk kayıttan: seçim keyfîdir. O zaman Türkçe kaydın (``tr``)
+    # İngilizce anlamına en yakın olan alınır. ⚠️ Tek kayıtta ya da kayıt
+    # yokken Türkçe anlam EKLENMEZ: her kelimede eklemek 121 kelimede 47
+    # tanık ekleyip 12 doğru tanığı (solcu ~ صول "left") göreli kesimle
+    # eliyor, başlıkları oynatıyordu (ölçüldü).
+    if len(set(glosses)) > 1:
+        anchor = _index_english_gloss(word)
+        if anchor:
+            if anchor in glosses:
+                return anchor
+            sims = _similarity_matrix(glosses, [anchor])
+            if sims:
+                return max(zip((row[0] for row in sims), glosses))[1]
+    return glosses[0] if glosses else ""
+
+
+def _index_english_gloss(word: str) -> str:
+    """Sorgunun indeksteki TÜRKÇE (``tr``) kaydının ilk İngilizce anlamı.
+
+    Tarihî katmanın Osmanlıca kayıtları indeks sırasıyla gelir; eşyazımlı
+    olanlar sorgunun kendisi değildir: `dam` için Farsça دام "net, trap"
+    Türkçe *dam* "roof"un (طام) önüne geçiyor, ana anlam ona göre
+    sıralandığından İngilizce anlam da "net, trap" oluyordu; runik *tam*
+    "wall" tanığı 0,133 ile eleniyordu (ölçüldü). Türkçe kaydın kendisi
+    varsa o sorgunun anlamıdır.
+    """
+    try:
+        from engine.db.lexicon_index import LexiconIndex
+
+        index = LexiconIndex()
+        if not index.exists:
+            return ""
+        for row in index.lookup(word, languages=["tr"], limit=30):
+            gloss = str(row.get("gloss") or "").strip()
+            if (row.get("word") != word or row.get("pos") == "name" or not gloss
+                    or not looks_english(gloss) or is_cross_reference(gloss)
+                    or is_inflection_gloss(gloss) or _REDIRECT_GLOSS.search(gloss)):
+                continue
+            return re.split(r"[;(]", gloss)[0].strip()
+    except Exception:
+        logger.debug("İndeks İngilizce anlamı okunamadı: %s", word, exc_info=True)
     return ""
 
 #: Kaynak zincirindeki verici dil adı -> sınıflandırıcının aile anahtarı.
@@ -1567,7 +1625,7 @@ class SearchEngine:
             # kesim (`el`: "hand" adayları 1,0, "people" eşseslileri 0,43).
             best = max((e["meaning_similarity"] for e in scored), default=0.0)
             floor = max(LOCAL_WITNESS_FLOOR, best - LOCAL_WITNESS_MARGIN)
-            verified = {id(e) for e in scored if e["meaning_similarity"] >= floor}
+            verified = {id(e) for e in scored if _meaning_verified(e, floor)}
             # Hoşgörülü kayıt yalnız ÖLÇÜLÜP düşükse elenir; ölçülemediyse kalır.
             verified |= {
                 id(e) for e in unverified

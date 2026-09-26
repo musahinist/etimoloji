@@ -2,10 +2,17 @@
 listesi) doğru okunduğunu sabitleyen testler."""
 
 import unittest
+from unittest import mock
 
 from engine.db.starling import StarlingEtymology, _turkish_forms, decode
 from engine.nlp.borrowing_chain import source_loan_step
-from engine.search_engine import _cited_cognates, _english_query_gloss, _query_source_proto
+from engine.search_engine import (
+    _cited_cognates,
+    _english_query_gloss,
+    _index_english_gloss,
+    _meaning_verified,
+    _query_source_proto,
+)
 
 
 class TestStarlingDecode(unittest.TestCase):
@@ -66,7 +73,34 @@ class TestSourceEvidence(unittest.TestCase):
              "source": INDEX_SOURCE},
             {"lang_code": "ota", "word": "y", "comparison": "köpük", "meaning": "foam, froth", "source": INDEX_SOURCE},
         ]
-        self.assertEqual(_english_query_gloss("köpük", entries), "foam, froth")
+        with mock.patch("engine.search_engine._index_english_gloss", return_value=""):
+            self.assertEqual(_english_query_gloss("köpük", entries), "foam, froth")
+
+    def test_english_gloss_prefers_turkish_index_record(self):
+        """`dam`: Osmanlıca eşyazımlı Farsça دام "net, trap" indeks sırasıyla
+        önce geliyordu; Türkçe kaydın kendisi ("roof") sorgunun anlamıdır."""
+        entries = [
+            {"lang_code": "ota", "word": "دام", "comparison": "dam", "source": INDEX_SOURCE,
+             "meaning": "net, trap, snare, for catching game", "lexicon_origin": "alıntı"},
+            {"lang_code": "ota", "word": "طام", "comparison": "dam", "meaning": "roof", "source": INDEX_SOURCE},
+        ]
+        rows = [
+            {"word": "dam", "pos": "noun", "gloss": "Dansta erkeğe eş olan kadın."},
+            {"word": "Dam", "pos": "name", "gloss": "a surname"},
+            {"word": "dam", "pos": "noun", "gloss": "roof; flat roof"},
+        ]
+        fake = mock.Mock(exists=True)
+        fake.lookup.return_value = rows
+        with mock.patch("engine.db.lexicon_index.LexiconIndex", return_value=fake):
+            self.assertEqual(_index_english_gloss("dam"), "roof")
+            self.assertEqual(_english_query_gloss("dam", entries, primary=entries[0]["meaning"]), "roof")
+
+    def test_runic_witness_floor(self):
+        """Orhun *tam* "wall" ~ `dam` "roof" 0,467: runik tanık göreli kesimden
+        muaf, sabit 0,45 alt sınır; çağdaş aday aynı benzerlikle elenir."""
+        self.assertTrue(_meaning_verified({"lang_code": "otk", "meaning_similarity": 0.467}, 0.65))
+        self.assertFalse(_meaning_verified({"lang_code": "tt", "meaning_similarity": 0.467}, 0.65))
+        self.assertFalse(_meaning_verified({"lang_code": "otk", "meaning_similarity": 0.133}, 0.50))
 
 
 if __name__ == "__main__":
