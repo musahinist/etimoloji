@@ -51,6 +51,26 @@ koşudan benzetim — değişim yalnız "kök belirlenemedi" maddelerine dokunur
   ``bulut``→bul+It, ``gece``→ge+CA, ``yer``→ye+Ar), 60'ında başka kök.
   Starling'in kök-ek diye böldüğü 76 maddenin 23'ü çözümlendi, 14'ünde kök
   doğru. Kısa (1 heceli) kök + tek ünlülü ek bölmeleri en riskli sınıftır.
+
+⚠️ TEKRAR, gelenek-denk ölçütle — yine BAĞLANMADI (2026-09-26; ön kayıt
+``data/cache/work/noroot/PREREG.md``, ``engine_halves`` A seçim / B rapor):
+
+* "Kök yok" sınıflaması (Starling kapalı, 45 madde + 5 alıntı hükmü): en
+  büyük sınıf (23) yerel veride HİÇ etimolojik kayıt olmayan kelimeler
+  (``uçarı``, ``koçkar``, ``tansık``, ``çaput``, ``tın``…); tek bilgi
+  kaynağı Starling, Starling açıkken 23'ü de doğru. Probe: 37 "yok"
+  maddesinin 29'unda indekste hiç Türk dili tanığı yok; tanık olup kök
+  yasağına (``withheld_reconstruction``) takılan 0. Sonra: 8 başlık
+  ``*<kelime>`` (yazım/eşsesli), 5 miras kaydı var ama trk-pro bağı yok
+  (``apaçık``, ``köstek``, ``çapa``…), 5 çözümleyici kökü yanlış (``boyan``
+  boya, ``sinle`` sin), yalnız 4 bu yedeğin çözebildiği sınıf (``alık``,
+  ``salgın``, ``karım``, ``tatık``).
+* Seçim (A): derin çözüm (gelenek 69 -> 71). Rapor (B, n=120): tam
+  48 -> 47 (−1 ``yelme``), gelenek 64 -> 65, ikisi de McNemar p=1,0.
+  savelyev dev gelenek −1 (``atla`` -> *at); 50 sahte kelimenin 1'ine kök
+  yazılır (``akçık`` -> *āk). Kabul ölçütü (tam VE gelenek anlamlı artış)
+  karşılanmadı. Kalan açığı kapatmak veri gerektirir (Starling dışı kök
+  kaynağı), çözümleyici değil.
 """
 
 from __future__ import annotations
