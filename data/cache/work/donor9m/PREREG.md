@@ -152,3 +152,61 @@ Kabul (aday için hepsi):
 Karar: kabul edilen aday varsayılan AÇIK (R3 ancak R1 ve R2 ikisi de kabulse; R1/R3 3. koşulu ayarda
 sağlamadığı için pratikte yalnız R2 açılabilir). Hiçbiri -> üretim değişmez (bayraklar kapalı, kod
 bayrak arkasında). Her durumda `tr_donor_eval`e `accuracy_natural` kalıcı ölçüt olarak eklenir.
+
+---
+
+## SONUÇ (ön kayıt commit'i 48a36ba'dan sonra, bir kez)
+
+`rapor.log`, `res_9m.json`; mühür doğrulandı (sha256 `8a4811d2…78a6`). Uyuşmazlık "aday yalnız doğru /
+prod yalnız doğru"; birincil test ağırlıklı işaret çevirme (kesin), Holm 3 aday.
+
+| koşul | ham | **acc_nat (tum)** | acc_nat (altin) | Arapça 290 | Fransızca 248 | Farsça 62 | uyuşmazlık | p (işaret) | Holm |
+|---|---|---|---|---|---|---|---|---|---|
+| base (G2/H1 kapalı; bilgi) | 0,4183 | 0,4182 | 0,4103 | 169 (0,583) | 68 (0,274) | 14 | — | — | — |
+| g1 (bilgi) | 0,4067 | 0,4065 | 0,4019 | 153 | 77 | 14 | — | — | — |
+| g2 (bilgi) | 0,4483 | 0,4481 | 0,4480 | 153 | 102 | 14 | — | — | — |
+| h1 (bilgi) | 0,4433 | 0,4431 | 0,4380 | 169 | 83 | 14 | — | — | — |
+| **prod** | **0,4650** | **0,4648** | 0,4665 | 153 (0,528) | 112 (0,452) | 14 | — | — | — |
+| R1 | 0,4617 | 0,4614 | 0,4628 | 153 | 110 | 14 | 0 / 2 | 0,50 | 1,0 |
+| R2 | 0,4667 | 0,4664 | 0,4675 | 156 (0,538) | 110 (0,444) | 14 | 3 / 2 | 0,44 | 1,0 |
+| R3 | 0,4633 | 0,4631 | 0,4638 | 156 | 108 | 14 | 3 / 4 | 1,0 | 1,0 |
+
+**KARAR: R1, R2, R3 RED — üretim değişmez** (`WESTERN_SUFFIX_DROP = ()`, `FRENCH_ARABIC_GUARD = False`).
+Hiçbiri birincilde anlamlı artış vermedi; "eşitlik + Arapça ≥ 0,80" yolu kapalıydı (R2 Türkçe train+dev
+Arapça 0,770); R1/R3 ayrıca Türkçe train+dev korumasını ayarda düşürmüştü (0,6348 / 0,6382 < 0,6416).
+R2 Fransızca duyarlılık koşulunu sağlıyordu (−2/248). Korumalar üretim için aynı: Türkçe train+dev
+0,6416 (doğal ağırlıklı 0,602), Saha 0,7136, xturkic 0,7459; eval-borrowing yapı gereği aynı
+(kabul yok, koşulmadı). ENGINE_VERSION değişmez.
+
+**Ana bulgu (bilgi, doğal oranlı yeni rapor):** G2+H1 doğal dağılımda da **anlamlı biçimde olumlu**:
+base 0,418 -> prod 0,465 (45/17, ağırlıklı işaret p = 0,0005). Arapça 169 -> 153 (−16: 17 kayıp, 1 kazanç)
+ama Fransızca 68 -> 112 (+44). 17 Arapça kaybın **17'si yine G2'nin ayrı Fransızca havuzundan ve
+tabanın Arapça etiketi yanlış etimonlu şans eşleşmesi** (dua ~ ت, usul ~ إسرائيل, macun ~ الصين,
+meşrutiyet -> Madrid, milliyet -> Malgache …): taban o maddeleri yalnız paylaşılan `LIMIT 200` havuzunu
+Arapça doldurduğu için "doğru" sayıyordu. Kullanıcının itirazındaki nicel önerme (doğal dağılımda net
+olumsuz) TDK başlık sayımında desteklenmiyor: Arapça payı Fransızcadan yalnız biraz büyük (0,418 / 0,357;
+tek sözcüklük yalın alıntıda eşit), ve Arapça kaybı Fransızca kazancının ~üçte biri.
+
+R2'nin 5 uyuşmazlığı: kazanç hasır (خسر), simit (تميس), suret (زرد) — üçü de yanlış etimon (şans iskelet
+eşi); kayıp debil (-> طبل), fonograf (-> فونوغراف: Arapçanın kendi Batı alıntısı, dökümde işaretsiz).
+Yani iskelet koruması da şans eşleşmesini şans eşleşmesiyle değiştiriyor.
+
+Önceki altınlarda adaylar (görülmüş, bilgi; acc_nat tum; `res_*_all.json`):
+
+| altın | prod | R1 | R2 | R3 | base |
+|---|---|---|---|---|---|
+| 9l rapor n=441 | 0,4593 | 0,4568 (0/1) | 0,4593 (0/0) | 0,4568 (0/1) | 0,3987 |
+| 9j TDK rapor n=710 | 0,4748 | 0,4596 (0/6) | 0,4698 (0/2) | 0,4545 (0/8) | 0,3908 |
+| 9j TETTL rapor n=573 | 0,4687 | 0,4662 (0/1) | 0,4611 (0/3) | 0,4586 (0/4) | 0,3758 |
+| 9e ayar n=290 | 0,6726 | 0,6650 (0/2) | 0,6612 (0/3) | 0,6574 (0/4) | 0,5451 |
+| 9e rapor n=560 | 0,6744 | 0,6649 (0/5) | 0,6762 (2/2) | 0,6666 (2/7) | 0,5455 |
+| 9f n=240 | 0,6563 | 0,6488 (0/1) | 0,6563 (0/0) | 0,6488 (0/1) | 0,3329 |
+| 9g ayar n=116 (el+hy) | 0,2382 | 0,2382 | 0,2382 | 0,2382 | 0,3090 |
+| 9g rapor n=228 (el+hy) | 0,2412 | 0,2412 | 0,2475 (1/0) | 0,2475 (1/0) | 0,2978 |
+
+Kalıcı ölçüt: `tr_donor_eval` her sisteme `accuracy_natural` (TDK `lisan` `tum` ağırlıkları,
+`NATURAL_COUNTS`) ekler; `data/eval/tr_donor.json` (etiket 0,642 -> doğal 0,602; kör 0,597 -> 0,564).
+
+Sonraki adım için tanı (öneri, ölçülmedi): kayıp da kazanç da doğru etimonun anlam havuzunda olmadığı
+maddelerde; asıl kaldıraç etiketi şans düzeyindeki eşleşmede "belirsiz" bırakmak ya da sınıf önselini
+açıkça (doğal dağılımla) kullanmak — biçim/sonek kuralı değil.

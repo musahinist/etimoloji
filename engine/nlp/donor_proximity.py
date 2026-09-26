@@ -1214,6 +1214,12 @@ def _arabic_via(comparison: str, lang: str, row: Any, arabic: list[Any]) -> tupl
 #: D2 mantığı) Arapça havuzdaki bir adayınkiyle aynıysa ve iskelet en az
 #: :data:`FRENCH_ARABIC_GUARD_MIN` ünsüzse Fransızca kuralları (G2'nin ayrı havuzundan
 #: gelen kazanan, Fransızca aracılı, H1 soneki) devreye girmez. Yalnız ETİKET.
+#:
+#: ⚠️ ÖLÇÜLDÜ (9m, ön kayıt ``data/cache/work/donor9m/PREREG.md``), RED: doğal oranlı yeni TDK
+#: rapor altını (n=600) doğal ağırlıklı doğruluk 0,4648 -> 0,4664 (3/2, Holm p=1,0); Türkçe
+#: train+dev Arapça duyarlılığı 0,757 -> 0,770 (0,80'e dönmüyor). Tanı: G2'nin kaybettirdiği
+#: Arapça maddelerin tümü taban etiketi yanlış etimonlu şans eşleşmesi; koruma da çoğunlukla
+#: şans iskelet eşi buluyor (hasır ~ خسر). G2+H1 doğal dağılımda da olumlu: 0,418 -> 0,465.
 FRENCH_ARABIC_GUARD = False
 FRENCH_ARABIC_GUARD_MIN = 3
 #: "Güçlü" eşleşme: iskelet eşi Arapça aday sorguya en çok bu SCA uzaklığında (``None`` = sınırsız).
@@ -1344,6 +1350,8 @@ WESTERN_RULE = "h1"
 
 #: 9m R1 — H1'den çıkarılan Türkçe sonekler (Arapça/Farsça sözcüklerde de görülen
 #: belirsiz sonlar). ``()`` = H1'in tüm sonekleri.
+#: ⚠️ ÖLÇÜLDÜ (9m), RED: ``("ik",)`` (Vikisözlük'te -ik %45 Fransızca dışı) doğal oranlı rapor
+#: 0,4648 -> 0,4614 (0/2); Türkçe train+dev 0,6416 -> 0,6348. H1 hiçbir altında Arapça bozmuyor.
 WESTERN_SUFFIX_DROP: tuple[str, ...] = ()
 
 
