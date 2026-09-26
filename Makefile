@@ -52,7 +52,7 @@ help:
 	@echo "wilkens        - Wilkens 2021 Eski Uygurca sözlüğünü indir ve ayrıştır (CC BY-SA 4.0; .[pdf] gerekir)"
 	@echo "clauson        - Clauson 1972 EDT'yi (TurkicWorld HTML) indir ve ayrıştır (telifli; repoya girmez)"
 	@echo "sense-bridge   - Türkçe -> İngilizce anlam köprüsü (9l S1; kaikki tr+en dökümleri ~550 MB, SHA künyeli)"
-	@echo "zemberek       - Zemberek kök sözlüğünü indir (Apache-2.0; kök/türetme ve alıntı ses sinyalleri)"
+	@echo "zemberek       - Zemberek kök sözlüğünü indir (Apache-2.0; ağız tanığı bağında kök varyantları)"
 	@echo "label-donors   - Yalnız-etiket eski dil havuzu (grc, xcl, vec, lij; bayraklar kapalı) + indeksi"
 	@echo "bootstrap-optional - Bayrakla kapalı/bağlanmamış özelliklerin verisi (label-donors gap-lexicons khakas clauson)"
 	@echo "starling       - Starling Türk/Moğol etimoloji tablolarını indir (Dybo & Starostin 2005)"
@@ -204,8 +204,9 @@ clauson:
 sense-bridge:
 	.venv/bin/python scripts/download_sense_bridge.py
 
-# Zemberek kök sözlüğü (Apache-2.0): kök adayları, türetme ve alıntı ses
-# sinyalleri varsayılan motorda kullanılır (engine/nlp/root_variants.py).
+# Zemberek kök sözlüğü (Apache-2.0): kök/yüzey varyantları varsayılan aramada
+# ağız tanığı bağında kullanılır (witness_variants.dialect_names_query ->
+# root_variants); türetme çözümleyicisi ve ters uyum sinyali bağlı/açık değil.
 zemberek:
 	.venv/bin/python scripts/download_zemberek_lexicon.py
 
@@ -309,7 +310,7 @@ web:
 # diskte VE SHA-256'sı künyeyle aynıysa atlar; tekrar koşmak ucuzdur.
 # Türkçe sürüm (--tr) indeksten ÖNCE iner ki indekse girsin. Kuzey Altayca
 # (`atv`) `lexicons` içinde. Wilkens (Eski Uygurca fetcher'ı) ve Zemberek
-# (kök/türetme) varsayılan aramada kullanılır; anlam köprüsü 9l S1'dir.
+# (ağız tanığı bağında kök varyantları) varsayılan aramada kullanılır; anlam köprüsü 9l S1'dir.
 # `calibrate` dahil değil: commit edilmiş data/calibration/model.json'u yeniden yazar.
 # Bayrakla kapalı ya da bağlanmamış kaynaklar ayrı: `make bootstrap-optional`.
 bootstrap:
