@@ -590,6 +590,14 @@ ATTRIBUTION_CONTROL_COUNT = 12
 #: dil AYRI grup (kendi null'ı); seçilirse etiket ailenin kodudur, kaynak
 #: ``kaikki-grc``/``kaikki-xcl`` ("Eski Yunanca biçimi"). Yalnız ETİKET; güç
 #: havuzu (``donors.db``) değişmez. Ön kayıt ``data/cache/work/donor9g/PREREG.md``.
+#:
+#: ⚠️ ÖLÇÜLDÜ, ön kayıtlı (6baec31), KORUMADA DÜŞTÜ -> kapalı. Yeni rapor
+#: (tr/ota/az/crh Wiktionary, el 150 + hy 78, kör indeks, bir kez): el+hy
+#: etiket doğruluğu 0,285 -> 0,439 (McNemar 37/2, Holm p 8,5e-9; Yunanca
+#: 36 -> 54/150, Ermenice 29 -> 46/78). Ama Türkçe TDK+Nişanyan train+dev
+#: 0,642 -> 0,614 (Arapça -> Yunanca 6 -> 17): ayrı grup Arapça alıntılara
+#: rastlantı eşi veriyor. ``merge`` modu (ayar tanısı) da düşürdü (0,621).
+#: G2 (``LABEL_FORM_FILTER``) etkisiz: rapor 0/0 uyuşmazlık.
 OLD_DONOR_LABELS = False
 OLD_DONOR_FAMILY = {"grc": "el", "xcl": "hy"}
 #: ``separate``: eski dil ayrı grup, kendi null'ı (ailenin ikinci "bileti");

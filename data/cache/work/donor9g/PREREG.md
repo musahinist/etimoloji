@@ -107,3 +107,83 @@ basit olan: G2 < G1 < G3). Hiçbiri -> üretim değişmez (`OLD_DONOR_LABELS =
 LABEL_FORM_FILTER = False`); havuz ve kod bayrak arkasında kalır.
 
 Mühür: `gold.json` sha256 `61cf43e54270cfd414f4792410bd67f77c299e9d411bfbd2dc93f28f7eddbc0e`.
+
+---
+
+## SONUÇ (ön kayıt commit'i 6baec31'den sonra, bir kez)
+
+Yeni rapor (n=228; `harness.py gold rapor`, `rapor.log`, `gold_rapor.json`),
+el+hy etiket doğruluğu, taban üretim (`off`):
+
+| koşul | rapor | Yunanca | Ermenice | McNemar (aday/off) | ham p | Holm p |
+|---|---|---|---|---|---|---|
+| off (üretim) | **0,2851** (65) | 36/150 | 29/78 | — | — | — |
+| G1 | 0,4386 (100) | 54/150 | 46/78 | 37 / 2 | 2,8e-9 | 8,5e-9 |
+| G2 | 0,2851 (65) | 36/150 | 29/78 | 0 / 0 | 1,0 | 1,0 |
+| G3 | 0,4298 (98) | 53/150 | 45/78 | 36 / 3 | 3,6e-8 | 7,2e-8 |
+
+Üretimin rapor karışıklık matrisi: Yunanca -> Fransızca 47, Arapça 42,
+**Yunanca 36**, İtalyanca 12, Ermenice 6, Farsça 5, yok 2; Ermenice ->
+**Ermenice 29**, Fransızca 18, Arapça 17, Yunanca 9, Farsça 4, yok 1.
+Ağız etiketli alt küme (n=44; hy 41): off 0,455 -> G1 0,636 (9/1), G3 0,614.
+
+Korumalar (rapordan önce ölçüldü): **TR train+dev G1 0,6143, G3 0,6075 <
+0,6416 — DÜŞTÜ** (Arapça -> Yunanca 6 -> 17/19); G2 0,6416 tuttu; xturkic
+0,7459 ve Saha 0,7136 üçünde de aynı. 9f rapor (bilgi): off 0,4375, G1 0,4292,
+G2 0,4333, G3 0,4250.
+
+**KARAR: G1 ve G3 red (rapor artışı büyük ve anlamlı, ama Türkçe TDK+Nişanyan
+koruması düştü); G2 red (etkisiz). Üretim değişmez: `OLD_DONOR_LABELS =
+LABEL_FORM_FILTER = False`.** Havuz (`donors_label.db`) ve kod bayrak arkasında
+kalır. eval-borrowing koruması gerekmedi (varsayılanlar kapalı; yapı gereği aynı).
+
+Yorum: Eski Yunanca/Eski Ermenice havuzu doğru vericiyi bulmaya yetiyor (Yunanca
+36 -> 54, Ermenice 29 -> 46), ama ayrı "bilet" olarak Arapça alıntılara da
+rastlantı eşi veriyor. Sonraki aday (ön kayıtsız öneri, ölçülmedi): eski dil
+grubunu yalnız SCA ≤ 0,35 ("kesin") iken seçilebilir kılmak ya da grc/xcl'yi
+yalnız el/hy zaten ilk iki aday arasındayken devreye almak.
+
+## Keşif (ALTIN DEĞİL): Derleme ağız maddelerinde "gizli Rumca/Ermenice temas" tahmini
+`derleme_probe.py` -> `derleme_probe.json`. 1.677 Derleme maddesinin (yerel
+hasat, `data/dialect/derleme`; tohum Vikisözlük halk ağzı kategorisi) 1.417'sinde
+Türkçe anlamın ilk karşılığı tam indeksin Türkçe maddesiyle İngilizceye
+çevrilebildi. Etiket adımı G3 açık (grc/xcl + çekim süzgeci), `TURKISH_DONORS`.
+"Güçlü" = etiket el/hy VE SCA ≤ eşik. Şans denetimi: aynı kelimeler, anlamlar
+döngüsel kaydırılmış.
+
+| eşik | gerçek anlam | şans denetimi | fazlalık |
+|---|---|---|---|
+| 0,35 | 314 (el 170, hy 144) | 293 | ~21 |
+| 0,25 | 156 | 133 | ~23 |
+| 0,15 | 53 | 32 | ~21 |
+| 0,05 | 30 | 14 | ~16 |
+
+Wiktionary'nin el/hy dediği Derleme maddelerinin 4/22'si 0,35'te yakalandı;
+Wiktionary'nin miras dediklerinin 29/118'i de "güçlü" çıktı (0,15'te 2/118).
+Elle 20 (SCA en küçük, ≤ 0,04; LLM değerlendirmesi, insan onayı yok): olası
+temas 8 (abrıl/abril/april ~ Erm. apríl — tek tip; kom ~ Erm. gom "ahır";
+bastık ~ Erm. pasteł "pestil"; çemiç ~ Erm. čamič "kuru üzüm"; manik ~ Erm.
+manuk "yavru/çocuk"; kirinti ~ Erm. gerandi "tırpan"), 1 başka kaynak olası
+(çaynik: Rusça čajnik), 11 rastlantı/anlam eşleme hatası (ceyran ~ ciran, firaz
+~ varaz, kelem ~ Gełam, gölbez, erkan, lak, adak, anneç, din, bibi, geriz).
+**Tahmin:** bu yöntemle şansın üstündeki fazlalık 1.417 maddede yalnız ~16–23
+(≈ %1–1,6); yöntemin ağız sözvarlığında gizli teması ayırma gücü düşük (anlam
+çevirisi kaba, havuzlar rastlantı eşine açık). Kullanıcının gözlemi (ağızlarda
+standart dilden fazla temas) altında zaten görülüyor: 9g altında Ermenice
+maddelerin 57/114'ü (%50) Wiktionary'de `dialectal` etiketli, Yunancada 6/230.
+
+## Dış kaynaklar (araştırıldı, KULLANILMADI; sonraki adım önerisi)
+- Dankoff, *Armenian Loanwords in Turkish* (Harrassowitz 1995; 806 Ermenice
+  alıntı). Açık erişim/dijital sürüm bulunamadı (Open Library / WorldCat
+  kaydı var). İndirilemedi.
+- Tietze, *Tarihi ve Etimolojik Türkiye Türkçesi Lugatı* (TETTL): 10 cilt
+  archive.org'da OCR metin (~16 MB; İtalyanca araştırması,
+  `data/cache/work/research/ITALIAN_DATA.md`); kaba ayrıştırmada Yunanca 323
+  başlık; Ermenice sayılmadı. OCR 5 ve 7–9. ciltlerde bozuk. Wiktionary'den
+  bağımsız ikinci altın olabilir — etimonları verici havuzuna KONMAMALI.
+- TDK GTS tam dökümü (github ogun/guncel-turkce-sozluk, `lisan` alanı): köken
+  dili; standart dil için.
+- Papadamou & Papanastassiou, "Archaisms and lexical borrowing: Greek
+  archaisms in Turkish dialects" (academia.edu) — ağızlardaki Rumca için liste
+  kaynağı adayı; Andriotis'in *Lexikon der Archaismen* çalışmasına dayanır.
+  Sayısal/açık liste doğrulanmadı.
