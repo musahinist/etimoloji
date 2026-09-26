@@ -1,0 +1,52 @@
+for a2 in off on; do v=$([ $a2 = on ] && echo 1 || echo 0); \
+	  ETY_DONOR_CLEAN=$v ETY_DONOR_RAMP_CHANCE=$v caffeinate -i data/cache/work/heavy.sh .venv/bin/python -m engine.evaluation.tr_donor_eval capture --index full --a2 $a2 || exit 1; \
+	  ETY_DONOR_CLEAN=$v ETY_DONOR_RAMP_CHANCE=$v ETY_LEXICON_INDEX=/Users/mshn/Documents/etimoloji/data/cache/work/xtr/index_blind.db caffeinate -i data/cache/work/heavy.sh .venv/bin/python -m engine.evaluation.tr_donor_eval capture --index blind --a2 $a2 || exit 1; \
+	done
+/Users/mshn/Documents/etimoloji/data/cache/work/trdonor/full_a2off.jsonl
+/Users/mshn/Documents/etimoloji/data/cache/work/trdonor/blind_a2off.jsonl
+/Users/mshn/Documents/etimoloji/data/cache/work/trdonor/full_a2on.jsonl
+/Users/mshn/Documents/etimoloji/data/cache/work/trdonor/blind_a2on.jsonl
+.venv/bin/python -m engine.evaluation.tr_donor_eval report
+
+=== Türkçe verici dil — Wiktionary↔TDK uyumu · n=293 · commit 607da37 ===
+altın: {'Arapça': 148, 'Fransızca': 92, 'Farsça': 32, 'Yunanca': 9, 'diğer': 6, 'İtalyanca': 6}  (çoğunluk Arapça)
+
+--- A2 off ---
+(a) etiket       doğruluk 0.642 (0.5852, 0.6944)  doğal ağırlıklı 0.602  kapsam 0.997  kapsananda 0.644  makro-duyarlılık 0.357
+                 en sık hata: [{'gold': 'Arapça', 'pred': 'Fransızca', 'n': 14}, {'gold': 'Fransızca', 'pred': 'Arapça', 'n': 13}, {'gold': 'Fransızca', 'pred': 'İtalyanca', 'n': 11}]
+(a) etiket (gösterilen) doğruluk 0.782 (0.7308, 0.8251)  doğal ağırlıklı 0.726  kapsam 0.997  kapsananda 0.784  makro-duyarlılık 0.421
+                 en sık hata: [{'gold': 'Farsça', 'pred': 'Arapça', 'n': 9}, {'gold': 'Arapça', 'pred': 'Fransızca', 'n': 8}, {'gold': 'Fransızca', 'pred': 'İtalyanca', 'n': 8}]
+(b) arama        doğruluk 0.918 (0.881, 0.9443)  doğal ağırlıklı 0.923  kapsam 0.939  kapsananda 0.978  makro-duyarlılık 0.918
+                 en sık hata: [{'gold': 'Arapça', 'pred': '—', 'n': 7}, {'gold': 'Fransızca', 'pred': '—', 'n': 5}, {'gold': 'Farsça', 'pred': '—', 'n': 5}]
+(b) zincir       doğruluk 0.921 (0.885, 0.9471)  doğal ağırlıklı 0.927  kapsam 0.942  kapsananda 0.978  makro-duyarlılık 0.920
+                 en sık hata: [{'gold': 'Arapça', 'pred': '—', 'n': 7}, {'gold': 'Farsça', 'pred': '—', 'n': 5}, {'gold': 'Fransızca', 'pred': '—', 'n': 4}]
+(b) dedektör     doğruluk 0.949 (0.9173, 0.9687)  doğal ağırlıklı 0.953  kapsam 0.997  kapsananda 0.952  makro-duyarlılık 0.939
+                 en sık hata: [{'gold': 'Arapça', 'pred': 'Farsça', 'n': 6}, {'gold': 'Farsça', 'pred': 'Arapça', 'n': 2}, {'gold': 'Arapça', 'pred': 'Yunanca', 'n': 2}]
+(c) kör          doğruluk 0.707 (0.6519, 0.7557)  doğal ağırlıklı 0.659  kapsam 0.874  kapsananda 0.809  makro-duyarlılık 0.385
+                 en sık hata: [{'gold': 'Arapça', 'pred': '—', 'n': 20}, {'gold': 'Fransızca', 'pred': 'İtalyanca', 'n': 8}, {'gold': 'Fransızca', 'pred': 'Arapça', 'n': 7}]
+çoğunluk         doğruluk 0.505 (0.4482, 0.5619)  doğal ağırlıklı 0.418  kapsam 1.000  kapsananda 0.505  makro-duyarlılık 0.167
+                 en sık hata: [{'gold': 'Fransızca', 'pred': 'Arapça', 'n': 92}, {'gold': 'Farsça', 'pred': 'Arapça', 'n': 32}, {'gold': 'Yunanca', 'pred': 'Arapça', 'n': 9}]
+(a) etiket       biçim kesinliği 0.4726  (138/292 gösterilen biçim doğru etimon)  kapsama 0.997
+(a) etiket (gösterilen) biçim kesinliği 0.7353  (125/170 gösterilen biçim doğru etimon)  kapsama 0.580
+
+--- A2 on ---
+(a) etiket       doğruluk 0.648 (0.5922, 0.7009)  doğal ağırlıklı 0.620  kapsam 0.990  kapsananda 0.655  makro-duyarlılık 0.438
+                 en sık hata: [{'gold': 'Fransızca', 'pred': 'İtalyanca', 'n': 13}, {'gold': 'Arapça', 'pred': 'diğer', 'n': 12}, {'gold': 'Arapça', 'pred': 'Yunanca', 'n': 8}]
+(a) etiket (gösterilen) doğruluk 0.764 (0.7127, 0.8095)  doğal ağırlıklı 0.715  kapsam 0.990  kapsananda 0.772  makro-duyarlılık 0.430
+                 en sık hata: [{'gold': 'Fransızca', 'pred': 'İtalyanca', 'n': 9}, {'gold': 'Fransızca', 'pred': 'Arapça', 'n': 8}, {'gold': 'Arapça', 'pred': 'Fransızca', 'n': 7}]
+(b) arama        doğruluk 0.918 (0.881, 0.9443)  doğal ağırlıklı 0.923  kapsam 0.939  kapsananda 0.978  makro-duyarlılık 0.918
+                 en sık hata: [{'gold': 'Arapça', 'pred': '—', 'n': 7}, {'gold': 'Fransızca', 'pred': '—', 'n': 5}, {'gold': 'Farsça', 'pred': '—', 'n': 5}]
+(b) zincir       doğruluk 0.921 (0.885, 0.9471)  doğal ağırlıklı 0.927  kapsam 0.942  kapsananda 0.978  makro-duyarlılık 0.920
+                 en sık hata: [{'gold': 'Arapça', 'pred': '—', 'n': 7}, {'gold': 'Farsça', 'pred': '—', 'n': 5}, {'gold': 'Fransızca', 'pred': '—', 'n': 4}]
+(b) dedektör     doğruluk 0.949 (0.9173, 0.9687)  doğal ağırlıklı 0.954  kapsam 0.990  kapsananda 0.959  makro-duyarlılık 0.940
+                 en sık hata: [{'gold': 'Arapça', 'pred': 'Farsça', 'n': 6}, {'gold': 'Farsça', 'pred': '—', 'n': 2}, {'gold': 'Arapça', 'pred': 'Yunanca', 'n': 2}]
+(c) kör          doğruluk 0.672 (0.6167, 0.7236)  doğal ağırlıklı 0.635  kapsam 0.864  kapsananda 0.779  makro-duyarlılık 0.377
+                 en sık hata: [{'gold': 'Arapça', 'pred': '—', 'n': 25}, {'gold': 'Fransızca', 'pred': 'İtalyanca', 'n': 9}, {'gold': 'Fransızca', 'pred': 'Arapça', 'n': 8}]
+çoğunluk         doğruluk 0.505 (0.4482, 0.5619)  doğal ağırlıklı 0.418  kapsam 1.000  kapsananda 0.505  makro-duyarlılık 0.167
+                 en sık hata: [{'gold': 'Fransızca', 'pred': 'Arapça', 'n': 92}, {'gold': 'Farsça', 'pred': 'Arapça', 'n': 32}, {'gold': 'Yunanca', 'pred': 'Arapça', 'n': 9}]
+(a) etiket       biçim kesinliği 0.4931  (143/290 gösterilen biçim doğru etimon)  kapsama 0.990
+(a) etiket (gösterilen) biçim kesinliği 0.6952  (130/187 gösterilen biçim doğru etimon)  kapsama 0.638
+
+⚠️ Bu ölçüm 'Wiktionary↔TDK uyumu'dur, verici doğruluğu değil. (b) DÖNGÜSEL: arama/zincir sözlük indeksindeki Wiktionary donor_lang kaydını okur ve Wiktionary Türkçe etimolojileri büyük ölçüde Nişanyan/TDK'ya dayanır — (b) iki sözlükçü geleneğin uyumunu ölçer. (c) kör indeks + zincir kapalı ve (a) yalnız etiket adımı kaydı görmez: bağımsız çıkarım. Önsel sızıntı: verici havuzu TURKISH_DONORS (ar, fa, el, hy, fr, it) Türkçe alıntı dağılımına bakılarak seçildi; 'diğer' sınıfını (a)/(c) yapısal olarak hemen hiç üretemez.
+
+JSON: /Users/mshn/Documents/etimoloji/data/eval/tr_donor.json

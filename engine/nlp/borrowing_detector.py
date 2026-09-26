@@ -1018,8 +1018,8 @@ class BorrowingDetector:
             label = donor_proximity.honest_label(attribution, comparison)
         if label is not None and not label.show_form:
             explanation = (
-                f"verici sözlüğünde aynı kavramın karşılığı fonetik olarak yakın "
-                f"(SCA {match.distance:.3f}, en yakın biçim şans düzeyinde; gösterilmiyor)"
+                f"verici sözlüğünde aynı kavramın fonetik olarak benzer bir karşılığı var "
+                f"(SCA {match.distance:.3f}; benzerlik şans düzeyinden ayırt edilemiyor, biçim gösterilmiyor)"
             )
         else:
             explanation = (

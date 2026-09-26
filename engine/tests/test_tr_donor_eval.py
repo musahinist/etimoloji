@@ -79,7 +79,10 @@ def test_evaluate_scores_confusion_and_top_error():
     assert systems["(c) kör"]["accuracy"] == 0.4
     assert systems["çoğunluk"]["accuracy"] == 0.6
     assert systems["(a) etiket"]["confusion"]["Farsça"] == {"Arapça": 2, "Farsça": 2}
-    assert set(result["vs_majority_mcnemar"]) == {"(a) etiket", "(b) arama", "(b) zincir", "(b) dedektör", "(c) kör"}
+    assert set(result["vs_majority_mcnemar"]) == {"(a) etiket", "(a) etiket (gösterilen)", "(b) arama",
+                                                  "(b) zincir", "(b) dedektör", "(c) kör"}
+    # önbellekte gösterilen etiket yoksa ham etikete düşer
+    assert systems["(a) etiket (gösterilen)"]["accuracy"] == 0.8
 
 
 def test_capture_refuses_wrong_environment(monkeypatch):
@@ -102,3 +105,37 @@ def test_natural_accuracy_reweights_classes():
     w_ar = t.NATURAL_COUNTS["Arapça"] / (t.NATURAL_COUNTS["Arapça"] + t.NATURAL_COUNTS["Fransızca"])
     assert abs(t.natural_accuracy(gold, all_ar) - round(w_ar, 4)) < 1e-4
     assert t.natural_accuracy(gold, gold) == 1.0
+
+
+def test_family_label_partial_credit():
+    assert t.engine_class("ar|fa") == "Arapça|Farsça"
+    assert t.credit("Farsça", "Arapça|Farsça") == 0.5
+    assert t.credit("Fransızca", "Arapça|Farsça") == 0.0
+    assert t.credit("Arapça", "Arapça") == 1.0
+    gold = ["Arapça", "Fransızca"]
+    w = t.NATURAL_COUNTS
+    got = t.natural_accuracy(gold, ["Arapça|Farsça", "Fransızca"])
+    assert abs(got - round((0.5 * w["Arapça"] + w["Fransızca"]) / (w["Arapça"] + w["Fransızca"]), 4)) < 1e-4
+
+
+def test_form_metrics_precision_and_coverage(tmp_path):
+    import sqlite3
+
+    db = tmp_path / "index.db"
+    con = sqlite3.connect(db)
+    con.execute("CREATE TABLE entries (lang_code, word, donor_lang, donor_form, etymology)")
+    con.execute("INSERT INTO entries VALUES ('tr', 'sultan', 'ar', 'سُلْطَان', '')")
+    con.commit()
+    cases = [t.TrDonorCase("sultan", "Arapça", "Arapça", "Arapça sulṭān", "Arapça", "train"),
+             t.TrDonorCase("kudret", "Arapça", "Arapça", "Arapça ḳudret", "Arapça", "train"),
+             t.TrDonorCase("aktör", "Fransızca", "Fransızca", "Fransızca acteur", "Fransızca", "train")]
+    rows = {
+        "sultan": {"label": "ar", "label_word": "سلطان", "label_comparison": "sultan", "label_certain": True},
+        "kudret": {"label": "ar", "label_word": "قطر", "label_comparison": "katar", "label_certain": False},
+        "aktör": {"label": "fr", "label_word": "acteur", "label_comparison": "acteur", "label_certain": True},
+    }
+    out = t.form_metrics(cases, rows, db)
+    raw, shown = out["(a) etiket"], out["(a) etiket (gösterilen)"]
+    assert (raw["shown"], raw["shown_correct"], raw["coverage"]) == (3, 2, 1.0)
+    assert (shown["shown"], shown["shown_correct"], shown["form_precision"]) == (2, 2, 1.0)
+    assert abs(shown["coverage"] - 0.6667) < 1e-4

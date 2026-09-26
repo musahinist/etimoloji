@@ -145,3 +145,48 @@ Kabul (aday için hepsi):
 Karar: kabul edilenlerden rapor `acc_nat`ı en yüksek olan `DONOR_HONEST` varsayılanı olur; hiçbiri ->
 üretim değişmez (bayrak kapalı, kod bayrak arkasında). Kabul varsa `tr_donor_eval`e kalıcı
 "biçim kesinliği" ve "kapsama" ölçütleri, CLI/web gösterimi, README verici satırı, ENGINE_VERSION 4.3.2.
+
+---
+
+## SONUÇ (ön kayıt commit'i 607da37'den sonra, bir kez)
+
+`rapor.log`, `res_9n.json`; mühür doğrulandı (sha256 `7a8e3a7b…5482`). n = 600 (ar 290, fr 248, fa 62);
+etiket verilen 432 (kalan 168'de kör indekste anlam eşleşmesi yok), hepsi etimon referanslı.
+
+| koşul | **(i) biçim kesinliği** | gösterilen biçim (yanlış) | **(ii) acc_nat** (aile = 1/2) | ham | aile doğruluğu | (iii) kapsama | Arapça / Farsça / Fransızca | (ii) işaret D (iyi/kötü), p |
+|---|---|---|---|---|---|---|---|---|
+| prod (off) | 0,451 (195/432) | 432 (237) | 0,4581 | 0,4583 | 0,4583 | 0,720 | 0,483 / 0,210 / 0,492 | — |
+| A1 | **0,757** (171/226) | 226 (55) | 0,4007 ✗ | 0,4008 | 0,4883 | 0,377 | 0,390 / 0,234 / 0,456 | −0,057 (18/87), 5e-6 |
+| **A2** | **0,757** (171/226) | 226 (55) | **0,5982** | 0,5983 | 0,5983 | 0,377 | 0,652 / 0,452 / 0,573 | **+0,140 (94/10), 5e-6** |
+| A3 | **0,757** (171/226) | 226 (55) | 0,4674 | 0,4675 | 0,6217 | 0,377 | 0,472 / 0,387 / 0,482 | +0,009 (107/87), 0,42 |
+
+(i) Fisher (üretimde gösterilen 432 biçim; aday korur / gizler × doğru etimon): korunan 171/55, gizlenen
+24/182, p = 5e-44 (Holm 3 aday: 1,6e-43; üç adayda aynı kural). (ii) Holm: A1 1,5e-5 (düşüş), A2 1e-5
+(artış), A3 0,42.
+
+**KARAR: A2 KABUL — `DONOR_HONEST = "a2"` varsayılan.** A1 RED ((ii) −0,057 anlamlı düşüş; ayrıca Türkçe
+train+dev korumasında 0,552 < 0,592). A3 kabul koşullarını sağladı ((i) ✓, Δ(ii) +0,009 ≥ −0,01, anlamlı
+düşüş yok, Türkçe train+dev 0,599 ≥ 0,592) ama ön kayıttaki seçim kuralı gereği rapor `acc_nat`ı en
+yüksek olan A2 seçildi (0,598 > 0,467).
+
+Belirsiz dilimde (206 madde) A2'nin dili 171'inde doğru (ar 124 / fr 58 / fa 24 etiketi); en yakın
+biçimin dili 87'sinde doğruydu. Kullanıcıya gösterilen yanlış verici biçimi 237 -> 55; kalan 55'in 38'i
+yanlış dil (çoğu koşut alıntı: dirhem ~ fr dirhem, cürüm ~ fr crime), 17'si doğru dil ama başka sözcük
+(kanun ~ قانوني türev, elif ~ ا harf).
+
+Korumalar: Saha `eval-donor` motor 0,7136 ve xturkic ayar 0,7459 her `DONOR_HONEST` değerinde aynı
+(`guard.log`); Türkçe train+dev (ayar ölçümü) acc_nat 0,602 -> 0,726, ham 0,642 -> 0,782.
+`eval-borrowing` (`eval_borrowing.py off|a2`): iki koşunun çıktısı bayt bayt aynı (`eval_borrowing_off.log`
+= `eval_borrowing_a2.log`; WOLD engine_trained F 0,6582, Türkçe 0,8894, xturkic 0,8299) ve
+`data/eval/borrowing.json` zaman damgası dışında önceki commit'le aynı.
+
+Kalıcı ölçüt (`make eval-tr-donor`, `data/eval/tr_donor.json`, Türkçe TDK+Nişanyan train+dev n=293, A2
+bayrakları kapalı): `(a) etiket (gösterilen)` doğruluk **0,782** [0,731–0,825], doğal ağırlıklı **0,726**
+(en yakın biçimin dili: 0,642 / 0,602); **biçim kesinliği 0,473 (138/292) -> 0,735 (125/170)**,
+**kapsama 0,997 -> 0,580**. Kör indeks `(c)` (dedektörün gösterdiği etiket) 0,597 -> **0,707** (doğal
+0,564 -> 0,659); `(b) dedektör` 0,945 -> 0,949. Önceki önbellek ve rapor `data/cache/work/trdonor_pre9n/`.
+
+Üretim: `DONOR_HONEST = "a2"`, ENGINE_VERSION 4.3.2. Gösterim (CLI/web, yakınlık sinyalinin açıklaması):
+"verici etiketi: muhtemelen Arapça (Türkçe alıntıların doğal dağılımı + biçim ipuçları, olasılık 0,72);
+verici belirsiz — şans düzeyinin üstünde yakın biçim bulunamadı"; güç sinyalinin açıklamasında da biçim yok.
+Kesin etikette 4.3.1 gösterimi (dil + biçim + SCA) aynen.

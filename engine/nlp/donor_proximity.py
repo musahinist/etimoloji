@@ -1422,7 +1422,22 @@ def _french_prior(comparison: str, lang: str, distance: float,
 #: ``a2`` — doğal dağılım önseli + biçim ipuçları (:mod:`engine.nlp.donor_prior`), tek dil;
 #: ``a3`` — a2'nin sonsalıyla seçilen AİLE. Yalnız Türkçe verici kümesinde (``TURKISH_DONORS``)
 #: uygulanır (önsel Türkçenin); ``attribute_donor``un kendisi değişmez (Saha/xturkic aynı).
-DONOR_HONEST = "off"
+#:
+#: ÖLÇÜLDÜ, ön kayıtlı (607da37), **A2 KABUL** (varsayılan). Yeni doğal oranlı TDK rapor altını
+#: (n=600: ar 290 / fr 248 / fa 62; 9m dahil önceki altınların dışında), bir kez::
+#:
+#:            biçim kesinliği        doğal ağırlıklı dil doğruluğu   kapsama (biçimli etiket)
+#:     off    0,451 (195/432)        0,458                           0,720
+#:     a1     0,757 (171/226)        0,401 (18/87, p=5e-6) ✗         0,377
+#:     a2     0,757 (171/226)        0,598 (94/10, p=5e-6)           0,377
+#:     a3     0,757 (171/226)        0,467 (107/87, p=0,42)          0,377
+#:
+#: (i) Fisher: korunan 171/55 vs gizlenen 24/182, p=5e-44 (üçünde aynı kural). Belirsiz dilimde
+#: (206 madde) a2 dili 171 doğru, en yakın biçimin dili 87. Gösterilen yanlış biçim 237 -> 55.
+#: Korumalar: Türkçe train+dev doğal ağırlıklı 0,602 -> 0,726 (a1 0,552 ✗); Saha 0,7136 ve
+#: xturkic 0,7459 aynı (Türkçe verici kümesi dışı). a3 de kabul koşullarını sağladı; kural
+#: gereği rapor doğruluğu en yüksek olan (a2) seçildi.
+DONOR_HONEST = "a2"
 
 #: Kesin etiket: mesafe en çok bu, şans yüzdeliği 0 ve anlamda ortak içerik sözcüğü var ...
 HONEST_MAX_DISTANCE = 0.25
@@ -1483,7 +1498,7 @@ class HonestDonorLabel:
     def describe(self, attribution: DonorAttribution) -> str:
         if self.certain:
             return attribution.describe()
-        why = "verici belirsiz — yakın biçim bulunamadı (en yakın aday şans düzeyinde)"
+        why = "verici belirsiz — şans düzeyinin üstünde yakın biçim bulunamadı"
         if self.basis == "önsel":
             p = f" {self.probability:.2f}".replace(".", ",") if self.probability is not None else ""
             return (f"muhtemelen {self.text()} (Türkçe alıntıların doğal dağılımı + biçim ipuçları,"

@@ -19,6 +19,11 @@ Sistemler
 ``(a) etiket``
     Yalnız etiket adımı: ``donor_proximity.attribute_donor`` her maddeye,
     kapısız (yakınlık sinyali ateşlenmese de). Sözlük indeksine bakmaz.
+``(a) etiket (gösterilen)``
+    Kullanıcıya gösterilen etiket (9n, ``donor_proximity.DONOR_HONEST``): şans düzeyindeki
+    eşleşmede dil doğal dağılım önseli + biçim ipuçlarıyla, biçim gösterilmez. Ayrıca kalıcı
+    ölçütler: **biçim kesinliği** (gösterilen verici biçimlerinden doğru etimon olanların payı) ve
+    **kapsama** (biçimli, kesin etiket payı) — :func:`form_metrics`.
 ``(b) arama``
     Tam motor, zincir açık: ``SearchEngine.search`` (yalnız yerel kaynaklar,
     ``headline_eval.build_engine``) sıralayıcısının seçtiği hüküm
@@ -94,9 +99,17 @@ NATURAL_COUNTS = {"Arapça": 6638.2, "Fransızca": 5676.2, "Farsça": 1432.0, "�
                   "Yunanca": 487.5, "diğer": 1047.5}
 
 
+def credit(gold: str, pred: str) -> float:
+    """Madde puanı: tam isabet 1; aile etiketi ("Arapça|Farsça", 9n) altın ailedeyse 1/üye sayısı."""
+    if "|" in pred:
+        members = pred.split("|")
+        return 1.0 / len(members) if gold in members else 0.0
+    return float(pred == gold)
+
+
 def natural_accuracy(gold: list[str], pred: list[str]) -> float:
     """Doğal dağılım ağırlıklı doğruluk: Σ_c w_c · duyarlılık_c (w: :data:`NATURAL_COUNTS`,
-    yalnız altında bulunan sınıflar üzerinde normalleştirilmiş)."""
+    yalnız altında bulunan sınıflar üzerinde normalleştirilmiş). Aile etiketi kısmi puan (:func:`credit`)."""
     classes = sorted(set(gold))
     total = sum(NATURAL_COUNTS.get(c, 0.0) for c in classes)
     if not total:
@@ -104,7 +117,7 @@ def natural_accuracy(gold: list[str], pred: list[str]) -> float:
     out = 0.0
     for c in classes:
         idx = [i for i, g in enumerate(gold) if g == c]
-        out += NATURAL_COUNTS.get(c, 0.0) / total * sum(pred[i] == c for i in idx) / len(idx)
+        out += NATURAL_COUNTS.get(c, 0.0) / total * sum(credit(c, pred[i]) for i in idx) / len(idx)
     return round(out, 4)
 
 
@@ -133,10 +146,12 @@ def name_class(name: str) -> str:
 
 
 def engine_class(value: str) -> str:
-    """Motorun verici KODU ya da ADI -> sınıf."""
+    """Motorun verici KODU ya da ADI -> sınıf (aile kodu "ar|fa" -> "Arapça|Farsça")."""
     value = (value or "").strip()
     if not value:
         return NO_PREDICTION
+    if "|" in value:
+        return "|".join(dict.fromkeys(engine_class(part) for part in value.split("|")))
     if value in _CODE_CLASS:
         return _CODE_CLASS[value]
     head = value.split("-")[0]
@@ -209,7 +224,7 @@ def capture(index: str, a2: str, *, limit: int = 0) -> Path:
     _check_env(index, a2)
     from engine.evaluation.borrowing_eval import _turkish_glosses
     from engine.nlp.borrowing_detector import TURKISH_DONORS, BorrowingDetector
-    from engine.nlp.donor_proximity import attribute_donor
+    from engine.nlp.donor_proximity import attribute_donor, honest_label
     from engine.utils.orthography import to_comparison_form
 
     cases = load_cases()[: limit or None]
@@ -238,10 +253,16 @@ def capture(index: str, a2: str, *, limit: int = 0) -> Path:
                     evidence = signal.evidence or {}
                     proximity = str(evidence.get("attributed_lang") or evidence.get("donor_lang") or "")
             label = attribute_donor(to_comparison_form(query), sense, languages=TURKISH_DONORS)
+            # 9n: kullanıcıya gösterilen etiket (DONOR_HONEST) ve biçim.
+            shown = honest_label(label, to_comparison_form(query)) if label is not None else None
             row: dict[str, Any] = {
                 "word": case.word, "sense": bool(sense),
                 "chain": verdict.donor_language, "proximity": proximity,
                 "label": label.lang_code if label is not None else "",
+                "label_shown": shown.code if shown is not None else "",
+                "label_certain": bool(shown is not None and shown.certain),
+                "label_word": label.word if label is not None else "",
+                "label_comparison": label.comparison if label is not None else "",
                 "is_borrowed": verdict.is_borrowed,
             }
             if engine is not None:
@@ -269,7 +290,8 @@ def predictions(row: dict[str, Any], index: str) -> dict[str, str]:
     """Önbellek satırından sistem tahminleri (sınıf)."""
     chain = engine_class(row.get("chain", ""))
     proximity = engine_class(row.get("proximity", ""))
-    out = {"(a) etiket": engine_class(row.get("label", ""))}
+    out = {"(a) etiket": engine_class(row.get("label", "")),
+           "(a) etiket (gösterilen)": engine_class(row.get("label_shown", row.get("label", "")))}
     if index == "full":
         out["(b) arama"] = engine_class(row.get("search", ""))
         out["(b) zincir"] = chain
@@ -297,7 +319,7 @@ def evaluate(cases: list[TrDonorCase], rows: dict[str, dict[str, dict[str, Any]]
             continue
         per = [predictions(rows[index].get(c.word, {}), index) for c in cases]
         for name in per[0]:
-            if name == "(a) etiket" and name in preds:
+            if name.startswith("(a) etiket") and name in preds:
                 continue  # sözlük indeksinden bağımsız; tam koşudaki alınır
             preds[name] = [p[name] for p in per]
     preds["çoğunluk"] = [majority] * len(gold)
@@ -308,7 +330,57 @@ def evaluate(cases: list[TrDonorCase], rows: dict[str, dict[str, dict[str, Any]]
         name: mcnemar_test([p == g for p, g in zip(pr, gold, strict=True)], majority_hits).as_dict()
         for name, pr in preds.items() if name != "çoğunluk"
     }
-    return {"systems": systems, "vs_majority_mcnemar": vs_majority, "_preds": preds}
+    out = {"systems": systems, "vs_majority_mcnemar": vs_majority, "_preds": preds}
+    label_rows = rows.get("full") or rows.get("blind") or {}
+    if any("label_word" in r for r in label_rows.values()):
+        out["form"] = form_metrics(cases, label_rows)
+    return out
+
+
+FULL_INDEX = PROJECT_ROOT / "data" / "lexicons" / "index.db"
+
+
+def form_metrics(cases: list[TrDonorCase], rows: dict[str, dict[str, Any]],
+                 index_path: Path = FULL_INDEX) -> dict[str, Any]:
+    """9n kalıcı ölçütleri: **biçim kesinliği** (gösterilen verici biçimlerinden doğru etimon
+    olanların payı; etimon referansı olan maddeler) ve **kapsama** (biçimli, kesin etiket payı).
+
+    "Doğru etimon" = biçim referansla aynı sözcük (:func:`etymon_match.is_etymon`) VE dil sınıfı
+    altınla aynı. ``(a) etiket``: her etiket biçimiyle gösterilir (4.3.1); ``(a) etiket (gösterilen)``:
+    yalnız kesin etiket (``DONOR_HONEST``).
+    """
+    import sqlite3
+
+    from engine.evaluation.etymon_match import is_etymon, reference_forms, source_translits
+
+    connection = sqlite3.connect(index_path) if index_path.exists() else None
+    stats = {name: {"shown": 0, "shown_correct": 0, "certain": 0} for name in ("(a) etiket", "(a) etiket (gösterilen)")}
+    n_ref = 0
+    for case in cases:
+        row = rows.get(case.word) or {}
+        if not row.get("label_word"):
+            continue
+        refs = reference_forms(case.word, connection) if connection is not None else set()
+        translits = source_translits(case.tdk_source, case.nisanyan_source)
+        certain = bool(row.get("label_certain", True))
+        stats["(a) etiket"]["certain"] += 1
+        stats["(a) etiket (gösterilen)"]["certain"] += certain
+        if not (refs or translits):
+            continue
+        n_ref += 1
+        correct = engine_class(row.get("label", "")) == case.gold and is_etymon(
+            row["label_word"], row.get("label_comparison", ""), refs, translits)
+        for name, shown in (("(a) etiket", True), ("(a) etiket (gösterilen)", certain)):
+            if shown:
+                stats[name]["shown"] += 1
+                stats[name]["shown_correct"] += correct
+    n = len(cases)
+    return {"n": n, "n_with_etymon_reference": n_ref, **{
+        name: {"form_precision": round(v["shown_correct"] / v["shown"], 4) if v["shown"] else None,
+               "shown": v["shown"], "shown_correct": v["shown_correct"],
+               "shown_wrong": v["shown"] - v["shown_correct"],
+               "coverage": round(v["certain"] / n, 4) if n else 0.0}
+        for name, v in stats.items()}}
 
 
 def load_rows(index: str, a2: str) -> dict[str, dict[str, Any]]:
@@ -346,6 +418,12 @@ ERROR_NOTE = (
 )
 
 
+def _donor_honest() -> str:
+    from engine.nlp import donor_proximity
+
+    return donor_proximity.DONOR_HONEST
+
+
 def report(split: str | None = None) -> dict[str, Any]:
     from engine.evaluation.headline_eval import _head
     from engine.evaluation.significance import mcnemar_test
@@ -364,7 +442,12 @@ def report(split: str | None = None) -> dict[str, Any]:
         "gold_distribution": dict(Counter(gold).most_common()),
         "natural_counts": NATURAL_COUNTS,
         "natural_note": "accuracy_natural: sınıf duyarlılıklarının TDK GTS lisan doğal dağılımıyla "
-                        "ağırlıklı ortalaması (NATURAL_COUNTS; donor9m)",
+                        "ağırlıklı ortalaması (NATURAL_COUNTS; donor9m); aile etiketi 1/üye sayısı puan",
+        "form_note": "form (9n): biçim kesinliği = gösterilen verici biçimlerinden doğru etimon olanların "
+                     "payı (referans: tdk/nisanyan kaynak çevriyazısı + tam indeks Wiktionary donor_form/"
+                     "etimoloji; dil sınıfı da doğru olmalı); kapsama = biçimli (kesin) etiket payı. "
+                     "'(a) etiket (gösterilen)' = kullanıcıya gösterilen etiket (DONOR_HONEST)",
+        "donor_honest": _donor_honest(),
         "gold_other_names": dict(Counter(c.gold_name for c in cases if c.gold == "diğer").most_common()),
         "majority_class": Counter(gold).most_common(1)[0][0] if gold else "",
         "circularity_warning": CIRCULARITY,
@@ -427,6 +510,10 @@ def main() -> int:
                   f"{s['accuracy_natural']:.3f}  kapsam {s['coverage']:.3f}  "
                   f"kapsananda {s['accuracy_when_predicted']:.3f}  makro-duyarlılık {s['macro_recall']:.3f}")
             print(f"{'':16} en sık hata: {s['top_errors'][:3]}")
+        for name, f in (result.get("form") or {}).items():
+            if isinstance(f, dict):
+                print(f"{name:16} biçim kesinliği {f['form_precision']}  ({f['shown_correct']}/{f['shown']} "
+                      f"gösterilen biçim doğru etimon)  kapsama {f['coverage']:.3f}")
     print(f"\n⚠️ {payload['circularity_warning']}")
     out = EVAL_DIR / (OUT_NAME if not args.split else OUT_NAME.replace(".json", f"_{args.split}.json"))
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
