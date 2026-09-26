@@ -84,6 +84,30 @@ _CODE_CLASS = {
     "el": "Yunanca", "grc": "Yunanca", "gkm": "Yunanca", "el-kal": "Yunanca",
 }
 
+#: Türkçe alıntıların DOĞAL köken dağılımı: TDK Güncel Türkçe Sözlük (12. baskı) ``lisan`` alanı,
+#: ``lisan`` dolu her başlığın ilk dil adı (birden çok dilli başlık eşit pay; "Türkçe" hariç).
+#: Sayım ``data/cache/work/donor9m/natural_dist.py`` (ham döküm repoda yok). Ermenice ve öbür
+#: diller "diğer"de. Sınıf-ağırlıklı doğruluk (:func:`natural_accuracy`) bunlarla ağırlıklanır:
+#: altındaki sınıf oranları (TDK+Nişanyan altını Arapça ağırlıklı, 9e/9f Fransızca ağırlıklı)
+#: sonucu değiştirmesin diye.
+NATURAL_COUNTS = {"Arapça": 6638.2, "Fransızca": 5676.2, "Farsça": 1432.0, "İtalyanca": 613.7,
+                  "Yunanca": 487.5, "diğer": 1047.5}
+
+
+def natural_accuracy(gold: list[str], pred: list[str]) -> float:
+    """Doğal dağılım ağırlıklı doğruluk: Σ_c w_c · duyarlılık_c (w: :data:`NATURAL_COUNTS`,
+    yalnız altında bulunan sınıflar üzerinde normalleştirilmiş)."""
+    classes = sorted(set(gold))
+    total = sum(NATURAL_COUNTS.get(c, 0.0) for c in classes)
+    if not total:
+        return 0.0
+    out = 0.0
+    for c in classes:
+        idx = [i for i, g in enumerate(gold) if g == c]
+        out += NATURAL_COUNTS.get(c, 0.0) / total * sum(pred[i] == c for i in idx) / len(idx)
+    return round(out, 4)
+
+
 A2_ENV = {"off": {"ETY_DONOR_CLEAN": "0", "ETY_DONOR_RAMP_CHANCE": "0"},
           "on": {"ETY_DONOR_CLEAN": "1", "ETY_DONOR_RAMP_CHANCE": "1"}}
 
@@ -277,7 +301,8 @@ def evaluate(cases: list[TrDonorCase], rows: dict[str, dict[str, dict[str, Any]]
                 continue  # sözlük indeksinden bağımsız; tam koşudaki alınır
             preds[name] = [p[name] for p in per]
     preds["çoğunluk"] = [majority] * len(gold)
-    systems = {name: {**score(gold, p), "top_errors": top_errors(gold, p)} for name, p in preds.items()}
+    systems = {name: {**score(gold, p), "accuracy_natural": natural_accuracy(gold, p),
+                      "top_errors": top_errors(gold, p)} for name, p in preds.items()}
     majority_hits = [g == majority for g in gold]
     vs_majority = {
         name: mcnemar_test([p == g for p, g in zip(pr, gold, strict=True)], majority_hits).as_dict()
@@ -337,6 +362,9 @@ def report(split: str | None = None) -> dict[str, Any]:
         "split": split or "train+dev",
         "split_counts": dict(Counter(c.split for c in cases)),
         "gold_distribution": dict(Counter(gold).most_common()),
+        "natural_counts": NATURAL_COUNTS,
+        "natural_note": "accuracy_natural: sınıf duyarlılıklarının TDK GTS lisan doğal dağılımıyla "
+                        "ağırlıklı ortalaması (NATURAL_COUNTS; donor9m)",
         "gold_other_names": dict(Counter(c.gold_name for c in cases if c.gold == "diğer").most_common()),
         "majority_class": Counter(gold).most_common(1)[0][0] if gold else "",
         "circularity_warning": CIRCULARITY,
@@ -395,7 +423,8 @@ def main() -> int:
     for a2, result in payload["by_a2"].items():
         print(f"\n--- A2 {a2} ---")
         for name, s in result["systems"].items():
-            print(f"{name:16} doğruluk {s['accuracy']:.3f} {s['accuracy_ci95']}  kapsam {s['coverage']:.3f}  "
+            print(f"{name:16} doğruluk {s['accuracy']:.3f} {s['accuracy_ci95']}  doğal ağırlıklı "
+                  f"{s['accuracy_natural']:.3f}  kapsam {s['coverage']:.3f}  "
                   f"kapsananda {s['accuracy_when_predicted']:.3f}  makro-duyarlılık {s['macro_recall']:.3f}")
             print(f"{'':16} en sık hata: {s['top_errors'][:3]}")
     print(f"\n⚠️ {payload['circularity_warning']}")

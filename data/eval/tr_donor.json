@@ -1,7 +1,7 @@
 {
   "_schema": "tr_donor_eval/v1",
   "name": "Türkçe verici dil — Wiktionary↔TDK uyumu",
-  "commit": "ebb1c62",
+  "commit": "48a36ba",
   "gold": "turkish_loanwords.json: alıntı, tdk_source ile nisanyan_source ilk dil adı aynı; train+dev (assign_split('tr-gold:<kelime>') test hariç)",
   "n": 293,
   "split": "train+dev",
@@ -17,6 +17,15 @@
     "diğer": 6,
     "İtalyanca": 6
   },
+  "natural_counts": {
+    "Arapça": 6638.2,
+    "Fransızca": 5676.2,
+    "Farsça": 1432.0,
+    "İtalyanca": 613.7,
+    "Yunanca": 487.5,
+    "diğer": 1047.5
+  },
+  "natural_note": "accuracy_natural: sınıf duyarlılıklarının TDK GTS lisan doğal dağılımıyla ağırlıklı ortalaması (NATURAL_COUNTS; donor9m)",
   "gold_other_names": {
     "İngilizce": 4,
     "İspanyolca": 1,
@@ -101,6 +110,7 @@
               "İtalyanca": 1
             }
           },
+          "accuracy_natural": 0.602,
           "top_errors": [
             {
               "gold": "Arapça",
@@ -178,6 +188,7 @@
               "—": 1
             }
           },
+          "accuracy_natural": 0.9234,
           "top_errors": [
             {
               "gold": "Arapça",
@@ -255,6 +266,7 @@
               "—": 1
             }
           },
+          "accuracy_natural": 0.9273,
           "top_errors": [
             {
               "gold": "Arapça",
@@ -334,6 +346,7 @@
               "Arapça": 1
             }
           },
+          "accuracy_natural": 0.9502,
           "top_errors": [
             {
               "gold": "Arapça",
@@ -427,6 +440,7 @@
               "Fransızca": 2
             }
           },
+          "accuracy_natural": 0.5642,
           "top_errors": [
             {
               "gold": "Arapça",
@@ -497,6 +511,7 @@
               "Arapça": 6
             }
           },
+          "accuracy_natural": 0.4176,
           "top_errors": [
             {
               "gold": "Fransızca",
@@ -643,6 +658,7 @@
               "Fransızca": 2
             }
           },
+          "accuracy_natural": 0.6204,
           "top_errors": [
             {
               "gold": "Fransızca",
@@ -720,6 +736,7 @@
               "—": 1
             }
           },
+          "accuracy_natural": 0.9234,
           "top_errors": [
             {
               "gold": "Arapça",
@@ -797,6 +814,7 @@
               "—": 1
             }
           },
+          "accuracy_natural": 0.9273,
           "top_errors": [
             {
               "gold": "Arapça",
@@ -877,6 +895,7 @@
               "Arapça": 1
             }
           },
+          "accuracy_natural": 0.9474,
           "top_errors": [
             {
               "gold": "Arapça",
@@ -973,6 +992,7 @@
               "Fransızca": 2
             }
           },
+          "accuracy_natural": 0.5873,
           "top_errors": [
             {
               "gold": "Arapça",
@@ -1043,6 +1063,7 @@
               "Arapça": 6
             }
           },
+          "accuracy_natural": 0.4176,
           "top_errors": [
             {
               "gold": "Fransızca",

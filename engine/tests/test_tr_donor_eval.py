@@ -93,3 +93,12 @@ def test_capture_refuses_wrong_environment(monkeypatch):
     with pytest.raises(SystemExit):
         t._check_env("blind", "on")
     t._check_env("full", "on")
+
+
+def test_natural_accuracy_reweights_classes():
+    gold = ["Arapça"] * 8 + ["Fransızca"] * 2
+    all_ar = ["Arapça"] * 10
+    # ham doğruluk 0,8; doğal ağırlıkla yalnız Arapça payı
+    w_ar = t.NATURAL_COUNTS["Arapça"] / (t.NATURAL_COUNTS["Arapça"] + t.NATURAL_COUNTS["Fransızca"])
+    assert abs(t.natural_accuracy(gold, all_ar) - round(w_ar, 4)) < 1e-4
+    assert t.natural_accuracy(gold, gold) == 1.0
