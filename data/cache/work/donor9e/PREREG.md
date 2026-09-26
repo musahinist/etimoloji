@@ -88,3 +88,28 @@ daha dar değişiklik — Arapça havuzuna dokunmaz). Yalnız biri -> o. Hiçbir
 üretim `off`. Kabul edilen varsayılan açılır (`FRENCH_RULE`).
 
 Mühür: `gold.json` sha256 `773746a0be6475539eddd5c116104986375f9d7e4d42c35f70c428029fa9c505`.
+
+---
+
+## SONUÇ (ön kayıt commit'i bf1eeea'dan sonra, bir kez)
+
+Rapor (n=560; `harness.py gold rapor`, `rapor.log`), etiket doğruluğu:
+
+| kural | rapor | McNemar (yalnız aday / yalnız off) | ham p | Holm p |
+|---|---|---|---|---|
+| off (üretim) | 0,4625 (259) | — | — | — |
+| F2 | 0,5500 (308) | 68 / 19 | 1,2e-7 | 1,2e-7 |
+| G2 | 0,5482 (307) | 57 / 9 | 1,2e-9 | 2,4e-9 |
+
+Bilgi (aday değil): F1 0,4821 (30/19), G1 0,4839 (20/8). Sınıf başına G2:
+Fransızca 66 -> 122/200, Arapça 131 -> 124/160, Farsça 36/100, İtalyanca
+9/50, Yunanca 17 -> 16/50. Kalan baskın hata Fransızca -> İtalyanca (36;
+tanıdaki 3. tür: İtalyanca biçim gerçekten daha yakın) ve Farsça -> Arapça (26).
+
+Korumalar (önceden ölçüldü): TR train+dev 0,563 -> 0,628; Saha 0,7136;
+xturkic ayar 0,7459 — tuttu. eval-borrowing: aşağıda.
+
+**KARAR: ikisi de kabul; ön kayda göre G2 üretimde (`FRENCH_RULE = "g2"`).**
+
+eval-borrowing (G2 varsayılan açık, `make eval-borrowing` modülü): 348 sayısal
+alanın 0'ı değişti (yalnız `trained_at`; geri alındı) — tuttu.

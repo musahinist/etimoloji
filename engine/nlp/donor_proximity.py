@@ -984,7 +984,20 @@ FRENCH_SLACK = 0.10
 #: French" ise ya da Fransızca havuzda yakın karşılığı varsa (bkz.
 #: :data:`FRENCH_NEAR`) -> ``fr``, ``via`` = kazanan dil. Yalnız ETİKET; alıntı
 #: gücü değişmez.
-FRENCH_RULE = "off"
+#:
+#: ÖLÇÜLDÜ, ön kayıtlı (bf1eeea), KABUL: yeni Türkçe Wiktionary verici altını
+#: (TDK+Nişanyan dışı, kör indeks), rapor bölümü bir kez (n=560)::
+#:
+#:              ayar n=290   rapor n=560   McNemar (yalnız aday / yalnız off)   Holm p
+#:     off      0,466        0,463         —                                    —
+#:     F2       0,528        0,550         68 / 19                              1e-7
+#:     G2       0,548        0,548         57 /  9                              2e-9
+#:
+#: Korumalar (G2): Türkçe TDK+Nişanyan etiket train+dev 0,563 -> 0,628;
+#: xturkic ayar verici tanıma 0,746 (aynı); Saha ``eval-donor`` 0,714 (aynı).
+#: G2 önceden seçilmişti (Arapça havuzuna dokunmaz; F1'in dil başına havuzu
+#: Türkçe train+dev'i 0,563 -> 0,529 düşürüyordu).
+FRENCH_RULE = "g2"
 
 
 def _french_via(comparison: str, lang: str, row: Any, distance: float,
