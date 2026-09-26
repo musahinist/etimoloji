@@ -1,0 +1,42 @@
+# 9e altın kalite denetimi — LLM ön-etiketi (Claude, insan onayı YOK); ölçüt: şablondaki verici dil kelimenin doğrudan vericisi mi
+split	donor	word	etymon	verdict	note
+rapor	el	liman	λιμένιον	ok	
+rapor	fr	blöf	bluff	ok	
+rapor	ar	mukadderat	مُقَدَّر	ok	
+ayar	it	kasiyer	cassiere	ok	
+ayar	fa	pir	پیر	ok	
+ayar	fr	eşofman	échauffement	ok	
+rapor	fr	klinik	clinique	ok	
+ayar	ar	binaenaleyh	بِنَاءً عَلَيْهِ	ok	
+rapor	ar	içtimaiyat	اِجْتِمَاع	ok	
+rapor	fa	eldiven	دست	ok	
+rapor	fr	arondisman	arrondissement	ok	
+ayar	el	cımbız	τσιμπίδι	ok	
+rapor	ar	imal	إِعْمَال	ok	
+rapor	fa	simin	سیمین	ok	
+rapor	fr	dansör	danseur	ok	
+rapor	fr	matine	matinée	ok	
+ayar	ar	mesafe	مَسَافَة	ok	
+rapor	fr	parsel	parcel	ok	
+rapor	ar	münasebet	مُنَاسَبَة	ok	
+ayar	fr	bank	banc	ok	
+rapor	fr	mimik	mimique	ok	
+rapor	el	hamsi	χαμψί	ok	
+rapor	fr	paratoner	paratonnerre	ok	
+rapor	ar	tezlil	تَذْلِيلْ	ok	
+ayar	fr	afirmasyon	affirmation	ok	
+ayar	fr	arsenik	arsenic	ok	
+ayar	fr	santimantalizm	sentimentalisme	ok	
+ayar	ar	müktesep	مُكْتَسَب	ok	
+ayar	fa	berhava	-	ok	
+ayar	fa	mercanköşk	مَرْزَنْگوش	ok	
+rapor	fa	gazi	غازی	şüpheli	şüpheli: TDK/Nişanyan Arapça ġāzī; Wiktionary Farsça aracı şablonu (aracı-köken belirsizliği)
+rapor	fr	ajitatör	agitateur	ok	
+ayar	ar	rütbe	رُتْبَة	ok	
+rapor	fr	varis	varice	ok	
+rapor	fr	konvansiyonel	conventionnel	ok	
+rapor	ar	mütekabil	مُتَقَابِل	ok	
+rapor	it	bilet	biglietto	ok	
+rapor	fr	reküperasyon	récupération	ok	
+ayar	el	sünger	σφουγγάρι	ok	
+rapor	ar	arif	عَارِف	ok	

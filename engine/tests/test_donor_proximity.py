@@ -118,6 +118,19 @@ class TestDonorIndexQueries(unittest.TestCase):
         rows = self.index.candidates("stol", max_length_gap=0)
         self.assertTrue(all(len(r["comparison"]) == 4 for r in rows))
 
+    def test_per_language_limit(self):
+        """9e F1: paylaşılan sınırda önce kurulan dil havuzu doldurur; dil
+        başına sınırda her dil kendi payını alır."""
+        index = DonorIndex(self.dir / "two.db")
+        index.build(sources={
+            "ar": _dump(self.dir, "ar", [{"word": w, "senses": [{"glosses": ["station"]}]}
+                                         for w in ("mahatta", "mawqif", "markaz", "maktab", "manzil")]),
+            "fr": _dump(self.dir, "fr", [{"word": "gare", "senses": [{"glosses": ["station"]}]}]),
+        })
+        self.assertEqual(len(index.by_sense("station", languages=["ar", "fr"], limit=3)), 3)
+        split = index.by_sense("station", languages=["ar", "fr"], limit=3, per_language=True)
+        self.assertEqual([r["lang_code"] for r in split], ["ar", "ar", "ar", "fr"])
+
     def test_missing_index_is_safe(self):
         empty = DonorIndex(self.dir / "yok.db")
         self.assertFalse(empty.exists)

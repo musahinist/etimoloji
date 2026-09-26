@@ -1,0 +1,10 @@
+{
+ "n": 290,
+ "blind_label_columns_nonnull": 0,
+ "gloss_identical_blind_full": 290,
+ "labels_identical_blind_full": 290,
+ "gloss_with_language_hint": [
+  "tabak"
+ ],
+ "pass": true
+}

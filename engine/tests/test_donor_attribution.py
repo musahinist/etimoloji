@@ -60,7 +60,7 @@ class _FakeIndex:
     def __init__(self, rows):
         self.rows = rows
 
-    def by_sense(self, sense, languages=None, limit=200):
+    def by_sense(self, sense, languages=None, limit=200, per_language=False):
         return [r for r in self.rows if languages is None or r["lang_code"] in languages]
 
 
@@ -169,6 +169,49 @@ class TestArabicViaPersian(unittest.TestCase):
         self.assertEqual(dp.script_skeleton("عَظَمَة"), dp.script_skeleton("عظمت"))
         self.assertIn(dp.consonant_skeleton("gadab"), dp._query_skeletons("gazap"))
         self.assertIn(dp.consonant_skeleton("dava"), dp._query_skeletons("davet"))
+
+
+class TestFrenchVia(unittest.TestCase):
+    """9e F2: Farsça/Ermenice/Yunanca kazanan biçim aslında o dilin Fransızca
+    alıntısıysa (pozitron, metro) etiket Fransızca, ``via`` = kazanan dil."""
+
+    def setUp(self):
+        dp.reset_cache()
+        if dp._pairwise() is None:
+            self.skipTest("LingPy kurulu değil")
+
+    def tearDown(self):
+        dp.reset_cache()
+
+    def _run(self, rows, comparison, rule="f2", loans=frozenset()):
+        with mock.patch.object(dp, "_index", lambda: _FakeIndex(rows)), \
+                mock.patch.object(dp, "_monget_entries", lambda: ()), \
+                mock.patch.object(dp, "FRENCH_RULE", rule), \
+                mock.patch.object(dp, "dump_loans", lambda lang, phrase: loans), \
+                mock.patch.object(dp, "_null_distance",
+                                  lambda length, pool: 0.5 if "pozitron" in pool else 0.0):
+            return dp.attribute_donor(comparison, "positron", languages=["ar", "fa", "hy", "el", "fr", "it"])
+
+    def test_near_french_form_relabels(self):
+        rows = [_row("fa", "پوزیترون", "pozitron"), _row("fr", "positron", "positron")]
+        self.assertEqual(self._run(rows, "pozitron", rule="f1").lang_code, "fa")
+        on = self._run(rows, "pozitron")
+        self.assertEqual((on.lang_code, on.via, on.word), ("fr", "fa", "positron"))
+        self.assertIn("aracılığıyla", on.describe())
+
+    def test_etymology_mark_relabels(self):
+        rows = [_row("hy", "մետրո", "pozitron", gloss="positron"), _row("fr", "électron", "elektron")]
+        on = self._run(rows, "pozitron", loans=frozenset({("մետրո", "positron")}))
+        self.assertEqual((on.lang_code, on.via), ("fr", "hy"))
+
+    def test_unrelated_winner_stays(self):
+        rows = [_row("fa", "پوزیترون", "pozitron"), _row("fr", "gare", "gar")]
+        self.assertEqual(self._run(rows, "pozitron").lang_code, "fa")
+
+    def test_italian_winner_is_not_touched(self):
+        rows = [_row("it", "positrone", "pozitron"), _row("fr", "gare", "gar")]
+        on = self._run(rows, "pozitron")
+        self.assertEqual((on.lang_code, on.via), ("it", ""))
 
 
 class TestSignalStrengthIsUntouched(unittest.TestCase):

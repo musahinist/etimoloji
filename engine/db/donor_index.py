@@ -468,8 +468,14 @@ class DonorIndex:
         languages: list[str] | None = None,
         limit: int = 400,
         clean: bool | None = None,
+        per_language: bool = False,
     ) -> list[sqlite3.Row]:
         """Anlamı sorguyla örtüşen verici maddeleri.
+
+        ``per_language=True``: ``limit`` HER verici dil için ayrı uygulanır
+        (9e F1). Paylaşılan sınırda temizlik kapalıyken sıralama yoktur;
+        önce kurulmuş dilin (Arapça) maddeleri havuzu doldurur ve Fransızca
+        aday hiç girmez (aktör, istasyon, teleskop).
 
         sabor'un (Miller & List 2023) yayınlanmış kurulumu **kavram
         kısıtlıdır**: aday yalnız aynı kavramın verici karşılığıdır. Kısıtsız
@@ -481,6 +487,9 @@ class DonorIndex:
         yazılmıştır). Bu yüzden :meth:`candidates` kısıtsız yol olarak durur.
         """
         clean = clean_enabled() if clean is None else clean
+        if per_language and languages:
+            return [row for lang in languages
+                    for row in self.by_sense(sense, languages=[lang], limit=limit, clean=clean)]
         tokens = sense_tokens_for_match(sense, clean)
         if not tokens or not self.exists:
             return []

@@ -746,7 +746,14 @@ def attribute_donor(
     index = _index()
     if _pairwise() is None or not comparison or not getattr(index, "exists", False):
         return None
-    rows = index.by_sense(sense, languages=languages, limit=max_candidates)
+    if FRENCH_RULE in ("f1", "f2"):
+        rows = index.by_sense(sense, languages=languages, limit=max_candidates, per_language=True)
+    else:
+        rows = index.by_sense(sense, languages=languages, limit=max_candidates)
+        if FRENCH_RULE in ("g1", "g2") and (languages is None or FRENCH in languages):
+            seen = {(r["lang_code"], r["word"], r["comparison"]) for r in rows}
+            rows = list(rows) + [r for r in index.by_sense(sense, languages=[FRENCH], limit=max_candidates)
+                                 if (r["lang_code"], r["word"], r["comparison"]) not in seen]
     active = _sense_filter(sense_filter)
     if active is not None:
         rows = active.filter(sense, rows)
@@ -795,6 +802,7 @@ def attribute_donor(
     scored.sort(key=lambda item: (item[0], item[1], item[2]))
     _, distance, lang, row, null = scored[0]
     via = ""
+    switched = None
     if ARABIC_VIA_RULE != "off" and (languages is None or ARABIC in languages):
         switched = _arabic_via(comparison, lang, row, groups.get(ARABIC) or [])
         if switched is not None:
@@ -804,6 +812,16 @@ def attribute_donor(
                 ar_pool = tuple(sorted({r["comparison"] for r in groups[ARABIC] if r["comparison"]}))
                 null = _null_distance(len(comparison), ar_pool)
             lang = ARABIC
+    # Fransızca aracılı: Arapça kuralı (D1) önce; ateşlediyse dokunulmaz.
+    if switched is None and FRENCH_RULE in ("f2", "g2") and (languages is None or FRENCH in languages):
+        french = _french_via(comparison, lang, row, distance, groups.get(FRENCH) or [])
+        if french is not None:
+            via = lang
+            row, distance = french
+            if row["lang_code"] == FRENCH:
+                fr_pool = tuple(sorted({r["comparison"] for r in groups[FRENCH] if r["comparison"]}))
+                null = _null_distance(len(comparison), fr_pool)
+            lang = FRENCH
     return DonorAttribution(
         lang_code=lang,
         word=row["word"],
@@ -882,12 +900,17 @@ def _query_skeletons(comparison: str) -> set[str]:
     return {s for s in out if len(s) >= 2}
 
 
-@lru_cache(maxsize=1)
 def persian_arabic_loans() -> frozenset[tuple[str, str]]:
-    """Farsça dökümde etimolojisi "from Arabic" olan (madde, anlam) çiftleri.
+    """Farsça dökümde etimolojisi "from Arabic" olan (madde, anlam) çiftleri."""
+    return dump_loans("fa", "from arabic")
+
+
+@lru_cache(maxsize=8)
+def dump_loans(lang: str, phrase: str) -> frozenset[tuple[str, str]]:
+    """``lang`` dökümünde etimolojisi ``phrase`` içeren (madde, anlam) çiftleri.
 
     Anahtar ``donors.db``deki ``(word, gloss)`` ile aynı kurala göre kurulur
-    (:func:`engine.db.donor_index._glosses`); eşsesli yerli Farsça madde
+    (:func:`engine.db.donor_index._glosses`); eşsesli yerli madde
     işaretlenmez. Döküm yoksa boş küme.
     """
     import gzip
@@ -895,9 +918,9 @@ def persian_arabic_loans() -> frozenset[tuple[str, str]]:
 
     from engine.db.donor_index import DONOR_DIR, _glosses
 
-    path = DONOR_DIR / "fa.jsonl.gz"
+    path = DONOR_DIR / f"{lang}.jsonl.gz"
     if not path.exists():
-        path = DONOR_DIR / "fa.jsonl"
+        path = DONOR_DIR / f"{lang}.jsonl"
         if not path.exists():
             return frozenset()
     opener = gzip.open if path.suffix == ".gz" else open
@@ -909,7 +932,7 @@ def persian_arabic_loans() -> frozenset[tuple[str, str]]:
             except (json.JSONDecodeError, UnicodeDecodeError):
                 continue
             text = (record.get("etymology_text") or "").lower()
-            if "from arabic" in text:
+            if phrase in text:
                 out.add(((record.get("word") or "").strip(), _glosses(record)))
     return frozenset(out)
 
@@ -937,4 +960,49 @@ def _arabic_via(comparison: str, lang: str, row: Any, arabic: list[Any]) -> tupl
         same = [r for r in arabic if consonant_skeleton(r["comparison"]) in skeletons]
         if same:
             return closest(same)
+    return None
+
+
+# --- Fransızca havuzu ve Fransızca aracılı (9e) ---------------------------------
+
+FRENCH = "fr"
+#: Kazananı Fransızcaya çevrilebilen diller: bunların uluslararası biçimleri
+#: çoğunlukla Fransızca alıntıdır (pozitron, parti, metro).
+FRENCH_VIA_FROM = ("fa", "hy", "el")
+#: F2 (b) "aynı biçimin yakın karşılığı": Fransızca aday kazanan biçime en çok
+#: :data:`FRENCH_NEAR` SCA uzaklığında VE sorguya kazanandan en çok
+#: :data:`FRENCH_SLACK` daha uzak. (SCA ses sınıfları kabadır: 0,30'da
+#: vatan~Bhoutan, sultan~question "yakın" çıkıyordu — ayar, 9e.)
+FRENCH_NEAR = 0.15
+FRENCH_SLACK = 0.10
+
+#: Etiket adımında Fransızca kuralı (``data/cache/work/donor9e/PREREG.md``):
+#: ``off``; ``f1`` — anlam havuzu dil başına ayrı sınır (``by_sense``
+#: ``per_language``; paylaşılan 200'ü Arapça dolduruyordu); ``g1`` — paylaşılan
+#: havuz + Fransızcaya ayrı 200'lük havuz; ``f2``/``g2`` — f1/g1 + "Fransızca
+#: aracılı": D1 ateşlemediyse ve kazanan fa/hy/el adayı kendi dökümünde "from
+#: French" ise ya da Fransızca havuzda yakın karşılığı varsa (bkz.
+#: :data:`FRENCH_NEAR`) -> ``fr``, ``via`` = kazanan dil. Yalnız ETİKET; alıntı
+#: gücü değişmez.
+FRENCH_RULE = "off"
+
+
+def _french_via(comparison: str, lang: str, row: Any, distance: float,
+                french: list[Any]) -> tuple[Any, float] | None:
+    """Etiket Fransızcaya çevrilmeli mi? Evetse (temsilci satır, mesafe)."""
+    if lang not in FRENCH_VIA_FROM:
+        return None
+    french = [r for r in french if r["comparison"]]
+
+    def closest(members: list[Any]) -> tuple[Any, float]:
+        best = min(members, key=lambda r: (label_distance(comparison, r["comparison"]), r["comparison"]))
+        return best, label_distance(comparison, best["comparison"])
+
+    near = [r for r in french if row["comparison"]
+            and sca_distance(row["comparison"], r["comparison"]) <= FRENCH_NEAR
+            and label_distance(comparison, r["comparison"]) <= distance + FRENCH_SLACK]
+    if near:
+        return closest(near)
+    if (row["word"], row["gloss"] or "") in dump_loans(lang, "from french"):
+        return closest(french) if french else (row, label_distance(comparison, row["comparison"]))
     return None
