@@ -1012,10 +1012,13 @@ class BorrowingDetector:
         attribution = attribute_donor(comparison, sense, languages=donors)
         # 9n: Türkçe verici kümesinde şans düzeyindeki etiket biçimsiz gösterilir
         # (``donor_proximity.DONOR_HONEST``); dil etiketi ``attribute_donor``da değişmez.
+        # 9o: kesin olmayan etikette biçim-öncelikli arama (``DONOR_FORM_FIRST``); anlam havuzu
+        # boşsa (``attribution`` None) da bir biçim bulabilir.
         label = None
-        if attribution is not None and donor_proximity.DONOR_HONEST != "off" \
-                and donors is not None and set(donors) == set(TURKISH_DONORS):
-            label = donor_proximity.honest_label(attribution, comparison)
+        if donor_proximity.DONOR_HONEST != "off" and donors is not None and set(donors) == set(TURKISH_DONORS):
+            label = donor_proximity.honest_label(attribution, comparison, sense=sense)
+        if label is not None and label.form is not None:
+            attribution = label.form
         if label is not None and not label.show_form:
             explanation = (
                 f"verici sözlüğünde aynı kavramın fonetik olarak benzer bir karşılığı var "

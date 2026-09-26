@@ -1478,6 +1478,9 @@ class HonestDonorLabel:
     #: ``yakınlık`` (en yakın biçim), ``önsel`` (a2), ``aile`` (a1), ``önsel-aile`` (a3).
     basis: str = "yakınlık"
     probability: float | None = None
+    #: 9o: biçim-öncelikli aramanın bulduğu biçim (:func:`form_first_attribution`); gösterilen
+    #: biçim ``attribute_donor``unki değil budur.
+    form: DonorAttribution | None = None
 
     @property
     def code(self) -> str:
@@ -1495,8 +1498,10 @@ class HonestDonorLabel:
             return DONOR_FAMILIES[self.family[0]][1]
         return language_name(self.lang_code)
 
-    def describe(self, attribution: DonorAttribution) -> str:
-        if self.certain:
+    def describe(self, attribution: DonorAttribution | None) -> str:
+        if self.form is not None:
+            return f"{self.form.describe()} (biçim-öncelikli arama: anlam havuzu dışından, dil önselle uyumlu)"
+        if self.certain and attribution is not None:
             return attribution.describe()
         why = "verici belirsiz — şans düzeyinin üstünde yakın biçim bulunamadı"
         if self.basis == "önsel":
@@ -1508,11 +1513,20 @@ class HonestDonorLabel:
         return f"{self.text()}; {why}"
 
 
-def honest_label(attribution: DonorAttribution, comparison: str, mode: str | None = None) -> HonestDonorLabel:
-    """``attribute_donor`` çıktısının gösterilecek biçimi (bkz. :data:`DONOR_HONEST`)."""
+def honest_label(attribution: DonorAttribution | None, comparison: str, mode: str | None = None,
+                 sense: str | None = None, form_first: str | None = None) -> HonestDonorLabel | None:
+    """``attribute_donor`` çıktısının gösterilecek biçimi (bkz. :data:`DONOR_HONEST`).
+
+    ``sense`` verilirse ve :data:`DONOR_FORM_FIRST` açıksa (9o) kesin olmayan etikette
+    biçim-öncelikli arama denenir (a2'de); ``attribution`` ``None`` olabilir (anlam havuzu boş)
+    ve o zaman yalnız biçim-öncelikli arama bir şey bulursa etiket döner, yoksa ``None``.
+    """
     mode = DONOR_HONEST if mode is None else mode
-    if mode == "off" or attribution_certain(attribution):
+    ff_mode = DONOR_FORM_FIRST if form_first is None else form_first
+    if attribution is not None and (mode == "off" or attribution_certain(attribution)):
         return HonestDonorLabel(certain=True, lang_code=attribution.lang_code)
+    if attribution is None and (mode != "a2" or ff_mode == "off" or sense is None):
+        return None
     if mode == "a1":
         family = DONOR_FAMILIES.get(attribution.lang_code)
         if family is None:
@@ -1523,6 +1537,12 @@ def honest_label(attribution: DonorAttribution, comparison: str, mode: str | Non
     post = donor_prior.posterior(comparison, list(HONEST_PRIOR_LANGS))
     if mode == "a2":
         lang = max(post, key=lambda k: (post[k], k))
+        if ff_mode != "off" and sense is not None:
+            found = form_first_attribution(comparison, sense, lang, ff_mode)
+            if found is not None:
+                return HonestDonorLabel(True, lang, basis="biçim-öncelikli", probability=post[lang], form=found)
+        if attribution is None:
+            return None
         return HonestDonorLabel(False, lang, basis="önsel", probability=post[lang])
     if mode == "a3":
         mass: dict[tuple[str, ...], float] = {}
@@ -1532,3 +1552,103 @@ def honest_label(attribution: DonorAttribution, comparison: str, mode: str | Non
         fam = max(mass, key=lambda k: (mass[k], k))
         return HonestDonorLabel(False, "", fam, basis="önsel-aile", probability=mass[fam])
     raise ValueError(f"bilinmeyen DONOR_HONEST: {mode}")
+
+
+# --- 9o: biçim-öncelikli ikinci arama ----------------------------------------------------
+
+#: Kesin olmayan (a2) etikette, anlam havuzundan BAĞIMSIZ ikinci arama. Aday: ünsüz iskeleti
+#: sorgununkiyle aynı verici maddesi (:mod:`engine.db.donor_skeleton`), etiket mesafesi
+#: :data:`FORM_FIRST_MAX` altında, anlamı DİLBİLGİSİ göndermesi değil ve sorgunun GENİŞ anlam
+#: sözcükleriyle (:func:`form_first_tokens`) en az bir ortak içerik sözcüğü; dili a2'nin
+#: önsel+ipucu dili (Farsça madde + önsel Arapça ise aynı Arap yazısı iskeletli Arapça madde,
+#: D1 gibi). Bulunursa etiket KESİN sayılır ve bu biçim gösterilir; dil değişmez (a2'nin dili).
+#: ``off`` · ``c1`` (geniş anlam: köprülü anlam + başlık köprüsü + Osmanlıca + özgün anlam,
+#: d ≤ 0,15) · ``c2`` (c1 + Türkçe anlamın sözcük sözcük köprüsü, d ≤ 0,15) · ``c3`` (c2, d ≤ 0,20).
+#: Bkz. ``data/cache/work/donor9o/PREREG.md``.
+DONOR_FORM_FIRST = "off"
+FORM_FIRST_MAX = {"c1": 0.15, "c2": 0.15, "c3": 0.20}
+#: Aday havuzunun (Arapça yazı eşi araması dahil) mesafe üst sınırı.
+FORM_FIRST_POOL_MAX = 0.30
+
+
+def _content_tokens(text: str) -> set[str]:
+    from engine.db.donor_index import FUNCTION_WORDS, _sense_tokens
+
+    return {t for t in _sense_tokens(text) if len(t) > 2 and t not in FUNCTION_WORDS}
+
+
+@lru_cache(maxsize=20000)
+def _word_bridge(token: str) -> frozenset[str]:
+    from engine.db.sense_bridge import english_sense
+    from engine.utils.orthography import to_comparison_form
+
+    return frozenset(_content_tokens(english_sense(to_comparison_form(token))))
+
+
+def form_first_tokens(comparison: str, sense: str, translate: bool) -> set[str]:
+    """Geniş anlam sözcükleri: köprülü anlam ∪ başlığın İngilizce köprüsü ∪ Osmanlıca maddenin
+    anlamı ∪ özgün anlam; ``translate`` ile Türkçe anlamın içerik sözcüklerinin tek tek köprüsü."""
+    from engine.db.donor_index import _sense_tokens
+    from engine.db.sense_bridge import english_sense, ottoman_sense
+
+    out = (_content_tokens(bridged_sense(comparison, sense)) | _content_tokens(english_sense(comparison))
+           | _content_tokens(ottoman_sense(comparison)) | _content_tokens(sense))
+    if translate:
+        for t in _sense_tokens(sense):
+            if len(t) >= 3:
+                out |= _word_bridge(t)
+    return out
+
+
+def form_first_attribution(comparison: str, sense: str, lang: str, mode: str | None = None) -> DonorAttribution | None:
+    """Biçim-öncelikli arama (bkz. :data:`DONOR_FORM_FIRST`): ``lang`` dilinde biçimce çok yakın,
+    anlamca örtüşen verici maddesi; yoksa ``None``."""
+    from engine.db.donor_index import is_form_of
+    from engine.db.donor_skeleton import by_skeleton
+
+    mode = DONOR_FORM_FIRST if mode is None else mode
+    if mode == "off" or not comparison or not sense or _pairwise() is None:
+        return None
+    index = _index()
+    if not getattr(index, "exists", False):
+        return None
+    limit = FORM_FIRST_MAX[mode]
+    tokens = form_first_tokens(comparison, sense, translate=mode in ("c2", "c3"))
+    if not tokens:
+        return None
+    from engine.nlp.borrowing_detector import TURKISH_DONORS
+
+    pool = []
+    for row in by_skeleton(_query_skeletons(comparison), list(TURKISH_DONORS), donors=index.path):
+        comp = row["comparison"] or ""
+        if not comp or abs(len(comp) - len(comparison)) > max(3, len(comparison) // 2):
+            continue
+        d = label_distance(comparison, comp)
+        if d <= FORM_FIRST_POOL_MAX:
+            pool.append((d, row["id"], row))
+    pool.sort(key=lambda x: (x[0], x[1]))
+    near = [(d, row) for d, _, row in pool if d <= limit and not is_form_of(row["gloss"])]
+    sensed = [(d, row) for d, row in near if tokens & _content_tokens(row["gloss"])]
+    hit, via = None, ""
+    for d, row in sensed:
+        if row["lang_code"] == lang:
+            hit = (d, row)
+            break
+    if hit is None and lang == ARABIC:
+        for _, row in sensed:
+            if row["lang_code"] != PERSIAN:
+                continue
+            sk = script_skeleton(row["word"])
+            twin = [(d, r) for d, r in near if r["lang_code"] == ARABIC and sk and script_skeleton(r["word"]) == sk]
+            if twin:
+                hit, via = twin[0], PERSIAN
+                break
+    if hit is None:
+        return None
+    d, row = hit
+    same = tuple(sorted({r["comparison"] for _, _, r in pool if r["lang_code"] == row["lang_code"]}))
+    return DonorAttribution(
+        lang_code=row["lang_code"], word=row["word"], comparison=row["comparison"], gloss=row["gloss"],
+        distance=d, null_distance=_null_distance(len(comparison), same), source="kaikki",
+        via=via, sense_overlap=len(tokens & _content_tokens(row["gloss"])), skeleton_match=True,
+    )

@@ -1,0 +1,10 @@
+300 1018 49s
+400 1018 59s
+500 1018 66s
+800 1018 102s
+1000 1018 119s
+tr 293 {'kesin': 170, 'anlam_farkli': 65, 'sinir': 28, 'havuzda_kesin_degil': 13, 'havuzda_secilmedi': 9, 'sozluk_yok': 8}
+tdk_ayar 439 {'kesin': 137, 'kopru_yok': 101, 'ref_yok': 73, 'anlam_farkli': 49, 'sozluk_yok': 46, 'sinir': 16, 'havuzda_kesin_degil': 9, 'havuzda_secilmedi': 8}
+tettl_ayar 286 {'kesin': 97, 'ref_yok': 75, 'anlam_farkli': 32, 'kopru_yok': 32, 'sozluk_yok': 27, 'sinir': 9, 'havuzda_kesin_degil': 7, 'havuzda_secilmedi': 7}
+toplam 1018 {'kesin': 404, 'ref_yok': 148, 'anlam_farkli': 146, 'kopru_yok': 133, 'sozluk_yok': 81, 'sinir': 53, 'havuzda_kesin_degil': 29, 'havuzda_secilmedi': 24}
+DONE

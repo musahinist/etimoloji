@@ -254,7 +254,9 @@ def capture(index: str, a2: str, *, limit: int = 0) -> Path:
                     proximity = str(evidence.get("attributed_lang") or evidence.get("donor_lang") or "")
             label = attribute_donor(to_comparison_form(query), sense, languages=TURKISH_DONORS)
             # 9n: kullanıcıya gösterilen etiket (DONOR_HONEST) ve biçim.
-            shown = honest_label(label, to_comparison_form(query)) if label is not None else None
+            shown = honest_label(label, to_comparison_form(query), sense=sense)
+            # 9o: gösterilen biçim biçim-öncelikli aramanınki olabilir (dili a2'ninki).
+            form = shown.form if shown is not None else None
             row: dict[str, Any] = {
                 "word": case.word, "sense": bool(sense),
                 "chain": verdict.donor_language, "proximity": proximity,
@@ -263,6 +265,7 @@ def capture(index: str, a2: str, *, limit: int = 0) -> Path:
                 "label_certain": bool(shown is not None and shown.certain),
                 "label_word": label.word if label is not None else "",
                 "label_comparison": label.comparison if label is not None else "",
+                **({"label_shown_word": form.word, "label_shown_comparison": form.comparison} if form else {}),
                 "is_borrowed": verdict.is_borrowed,
             }
             if engine is not None:
@@ -358,20 +361,25 @@ def form_metrics(cases: list[TrDonorCase], rows: dict[str, dict[str, Any]],
     n_ref = 0
     for case in cases:
         row = rows.get(case.word) or {}
-        if not row.get("label_word"):
+        if not row.get("label_word") and not row.get("label_shown_word"):
             continue
         refs = reference_forms(case.word, connection) if connection is not None else set()
         translits = source_translits(case.tdk_source, case.nisanyan_source)
         certain = bool(row.get("label_certain", True))
-        stats["(a) etiket"]["certain"] += 1
+        stats["(a) etiket"]["certain"] += bool(row.get("label_word"))
         stats["(a) etiket (gösterilen)"]["certain"] += certain
         if not (refs or translits):
             continue
         n_ref += 1
-        correct = engine_class(row.get("label", "")) == case.gold and is_etymon(
-            row["label_word"], row.get("label_comparison", ""), refs, translits)
-        for name, shown in (("(a) etiket", True), ("(a) etiket (gösterilen)", certain)):
+        # 9o: biçim-öncelikli aramanın biçimi gösterilmişse (``label_shown_word``) onun dili a2'ninki.
+        for name, shown, lang_key, word_key, comp_key in (
+                ("(a) etiket", bool(row.get("label_word")), "label", "label_word", "label_comparison"),
+                ("(a) etiket (gösterilen)", certain, "label_shown" if row.get("label_shown_word") else "label",
+                 "label_shown_word" if row.get("label_shown_word") else "label_word",
+                 "label_shown_comparison" if row.get("label_shown_word") else "label_comparison")):
             if shown:
+                correct = engine_class(row.get(lang_key, "")) == case.gold and is_etymon(
+                    row[word_key], row.get(comp_key, ""), refs, translits)
                 stats[name]["shown"] += 1
                 stats[name]["shown_correct"] += correct
     n = len(cases)

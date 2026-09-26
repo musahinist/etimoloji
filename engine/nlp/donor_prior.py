@@ -126,6 +126,7 @@ EXCLUDE_GOLDS = (
     "data/cache/work/donor9g/gold.json", "data/cache/work/donor9j/gold_tdk.json",
     "data/cache/work/donor9j/gold_tettl.json", "data/cache/work/donor9l/gold.json",
     "data/cache/work/donor9m/gold.json", "data/cache/work/donor9n/gold.json",
+    "data/cache/work/donor9o/gold.json",
 )
 
 

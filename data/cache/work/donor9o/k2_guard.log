@@ -1,0 +1,22 @@
+=== data/cache/work/donor9o/harness.py k2
+0 600 3s
+100 600 15s
+200 600 22s
+300 600 32s
+400 600 40s
+500 600 46s
+0 600 0s
+100 600 6s
+200 600 11s
+300 600 18s
+400 600 23s
+500 600 26s
+{"n": 600, "word_overlap_previous_golds": 0, "blind_label_columns_nonnull": 0, "gloss_identical_blind_full": 600, "labels_identical_blind_full": 600, "cue_model_excludes_9o_gold": true, "gold_words_in_exclusion": 600, "fetchers_loaded": [], "network": "socket.connect engelli", "pass": true}
+=== data/cache/work/donor9o/harness.py saha
+prod {'yakınlık': 0.6659, 'motor': 0.7295}
+c1 {'yakınlık': 0.6659, 'motor': 0.7295}
+c2 {'yakınlık': 0.6659, 'motor': 0.7295}
+c3 {'yakınlık': 0.6659, 'motor': 0.7295}
+=== data/cache/work/donor9n/harness.py xt
+{'prod': {'engine_trained': 0.7459}, 'turkish_donor_set_items': 0}
+DONE

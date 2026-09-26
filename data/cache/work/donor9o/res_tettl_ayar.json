@@ -1,0 +1,9601 @@
+{
+"summary": {
+"n": 286,
+"classes": {
+"Arapça": 60,
+"Yunanca": 57,
+"Farsça": 60,
+"Fransızca": 60,
+"Ermenice": 27,
+"İtalyanca": 22
+},
+"n_ref": 205,
+"n_sense": 286,
+"n_attr": 223,
+"prod": {
+"acc_nat": 0.6156,
+"acc": 0.3671,
+"precision": 0.5495,
+"shown": 91,
+"shown_correct": 50,
+"shown_wrong": 41,
+"coverage": 0.3392,
+"labelled": 0.7797,
+"per_class": {
+"Arapça": 0.7,
+"Ermenice": 0.037,
+"Farsça": 0.2833,
+"Fransızca": 0.7167,
+"Yunanca": 0.0175,
+"İtalyanca": 0.0455
+}
+},
+"c1": {
+"acc_nat": 0.6156,
+"acc": 0.3671,
+"precision": 0.5408,
+"shown": 98,
+"shown_correct": 53,
+"shown_wrong": 45,
+"coverage": 0.3706,
+"labelled": 0.7797,
+"per_class": {
+"Arapça": 0.7,
+"Ermenice": 0.037,
+"Farsça": 0.2833,
+"Fransızca": 0.7167,
+"Yunanca": 0.0175,
+"İtalyanca": 0.0455
+},
+"vs_prod": {
+"coverage_mcnemar": {
+"gained": 9,
+"lost": 0,
+"p": 0.00390625,
+"p_holm": 0.00390625
+},
+"added_precision": [
+3,
+7
+],
+"form_changed_in_prod_certain": 0,
+"nat_signflip": {
+"D": 0.0,
+"p": 1.0,
+"discordant": 0
+}
+}
+},
+"c2": {
+"acc_nat": 0.631,
+"acc": 0.3776,
+"precision": 0.5714,
+"shown": 105,
+"shown_correct": 60,
+"shown_wrong": 45,
+"coverage": 0.4056,
+"labelled": 0.7937,
+"per_class": {
+"Arapça": 0.7167,
+"Ermenice": 0.037,
+"Farsça": 0.3,
+"Fransızca": 0.7333,
+"Yunanca": 0.0175,
+"İtalyanca": 0.0455
+},
+"vs_prod": {
+"coverage_mcnemar": {
+"gained": 19,
+"lost": 0,
+"p": 3.814697265625e-06,
+"p_holm": 7.62939453125e-06
+},
+"added_precision": [
+10,
+14
+],
+"form_changed_in_prod_certain": 0,
+"nat_signflip": {
+"D": 0.0154,
+"p": 0.25,
+"discordant": 3,
+"a_better": 3,
+"b_better": 0
+}
+}
+},
+"c3": {
+"acc_nat": 0.6384,
+"acc": 0.3811,
+"precision": 0.5688,
+"shown": 109,
+"shown_correct": 62,
+"shown_wrong": 47,
+"coverage": 0.4196,
+"labelled": 0.7972,
+"per_class": {
+"Arapça": 0.7333,
+"Ermenice": 0.037,
+"Farsça": 0.3,
+"Fransızca": 0.7333,
+"Yunanca": 0.0175,
+"İtalyanca": 0.0455
+},
+"vs_prod": {
+"coverage_mcnemar": {
+"gained": 23,
+"lost": 0,
+"p": 2.384185791015625e-07,
+"p_holm": 7.152557373046875e-07
+},
+"added_precision": [
+12,
+18
+],
+"form_changed_in_prod_certain": 0,
+"nat_signflip": {
+"D": 0.02284,
+"p": 0.125,
+"discordant": 4,
+"a_better": 4,
+"b_better": 0
+}
+}
+}
+},
+"rows": [
+{
+"word": "ahbap",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:حباب/hubab/0.240/fa",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:حباب/hubab/0.240/fa",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:حباب/hubab/0.240/fa",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:حباب/hubab/0.240/fa",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:حباب/hubab/0.240/fa",
+"etym": false
+}
+},
+{
+"word": "akva",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "amberbaris",
+"gold": "Arapça",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "bakiye",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:باق/bakin/0.187/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:باق/bakin/0.187/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:باق/bakin/0.187/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:باق/bakin/0.187/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:باق/bakin/0.187/",
+"etym": false
+}
+},
+{
+"word": "bariz",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "el:φανερός/faneros/0.330/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "beliye",
+"gold": "Arapça",
+"has_ref": false,
+"sense": true,
+"form": "ar:طاسات/tasat/0.809/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:بلية/baliyya/0.033/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:بلية/baliyya/0.033/",
+"etym": false
+}
+},
+{
+"word": "beraat",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:تبرئة/tabria/0.650/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "beşeriyet",
+"gold": "Arapça",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "cazip",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:جاذب/jadib/0.450/fa",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "celse",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "hy:սեսիա/sesia/0.310/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "cem",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:كم/kam/0.200/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "cırboğa",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:طور سينا/tursina/0.440/fa",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "dağdağa",
+"gold": "Arapça",
+"has_ref": false,
+"sense": true,
+"form": "el:ανάθεμα/anathema/0.597/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "dünyevi",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:عرفي/urfiyy/0.545/fa",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "ebleh",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "el:ελαφρόμυαλος/elafromyalos/0.635/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:أبله/ablah/0.050/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:أبله/ablah/0.050/",
+"etym": true
+}
+},
+{
+"word": "emin",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:آمن/amin/0.033/fa",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:آمن/amin/0.033/fa",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:آمن/amin/0.033/fa",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:آمن/amin/0.033/fa",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:آمن/amin/0.033/fa",
+"etym": true
+}
+},
+{
+"word": "eser",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "fr:bosser/bosser/0.189/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:bosser/bosser/0.189/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:bosser/bosser/0.189/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:bosser/bosser/0.189/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:bosser/bosser/0.189/",
+"etym": false
+}
+},
+{
+"word": "eşed",
+"gold": "Arapça",
+"has_ref": false,
+"sense": true,
+"form": "ar:دحو/dahv/0.887/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "fetret",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "fr:être/etre/0.304/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:فترة/fatra/0.185/",
+"etym": true
+}
+},
+{
+"word": "fikri",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:شكرية/şukriyya/0.171/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fr:figura/figura/0.191/",
+"etym": false
+}
+},
+{
+"word": "fikriyat",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "fil",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:فيل/fil/0.000/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:فيل/fil/0.000/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:فيل/fil/0.000/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:فيل/fil/0.000/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:فيل/fil/0.000/",
+"etym": true
+}
+},
+{
+"word": "fodul",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "gargara",
+"gold": "Arapça",
+"has_ref": false,
+"sense": true,
+"form": "fr:collutoire/collutoire/0.492/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "gurbet",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "fr:gourmet/gourmet/0.220/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:غربة/gurba/0.162/fa",
+"etym": true
+}
+},
+{
+"word": "hacer",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:طاسة/tasa/0.609/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "haslet",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:خصلة/kasla/0.385/fa",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "ihya",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "iklim",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:إقليم/iklim/0.000/fa",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:إقليم/iklim/0.000/fa",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:إقليم/iklim/0.000/fa",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:إقليم/iklim/0.000/fa",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:إقليم/iklim/0.000/fa",
+"etym": true
+}
+},
+{
+"word": "iksir",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:إكسير/iksir/0.000/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:إكسير/iksir/0.000/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:إكسير/iksir/0.000/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:إكسير/iksir/0.000/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:إكسير/iksir/0.000/",
+"etym": true
+}
+},
+{
+"word": "istikşaf",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:استكشاف/istikşaf/0.000/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:استكشاف/istikşaf/0.000/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:استكشاف/istikşaf/0.000/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:استكشاف/istikşaf/0.000/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:استكشاف/istikşaf/0.000/",
+"etym": true
+}
+},
+{
+"word": "kazurat",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "mahsus",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:مخصوص/maksus/0.246/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:مخصوص/maksus/0.246/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:مخصوص/maksus/0.246/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:مخصوص/maksus/0.246/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:مخصوص/maksus/0.246/",
+"etym": true
+}
+},
+{
+"word": "medet",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:مدد/madad/0.050/fa",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:مدد/madad/0.050/fa",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:مدد/madad/0.050/fa",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:مدد/madad/0.050/fa",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:مدد/madad/0.050/fa",
+"etym": true
+}
+},
+{
+"word": "muhip",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "fa:ماهور/mahur/0.300/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:محب/muhibb/0.000/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:محب/muhibb/0.000/",
+"etym": true
+}
+},
+{
+"word": "mülk",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:ملك/milk/0.029/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:ملك/milk/0.029/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:ملك/milk/0.029/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:ملك/milk/0.029/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:ملك/milk/0.029/",
+"etym": true
+}
+},
+{
+"word": "münacat",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:مؤذن/muaddin/0.519/fa",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "münteşir",
+"gold": "Arapça",
+"has_ref": false,
+"sense": true,
+"form": "ar:انتشار/intişar/0.172/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:انتشار/intişar/0.172/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:انتشار/intişar/0.172/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:انتشار/intişar/0.172/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:انتشار/intişar/0.172/",
+"etym": false
+}
+},
+{
+"word": "müsrif",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:مسرف/musrif/0.000/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:مسرف/musrif/0.000/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:مسرف/musrif/0.000/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:مسرف/musrif/0.000/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:مسرف/musrif/0.000/",
+"etym": true
+}
+},
+{
+"word": "namus",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:شموخ/şumuk/0.400/fa",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:ناموس/namus/0.000/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:ناموس/namus/0.000/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:ناموس/namus/0.000/",
+"etym": true
+}
+},
+{
+"word": "nasihat",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:نصيحة/nasiha/0.131/fa",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:نصيحة/nasiha/0.131/fa",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:نصيحة/nasiha/0.131/fa",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:نصيحة/nasiha/0.131/fa",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:نصيحة/nasiha/0.131/fa",
+"etym": true
+}
+},
+{
+"word": "nebbaş",
+"gold": "Arapça",
+"has_ref": false,
+"sense": true,
+"form": "el:νεφρό/nefro/0.349/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "nikah",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:نكاح/nikah/0.000/fa",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:نكاح/nikah/0.000/fa",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:نكاح/nikah/0.000/fa",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:نكاح/nikah/0.000/fa",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:نكاح/nikah/0.000/fa",
+"etym": true
+}
+},
+{
+"word": "revaç",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "rıza",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "fa:رضایت/rizayat/0.187/",
+"prod": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:رضایت/rizayat/0.187/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:رضایت/rizayat/0.187/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:رضایت/rizayat/0.187/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:رضایت/rizayat/0.187/",
+"etym": false
+}
+},
+{
+"word": "sah",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:صح/sahha/0.152/",
+"etym": false
+}
+},
+{
+"word": "sahne",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "fr:scène/scene/0.404/el",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "sam",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "saykal",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:صيقل/saykal/0.000/fa",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:صيقل/saykal/0.000/fa",
+"etym": true
+}
+},
+{
+"word": "sebil",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:صول/savvala/0.240/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "sevda",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:حد/hadda/0.310/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:سوداء/savda/0.025/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:سوداء/savda/0.025/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:سوداء/savda/0.025/",
+"etym": true
+}
+},
+{
+"word": "silsile",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:سلسلة/silsila/0.018/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:سلسلة/silsila/0.018/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:سلسلة/silsila/0.018/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:سلسلة/silsila/0.018/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:سلسلة/silsila/0.018/",
+"etym": true
+}
+},
+{
+"word": "tellal",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:دلالة/dalala/0.122/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:دلالة/dalala/0.122/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:دلالة/dalala/0.122/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:دلالة/dalala/0.122/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:دلالة/dalala/0.122/",
+"etym": false
+}
+},
+{
+"word": "tevatür",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "fr:épater/epater/0.212/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "turaç",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "el:νέρος/neros/0.300/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "vehim",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:وهم/vahm/0.186/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:وهم/vahm/0.186/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:وهم/vahm/0.186/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:وهم/vahm/0.186/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:وهم/vahm/0.186/",
+"etym": true
+}
+},
+{
+"word": "yallah",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:ياالله/yallah/0.000/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:ياالله/yallah/0.000/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:ياالله/yallah/0.000/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:ياالله/yallah/0.000/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:ياالله/yallah/0.000/",
+"etym": true
+}
+},
+{
+"word": "zibil",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:زبال/zabbal/0.050/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:زبال/zabbal/0.050/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:زبال/zabbal/0.050/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:زبال/zabbal/0.050/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:زبال/zabbal/0.050/",
+"etym": true
+}
+},
+{
+"word": "şavullama",
+"gold": "Arapça",
+"has_ref": false,
+"sense": true,
+"form": "fa:داعشی‌ها/daişiha/0.718/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "şerbet",
+"gold": "Arapça",
+"has_ref": true,
+"sense": true,
+"form": "ar:شربت/şarbat/0.050/fa",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:شربت/şarbat/0.050/fa",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:شربت/şarbat/0.050/fa",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:شربت/şarbat/0.050/fa",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:شربت/şarbat/0.050/fa",
+"etym": true
+}
+},
+{
+"word": "angona",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "fr:Trébizonde/trebizonde/0.689/el",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "balada",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "ar:بلدية/baladiyya/0.022/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "balak",
+"gold": "Yunanca",
+"has_ref": true,
+"sense": true,
+"form": "fr:pilon/pilon/0.300/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "balalos",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "baloz",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "behni",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "ar:تحيت/tuhayta/0.631/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "biberiye",
+"gold": "Yunanca",
+"has_ref": true,
+"sense": true,
+"form": "ar:فبراير/fibrayir/0.318/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "bini",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "ar:بنية/bunniyya/0.033/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fr:pina/pina/0.033/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fr:pina/pina/0.033/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fr:pina/pina/0.033/",
+"etym": false
+}
+},
+{
+"word": "bitemi",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "ar:فرم/farama/0.378/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "bük",
+"gold": "Yunanca",
+"has_ref": true,
+"sense": true,
+"form": "el:πνίγω/pnigo/0.342/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "bürün",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "fr:prosodie/prosodie/0.652/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "dalar",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "fa:זמאן/zaman/0.700/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "domat",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "ar:ص/sad/0.574/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fr:tomate/tomate/0.099/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fr:tomate/tomate/0.099/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fr:tomate/tomate/0.099/",
+"etym": false
+}
+},
+{
+"word": "eneze",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "el:άπνοος/apnoos/0.387/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "eğir",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "fa:اگیر/agir/0.240/",
+"prod": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:اگیر/agir/0.240/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:اگیر/agir/0.240/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:اگیر/agir/0.240/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:اگیر/agir/0.240/",
+"etym": false
+}
+},
+{
+"word": "firez",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "galvaniz",
+"gold": "Yunanca",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "garoz",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "gobel",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "el:Άγκυρα/agkyra/0.707/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "gırgır",
+"gold": "Yunanca",
+"has_ref": true,
+"sense": true,
+"form": "hy:գորգ/gorg/0.364/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "hartama",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "imece",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "fa:همدستی/hamdasti/0.512/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "kanata",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "kanzi",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "ar:خزن/kazzana/0.389/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "katedral",
+"gold": "Yunanca",
+"has_ref": true,
+"sense": true,
+"form": "ar:كاتدرائية/katidraiyya/0.126/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كاتدرائية/katidraiyya/0.126/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كاتدرائية/katidraiyya/0.126/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كاتدرائية/katidraiyya/0.126/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كاتدرائية/katidraiyya/0.126/",
+"etym": false
+}
+},
+{
+"word": "keleme",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "kepbastı",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "kepiç",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "it:PEC/pec/0.538/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "kikla",
+"gold": "Yunanca",
+"has_ref": true,
+"sense": true,
+"form": "fr:angle/angle/0.337/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "kopal",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "kral",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "fr:Israël/israel/0.354/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "kudal",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "fr:yaourtière/yaourtiere/0.517/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "kumbara",
+"gold": "Yunanca",
+"has_ref": true,
+"sense": true,
+"form": "el:καπάρο/kaparo/0.157/",
+"prod": {
+"certain": true,
+"lang": "el",
+"family": [],
+"basis": "yakınlık",
+"shown": "el:καπάρο/kaparo/0.157/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "el",
+"family": [],
+"basis": "yakınlık",
+"shown": "el:καπάρο/kaparo/0.157/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "el",
+"family": [],
+"basis": "yakınlık",
+"shown": "el:καπάρο/kaparo/0.157/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "el",
+"family": [],
+"basis": "yakınlık",
+"shown": "el:καπάρο/kaparo/0.157/",
+"etym": false
+}
+},
+{
+"word": "köfün",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "lonca",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "fr:hanse/hanse/0.400/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "malak",
+"gold": "Yunanca",
+"has_ref": true,
+"sense": true,
+"form": "ar:ملك/malak/0.000/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:ملك/malak/0.000/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:ملك/malak/0.000/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:ملك/malak/0.000/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:ملك/malak/0.000/",
+"etym": true
+}
+},
+{
+"word": "meze",
+"gold": "Yunanca",
+"has_ref": true,
+"sense": true,
+"form": "ar:مقصف/maksaf/0.415/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "mısırı",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "fr:azure/azure/0.215/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "omuzluk",
+"gold": "Yunanca",
+"has_ref": true,
+"sense": true,
+"form": "el:ώμος/omos/0.398/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "oya",
+"gold": "Yunanca",
+"has_ref": true,
+"sense": true,
+"form": "ar:ي/iyy/0.400/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "pandomima",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "piçuta",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "fa:ریزشی/rizeşi/0.425/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "portakal",
+"gold": "Yunanca",
+"has_ref": true,
+"sense": true,
+"form": "ar:خردل/kardal/0.359/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "pırpıt",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "el:-ποιώ/poio/0.683/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "susta",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "it:copeca/copeca/0.560/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "talaz",
+"gold": "Yunanca",
+"has_ref": true,
+"sense": true,
+"form": "ar:تل/talla/0.187/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "tirhandil",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "it:tartana/tartana/0.392/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "tora",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "ar:طائرة/taira/0.033/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:طائرة/taira/0.033/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:طائرة/taira/0.033/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:طائرة/taira/0.033/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:طائرة/taira/0.033/",
+"etym": false
+}
+},
+{
+"word": "tulup",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "fr:top/top/0.328/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "varyoz",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "vat",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "vişnap",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "çete",
+"gold": "Yunanca",
+"has_ref": true,
+"sense": true,
+"form": "el:ζώνη/zoni/0.400/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "çitar",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "fa:تور/tor/0.415/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fa:چادر/çadur/0.050/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fa:چادر/çadur/0.050/",
+"etym": false
+}
+},
+{
+"word": "çıngar",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "hy:հագնել/hagnel/0.475/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "ölmez",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": "fr:lies/lies/0.392/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "ıltar",
+"gold": "Yunanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "abanoz",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "el:έβενος/evenos/0.133/",
+"prod": {
+"certain": true,
+"lang": "el",
+"family": [],
+"basis": "yakınlık",
+"shown": "el:έβενος/evenos/0.133/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "el",
+"family": [],
+"basis": "yakınlık",
+"shown": "el:έβενος/evenos/0.133/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "el",
+"family": [],
+"basis": "yakınlık",
+"shown": "el:έβενος/evenos/0.133/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "el",
+"family": [],
+"basis": "yakınlık",
+"shown": "el:έβενος/evenos/0.133/",
+"etym": true
+}
+},
+{
+"word": "abuhava",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fa:آب و هوا/abuhava/0.000/",
+"prod": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:آب و هوا/abuhava/0.000/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:آب و هوا/abuhava/0.000/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:آب و هوا/abuhava/0.000/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:آب و هوا/abuhava/0.000/",
+"etym": false
+}
+},
+{
+"word": "asayiş",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fr:Assam/assam/0.200/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:Assam/assam/0.200/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:Assam/assam/0.200/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:Assam/assam/0.200/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:Assam/assam/0.200/",
+"etym": false
+}
+},
+{
+"word": "asta",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fa:آهسته/ahista/0.257/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "aşkın",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fr:région/region/0.284/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "bal",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "el:παστέλι/pasteli/0.480/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "bazar",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fr:baissier/baissier/0.025/fa",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:baissier/baissier/0.025/fa",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:baissier/baissier/0.025/fa",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:baissier/baissier/0.025/fa",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:baissier/baissier/0.025/fa",
+"etym": false
+}
+},
+{
+"word": "becit",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "beddua",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fr:maudition/maudition/0.658/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "bende",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fr:panca/panca/0.150/fa",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:panca/panca/0.150/fa",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:panca/panca/0.150/fa",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:panca/panca/0.150/fa",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:panca/panca/0.150/fa",
+"etym": false
+}
+},
+{
+"word": "beyaban",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "el:αυχένας/afchenas/0.665/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fa:بیابان/biyaban/0.025/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fa:بیابان/biyaban/0.025/",
+"etym": true
+}
+},
+{
+"word": "biçare",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fa:بی‌چاره/beçare/0.022/",
+"prod": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:بی‌چاره/beçare/0.022/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:بی‌چاره/beçare/0.022/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:بی‌چاره/beçare/0.022/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:بی‌چاره/beçare/0.022/",
+"etym": true
+}
+},
+{
+"word": "canfeza",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "el:Τούρκος/tourkos/0.575/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "cerrahi",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fa:جراحی/jarrahi/0.244/",
+"prod": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:جراحی/jarrahi/0.244/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:جراحی/jarrahi/0.244/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:جراحی/jarrahi/0.244/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:جراحی/jarrahi/0.244/",
+"etym": true
+}
+},
+{
+"word": "civan",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fa:جوان/javan/0.275/",
+"prod": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:جوان/javan/0.275/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:جوان/javan/0.275/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:جوان/javan/0.275/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:جوان/javan/0.275/",
+"etym": true
+}
+},
+{
+"word": "destan",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "hy:դյուցազն/dyucazn/0.360/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "düyek",
+"gold": "Farsça",
+"has_ref": false,
+"sense": true,
+"form": "hy:տաճիկ/taçik/0.229/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "ebru",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fa:ابری/abri/0.067/",
+"prod": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:ابری/abri/0.067/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:ابری/abri/0.067/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:ابری/abri/0.067/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:ابری/abri/0.067/",
+"etym": false
+}
+},
+{
+"word": "emaret",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fr:émirat/emirat/0.044/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:émirat/emirat/0.044/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:émirat/emirat/0.044/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:émirat/emirat/0.044/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:émirat/emirat/0.044/",
+"etym": false
+}
+},
+{
+"word": "encam",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fa:آینده/ayanda/0.330/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "endaht",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fr:accot/accot/0.442/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "fakirane",
+"gold": "Farsça",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "fağfuri",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "ar:صینی/sini/0.829/fa",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "fürumaye",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "gayet",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fa:گنده/ganda/0.309/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "gende",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fr:lente/lente/0.250/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "gevher",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fa:گوهر/gavhar/0.040/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fa:گوهر/gavhar/0.040/",
+"etym": true
+}
+},
+{
+"word": "gülibrişim",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "hamail",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fr:semoir/semoir/0.300/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "hasta",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fa:خسته/haste/0.025/",
+"prod": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:خسته/haste/0.025/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:خسته/haste/0.025/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:خسته/haste/0.025/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:خسته/haste/0.025/",
+"etym": true
+}
+},
+{
+"word": "hem",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fr:hem/hem/0.000/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "kalemkâr",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "kişmiş",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "ar:كشمش/kişmiş/0.000/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كشمش/kişmiş/0.000/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كشمش/kişmiş/0.000/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كشمش/kişmiş/0.000/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كشمش/kişmiş/0.000/",
+"etym": true
+}
+},
+{
+"word": "kökür",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "kırmızı",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "ar:قرمزي/kirmiziyy/0.000/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:قرمز/kirmiz/0.080/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:قرمز/kirmiz/0.080/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:قرمز/kirmiz/0.080/",
+"etym": true
+}
+},
+{
+"word": "meydan",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "hy:մեյդան/meydan/0.000/",
+"prod": {
+"certain": true,
+"lang": "hy",
+"family": [],
+"basis": "yakınlık",
+"shown": "hy:մեյդան/meydan/0.000/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "hy",
+"family": [],
+"basis": "yakınlık",
+"shown": "hy:մեյդան/meydan/0.000/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "hy",
+"family": [],
+"basis": "yakınlık",
+"shown": "hy:մեյդան/meydan/0.000/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "hy",
+"family": [],
+"basis": "yakınlık",
+"shown": "hy:մեյդան/meydan/0.000/",
+"etym": true
+}
+},
+{
+"word": "meğer",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "ar:مزار/mazar/0.200/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "nevzine",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "ar:عفوا/afvan/0.459/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "panzehir",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "ar:بازهر/bazahr/0.223/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:بازهر/bazahr/0.223/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:بازهر/bazahr/0.223/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:بازهر/bazahr/0.223/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:بازهر/bazahr/0.223/",
+"etym": false
+}
+},
+{
+"word": "parçalı",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "pekmez",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fr:Bruges/bruges/0.257/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "pinhan",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fa:پنهان/penhan/0.020/",
+"prod": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:پنهان/penhan/0.020/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:پنهان/penhan/0.020/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:پنهان/penhan/0.020/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:پنهان/penhan/0.020/",
+"etym": true
+}
+},
+{
+"word": "piyade",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fa:پیاده/piyada/0.033/",
+"prod": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:پیاده/piyada/0.033/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:پیاده/piyada/0.033/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:پیاده/piyada/0.033/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:پیاده/piyada/0.033/",
+"etym": true
+}
+},
+{
+"word": "postin",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "rastık",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fr:critique/critikue/0.339/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "rint",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "rugan",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fr:maroquin/marokuin/0.305/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "serdümen",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "sürahi",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "ar:ساح/saha/0.311/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:صرحي/sarrihi/0.044/fa",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:صرحي/sarrihi/0.044/fa",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:صرحي/sarrihi/0.044/fa",
+"etym": false
+}
+},
+{
+"word": "tahtaboş",
+"gold": "Farsça",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "tatula",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fa:تاتوره/tatura/0.133/",
+"prod": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:تاتوره/tatura/0.133/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:تاتوره/tatura/0.133/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:تاتوره/tatura/0.133/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:تاتوره/tatura/0.133/",
+"etym": false
+}
+},
+{
+"word": "teber",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fr:taper/taper/0.025/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:taper/taper/0.025/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:taper/taper/0.025/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:taper/taper/0.025/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:taper/taper/0.025/",
+"etym": false
+}
+},
+{
+"word": "tezek",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "hy:թրիք/trik/0.442/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "tirit",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "ar:ثريد/tarid/0.025/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:ثريد/tarid/0.025/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:ثريد/tarid/0.025/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:ثريد/tarid/0.025/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:ثريد/tarid/0.025/",
+"etym": true
+}
+},
+{
+"word": "tüvana",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "yek",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "ar:أوقية/ukiyya/0.240/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "çarnaçar",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "it:-astro/astro/0.700/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "çini",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "it:faenza/faenza/0.547/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fa:چینی/çini/0.000/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fa:چینی/çini/0.000/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fa:چینی/çini/0.000/",
+"etym": true
+}
+},
+{
+"word": "şehir",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "ar:جسر/jasar/0.314/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "şeker",
+"gold": "Farsça",
+"has_ref": true,
+"sense": true,
+"form": "fr:à croquer/acrokuer/0.397/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:شاكر/şakir/0.067/fa",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:شاكر/şakir/0.067/fa",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "ar:شاكر/şakir/0.067/fa",
+"etym": true
+}
+},
+{
+"word": "agreman",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:agrément/agrement/0.126/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:agrément/agrement/0.126/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:agrément/agrement/0.126/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:agrément/agrement/0.126/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:agrément/agrement/0.126/",
+"etym": true
+}
+},
+{
+"word": "antiseptik",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:antiseptique/antiseptikue/0.051/el",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:antiseptique/antiseptikue/0.051/el",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:antiseptique/antiseptikue/0.051/el",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:antiseptique/antiseptikue/0.051/el",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:antiseptique/antiseptikue/0.051/el",
+"etym": true
+}
+},
+{
+"word": "aranjman",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:arrangement/arrangement/0.324/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "aseptik",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:aseptique/aseptikue/0.073/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:aseptique/aseptikue/0.073/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:aseptique/aseptikue/0.073/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:aseptique/aseptikue/0.073/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:aseptique/aseptikue/0.073/",
+"etym": true
+}
+},
+{
+"word": "atonal",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:atonal/atonal/0.000/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:atonal/atonal/0.000/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:atonal/atonal/0.000/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:atonal/atonal/0.000/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:atonal/atonal/0.000/",
+"etym": false
+}
+},
+{
+"word": "atölye",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:atelier/atelier/0.208/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:atelier/atelier/0.208/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:atelier/atelier/0.208/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:atelier/atelier/0.208/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:atelier/atelier/0.208/",
+"etym": true
+}
+},
+{
+"word": "bakteriyolog",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "it:batteriologo/batteriologo/0.130/",
+"prod": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:batteriologo/batteriologo/0.130/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:batteriologo/batteriologo/0.130/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:batteriologo/batteriologo/0.130/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:batteriologo/batteriologo/0.130/",
+"etym": false
+}
+},
+{
+"word": "balad",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "banal",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:banal/banal/0.000/el",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:banal/banal/0.000/el",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:banal/banal/0.000/el",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:banal/banal/0.000/el",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:banal/banal/0.000/el",
+"etym": true
+}
+},
+{
+"word": "barem",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:barème/bareme/0.099/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:barème/bareme/0.099/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:barème/bareme/0.099/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:barème/bareme/0.099/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:barème/bareme/0.099/",
+"etym": true
+}
+},
+{
+"word": "bateri",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:batterie/batterie/0.000/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:batterie/batterie/0.000/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:batterie/batterie/0.000/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:batterie/batterie/0.000/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:batterie/batterie/0.000/",
+"etym": true
+}
+},
+{
+"word": "bezik",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fr:bésigue/besigue/0.099/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fr:bésigue/besigue/0.099/",
+"etym": true
+}
+},
+{
+"word": "biyolog",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "it:biologo/biologo/0.099/",
+"prod": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:biologo/biologo/0.099/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:biologo/biologo/0.099/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:biologo/biologo/0.099/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:biologo/biologo/0.099/",
+"etym": false
+}
+},
+{
+"word": "botanik",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:botanique/botanikue/0.073/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:botanique/botanikue/0.073/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:botanique/botanikue/0.073/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:botanique/botanikue/0.073/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:botanique/botanikue/0.073/",
+"etym": true
+}
+},
+{
+"word": "buklet",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "carcur",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "dedektif",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "hy:դետեկտիվ/detektiv/0.000/",
+"prod": {
+"certain": true,
+"lang": "hy",
+"family": [],
+"basis": "yakınlık",
+"shown": "hy:դետեկտիվ/detektiv/0.000/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "hy",
+"family": [],
+"basis": "yakınlık",
+"shown": "hy:դետեկտիվ/detektiv/0.000/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "hy",
+"family": [],
+"basis": "yakınlık",
+"shown": "hy:դետեկտիվ/detektiv/0.000/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "hy",
+"family": [],
+"basis": "yakınlık",
+"shown": "hy:դետեկտիվ/detektiv/0.000/",
+"etym": false
+}
+},
+{
+"word": "desen",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:dessin/dessin/0.025/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:dessin/dessin/0.025/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:dessin/dessin/0.025/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:dessin/dessin/0.025/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:dessin/dessin/0.025/",
+"etym": true
+}
+},
+{
+"word": "dine",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "ar:دنيا/dunya/0.067/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fr:dina/dina/0.033/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fr:dina/dina/0.033/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fr:dina/dina/0.033/",
+"etym": false
+}
+},
+{
+"word": "direksiyon",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "hy:դուրգ/durg/0.458/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "diyez",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:dièse/diese/0.152/el",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:dièse/diese/0.152/el",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:dièse/diese/0.152/el",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:dièse/diese/0.152/el",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:dièse/diese/0.152/el",
+"etym": true
+}
+},
+{
+"word": "dosya",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "it:dossier/dossier/0.209/",
+"prod": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:dossier/dossier/0.209/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:dossier/dossier/0.209/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:dossier/dossier/0.209/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:dossier/dossier/0.209/",
+"etym": true
+}
+},
+{
+"word": "enflüanza",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "el:μαυρομάνικος/mavromanikos/0.543/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fr:influenza/influenza/0.086/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fr:influenza/influenza/0.086/",
+"etym": true
+}
+},
+{
+"word": "fiks",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "el:βράχος/vrachos/0.456/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "filtre",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:filtre/filtre/0.000/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:filtre/filtre/0.000/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:filtre/filtre/0.000/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:filtre/filtre/0.000/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:filtre/filtre/0.000/",
+"etym": true
+}
+},
+{
+"word": "frambuaz",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:framboise/framboise/0.083/el",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:framboise/framboise/0.083/el",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:framboise/framboise/0.083/el",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:framboise/framboise/0.083/el",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:framboise/framboise/0.083/el",
+"etym": true
+}
+},
+{
+"word": "fular",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "it:foulard/foulard/0.168/",
+"prod": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:foulard/foulard/0.168/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:foulard/foulard/0.168/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:foulard/foulard/0.168/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:foulard/foulard/0.168/",
+"etym": true
+}
+},
+{
+"word": "gangren",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:gangrène/gangrene/0.067/hy",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:gangrène/gangrene/0.067/hy",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:gangrène/gangrene/0.067/hy",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:gangrène/gangrene/0.067/hy",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:gangrène/gangrene/0.067/hy",
+"etym": true
+}
+},
+{
+"word": "gastrit",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:gastrite/gastrite/0.067/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:gastrite/gastrite/0.067/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:gastrite/gastrite/0.067/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:gastrite/gastrite/0.067/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:gastrite/gastrite/0.067/",
+"etym": true
+}
+},
+{
+"word": "gramofon",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "el:γραμμόφωνο/grammofono/0.062/",
+"prod": {
+"certain": true,
+"lang": "el",
+"family": [],
+"basis": "yakınlık",
+"shown": "el:γραμμόφωνο/grammofono/0.062/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "el",
+"family": [],
+"basis": "yakınlık",
+"shown": "el:γραμμόφωνο/grammofono/0.062/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "el",
+"family": [],
+"basis": "yakınlık",
+"shown": "el:γραμμόφωνο/grammofono/0.062/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "el",
+"family": [],
+"basis": "yakınlık",
+"shown": "el:γραμμόφωνο/grammofono/0.062/",
+"etym": false
+}
+},
+{
+"word": "gravyer",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "idealist",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:idéaliste/idealiste/0.113/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:idéaliste/idealiste/0.113/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:idéaliste/idealiste/0.113/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:idéaliste/idealiste/0.113/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:idéaliste/idealiste/0.113/",
+"etym": true
+}
+},
+{
+"word": "kadran",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:train/train/0.300/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "karbonat",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "ar:كربن/karbana/0.126/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كربن/karbana/0.126/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كربن/karbana/0.126/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كربن/karbana/0.126/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كربن/karbana/0.126/",
+"etym": false
+}
+},
+{
+"word": "karnaval",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:carnaval/carnaval/0.062/el",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:carnaval/carnaval/0.062/el",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:carnaval/carnaval/0.062/el",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:carnaval/carnaval/0.062/el",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:carnaval/carnaval/0.062/el",
+"etym": true
+}
+},
+{
+"word": "kasket",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:casquette/caskuette/0.175/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "kastanyet",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:castagnette/castagnette/0.241/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:castagnette/castagnette/0.241/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:castagnette/castagnette/0.241/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:castagnette/castagnette/0.241/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:castagnette/castagnette/0.241/",
+"etym": true
+}
+},
+{
+"word": "kaşe",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "hy:գիր/gir/0.402/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "kleptomani",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:kleptomanie/kleptomanie/0.000/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:kleptomanie/kleptomanie/0.000/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:kleptomanie/kleptomanie/0.000/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:kleptomanie/kleptomanie/0.000/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:kleptomanie/kleptomanie/0.000/",
+"etym": true
+}
+},
+{
+"word": "komedyen",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "ar:كوميديان/komidiyan/0.036/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كوميديان/komidiyan/0.036/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كوميديان/komidiyan/0.036/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كوميديان/komidiyan/0.036/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كوميديان/komidiyan/0.036/",
+"etym": false
+}
+},
+{
+"word": "komütatör",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "kritik",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:critique/critikue/0.156/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:critique/critikue/0.156/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:critique/critikue/0.156/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:critique/critikue/0.156/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:critique/critikue/0.156/",
+"etym": true
+}
+},
+{
+"word": "liken",
+"gold": "Fransızca",
+"has_ref": false,
+"sense": true,
+"form": "fr:lichen/lichen/0.221/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:lichen/lichen/0.221/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:lichen/lichen/0.221/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:lichen/lichen/0.221/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:lichen/lichen/0.221/",
+"etym": false
+}
+},
+{
+"word": "litografi",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:lithographie/lithographie/0.198/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:lithographie/lithographie/0.198/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:lithographie/lithographie/0.198/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:lithographie/lithographie/0.198/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:lithographie/lithographie/0.198/",
+"etym": true
+}
+},
+{
+"word": "lüks",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "it:lusso/lusso/0.349/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "maki",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:maki/maki/0.000/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:maki/maki/0.000/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:maki/maki/0.000/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:maki/maki/0.000/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:maki/maki/0.000/",
+"etym": false
+}
+},
+{
+"word": "manken",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:mannequin/mannekuin/0.133/fa",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:mannequin/mannekuin/0.133/fa",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:mannequin/mannekuin/0.133/fa",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:mannequin/mannekuin/0.133/fa",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:mannequin/mannekuin/0.133/fa",
+"etym": true
+}
+},
+{
+"word": "mokasen",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:mocassin/mocassin/0.091/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:mocassin/mocassin/0.091/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:mocassin/mocassin/0.091/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:mocassin/mocassin/0.091/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:mocassin/mocassin/0.091/",
+"etym": true
+}
+},
+{
+"word": "operatör",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:opérateur/operateur/0.017/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:opérateur/operateur/0.017/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:opérateur/operateur/0.017/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:opérateur/operateur/0.017/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:opérateur/operateur/0.017/",
+"etym": true
+}
+},
+{
+"word": "pigment",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:pigment/pigment/0.000/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:pigment/pigment/0.000/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:pigment/pigment/0.000/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:pigment/pigment/0.000/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:pigment/pigment/0.000/",
+"etym": true
+}
+},
+{
+"word": "radyoskopi",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "el:ανακοπή/anakopi/0.374/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "reverans",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "it:riverenza/riverenza/0.126/",
+"prod": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:riverenza/riverenza/0.126/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:riverenza/riverenza/0.126/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:riverenza/riverenza/0.126/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:riverenza/riverenza/0.126/",
+"etym": false
+}
+},
+{
+"word": "reye",
+"gold": "Fransızca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "saksafon",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "hy:սաքսոֆոն/saksofon/0.015/",
+"prod": {
+"certain": true,
+"lang": "hy",
+"family": [],
+"basis": "yakınlık",
+"shown": "hy:սաքսոֆոն/saksofon/0.015/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "hy",
+"family": [],
+"basis": "yakınlık",
+"shown": "hy:սաքսոֆոն/saksofon/0.015/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "hy",
+"family": [],
+"basis": "yakınlık",
+"shown": "hy:սաքսոֆոն/saksofon/0.015/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "hy",
+"family": [],
+"basis": "yakınlık",
+"shown": "hy:սաքսոֆոն/saksofon/0.015/",
+"etym": false
+}
+},
+{
+"word": "sempatizan",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:sympathisant/sympathisant/0.150/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:sympathisant/sympathisant/0.150/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:sympathisant/sympathisant/0.150/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:sympathisant/sympathisant/0.150/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:sympathisant/sympathisant/0.150/",
+"etym": true
+}
+},
+{
+"word": "vestiyer",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:vestiaire/vestiaire/0.080/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:vestiaire/vestiaire/0.080/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:vestiaire/vestiaire/0.080/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:vestiaire/vestiaire/0.080/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:vestiaire/vestiaire/0.080/",
+"etym": true
+}
+},
+{
+"word": "vizon",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:vison/vison/0.000/el",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:vison/vison/0.000/el",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:vison/vison/0.000/el",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:vison/vison/0.000/el",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:vison/vison/0.000/el",
+"etym": true
+}
+},
+{
+"word": "şike",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:liège/liege/0.200/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "şizoid",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:schizoïde/schizoıde/0.451/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "şömine",
+"gold": "Fransızca",
+"has_ref": true,
+"sense": true,
+"form": "fr:cheminée/cheminee/0.258/fa",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "ahbun",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": "it:Trapezunta/trapezunta/0.638/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "bızdık",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "gencer",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": "el:δίνες/dines/0.626/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "geveze",
+"gold": "Ermenice",
+"has_ref": true,
+"sense": true,
+"form": "ar:حافظ/hafiz/0.381/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "gilik",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": "fr:Attalie/attalie/0.590/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "gocuk",
+"gold": "Ermenice",
+"has_ref": true,
+"sense": true,
+"form": "it:giacca/giacca/0.266/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "hiç",
+"gold": "Ermenice",
+"has_ref": true,
+"sense": true,
+"form": "ar:ح/ha/0.319/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "hodak",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": "fr:camtar/camtar/0.552/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "hop",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": "fr:oups/oups/0.508/el",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "hozan",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": "hy:ըլել/elel/0.789/",
+"prod": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fa",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "hızan",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": "hy:ըլել/elel/0.789/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "kamus",
+"gold": "Ermenice",
+"has_ref": true,
+"sense": true,
+"form": "ar:قاموس/kamus/0.000/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:قاموس/kamus/0.000/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:قاموس/kamus/0.000/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:قاموس/kamus/0.000/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:قاموس/kamus/0.000/",
+"etym": true
+}
+},
+{
+"word": "kerenti",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": "hy:գերանդի/gerandi/0.018/",
+"prod": {
+"certain": true,
+"lang": "hy",
+"family": [],
+"basis": "yakınlık",
+"shown": "hy:գերանդի/gerandi/0.018/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "hy",
+"family": [],
+"basis": "yakınlık",
+"shown": "hy:գերանդի/gerandi/0.018/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "hy",
+"family": [],
+"basis": "yakınlık",
+"shown": "hy:գերանդի/gerandi/0.018/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "hy",
+"family": [],
+"basis": "yakınlık",
+"shown": "hy:գերանդի/gerandi/0.018/",
+"etym": false
+}
+},
+{
+"word": "kermen",
+"gold": "Ermenice",
+"has_ref": true,
+"sense": true,
+"form": "el:κάστρο/kastro/0.536/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "kubat",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": "ar:خيبة/kayba/0.215/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "köftün",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "lap",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": "ar:اشیاء/aşya/0.780/fa",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "link",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": "fa:لینک/link/0.000/",
+"prod": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:لینک/link/0.000/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:لینک/link/0.000/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:لینک/link/0.000/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fa",
+"family": [],
+"basis": "yakınlık",
+"shown": "fa:لینک/link/0.000/",
+"etym": false
+}
+},
+{
+"word": "merek",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": "fr:yers/yers/0.633/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "mucuk",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "musul",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": "hy:փաթուլ/patul/0.475/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "pırtı",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "rapata",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": "hy:ըլել/elel/0.817/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "teşi",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "çank",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "çermik",
+"gold": "Ermenice",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "şıllık",
+"gold": "Ermenice",
+"has_ref": true,
+"sense": true,
+"form": "ar:إلخ/ilak/0.054/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "avanta",
+"gold": "İtalyanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "avara",
+"gold": "İtalyanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "barbun",
+"gold": "İtalyanca",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "boyna",
+"gold": "İtalyanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "doblin",
+"gold": "İtalyanca",
+"has_ref": false,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fr:doublon/doublon/0.040/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "biçim-öncelikli",
+"shown": "fr:doublon/doublon/0.040/",
+"etym": false
+}
+},
+{
+"word": "fileto",
+"gold": "İtalyanca",
+"has_ref": true,
+"sense": true,
+"form": "it:filetto/filetto/0.000/",
+"prod": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:filetto/filetto/0.000/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:filetto/filetto/0.000/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:filetto/filetto/0.000/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "it",
+"family": [],
+"basis": "yakınlık",
+"shown": "it:filetto/filetto/0.000/",
+"etym": true
+}
+},
+{
+"word": "fırkateyn",
+"gold": "İtalyanca",
+"has_ref": true,
+"sense": true,
+"form": "ar:فرقاطة/firkata/0.122/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:فرقاطة/firkata/0.122/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:فرقاطة/firkata/0.122/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:فرقاطة/firkata/0.122/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:فرقاطة/firkata/0.122/",
+"etym": false
+}
+},
+{
+"word": "giz",
+"gold": "İtalyanca",
+"has_ref": true,
+"sense": true,
+"form": "el:κρυφός/kryfos/0.442/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "ispanyolet",
+"gold": "İtalyanca",
+"has_ref": true,
+"sense": true,
+"form": "fr:espagnolette/espagnolette/0.187/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:espagnolette/espagnolette/0.187/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:espagnolette/espagnolette/0.187/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:espagnolette/espagnolette/0.187/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:espagnolette/espagnolette/0.187/",
+"etym": true
+}
+},
+{
+"word": "izolasyon",
+"gold": "İtalyanca",
+"has_ref": true,
+"sense": true,
+"form": "fr:isolation/isolation/0.150/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:isolation/isolation/0.150/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:isolation/isolation/0.150/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:isolation/isolation/0.150/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:isolation/isolation/0.150/",
+"etym": true
+}
+},
+{
+"word": "komando",
+"gold": "İtalyanca",
+"has_ref": true,
+"sense": true,
+"form": "fr:commando/commando/0.073/el",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:commando/commando/0.073/el",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:commando/commando/0.073/el",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:commando/commando/0.073/el",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:commando/commando/0.073/el",
+"etym": true
+}
+},
+{
+"word": "komedya",
+"gold": "İtalyanca",
+"has_ref": true,
+"sense": true,
+"form": "fr:comédie/comedie/0.111/fa",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:comédie/comedie/0.111/fa",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:comédie/comedie/0.111/fa",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:comédie/comedie/0.111/fa",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:comédie/comedie/0.111/fa",
+"etym": true
+}
+},
+{
+"word": "komodin",
+"gold": "İtalyanca",
+"has_ref": true,
+"sense": true,
+"form": "fr:table de nuit/tabledenuit/0.594/el",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "konvoy",
+"gold": "İtalyanca",
+"has_ref": true,
+"sense": true,
+"form": "fr:convoi/convoi/0.100/",
+"prod": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:convoi/convoi/0.100/",
+"etym": true
+},
+"c1": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:convoi/convoi/0.100/",
+"etym": true
+},
+"c2": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:convoi/convoi/0.100/",
+"etym": true
+},
+"c3": {
+"certain": true,
+"lang": "fr",
+"family": [],
+"basis": "yakınlık",
+"shown": "fr:convoi/convoi/0.100/",
+"etym": true
+}
+},
+{
+"word": "kordon",
+"gold": "İtalyanca",
+"has_ref": true,
+"sense": true,
+"form": "ar:كردون/kurdun/0.040/",
+"prod": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كردون/kurdun/0.040/",
+"etym": false
+},
+"c1": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كردون/kurdun/0.040/",
+"etym": false
+},
+"c2": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كردون/kurdun/0.040/",
+"etym": false
+},
+"c3": {
+"certain": true,
+"lang": "ar",
+"family": [],
+"basis": "yakınlık",
+"shown": "ar:كردون/kurdun/0.040/",
+"etym": false
+}
+},
+{
+"word": "lavantin",
+"gold": "İtalyanca",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "maçuna",
+"gold": "İtalyanca",
+"has_ref": true,
+"sense": true,
+"form": "fr:machine/machine/0.238/",
+"prod": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "ar",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "paçarız",
+"gold": "İtalyanca",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "perno",
+"gold": "İtalyanca",
+"has_ref": true,
+"sense": true,
+"form": "fr:Paraná/parana/0.187/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "raşe",
+"gold": "İtalyanca",
+"has_ref": true,
+"sense": true,
+"form": "fr:rebeu/rebeu/0.240/",
+"prod": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c1": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c2": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+},
+"c3": {
+"certain": false,
+"lang": "fr",
+"family": [],
+"basis": "önsel",
+"shown": "",
+"etym": false
+}
+},
+{
+"word": "trampa",
+"gold": "İtalyanca",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+},
+{
+"word": "vardavela",
+"gold": "İtalyanca",
+"has_ref": true,
+"sense": true,
+"form": null,
+"prod": null,
+"c1": null,
+"c2": null,
+"c3": null
+}
+]
+}
