@@ -122,6 +122,53 @@ INNER_FOLDS = 5
 #: kazançtır; eşit iş gören sinyal ek bir kırılganlık kaynağıdır.
 SIMPLICITY_TOLERANCE = 0.01
 
+#: D8 / M9 (Nath ve ark. 2022, zor negatifler): eğitimde "alıntıya benzeyen"
+#: MİRAS maddelerinin kayıp ağırlığı. 1,0 = kapalı (üretim). Kural:
+#: ``ramp`` = verici yakınlığı rampada (0 < güç < 1); ``ramp_phon`` = rampa
+#: YA DA fonotaktik ihlal (yabancı ses yapısı). ``ETY_COMBINER_HARD_NEG``
+#: ("<ağırlık>:<kural>[:thr]", "off") deneme içindir; ``thr`` eşik seçimini
+#: de aynı ağırlıkla yapar. Sonuç: ön kayıt ``data/cache/work/d8/PREREG.md``.
+HARD_NEGATIVE_WEIGHT = 1.0
+HARD_NEGATIVE_RULE = "ramp"
+HARD_NEGATIVE_THRESHOLD = False
+HARD_NEGATIVE_RULES = ("ramp", "ramp_phon")
+
+
+def is_hard_negative(signals: dict[str, float], label: bool, rule: str) -> bool:
+    """Miras ama alıntıya benzeyen madde mi? (M9 zor negatif)"""
+    if label:
+        return False
+    donor = float(signals.get("verici_yakınlığı", 0.0))
+    ramp = 0.0 < donor < 1.0
+    if rule == "ramp":
+        return ramp
+    if rule == "ramp_phon":
+        return ramp or float(signals.get("fonotaktik_ihlal", 0.0)) > 0
+    raise ValueError(f"bilinmeyen zor negatif kuralı: {rule}")
+
+
+def hard_negative_settings() -> tuple[float, str, bool]:
+    """(ağırlık, kural, eşik de ağırlıklı mı) — bayrak modül varsayılanını ezer."""
+    import os
+
+    value = os.environ.get("ETY_COMBINER_HARD_NEG", "").strip().lower()
+    if not value:
+        return HARD_NEGATIVE_WEIGHT, HARD_NEGATIVE_RULE, HARD_NEGATIVE_THRESHOLD
+    if value in ("0", "off", "false", "no"):
+        return 1.0, HARD_NEGATIVE_RULE, False
+    parts = value.split(":")
+    weight = float(parts[0])
+    rule = parts[1] if len(parts) > 1 else HARD_NEGATIVE_RULE
+    if rule not in HARD_NEGATIVE_RULES:
+        raise ValueError(f"bilinmeyen zor negatif kuralı: {rule}")
+    return weight, rule, len(parts) > 2 and parts[2] == "thr"
+
+
+def sample_weights(
+    samples: list[tuple[dict[str, float], bool]], weight: float, rule: str
+) -> list[float]:
+    return [weight if is_hard_negative(s, y, rule) else 1.0 for s, y in samples]
+
 
 def _sigmoid(z: float) -> float:
     if z >= 0:
@@ -210,6 +257,7 @@ def fit(
     iterations: int = ITERATIONS,
     learning_rate: float = LEARNING_RATE,
     threshold: float | None = None,
+    hard_negative: tuple[float, str, bool] | None = None,
 ) -> BorrowingCombiner:
     """Lojistik regresyonu tam-toplu (proksimal) gradyan inişiyle eğitir.
 
@@ -220,6 +268,10 @@ def fit(
         sabit kalır (ablasyon / geriye doğru eleme).
     :param threshold: verilirse eşik eğitim verisinde **aranmaz** — iç
         çapraz doğrulamada, modelin görmediği katlarda seçilmiş eşik budur.
+
+    :param hard_negative: (ağırlık, kural, eşik ağırlıklı mı) — M9 zor
+        negatifleri; ``None`` = :func:`hard_negative_settings`. Ağırlık 1,0
+        iken eğitim ağırlıksız eğitimle BİREBİR aynıdır.
 
     Deterministiktir: rastgele başlangıç yok, karıştırma yok. Aynı veri aynı
     katsayıları verir — ölçümün tekrarlanabilirliği bunu gerektiriyor.
@@ -235,8 +287,11 @@ def fit(
 
     model = BorrowingCombiner(trained_on=trained_on, n=len(samples))
     rows = [(model.features(signals), 1.0 if label else 0.0) for signals, label in samples]
+    hn_weight, hn_rule, hn_threshold = hard_negative or hard_negative_settings()
+    per_sample = sample_weights(samples, hn_weight, hn_rule) if hn_weight != 1.0 else None
     weights, bias = _optimise(
-        rows, mask, l1=l1, l2=l2, iterations=iterations, learning_rate=learning_rate
+        rows, mask, l1=l1, l2=l2, iterations=iterations, learning_rate=learning_rate,
+        sample_weight=per_sample,
     )
 
     model.weights = dict(zip(SIGNAL_ORDER, weights, strict=True))
@@ -247,9 +302,16 @@ def fit(
     model.threshold = (
         threshold
         if threshold is not None
-        else _best_threshold(model, samples, objective=objective)
+        else _best_threshold(
+            model, samples, objective=objective,
+            sample_weight=per_sample if hn_threshold else None,
+        )
     )
     model.objective = objective
+    if per_sample is not None:
+        model.selection = {**model.selection, "hard_negative": {
+            "weight": hn_weight, "rule": hn_rule, "threshold_weighted": hn_threshold,
+            "n_hard": sum(1 for w in per_sample if w != 1.0)}}
     return model
 
 
@@ -261,9 +323,15 @@ def _optimise(
     l2: float,
     iterations: int,
     learning_rate: float,
+    sample_weight: list[float] | None = None,
 ) -> tuple[list[float], float]:
-    """Proksimal gradyan inişi: L2 gradyanda, L1 yumuşak eşiklemede."""
-    size = len(rows)
+    """Proksimal gradyan inişi: L2 gradyanda, L1 yumuşak eşiklemede.
+
+    ``sample_weight`` verilirse kayıp ağırlıklıdır (M9); ölçek ağırlık
+    toplamıdır, yani L2'nin göreli gücü değişmez.
+    """
+    size = len(rows) if sample_weight is None else sum(sample_weight)
+    per = sample_weight or [1.0] * len(rows)
     dims = len(mask)
     weights = [0.0] * dims
     bias = 0.0
@@ -271,9 +339,9 @@ def _optimise(
     for _ in range(iterations):
         gradient = [0.0] * dims
         bias_gradient = 0.0
-        for features, target in rows:
+        for (features, target), sw in zip(rows, per, strict=True):
             prediction = _sigmoid(bias + sum(w * x for w, x in zip(weights, features, strict=True)))
-            error = prediction - target
+            error = (prediction - target) * sw
             bias_gradient += error
             for index, value in enumerate(features):
                 gradient[index] += error * value
@@ -311,23 +379,26 @@ def _stratified_folds(samples: list[tuple[dict[str, float], bool]], folds: int) 
     return out
 
 
-def _score(scored: list[tuple[float, bool]], threshold: float, objective: str) -> float:
-    tp = sum(1 for p, y in scored if p >= threshold and y)
-    fp = sum(1 for p, y in scored if p >= threshold and not y)
-    fn = sum(1 for p, y in scored if p < threshold and y)
-    tn = len(scored) - tp - fp - fn
+def _score(scored: list[tuple[float, bool]], threshold: float, objective: str,
+           sample_weight: list[float] | None = None) -> float:
+    per = sample_weight or [1.0] * len(scored)
+    tp = sum(w for (p, y), w in zip(scored, per, strict=True) if p >= threshold and y)
+    fp = sum(w for (p, y), w in zip(scored, per, strict=True) if p >= threshold and not y)
+    fn = sum(w for (p, y), w in zip(scored, per, strict=True) if p < threshold and y)
+    tn = sum(per) - tp - fp - fn
     if objective == "accuracy":
-        return (tp + tn) / len(scored) if scored else 0.0
+        return (tp + tn) / sum(per) if scored else 0.0
     precision = tp / (tp + fp) if tp + fp else 0.0
     recall = tp / (tp + fn) if tp + fn else 0.0
     return 2 * precision * recall / (precision + recall) if precision + recall else 0.0
 
 
-def _threshold_on(scored: list[tuple[float, bool]], objective: str) -> tuple[float, float]:
+def _threshold_on(scored: list[tuple[float, bool]], objective: str,
+                  sample_weight: list[float] | None = None) -> tuple[float, float]:
     best_threshold, best_score = 0.5, -1.0
     for step in range(1, 100):
         threshold = step / 100
-        value = _score(scored, threshold, objective)
+        value = _score(scored, threshold, objective, sample_weight)
         if value > best_score:
             best_threshold, best_score = threshold, value
     return best_threshold, best_score
@@ -465,6 +536,7 @@ def _best_threshold(
     samples: list[tuple[dict[str, float], bool]],
     *,
     objective: str = "fscore",
+    sample_weight: list[float] | None = None,
 ) -> float:
     """Eğitim yarısında hedef ölçüyü en yükselten eşiği seçer.
 
@@ -481,7 +553,7 @@ def _best_threshold(
     saklanır.
     """
     scored = [(model.probability(signals), label) for signals, label in samples]
-    return _threshold_on(scored, objective)[0]
+    return _threshold_on(scored, objective, sample_weight)[0]
 
 
 def save(model: BorrowingCombiner, path: Path | None = None) -> Path:

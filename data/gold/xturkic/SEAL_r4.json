@@ -1,0 +1,27 @@
+{
+  "_schema": "xturkic-borrowing-gold-r4-seal/v1",
+  "file": "r4.jsonl",
+  "count": 1588,
+  "checksum": "750ecb48e39271f7659c17a7f02b2572961c6912fa2fe1c3dbd2eaf10fe4f51d",
+  "x1_seal_checksums": {
+    "tune": "35db60bcbafbbd9639ea3a8fb68efdd8bf365bc588042ee62bcacbce80b65c10",
+    "r1": "81f3436a46832eed0a7b6d5f40c16563a4ff85fc2bf99d7d60bb9f44d70df433",
+    "r2": "83104e50ebf63d48e1bc2a0a55637bfa53cc0dc70119ac129bf069e611409f19",
+    "test": "49215488d87b9883812176be1e6f38d3218adf0cc8aec0dc03f392c3252ade48"
+  },
+  "r3_checksum": "6b1745759406e9f57b44c1320494678bb750d7ebdd9eb4fe8a28012ab962d672",
+  "dumps": {
+    "atv": "7336f3318badd5452a2d40ee21eb0ea607a52f8f68bf95643fe79362118d1ef8",
+    "az": "496708581bfbd14449ab7a3d9bf91ec3b3d4e677f95b0fd04f4edf4e3c6ce0d7",
+    "crh": "58f97925c9fa0896d77349222094c031acac1085fd252900488f82fd203049e7",
+    "cv": "3ebe9bf631116ad99988d4bdbe5a47ed8a5346d5a29778df85f06185305dc05c",
+    "kk": "9be0bd816bbfc860d7b5457431e5ce6e0da612d53cdf66992298a2edb63208b8",
+    "klj": "591cd54e842641c7e9792d2aa0eec78268098ec8d073a5666f9ff25b6edfc936",
+    "slq": "1b90befe8383ae548369ccdc776c7ee309856546ec9f414d3b0104f187caabde",
+    "ug": "ccc9a73d490a517efffe72a09b6f9b39569ac71dca3edc11229b94dd1ba42913",
+    "uz": "4755ac7580494d096eb9e5941644d53055f6e4ad8a9ba6b7b452447cd9d5844f"
+  },
+  "code_commit": "81fe3af1cc4d5cb6cfdb9ad55fbe6ebab3d4c332",
+  "sealed_at": "2026-09-26T07:09:06+00:00",
+  "note": "R4 yalnız commit edilmiş PREREG ile BİR KEZ açılır. X1 (test dahil) ve R3'ün hiçbir etimon grubu R4'te yok."
+}

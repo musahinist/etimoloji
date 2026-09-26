@@ -1,0 +1,272 @@
+{
+  "_schema": "xturkic-borrowing-gold-r4-stats/v1",
+  "total": 1588,
+  "languages": [
+    "atv",
+    "az",
+    "crh",
+    "cv",
+    "kk",
+    "klj",
+    "slq",
+    "ug",
+    "uz"
+  ],
+  "cap_per_lang_class": 350,
+  "by_lang_label": {
+    "atv": {
+      "alıntı": 45,
+      "miras": 69
+    },
+    "az": {
+      "alıntı": 350,
+      "miras": 0
+    },
+    "crh": {
+      "alıntı": 112,
+      "miras": 0
+    },
+    "cv": {
+      "alıntı": 0,
+      "miras": 51
+    },
+    "kk": {
+      "alıntı": 198,
+      "miras": 0
+    },
+    "klj": {
+      "alıntı": 160,
+      "miras": 34
+    },
+    "slq": {
+      "alıntı": 0,
+      "miras": 84
+    },
+    "ug": {
+      "alıntı": 242,
+      "miras": 0
+    },
+    "uz": {
+      "alıntı": 243,
+      "miras": 0
+    }
+  },
+  "by_label": {
+    "alıntı": 1350,
+    "miras": 238
+  },
+  "by_source": {
+    "yeni_dil": 443,
+    "r3_artık": 1145
+  },
+  "donor_macro": {
+    "mn": 38,
+    "ru": 386,
+    "fa": 384,
+    "ar": 468,
+    "diğer": 74
+  },
+  "etymon_groups": 1454,
+  "pool_before_balance": {
+    "alt": {
+      "alıntı": 21
+    },
+    "atv": {
+      "alıntı": 45,
+      "miras": 69
+    },
+    "az": {
+      "alıntı": 1363,
+      "miras": 18
+    },
+    "crh": {
+      "alıntı": 191
+    },
+    "cv": {
+      "alıntı": 24,
+      "miras": 51
+    },
+    "kk": {
+      "alıntı": 1630
+    },
+    "klj": {
+      "alıntı": 160,
+      "miras": 34
+    },
+    "kum": {
+      "alıntı": 4
+    },
+    "ky": {
+      "alıntı": 6
+    },
+    "nog": {
+      "alıntı": 1
+    },
+    "slq": {
+      "alıntı": 75,
+      "miras": 84
+    },
+    "tk": {
+      "miras": 3
+    },
+    "ug": {
+      "alıntı": 242
+    },
+    "uz": {
+      "alıntı": 243,
+      "miras": 4
+    }
+  },
+  "exclusions": {
+    "atv": {
+      "_kabul": 814,
+      "aracılı_alıntı": 4,
+      "belirsiz": 1,
+      "etimoloji_şablonu_yok": 248,
+      "form_of": 1,
+      "miras_metninde_yabancı_dil": 1,
+      "türk_içi_alıntı": 2,
+      "yalnız_der": 34,
+      "çekince_metni": 45,
+      "çekince_or": 1,
+      "çelişen_eşadlı": 14,
+      "çelişen_şablon": 1,
+      "çok_etimonlu": 29,
+      "çok_sözcüklü_veya_kısa": 53,
+      "özel_ad": 1
+    },
+    "cv": {
+      "_kabul": 321,
+      "aile_dışı_der": 38,
+      "anlam_ipucu_K3": 1,
+      "başka_alıntı_türü": 1,
+      "belirsiz": 21,
+      "etimoloji_şablonu_yok": 450,
+      "melez_türetme": 1,
+      "miras_metninde_yabancı_dil": 3,
+      "türk_içi_alıntı": 35,
+      "yalnız_der": 34,
+      "çekince_metni": 40,
+      "çelişen_eşadlı": 16,
+      "çok_etimonlu": 53,
+      "çok_sözcüklü_veya_kısa": 29,
+      "özel_ad": 6
+    },
+    "klj": {
+      "_kabul": 607,
+      "aile_dışı_der": 2,
+      "belirsiz": 1,
+      "etimoloji_şablonu_yok": 1287,
+      "form_of": 3,
+      "türk_içi_alıntı": 39,
+      "yalnız_der": 7,
+      "çekince_metni": 4,
+      "çelişen_şablon": 2,
+      "çok_etimonlu": 2,
+      "çok_sözcüklü_veya_kısa": 29,
+      "öyküntü": 1,
+      "özel_ad": 3
+    },
+    "slq": {
+      "_kabul": 575,
+      "aile_dışı_der": 2,
+      "aracılı_alıntı": 2,
+      "belirsiz": 2,
+      "etimoloji_şablonu_yok": 535,
+      "form_of": 4,
+      "türk_içi_alıntı": 9,
+      "yalnız_der": 42,
+      "çekince_metni": 14,
+      "çelişen_eşadlı": 6,
+      "çok_etimonlu": 51,
+      "çok_sözcüklü_veya_kısa": 35,
+      "öyküntü": 1,
+      "özel_ad": 2
+    }
+  },
+  "etymon_leak_excluded": {
+    "atv": {
+      "miras": 676,
+      "alıntı": 24
+    },
+    "cv": {
+      "alıntı": 12,
+      "miras": 234
+    },
+    "klj": {
+      "miras": 341,
+      "alıntı": 72
+    },
+    "slq": {
+      "alıntı": 25,
+      "miras": 391
+    }
+  },
+  "excluded_cells": {
+    "alt/alıntı": "Q4 (LLM ön-etiketi): 18/20, Wilson alt 0,699; havuzda 27 madde — hepsi doğru olsa 25/27, Wilson alt 0,766 < 0,80 (data/cache/work/xtr/x5/Q4_r3.json)",
+    "slq/alıntı": "Q4 (LLM ön-etiketi): 17/20 (3 belirsiz), Wilson alt < 0,80 (data/cache/work/d8/Q4_r4.json)",
+    "cv/alıntı": "Q4: 18/20 (Kumanca verici; zayıf Moğolca kaynak), Wilson alt < 0,80"
+  },
+  "donor_sets": {
+    "atv": [
+      "ru",
+      "ar",
+      "fa",
+      "mn"
+    ],
+    "az": [
+      "ar",
+      "fa",
+      "ru"
+    ],
+    "crh": [
+      "ar",
+      "fa",
+      "ru"
+    ],
+    "cv": [
+      "ru",
+      "ar",
+      "fa",
+      "mn"
+    ],
+    "kk": [
+      "ru",
+      "ar",
+      "fa",
+      "mn"
+    ],
+    "klj": [
+      "ar",
+      "fa",
+      "ru"
+    ],
+    "slq": [
+      "ar",
+      "fa",
+      "ru",
+      "mn"
+    ],
+    "ug": [
+      "ar",
+      "fa",
+      "ru"
+    ],
+    "uz": [
+      "ar",
+      "fa",
+      "ru"
+    ]
+  },
+  "natural_borrowed_rate": {
+    "atv": 0.0846,
+    "az": 0.7389,
+    "crh": 0.6532,
+    "cv": 0.1111,
+    "kk": 0.7686,
+    "klj": 0.3822,
+    "slq": 0.1739,
+    "ug": 0.6985,
+    "uz": 0.8021
+  }
+}

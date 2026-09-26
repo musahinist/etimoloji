@@ -155,6 +155,10 @@ def apply_variant(variant: str) -> None:
         dp.STRENGTH_DISTANCE = "mean"
         dp.DONOR_DISTANCE_THRESHOLD = 0.60
         dp.DONOR_DISTANCE_CEILING = 0.85
+    elif variant == "pred":
+        # D8 M8 (PREREG d8): PRED — alıcı kelimenin sonundaki fazlalık cezasız
+        # (Mi ve ark. 2018); eşikler SCA'nınki (0,35/0,60), başka değişiklik yok.
+        dp.STRENGTH_DISTANCE = "pred"
     elif variant.startswith("sense:"):
         from engine.nlp.sense_match import parse_spec
 
@@ -239,6 +243,10 @@ def load_cache(split: str, tag: str = "") -> list[dict[str, Any]]:
         from engine.evaluation.xturkic_gold import r3_languages
 
         admitted = set(r3_languages())
+    elif split == "r4":  # D8
+        from engine.evaluation.xturkic_gold import r4_languages
+
+        admitted = set(r4_languages())
     else:
         admitted = set(admitted_languages())
     return [r for r in rows if r["lang"] in admitted]
@@ -284,8 +292,29 @@ def _features(row: dict[str, Any], lms: dict[str, Any], *, chain: str, dp_binary
     return feats
 
 
+#: Birleştirici eğitiminde zor negatif ayarı (D8 M9). Taban AÇIKÇA kapalı:
+#: ``ETY_COMBINER_HARD_NEG`` bayrağı ölçümü etkilemez.
+HARD_NEG_OFF: tuple[float, str, bool] = (1.0, "ramp", False)
+
+
+def split_tag(tag: str) -> tuple[str, tuple[float, str, bool]]:
+    """``<önbellek etiketi>@hn<ağırlık>:<kural>[:thr]`` -> (önbellek, zor negatif ayarı).
+
+    ``@`` yoksa zor negatif kapalı. Zor negatif yalnız EĞİTİMİ değiştirir;
+    sinyaller aynı önbellekten okunur.
+    """
+    if "@" not in tag:
+        return tag, HARD_NEG_OFF
+    cache, spec = tag.split("@", 1)
+    if not spec.startswith("hn"):
+        raise SystemExit(f"bilinmeyen eğitim çeşidi: {spec}")
+    parts = spec[2:].split(":")
+    return cache, (float(parts[0]), parts[1], len(parts) > 2 and parts[2] == "thr")
+
+
 def _train_predict(
-    train: list[dict[str, Any]], test: list[dict[str, Any]]
+    train: list[dict[str, Any]], test: list[dict[str, Any]],
+    hard_negative: tuple[float, str, bool] = HARD_NEG_OFF,
 ) -> dict[str, dict[str, bool]]:
     """Ayar protokolü: LM eğitim yarısının A parçasında, birleştirici B parçasında."""
     from engine.nlp.borrowing_combiner import fit
@@ -302,7 +331,7 @@ def _train_predict(
     out: dict[str, dict[str, bool]] = defaultdict(dict)
     for name, kw in variants.items():
         samples = [(_features(r, lms, **kw), r["y"]) for r in part_b]
-        combiner = fit(samples, trained_on=f"xtr/tune/mem/{name}")
+        combiner = fit(samples, trained_on=f"xtr/tune/mem/{name}", hard_negative=hard_negative)
         for r in test:
             out[name][r["id"]] = combiner.predict(_features(r, lms, **kw))
         if name == "engine_trained":
@@ -331,14 +360,16 @@ def _prod_predictions(rows: list[dict[str, Any]]) -> dict[str, dict[str, bool]]:
     return out
 
 
-def crossfit(rows: list[dict[str, Any]]) -> tuple[dict[str, dict[str, bool]], list[dict[str, Any]]]:
+def crossfit(
+    rows: list[dict[str, Any]], hard_negative: tuple[float, str, bool] = HARD_NEG_OFF,
+) -> tuple[dict[str, dict[str, bool]], list[dict[str, Any]]]:
     """Ayar bölümünde kat dışı kararlar."""
     preds: dict[str, dict[str, bool]] = defaultdict(dict)
     combiners = []
     for k in range(FOLDS):
         train = [r for r in rows if _fold(r["etymon"]) != k]
         test = [r for r in rows if _fold(r["etymon"]) == k]
-        fold = _train_predict(train, test)
+        fold = _train_predict(train, test, hard_negative)
         combiners.append(fold.pop("_combiner"))  # type: ignore[arg-type]
         for name, p in fold.items():
             preds[name].update(p)
@@ -827,12 +858,13 @@ def mcnemar_one_sided(before: list[bool], after: list[bool]) -> dict[str, Any]:
 
 
 def _variant_predictions(split: str, tag: str) -> tuple[list[dict[str, Any]], dict[str, dict[str, bool]]]:
+    tag, hard_negative = split_tag(tag)
     tune = load_cache("tune", tag)
     if split == "tune":  # ayar: kat dışı kararlar (çapraz uydurma), kilit yok
-        preds, _ = crossfit(tune)
+        preds, _ = crossfit(tune, hard_negative)
         return tune, preds
     rows = load_cache(split, tag)
-    preds = _train_predict(tune, rows)
+    preds = _train_predict(tune, rows, hard_negative)
     preds.pop("_combiner", None)
     for r in rows:
         preds["donor_proximity_only"][r["id"]] = bool((r["dp"] or {}).get("close"))
@@ -863,12 +895,18 @@ def compare_variants(split: str, prereg: str | None, base_tag: str, cand_tags: l
             "donor_proximity_only": prf(rows, preds["donor_proximity_only"]).as_dict(),
             "donor_identification": donor_identification(rows, preds["engine_trained"]),
             "ramp_rate_inherited": round(sum(_ramp(r) for r in inherited) / max(1, len(inherited)), 4),
+            # D8: miras özgüllüğü (engine_trained'in miras dediği mirasların payı)
+            "specificity_inherited": round(
+                sum(1 for r in inherited if not preds["engine_trained"][r["id"]]) / max(1, len(inherited)), 4),
             "ramp_rate_borrowed": round(sum(_ramp(r) for r in rows if r["y"]) / max(1, len(rows) - len(inherited)), 4),
             "breakdowns": breakdowns(rows, preds["engine_trained"]),
         }
 
     def subsets(rows: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
         """R3 (X5): yeni diller / X1 dillerinin artığı ayrı (ikincil, betimsel)."""
+        if split == "r4":
+            return {"yeni_dil": [r for r in rows if r["lang"] in ("atv", "cv", "klj", "slq")],
+                    "r3_artık": [r for r in rows if r["lang"] not in ("atv", "cv", "klj", "slq")]}
         if split != "r3":
             return {}
         from engine.evaluation.xturkic_gold import R3_NEW_LANGUAGES
@@ -894,6 +932,10 @@ def compare_variants(split: str, prereg: str | None, base_tag: str, cand_tags: l
                 rows, preds["donor_proximity_only"], base_rows, base["donor_proximity_only"], "precision"),
             "ramp_inherited_mcnemar": mcnemar_one_sided(
                 [_ramp(r) for r in inherited], [_ramp(by_id[r["id"]]) for r in inherited]),
+            # D8: mirasta yanlış pozitif AZALIR mı? (özgüllük artışı; kesin, tek yönlü)
+            "fp_inherited_mcnemar": mcnemar_one_sided(
+                [base["engine_trained"][r["id"]] for r in inherited],
+                [preds["engine_trained"][r["id"]] for r in inherited]),
         }
         base_by_id = {r["id"]: r for r in base_rows}
         for name, members in subsets(rows).items():
@@ -905,13 +947,14 @@ def compare_variants(split: str, prereg: str | None, base_tag: str, cand_tags: l
         for t in cand_tags:
             payload["comparisons"][t]["F_engine_trained"]["p_holm"] = adjusted[t]
     payload["code_commit"] = _git_head()
-    stem = Path(prereg).stem if prereg else "cmp_" + "_".join(t.replace(":", "") for t in cand_tags)
+    stem = Path(prereg).stem if prereg else "cmp_" + "_".join(t.replace(":", "").replace("@", "-") for t in cand_tags)
     out = WORK_DIR / f"xborrowing_{split}_{stem}.json"
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     print(json.dumps({"systems": {k: {"F": v["engine_trained"]["fscore"], "acc": v["engine_trained"]["accuracy"],
                                       "dp_P": v["donor_proximity_only"]["precision"],
                                       "donor_id": v["donor_identification"]["accuracy"],
-                                      "ramp_inh": v["ramp_rate_inherited"]}
+                                      "ramp_inh": v["ramp_rate_inherited"],
+                                      "spec_inh": v["specificity_inherited"]}
                                   for k, v in payload["systems"].items()},
                       "comparisons": payload["comparisons"]}, ensure_ascii=False, indent=1))
     print(out)
@@ -940,7 +983,7 @@ def main() -> int:
     cmp_.add_argument("--tags", nargs="+", required=True)
     cmp_.add_argument("--final-report", action="store_true")
     args = ap.parse_args()
-    if args.split not in ("tune", "r1", "r2", "r3", "test"):
+    if args.split not in ("tune", "r1", "r2", "r3", "r4", "test"):
         raise SystemExit(f"bilinmeyen bölüm {args.split}")
     if args.cmd == "compare":
         compare_variants(args.split, args.prereg, args.base_tag, args.tags, args.final_report)

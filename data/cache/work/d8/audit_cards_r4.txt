@@ -1,0 +1,654 @@
+[atv:гӱрӧнъ] (gürön, adj) 'brown'
+   ETİKET alıntı xgn:
+   şablon: bor xgn 
+   metin: A Mongolic borrowing: compare Mongolian хүрэн (xüren, “brown”).
+[atv:найыджы] (nayıdjı, noun) 'friend'
+   ETİKET alıntı xgn-pro:*naïja
+   şablon: bor xgn-pro *naïja
+   metin: From Proto-Mongolic *naïja. Compare to Shor нанчы (nančï), Mongolian найз (najz), etc.
+[atv:караал] (karaal, noun) 'midge'
+   ETİKET alıntı xng:ᠬᠠᠷᠠᠭᠤᠯ
+   şablon: bor xng ᠬᠠᠷᠠᠭᠤᠯ
+   metin: From Middle Mongol ᠬᠠᠷᠠᠭᠤᠯ (qaraɣul).
+[atv:время] (vremya, noun) 'time'
+   ETİKET alıntı ru:время
+   şablon: bor ru время
+   metin: From Russian время (vremja).
+[atv:арбакчы] (arbakçı, noun) 'rope'
+   ETİKET alıntı xgn-pro:*arɣamǰi
+   şablon: bor xgn-pro *arɣamǰi
+   metin: From Proto-Mongolic *arɣamǰi. Compare Mongolian аргамж (argamž).
+[atv:кӱлер] (küler, adj) 'bronze, bronzen'
+   ETİKET alıntı xgn-pro:*küril
+   şablon: bor xgn-pro *küril
+   metin: From Proto-Mongolic *küril. Compare with Tuvan хүлер (xüler) and Tofa һүлер (hüler).
+[atv:ньаан] (naan, adj) 'big, large, great'
+   ETİKET alıntı xgn-pro:*ǯagan
+   şablon: bor xgn-pro *ǯagan ; der xgn-pro *ǯigan
+   metin: From Proto-Mongolic *ǯagan / Proto-Mongolic *ǯigan. Cognate to Shor наан (naan), dialectal Khakas нан (nan), etc.
+[atv:ньон] (non, noun) 'people, nation'
+   ETİKET alıntı xgn:
+   şablon: bor xgn 
+   metin: From Mongolic. Compare Khakas чон (çon), Shor чон (čon), Yakut дьон (jon), Dolgan дьон (con), etc.
+[atv:торго] (torgo, noun) 'silk'
+   ETİKET alıntı mn:торго
+   şablon: bor mn торго
+   metin: From Mongolian торго (torgo). Cognate to Khakas торғы (torğı), Shor торғу (torɣu), etc.
+[atv:калбак] (kalbak, noun) 'spoon'
+   ETİKET alıntı xgn-pro:*kalbuga
+   şablon: bor xgn-pro *kalbuga
+   metin: From Proto-Mongolic *kalbuga.
+[atv:алка] (alka, noun) 'hammer'
+   ETİKET alıntı mn:алх
+   şablon: bor mn алх
+   metin: From Mongolian алх (alx). Cognate to Tofa алаға (alaɣa).
+[atv:власть] (vlast, noun) 'power'
+   ETİKET alıntı ru:власть
+   şablon: bor ru власть
+   metin: From Russian власть (vlastʹ).
+[atv:солай] (solay, noun) 'lefty, left-hander, left-handed person'
+   ETİKET alıntı xgn-pro:*solagai
+   şablon: bor xgn-pro *solagai
+   metin: From Proto-Mongolic *solagai. Cognate to Khakas солағай (solağay), Shor солағай (solaɣay), Tuvan солагай (solagay), etc.
+[atv:гость] (gost, noun) 'guest, visitor'
+   ETİKET alıntı ru:гость
+   şablon: bor ru гость
+   metin: From Russian гость (gostʹ).
+[atv:чажын] (çajın, noun) 'paper'
+   ETİKET alıntı mn:цаас
+   şablon: bor mn цаас ; der xgn-pro *caxasun
+   metin: From Mongolian цаас (caas), from Proto-Mongolic *caxasun, *carxasun. Cognate to Khakas чаӌын (çacın), etc.
+[atv:кошке] (koşke, noun) 'cat'
+   ETİKET alıntı ru:кошка
+   şablon: bor ru кошка
+   metin: From Russian кошка (koška). Cognate to Khakas хоосха (xoosxa), Yakut куоска (kuoska), etc.
+[atv:шикир] (şikir, noun) 'sugar'
+   ETİKET alıntı mn:чихэр
+   şablon: bor mn чихэр ; der fa شکر ; der trk  ; der sa शर्करा
+   metin: Borrowed from Mongolian чихэр (čixer), itself from Persian شکر (šakar) via Turkic, ultimately from Sanskrit शर्करा (śárkarā, “ground or candied sugar, originally meaning grit, gravel”).
+[atv:талай] (talay, noun) 'sea'
+   ETİKET alıntı mn:далай
+   şablon: bor mn далай ; der xgn-pro *dalai
+   metin: From Mongolian далай (dalaj), from Proto-Mongolic *dalai. Cognate to Khakas талай (talay), Tuvan далай (dalay), Yakut далай (dalay), etc.
+[atv:тоо] (too, noun) 'number'
+   ETİKET alıntı xgn-pro:*toxa
+   şablon: bor xgn-pro *toxa
+   metin: From Proto-Mongolic *toxa. Compare to Tuvan дугаар (dugaar), Shor тоо (too), etc.
+[atv:кий] (kiy, noun) 'air'
+   ETİKET alıntı xgn-pro:*kei
+   şablon: bor xgn-pro *kei
+   metin: From Proto-Mongolic *kei (“wind”). Cognate to Khakas кии (kii), Mongolian хий (xii) etc.
+[atv:йебирерге] (yebirerge, verb) 'to destroy'
+   ETİKET miras :
+   şablon: inh trk-pro *jemür-
+   metin: From Proto-Turkic *jemür-.
+[atv:одузунджы] (oduzundjı, num) 'thirtieth'
+   ETİKET miras :
+   şablon: inh trk-pro *otuŕunč
+   metin: From Proto-Turkic *otuŕunč, from отыс (otïs) +-ынджы (-ïndžï). Cognate to Shor одузунчы (oduzunčï), Khakas отызынӌы (otızıncı), etc.
+[atv:чӱзинджи] (çüzindji, num) 'hundredth'
+   ETİKET miras :
+   şablon: inh trk-pro *yǖŕünč
+   metin: From Proto-Turkic *yǖŕünč, from чӱс (čüs) + -инджи (-indži). Cognate to Shor чӱзинчи (čüzinči), Khakas чӱзінӌі (çüzìncì), etc.
+[atv:тӧртинджи] (törtindji, num) 'fourth'
+   ETİKET miras :
+   şablon: inh trk-pro *tȫrtünč
+   metin: From Proto-Turkic *tȫrtünč, from тӧрт (tört) +-инджи (-indži). Cognate to Shor тӧртӱнчи (törtünči), Khakas тӧртінӌі (törtìncì), etc.
+[atv:чӧрджек] (çördjek, noun) 'tale, fairy tale'
+   ETİKET miras :
+   şablon: inh trk-pro *sö-
+   metin: From Proto-Turkic *sö-.
+[atv:йараш] (yaraş, adj) 'beautiful'
+   ETİKET miras :
+   şablon: inh trk-pro *jara-
+   metin: From Proto-Turkic *jara-.
+[atv:ньоон] (noon, adj) 'thick'
+   ETİKET miras :
+   şablon: inh trk-pro *yogun
+   metin: From Proto-Turkic *yogun. Cognate to Khakas чоон (çoon), Shor чоон (čoon), etc.
+[atv:экинджи] (ekindji, num) 'second'
+   ETİKET miras :
+   şablon: inh trk-pro *ẹk(k)inč
+   metin: From Proto-Turkic *ẹk(k)inč, экки (ekki) +-инджи (-indži). Cognate to Shor ийгинчи (iyginči), Khakas ікінӌі (ìkìncì), etc.
+[atv:чымчак] (çımçak, adj) 'soft'
+   ETİKET miras :
+   şablon: inh trk-pro *jïm-ĺča-k
+   metin: From Proto-Turkic *jïm-ĺča-k (“soft”).
+[atv:тогызынджы] (togızındjı, num) 'ninth'
+   ETİKET miras :
+   şablon: inh trk-pro *tokuŕunč
+   metin: From Proto-Turkic *tokuŕunč, from тогыс (togïs) +-ынджы (-ïndžï). Cognate to Shor тоғузунчы (toɣuzunčï), Khakas тоғызынӌы (toğızıncı), etc.
+[atv:шеден] (şeden, noun) 'fence'
+   ETİKET miras :
+   şablon: inh trk-pro *četen
+   metin: From Proto-Turkic *četen.
+[atv:паас] (paas, noun) 'gadfly'
+   ETİKET miras :
+   şablon: inh trk-pro *baŋïŕ
+   metin: From Proto-Turkic *baŋïŕ. Cognate to Khakas маас (maas, “fly (Kyzyl)”), Shor маас (maas, “gadfly”), Tofa маас (maas, “gadfly”), etc.
+[atv:тӱгӱн] (tügün, noun) 'knot, bundle'
+   ETİKET miras :
+   şablon: inh trk-cmn-pro *tügün
+   metin: From Proto-Common Turkic *tügün. Compare Khakas тӱӱнӌек (tüüncek), etc.
+[atv:кырыгынджы] (kırıgındjı, num) 'fortieth'
+   ETİKET miras :
+   şablon: inh trk-pro *kïrkïnč
+   metin: From Proto-Turkic *kïrkïnč, from кырык (kïrïk) + -ынджы (-ïndžï). Cognate to Shor қырығынчы (qïrɣïnčï), Khakas хырығынӌы (xırığıncı), etc.
+[atv:уджук] (udjuk, noun) 'thread'
+   ETİKET miras :
+   şablon: inh trk-pro *učuk
+   metin: From Proto-Turkic *učuk. Cognate to Tuvan ужук (ujuk), Khakas учух (uçux), etc.
+[atv:кола] (kola, noun) 'copper (yellow)'
+   ETİKET miras :
+   şablon: inh trk-pro *kōla
+   metin: From Proto-Turkic *kōla. Cognate to Tuvan хола (xola), etc.
+[atv:тазыл] (tazıl, noun) 'root'
+   ETİKET miras :
+   şablon: inh trk-pro *taŕïl
+   metin: From Proto-Turkic *taŕïl. Compare to Tuvan дазыл (dazıl), etc.
+[atv:карлыг] (karlıg, adj) 'snowy'
+   ETİKET miras :
+   şablon: inh trk-pro *kiār-lïg
+   metin: From Proto-Turkic *kiār-lïg.
+[atv:тӧнъеш] (töneş, noun) 'stump'
+   ETİKET miras :
+   şablon: inh trk-pro *tömgek
+   metin: From Proto-Turkic *tömgek. Cognate to Shor тӧңеш (töŋeš), Tofa дөһеш (döheš), etc.
+[atv:элигинджи] (eligindji, num) 'fiftieth'
+   ETİKET miras :
+   şablon: inh trk-pro *elliginč
+   metin: From Proto-Turkic *elliginč, from кырык (kïrïk) + -ынджы (-ïndžï). Cognate to Shor элигинчи (eliginči), Khakas илігінӌі (ilìgìncì), etc.
+[cv:акак] (akak, noun) 'carnelian'
+   ETİKET alıntı ar:عَقِيق
+   şablon: bor+ ar عَقِيق
+   metin: Borrowed from Arabic عَقِيق (ʕaqīq). Compare Tatar ахак (axaq), Bashkir аҡыҡ (aqıq)
+[cv:этем] (etem, noun) 'human being'
+   ETİKET alıntı fa:آدم
+   şablon: bor+ fa آدم
+   metin: Borrowed from Persian آدم.
+[cv:кӗреҫе] (kerese, noun) 'shovel, paddle'
+   ETİKET alıntı xng:ᠬᠦᠷᠵᠡ
+   şablon: bor+ xng ᠬᠦᠷᠵᠡ
+   metin: Borrowed from Middle Mongol ᠬᠦᠷᠵᠡ (kürǰe, “shovel”). Despite Agyagasi, Jegorov and Fedotov, unlikely to come from Proto-Turkic *kürgek (“shovel”).
+[cv:ҫемье] (seme, noun) 'family'
+   ETİKET alıntı ru:семья́
+   şablon: bor ru семья́
+   metin: From Russian семья́ (semʹjá).
+[cv:авӑн] (avan, noun) 'barn, granary'
+   ETİKET alıntı ru:овин
+   şablon: bor ru овин
+   metin: Borrowed from Russian овин (ovin).
+[cv:сала] (sala, noun) 'village'
+   ETİKET alıntı ru:село́
+   şablon: bor ru село́
+   metin: Borrowed from Russian село́ (seló).
+[cv:ватӑ] (vata, noun) 'an elderly person:'
+   ETİKET alıntı xgn:
+   şablon: bor+ xgn 
+   metin: Borrowed from Mongolic. Compare Mongolian өтөл (ötöl, “old”) and Mongolian өтгөс (ötgös, “elders”).
+[cv:служащи] (slujaşi, noun) 'office worker, white-collar worker'
+   ETİKET alıntı ru:слу́жащий
+   şablon: bor ru слу́жащий
+   metin: From Russian слу́жащий (slúžaščij).
+[cv:кекс] (keks, noun) 'cake'
+   ETİKET alıntı ru:кекс
+   şablon: bor+ ru кекс
+   metin: Borrowed from Russian кекс (keks).
+[cv:йӗпкӗн] (yepken, adj) 'dark (of colors)'
+   ETİKET alıntı qwm-cum:ipchin
+   şablon: bor+ qwm-cum ipchin ; der trk-pro *(y)ipgin
+   metin: Borrowed from Cuman ipchin (“purple”), from Proto-Turkic *(y)ipgin.
+[cv:шоколад] (şokolad, noun) 'chocolate'
+   ETİKET alıntı ru:шоколад
+   şablon: bor+ ru шоколад
+   metin: Borrowed from Russian шоколад (šokolad, “chocolate”).
+[cv:рабочи] (raboçi, noun) 'worker'
+   ETİKET alıntı ru:рабо́чий
+   şablon: bor ru рабо́чий
+   metin: From Russian рабо́чий (rabóčij).
+[cv:апат] (apat, noun) 'meal'
+   ETİKET alıntı ru:обед
+   şablon: bor ru обед
+   metin: Borrowed from Russian обед (obed).
+[cv:кӗнеке] (keneke, noun) 'book'
+   ETİKET alıntı ru:книга
+   şablon: bor ru книга
+   metin: Borrowed from Russian книга (kniga).
+[cv:тестостерон] (testosteron, noun) 'testosterone'
+   ETİKET alıntı ru:тестостеро́н
+   şablon: bor ru тестостеро́н
+   metin: From Russian тестостеро́н (tɛstostɛrón).
+[cv:хваттер] (hvatter, noun) 'apartment'
+   ETİKET alıntı ru:кварти́ра
+   şablon: bor+ ru кварти́ра
+   metin: Borrowed from Russian кварти́ра (kvartíra).
+[cv:хресчен] (hresçen, noun) 'peasant'
+   ETİKET alıntı ru:крестьянин
+   şablon: bor ru крестьянин
+   metin: From Russian крестьянин (krestʹjanin).
+[cv:сӑмса] (samsa, noun) 'nose'
+   ETİKET alıntı xng:ᠰᠠᠮᠰᠠ
+   şablon: bor+ xng ᠰᠠᠮᠰᠠ
+   metin: Borrowed from Middle Mongol ᠰᠠᠮᠰᠠ (samsa, “nasal septum”). Jegorov and Fedotov also compare Proto-Common Turkic *tumšuk (“nose, beak”), however this is dubious for phonetic reasons. EDAL reconstructs Proto-Turkic *sum-, however such a word is not attested in any other Turkic language.
+[cv:авал] (aval, adv) 'long ago, in ancient times'
+   ETİKET alıntı ar:أول#Adjective
+   şablon: bor+ ar أول#Adjective
+   metin: Borrowed from Arabic أَوَّل (ʔawwal, “first”). Compare Turkish evvel (“beginning”).
+[cv:сахӑр] (sahar, noun) 'sugar'
+   ETİKET alıntı ru:са́хар
+   şablon: bor ru са́хар
+   metin: Etymology tree
+Proto-Indo-European *ḱorkeh₂
+Proto-Indo-Iranian *ćárkaraH
+Proto-Indo-Aryan *śárkaraH
+Sanskrit शर्क॑रा (śárkarā)
+Pali sakkharābor.
+Ancient Greek σάκχαρ (sákkhar)bor.
+Old East Slavic са́харъ (sáxarŭ)
+Russian са́хар (sáxar)bor.
+Chuvash сахӑр
+Borrowed from Russian са́хар (sáxar), from Old
+[cv:хӗрӗ] (here, noun) 'edge'
+   ETİKET miras :
+   şablon: inh trk-pro *kïdïg ; inh+ trk-pro *kïdïg
+   metin: Inherited from Proto-Turkic *kïdïg (“edge”).
+Cognate with Turkish kıyı (“shore”) and Southern Altai куйу (kuyu, “border”).
+[cv:кӗҫӗ] (kese, noun) 'scabies'
+   ETİKET miras :
+   şablon: inh trk-pro *kīči- ; inh+ trk-pro *kīči-
+   metin: Inherited from Proto-Turkic *kīči- (“to itch”). Cognate with Turkish gıcık (“tickle; annoying”). Doublet of кӑчӑк (kăč̬ăk, “tickling, itching, irritation”).
+[cv:хӑш] (haş, pron) 'which? which one?'
+   ETİKET miras :
+   şablon: inh trk-pro 
+   metin: From Proto-Turkic [Term?]. Cognates include Turkish hangi and Bashkir ҡайһы (qayhı).
+[cv:ҫурта] (surta, noun) 'candle'
+   ETİKET miras :
+   şablon: inh trk-pro *yārtu
+   metin: From Proto-Turkic *yārtu.
+[cv:ҫулӑх] (sulah, verb) 'to be annoying'
+   ETİKET miras :
+   şablon: inh trk-pro *yōluk- ; inh+ trk-pro *yōluk-
+   metin: Inherited from Proto-Turkic *yōluk- (“to meet”).
+[cv:пӗтӳ] (petu, noun) 'amulet'
+   ETİKET miras :
+   şablon: inh trk-pro *bitig
+   metin: From Proto-Turkic *bitig, ultimately from Proto-Turkic *biti-. Cognate with Old Turkic 𐰋𐰃𐱅𐰏 (b²it²g²).
+[cv:лар] (lar, verb) 'to sit'
+   ETİKET miras :
+   şablon: inh trk-pro *olur-
+   metin: From Proto-Turkic *olur- (“to sit”).
+[cv:йӗке] (yeke, noun) 'spindle'
+   ETİKET miras :
+   şablon: inh trk-pro *yīk
+   metin: From Proto-Turkic *yīk. Cognate with Turkish iğ, etc.
+[cv:ҫурла] (surla, noun) 'August'
+   ETİKET miras :
+   şablon: inh trk-pro *čarlag ; inh+ trk-pro *čarlag
+   metin: Inherited from Proto-Turkic *čarlag.
+[cv:япӑх] (yapah, adj) 'bad'
+   ETİKET miras :
+   şablon: inh trk-pro *yab-
+   metin: Derived from Proto-Turkic *yab- (“unattested verb denoting negativity”).
+[cv:вӗлер] (veler, verb) 'to kill'
+   ETİKET miras :
+   şablon: inh trk-pro *ölür- ; inh+ trk-pro *ölür-
+   metin: Inherited from Proto-Turkic *ölür-, a causative form of *öl-.
+[cv:хӗрт] (hert, verb) 'to heat up'
+   ETİKET miras :
+   şablon: inh trk-pro *kï̄ŕart- ; inh+ trk-pro *kï̄ŕart-
+   metin: Inherited from Proto-Turkic *kï̄rᶻart- (“to heat up”). Cognate with Turkish kızartmak. Related to Chuvash хӗр (xĕr, “(intransitive) to heat up”).
+[cv:валак] (valak, noun) 'gutter'
+   ETİKET miras :
+   şablon: inh trk-pro *oluk ; inh+ trk-pro *oluk
+   metin: Inherited from Proto-Turkic *oluk (“gutter; hollowed-out tree”). Despite Yegorov, unrelated to *yālgak (“trough”). Cognate with Hungarian vályú (“trough”).
+[cv:ҫухал] (suhal, verb) 'to disappear, get lost'
+   ETİKET miras :
+   şablon: inh trk-pro *yōkal- ; inh+ trk-pro *yōkal-
+   metin: Inherited from Proto-Turkic *yōkal- (“to perish, be destroyed, lost; to disappear”), by surface analysis, ҫук (śuk, “there is not”) + -ал (-al). Cognate with Turkish yoğalmak (“to disappear”).
+[cv:пӗҫер] (peser, noun) 'to bake, cook'
+   ETİKET miras :
+   şablon: inh trk-pro *bïĺčür- ; inh+ trk-pro *bïĺčür-
+   metin: Inherited from Proto-Turkic *bïlᶴčur- (“to bake, to cook”).
+[cv:валеҫ] (vales, verb) 'to distribute'
+   ETİKET miras :
+   şablon: inh trk-pro *üleĺč- ; inh+ trk-pro *üleĺč-
+   metin: Inherited from Proto-Turkic *ülälᶴč- (“to distribute”). Cognate with Karakhanid اُلَشماَك (ʾlšmʾk /⁠üläš-⁠/, “to dividee, share”).
+[cv:ара] (ara, noun) 'really'
+   ETİKET miras :
+   şablon: inh trk-pro *ede
+   metin: From Proto-Turkic *ede, *ide.
+Cognate with Old Turkic [script needed] (idi).
+[cv:ҫурӑк] (surak, noun) 'crack, crevice, shred'
+   ETİKET miras :
+   şablon: inh trk-pro *yāruk ; inh+ trk-pro *yāruk
+   metin: Inherited from Proto-Turkic *yāruk (“crack”), by surface analysis, ҫур (śur, “to split, cleave”) + -ӑк (-ăk).
+[cv:ҫӑмха] (samha, noun) 'ball'
+   ETİKET miras :
+   şablon: inh trk-pro *yumgak ; inh+ trk-pro *yumgak
+   metin: Inherited from Proto-Turkic *yumgak (“spherical, globular object”).
+[cv:ҫураҫ] (suras, verb) 'to come to terms'
+   ETİKET miras :
+   şablon: inh trk-pro *yaraĺč- ; inh+ trk-pro *yaraĺč-
+   metin: Inherited from Proto-Turkic *yaralᶴč- (“to be suitable, becoming, harmonious”) Cognate with Karakhanid يَرَشماَق (yršmʾq /⁠yaraš-⁠/, “to agree”).
+[klj:bil] (bil, noun) 'shovel'
+   ETİKET alıntı fa:بیل
+   şablon: bor+ fa بیل
+   metin: Borrowed from Persian بیل (bil)
+[klj:çân] (çan, noun) 'a kind of threshing machine'
+   ETİKET alıntı fa:چان
+   şablon: bor fa چان
+   metin: From dialectal Persian چان (čân).
+[klj:pâyîz] (payiz, noun) 'autumn'
+   ETİKET alıntı fa:پاییز
+   şablon: bor+ fa پاییز
+   metin: Borrowed from Persian پاییز (pâyiz).
+[klj:zuğâl] (zuğal, noun) 'coal'
+   ETİKET alıntı fa:زغال
+   şablon: bor+ fa زغال
+   metin: Borrowed from Persian زغال (zoġâl).
+[klj:əmmâ] (emma, conj) 'but'
+   ETİKET alıntı fa:اما
+   şablon: bor+ fa اما ; der ar أَمَّا
+   metin: Borrowed from Persian اما (ammâ), from Arabic أَمَّا (ʔammā).
+[klj:çâna] (çana, noun) 'chin'
+   ETİKET alıntı fa:چانه
+   şablon: bor+ fa چانه
+   metin: Borrowed from Persian چانه (čâne).
+[klj:bəbr] (bebr, noun) 'tiger'
+   ETİKET alıntı fa:ببر
+   şablon: bor+ fa ببر
+   metin: Borrowed from Persian ببر (babr)
+[klj:dovra] (dovra, noun) 'round (in a game)'
+   ETİKET alıntı fa:دوره
+   şablon: bor+ fa دوره ; der ar دَوْرَة
+   metin: Borrowed from Persian دوره (dowre), from Arabic دَوْرَة (dawra)
+[klj:xazâna] (hazana, noun) 'treasury'
+   ETİKET alıntı fa:خزانه
+   şablon: bor+ fa خزانه ; der ar خِزَانَة
+   metin: Borrowed from Persian خزانه (xazâne), from Arabic خِزَانَة (ḵizāna)
+[klj:bara] (bara, postp) 'because of, for'
+   ETİKET alıntı fa:برا
+   şablon: bor+ fa برا
+   metin: Borrowed from Persian برا (barâ).
+[klj:sîb] (sib, noun) 'apple'
+   ETİKET alıntı fa:سیب
+   şablon: bor+ fa سیب
+   metin: Borrowed from Persian سیب (sib).
+[klj:âbəmbâr] (abembar, noun) 'water container'
+   ETİKET alıntı fa:آبانبار
+   şablon: bor+ fa آبانبار
+   metin: Borrowed from Persian آبانبار (âb anbâr).
+[klj:çarx] (çarh, noun) 'wheel'
+   ETİKET alıntı fa:چرخ
+   şablon: bor+ fa چرخ
+   metin: Borrowed from Persian چرخ (čarx, “wheel”).
+[klj:kula] (kula, adj) 'short, small'
+   ETİKET alıntı fa:کل
+   şablon: bor fa کل
+   metin: Ultimately from Persian کل (kol).
+[klj:yâd] (yad, noun) 'memory, remembrance'
+   ETİKET alıntı fa:یاد
+   şablon: bor+ fa یاد
+   metin: Borrowed from Persian یاد (yâd).
+[klj:harra] (harra, noun) 'saw'
+   ETİKET alıntı fa:اره
+   şablon: bor+ fa اره
+   metin: Borrowed from Persian اره (arre).
+[klj:həmpâça] (hempaça, noun) 'co-brother-in-law'
+   ETİKET alıntı fa:همپاچه
+   şablon: bor+ fa همپاچه
+   metin: Borrowed from Persian همپاچه (hampâče, “co-brother-in-law”, literally “having the same feet”).
+[klj:âzâr] (azar, noun) 'torture, agony, anguish'
+   ETİKET alıntı fa:آزار
+   şablon: bor+ fa آزار
+   metin: Borrowed from Persian آزار (âzâr).
+[klj:aqîdə] (akide, noun) 'opinion, view'
+   ETİKET alıntı fa:عقیده
+   şablon: bor+ fa عقیده ; der ar عَقِيدَة
+   metin: Borrowed from Persian عقیده ('aqide), from Arabic عَقِيدَة (ʕaqīda).
+[klj:âyəndə] (ayende, noun) 'future'
+   ETİKET alıntı fa:آینده
+   şablon: bor+ fa آینده
+   metin: Borrowed from Persian آینده (âyande).
+[klj:târ] (tar, adj) 'narrow'
+   ETİKET miras :
+   şablon: inh trk-pro *t(i)ār
+   metin: From Proto-Turkic *t(i)ār.
+[klj:bəlgülüg] (belgülüg, adj) 'known'
+   ETİKET miras :
+   şablon: inh trk-pro *bẹlgülig
+   metin: From Proto-Turkic *bẹlgülig.
+[klj:kişi] (kişi, noun) 'woman'
+   ETİKET miras :
+   şablon: inh trk-cmn-pro *kiši ; inh trk-pro *kisi
+   metin: From Proto-Common Turkic *kiši, contaminated with Proto-Turkic *kisi
+[klj:harq] (hark, noun) 'excrement'
+   ETİKET miras :
+   şablon: inh trk-pro *ark
+   metin: From Proto-Turkic *ark.
+[klj:irdək] (irdek, noun) 'duck'
+   ETİKET miras :
+   şablon: inh trk-cmn-pro *ȫrdek
+   metin: From Proto-Common Turkic *ȫrdek (“duck”).
+[klj:hikmək] (hikmek, noun) 'bread'
+   ETİKET miras :
+   şablon: inh trk-pro *etmek
+   metin: From Proto-Turkic *etmek
+[klj:bulâq] (bulak, noun) 'spring, waterer, fount'
+   ETİKET miras :
+   şablon: inh trk-pro *bulak
+   metin: From Proto-Turkic *bulak.
+[klj:yilimək] (yilimek, verb) 'to shave'
+   ETİKET miras :
+   şablon: inh trk-pro *yüli-
+   metin: From Proto-Turkic *yüli-.
+[klj:boğarsuq] (boğarsuk, noun) 'bowels'
+   ETİKET miras :
+   şablon: inh trk-pro *bagïrsuk
+   metin: From Proto-Turkic *bagïrsuk.
+[klj:qômaq] (komak, verb) 'to put'
+   ETİKET miras :
+   şablon: inh trk-pro *ko-
+   metin: From Proto-Turkic *ko-.
+[klj:qarğu] (karğu, noun) 'reed'
+   ETİKET miras :
+   şablon: inh trk-pro *kargu
+   metin: From Proto-Turkic *kargu.
+[klj:kissi] (kissi, noun) 'wife'
+   ETİKET miras :
+   şablon: inh trk-pro *kisi
+   metin: From Proto-Turkic *kisi
+[klj:holımaq] (holımak, verb) 'to turn around'
+   ETİKET miras :
+   şablon: inh trk-pro *olï-
+   metin: From Proto-Turkic *olï-.
+[klj:bôyın] (boyın, noun) 'neck'
+   ETİKET miras :
+   şablon: inh trk-pro *bōyn
+   metin: From Proto-Turkic *bōyn (“neck”).
+[klj:hürün] (hürün, adj) 'white'
+   ETİKET miras :
+   şablon: inh trk-pro *ürüŋ
+   metin: From Proto-Turkic *ürüŋ.
+[klj:ışıq] (ışık, adj) 'clear, bright, light'
+   ETİKET miras :
+   şablon: inh trk-pro *yaĺčuk
+   metin: From Proto-Turkic *yaĺčuk.
+[klj:yıqmaq] (yıkmak, verb) 'to throw down'
+   ETİKET miras :
+   şablon: inh trk-pro *yïk-
+   metin: From Proto-Turkic *yïk-.
+[klj:hâm] (ham, noun) 'vagina, vulva, cunt'
+   ETİKET miras :
+   şablon: inh trk-pro *am
+   metin: From Proto-Turkic *am.
+[klj:tîrsək] (tirsek, noun) 'elbow'
+   ETİKET miras :
+   şablon: inh trk-cmn-pro *tirsgek
+   metin: From Proto-Common Turkic *tirsgek.
+[klj:çamur] (çamur, noun) 'mud'
+   ETİKET miras :
+   şablon: inh trk-pro *čalmur
+   metin: From Proto-Turkic *čalmur (“mud”).
+[slq:cici] (cici, adj) 'positive; dynamic; energetic'
+   ETİKET alıntı cmn:積極
+   şablon: bor cmn 積極
+   metin: From Mandarin 積極 /积极 (jījí).
+[slq:fañvu] (faŋvu, noun) 'house'
+   ETİKET alıntı zh:房屋
+   şablon: bor zh 房屋
+   metin: Borrowed from Chinese 房屋 (fángwū).
+[slq:vunhua] (vunhua, noun) 'culture'
+   ETİKET alıntı cmn:文化
+   şablon: bor cmn 文化
+   metin: From Mandarin 文化 (wénhuà).
+[slq:onduq] (onduk, noun) 'buttocks, butt'
+   ETİKET alıntı mn:onts'og
+   şablon: bor+ mn onts'og
+   metin: Borrowed from Mongolian [script needed] (onts'og).
+[slq:sunzı] (sunzı, noun) 'grandson'
+   ETİKET alıntı zh:孙子
+   şablon: bor+ zh 孙子
+   metin: Borrowed from Chinese 孙子.
+[slq:gulu] (gulu, noun) 'wheel'
+   ETİKET alıntı zh:軲轆
+   şablon: bor+ zh 軲轆
+   metin: Borrowed from Chinese 軲轆 /轱辘.
+[slq:beñger] (beŋger, noun) 'stick'
+   ETİKET alıntı zh:棒棍
+   şablon: bor+ zh 棒棍
+   metin: Borrowed from Chinese 棒棍 (“stick”).
+[slq:şam] (şam, noun) 'dusk'
+   ETİKET alıntı fa-cls:شَام
+   şablon: bor+ fa-cls شَام
+   metin: Borrowed from Classical Persian شَام (šām).
+[slq:hay] (hay, noun) 'sea'
+   ETİKET alıntı cmn:海
+   şablon: bor+ cmn 海
+   metin: Borrowed from Mandarin 海 (hǎi).
+[slq:siru] (siru, noun) 'cold wind'
+   ETİKET alıntı mn:
+   şablon: bor+ mn 
+   metin: Borrowed from Mongolian [Term?]. Related to Turkish serin.
+[slq:loñxa] (loŋha, noun) 'vase'
+   ETİKET alıntı mn:лонх
+   şablon: bor+ mn лонх
+   metin: Borrowed from Mongolian лонх (lonx).
+[slq:yogo] (yogo, adv) 'everybody, all'
+   ETİKET alıntı zh:有个
+   şablon: bor+ zh 有个
+   metin: Borrowed from Chinese 有个.
+[slq:carığusı] (carığusı, verb) 'to spend (money)'
+   ETİKET alıntı mn:
+   şablon: bor+ mn 
+   metin: Borrowed from Mongolian [Term?].
+[slq:mağla] (mağla, noun) 'bean'
+   ETİKET alıntı ar:باقلاء
+   şablon: bor+ ar باقلاء
+   metin: Borrowed from Arabic باقلاء. Related to Turkish bakla.
+[slq:dumçuq] (dumçuk, noun) 'corner'
+   ETİKET alıntı fa:tūn
+   şablon: bor+ fa tūn
+   metin: Borrowed from Persian [script needed] (tūn). Related to dialectal Turkish tun, etc.
+[slq:cida] (cida, noun) 'spear, lance'
+   ETİKET alıntı xng:ᠵᠢᠳᠠ
+   şablon: bor+ xng ᠵᠢᠳᠠ
+   metin: Borrowed from Middle Mongol ᠵᠢᠳᠠ (ǰida).
+[slq:yarı] (yarı, noun) 'friend'
+   ETİKET alıntı fa:يار
+   şablon: bor+ fa يار
+   metin: Borrowed from Persian يار.
+[slq:muñısgarcaq] (muŋısgarcak, noun) 'devil'
+   ETİKET alıntı mn:
+   şablon: bor mn 
+   metin: From Mongolian [Term?].
+[slq:çüven] (çüven, noun) 'brick'
+   ETİKET alıntı zh:磚
+   şablon: bor zh 磚
+   metin: Borrowed from Chinese 磚 /砖 (zhuān).
+[slq:carıqçı] (carıkçı, noun) 'slave, serviceman'
+   ETİKET alıntı mn:
+   şablon: bor+ mn 
+   metin: From Salar carığusı. Borrowed from Mongolian [Term?].
+[slq:yançuq] (yançuk, noun) 'pocket'
+   ETİKET miras :
+   şablon: inh trk-pro *yānčuk ; inh+ trk-pro *yānčuk
+   metin: Inherited from Proto-Turkic *yānčuk. Cognate to Turkish yancık, Turkmen ýānjyk, etc.
+[slq:yasuq] (yasuk, noun) 'sin'
+   ETİKET miras :
+   şablon: inh trk-pro *yāz- ; inh+ trk-pro *yāz-
+   metin: Inherited from Proto-Turkic *yāz-ïk. Cognate to Turkish yazık, Turkmen ýāzyk.
+[slq:yilik] (yilik, noun) 'marrow'
+   ETİKET miras :
+   şablon: inh trk-eog الك ; inh+ trk-eog الك
+   metin: Inherited from Early Old Oghuz الك (ilik). Cognate to Azerbaijani and Turkish ilik, Turkmen ýilik, etc.
+[slq:soğulcañ] (soğulcaŋ, noun) 'worm'
+   ETİKET miras :
+   şablon: inh trk-ogz-pro *sogulčan
+   metin: Cognate to Azerbaijani soxulcan, Gagauz and Turkish solucan, Turkmen soguljan, ultimately from Proto-Oghuz *sogulčan.
+[slq:qurğusı] (kurğusı, verb) 'to dry'
+   ETİKET miras :
+   şablon: inh trk-ogz-pro *kūrï-
+   metin: From Proto-Oghuz *kūrï-. Cognate with Turkish kurumak, Turkmen gūramak, etc.
+[slq:keleğüsi] (keleğüsi, verb) 'to be needed'
+   ETİKET miras :
+   şablon: inh trk-cmn-pro *kele-
+   metin: From Proto-Common Turkic *kele-. Cognate to dialectal Uyghur [script needed] (kele-), dialectal Tatar [script needed] (kelä-), Chuvash кӗле (kĕle), Karachay-Balkar [script needed] (kele-). Related to Turkish keleci, Ottoman Turkish كلجى (keleci).
+[slq:eñer] (eŋer, noun) 'saddle'
+   ETİKET miras :
+   şablon: inh trk-pro *ẹdŋer ; inh+ trk-pro *ẹdŋer
+   metin: Inherited from Proto-Turkic *ẹdŋer. Cognate to Turkish eyer.
+[slq:aruq] (aruk, adj) 'thin, lean, skinny (not fat)'
+   ETİKET miras :
+   şablon: inh trk-pro *ārïk ; inh+ trk-pro *ārïk ; inh trk-pro *ār-
+   metin: Inherited from Proto-Turkic *ārïk, ultimately from Proto-Turkic *ār-. Cognate to Azerbaijani arıq, Turkish arık, Turkmen arryk.
+[slq:qaynağusı] (kaynağusı, verb) 'to boil'
+   ETİKET miras :
+   şablon: inh trk-pro *kayna- ; inh+ trk-pro *kayna-
+   metin: Inherited from Proto-Turkic *kayna-. Cognate to Azerbaijani qaynamaq, Gagauz kaynamaa, Turkish kaynamak, Turkmen gaýnamak.
+[slq:çixgüsi] (çihgüsi, verb) 'to drag, pull out'
+   ETİKET miras :
+   şablon: inh trk-ogz-pro *ček-
+   metin: From Proto-Oghuz *ček-. Cognate with Azerbaijani çəkmək, Gagauz çekmää, Turkish and Turkmen çekmek. Do not confuse with Salar çıqğusı.
+[slq:manqusı] (mankusı, verb) 'to dunk'
+   ETİKET miras :
+   şablon: inh trk-cmn-pro *bān- ; inh+ trk-cmn-pro *bān-
+   metin: Inherited from Proto-Common Turkic *bān-. Cognate to Turkish banmak.
+[slq:zığağusı] (zığağusı, verb) 'to roll up (arms of a cloth)'
+   ETİKET miras :
+   şablon: inh trk-cmn-pro *sïd- ; inh+ trk-cmn-pro *sïd-
+   metin: Inherited from Proto-Common Turkic *sïd-. Cognate to Turkish sıvamak, Ottoman Turkish صيغامق, etc.
+[slq:diñgüsi] (diŋgüsi, verb) 'to stop, cease'
+   ETİKET miras :
+   şablon: inh trk-pro *tiŋ- ; inh+ trk-pro *tiŋ-
+   metin: Inherited from Proto-Turkic *tiŋ-.
+[slq:yumul] (yumul, adj) 'light (weight)'
+   ETİKET miras :
+   şablon: inh trk-pro *yüŋül
+   metin: Ultimately from Proto-Turkic *yüŋül. Cognate with Azerbaijani yüngül, Turkish yüngül.
+[slq:qonaq] (konak, noun) 'foxtail millet (unprocessed millet in general)'
+   ETİKET miras :
+   şablon: inh trk-cmn-pro *konak
+   metin: From Proto-Common Turkic *konak (“millet”).
+Cognate to Karakhanid قنق (qonaq, “a kind of millet”),
+Uyghur قوناق (qonaq, “millet, sorgho, maize”).
+[slq:solaq] (solak, noun) 'breath'
+   ETİKET miras :
+   şablon: inh trk-pro *soglï-
+   metin: From Proto-Turkic *soglï- (“to breathe”).
+[slq:baldur] (baldur, noun) 'calf, calf muscles'
+   ETİKET miras :
+   şablon: inh trk-pro *baltïr ; inh+ trk-pro *baltïr
+   metin: Inherited from Proto-Turkic *baltïr. Cognate with Turkish baldır, etc.
+[slq:oñağusı] (oŋağusı, verb) 'to dig, excavate'
+   ETİKET miras :
+   şablon: inh trk-pro *oŋ- ; inh+ trk-pro *oŋ-
+   metin: Inherited from Proto-Turkic *oŋ-.
+[slq:yul] (yul, noun) 'a spring'
+   ETİKET miras :
+   şablon: inh trk-pro *yul
+   metin: From Proto-Turkic *yul. Cognate to Karakhanid يُلْ (yul, “spring”), Khakas [script needed] (çul), Chuvash ҫӑл (śăl), etc.
+[slq:palçıq] (palçık, noun) 'mud'
+   ETİKET miras :
+   şablon: inh trk-ogz-pro *balčïk ; inh+ trk-ogz-pro *balčïk
+   metin: Inherited from Proto-Oghuz *balčïk. Cognate to Azerbaijani palçıq, Turkish balçık, etc.

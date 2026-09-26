@@ -1,0 +1,52 @@
+{
+ "_not": "D8 MDE: ayar (n=1.379, kat dışı) aday − taban engine_trained F farkının SE'si, R4 bileşimine (alıntı/miras sayıları) göre sınıf tabakalı bootstrap (2.000, tohum 20260925); MDE = 2,8016·SE (α=0,05 iki yönlü, güç 0,80). Holm ilk adımı (α/2) için ×1,10 (3,08/2,80).",
+ "n_tune": 1379,
+ "R4": {
+  "cap350": {
+   "n": 1588,
+   "alıntı": 1350,
+   "miras": 238
+  },
+  "cap300": {
+   "n": 1538,
+   "alıntı": 1300,
+   "miras": 238
+  }
+ },
+ "pairs": {
+  "d8@hn2:ramp:thr": {
+   "tune_dF": 0.0005,
+   "tune_ci95": [
+    -0.016,
+    0.0181
+   ],
+   "cap300": {
+    "dF_at_comp": -0.0354,
+    "se": 0.0049,
+    "mde": 0.0137
+   },
+   "cap350": {
+    "dF_at_comp": -0.0358,
+    "se": 0.0048,
+    "mde": 0.0134
+   }
+  },
+  "d8pred": {
+   "tune_dF": 0.0011,
+   "tune_ci95": [
+    -0.0163,
+    0.0195
+   ],
+   "cap300": {
+    "dF_at_comp": 0.0119,
+    "se": 0.0051,
+    "mde": 0.0143
+   },
+   "cap350": {
+    "dF_at_comp": 0.0121,
+    "se": 0.005,
+    "mde": 0.014
+   }
+  }
+ }
+}

@@ -1,0 +1,99 @@
+{
+ "atv/alıntı": {
+  "n": 20,
+  "doğru": 20,
+  "yanlış": 0,
+  "belirsiz": 0,
+  "precision": 1.0,
+  "wilson95": [
+   0.8389,
+   1.0
+  ],
+  "accepted": true
+ },
+ "atv/miras": {
+  "n": 20,
+  "doğru": 20,
+  "yanlış": 0,
+  "belirsiz": 0,
+  "precision": 1.0,
+  "wilson95": [
+   0.8389,
+   1.0
+  ],
+  "accepted": true
+ },
+ "cv/alıntı": {
+  "n": 20,
+  "doğru": 18,
+  "yanlış": 1,
+  "belirsiz": 1,
+  "precision": 0.9,
+  "wilson95": [
+   0.699,
+   0.9721
+  ],
+  "accepted": false
+ },
+ "cv/miras": {
+  "n": 20,
+  "doğru": 20,
+  "yanlış": 0,
+  "belirsiz": 0,
+  "precision": 1.0,
+  "wilson95": [
+   0.8389,
+   1.0
+  ],
+  "accepted": true
+ },
+ "klj/alıntı": {
+  "n": 20,
+  "doğru": 20,
+  "yanlış": 0,
+  "belirsiz": 0,
+  "precision": 1.0,
+  "wilson95": [
+   0.8389,
+   1.0
+  ],
+  "accepted": true
+ },
+ "klj/miras": {
+  "n": 20,
+  "doğru": 20,
+  "yanlış": 0,
+  "belirsiz": 0,
+  "precision": 1.0,
+  "wilson95": [
+   0.8389,
+   1.0
+  ],
+  "accepted": true
+ },
+ "slq/alıntı": {
+  "n": 20,
+  "doğru": 17,
+  "yanlış": 0,
+  "belirsiz": 3,
+  "precision": 0.85,
+  "wilson95": [
+   0.6396,
+   0.9476
+  ],
+  "accepted": false
+ },
+ "slq/miras": {
+  "n": 20,
+  "doğru": 20,
+  "yanlış": 0,
+  "belirsiz": 0,
+  "precision": 1.0,
+  "wilson95": [
+   0.8389,
+   1.0
+  ],
+  "accepted": true
+ },
+ "_not": "Q4 (R4 yeni diller; LLM ön-etiketi — Claude, D8 ajanı; motor çıktısı görülmeden, kanıt kartıyla audit_cards_r4.txt). Ölçüt sınıf (alıntı/miras) doğruluğu; kesin etimon değil. Kullanıcı ≥%10 bağımsız denetlemeli."
+}

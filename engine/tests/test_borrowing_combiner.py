@@ -286,3 +286,37 @@ class TestWoldDonorField(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class HardNegativeTests(unittest.TestCase):
+    """D8 M9: zor negatif ağırlığı — 1,0 iken eğitim ağırlıksızla BİREBİR aynı."""
+
+    def test_rule(self) -> None:
+        from engine.nlp.borrowing_combiner import is_hard_negative
+
+        ramp = {"verici_yakınlığı": 0.4}
+        self.assertTrue(is_hard_negative(ramp, False, "ramp"))
+        self.assertFalse(is_hard_negative(ramp, True, "ramp"))
+        self.assertFalse(is_hard_negative({"verici_yakınlığı": 1.0}, False, "ramp"))
+        phon = {"fonotaktik_ihlal": 1.0}
+        self.assertFalse(is_hard_negative(phon, False, "ramp"))
+        self.assertTrue(is_hard_negative(phon, False, "ramp_phon"))
+
+    def test_weight_one_is_identity(self) -> None:
+        samples = _samples(60)
+        plain = fit(samples, trained_on="t", hard_negative=(1.0, "ramp", False), iterations=300)
+        again = fit(samples, trained_on="t", hard_negative=(1.0, "ramp_phon", True), iterations=300)
+        self.assertEqual(plain.as_dict()["weights"], again.as_dict()["weights"])
+        self.assertEqual(plain.threshold, again.threshold)
+
+    def test_weight_lowers_ramp_probability(self) -> None:
+        samples = []
+        for i in range(120):
+            borrowed = i % 3 == 0
+            ramp = 0.5 if i % 2 else 0.0
+            samples.append(({"verici_yakınlığı": 1.0 if borrowed else ramp}, borrowed))
+        plain = fit(samples, trained_on="t", hard_negative=(1.0, "ramp", False), iterations=500)
+        heavy = fit(samples, trained_on="t", hard_negative=(5.0, "ramp", False), iterations=500)
+        probe = {"verici_yakınlığı": 0.5}
+        self.assertLess(heavy.probability(probe), plain.probability(probe))
+        self.assertEqual(heavy.selection["hard_negative"]["weight"], 5.0)

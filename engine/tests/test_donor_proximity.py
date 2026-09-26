@@ -312,3 +312,16 @@ class TestSignalIsDisabledWithoutData(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PredDistanceTests(unittest.TestCase):
+    """D8 M8: PRED — alıcının sonundaki fazlalık cezasız, vericiden kısa gövde yok."""
+
+    def test_suffix_is_free_and_never_worse(self) -> None:
+        full = dp.sca_distance("mashinasy", "mashina")
+        pred = dp.pred_distance("mashinasy", "mashina")
+        self.assertLessEqual(pred, full)
+        self.assertAlmostEqual(pred, dp.sca_distance("mashina", "mashina"))
+
+    def test_no_trim_below_donor_length(self) -> None:
+        self.assertEqual(dp.pred_distance("kitap", "kitaplar"), dp.sca_distance("kitap", "kitaplar"))

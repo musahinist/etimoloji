@@ -265,7 +265,31 @@ def _mean_distance(a: str, b: str) -> float:
     return (sca_distance(a, b) + min(1.0, pmi_distance(a, b))) / 2
 
 
+#: D8 / M8 (Mi ve ark. 2018, PRED): alıcı kelimenin SONUNDAKİ fazlalık
+#: cezasız — çekimli/türemiş alıntıda verici biçim alıcının önekiyle
+#: eşleşir (kk ``машинасы`` ~ ru ``машина``). Sondan en çok ``PRED_MAX_TRIM``
+#: harf kırpılır; kırpılmış gövde vericiden kısa ya da ``PRED_MIN_STEM``den
+#: kısa olamaz. Mesafe SCA'dır; kontrol kelimeleri (şans denetimi, null) aynı
+#: mesafeyi görür. ``STRENGTH_DISTANCE = "pred"`` ile açılır (deneme).
+#: ``derivation``/``root_variants`` Türkçe (Zemberek TR) sözlüğüne bağlı —
+#: Türk dilleri arası bölümlere uymadığı için dile bağımsız sondan kırpma.
+PRED_MAX_TRIM = 4
+PRED_MIN_STEM = 3
+
+
+def pred_distance(query: str, donor: str) -> float:
+    best = sca_distance(query, donor)
+    for trim in range(1, PRED_MAX_TRIM + 1):
+        stem = query[:-trim]
+        if len(stem) < max(PRED_MIN_STEM, len(donor)):
+            break
+        best = min(best, sca_distance(stem, donor))
+    return best
+
+
 def _strength_best(query: str, candidates: list[str]) -> tuple[float, str]:
+    if STRENGTH_DISTANCE == "pred":
+        return _best(query, candidates, pred_distance)
     if STRENGTH_DISTANCE == "mean":
         return _best(query, candidates, _mean_distance)
     if STRENGTH_DISTANCE == "pmi":
