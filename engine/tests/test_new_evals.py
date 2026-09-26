@@ -108,3 +108,16 @@ def test_chronology_summary_separates_coverage():
     assert s["coverage"] == 0.5
     assert s["within_century|covered"] == 1.0
     assert s["within_century|all"] == 0.5
+
+
+def test_headline_tradition_equivalence_is_separate_column() -> None:
+    scored = headline_eval.score_item("*tāt-", ["*dāt"])
+    assert not scored["exact"] and scored["tradition_equivalent"]
+    assert not headline_eval.score_item("*bït", ["*büt"])["tradition_equivalent"]
+    items = [("tat", ["*dāt"]), ("but", ["*büt"]), ("kel", ["*kel"])]
+    runs = {"tat": {"headline": "*tāt-"}, "but": {"headline": "*bït"}, "kel": {"headline": "*kel-"}}
+    out = headline_eval.evaluate_subset(items, runs)
+    assert out["engine"]["exact"] == round(1 / 3, 4)
+    assert out["engine"]["tradition_equivalent"] == round(2 / 3, 4)
+    halves = out["engine_halves"]
+    assert halves["A"]["n"] + halves["B"]["n"] == 3

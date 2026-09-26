@@ -48,22 +48,26 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import random
 import re
 import subprocess
 from collections.abc import Callable, Iterable, Sequence
+from pathlib import Path
 from typing import Any
 
 from engine.config import PROJECT_ROOT
 from engine.evaluation.metrics import best_match, normalize_proto, normalized_edit_distance
 from engine.logging_setup import get_logger
+from engine.utils.proto_notation import same_root_across_traditions
 
 logger = get_logger(__name__)
 
 SEED = 20260924
 #: Starling TRK alanından örneklenecek kelime sayısı.
 STARLING_SAMPLE = 250
-CACHE_DIR = PROJECT_ROOT / "data" / "cache" / "eval_engine_runs"
+#: ``ETY_EVAL_RUN_CACHE`` ile başka dizine (ör. scratch) yönlendirilebilir.
+CACHE_DIR = Path(os.environ.get("ETY_EVAL_RUN_CACHE") or PROJECT_ROOT / "data" / "cache" / "eval_engine_runs")
 
 _PROTO_TOKEN = re.compile(r"\*[^\s,/();?]+")
 #: savelyev çevriyazısı -> Türkiye Türkçesi imlası (yalnız Türkçe tanık için).
@@ -227,6 +231,7 @@ def summarize_finding(finding: dict[str, Any]) -> dict[str, Any]:
     return {
         "headline": str(root.get("proto_turkic") or ""),
         "provenance": str(root.get("provenance") or ""),
+        "tradition_note": str(root.get("tradition_note") or ""),
         "attestation_year": int(year) if year is not None else None,
         "attestation_record": record,
         "attestation_precision": precision,
@@ -294,7 +299,12 @@ def from_starling(provenance: str) -> bool:
 
 
 def score_item(predicted: str, candidates: Sequence[str]) -> dict[str, Any]:
-    """Tam / kabul edilebilir / NED (en yakın adaya göre)."""
+    """Tam / kabul edilebilir / NED (en yakın adaya göre) / gelenekten bağımsız eşdeğerlik.
+
+    ``tradition_equivalent``: başlık bir adayla, yalnız Wiktionary ↔
+    Starling/EDAL gösterim farkları katlandığında aynı mı
+    (:func:`engine.utils.proto_notation.tradition_key`; tablo veriye bakılmadan
+    literatürden yazıldı). ``exact``/``acceptable``/``ned`` DEĞİŞMEDİ."""
     shown = predicted.strip()
     if not shown.startswith("*"):
         shown = "*" + shown
@@ -302,7 +312,9 @@ def score_item(predicted: str, candidates: Sequence[str]) -> dict[str, Any]:
     ned = min(
         normalized_edit_distance(normalize_proto(shown), normalize_proto(c)) for c in candidates
     )
-    return {"exact": exact, "acceptable": acceptable, "ned": round(ned, 4), "matched": chosen}
+    tradition = exact or any(same_root_across_traditions(shown, c) for c in candidates)
+    return {"exact": exact, "acceptable": acceptable, "ned": round(ned, 4), "matched": chosen,
+            "tradition_equivalent": tradition}
 
 
 def score_set(rows: Sequence[dict[str, Any]]) -> dict[str, Any]:
@@ -310,6 +322,7 @@ def score_set(rows: Sequence[dict[str, Any]]) -> dict[str, Any]:
     exact = sum(r["exact"] for r in rows)
     acceptable = sum(r["acceptable"] for r in rows)
     neds = [r["ned"] for r in rows]
+    tradition = sum(r.get("tradition_equivalent", False) for r in rows)
     return {
         "n": n,
         "exact": round(exact / n, 4) if n else 0.0,
@@ -318,7 +331,19 @@ def score_set(rows: Sequence[dict[str, Any]]) -> dict[str, Any]:
         "acceptable_ci95": wilson(acceptable, n),
         "mean_ned": round(sum(neds) / n, 4) if n else 0.0,
         "mean_ned_ci95": bootstrap_mean_ci(neds),
+        "tradition_equivalent": round(tradition / n, 4) if n else 0.0,
+        "tradition_equivalent_ci95": wilson(tradition, n),
     }
+
+
+def split_halves(words: Iterable[str], seed: int = SEED) -> dict[str, str]:
+    """Kelime -> "A"/"B": sabit tohumlu karıştırmayla iki yarı. Yeni ölçüt
+    iki yarıda ayrı raporlanır; tutarsızlık tablonun bir yarıya özgü
+    örüntüye dayandığını gösterirdi."""
+    ordered = sorted(dict.fromkeys(words))
+    random.Random(seed).shuffle(ordered)
+    cut = (len(ordered) + 1) // 2
+    return {w: ("A" if i < cut else "B") for i, w in enumerate(ordered)}
 
 
 def evaluate_subset(
@@ -338,8 +363,14 @@ def evaluate_subset(
         baseline_rows.append(score_item(word, candidates))
         detail.append({"word": word, "headline": headline, "reference": list(candidates),
                        "provenance": run.get("provenance", "")[:160], **scored})
+    half_of = split_halves(d["word"] for d in detail)
+    halves = {
+        h: score_set([r for r, d in zip(engine_rows, detail, strict=True) if half_of[d["word"]] == h])
+        for h in ("A", "B")
+    }
     return {
         "engine": score_set(engine_rows),
+        "engine_halves": halves,
         "baseline_identity": score_set(baseline_rows),
         "headline_is_starred": round(
             sum(d["headline"].startswith("*") for d in detail) / len(detail), 4) if detail else 0.0,
@@ -388,7 +419,16 @@ def run(*, sample: int = STARLING_SAMPLE, fresh: bool = False) -> dict[str, Any]
         "fetchers": "yalnız yerel (tohum/indeks + indirilmiş Starling); ağ kaynakları kapalı",
         "sample": {"starling_words": len(words), "savelyev_dev_turkish": len(savelyev_items), "seed": SEED},
         "headline_from_starling_share": round(starling_share, 4),
-        "metric": "normalize_proto ile tam eşleşme, is_acceptable, NED (en yakın adaya)",
+        # Üretim gösterimi: başlıkta "Starling: *X · Wiktionary: *Y (aynı kök,
+        # farklı gösterim)" satırı çıkan kelime payı (yerel ayar; başlık seçimi
+        # bundan etkilenmez).
+        "tradition_note_share": round(
+            sum(bool(local[w].get("tradition_note")) for w in words) / len(words), 4),
+        "tradition_note_examples": {
+            w: local[w]["tradition_note"] for w in words if local[w].get("tradition_note")},
+        "metric": "normalize_proto ile tam eşleşme, is_acceptable, NED (en yakın adaya); "
+                  "tradition_equivalent: Wiktionary↔Starling/EDAL gösterim denkliği "
+                  "(proto_notation.tradition_key), iki yarıda ayrı (engine_halves)",
         "circularity": CIRCULARITY,
         "subsets": subsets,
     }
@@ -413,6 +453,11 @@ def main() -> int:
             f"kabul {e['acceptable']:.3f}  NED {e['mean_ned']:.3f} {e['mean_ned_ci95']}  "
             f"| taban tam {b['exact']:.3f} NED {b['mean_ned']:.3f}"
         )
+        halves = "  ".join(
+            f"{h}: n={s['n']} tam {s['exact']:.3f} gelenek {s['tradition_equivalent']:.3f}"
+            for h, s in sub["engine_halves"].items())
+        print(f"{'':32} gelenekten bağımsız {e['tradition_equivalent']:.3f} "
+              f"{e['tradition_equivalent_ci95']}  | {halves}")
         print(f"{'':32} ⚠️ {payload['circularity'][name]}")
     out = EVAL_DIR / "headline.json"
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
