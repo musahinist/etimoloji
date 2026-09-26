@@ -65,9 +65,12 @@ install:
 test:
 	.venv/bin/pytest -q -n 4
 
-# Commit öncesi: yavaş uç nokta testleri dahil hepsi.
+# Commit öncesi: yavaş uç nokta testleri dahil hepsi. `serial` işaretli testler
+# (tam WOLD alıntı değerlendirmesi) 4 işçiyle aynı anda koşunca 16 GB'ta işçi
+# çöküyordu; paralel faz bitince tek süreçte koşarlar.
 test-all:
-	.venv/bin/pytest -q -n 4 -m "slow or not slow"
+	.venv/bin/pytest -q -n 4 -m "not serial"
+	.venv/bin/pytest -q -p no:xdist -m serial
 
 test-live:
 	ETY_LIVE=1 .venv/bin/pytest engine/tests/live -v

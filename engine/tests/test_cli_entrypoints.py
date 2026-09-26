@@ -197,7 +197,8 @@ class TestBorrowingChainEntrypoint(CliCase):
 
 
 @unittest.skipUnless(HAS_CLDF and HAS_WOLD and HAS_INDEX, "veri eksik")
-@pytest.mark.slow  # ~8 dk, tam pakette bellek yetmeyebiliyor
+@pytest.mark.slow  # tek başına ~12 dk
+@pytest.mark.serial  # 4 işçiyle birlikte bellek yetmiyor (işçi çöküyordu): tek başına koşar
 class TestBorrowingEvalEntrypoint(CliCase):
     def test_borrowing_eval_runs(self):
         from engine.evaluation import borrowing_eval
