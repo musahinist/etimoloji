@@ -1,6 +1,6 @@
 .PHONY: help install test test-live lint fix coverage clean serve web \
         data gold donors patterns gold-agreement regularity sigtyp expert-review turkish-gold eval eval-baseline eval-cognates eval-borrowing eval-calibration eval-controls eval-cv eval-cv-neural eval-cv-neural-validate audit eval-llm eval-prediction eval-headline eval-donor eval-chronology starling correspondences calibrate lexicons lexicon-index chains predict-lock predict-verify apertium wilkens semantic dialect bootstrap column-model neural-selector \
-        sense-bridge
+        sense-bridge zemberek label-donors bootstrap-optional
 
 help:
 	@echo "install     - .venv oluştur ve bağımlılıkları kur"
@@ -52,9 +52,12 @@ help:
 	@echo "wilkens        - Wilkens 2021 Eski Uygurca sözlüğünü indir ve ayrıştır (CC BY-SA 4.0; .[pdf] gerekir)"
 	@echo "clauson        - Clauson 1972 EDT'yi (TurkicWorld HTML) indir ve ayrıştır (telifli; repoya girmez)"
 	@echo "sense-bridge   - Türkçe -> İngilizce anlam köprüsü (9l S1; kaikki tr+en dökümleri ~550 MB, SHA künyeli)"
+	@echo "zemberek       - Zemberek kök sözlüğünü indir (Apache-2.0; kök/türetme ve alıntı ses sinyalleri)"
+	@echo "label-donors   - Yalnız-etiket eski dil havuzu (grc, xcl, vec, lij; bayraklar kapalı) + indeksi"
+	@echo "bootstrap-optional - Bayrakla kapalı/bağlanmamış özelliklerin verisi (label-donors gap-lexicons khakas clauson)"
 	@echo "starling       - Starling Türk/Moğol etimoloji tablolarını indir (Dybo & Starostin 2005)"
 	@echo "calibrate      - Güven kalibratörünü TRAIN bölümünde eğit"
-	@echo "bootstrap      - Taze klonda tüm veriyi indir ve kur (data+lexicons+tr+index+donors+starling+apertium+sense-bridge+gold+patterns)"
+	@echo "bootstrap      - Taze klonda varsayılan motorun tüm verisi (data+lexicons+tr+index+donors+starling+apertium+wilkens+zemberek+sense-bridge+gold+patterns)"
 	@echo ""
 	@echo "serve       - REST API sunucusu"
 	@echo "web         - Web panelini yayınla (localhost:3000)"
@@ -201,6 +204,18 @@ clauson:
 sense-bridge:
 	.venv/bin/python scripts/download_sense_bridge.py
 
+# Zemberek kök sözlüğü (Apache-2.0): kök adayları, türetme ve alıntı ses
+# sinyalleri varsayılan motorda kullanılır (engine/nlp/root_variants.py).
+zemberek:
+	.venv/bin/python scripts/download_zemberek_lexicon.py
+
+# 9g/9j yalnız-etiket eski dil havuzu (Eski Yunanca, Eski Ermenice, Venedikçe,
+# Cenevizce). OLD_DONOR_LABELS / VENETAN_LABELS kapalı (ölçüldü, red); yalnız
+# bayrağı açıp denemek için. donors.db'ye dokunmaz.
+label-donors:
+	.venv/bin/python scripts/download_lexicons.py --label-donors
+	.venv/bin/python -m engine.db.donor_index --build-label
+
 lexicon-index: lexicons
 	.venv/bin/python -m engine.db.lexicon_index --build
 
@@ -289,14 +304,24 @@ serve:
 web:
 	cd web && npx serve -l 3000 .
 
-# Taze klondan tüm yerel veriyi kurar (~800 MB). İndiriciler, veri dosyası
+# Taze klondan varsayılan motorun kullandığı tüm yerel veriyi kurar (~900 MB
+# kalıcı; anlam köprüsü kurulurken geçici ~550 MB). İndiriciler, veri dosyası
 # diskte VE SHA-256'sı künyeyle aynıysa atlar; tekrar koşmak ucuzdur.
-# Türkçe sürüm (--tr) indeksten ÖNCE iner ki indekse girsin. `calibrate`
-# dahil değil: commit edilmiş data/calibration/model.json'u yeniden yazar.
+# Türkçe sürüm (--tr) indeksten ÖNCE iner ki indekse girsin. Kuzey Altayca
+# (`atv`) `lexicons` içinde. Wilkens (Eski Uygurca fetcher'ı) ve Zemberek
+# (kök/türetme) varsayılan aramada kullanılır; anlam köprüsü 9l S1'dir.
+# `calibrate` dahil değil: commit edilmiş data/calibration/model.json'u yeniden yazar.
+# Bayrakla kapalı ya da bağlanmamış kaynaklar ayrı: `make bootstrap-optional`.
 bootstrap:
 	$(MAKE) data lexicons
 	.venv/bin/python scripts/download_lexicons.py --tr
-	$(MAKE) lexicon-index donors starling apertium sense-bridge gold patterns
+	$(MAKE) lexicon-index donors starling apertium wilkens zemberek sense-bridge gold patterns
+
+# İsteğe bağlı: varsayılan motor bunları KULLANMAZ (bayrak kapalı ya da
+# ölçülüp bağlanmadı): yalnız-etiket eski dil havuzu, veri açığı dilleri,
+# Hakasça sözlükler, Clauson EDT (telifli; repoya girmez).
+bootstrap-optional:
+	$(MAKE) label-donors gap-lexicons khakas clauson
 
 clean:
 	find . -type d -name __pycache__ -prune -exec rm -rf {} +
