@@ -64,6 +64,8 @@ def print_finding_formatted(finding: dict[str, Any]) -> None:
     print(f" 📌 Ana Kök / Rekonstrüksiyon: {root.get('proto_turkic', 'Bilinmiyor')}")
     if root.get("provenance"):
         print(f" 🏷️  Kökün Kaynağı           : {root['provenance']}")
+    if root.get("tradition_note"):
+        print(f" 🔁 Gösterim Denkliği        : {root['tradition_note']}")
     protos = root.get("source_proto_forms") or []
     if protos:
         listed = ", ".join(f"{p['form']} ({p['count']} kayıt)" for p in protos)

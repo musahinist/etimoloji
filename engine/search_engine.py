@@ -55,6 +55,7 @@ from engine.utils.morphology import analyze_morphology, is_inflection_gloss
 from engine.utils.network import Diagnostics, RequestRecord, capture_requests, unanswered_status
 from engine.utils.orthography import to_comparison_form
 from engine.utils.phonetic_rules import analyze_phonetic_shifts
+from engine.utils.proto_notation import same_root_across_traditions
 from engine.utils.reference_resolver import extract_cross_references, is_cross_reference
 from engine.utils.seed import load_seed_entries
 from engine.utils.transliteration import transliterate_to_latin
@@ -2023,6 +2024,7 @@ class SearchEngine:
             word_clean, sorted_entries, primary=(meanings_by_source.get(primary_source) or [""])[0]
         )
         source_label = f"{source_root_lang} sözlük kaydı"
+        wiktionary_root = source_root
         if not source_root and starling_root:
             source_root, source_label = starling_root, "Starling (Dybo & Starostin 2005)"
         if not source_root:
@@ -2032,6 +2034,7 @@ class SearchEngine:
                 word_clean, primary=(meanings_by_source.get(primary_source) or [""])[0]
             )
             source_label = f"{index_lang} sözlük kaydı (yerel indeks)"
+            wiktionary_root = source_root
         if source_root and _sel_kind != "borrowed" and source_root != proto_root:
             engine_root = proto_root
             proto_root = source_root
@@ -2039,6 +2042,26 @@ class SearchEngine:
                 f"tanıklı — {source_label} (Proto-Türkçe {source_root})"
                 + (f"; motorun rekonstrüksiyonu: {engine_root}" if engine_root else "")
             )
+
+        # İki gelenek (Starling/EDAL ↔ Wiktionary) aynı kökü farklı yazıyorsa
+        # başlık yanında ikisi birlikte gösterilir. Yalnız GÖSTERİMDİR: başlık
+        # seçimi, eşsesli ayrımı ve alıntı hükmü değişmez (alıntıda gösterilmez).
+        tradition_note = ""
+        if starling_root and _sel_kind != "borrowed" and self.uses_lexicon_index:
+            if not wiktionary_root:
+                wiktionary_root, _ = _index_source_proto(
+                    word_clean, primary=(meanings_by_source.get(primary_source) or [""])[0]
+                )
+            if (
+                wiktionary_root
+                and wiktionary_root != starling_root
+                and proto_root in (starling_root, wiktionary_root)
+                and same_root_across_traditions(starling_root, wiktionary_root)
+            ):
+                tradition_note = (
+                    f"Starling: {starling_root} · Wiktionary: {wiktionary_root} "
+                    "(aynı kök, farklı gösterim)"
+                )
 
         # Motor hiçbir yöntemle kök bulamadıysa ama sözlük maddesi yapıyı
         # veriyorsa, kök o yapının ilk parçasıdır (`bitig` -> `biti-`).
@@ -2154,6 +2177,7 @@ class SearchEngine:
                 # değildir, o yüzden damgası da "yok".
                 "provenance": proto_root_provenance or "yok — kök belirlenemedi",
                 "root_note": root_note,
+                "tradition_note": tradition_note,
                 "origin_layers": origin_layers,
                 "source_proto_forms": source_proto,
                 "reconstruction_notes": reconstruction_eval.get("reconstruction_notes", "")
