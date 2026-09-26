@@ -284,3 +284,61 @@ class TestSignalStrengthIsUntouched(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestLabelOnlyPools9g(unittest.TestCase):
+    """9g: eski dil havuzları ve çekim süzgeci yalnız ETİKET adımında, varsayılan kapalı."""
+
+    def _index(self, tmp, rows):
+        import gzip
+        import json
+        from pathlib import Path
+
+        from engine.db.donor_index import DonorIndex
+
+        sources = {}
+        for lang, items in rows.items():
+            path = Path(tmp) / f"{lang}.jsonl.gz"
+            with gzip.open(path, "wt", encoding="utf-8") as handle:
+                for word, gloss in items:
+                    handle.write(json.dumps({"word": word, "senses": [{"glosses": [gloss]}]}) + "\n")
+            sources[lang] = path
+        index = DonorIndex(Path(tmp) / "d.db")
+        index.build(sources=sources)
+        return index
+
+    def test_defaults_off(self):
+        self.assertFalse(dp.OLD_DONOR_LABELS)
+        self.assertFalse(dp.LABEL_FORM_FILTER)
+
+    def test_form_of_rows_skipped_only_for_listed_languages(self):
+        from tempfile import TemporaryDirectory
+
+        with TemporaryDirectory() as tmp:
+            index = self._index(tmp, {
+                "el": [("kalos", "plural of kala"), ("kala", "good")],
+                "fr": [("bonne", "feminine singular of bon"), ("bon", "good")],
+            })
+            words = lambda rows: sorted(r["word"] for r in rows)  # noqa: E731
+            self.assertEqual(words(index.by_sense("plural singular good", clean=False)), ["bon", "bonne", "kala", "kalos"])
+            skipped = index.by_sense("plural singular good", clean=False, skip_form_of=frozenset({"el"}))
+            self.assertEqual(words(skipped), ["bon", "bonne", "kala"])
+
+    def test_old_pool_maps_to_family_code(self):
+        from tempfile import TemporaryDirectory
+
+        with TemporaryDirectory() as tmp:
+            main = self._index(tmp + "", {"fa": [("zzzzz", "lamp")]})
+            from pathlib import Path
+
+            sub = Path(tmp) / "label"
+            sub.mkdir()
+            label = self._index(sub, {"grc": [("lampas", "lamp, torch")]})
+            with mock.patch.object(dp, "_index", return_value=main), \
+                    mock.patch.object(dp, "_label_index", return_value=label), \
+                    mock.patch.object(dp, "OLD_DONOR_LABELS", True):
+                result = dp.attribute_donor("lamba", "lamp", languages=["el", "fa"])
+            self.assertIsNotNone(result)
+            self.assertEqual(result.lang_code, "el")
+            self.assertEqual(result.source, "kaikki-grc")
+            self.assertIn("Eski Yunanca", result.describe())

@@ -64,6 +64,15 @@ logger = get_logger(__name__)
 DONOR_DIR = LEXICON_DIR / "donors"
 DEFAULT_DB = DONOR_DIR / "donors.db"
 
+#: YALNIZ ETİKET adımı için eski dil vericileri (9g): Eski Yunanca (grc), Eski
+#: Ermenice (xcl). ``scripts/download_lexicons.py --label-donors`` indirir,
+#: ``python -m engine.db.donor_index --build-label`` kurar. Alıntı GÜCÜ
+#: havuzuna (:data:`DEFAULT_DB`) ASLA girmez: güce eklenen dil (Starling
+#: Moğolcası) WOLD F'sini düşürmüştü (1facc40). Kullanan yer:
+#: ``donor_proximity.OLD_DONOR_LABELS``.
+LABEL_DIR = LEXICON_DIR / "donors_label"
+LABEL_DB = LABEL_DIR / "donors_label.db"
+
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS donor_entries (
     id          INTEGER PRIMARY KEY,
@@ -469,11 +478,15 @@ class DonorIndex:
         limit: int = 400,
         clean: bool | None = None,
         per_language: bool = False,
+        skip_form_of: frozenset[str] | None = None,
     ) -> list[sqlite3.Row]:
         """Anlamı sorguyla örtüşen verici maddeleri.
 
         ``per_language=True``: ``limit`` HER verici dil için ayrı uygulanır
-        (9e F1). Paylaşılan sınırda temizlik kapalıyken sıralama yoktur;
+        (9e F1). ``skip_form_of``: bu dillerin anlamı YALNIZ çekim/biçim
+        göndermesi olan maddeleri (:func:`is_form_of`) atlanır ve yerlerine
+        sıradaki maddeler girer (9g; X4 (b) kuralı, yalnız ETİKET adımı için;
+        (a)/(c) ve güç yolu değişmez). Paylaşılan sınırda temizlik kapalıyken sıralama yoktur;
         önce kurulmuş dilin (Arapça) maddeleri havuzu doldurur ve Fransızca
         aday hiç girmez (aktör, istasyon, teleskop).
 
@@ -489,7 +502,8 @@ class DonorIndex:
         clean = clean_enabled() if clean is None else clean
         if per_language and languages:
             return [row for lang in languages
-                    for row in self.by_sense(sense, languages=[lang], limit=limit, clean=clean)]
+                    for row in self.by_sense(sense, languages=[lang], limit=limit, clean=clean,
+                                             skip_form_of=skip_form_of)]
         tokens = sense_tokens_for_match(sense, clean)
         if not tokens or not self.exists:
             return []
@@ -506,12 +520,15 @@ class DonorIndex:
         if clean:
             query += " ORDER BY f.rank"
         query += " LIMIT ?"
-        params.append(CLEAN_FETCH if clean else limit)
+        params.append(CLEAN_FETCH if clean or skip_form_of else limit)
         with self._connect() as connection:
             try:
                 rows = connection.execute(query, params).fetchall()
                 if clean:
                     rows = [r for r in rows if not is_form_of(r["gloss"] or "")][:limit]
+                elif skip_form_of:
+                    rows = [r for r in rows
+                            if r["lang_code"] not in skip_form_of or not is_form_of(r["gloss"] or "")][:limit]
                 return rows
             except sqlite3.OperationalError:
                 # FTS sorgu sözdizimi hatası (tırnaklı garip kavram adı):
@@ -544,7 +561,15 @@ def main() -> int:
 
     ap = argparse.ArgumentParser(description="Verici dil sözlüğü indeksi")
     ap.add_argument("--build", action="store_true")
+    ap.add_argument("--build-label", action="store_true",
+                    help="yalnız etiket havuzu (donors_label/: grc, xcl); donors.db'ye dokunmaz")
     args = ap.parse_args()
+    if args.build_label:
+        label = DonorIndex(LABEL_DB)
+        result = label.build(sources=discover_donor_dumps(LABEL_DIR))
+        print(f"etiket havuzu kuruldu: {result['total']:,} madde · {result['languages']}")
+        print(label.stats())
+        return 0
     index = DonorIndex()
     if args.build:
         result = index.build()

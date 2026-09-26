@@ -64,6 +64,9 @@ data/lexicons/index.db
 data/lexicons/donors/*.jsonl
 data/lexicons/donors/*.jsonl.gz
 data/lexicons/donors/donors.db
+data/lexicons/donors_label/*.jsonl
+data/lexicons/donors_label/*.jsonl.gz
+data/lexicons/donors_label/*.db
 data/lexicons/ru_edition/*.jsonl
 data/lexicons/ru_edition/*.jsonl.gz
 # Zincir dökümü büyük ve türetilmiş; kurallar özet olduğu için commit edilir.

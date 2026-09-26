@@ -1,0 +1,16 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Ancient_Greek",
+  "code": "grc",
+  "donor": true,
+  "label_only": true,
+  "ru_edition": false,
+  "url": "https://kaikki.org/dictionary/Ancient%20Greek/kaikki.org-dictionary-AncientGreek.jsonl",
+  "retrieved_at": "2026-09-26T08:21:08+00:00",
+  "raw_bytes": 401107810,
+  "stored_bytes": 36104193,
+  "entries": 68196,
+  "compressed": true,
+  "sha256_stored": "ee17ab17d8231329dc36021245cfc990489a794a719c4730b924ceb47ed566b5",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

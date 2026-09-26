@@ -1,0 +1,33 @@
+# 9g altın kalite denetimi — 30 madde (hash sırası, el 15 + hy 15). LLM ön-etiketi (Claude); insan onayı YOK.
+aile	kod	dil	kelime	etimon	karar	not
+el	el	tr	yakamoz	διακαμός	doğru
+el	el	tr	Ege	Αιγαίο	şüpheli	özel ad niteliğinde (yer adı)
+el	el	tr	bahna	παχνί	doğru	ağız biçimi
+el	el	tr	tirfil	τριφύλλι	doğru
+el	gkm	tr	salya	σάλιον	doğru
+el	el	ota	ispati	σπαθί	doğru
+el	el	tr	gangava	γαγγάβα	doğru
+el	gkm	ota	safra	σαβούρα	doğru	Lat. saburra kökenli; Rumca aracı kabul
+el	gkm	ota	burgaz	πύργος	doğru
+el	el	tr	defne	δάφνη	doğru
+el	el	ota	musandıra	(etimon alanı Arap harfli)	doğru	Rumca mesandra; şablon etimonu bozuk
+el	el	tr	levrek	λαβράκι	doğru
+el	el	tr	tekir	τίγρη	doğru
+el	el	ota	dimi	δίμιτο	doğru
+el	gkm	tr	bre	βρέ	doğru
+hy	hy	tr	guzik	կուզիկ	doğru	ağız
+hy	hy	az	cücü	ճիճու	doğru
+hy	hy	ota	pazı	բազուկ	doğru
+hy	hy	tr	korunga	կորնգան	doğru
+hy	hy	ota	piç	բիճ	doğru	köken tartışmalı ama Ermenice yaygın görüş
+hy	hy	tr	pancar	բանջար	doğru
+hy	hy	tr	daşd	տաշտ	şüpheli	Ermenice tašt Farsçadan; Farsça doğrudan da olası (ağız)
+hy	hy	tr	sayıt	սարդ	doğru	ağız
+hy	hy	tr	nahır	նախիր	doğru	ağız
+hy	hy	az	mamır	մամուռ	doğru
+hy	hy	tr	loğ	լող	doğru
+hy	axm	ota	hav	խաւ	doğru
+hy	hy	tr	şen	շեն	doğru
+hy	hy	az	kərənti	գերանդի	doğru
+hy	hy	tr	hamol	hamol	şüpheli	etimon Latin harfli, kaynak belirsiz (ağız)
+# Sonuç: 27 doğru, 3 şüpheli, 0 açıkça yanlış.

@@ -152,6 +152,14 @@ def _index() -> Any:
     return DonorIndex()
 
 
+@lru_cache(maxsize=1)
+def _label_index() -> Any:
+    """YALNIZ etiket adımının eski dil havuzu (grc, xcl); bkz. :data:`OLD_DONOR_LABELS`."""
+    from engine.db.donor_index import LABEL_DB, DonorIndex
+
+    return DonorIndex(LABEL_DB)
+
+
 #: Kontrol kelimeleri: gerçek Türki biçimlerden, uzunluğa göre gruplanmış.
 #:
 #: ⚠️ Rastgele harf dizisi kullanılmaz. Türkçe fonotaktiğine uymayan bir
@@ -183,6 +191,7 @@ def _controls(length: int, count: int = CHANCE_CONTROL_COUNT) -> tuple[str, ...]
 def reset_cache() -> None:
     _pairwise.cache_clear()
     _index.cache_clear()
+    _label_index.cache_clear()
     # ⚠️ Mesafe önbelleği de temizlenmeli: LingPy'siz koşuyu ölçerken
     # önbellekte duran LingPy'li sonuç geri dönerdi.
     sca_distance.cache_clear()
@@ -576,6 +585,24 @@ LABEL_DISTANCE = "sca"
 #: Etiket null'ı için kontrol sayısı.
 ATTRIBUTION_CONTROL_COUNT = 12
 
+#: 9g G1 — etiket adımında eski dil havuzları (``donor_index.LABEL_DB``):
+#: Eski Yunanca -> Yunanca ailesi, Eski Ermenice -> Ermenice ailesi. Her eski
+#: dil AYRI grup (kendi null'ı); seçilirse etiket ailenin kodudur, kaynak
+#: ``kaikki-grc``/``kaikki-xcl`` ("Eski Yunanca biçimi"). Yalnız ETİKET; güç
+#: havuzu (``donors.db``) değişmez. Ön kayıt ``data/cache/work/donor9g/PREREG.md``.
+OLD_DONOR_LABELS = False
+OLD_DONOR_FAMILY = {"grc": "el", "xcl": "hy"}
+#: ``separate``: eski dil ayrı grup, kendi null'ı (ailenin ikinci "bileti");
+#: ``merge``: eski dil maddeleri ailenin grubuna katılır, null birleşik havuzdan.
+OLD_DONOR_MODE = "separate"
+
+#: 9g G2 — etiket adımında çekim/biçim göndermesi süzgeci: bu dillerin anlamı
+#: YALNIZ "plural of X", "inflection of X" gibi dilbilgisi göndermesi olan
+#: maddeleri (``donor_index.is_form_of``, X4 (b)) atlanır. Güç yolu ve X4
+#: ``CLEAN`` bayrağı değişmez (A2 alıntı gücünde Türkçe korumasını düşürmüştü).
+LABEL_FORM_FILTER = False
+LABEL_FORM_FILTER_LANGS = frozenset({"el", "hy", "grc", "xcl"})
+
 
 @dataclass(frozen=True)
 class DonorAttribution:
@@ -609,6 +636,8 @@ class DonorAttribution:
             "starling-monget": ", Starling monget",
             "northeuralex": ", NorthEuraLex",
             "robbeetstriangulation": ", robbeetstriangulation",
+            "kaikki-grc": ", Eski Yunanca biçimi",
+            "kaikki-xcl": ", Eski Ermenice biçimi",
         }.get(self.source, "")
         note = " ⚠️ verici belirsiz" if self.uncertain else ""
         via = ""
@@ -781,10 +810,12 @@ def attribute_donor(
     index = _index()
     if _pairwise() is None or not comparison or not getattr(index, "exists", False):
         return None
+    skip = LABEL_FORM_FILTER_LANGS if LABEL_FORM_FILTER else None
+    skip_kw = {"skip_form_of": skip} if skip else {}
     if FRENCH_RULE in ("f1", "f2"):
-        rows = index.by_sense(sense, languages=languages, limit=max_candidates, per_language=True)
+        rows = index.by_sense(sense, languages=languages, limit=max_candidates, per_language=True, **skip_kw)
     else:
-        rows = index.by_sense(sense, languages=languages, limit=max_candidates)
+        rows = index.by_sense(sense, languages=languages, limit=max_candidates, **skip_kw)
         if FRENCH_RULE in ("g1", "g2") and (languages is None or FRENCH in languages):
             seen = {(r["lang_code"], r["word"], r["comparison"]) for r in rows}
             rows = list(rows) + [r for r in index.by_sense(sense, languages=[FRENCH], limit=max_candidates)
@@ -806,6 +837,22 @@ def attribute_donor(
         if mongolic:
             groups[MONGOLIAN] = mongolic
             sources[MONGOLIAN] = "starling-monget"
+    if OLD_DONOR_LABELS and getattr(_label_index(), "exists", False):
+        for old, family in OLD_DONOR_FAMILY.items():
+            if languages is not None and family not in languages:
+                continue
+            extra = _label_index().by_sense(sense, languages=[old], limit=max_candidates, **skip_kw)
+            if active is not None:
+                extra = active.filter(sense, extra)
+            if not extra:
+                continue
+            if OLD_DONOR_MODE == "merge":
+                groups.setdefault(family, []).extend(
+                    {"lang_code": family, "word": r["word"], "comparison": r["comparison"],
+                     "gloss": r["gloss"], "source": f"kaikki-{old}"} for r in extra)
+            else:
+                groups[old] = list(extra)
+                sources[old] = f"kaikki-{old}"
     if CONCEPT_DONOR_LABELS:
         for pool, extra in _concept_rows(sense).items():
             if active is not None:
@@ -836,6 +883,8 @@ def attribute_donor(
         return None
     scored.sort(key=lambda item: (item[0], item[1], item[2]))
     _, distance, lang, row, null = scored[0]
+    raw_lang = lang
+    lang = OLD_DONOR_FAMILY.get(lang, lang)
     via = ""
     switched = None
     if ARABIC_VIA_RULE != "off" and (languages is None or ARABIC in languages):
@@ -873,8 +922,9 @@ def attribute_donor(
         gloss=row["gloss"] or "",
         distance=distance,
         null_distance=null,
-        source=(row.get("source") if isinstance(row, dict) else None) or sources.get(lang, "kaikki"),
-        alternatives=tuple((item[2], item[1], item[4]) for item in scored[1:] if item[2] != lang),
+        source=(row.get("source") if isinstance(row, dict) else None)
+        or sources.get(raw_lang if lang == OLD_DONOR_FAMILY.get(raw_lang) else lang, "kaikki"),
+        alternatives=tuple((item[2], item[1], item[4]) for item in scored[1:] if item[2] not in (lang, raw_lang)),
         via=via,
     )
 

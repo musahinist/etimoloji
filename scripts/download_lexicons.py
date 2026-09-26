@@ -210,6 +210,17 @@ DONORS: dict[str, str] = {
     "Italian": "it",
 }
 
+#: YALNIZ ETİKET adımı için eski dil vericileri (9g). Alıntı GÜCÜ havuzuna
+#: (``donors.db``) ASLA girmez — ayrı dizine iner (``data/lexicons/donors_label/``)
+#: ve ``engine.db.donor_index.LABEL_DB`` ayrı indeksine kurulur. Gerekçe: güç
+#: havuzuna eklenen dil (Starling Moğolcası) WOLD F'sini düşürmüştü (1facc40).
+#: Orta Yunanca (gkm) kaikki'de yok (2026-09-26, dizin listesi).
+LABEL_DONORS: dict[str, str] = {
+    "Ancient_Greek": "grc",
+    "Old_Armenian": "xcl",
+}
+LABEL_SUBDIR = "donors_label"
+
 #: Verici dökümleri için ayrı dizin. Türki indeksle karışmaması **yapısal**
 #: olarak garanti edilir: ``lexicon_index`` yalnız ``LEXICON_DIR``in kendi
 #: köküne bakar.
@@ -254,6 +265,7 @@ def download(
     donor: bool = False,
     ru_edition: bool = False,
     gap: bool = False,
+    label: bool = False,
 ) -> dict[str, Any] | None:
     """Tek bir dilin dökümünü indirir ve künyesini döndürür.
 
@@ -266,6 +278,9 @@ def download(
     elif gap:
         edition, code = GAP_LEXICONS[name]
         directory = LEXICON_DIR / GAP_SUBDIR
+    elif label:
+        code = LABEL_DONORS[name]
+        directory = LEXICON_DIR / LABEL_SUBDIR
     else:
         code = (DONORS if donor else LEXICONS)[name]
         directory = LEXICON_DIR / DONOR_SUBDIR if donor else LEXICON_DIR
@@ -316,7 +331,8 @@ def download(
         "_schema": "turkic-etymology-lexicon-provenance/v1",
         "language": name,
         "code": code,
-        "donor": donor,
+        "donor": donor or label,
+        **({"label_only": True} if label else {}),
         "ru_edition": ru_edition,
         **({"gap_edition": edition} if gap else {}),
         "url": url,
@@ -453,6 +469,11 @@ def main() -> int:
         action="store_true",
         help="veri açığı dilleri (Karaçay-Balkarca ru, Kumanca tr); indekse bağlanmaz",
     )
+    ap.add_argument(
+        "--label-donors",
+        action="store_true",
+        help="yalnız etiket adımı için eski dil vericileri (Eski Yunanca, Eski Ermenice); güç havuzuna girmez",
+    )
     ap.add_argument("--small", action="store_true", help=f"{SMALL_LIMIT >> 20} MB altındakiler")
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--no-compress", action="store_true", help="gzip'lemeden sakla")
@@ -481,6 +502,14 @@ def main() -> int:
                                  compress=not args.no_compress, gap=True))
         ]
         return 0 if results else 1
+
+    if args.label_donors:
+        results = [
+            prov for name in LABEL_DONORS
+            if (prov := download(name, session=session, force=args.force,
+                                 compress=not args.no_compress, label=True))
+        ]
+        return 0 if len(results) == len(LABEL_DONORS) else 1
 
     if args.ru:
         results = [
