@@ -1,13 +1,13 @@
 {
   "_schema": "headline_eval/v1",
-  "commit": "d1bd6af",
+  "commit": "ebb1c62",
   "fetchers": "yalnız yerel (tohum/indeks + indirilmiş Starling); ağ kaynakları kapalı",
   "sample": {
     "starling_words": 250,
     "savelyev_dev_turkish": 32,
     "seed": 20260924
   },
-  "headline_from_starling_share": 0.6,
+  "headline_from_starling_share": 0.596,
   "tradition_note_share": 0.1,
   "tradition_note_examples": {
     "arka": "Starling: *ărka · Wiktionary: *arka (aynı kök, farklı gösterim)",
@@ -555,7 +555,7 @@
           "reference": [
             "*bEŋiŕ"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *bEŋiŕ); motorun rekonstrüksiyonu: *beŋiŕ",
+          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *bEŋiŕ); motorun rekonstrüksiyonu: *beŋi",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -594,7 +594,7 @@
           "reference": [
             "*bile"
           ],
-          "provenance": "tanıklı — Starling Türk Etimoloji Veritabanı (Dybo & Starostin 2005, yerel)",
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -620,7 +620,7 @@
           "reference": [
             "*bɨŋ"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *bɨŋ); motorun rekonstrüksiyonu: *büŋ",
+          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *bɨŋ); motorun rekonstrüksiyonu: *beŋ",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -633,7 +633,7 @@
           "reference": [
             "*büt"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *büt-); motorun rekonstrüksiyonu: *beteĺ",
+          "provenance": "tanıklı — Starling Türk Etimoloji Veritabanı (Dybo & Starostin 2005, yerel)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -898,7 +898,7 @@
           "reference": [
             "*dEgiŋ"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *dEgiŋ); motorun rekonstrüksiyonu: *deji",
+          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *dEgiŋ); motorun rekonstrüksiyonu: *dejin",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -1030,7 +1030,7 @@
           "reference": [
             "*döl"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *döl); motorun rekonstrüksiyonu: *töl",
+          "provenance": "tanıklı — Starling Türk Etimoloji Veritabanı (Dybo & Starostin 2005, yerel)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -1306,7 +1306,7 @@
             "*gȫl",
             "*kȫĺek"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *kȫl-)",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *kȫl-); motorun rekonstrüksiyonu: *gölek",
           "exact": false,
           "acceptable": true,
           "ned": 0.3333,
@@ -1413,7 +1413,7 @@
           "reference": [
             "*gür"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *gür); motorun rekonstrüksiyonu: *kür",
+          "provenance": "tanıklı — Starling Türk Etimoloji Veritabanı (Dybo & Starostin 2005, yerel)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -1439,7 +1439,7 @@
           "reference": [
             "*īl"
           ],
-          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *īl-); motorun rekonstrüksiyonu: *ilmek",
+          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *īl-); motorun rekonstrüksiyonu: *elmek",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -1534,7 +1534,7 @@
             "*KAĺuk",
             "*KAlgak"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *KAĺuk); motorun rekonstrüksiyonu: *kalak",
+          "provenance": "tanıklı — Starling Türk Etimoloji Veritabanı (Dybo & Starostin 2005, yerel)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -1667,7 +1667,7 @@
           "reference": [
             "*KAbuk"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *KAbuk); motorun rekonstrüksiyonu: *kabak",
+          "provenance": "tanıklı — Starling Türk Etimoloji Veritabanı (Dybo & Starostin 2005, yerel)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -1707,7 +1707,7 @@
             "*Kek",
             "*Kak"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *Kek-); motorun rekonstrüksiyonu: *kerk",
+          "provenance": "tanıklı — Starling Türk Etimoloji Veritabanı (Dybo & Starostin 2005, yerel)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -1733,7 +1733,7 @@
           "reference": [
             "*kes"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *kes-); motorun rekonstrüksiyonu: *kesik",
+          "provenance": "tanıklı — Starling Türk Etimoloji Veritabanı (Dybo & Starostin 2005, yerel)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -1760,7 +1760,7 @@
           "reference": [
             "*Kon"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *Kon-); motorun rekonstrüksiyonu: *komĺu",
+          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *Kon-); motorun rekonstrüksiyonu: *konĺu",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -1799,7 +1799,7 @@
           "reference": [
             "*Kog"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *Kog-); motorun rekonstrüksiyonu: *ko",
+          "provenance": "tanıklı — Starling Türk Etimoloji Veritabanı (Dybo & Starostin 2005, yerel)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -2086,7 +2086,7 @@
           "reference": [
             "*or"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *or-); motorun rekonstrüksiyonu: *ora",
+          "provenance": "tanıklı — Starling Türk Etimoloji Veritabanı (Dybo & Starostin 2005, yerel)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -2099,7 +2099,7 @@
           "reference": [
             "*or"
           ],
-          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
+          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *ordu); motorun rekonstrüksiyonu: *orda",
           "exact": false,
           "acceptable": false,
           "ned": 0.5,
@@ -2165,7 +2165,7 @@
           "reference": [
             "*ōj"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *ōj-); motorun rekonstrüksiyonu: *oj",
+          "provenance": "tanıklı — Starling Türk Etimoloji Veritabanı (Dybo & Starostin 2005, yerel)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -2282,7 +2282,7 @@
           "reference": [
             "*sạg"
           ],
-          "provenance": "sıralayıcı hükmü — MİRAS — *sag [*PT]",
+          "provenance": "türetilmiş — A-HVP inceleme gerektiren miras kökü (Proto-Türkçe)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -2361,7 +2361,7 @@
             "*sīl",
             "*sɨ̄la"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *sīl-); motorun rekonstrüksiyonu: *sil",
+          "provenance": "tanıklı — Starling Türk Etimoloji Veritabanı (Dybo & Starostin 2005, yerel)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -2637,7 +2637,7 @@
           "reference": [
             "*Tobur"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *Tobur-); motorun rekonstrüksiyonu: *tomurçuk",
+          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *Tobur-); motorun rekonstrüksiyonu: *togurçuk",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -3303,100 +3303,100 @@
     },
     "starling/yerel/starling_dışı": {
       "engine": {
-        "n": 99,
-        "exact": 0.5455,
+        "n": 100,
+        "exact": 0.55,
         "exact_ci95": [
-          0.4475,
-          0.64
+          0.4524,
+          0.6439
         ],
-        "acceptable": 0.6768,
+        "acceptable": 0.68,
         "acceptable_ci95": [
-          0.5795,
-          0.7608
+          0.5834,
+          0.7633
         ],
-        "mean_ned": 0.2165,
+        "mean_ned": 0.2144,
         "mean_ned_ci95": [
-          0.1611,
-          0.2776
+          0.1599,
+          0.2732
         ],
-        "tradition_equivalent": 0.697,
+        "tradition_equivalent": 0.7,
         "tradition_equivalent_ci95": [
-          0.6005,
-          0.7787
+          0.6041,
+          0.7811
         ]
       },
       "engine_halves": {
         "A": {
           "n": 50,
-          "exact": 0.62,
+          "exact": 0.58,
           "exact_ci95": [
-            0.4815,
-            0.7414
+            0.4423,
+            0.7063
           ],
-          "acceptable": 0.72,
+          "acceptable": 0.68,
           "acceptable_ci95": [
+            0.5419,
+            0.7924
+          ],
+          "mean_ned": 0.2122,
+          "mean_ned_ci95": [
+            0.1323,
+            0.2998
+          ],
+          "tradition_equivalent": 0.72,
+          "tradition_equivalent_ci95": [
             0.5833,
             0.8253
-          ],
-          "mean_ned": 0.1948,
-          "mean_ned_ci95": [
-            0.1168,
-            0.2751
-          ],
-          "tradition_equivalent": 0.76,
-          "tradition_equivalent_ci95": [
-            0.6259,
-            0.857
           ]
         },
         "B": {
-          "n": 49,
-          "exact": 0.4694,
+          "n": 50,
+          "exact": 0.52,
           "exact_ci95": [
-            0.337,
-            0.6062
+            0.3851,
+            0.652
           ],
-          "acceptable": 0.6327,
+          "acceptable": 0.68,
           "acceptable_ci95": [
-            0.4927,
-            0.7534
+            0.5419,
+            0.7924
           ],
-          "mean_ned": 0.2388,
+          "mean_ned": 0.2166,
           "mean_ned_ci95": [
-            0.163,
-            0.3228
+            0.1403,
+            0.2952
           ],
-          "tradition_equivalent": 0.6327,
+          "tradition_equivalent": 0.68,
           "tradition_equivalent_ci95": [
-            0.4927,
-            0.7534
+            0.5419,
+            0.7924
           ]
         }
       },
       "baseline_identity": {
-        "n": 99,
-        "exact": 0.2727,
+        "n": 100,
+        "exact": 0.28,
         "exact_ci95": [
-          0.1947,
-          0.3677
+          0.2014,
+          0.3749
         ],
-        "acceptable": 0.3535,
+        "acceptable": 0.36,
         "acceptable_ci95": [
-          0.2664,
-          0.4516
+          0.2727,
+          0.4576
         ],
-        "mean_ned": 0.3253,
+        "mean_ned": 0.322,
         "mean_ned_ci95": [
-          0.2713,
-          0.383
+          0.2686,
+          0.3791
         ],
-        "tradition_equivalent": 0.4848,
+        "tradition_equivalent": 0.49,
         "tradition_equivalent_ci95": [
-          0.3888,
-          0.582
+          0.3942,
+          0.5865
         ]
       },
-      "headline_is_starred": 0.9495,
+      "headline_is_starred": 0.95,
       "items": [
         {
           "word": "ad",
@@ -3606,6 +3606,19 @@
           "acceptable": true,
           "ned": 0.0,
           "matched": "*bẹ̄l",
+          "tradition_equivalent": true
+        },
+        {
+          "word": "bile",
+          "headline": "*bile",
+          "reference": [
+            "*bile"
+          ],
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
+          "exact": true,
+          "acceptable": true,
+          "ned": 0.0,
+          "matched": "*bile",
           "tradition_equivalent": true
         },
         {
@@ -3931,7 +3944,7 @@
             "*gȫl",
             "*kȫĺek"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *kȫl-)",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *kȫl-); motorun rekonstrüksiyonu: *gölek",
           "exact": false,
           "acceptable": true,
           "ned": 0.3333,
@@ -3971,7 +3984,7 @@
           "reference": [
             "*īl"
           ],
-          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *īl-); motorun rekonstrüksiyonu: *ilmek",
+          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *īl-); motorun rekonstrüksiyonu: *elmek",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -4248,7 +4261,7 @@
           "reference": [
             "*or"
           ],
-          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
+          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *ordu); motorun rekonstrüksiyonu: *orda",
           "exact": false,
           "acceptable": false,
           "ned": 0.5,
@@ -4327,7 +4340,7 @@
           "reference": [
             "*sạg"
           ],
-          "provenance": "sıralayıcı hükmü — MİRAS — *sag [*PT]",
+          "provenance": "türetilmiş — A-HVP inceleme gerektiren miras kökü (Proto-Türkçe)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -4705,20 +4718,20 @@
     "starling/starling_yok": {
       "engine": {
         "n": 240,
-        "exact": 0.4083,
+        "exact": 0.4167,
         "exact_ci95": [
-          0.3481,
-          0.4715
+          0.3561,
+          0.4799
         ],
         "acceptable": 0.5375,
         "acceptable_ci95": [
           0.4743,
           0.5995
         ],
-        "mean_ned": 0.2731,
+        "mean_ned": 0.2697,
         "mean_ned_ci95": [
-          0.2388,
-          0.3101
+          0.235,
+          0.3072
         ],
         "tradition_equivalent": 0.5542,
         "tradition_equivalent_ci95": [
@@ -4739,10 +4752,10 @@
             0.4526,
             0.6281
           ],
-          "mean_ned": 0.2731,
+          "mean_ned": 0.2719,
           "mean_ned_ci95": [
-            0.2252,
-            0.3248
+            0.2234,
+            0.3225
           ],
           "tradition_equivalent": 0.575,
           "tradition_equivalent_ci95": [
@@ -4752,20 +4765,20 @@
         },
         "B": {
           "n": 120,
-          "exact": 0.4,
+          "exact": 0.4167,
           "exact_ci95": [
-            0.3168,
-            0.4894
+            0.3324,
+            0.5061
           ],
           "acceptable": 0.5333,
           "acceptable_ci95": [
             0.4444,
             0.6202
           ],
-          "mean_ned": 0.273,
+          "mean_ned": 0.2674,
           "mean_ned_ci95": [
-            0.2239,
-            0.3221
+            0.2184,
+            0.3182
           ],
           "tradition_equivalent": 0.5333,
           "tradition_equivalent_ci95": [
@@ -4797,7 +4810,7 @@
           0.4335
         ]
       },
-      "headline_is_starred": 0.8,
+      "headline_is_starred": 0.7708,
       "items": [
         {
           "word": "abuş",
@@ -5129,14 +5142,14 @@
         },
         {
           "word": "barnak",
-          "headline": "*barna",
+          "headline": "barnak",
           "reference": [
             "*biarŋak"
           ],
-          "provenance": "türetilmiş — A-HVP inceleme gerektiren miras kökü (Proto-Türkçe)",
+          "provenance": "yok — kök belirlenemedi",
           "exact": false,
           "acceptable": false,
-          "ned": 0.4286,
+          "ned": 0.2857,
           "matched": "*biarŋak",
           "tradition_equivalent": false
         },
@@ -5212,7 +5225,7 @@
           "reference": [
             "*bEŋiŕ"
           ],
-          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *beŋiŕ); motorun rekonstrüksiyonu: *beŋi",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -5251,7 +5264,7 @@
           "reference": [
             "*bile"
           ],
-          "provenance": "türetilmiş — tanıksız kelime kanıtlayıcısı",
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -5277,7 +5290,7 @@
           "reference": [
             "*bɨŋ"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *bīn-); motorun rekonstrüksiyonu: *büŋ",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *bīn-); motorun rekonstrüksiyonu: *beŋ",
           "exact": false,
           "acceptable": false,
           "ned": 0.6667,
@@ -5286,11 +5299,11 @@
         },
         {
           "word": "bitiş",
-          "headline": "*beteĺ",
+          "headline": "bitiş",
           "reference": [
             "*büt"
           ],
-          "provenance": "türetilmiş — A-HVP inceleme gerektiren miras kökü (Proto-Türkçe)",
+          "provenance": "yok — kök belirlenemedi",
           "exact": false,
           "acceptable": false,
           "ned": 0.6,
@@ -5369,7 +5382,7 @@
           "reference": [
             "*buŋ"
           ],
-          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *buŋ); motorun rekonstrüksiyonu: *boŋ",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -5555,7 +5568,7 @@
           "reference": [
             "*dEgiŋ"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *teg-); motorun rekonstrüksiyonu: *dekin",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *teg-); motorun rekonstrüksiyonu: *deji",
           "exact": false,
           "acceptable": false,
           "ned": 0.6,
@@ -5595,7 +5608,7 @@
           "reference": [
             "*dɨŋ"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *tïŋ)",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *tïŋ); motorun rekonstrüksiyonu: *tinç",
           "exact": false,
           "acceptable": true,
           "ned": 0.3333,
@@ -5631,7 +5644,7 @@
         },
         {
           "word": "domuz",
-          "headline": "*tomuŕ",
+          "headline": "*tonuŕ",
           "reference": [
             "*doŋuŕ"
           ],
@@ -5683,14 +5696,14 @@
         },
         {
           "word": "döl",
-          "headline": "*töl",
+          "headline": "döl",
           "reference": [
             "*döl"
           ],
-          "provenance": "türetilmiş — A-HVP inceleme gerektiren miras kökü (Proto-Türkçe)",
-          "exact": false,
+          "provenance": "yok — kök belirlenemedi",
+          "exact": true,
           "acceptable": true,
-          "ned": 0.3333,
+          "ned": 0.0,
           "matched": "*döl",
           "tradition_equivalent": true
         },
@@ -5884,7 +5897,7 @@
           "reference": [
             "*gēŋ"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *kēŋ); motorun rekonstrüksiyonu: *keŋ",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *kēŋ)",
           "exact": false,
           "acceptable": true,
           "ned": 0.3333,
@@ -5963,7 +5976,7 @@
             "*gȫl",
             "*kȫĺek"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *kȫl-)",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *kȫl-); motorun rekonstrüksiyonu: *gölek",
           "exact": false,
           "acceptable": true,
           "ned": 0.3333,
@@ -6017,7 +6030,7 @@
             "*gögüŕ",
             "*Kökrek"
           ],
-          "provenance": "türetilmiş — A-HVP inceleme gerektiren miras kökü (Proto-Türkçe)",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *köküŕ); motorun rekonstrüksiyonu: *kügük",
           "exact": false,
           "acceptable": true,
           "ned": 0.2,
@@ -6057,7 +6070,7 @@
           "reference": [
             "*güni"
           ],
-          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
+          "provenance": "türetilmiş — A-HVP inceleme gerektiren miras kökü (Proto-Türkçe)",
           "exact": false,
           "acceptable": false,
           "ned": 0.5,
@@ -6066,14 +6079,14 @@
         },
         {
           "word": "gür",
-          "headline": "*kür",
+          "headline": "gür",
           "reference": [
             "*gür"
           ],
-          "provenance": "sıralayıcı hükmü — MİRAS — *kür [*PCT]",
-          "exact": false,
+          "provenance": "yok — kök belirlenemedi",
+          "exact": true,
           "acceptable": true,
-          "ned": 0.3333,
+          "ned": 0.0,
           "matched": "*gür",
           "tradition_equivalent": true
         },
@@ -6096,7 +6109,7 @@
           "reference": [
             "*īl"
           ],
-          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *īl-); motorun rekonstrüksiyonu: *ilmek",
+          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *īl-); motorun rekonstrüksiyonu: *elmek",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -6186,12 +6199,12 @@
         },
         {
           "word": "kalak",
-          "headline": "*kalak",
+          "headline": "kalak",
           "reference": [
             "*KAĺuk",
             "*KAlgak"
           ],
-          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
+          "provenance": "yok — kök belirlenemedi",
           "exact": false,
           "acceptable": false,
           "ned": 0.1667,
@@ -6320,11 +6333,11 @@
         },
         {
           "word": "kavuk",
-          "headline": "*kabak",
+          "headline": "kavuk",
           "reference": [
             "*KAbuk"
           ],
-          "provenance": "türetilmiş — A-HVP inceleme gerektiren miras kökü (Proto-Türkçe)",
+          "provenance": "yok — kök belirlenemedi",
           "exact": false,
           "acceptable": false,
           "ned": 0.2,
@@ -6359,12 +6372,12 @@
         },
         {
           "word": "keke",
-          "headline": "*kerk",
+          "headline": "keke",
           "reference": [
             "*Kek",
             "*Kak"
           ],
-          "provenance": "türetilmiş — A-HVP inceleme gerektiren miras kökü (Proto-Türkçe)",
+          "provenance": "yok — kök belirlenemedi",
           "exact": false,
           "acceptable": false,
           "ned": 0.25,
@@ -6390,7 +6403,7 @@
           "reference": [
             "*kes"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *kes-); motorun rekonstrüksiyonu: *kesik",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *kes-); motorun rekonstrüksiyonu: *kesük",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -6417,7 +6430,7 @@
           "reference": [
             "*Kon"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *kon-); motorun rekonstrüksiyonu: *komĺu",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *kon-); motorun rekonstrüksiyonu: *konĺu",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -6456,7 +6469,7 @@
           "reference": [
             "*Kog"
           ],
-          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *kob-); motorun rekonstrüksiyonu: *ko",
+          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *kob-)",
           "exact": false,
           "acceptable": false,
           "ned": 0.3333,
@@ -6535,7 +6548,7 @@
           "reference": [
             "*köp"
           ],
-          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
+          "provenance": "tanıklı — Çağatayca sözlük kaydı (Proto-Türkçe *köp); motorun rekonstrüksiyonu: *kop",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -6743,7 +6756,7 @@
           "reference": [
             "*or"
           ],
-          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *or-); motorun rekonstrüksiyonu: *ora",
+          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *or-)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -6756,7 +6769,7 @@
           "reference": [
             "*or"
           ],
-          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
+          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (Proto-Türkçe *ordu); motorun rekonstrüksiyonu: *orda",
           "exact": false,
           "acceptable": false,
           "ned": 0.5,
@@ -6769,7 +6782,7 @@
           "reference": [
             "*or"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *or-); motorun rekonstrüksiyonu: *orta",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *or-); motorun rekonstrüksiyonu: *orto",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -6796,7 +6809,7 @@
           "reference": [
             "*otuŕ"
           ],
-          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *otuŕ); motorun rekonstrüksiyonu: *otıŕ",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -6939,7 +6952,7 @@
           "reference": [
             "*sạg"
           ],
-          "provenance": "türetilmiş — tanıksız kelime kanıtlayıcısı",
+          "provenance": "türetilmiş — A-HVP inceleme gerektiren miras kökü (Proto-Türkçe)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -7018,7 +7031,7 @@
             "*sīl",
             "*sɨ̄la"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *sīl-); motorun rekonstrüksiyonu: *sil",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *sīl-)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -7294,7 +7307,7 @@
           "reference": [
             "*Tobur"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *toburčuk); motorun rekonstrüksiyonu: *tomurçuk",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *toburčuk); motorun rekonstrüksiyonu: *togurçuk",
           "exact": false,
           "acceptable": false,
           "ned": 0.375,
@@ -7399,7 +7412,7 @@
           "reference": [
             "*ulug"
           ],
-          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *ulï-); motorun rekonstrüksiyonu: *ulu",
+          "provenance": "tanıklı — Osmanlı Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *ulï-); motorun rekonstrüksiyonu: *ul",
           "exact": false,
           "acceptable": false,
           "ned": 0.5,
@@ -7412,7 +7425,7 @@
           "reference": [
             "*ur"
           ],
-          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *ur)",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -7464,7 +7477,7 @@
           "reference": [
             "*jElme"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *yal-)",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *yal-); motorun rekonstrüksiyonu: *jalj",
           "exact": false,
           "acceptable": false,
           "ned": 0.6,
@@ -7897,7 +7910,7 @@
           "reference": [
             "*ȫŕ"
           ],
-          "provenance": "tanıklı — Eski Uygurca sözlük kaydı (Proto-Türkçe *ȫŕ)",
+          "provenance": "tanıklı — Eski Uygurca sözlük kaydı (Proto-Türkçe *ȫŕ); motorun rekonstrüksiyonu: *oŕ",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -7936,7 +7949,7 @@
           "reference": [
             "*ǖĺ"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *ǖš); motorun rekonstrüksiyonu: *üs",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *ǖš); motorun rekonstrüksiyonu: *üŕ",
           "exact": false,
           "acceptable": false,
           "ned": 0.5,
@@ -7949,7 +7962,7 @@
           "reference": [
             "*jɨlɨ-g"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *yïlïg); motorun rekonstrüksiyonu: *jılı",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *yïlïg); motorun rekonstrüksiyonu: *ılık",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -8205,7 +8218,7 @@
           "reference": [
             "*gēŋ"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *kẹ̄ŋ); motorun rekonstrüksiyonu: *keŋi",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *kẹ̄ŋ); motorun rekonstrüksiyonu: *keŋ",
           "exact": false,
           "acceptable": true,
           "ned": 0.75,
@@ -8309,7 +8322,7 @@
           "reference": [
             "*jiŋčge"
           ],
-          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *jiŋč-ge); motorun rekonstrüksiyonu: *sinçe",
+          "provenance": "tanıklı — Starling (Dybo & Starostin 2005) (Proto-Türkçe *jiŋč-ge); motorun rekonstrüksiyonu: *inçe",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -8605,7 +8618,7 @@
             "*jaŋï",
             "*jeŋi"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *yaŋï); motorun rekonstrüksiyonu: *jana",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *yaŋï); motorun rekonstrüksiyonu: *jaŋi",
           "exact": true,
           "acceptable": true,
           "ned": 0.0,
@@ -8722,7 +8735,7 @@
           "reference": [
             "*gēŋ"
           ],
-          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *kẹ̄ŋ); motorun rekonstrüksiyonu: *keŋi",
+          "provenance": "tanıklı — Türkiye Türkçesi sözlük kaydı (yerel indeks) (Proto-Türkçe *kẹ̄ŋ); motorun rekonstrüksiyonu: *keŋ",
           "exact": false,
           "acceptable": true,
           "ned": 0.75,
@@ -8822,11 +8835,11 @@
         },
         {
           "word": "ince",
-          "headline": "*sinçe",
+          "headline": "*inçe",
           "reference": [
             "*jiŋčge"
           ],
-          "provenance": "türetilmiş — tanıksız kelime kanıtlayıcısı",
+          "provenance": "türetilmiş — A-HVP doğrulanmış miras kökü (Proto-Türkçe)",
           "exact": false,
           "acceptable": false,
           "ned": 0.5,

@@ -1,7 +1,7 @@
 {
   "_schema": "tr_donor_eval/v1",
   "name": "Türkçe verici dil — Wiktionary↔TDK uyumu",
-  "commit": "192d518",
+  "commit": "ebb1c62",
   "gold": "turkish_loanwords.json: alıntı, tdk_source ile nisanyan_source ilk dil adı aynı; train+dev (assign_split('tr-gold:<kelime>') test hariç)",
   "n": 293,
   "split": "train+dev",
@@ -40,96 +40,92 @@
       "systems": {
         "(a) etiket": {
           "n": 293,
-          "accuracy": 0.5631,
+          "accuracy": 0.6416,
           "accuracy_ci95": [
-            0.5059,
-            0.6188
+            0.5852,
+            0.6944
           ],
           "coverage": 0.9966,
-          "accuracy_when_predicted": 0.5651,
+          "accuracy_when_predicted": 0.6438,
           "accuracy_when_predicted_ci95": [
-            0.5077,
-            0.6207
+            0.5874,
+            0.6966
           ],
-          "macro_recall": 0.3107,
+          "macro_recall": 0.3572,
           "per_class_recall": {
-            "Arapça": 0.8041,
+            "Arapça": 0.7568,
             "Farsça": 0.3125,
-            "Fransızca": 0.3587,
+            "Fransızca": 0.6848,
             "Yunanca": 0.2222,
             "diğer": 0.0,
             "İtalyanca": 0.1667
           },
           "confusion": {
             "Fransızca": {
-              "Farsça": 12,
-              "Fransızca": 33,
-              "Arapça": 21,
-              "Yunanca": 8,
-              "İtalyanca": 14,
-              "diğer": 3,
+              "Fransızca": 63,
+              "Arapça": 13,
+              "Farsça": 1,
+              "Yunanca": 3,
+              "İtalyanca": 11,
               "—": 1
             },
             "Arapça": {
-              "Yunanca": 8,
-              "Arapça": 119,
+              "Yunanca": 6,
+              "Arapça": 112,
+              "Fransızca": 14,
               "İtalyanca": 5,
               "diğer": 4,
-              "Fransızca": 3,
-              "Farsça": 9
+              "Farsça": 7
             },
             "Yunanca": {
-              "Arapça": 4,
-              "Fransızca": 2,
-              "Yunanca": 2,
-              "Farsça": 1
+              "Arapça": 3,
+              "Fransızca": 4,
+              "Yunanca": 2
             },
             "Farsça": {
               "diğer": 2,
               "Farsça": 10,
-              "Arapça": 13,
-              "Fransızca": 2,
+              "Arapça": 9,
+              "Fransızca": 6,
               "Yunanca": 4,
               "İtalyanca": 1
             },
             "diğer": {
               "İtalyanca": 1,
-              "Arapça": 3,
-              "Farsça": 1,
-              "Fransızca": 1
+              "Fransızca": 4,
+              "Farsça": 1
             },
             "İtalyanca": {
-              "Arapça": 3,
-              "İtalyanca": 1,
-              "Fransızca": 1,
-              "Yunanca": 1
+              "Fransızca": 3,
+              "Arapça": 2,
+              "İtalyanca": 1
             }
           },
           "top_errors": [
             {
-              "gold": "Fransızca",
-              "pred": "Arapça",
-              "n": 21
-            },
-            {
-              "gold": "Fransızca",
-              "pred": "İtalyanca",
+              "gold": "Arapça",
+              "pred": "Fransızca",
               "n": 14
             },
             {
-              "gold": "Farsça",
+              "gold": "Fransızca",
               "pred": "Arapça",
               "n": 13
             },
             {
               "gold": "Fransızca",
-              "pred": "Farsça",
-              "n": 12
+              "pred": "İtalyanca",
+              "n": 11
+            },
+            {
+              "gold": "Farsça",
+              "pred": "Arapça",
+              "n": 9
             },
             {
               "gold": "Arapça",
               "pred": "Farsça",
-              "n": 9
+              "n": 7
             }
           ]
         },
@@ -289,47 +285,46 @@
         },
         "(b) dedektör": {
           "n": 293,
-          "accuracy": 0.9386,
+          "accuracy": 0.9454,
           "accuracy_ci95": [
-            0.905,
-            0.9608
+            0.9131,
+            0.9661
           ],
           "coverage": 0.9966,
-          "accuracy_when_predicted": 0.9418,
+          "accuracy_when_predicted": 0.9486,
           "accuracy_when_predicted_ci95": [
-            0.9088,
-            0.9633
+            0.917,
+            0.9686
           ],
-          "macro_recall": 0.9265,
+          "macro_recall": 0.9301,
           "per_class_recall": {
             "Arapça": 0.9459,
             "Farsça": 0.8125,
-            "Fransızca": 0.9674,
+            "Fransızca": 0.9891,
             "Yunanca": 1.0,
             "diğer": 1.0,
             "İtalyanca": 0.8333
           },
           "confusion": {
             "Fransızca": {
-              "Fransızca": 89,
-              "—": 1,
-              "Arapça": 1,
-              "Farsça": 1
+              "Fransızca": 91,
+              "—": 1
             },
             "Arapça": {
               "Arapça": 140,
-              "Farsça": 6,
-              "Yunanca": 2
+              "Farsça": 5,
+              "Yunanca": 2,
+              "Fransızca": 1
             },
             "Yunanca": {
               "Yunanca": 9
             },
             "Farsça": {
               "Farsça": 26,
-              "Fransızca": 1,
-              "Arapça": 3,
+              "Fransızca": 2,
               "İtalyanca": 1,
-              "diğer": 1
+              "diğer": 1,
+              "Arapça": 2
             },
             "diğer": {
               "diğer": 6
@@ -343,12 +338,12 @@
             {
               "gold": "Arapça",
               "pred": "Farsça",
-              "n": 6
+              "n": 5
             },
             {
               "gold": "Farsça",
-              "pred": "Arapça",
-              "n": 3
+              "pred": "Fransızca",
+              "n": 2
             },
             {
               "gold": "Arapça",
@@ -356,93 +351,83 @@
               "n": 2
             },
             {
-              "gold": "Fransızca",
-              "pred": "—",
-              "n": 1
+              "gold": "Farsça",
+              "pred": "Arapça",
+              "n": 2
             },
             {
               "gold": "Fransızca",
-              "pred": "Arapça",
+              "pred": "—",
               "n": 1
             }
           ]
         },
         "(c) kör": {
           "n": 293,
-          "accuracy": 0.5154,
+          "accuracy": 0.5973,
           "accuracy_ci95": [
-            0.4583,
-            0.572
+            0.5402,
+            0.6518
           ],
           "coverage": 0.8737,
-          "accuracy_when_predicted": 0.5898,
+          "accuracy_when_predicted": 0.6836,
           "accuracy_when_predicted_ci95": [
-            0.5287,
-            0.6483
+            0.6243,
+            0.7375
           ],
-          "macro_recall": 0.2942,
+          "macro_recall": 0.3418,
           "per_class_recall": {
-            "Arapça": 0.7162,
+            "Arapça": 0.6757,
             "Farsça": 0.3125,
-            "Fransızca": 0.3478,
+            "Fransızca": 0.6739,
             "Yunanca": 0.2222,
             "diğer": 0.0,
             "İtalyanca": 0.1667
           },
           "confusion": {
             "Fransızca": {
-              "Farsça": 11,
-              "Fransızca": 32,
-              "Arapça": 20,
+              "Fransızca": 62,
+              "Arapça": 12,
               "—": 5,
-              "Yunanca": 7,
-              "İtalyanca": 14,
-              "diğer": 3
+              "İtalyanca": 11,
+              "Yunanca": 2
             },
             "Arapça": {
-              "Yunanca": 5,
+              "Yunanca": 3,
               "—": 20,
-              "Arapça": 106,
+              "Arapça": 100,
+              "Fransızca": 11,
               "İtalyanca": 4,
               "diğer": 4,
-              "Farsça": 8,
-              "Fransızca": 1
+              "Farsça": 6
             },
             "Yunanca": {
               "Arapça": 2,
               "—": 3,
               "Yunanca": 2,
-              "Farsça": 1,
-              "Fransızca": 1
+              "Fransızca": 2
             },
             "Farsça": {
               "—": 6,
               "Farsça": 10,
-              "Fransızca": 2,
+              "Fransızca": 4,
               "Yunanca": 3,
-              "Arapça": 10,
-              "İtalyanca": 1
+              "İtalyanca": 1,
+              "Arapça": 8
             },
             "diğer": {
               "İtalyanca": 1,
               "—": 2,
-              "Arapça": 2,
-              "Fransızca": 1
+              "Fransızca": 3
             },
             "İtalyanca": {
               "—": 1,
               "Arapça": 2,
               "İtalyanca": 1,
-              "Fransızca": 1,
-              "Yunanca": 1
+              "Fransızca": 2
             }
           },
           "top_errors": [
-            {
-              "gold": "Fransızca",
-              "pred": "Arapça",
-              "n": 20
-            },
             {
               "gold": "Arapça",
               "pred": "—",
@@ -450,18 +435,23 @@
             },
             {
               "gold": "Fransızca",
-              "pred": "İtalyanca",
-              "n": 14
+              "pred": "Arapça",
+              "n": 12
+            },
+            {
+              "gold": "Arapça",
+              "pred": "Fransızca",
+              "n": 11
             },
             {
               "gold": "Fransızca",
-              "pred": "Farsça",
+              "pred": "İtalyanca",
               "n": 11
             },
             {
               "gold": "Farsça",
               "pred": "Arapça",
-              "n": 10
+              "n": 8
             }
           ]
         },
@@ -539,11 +529,11 @@
       "vs_majority_mcnemar": {
         "(a) etiket": {
           "test": "mcnemar",
-          "statistic": 17.0,
-          "p": 0.06395,
-          "n": 75,
-          "significant": false,
-          "note": "yalnız A doğru: 46, yalnız B doğru: 29"
+          "statistic": 40.0,
+          "p": 0.0002,
+          "n": 112,
+          "significant": true,
+          "note": "yalnız A doğru: 76, yalnız B doğru: 36"
         },
         "(b) arama": {
           "test": "mcnemar",
@@ -563,19 +553,19 @@
         },
         "(b) dedektör": {
           "test": "mcnemar",
-          "statistic": 127.0,
+          "statistic": 129.0,
           "p": 0.0,
-          "n": 143,
+          "n": 145,
           "significant": true,
-          "note": "yalnız A doğru: 135, yalnız B doğru: 8"
+          "note": "yalnız A doğru: 137, yalnız B doğru: 8"
         },
         "(c) kör": {
           "test": "mcnemar",
-          "statistic": 3.0,
-          "p": 0.83037,
-          "n": 87,
-          "significant": false,
-          "note": "yalnız A doğru: 45, yalnız B doğru: 42"
+          "statistic": 27.0,
+          "p": 0.01869,
+          "n": 123,
+          "significant": true,
+          "note": "yalnız A doğru: 75, yalnız B doğru: 48"
         }
       },
       "missing_rows": {
@@ -588,43 +578,42 @@
       "systems": {
         "(a) etiket": {
           "n": 293,
-          "accuracy": 0.5427,
+          "accuracy": 0.6485,
           "accuracy_ci95": [
-            0.4854,
-            0.5988
+            0.5922,
+            0.7009
           ],
           "coverage": 0.9898,
-          "accuracy_when_predicted": 0.5483,
+          "accuracy_when_predicted": 0.6552,
           "accuracy_when_predicted_ci95": [
-            0.4907,
-            0.6046
+            0.5988,
+            0.7075
           ],
-          "macro_recall": 0.3831,
+          "macro_recall": 0.4379,
           "per_class_recall": {
-            "Arapça": 0.6959,
+            "Arapça": 0.7095,
             "Farsça": 0.5,
-            "Fransızca": 0.3804,
+            "Fransızca": 0.6957,
             "Yunanca": 0.2222,
             "diğer": 0.1667,
             "İtalyanca": 0.3333
           },
           "confusion": {
             "Fransızca": {
-              "Farsça": 17,
-              "Fransızca": 35,
-              "diğer": 4,
-              "Yunanca": 9,
-              "İtalyanca": 17,
+              "Fransızca": 64,
+              "Farsça": 2,
+              "Yunanca": 3,
+              "İtalyanca": 13,
               "Arapça": 8,
               "—": 2
             },
             "Arapça": {
-              "Yunanca": 10,
-              "Arapça": 103,
-              "İtalyanca": 9,
-              "Fransızca": 7,
+              "Yunanca": 8,
+              "Arapça": 105,
+              "İtalyanca": 8,
               "diğer": 12,
-              "Farsça": 6,
+              "Fransızca": 7,
+              "Farsça": 7,
               "—": 1
             },
             "Yunanca": {
@@ -638,33 +627,27 @@
             "Farsça": {
               "Yunanca": 4,
               "Farsça": 16,
-              "Fransızca": 3,
+              "Fransızca": 2,
               "diğer": 2,
-              "İtalyanca": 2,
+              "İtalyanca": 3,
               "Arapça": 5
             },
             "diğer": {
               "Fransızca": 4,
-              "Yunanca": 1,
+              "İtalyanca": 1,
               "diğer": 1
             },
             "İtalyanca": {
               "İtalyanca": 2,
               "Arapça": 2,
-              "Fransızca": 1,
-              "Yunanca": 1
+              "Fransızca": 2
             }
           },
           "top_errors": [
             {
               "gold": "Fransızca",
-              "pred": "Farsça",
-              "n": 17
-            },
-            {
-              "gold": "Fransızca",
               "pred": "İtalyanca",
-              "n": 17
+              "n": 13
             },
             {
               "gold": "Arapça",
@@ -674,12 +657,17 @@
             {
               "gold": "Arapça",
               "pred": "Yunanca",
-              "n": 10
+              "n": 8
+            },
+            {
+              "gold": "Arapça",
+              "pred": "İtalyanca",
+              "n": 8
             },
             {
               "gold": "Fransızca",
-              "pred": "Yunanca",
-              "n": 9
+              "pred": "Arapça",
+              "n": 8
             }
           ]
         },
@@ -839,31 +827,30 @@
         },
         "(b) dedektör": {
           "n": 293,
-          "accuracy": 0.9386,
+          "accuracy": 0.942,
           "accuracy_ci95": [
-            0.905,
-            0.9608
+            0.9091,
+            0.9635
           ],
           "coverage": 0.9898,
-          "accuracy_when_predicted": 0.9483,
+          "accuracy_when_predicted": 0.9517,
           "accuracy_when_predicted_ci95": [
-            0.9164,
-            0.9684
+            0.9206,
+            0.971
           ],
-          "macro_recall": 0.9313,
+          "macro_recall": 0.9331,
           "per_class_recall": {
             "Arapça": 0.9324,
             "Farsça": 0.8438,
-            "Fransızca": 0.9783,
+            "Fransızca": 0.9891,
             "Yunanca": 1.0,
             "diğer": 1.0,
             "İtalyanca": 0.8333
           },
           "confusion": {
             "Fransızca": {
-              "Fransızca": 90,
-              "Yunanca": 1,
-              "Farsça": 1
+              "Fransızca": 91,
+              "Yunanca": 1
             },
             "Arapça": {
               "Arapça": 138,
@@ -920,44 +907,43 @@
         },
         "(c) kör": {
           "n": 293,
-          "accuracy": 0.5119,
+          "accuracy": 0.6109,
           "accuracy_ci95": [
-            0.4549,
-            0.5687
+            0.554,
+            0.665
           ],
           "coverage": 0.8635,
-          "accuracy_when_predicted": 0.5929,
+          "accuracy_when_predicted": 0.7075,
           "accuracy_when_predicted_ci95": [
-            0.5314,
-            0.6516
+            0.6487,
+            0.7601
           ],
-          "macro_recall": 0.3675,
+          "macro_recall": 0.4201,
           "per_class_recall": {
             "Arapça": 0.6554,
             "Farsça": 0.4688,
-            "Fransızca": 0.3587,
+            "Fransızca": 0.6739,
             "Yunanca": 0.2222,
             "diğer": 0.1667,
             "İtalyanca": 0.3333
           },
           "confusion": {
             "Fransızca": {
-              "Farsça": 16,
-              "Fransızca": 33,
-              "diğer": 4,
+              "Fransızca": 62,
               "—": 5,
-              "Yunanca": 9,
-              "İtalyanca": 17,
-              "Arapça": 8
+              "Yunanca": 3,
+              "İtalyanca": 13,
+              "Arapça": 8,
+              "Farsça": 1
             },
             "Arapça": {
               "—": 25,
               "Arapça": 97,
-              "İtalyanca": 6,
-              "Yunanca": 5,
+              "İtalyanca": 5,
+              "Yunanca": 4,
               "diğer": 9,
-              "Farsça": 5,
-              "Fransızca": 1
+              "Fransızca": 3,
+              "Farsça": 5
             },
             "Yunanca": {
               "diğer": 1,
@@ -978,14 +964,13 @@
             },
             "diğer": {
               "Fransızca": 4,
-              "Yunanca": 1,
+              "İtalyanca": 1,
               "diğer": 1
             },
             "İtalyanca": {
               "İtalyanca": 2,
               "Arapça": 2,
-              "Fransızca": 1,
-              "Yunanca": 1
+              "Fransızca": 2
             }
           },
           "top_errors": [
@@ -997,22 +982,22 @@
             {
               "gold": "Fransızca",
               "pred": "İtalyanca",
-              "n": 17
-            },
-            {
-              "gold": "Fransızca",
-              "pred": "Farsça",
-              "n": 16
-            },
-            {
-              "gold": "Fransızca",
-              "pred": "Yunanca",
-              "n": 9
+              "n": 13
             },
             {
               "gold": "Arapça",
               "pred": "diğer",
               "n": 9
+            },
+            {
+              "gold": "Fransızca",
+              "pred": "Arapça",
+              "n": 8
+            },
+            {
+              "gold": "Farsça",
+              "pred": "—",
+              "n": 7
             }
           ]
         },
@@ -1090,11 +1075,11 @@
       "vs_majority_mcnemar": {
         "(a) etiket": {
           "test": "mcnemar",
-          "statistic": 11.0,
-          "p": 0.31973,
-          "n": 101,
-          "significant": false,
-          "note": "yalnız A doğru: 56, yalnız B doğru: 45"
+          "statistic": 42.0,
+          "p": 0.00026,
+          "n": 128,
+          "significant": true,
+          "note": "yalnız A doğru: 85, yalnız B doğru: 43"
         },
         "(b) arama": {
           "test": "mcnemar",
@@ -1114,19 +1099,19 @@
         },
         "(b) dedektör": {
           "test": "mcnemar",
-          "statistic": 127.0,
+          "statistic": 128.0,
           "p": 0.0,
-          "n": 147,
+          "n": 148,
           "significant": true,
-          "note": "yalnız A doğru: 137, yalnız B doğru: 10"
+          "note": "yalnız A doğru: 138, yalnız B doğru: 10"
         },
         "(c) kör": {
           "test": "mcnemar",
-          "statistic": 2.0,
-          "p": 0.92195,
-          "n": 104,
-          "significant": false,
-          "note": "yalnız A doğru: 53, yalnız B doğru: 51"
+          "statistic": 31.0,
+          "p": 0.00903,
+          "n": 133,
+          "significant": true,
+          "note": "yalnız A doğru: 82, yalnız B doğru: 51"
         }
       },
       "missing_rows": {
@@ -1139,11 +1124,11 @@
   "a2_on_vs_off_mcnemar": {
     "(a) etiket": {
       "test": "mcnemar",
-      "statistic": -6.0,
-      "p": 0.41769,
-      "n": 38,
+      "statistic": 2.0,
+      "p": 0.87761,
+      "n": 42,
       "significant": false,
-      "note": "yalnız A doğru: 16, yalnız B doğru: 22"
+      "note": "yalnız A doğru: 22, yalnız B doğru: 20"
     },
     "(b) arama": {
       "test": "mcnemar",
@@ -1163,19 +1148,19 @@
     },
     "(b) dedektör": {
       "test": "mcnemar",
-      "statistic": 0.0,
+      "statistic": -1.0,
       "p": 1.0,
-      "n": 4,
+      "n": 3,
       "significant": false,
-      "note": "yalnız A doğru: 2, yalnız B doğru: 2"
+      "note": "yalnız A doğru: 1, yalnız B doğru: 2"
     },
     "(c) kör": {
       "test": "mcnemar",
-      "statistic": -1.0,
-      "p": 1.0,
-      "n": 33,
+      "statistic": 4.0,
+      "p": 0.6271,
+      "n": 38,
       "significant": false,
-      "note": "yalnız A doğru: 16, yalnız B doğru: 17"
+      "note": "yalnız A doğru: 21, yalnız B doğru: 17"
     }
   },
   "items": [
@@ -1184,16 +1169,16 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Farsça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "—",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Farsça",
-      "on:(a) etiket": "Farsça",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "—",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Farsça"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "abdiâciz",
@@ -1237,11 +1222,11 @@
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
       "off:(c) kör": "Arapça",
-      "on:(a) etiket": "diğer",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "diğer"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "ajite",
@@ -1280,11 +1265,11 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Arapça",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
@@ -1392,32 +1377,32 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Yunanca",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Yunanca",
-      "on:(a) etiket": "Yunanca",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Yunanca"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "anomali",
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Yunanca",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Yunanca",
-      "on:(a) etiket": "Yunanca",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Yunanca"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "antagonist",
@@ -1440,16 +1425,16 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Arapça",
-      "on:(a) etiket": "Farsça",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Farsça"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "arbede",
@@ -1493,27 +1478,27 @@
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
       "off:(c) kör": "Arapça",
-      "on:(a) etiket": "Farsça",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Farsça"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "asansör",
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Farsça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Farsça",
-      "on:(a) etiket": "Farsça",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Farsça"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "asil",
@@ -1632,11 +1617,11 @@
       "gold": "Arapça",
       "gold_name": "Arapça",
       "split": "dev",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Arapça",
       "off:(b) zincir": "Arapça",
       "off:(b) dedektör": "Arapça",
-      "off:(c) kör": "Arapça",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "Arapça",
       "on:(b) arama": "Arapça",
       "on:(b) zincir": "Arapça",
@@ -1648,16 +1633,16 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "dev",
-      "off:(a) etiket": "Farsça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Farsça",
-      "on:(a) etiket": "Farsça",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Farsça"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "bant",
@@ -1760,16 +1745,16 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "diğer",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "diğer",
-      "on:(a) etiket": "diğer",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "diğer"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "bonservis",
@@ -1781,11 +1766,11 @@
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
       "off:(c) kör": "Arapça",
-      "on:(a) etiket": "Yunanca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Yunanca"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "bordro",
@@ -1824,11 +1809,11 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "—",
       "off:(b) zincir": "—",
-      "off:(b) dedektör": "Arapça",
-      "off:(c) kör": "Arapça",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "Fransızca",
       "on:(b) arama": "—",
       "on:(b) zincir": "—",
@@ -1920,7 +1905,7 @@
       "gold": "İtalyanca",
       "gold_name": "İtalyanca",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "İtalyanca",
       "off:(b) zincir": "İtalyanca",
       "off:(b) dedektör": "İtalyanca",
@@ -2032,23 +2017,23 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "İtalyanca",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "İtalyanca",
-      "on:(a) etiket": "İtalyanca",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "İtalyanca"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "diğer",
       "gold": "Farsça",
       "gold_name": "Farsça",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Farsça",
       "off:(b) zincir": "Farsça",
       "off:(b) dedektör": "Farsça",
@@ -2101,7 +2086,7 @@
       "off:(b) zincir": "Arapça",
       "off:(b) dedektör": "Arapça",
       "off:(c) kör": "—",
-      "on:(a) etiket": "Fransızca",
+      "on:(a) etiket": "Arapça",
       "on:(b) arama": "Arapça",
       "on:(b) zincir": "Arapça",
       "on:(b) dedektör": "Arapça",
@@ -2160,16 +2145,16 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Arapça",
-      "on:(a) etiket": "Farsça",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Farsça"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "endirekt",
@@ -2192,11 +2177,11 @@
       "gold": "Arapça",
       "gold_name": "Arapça",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Arapça",
       "off:(b) zincir": "Arapça",
       "off:(b) dedektör": "Arapça",
-      "off:(c) kör": "Arapça",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "Yunanca",
       "on:(b) arama": "Arapça",
       "on:(b) zincir": "Arapça",
@@ -2229,11 +2214,11 @@
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
       "off:(c) kör": "Fransızca",
-      "on:(a) etiket": "Farsça",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Farsça"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "felç",
@@ -2336,16 +2321,16 @@
       "gold": "diğer",
       "gold_name": "İngilizce",
       "split": "dev",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "diğer",
       "off:(b) zincir": "diğer",
       "off:(b) dedektör": "diğer",
       "off:(c) kör": "—",
-      "on:(a) etiket": "Fransızca",
+      "on:(a) etiket": "İtalyanca",
       "on:(b) arama": "diğer",
       "on:(b) zincir": "diğer",
       "on:(b) dedektör": "diğer",
-      "on:(c) kör": "Fransızca"
+      "on:(c) kör": "İtalyanca"
     },
     {
       "word": "garanti",
@@ -2416,11 +2401,11 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Arapça",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "Arapça",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
@@ -2624,7 +2609,7 @@
       "gold": "Yunanca",
       "gold_name": "Yunanca",
       "split": "dev",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Yunanca",
       "off:(b) zincir": "Yunanca",
       "off:(b) dedektör": "Yunanca",
@@ -2720,16 +2705,16 @@
       "gold": "Arapça",
       "gold_name": "Arapça",
       "split": "train",
-      "off:(a) etiket": "Yunanca",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Arapça",
       "off:(b) zincir": "Arapça",
       "off:(b) dedektör": "Arapça",
-      "off:(c) kör": "Yunanca",
-      "on:(a) etiket": "Yunanca",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Arapça",
       "on:(b) zincir": "Arapça",
       "on:(b) dedektör": "Arapça",
-      "on:(c) kör": "Yunanca"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "iade",
@@ -2741,7 +2726,7 @@
       "off:(b) zincir": "Arapça",
       "off:(b) dedektör": "Arapça",
       "off:(c) kör": "—",
-      "on:(a) etiket": "Fransızca",
+      "on:(a) etiket": "Arapça",
       "on:(b) arama": "Arapça",
       "on:(b) zincir": "Arapça",
       "on:(b) dedektör": "Arapça",
@@ -2848,16 +2833,16 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Arapça",
-      "on:(a) etiket": "İtalyanca",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "İtalyanca"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "isteka",
@@ -2912,11 +2897,11 @@
       "gold": "Arapça",
       "gold_name": "Arapça",
       "split": "train",
-      "off:(a) etiket": "Yunanca",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Arapça",
       "off:(b) zincir": "Arapça",
       "off:(b) dedektör": "Arapça",
-      "off:(c) kör": "Yunanca",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "Arapça",
       "on:(b) arama": "Arapça",
       "on:(b) zincir": "Arapça",
@@ -2960,32 +2945,32 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Farsça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Farsça",
-      "on:(a) etiket": "Farsça",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Farsça"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "jimnastik",
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Farsça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Farsça",
-      "on:(a) etiket": "Farsça",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Farsça"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "kabahat",
@@ -3008,16 +2993,16 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Arapça",
-      "on:(a) etiket": "Farsça",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Farsça"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "karakterize",
@@ -3120,16 +3105,16 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "dev",
-      "off:(a) etiket": "Farsça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Farsça",
-      "on:(a) etiket": "Farsça",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Farsça"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "kolonyalist",
@@ -3168,11 +3153,11 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Yunanca",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Yunanca",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "İtalyanca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
@@ -3248,11 +3233,11 @@
       "gold": "Farsça",
       "gold_name": "Farsça",
       "split": "dev",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "—",
       "off:(b) zincir": "—",
-      "off:(b) dedektör": "Arapça",
-      "off:(c) kör": "Arapça",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "diğer",
       "on:(b) arama": "—",
       "on:(b) zincir": "—",
@@ -3344,11 +3329,11 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Arapça",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "İtalyanca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
@@ -3376,7 +3361,7 @@
       "gold": "Farsça",
       "gold_name": "Farsça",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Farsça",
       "off:(b) zincir": "Farsça",
       "off:(b) dedektör": "Farsça",
@@ -3504,11 +3489,11 @@
       "gold": "diğer",
       "gold_name": "İngilizce",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "diğer",
       "off:(b) zincir": "diğer",
       "off:(b) dedektör": "diğer",
-      "off:(c) kör": "Arapça",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "Fransızca",
       "on:(b) arama": "diğer",
       "on:(b) zincir": "diğer",
@@ -3536,7 +3521,7 @@
       "gold": "Arapça",
       "gold_name": "Arapça",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Arapça",
       "off:(b) zincir": "Arapça",
       "off:(b) dedektör": "Arapça",
@@ -3616,11 +3601,11 @@
       "gold": "Arapça",
       "gold_name": "Arapça",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Arapça",
       "off:(b) zincir": "Arapça",
       "off:(b) dedektör": "Arapça",
-      "off:(c) kör": "Arapça",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "Arapça",
       "on:(b) arama": "Arapça",
       "on:(b) zincir": "Arapça",
@@ -3680,32 +3665,32 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "diğer",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "diğer",
-      "on:(a) etiket": "diğer",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "diğer"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "mikroskop",
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Yunanca",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Yunanca",
-      "on:(a) etiket": "Yunanca",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Yunanca"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "misafir",
@@ -3744,16 +3729,16 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "dev",
-      "off:(a) etiket": "İtalyanca",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "İtalyanca",
-      "on:(a) etiket": "İtalyanca",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "İtalyanca"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "monden",
@@ -4016,11 +4001,11 @@
       "gold": "Arapça",
       "gold_name": "Arapça",
       "split": "dev",
-      "off:(a) etiket": "Farsça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Arapça",
       "off:(b) zincir": "Arapça",
       "off:(b) dedektör": "Arapça",
-      "off:(c) kör": "Farsça",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "Farsça",
       "on:(b) arama": "Arapça",
       "on:(b) zincir": "Arapça",
@@ -4032,11 +4017,11 @@
       "gold": "Arapça",
       "gold_name": "Arapça",
       "split": "dev",
-      "off:(a) etiket": "Farsça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "—",
       "off:(b) zincir": "—",
-      "off:(b) dedektör": "Farsça",
-      "off:(c) kör": "Farsça",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "diğer",
       "on:(b) arama": "—",
       "on:(b) zincir": "—",
@@ -4160,16 +4145,16 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "İtalyanca",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "İtalyanca",
-      "on:(a) etiket": "İtalyanca",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "İtalyanca"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "opsiyon",
@@ -4192,11 +4177,11 @@
       "gold": "Yunanca",
       "gold_name": "Yunanca",
       "split": "train",
-      "off:(a) etiket": "Farsça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Yunanca",
       "off:(b) zincir": "Yunanca",
       "off:(b) dedektör": "Yunanca",
-      "off:(c) kör": "Farsça",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "İtalyanca",
       "on:(b) arama": "Yunanca",
       "on:(b) zincir": "Yunanca",
@@ -4213,11 +4198,11 @@
       "off:(b) zincir": "diğer",
       "off:(b) dedektör": "diğer",
       "off:(c) kör": "—",
-      "on:(a) etiket": "Yunanca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "diğer",
       "on:(b) zincir": "diğer",
       "on:(b) dedektör": "diğer",
-      "on:(c) kör": "Yunanca"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "paralel",
@@ -4240,16 +4225,16 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Farsça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Farsça",
-      "on:(a) etiket": "Yunanca",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Yunanca"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "patlıcan",
@@ -4309,7 +4294,7 @@
       "off:(b) zincir": "Farsça",
       "off:(b) dedektör": "Farsça",
       "off:(c) kör": "Arapça",
-      "on:(a) etiket": "Fransızca",
+      "on:(a) etiket": "İtalyanca",
       "on:(b) arama": "Farsça",
       "on:(b) zincir": "Farsça",
       "on:(b) dedektör": "Farsça",
@@ -4368,32 +4353,32 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Farsça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "—",
       "off:(b) zincir": "—",
-      "off:(b) dedektör": "Farsça",
-      "off:(c) kör": "Farsça",
-      "on:(a) etiket": "Farsça",
+      "off:(b) dedektör": "Fransızca",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "—",
       "on:(b) zincir": "—",
-      "on:(b) dedektör": "Farsça",
-      "on:(c) kör": "Farsça"
+      "on:(b) dedektör": "Fransızca",
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "problem",
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "diğer",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "diğer",
-      "on:(a) etiket": "diğer",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "diğer"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "prostat",
@@ -4480,16 +4465,16 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "dev",
-      "off:(a) etiket": "Farsça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Farsça",
-      "on:(a) etiket": "Farsça",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Farsça"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "rezistans",
@@ -4597,11 +4582,11 @@
       "off:(b) zincir": "Arapça",
       "off:(b) dedektör": "Arapça",
       "off:(c) kör": "Arapça",
-      "on:(a) etiket": "İtalyanca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Arapça",
       "on:(b) zincir": "Arapça",
       "on:(b) dedektör": "Arapça",
-      "on:(c) kör": "İtalyanca"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "sandık",
@@ -4805,7 +4790,7 @@
       "off:(b) zincir": "Arapça",
       "off:(b) dedektör": "Arapça",
       "off:(c) kör": "—",
-      "on:(a) etiket": "Yunanca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Arapça",
       "on:(b) zincir": "Arapça",
       "on:(b) dedektör": "Arapça",
@@ -4864,11 +4849,11 @@
       "gold": "Arapça",
       "gold_name": "Arapça",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Arapça",
       "off:(b) zincir": "Arapça",
       "off:(b) dedektör": "Arapça",
-      "off:(c) kör": "Arapça",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "diğer",
       "on:(b) arama": "Arapça",
       "on:(b) zincir": "Arapça",
@@ -4928,11 +4913,11 @@
       "gold": "Arapça",
       "gold_name": "Arapça",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Arapça",
       "off:(b) zincir": "Arapça",
       "off:(b) dedektör": "Arapça",
-      "off:(c) kör": "Arapça",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "Arapça",
       "on:(b) arama": "Arapça",
       "on:(b) zincir": "Arapça",
@@ -4960,16 +4945,16 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Farsça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Farsça",
-      "on:(a) etiket": "Farsça",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Farsça"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "tasarruf",
@@ -5376,16 +5361,16 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Yunanca",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Yunanca",
-      "on:(a) etiket": "Yunanca",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Yunanca"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "vasi",
@@ -5424,11 +5409,11 @@
       "gold": "Arapça",
       "gold_name": "Arapça",
       "split": "dev",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Arapça",
       "off:(b) zincir": "Arapça",
       "off:(b) dedektör": "Arapça",
-      "off:(c) kör": "Arapça",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "Arapça",
       "on:(b) arama": "Arapça",
       "on:(b) zincir": "Arapça",
@@ -5440,16 +5425,16 @@
       "gold": "Fransızca",
       "gold_name": "Fransızca",
       "split": "train",
-      "off:(a) etiket": "Farsça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Fransızca",
       "off:(b) zincir": "Fransızca",
       "off:(b) dedektör": "Fransızca",
-      "off:(c) kör": "Farsça",
-      "on:(a) etiket": "Farsça",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "Fransızca",
       "on:(b) zincir": "Fransızca",
       "on:(b) dedektör": "Fransızca",
-      "on:(c) kör": "Farsça"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "vuzuh",
@@ -5461,7 +5446,7 @@
       "off:(b) zincir": "Arapça",
       "off:(b) dedektör": "Arapça",
       "off:(c) kör": "Farsça",
-      "on:(a) etiket": "Fransızca",
+      "on:(a) etiket": "Farsça",
       "on:(b) arama": "Arapça",
       "on:(b) zincir": "Arapça",
       "on:(b) dedektör": "Arapça",
@@ -5472,11 +5457,11 @@
       "gold": "diğer",
       "gold_name": "Ermenice",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "diğer",
       "off:(b) zincir": "diğer",
       "off:(b) dedektör": "diğer",
-      "off:(c) kör": "Arapça",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "diğer",
       "on:(b) arama": "diğer",
       "on:(b) zincir": "diğer",
@@ -5632,11 +5617,11 @@
       "gold": "Farsça",
       "gold_name": "Farsça",
       "split": "train",
-      "off:(a) etiket": "Arapça",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "Farsça",
       "off:(b) zincir": "Farsça",
       "off:(b) dedektör": "Farsça",
-      "off:(c) kör": "Arapça",
+      "off:(c) kör": "Fransızca",
       "on:(a) etiket": "Arapça",
       "on:(b) arama": "Farsça",
       "on:(b) zincir": "Farsça",
@@ -5648,16 +5633,16 @@
       "gold": "İtalyanca",
       "gold_name": "İtalyanca",
       "split": "train",
-      "off:(a) etiket": "Yunanca",
+      "off:(a) etiket": "Fransızca",
       "off:(b) arama": "İtalyanca",
       "off:(b) zincir": "İtalyanca",
       "off:(b) dedektör": "İtalyanca",
-      "off:(c) kör": "Yunanca",
-      "on:(a) etiket": "Yunanca",
+      "off:(c) kör": "Fransızca",
+      "on:(a) etiket": "Fransızca",
       "on:(b) arama": "İtalyanca",
       "on:(b) zincir": "İtalyanca",
       "on:(b) dedektör": "İtalyanca",
-      "on:(c) kör": "Yunanca"
+      "on:(c) kör": "Fransızca"
     },
     {
       "word": "çiroz",

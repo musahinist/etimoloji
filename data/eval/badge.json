@@ -1,6 +1,6 @@
 {
   "_schema": "badge_eval/v2",
-  "commit": "192d518",
+  "commit": "ebb1c62",
   "fetchers": "yalnız yerel, Starling KAPALI, ağ kapalı (headline_eval.build_engine)",
   "sample": {
     "turkce_altin/train (ayar, örneklem içi)": 438,
