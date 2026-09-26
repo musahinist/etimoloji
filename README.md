@@ -33,14 +33,40 @@ saklanır.
 
 | Ölçüm | Değer | Taban çizgi | Hüküm |
 |---|---|---|---|
-| Alıntı F — **Türkçe** (TDK+Nişanyan, n=349) | **0,889** | 0,749 hepsi-alıntı | ✅ **anlamlı** (+0,272 doğruluk, p=0,0001) |
-| Alıntı F — WOLD/Sakha (n=769) | **0,657** | 0,464 hepsi-alıntı | ✅ fonotaktiğe karşı anlamlı (+0,121 doğruluk, p=0,0001) · ⚠️ yalnız verici yakınlığına karşı anlamlı **değil** (−0,007, p=0,608) |
-| Rekonstrüksiyon NED (dev, n=83, çapa hariç) | **0,304** | 0,339 `majority_character` | ⚠️ anlamlı **değil** (GA [−0,075, +0,007]) |
-| Rekonstrüksiyon tam (dev, çapa hariç) | **0,398** | 0,337 | ⚠️ anlamlı **değil** (p=0,188) |
-| Rekonstrüksiyon NED (5 katlı ÇD, train+dev n=320) | **0,343** | 0,371 `majority_character` | ✅ **anlamlı** (fark −0,028, GA [−0,047, −0,009]) · tam 0,272 vs 0,253 anlamlı değil · BCFS 0,550 vs 0,519 ✅ anlamlı (+0,031, GA [+0,012, +0,047]) → **H2 destekleniyor** · `make eval-cv` |
+| Alıntı F — **Türkçe** (TDK+Nişanyan, n=349, zincir kapalı) | **0,889** | 0,749 hepsi-alıntı | ✅ **anlamlı** (+0,272 doğruluk, GA [+0,209, +0,335], p=0,0001) · fonotaktiğe karşı +0,115 ✅ · ⚠️ kısmen döngüsel (aşağıya bkz.) |
+| Alıntı F — WOLD/Sakha (n=769) | **0,658** | 0,464 hepsi-alıntı | ✅ fonotaktiğe karşı anlamlı (+0,072 doğruluk, GA [+0,033, +0,111], p=0,001) · ⚠️ yalnız verici yakınlığına karşı anlamlı **değil** (−0,004, p=0,80) |
+| Alıntı F — **Türk dilleri arası** (`xturkic` ayar, 7 dil, n=1.379, kör indeks + zincir kapalı) | **0,755** (üretim birleştiricisi) | 0,660 hepsi-alıntı · 0,763 yalnız verici yakınlığı | ⚠️ yalnız verici yakınlığından **ayırt edilemez** (−0,002, küme GA [−0,028, +0,023]) · Wiktionary'den bağımsız değil ama motorun zinciri **kapalı** — zincir açık olsaydı F +0,227 (K1): o sayı döngüseldir, raporlanmaz |
+| Verici dil tanıma — WOLD Saha (n=440) | **0,714** | 0,575 çoğunluk (Rusça) | ✅ anlamlı (McNemar p<0,001) · Moğolca en zayıf (81/166) |
+| Verici dil tanıma — **Türkçe** (TDK+Nişanyan, train+dev n=293) | **0,563** (etiket) | 0,505 çoğunluk | ⚠️ çoğunluğun ancak biraz üstünde · kör indeksle 0,515 · "Wiktionary↔TDK uyumu", bağımsız doğruluk değil (tam indeksle arama/zincir/dedektör 0,92–0,94: indeksin köken etiketini okur) |
+| Verici dil tanıma — `xturkic` ayar (n=551 alıntı) | **0,746** | — | 9d "Farsça üzerinden Arapça" sonrası (önce 0,550) · ayar bölümü, R/test değil |
+| Rekonstrüksiyon NED (dev, n=83, çapa hariç) | **0,308** | 0,339 `majority_character` | ⚠️ anlamlı **değil** (GA [−0,069, +0,007]) |
+| Rekonstrüksiyon tam (dev, çapa hariç) | **0,398** | 0,337 | ⚠️ anlamlı **değil** (p=0,228) |
+| Rekonstrüksiyon NED (5 katlı ÇD, train+dev n=320) — **sütun modeli** (üretim) | **0,327** | 0,342 öğrenilmiş tablo · 0,371 `majority_character` | ✅ tabloya karşı anlamlı (−0,014, GA [−0,026, −0,004]) · tam 0,297 vs 0,272 ✅ · BCFS 0,556 · öğrenilmiş tablo `majority_character`'a karşı BCFS +0,024 ✅ → **H2 destekleniyor** · `make eval-cv` |
+| ↳ B2 sinir seçici (3 tohum, ön kayıt 3) | NED 0,313 | 0,328 sütun | ✅ kabul (−0,016, p=0,026) ama üretim kapsamında (277/320) −0,007 anlamlı değil → bayrakla bağlı, **varsayılan KAPALI** |
+| Başlık kökü tam — Starling **açık** (n=240) | **0,812** | 0,225 özdeşlik | ⚠️ **DÖNGÜSEL**: başlığın %60'ı Starling yedeğinden · Starling'den gelmeyen 100 maddede 0,550 |
+| Başlık kökü tam — Starling **kapalı** (n=240) | **0,417** | 0,225 | NED 0,270 · kısmen bağımsız (yerel Proto-Türkçe biçimleri EDAL soyundan) · savelyev dev (n=32) 0,656 |
+| Tarihleme — yüzyıl içinde (n=200) | 0,95 Starling açık · **0,08** kapalı | 0,755 medyan yıl | ⚠️ açık hâl DÖNGÜSEL (yıl aynı Starling etiketinden) · kapalıyken kapsam 0,48, tabanın **çok altında** |
+| Hüküm rozeti AUC — Türkçe dev (n=65 hipotezli) | **0,984** | 0,5 | 🟢 63 maddede doğruluk 1,000 · ⚠️ kısmen döngüsel · savelyev dev AUC 0,705 (n=31) |
+| Eşsesli fark etme (kaikki "Etymology N", n=150) | **0,767** | — | başlık doğru etimolojide 0,80 (şans 0,48) · tutarsız başlık 0 · ⚠️ altın, indeksle aynı döküm |
 | Akraba tespiti B-Cubed F (dev) | 0,931 | 0,934 düzenleme uzaklığı | ⚠️ taban çizgisine **eşit** (kümeleyici artık aynı ölçüyü kullanıyor) |
 | Uzman uyuşmazlık bandı | **0,914** | — | otomatik sistemin gerçekçi tavanı |
 | Denklik düzenliliği (CoPaR, TRAIN) | **0,713** | — | kural tabanlı doğruluğun üst sınırı |
+
+Tablodaki bütün sayılar ENGINE_VERSION 4.3.0'ın 2026-09-26 temiz ağaç
+koşusundandır (`data/eval/*.json`; `xturkic` için
+`data/cache/work/xtr/xborrowing_tune.json`). **Dondurulmuş test bölümleri
+(Türkçe altın test, `xturkic` test, savelyev test) açılmadı**; yukarıdaki
+her şey ayar/dev/train+dev bölümlerindendir.
+
+⚠️ **Döngüsellik.** Türkçe alıntı ve verici ölçütleri TDK+Nişanyan'a
+dayanır; motor ağ kapalıyken Wiktionary köken etiketini okur ve Wiktionary
+Türkçe kökenleri çoğu kez Nişanyan'dan alır — "Wiktionary↔TDK uyumu"dur,
+bağımsız doğruluk değil. Başlık kökü ve tarihlemede Starling açık satırlar
+döngüseldir; kapalı satırlar asıl ölçüdür. Wiktionary'den bağımsız tek
+alıntı altını WOLD'dur (yalnız Saha). `xturkic` altını Türkçe dışı 7 dilde
+kör indeksle ölçer; etiket yine Wiktionary şablonudur ve motorun zincir
+sinyali aynı şablonu okuduğundan (K1) zincir kapalı tutulur — zincir açık
+F 0,988 döngüsel bir sayıdır.
 
 Doğrulanmamış ya da kazanç vermeyen şeyler de aynı ayrıntıda raporlanıyor:
 bağlam kodlaması (D3), N-best yeniden sıralama (D5), Batı Eski Türkçe
@@ -64,13 +90,13 @@ kendi tespit edip uyarı basıyor ve künyeye yazıyor.
 
 | Sistem | **NED**↓ | **BCFS**↑ | ED↓ | tam |
 |---|---|---|---|---|
-| **motor** | **0,304** | **0,600** | **1,47** | **0,398** |
+| **motor** | **0,308** | **0,600** | **1,48** | **0,398** |
 | `majority_character` (trivial) | 0,339 | 0,571 | 1,59 | 0,337 |
 | `copy_anchor` (hiçbir şey yapma) | 0,390 | 0,529 | 1,87 | 0,229 |
 | `copy_random_daughter` | 0,401 | 0,520 | 1,84 | 0,241 |
 | `copy_longest` | 0,500 | 0,429 | 2,57 | 0,157 |
 
-Birincil metrikte fark **−0,0347** (motor lehine), %95 GA [−0,0753,
+Birincil metrikte fark **−0,0307** (motor lehine), %95 GA [−0,0688,
 +0,0065] → **anlamlı DEĞİL**; aralık sıfırı kılpayı içeriyor. n=83'te daha
 fazlası gösterilemiyor. `test` bölümü **dondurulmuş** durumda ve Faz D
 bitene kadar açılmayacak.
@@ -415,27 +441,25 @@ ECE 0,406 → 0,037 karşılığında AUC'den ~0,03 verilmiştir.
 
 | Sistem | F | kesinlik | duyarlılık | doğruluk |
 |---|---|---|---|---|
-| **motor (eğitilmiş birleştirici)** | **0,651** | 0,635 | 0,668 | 0,784 |
+| **motor (eğitilmiş birleştirici)** | **0,658** | 0,649 | 0,668 | 0,791 |
 | yalnız verici yakınlığı | 0,624 | 0,697 | 0,565 | 0,795 |
-| motor (doğrusal yedek yol) | 0,623 | 0,547 | 0,724 | 0,736 |
+| motor (doğrusal yedek yol) | 0,636 | 0,570 | 0,720 | 0,752 |
 | yalnız dizilim modeli (PyBor) | 0,558 | 0,556 | 0,560 | 0,732 |
 | hepsi alıntı (trivial) | 0,464 | 0,302 | 1,000 | 0,302 |
-| yalnız fonotaktik kural | 0,215 | 0,372 | 0,151 | 0,667 |
+| yalnız fonotaktik kural | 0,150 | 0,864 | 0,082 | 0,719 |
 
-**F 0,385 → 0,651.** Plan hedefi (≥0,60) aşıldı; PyBor'un WOLD 41 dil
+**F 0,385 → 0,658.** Plan hedefi (≥0,60) aşıldı; PyBor'un WOLD 41 dil
 ortalamasının (0,59–0,61) üstünde.
 
-⚠️ **Ablasyon hükmü WOLD'da anlamlı DEĞİL**: gönderdiğimiz sistem
-(eğitilmiş birleştirici) vs yalnız fonotaktik fark +0,030, %95 GA
-[−0,018, +0,077], p=0,251. Doğrusal yedek yol için aynı fark +0,069
-(p=0,004) ama üretimde kullanılan sistem o değil; hüküm **gönderdiğimiz
-sisteme** göre verilmelidir.
-
-Anlamlı üstünlük **ikincil ölçütte** (aşağıda, TDK + Nişanyan) elde
-edildi.
+✅ **Ablasyon hükmü WOLD'da anlamlı** (4.3.0 koşusu): gönderdiğimiz
+sistem (eğitilmiş birleştirici) vs yalnız fonotaktik madde başına doğrulukta
+fark +0,072, %95 GA [+0,033, +0,111], p=0,001. (README'de uzun süre kalan
++0,030, p=0,251 Ağustos'taki birleştiricinin sayısıydı; `borrowing.json`
+cf7b0c7'den beri +0,072 veriyordu, bu koşuda da aynı.) Hüküm **gönderdiğimiz sisteme**
+göre verilir; ikincil ölçütte (aşağıda, TDK + Nişanyan) fark daha büyük.
 
 ⚠️ Motor, tek başına verici yakınlığından **anlamlı biçimde iyi değil**:
-madde başına doğrulukta fark −0,010, %95 GA [−0,030, +0,009], p=0,354.
+madde başına doğrulukta fark −0,004, %95 GA [−0,023, +0,016], p=0,80.
 Yani "istatistiksel olarak berabere" — üstünlük iddia edilmiyor. (Bu turun
 başında aynı fark −0,030, p=0,004 ile motorun **aleyhineydi**.)
 
@@ -550,12 +574,13 @@ Ağırlıklar artık **ayar yarısında** öğreniliyor (lojistik regresyon; skl
 yok, optimizasyon repoda ve deterministik). Öğrenilen katsayılar ablasyonu
 birebir doğruluyor:
 
-    sabit −1,993 · verici_yakınlığı +1,552 · zincir_kanıtı +1,014
-                 · fonotaktik_model +0,878 · fonotaktik_ihlal +0,140
-                 · ses_kanunu_ihlali +0,038 · değişimsiz_yayılım −0,018
+    sabit −1,966 · verici_yakınlığı +1,534 · zincir_kanıtı +1,198
+                 · fonotaktik_model +0,844 · fonotaktik_ihlal +0,491
+                 · ses_kanunu_ihlali −0,268 · değişimsiz_yayılım −0,077
+                 (kapalı bayraklı ters_uyum ve söz_sonu_ünsüz_kümesi 0)
 
 ⚠️ **Hedef ölçü seçimi sonucu belirler ve gizlenemez.** Aynı model, yalnız
-eşik farklı: F hedefli 0,651/0,784 · doğruluk hedefli 0,534/0,787. İkisi
+eşik farklı: F hedefli 0,658/0,791 · doğruluk hedefli 0,565/0,796. İkisi
 aynı anda alınamaz; hangisinin seçildiği model dosyasında saklanıyor.
 
 ⚠️ Model WOLD/Sakha'da eğitildi. Başka bir dile uygulandığında çıktı
@@ -580,7 +605,7 @@ kuruldu: TDK Güncel Türkçe Sözlük (`lisan` alanı) ve Nişanyan Sözlük
 
 | Sistem | F | kesinlik | duyarlılık | doğruluk |
 |---|---|---|---|---|
-| **motor (eğitilmiş)** | **0,885** | 0,909 | 0,861 | 0,865 |
+| **motor (eğitilmiş)** | **0,889** | 0,914 | 0,866 | 0,871 |
 | motor (doğrusal yedek) | 0,801 | 0,793 | 0,809 | 0,759 |
 | yalnız dizilim modeli | 0,800 | 0,669 | 0,995 | 0,702 |
 | yalnız fonotaktik kural | 0,758 | 0,937 | 0,636 | 0,756 |
@@ -620,10 +645,12 @@ kaybı yapısaldır.
 **denetimsiz kanıtın kaldırılmasıdır**.
 
 ✅ **İlk kez trivial taban çizgiye karşı anlamlı üstünlük:**
-motor vs `always_borrowed` **+0,267**, %95 GA [+0,203, +0,330], p=0,0001.
-Motor vs yalnız fonotaktik **+0,109**, %95 GA [+0,069, +0,149], p=0,0001.
+motor vs `always_borrowed` **+0,272**, %95 GA [+0,209, +0,335], p=0,0001.
+Motor vs yalnız fonotaktik **+0,115**, %95 GA [+0,075, +0,158], p=0,0001.
 (Fark **madde düzeyi doğruluk** farkıdır, F farkı değil; F cinsinden
-hepsi-alıntıya karşı üstünlük +0,135'tir.)
+hepsi-alıntıya karşı üstünlük +0,140'tır.) Yeni `diriltme` köken sınıfındaki
+28 Türkçe kelimenin (betik, bilge, başkan…) **hiçbiri** bu altın kümede
+yok; o değişiklik bu sayıları etkilemez.
 
 ⚠️ **Verici dil eklemek (İngilizce/Almanca/Latince) ölçülerek REDDEDİLDİ.**
 Verici indeksinde 9 dil var (it 622.831 · ru 440.919 · fr 401.061 ·
@@ -673,22 +700,24 @@ etmiyor. Veri **yalnız iç doğrulama** için, atıflı ve sınırlı hacimde
 çekiliyor; `data/gold/` .gitignore altında, yeniden dağıtılmıyor. TDK
 Güncel Türkçe Sözlük kamuya açık bir kurum sözlüğüdür.
 
-#### Türkçe ablasyon (Wiktionary etiketi, zincir sinyali kapalı), n=750
+#### Türkçe ablasyon (Wiktionary etiketi, zincir sinyali kapalı), n=1.500
 
 | Sistem | F | kesinlik | duyarlılık |
 |---|---|---|---|
-| hepsi alıntı (trivial) | 0,844 | 0,729 | 1,000 |
-| motor (eğitilmiş) | 0,844 | 0,729 | 1,000 |
-| motor (el ağırlıkları) | 0,811 | 0,738 | 0,900 |
-| yalnız fonotaktik | 0,660 | 0,766 | 0,580 |
+| **motor (eğitilmiş)** | **0,830** | 0,788 | 0,877 |
+| yalnız dizilim modeli | 0,811 | 0,800 | 0,822 |
+| hepsi alıntı (trivial) | 0,791 | 0,655 | 1,000 |
+| motor (el ağırlıkları) | 0,769 | 0,675 | 0,895 |
+| yalnız fonotaktik | 0,679 | 0,817 | 0,580 |
 
-Motor vs yalnız fonotaktik: **+0,129**, %95 GA [+0,089, +0,169], p=0,0001.
+Motor vs yalnız fonotaktik: **+0,125**, %95 GA [+0,099, +0,150], p=0,0001.
 
-⚠️ **Eğitilmiş birleştirici bu kümede ÇÖKÜYOR**: kararları
-`always_borrowed` ile birebir aynı. Alıntı oranı %72,9 olduğu için F'yi en
-yükselten eşik "hepsine alıntı de"dir. Bu bir başarı değil, F ölçüsünün
-dengesiz sınıftaki bilinen patolojisidir — değerlendirme artık bu durumu
-kendi tespit edip uyarı basıyor.
+Eski sürümde eğitilmiş birleştirici bu kümede `always_borrowed` ile birebir
+aynı kararları veriyordu (alıntı oranı yüksek olunca F'yi en yükselten eşik
+"hepsine alıntı de"dir); 4.3.0 koşusunda çökme yok (eşik 0,15, F 0,830 vs
+0,791). ⚠️ Etiket indeksin Wiktionary köken etiketidir; yeni indekste 112
+kayıt alıntı → miras düzeltmesi ve `diriltme` sınıfı yüzünden kümenin alıntı
+oranı %65,9 → %65,5 oldu (6 madde).
 
 #### Neden SCA, neden anlam kısıtı
 
@@ -732,11 +761,11 @@ bir indekste arıyor ve kısa biçimler salt şansla eşleşir (Kessler 2001).
 
 | Batarya | n | yanlış-pozitif | **güçlü iddia** |
 |---|---|---|---|
-| fonotaktik geçerli sahte | 8 | 1,000 | **0,000** |
+| fonotaktik geçerli sahte | 58 | 0,017 | **0,000** |
 | bariz sahte | 4 | 0,000 | **0,000** |
-| sahte akraba | 4 | 0,000 | **0,000** |
-| alıntı tuzağı | 5 | 1,000 | **0,000** |
-| eşadlı | 3 | — | **0,000** |
+| sahte akraba | 1 | 0,000 | **0,000** |
+| alıntı tuzağı | 5 | 0,000 | **0,000** |
+| eşadlı | 3 | 1,000 | **0,000** |
 
 En kritik sütun sonuncusu: motor hiçbir negatif kontrolde 🟢/🟡 rozet
 vermiyor. Uydurma bir köke düşük güvenle aday üretmesi kabul edilebilir; onu
@@ -835,8 +864,12 @@ Wiktionary sürümü, Wiktextract/Kaikki, Internet Archive.
 
 **Yerel veri** (`make data`, `make lexicons`) — 5 CLDF veri kümesi
 (savelyevturkic, hruschkaturkic, starostinaltaic, robbeetstriangulation, WOLD)
-ve 23 Türki dilin kaikki dökümü (125.879 madde). Rusça Wiktionary sürümü de
-katıldığında SQLite FTS5 arama indeksi **25 dil kodu / 150.458 kayıt** taşır.
+ve Türki dillerin kaikki dökümleri (İngilizce, Türkçe ve Rusça Wiktionary
+sürümleri). SQLite FTS5 arama indeksi **30 dil kodu / 450.528 kayıt** taşır
+(2026-09-26 yeniden kurulumu; Türkçe 256.772 · Azerice 32.833 · Kazakça
+32.279 · … · Kuzey Altayca 1.259 · Hakasça `khk` 1.139 · Salarca `slq` 1.298).
+Köken sütunu: 36.179 `alıntı`, 46 `diriltme` (Öztürkçe diriltme/uydurma:
+betik, bilge, başkan, kağan… — alıntı sayılmaz), 21.331 `miras`, gerisi boş.
 Her indirme sürüm, tarih ve SHA-256 damgası taşır (`data/SOURCES.md`).
 
 ⚠️ **Wiktionary türevi veri altın standart DEĞİLDİR.** Häuser & Stamatakis
@@ -1093,6 +1126,15 @@ make eval-prediction   # ileri tahmin
 make eval-calibration  # ECE + risk-coverage
 make eval-borrowing    # WOLD + ablasyon
 make eval-controls     # negatif kontrol bataryası
+make eval-cv           # rekonstrüksiyon 5 katlı ÇD (sütun modeli, H2)
+make eval-donor        # verici dil tanıma × WOLD Saha
+make eval-tr-donor     # Türkçe verici dil × TDK+Nişanyan (tam/kör indeks, A2 kapalı/açık)
+make eval-xborrowing   # Türk dilleri arası alıntı altını, ayar bölümü (kör indeks)
+make eval-headline     # başlık kökü × Starling ve savelyev dev
+make eval-chronology   # tarihleme × Starling tarihli etiketleri
+make eval-badge        # hüküm rozeti AUC
+make eval-homonym      # eşsesli ayrımı
+make audit             # 60 kelimelik tutarlılık denetimi
 make dialect           # ağız kelimeleri toplu analizi
 
 make test && make coverage
@@ -1196,7 +1238,7 @@ türetmek.
 | Starostin, Dybo & Mudrak, *Altaic Etymological Dictionary* — `starostinaltaic` | 5.756 biçim · 55 dil | ⚠️ yalnız karşılaştırma; Vovin 2005 eleştirisiyle birlikte anılır, tek kaynak olarak kullanılmaz |
 | Robbeets & Bouckaert — `robbeetstriangulation` | 26.224 biçim · 102 dil | ⚠️ yalnız **temas** çerçevesinde; akrabalık kanıtına katılmaz (Tian ve ark. 2022 eleştirileri). **Ölçümle doğrulandı**: altın kümeye alınması denendi ve geri alındı — gerekçe «Bilinen sınırlar → Veri» bölümünde |
 | Róna-Tas & Berta 2011, *West Old Turkic: Turkic Loanwords in Hungarian* — `ronataswestoldturkic` ([loanwordbank](https://github.com/loanwordbank/ronataswestoldturkic), CC-BY) | 1.755 biçim · 430 kavram · 480 Oğur (Bolgar, `bolg1249`) biçimi | ⚠️ **atteste değil**, Macarcadaki alıntılardan geri kurulmuş; ayrı tanık kodu (`wot`), tek başına `*PT` taşımaz. Ölçüldü: kazanç yok, **varsayılan kapalı** |
-| [kaikki.org](https://kaikki.org) — Wiktionary makine-okunur dökümleri | 23 Türki dil · 125.879 madde · ~856 MB ham (diskte 60 MB) | ✅ arama indeksi · ⚠️ **altın standart değil** (bkz. Häuser & Stamatakis 2025) |
+| [kaikki.org](https://kaikki.org) — Wiktionary makine-okunur dökümleri | İngilizce sürüm: 23 Türki dil · 125.879 madde · ~856 MB ham (diskte 60 MB); en/tr/ru sürümleriyle indeks toplamı 30 dil kodu · 450.528 kayıt | ✅ arama indeksi · ⚠️ **altın standart değil** (bkz. Häuser & Stamatakis 2025) |
 | kaikki.org — **tarihî katman** (URL kalıbı düzeltilince erişilebildi) | Osmanlı Türkçesi 9.806 · Kırım Tatarcası 4.780 · Güney Altayca 1.914 · **Eski Türkçe 470** (Orhun runik) | ✅ arama indeksi · ⚠️ Eski Türkçe dökümü küçüktür; runik biçimler `transliterate_to_latin` ile Latin karşılaştırma biçimine çevrilir |
 | kaikki.org — **Rusça Wiktionary sürümü** (10 Türki dil, ~2,8 MB) | Karayca 5.793 · Kırım Tatarcası 3.497 · Çuvaşça 2.074 · Başkurtça 4.282 · Yakutça 4.285 · Şorca 557 | ✅ tanık ve arama verisi · ⚠️ şemada `etymology_templates` **yok** (köken çıkarılamaz), anlamlar Rusça (anlam kısıtlı verici sinyali çalışmaz) |
 | TDK Güncel Türkçe Sözlük + Nişanyan Sözlük | Türkçe altın alıntı kümesi | ✅ **Wiktionary'den bağımsız** ikinci alıntı ölçütü · ⚠️ kanıt kuralı asimetrik (bkz. Alıntı tespiti) |
@@ -1205,7 +1247,11 @@ türetmek.
 | kaikki.org — **Türkçe Wiktionary sürümü** (`download_lexicons.py --tr`) | Türkçe ~210 bin madde (çekim sayfaları ayıklandı) · Osmanlıca 8.570 · Azerice, Tatarca, Özbekçe… | ✅ yalnız tanık ve arama verisi · ⚠️ köken kategorileri **okunmaz**: Nişanyan/TDK kaynaklı, Türkçe altın kümeyle döngüsellik |
 | kaikki.org — Rusça sürüme 2026-09-24'te eklenen 8 dil | Kazakça, Tatarca, Azerice, Özbekçe, Kırgızca, Türkmence, Uygurca, Gagavuzca (~54 bin) | ✅ tanık ve arama verisi (anlamca doğrulanır, alt sınır 0,50) |
 | kaikki.org — Eski Uygurca, Eski Anadolu Türkçesi, **Proto-Türkçe** | 446 · 593 · 1.150 madde | ✅ ilk ikisi tanık dili (yayılım paydasına girmez) · Proto-Türkçe sayfaları indekse **girmez**; kök torunları olarak okunur (`LocalProtoTurkicFetcher`) |
-| [Starling](https://starlingdb.org) Türk etimolojisi (`turcet`, Dybo & Starostin 2005, `make starling`) | 2.017 Proto-Türkçe kök · 32 dil alanı · EDT/ЭСТЯ atıfları | ✅ başlık kökü (kaynak biçim yoksa) ve tarihli Eski Türkçe tanık (Orhun 732, DLT 1072) · ⚠️ ölçüldü: örüntü tablosuna ek eğitim verisi olarak **kazanç yok**; Moğolca tablosu verici indeksinde WOLD'u **bozdu**, kullanılmıyor |
+| [Starling](https://starlingdb.org) Türk etimolojisi (`turcet`, Dybo & Starostin 2005, `make starling`) | 2.017 Proto-Türkçe kök · 32 dil alanı · EDT/ЭСТЯ atıfları | ✅ başlık kökü (kaynak biçim yoksa) ve tarihli Eski Türkçe tanık (Orhun 732, DLT 1072) · ⚠️ ölçüldü: örüntü tablosuna ek eğitim verisi olarak **kazanç yok**; Moğolca tablosu verici indeksinde WOLD'u **bozdu**, kullanılmıyor · **Starling tanıkları** (2dc0f04): seçilen kökün indekste tanığı olmayan dillerdeki biçimleri ayrı bölümde gösterilir (131 kelimenin 62'sine 570 tanık; Savelyev'le karşılaştırılabilen 409'un 398'i uyumlu, 0,973) — başlık aynı kayıttan geldiği için yayılıma, A-HVP'ye ve skora **girmez** |
+| [Wilkens 2021](https://doi.org/10.17875/gup2021-1590), *Handwörterbuch des Altuigurischen* (CC BY-SA 4.0, `make wilkens`) | 29.891 madde başı · 19.401 Türkçe anlamlı gerçek madde · 5.307 köken zinciri | ✅ Eski Uygurca tanık (`WilkensOldUyghurFetcher`), dönem "9.-14. yy" (1350) · Starling'siz tarihleme kapsamı 0,06 → 0,455 · ⚠️ nokta yıl vermez; elle 50 örnekte tanık kesinliği 0,86 |
+| [Zemberek-NLP](https://github.com/ahmetaa/zemberek-nlp) sözlüğü (Apache 2.0) | kök ses öznitelikleri (yumuşama, ikizleşme, ünlü düşmesi) | ✅ kök varyant üreteci (`engine/nlp/root_variants.py`) · ⚠️ ölçüldü: başlık kökünde kazanç 0, **bağlanmadı**; ters uyum sinyali olumsuz, bayrak kapalı |
+| kaikki.org — **Kuzey Altayca** (`atv`, 807fe41) | 1.259 madde · 1.332 anlam (904 miras, 107 alıntı) | ✅ ayrı dil olarak indekste; Güney Altaycaya (`alt`) **katılmaz** — birleşse yayılım iki dili tek tanık sayardı |
+| **Türk dilleri arası alıntı altını** (`xturkic`, X1; `make xturkic-gold`) | kk, ky, tt, ba, uz, ug, tk Wiktionary en köken şablonlarından 3.430 madde (ayar 1.379 · R1 684 · R2 684 · test 683 **mühürlü**); R3 3.706 | ✅ Türkçe dışı ilk bağımsız alıntı ölçütü: **kör indeks** (köken sütunları boşaltılmış) + zincir kapalı · ⚠️ etiket Wiktionary'den; motorun zinciri aynı şablonu okur (K1), bu yüzden zincir açık sayı raporlanmaz |
 | [Apertium](https://github.com/apertium) iki dilli sözlükleri (`make apertium`) | Türkçe ↔ Çuvaşça, Kırım Tatarcası, Kırgızca, Tatarca, Özbekçe, Azerice, Türkmence | ✅ tanık (`ApertiumFetcher`) · ⚠️ **çeviri karşılığıdır**, akraba değil (pencere ~ терезе): benzerlik ≥ 0,50, Çuvaşça ≥ 0,66 |
 | kaikki **verici dili** dökümleri — Rusça, Moğolca, Evenkice, Arapça, Farsça, Yunanca, Ermenice, Fransızca, İtalyanca | 1.674.418 madde, ~352 MB | ✅ verici yakınlığı sinyali · ⚠️ Türki arama indeksinden **AYRI** dosyada; karışsalardı Rusça `море` Türki akraba adayı olarak dönerdi |
 | DatSemShift | 10.565 anlam kayması | 🚧 semantik makullük |
