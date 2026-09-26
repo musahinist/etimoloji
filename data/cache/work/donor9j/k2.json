@@ -1,0 +1,78 @@
+{
+ "n": 2008,
+ "blind_label_columns_nonnull": 0,
+ "gloss_identical_blind_full": 2008,
+ "labels_identical_blind_full": 2008,
+ "gloss_with_language_hint": [
+  [
+   "helva",
+   "halva, a traditional Middle Eastern confection usually made from crushed sesame seeds and honey"
+  ],
+  [
+   "kef",
+   "Letter of the Arabic alphabet: ك"
+  ],
+  [
+   "efrat",
+   "Arabic plural of fert; individuals; ordinary people"
+  ],
+  [
+   "fukara",
+   "Arabic plural of fakir; the poor."
+  ],
+  [
+   "haydari",
+   "haydari (a meze made from strained yoghurt)"
+  ],
+  [
+   "cibre",
+   "pomace, marc, the pulp remaining from a substance pressed to extract its oil or juice"
+  ],
+  [
+   "horozbina",
+   "blenny, any of various marine fishes from the suborder Blennioidei or order Blenniiformes"
+  ],
+  [
+   "pizza",
+   "pizza (Italian dish)"
+  ],
+  [
+   "gurbet",
+   "Any place far away from one's homeland."
+  ],
+  [
+   "şifa",
+   "recovery (from an illness)"
+  ],
+  [
+   "kandil",
+   "oil lamp, a simple vessel used to produce light from a liquid fuel source"
+  ],
+  [
+   "keşkek",
+   "A traditional Turkish dish similar to Armenian harissa; a sort of meat and wheat or barley stew."
+  ]
+ ],
+ "pool_languages": {
+  "donors.db": [
+   "ar",
+   "el",
+   "evn",
+   "fa",
+   "fr",
+   "hy",
+   "it",
+   "mn",
+   "ru"
+  ],
+  "donors_label.db": [
+   "grc",
+   "lij",
+   "vec",
+   "xcl"
+  ]
+ },
+ "fetchers_loaded": [],
+ "network": "socket.connect engelli",
+ "pass": true
+}

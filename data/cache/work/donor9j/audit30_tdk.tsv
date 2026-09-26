@@ -1,0 +1,33 @@
+# 9j TDK altını kalite denetimi — 30 madde (hash sırası "9j-q:gold_tdk.json"), LLM ön-etiketi (Claude), insan onayı yok. Karar: doğru / şüpheli / yanlış.
+kelime	verici	etimon	karar	not
+bihuş	fa	bīhūş	doğru	
+idea	el		şüpheli	öğrenilmiş kelime; Batı (fr idée/it idea) aracılığı olası
+şalopa	it	scialuppa	doğru	
+tazı	fa	tāzī	doğru	
+perestiş	fa	perestiş	doğru	
+çulha	fa	cūlāh	doğru	
+razakı	el		doğru	Rumca rozaki
+sinara	el		doğru	
+çağanak	fa	çeġāne	doğru	
+ekstrem	fr	extrême	doğru	
+yâren	fa	yārān	doğru	
+buselik	fa	bū-selīk	doğru	
+forte	it	forte	doğru	
+libre	it	libbra	doğru	
+ilistir	el		doğru	
+amabile	it	amàbile	doğru	
+tarlatan	fr	tarlatane	doğru	
+faş	fa	fāş	doğru	
+raspa	it	raspa	doğru	
+mıskal	fa	mūsīḳār	doğru	
+naz	fa	nāz	doğru	
+fanyol	it	eufonio	şüpheli	etimon-biçim ilişkisi zayıf
+ıhlamur	el		doğru	Rumca flamouri
+ekseriyet	ar	eks̱eriyyet	doğru	
+yoma	el		doğru	
+çetele	el		doğru	
+fortepiano	it	fortepiano	doğru	
+armador	it	armadúr	doğru	
+liga	it	liga	doğru	
+metfun	ar	medfūn	doğru	
+# özet: 28 doğru, 2 şüpheli, 0 yanlış

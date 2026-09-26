@@ -1,0 +1,11547 @@
+{
+"meta": {
+"salt": "donor9j-tdk-v1",
+"source": "TDK GTS v12 (ogun/guncel-turkce-sozluk) lisan; TDK+Nişanyan, 9e/9f/9g dışı",
+"available": {
+"ayar/ar": 1660,
+"ayar/el": 114,
+"ayar/fa": 289,
+"ayar/fr": 1621,
+"ayar/hy": 9,
+"ayar/it": 116,
+"rapor/ar": 3096,
+"rapor/el": 176,
+"rapor/fa": 553,
+"rapor/fr": 3004,
+"rapor/hy": 10,
+"rapor/it": 236
+},
+"dropped": {
+"çok-dilli/uygunsuz": 103,
+"biçim": 20,
+"önceki-altında-kelime": 1459,
+"kör-indekste-anlam-yok": 602,
+"önceki-altında-etimon": 26
+},
+"counts": {
+"ayar/ar": 60,
+"ayar/el": 114,
+"ayar/fa": 60,
+"ayar/fr": 80,
+"ayar/hy": 9,
+"ayar/it": 116,
+"rapor/ar": 100,
+"rapor/el": 150,
+"rapor/fa": 100,
+"rapor/fr": 150,
+"rapor/hy": 10,
+"rapor/it": 200
+},
+"counts_en_gloss": {
+"ayar/ar": 37,
+"ayar/el": 31,
+"ayar/fa": 34,
+"ayar/fr": 36,
+"ayar/hy": 3,
+"ayar/it": 16,
+"rapor/ar": 55,
+"rapor/el": 35,
+"rapor/fa": 42,
+"rapor/fr": 55,
+"rapor/hy": 1,
+"rapor/it": 29
+}
+},
+"items": [
+{
+"word": "ahir",
+"comparison": "ahir",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "āḫir",
+"group": "ahir",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "askerî",
+"comparison": "askeri",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ʿaskerī",
+"group": "askeri",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "aşerat",
+"comparison": "aşerat",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ʿaşerāt",
+"group": "aşerat",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "cezp",
+"comparison": "cezp",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ceẕb",
+"group": "cezb",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "civar",
+"comparison": "civar",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "civār",
+"group": "civar",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "cünun",
+"comparison": "cünun",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "cunūn",
+"group": "cunun",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "debagat",
+"comparison": "debagat",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "debāġat",
+"group": "debagat",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "dâhi",
+"comparison": "dahi",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "dāhī",
+"group": "dahi",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "edebî",
+"comparison": "edebi",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "edebī",
+"group": "edebi",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "feyezan",
+"comparison": "feyezan",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "feyeżān",
+"group": "feyezan",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "fuzuli",
+"comparison": "fuzuli",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "fużūlī",
+"group": "fuzuli",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "habip",
+"comparison": "habip",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ḥabīb",
+"group": "habib",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "hadım",
+"comparison": "hadım",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ḫādim",
+"group": "hadim",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "heccav",
+"comparison": "heccav",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "heccāv",
+"group": "heccav",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "helva",
+"comparison": "helva",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ḥalvā",
+"group": "halva",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "hikemî",
+"comparison": "hikemi",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ḥikemī",
+"group": "hikemi",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "hindiba",
+"comparison": "hindiba",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "hindibāʾ",
+"group": "hindiba",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "hülasaten",
+"comparison": "hülasaten",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ḫulāṣaten",
+"group": "hulasaten",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "ihlas",
+"comparison": "ihlas",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "iḫlāṣ",
+"group": "ihlas",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "imza",
+"comparison": "imza",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "imżāʾ",
+"group": "imza",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "irap",
+"comparison": "irap",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "iʿrāb",
+"group": "irab",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "itaat",
+"comparison": "itaat",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "iṭāʿat",
+"group": "itaat",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "kabir",
+"comparison": "kabir",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ḳabr",
+"group": "kabr",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "kanara",
+"comparison": "kanara",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ḳinnāre",
+"group": "kinnare",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kerh",
+"comparison": "kerh",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "kerh",
+"group": "kerh",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kibrit",
+"comparison": "kibrit",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "kibrīt",
+"group": "kibrit",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "kudret",
+"comparison": "kudret",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ḳudret",
+"group": "kudret",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "kûfi",
+"comparison": "kufi",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "kūfī",
+"group": "kufi",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kül",
+"comparison": "kül",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "kull",
+"group": "kull",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "mesture",
+"comparison": "mesture",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "mestūre",
+"group": "mesture",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "metfun",
+"comparison": "metfun",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "medfūn",
+"group": "medfun",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "mezbaha",
+"comparison": "mezbaha",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "meẕbaḥa",
+"group": "mezbaha",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "mezbele",
+"comparison": "mezbele",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "mezbele",
+"group": "mezbele",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "meşveret",
+"comparison": "meşveret",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "meşveret",
+"group": "meşveret",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "mihrap",
+"comparison": "mihrap",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "miḥrāb",
+"group": "mihrab",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "muktebes",
+"comparison": "muktebes",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "muḳtebes",
+"group": "muktebes",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "musakka",
+"comparison": "musakka",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "musaḳḳā",
+"group": "musakka",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "müezzin",
+"comparison": "müezzin",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "muʾeẕẕin",
+"group": "muezzin",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "müruriye",
+"comparison": "müruriye",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "murūriyye",
+"group": "mururiyye",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "saba",
+"comparison": "saba",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ṣabā",
+"group": "saba",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "sakamet",
+"comparison": "sakamet",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "saḳāmet",
+"group": "sakamet",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "salisen",
+"comparison": "salisen",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "s̱ālis̱en",
+"group": "salisen",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "savap",
+"comparison": "savap",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ṣavāb",
+"group": "savab",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "semt",
+"comparison": "semt",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "semt",
+"group": "semt",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "setre",
+"comparison": "setre",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "setre",
+"group": "setre",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "siftah",
+"comparison": "siftah",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "istiftāḥ",
+"group": "istiftah",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "sükûti",
+"comparison": "sükuti",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "sukūtī",
+"group": "sukuti",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "sınai",
+"comparison": "sınai",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ṣināʿī",
+"group": "sinai",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "sınıf",
+"comparison": "sınıf",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ṣinf",
+"group": "sinf",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "tarife",
+"comparison": "tarife",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "taʿrife",
+"group": "tarife",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "tenkisat",
+"comparison": "tenkisat",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "tenḳīṣāt",
+"group": "tenkisat",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "teşerrüf",
+"comparison": "teşerrüf",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "teşerruf",
+"group": "teşerruf",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "yemin",
+"comparison": "yemin",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "yemīn",
+"group": "yemin",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "özür",
+"comparison": "özür",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ʿuẕr",
+"group": "uzr",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "ümmet",
+"comparison": "ümmet",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ummet",
+"group": "ummet",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "ümmi",
+"comparison": "ümmi",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ummī",
+"group": "ummi",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "şehriye",
+"comparison": "şehriye",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "şaʿriyye",
+"group": "şariyye",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "şerare",
+"comparison": "şerare",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "şerāre",
+"group": "şerare",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "şey",
+"comparison": "şey",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "şeyʾ",
+"group": "şey",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "şeyh",
+"comparison": "şeyh",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "şeyḫ",
+"group": "şeyh",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "ablatya",
+"comparison": "ablatya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "ablatya",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "aksona",
+"comparison": "aksona",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "aksona",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "alamana",
+"comparison": "alamana",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "tr.",
+"group": "tr",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "anavaşya",
+"comparison": "anavaşya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "anavaşya",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "andaval",
+"comparison": "andaval",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "andaval",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "ayandon",
+"comparison": "ayandon",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "ayandon",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "balyos",
+"comparison": "balyos",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "balyos",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "barba",
+"comparison": "barba",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "barba",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "barsama",
+"comparison": "barsama",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "barsama",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "basarna",
+"comparison": "basarna",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "basarna",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "bibliyografya",
+"comparison": "bibliyografya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "bibliyografya",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "bilar",
+"comparison": "bilar",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "bilar",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "bodoslama",
+"comparison": "bodoslama",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "bodoslama",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "bulada",
+"comparison": "bulada",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "bulada",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "buzuki",
+"comparison": "buzuki",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "buzuki",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "dikiz",
+"comparison": "dikiz",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "dikiz",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "dilemma",
+"comparison": "dilemma",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "dilemma",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "dineri",
+"comparison": "dineri",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "dineri",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "diyakoz",
+"comparison": "diyakoz",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "diyakoz",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "domates",
+"comparison": "domates",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "domates",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "düver",
+"comparison": "düver",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "düver",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "düziko",
+"comparison": "düziko",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "düziko",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "entelekya",
+"comparison": "entelekya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "entelekya",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "erganun",
+"comparison": "erganun",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "erganun",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "erkete",
+"comparison": "erkete",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "erkete",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "eskatologya",
+"comparison": "eskatologya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "eskatologya",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "etnografya",
+"comparison": "etnografya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "etnografya",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "falyanos",
+"comparison": "falyanos",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "falyanos",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "fangri",
+"comparison": "fangri",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "fangri",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "fanti",
+"comparison": "fanti",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "fanti",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "fanya",
+"comparison": "fanya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "fanya",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "fasarya",
+"comparison": "fasarya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "fasarya",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "fava",
+"comparison": "fava",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "fava",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "fener",
+"comparison": "fener",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "fener",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "fesleğen",
+"comparison": "fesleğen",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "fesleğen",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "filenk",
+"comparison": "filenk",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "filenk",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "foroz",
+"comparison": "foroz",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "foroz",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "fırın",
+"comparison": "fırın",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "fırın",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "gebre",
+"comparison": "gebre",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "gebre",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "gerdel",
+"comparison": "gerdel",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "gerdel",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "gönder",
+"comparison": "gönder",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "gönder",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "gübre",
+"comparison": "gübre",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "gübre",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "harharyas",
+"comparison": "harharyas",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "harharyas",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "helke",
+"comparison": "helke",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "helke",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "horoskop",
+"comparison": "horoskop",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "horoskop",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "iskete",
+"comparison": "iskete",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "iskete",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "ispit",
+"comparison": "ispit",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "ispit",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "kadırga",
+"comparison": "kadırga",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kadırga",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "kalafat",
+"comparison": "kalafat",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kalafat",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kalinis",
+"comparison": "kalinis",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kalinis",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "kalinos",
+"comparison": "kalinos",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kalinos",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "karamandola",
+"comparison": "karamandola",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "karamandola",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "katavaşya",
+"comparison": "katavaşya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "katavaşya",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kibernetik",
+"comparison": "kibernetik",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kibernetik",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kiklotron",
+"comparison": "kiklotron",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kiklotron",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kimüs",
+"comparison": "kimüs",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kimüs",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kirizma",
+"comparison": "kirizma",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kirizma",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "koloridye",
+"comparison": "koloridye",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "koloridye",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kopanaki",
+"comparison": "kopanaki",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kopanaki",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kundak",
+"comparison": "kundak",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kundak",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "kıtipiyoz",
+"comparison": "kıtipiyoz",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kıtipiyoz",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "lahos",
+"comparison": "lahos",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "lahos",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "lipari",
+"comparison": "lipari",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "lipari",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "liturya",
+"comparison": "liturya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "liturya",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "mandar",
+"comparison": "mandar",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "mandar",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "martolos",
+"comparison": "martolos",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "martolos",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "marya",
+"comparison": "marya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "marya",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "mastı",
+"comparison": "mastı",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "mastı",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "masura",
+"comparison": "masura",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "masura",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "maydanoz",
+"comparison": "maydanoz",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "maydanoz",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "mazgal",
+"comparison": "mazgal",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "mazgal",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "melanurya",
+"comparison": "melanurya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "melanurya",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "merlanos",
+"comparison": "merlanos",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "merlanos",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "mersin",
+"comparison": "mersin",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "mersin",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "minakop",
+"comparison": "minakop",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "minakop",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "mitos",
+"comparison": "mitos",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "mitos",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "musandıra",
+"comparison": "musandıra",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "musandıra",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "muşmula",
+"comparison": "muşmula",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "muşmula",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "olta",
+"comparison": "olta",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "olta",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "orya",
+"comparison": "orya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "orya",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "pantufla",
+"comparison": "pantufla",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "pantufla",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "parpa",
+"comparison": "parpa",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "parpa",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "pastra",
+"comparison": "pastra",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "pastra",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "pedavra",
+"comparison": "pedavra",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "pedavra",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "peleme",
+"comparison": "peleme",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "peleme",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "pines",
+"comparison": "pines",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "pines",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "piskopos",
+"comparison": "piskopos",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "piskopos",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "piyastos",
+"comparison": "piyastos",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "piyastos",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "planya",
+"comparison": "planya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "planya",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "polim",
+"comparison": "polim",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "polim",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "prostela",
+"comparison": "prostela",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "prostela",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "pırnal",
+"comparison": "pırnal",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "pırnal",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "razakı",
+"comparison": "razakı",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "razakı",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "sarpa",
+"comparison": "sarpa",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "sarpa",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "sarpın",
+"comparison": "sarpın",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "sarpın",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "sinara",
+"comparison": "sinara",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "sinara",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "sinarit",
+"comparison": "sinarit",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "sinarit",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "sirto",
+"comparison": "sirto",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "sirto",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "sistire",
+"comparison": "sistire",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "sistire",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "soma",
+"comparison": "soma",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "soma",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "somata",
+"comparison": "somata",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "somata",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "tarator",
+"comparison": "tarator",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "tarator",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "telfin",
+"comparison": "telfin",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "telfin",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "tirsi",
+"comparison": "tirsi",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "tirsi",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "tırpana",
+"comparison": "tırpana",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "tırpana",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "uzo",
+"comparison": "uzo",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "uzo",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "varyos",
+"comparison": "varyos",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "varyos",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "yoma",
+"comparison": "yoma",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "yoma",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "yulaf",
+"comparison": "yulaf",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "yulaf",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "zifos",
+"comparison": "zifos",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "zifos",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "çaparız",
+"comparison": "çaparız",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "çaparız",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "çağanoz",
+"comparison": "çağanoz",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "çağanoz",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "öreke",
+"comparison": "öreke",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "öreke",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "şinik",
+"comparison": "şinik",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "şinik",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "ahenk",
+"comparison": "ahenk",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "āheng",
+"group": "aheng",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "asude",
+"comparison": "asude",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "āsūde",
+"group": "asude",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "bargâh",
+"comparison": "bargah",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "bārgāh",
+"group": "bargah",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "buselik",
+"comparison": "buselik",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "bū-selīk",
+"group": "buselik",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "cambaz",
+"comparison": "cambaz",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "cānbāz",
+"group": "canbaz",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "cengâver",
+"comparison": "cengaver",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "cengāver",
+"group": "cengaver",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "cenk",
+"comparison": "cenk",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "ceng",
+"group": "ceng",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "derdest",
+"comparison": "derdest",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "derdest",
+"group": "derdest",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "derya",
+"comparison": "derya",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "deryā",
+"group": "derya",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "dilaver",
+"comparison": "dilaver",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "dilāver",
+"group": "dilaver",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "diriğ",
+"comparison": "diriğ",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "dirīġ",
+"group": "dirig",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "duvar",
+"comparison": "duvar",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "dīvār",
+"group": "divar",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "faş",
+"comparison": "faş",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "fāş",
+"group": "faş",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "füsun",
+"comparison": "füsun",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "fusūn",
+"group": "fusun",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "geriz",
+"comparison": "geriz",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "kārīz",
+"group": "kariz",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "hayli",
+"comparison": "hayli",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "ḫaylī",
+"group": "hayli",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "haçvari",
+"comparison": "haçvari",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "hācvārī",
+"group": "hacvari",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "hemen",
+"comparison": "hemen",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "hemān",
+"group": "heman",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "hengâm",
+"comparison": "hengam",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "hengām",
+"group": "hengam",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "hergele",
+"comparison": "hergele",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "ḫargele",
+"group": "hargele",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "hidiv",
+"comparison": "hidiv",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "ḫidīv",
+"group": "hidiv",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "hoşnut",
+"comparison": "hoşnut",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "ḫoşnūd",
+"group": "hoşnud",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kef",
+"comparison": "kef",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "kef",
+"group": "kef",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "kem",
+"comparison": "kem",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "kem",
+"group": "kem",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "kereste",
+"comparison": "kereste",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "kerāste",
+"group": "keraste",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "keşkül",
+"comparison": "keşkül",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "keşkūl",
+"group": "keşkul",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kumru",
+"comparison": "kumru",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "ḳumrī",
+"group": "kumri",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "köşker",
+"comparison": "köşker",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "kefş-ger",
+"group": "kefşger",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "maya",
+"comparison": "maya",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "māye",
+"group": "maye",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "mihman",
+"comparison": "mihman",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "mihmān",
+"group": "mihman",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "mıh",
+"comparison": "mıh",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "mīḫ",
+"group": "mih",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "mıskal",
+"comparison": "mıskal",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "mūsīḳār'dan",
+"group": "musikardan",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "naz",
+"comparison": "naz",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "nāz",
+"group": "naz",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "nikbin",
+"comparison": "nikbin",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "nīkbīn",
+"group": "nikbin",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "nişasta",
+"comparison": "nişasta",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "nişāste",
+"group": "nişaste",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "pah",
+"comparison": "pah",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "pāḫ",
+"group": "pah",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "pamuk",
+"comparison": "pamuk",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "panbuḳ",
+"group": "panbuk",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "perdedar",
+"comparison": "perdedar",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "perdedār",
+"group": "perdedar",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "postal",
+"comparison": "postal",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "postgāl",
+"group": "postgal",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "putperest",
+"comparison": "putperest",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "butperest",
+"group": "butperest",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "saray",
+"comparison": "saray",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "serāy",
+"group": "seray",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "saz",
+"comparison": "saz",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "sāz",
+"group": "saz",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "seza",
+"comparison": "seza",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "sezā",
+"group": "seza",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "sima",
+"comparison": "sima",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "sīmā",
+"group": "sima",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "sipahi",
+"comparison": "sipahi",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "sipāhī",
+"group": "sipahi",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "tarumar",
+"comparison": "tarumar",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "tārmār",
+"group": "tarmar",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "tazı",
+"comparison": "tazı",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "tāzī",
+"group": "tazi",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "yave",
+"comparison": "yave",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "yāve",
+"group": "yave",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "yâran",
+"comparison": "yaran",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "yārān",
+"group": "yaran",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "yâren",
+"comparison": "yaren",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "yārān",
+"group": "yaran",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "zeyrek",
+"comparison": "zeyrek",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "zīrek",
+"group": "zirek",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "zurna",
+"comparison": "zurna",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "surnāy",
+"group": "surnay",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "çalak",
+"comparison": "çalak",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "çālāk",
+"group": "çalak",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "çark",
+"comparison": "çark",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "çarḫ",
+"group": "çarh",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "çengel",
+"comparison": "çengel",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "çengāl",
+"group": "çengal",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "çiriş",
+"comparison": "çiriş",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "sirīş",
+"group": "siriş",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "çulha",
+"comparison": "çulha",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "cūlāh",
+"group": "culah",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "şikemperver",
+"comparison": "şikemperver",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "şikemperver",
+"group": "şikemperver",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "şikâr",
+"comparison": "şikar",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "şikār",
+"group": "şikar",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "şirin",
+"comparison": "şirin",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "şīrīn",
+"group": "şirin",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "alkolizm",
+"comparison": "alkolizm",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "alcoolisme",
+"group": "alcoolisme",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "alo",
+"comparison": "alo",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "allô",
+"group": "allo",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "alogami",
+"comparison": "alogami",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "allogamie",
+"group": "allogamie",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "ambargo",
+"comparison": "ambargo",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "embargo",
+"group": "embargo",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "amor",
+"comparison": "amor",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "amour",
+"group": "amour",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "anafilaksi",
+"comparison": "anafilaksi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "anaphylaxie",
+"group": "anaphylahie",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "analojik",
+"comparison": "analojik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "analogique",
+"group": "analogikue",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "anemik",
+"comparison": "anemik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "anémique",
+"group": "anemikue",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "anhidrit",
+"comparison": "anhidrit",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "anhydrite",
+"group": "anhydrite",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "apatit",
+"comparison": "apatit",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "apatite",
+"group": "apatite",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "apraksi",
+"comparison": "apraksi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "apraxie",
+"group": "aprahie",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "atlet",
+"comparison": "atlet",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "athlète",
+"group": "athlete",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "azotometre",
+"comparison": "azotometre",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "azotomètre",
+"group": "azotometre",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "barit",
+"comparison": "barit",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "baryte",
+"group": "baryte",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "blok",
+"comparison": "blok",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "bloc",
+"group": "bloc",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "bopstil",
+"comparison": "bopstil",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "bob style",
+"group": "bobstyle",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "bordür",
+"comparison": "bordür",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "bordure",
+"group": "bordure",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "deforme",
+"comparison": "deforme",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "déformé",
+"group": "deforme",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "deodorant",
+"comparison": "deodorant",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "déodorant",
+"group": "deodorant",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "despotizm",
+"comparison": "despotizm",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "despotisme",
+"group": "despotisme",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "dikotomi",
+"comparison": "dikotomi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "dichotomie",
+"group": "dichotomie",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "distribütör",
+"comparison": "distribütör",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "distributeur",
+"group": "distributeur",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "dramaturji",
+"comparison": "dramaturji",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "dramaturgie",
+"group": "dramaturgie",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "efemine",
+"comparison": "efemine",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "efféminé",
+"group": "effemine",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "ekstrem",
+"comparison": "ekstrem",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "extrême",
+"group": "ehtreme",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "elektromekanik",
+"comparison": "elektromekanik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "électromécanique",
+"group": "electromecanikue",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "elipsoit",
+"comparison": "elipsoit",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "ellipsoïde",
+"group": "ellipsoıde",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "etnik",
+"comparison": "etnik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "ethnique",
+"group": "ethnikue",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "figür",
+"comparison": "figür",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "figure",
+"group": "figure",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "fildekoz",
+"comparison": "fildekoz",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "fil d'Ecosse",
+"group": "fildecosse",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "fizyoterapist",
+"comparison": "fizyoterapist",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "physiothérapiste",
+"group": "physiotherapiste",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "geometrik",
+"comparison": "geometrik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "géométrique",
+"group": "geometrikue",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "glikojen",
+"comparison": "glikojen",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "glycogène",
+"group": "glycogene",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "hartuç",
+"comparison": "hartuç",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "cartouche",
+"group": "cartouche",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "iyodür",
+"comparison": "iyodür",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "iodure",
+"group": "iodure",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kanalize",
+"comparison": "kanalize",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "canalisé",
+"group": "canalise",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "konteyner",
+"comparison": "konteyner",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "conteneur",
+"group": "conteneur",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kontuvar",
+"comparison": "kontuvar",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "comptoir",
+"group": "comptoir",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "korozyon",
+"comparison": "korozyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "corrosion",
+"group": "corrosion",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kramp",
+"comparison": "kramp",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "crampe",
+"group": "crampe",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "krater",
+"comparison": "krater",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "cratère",
+"group": "cratere",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kruvazör",
+"comparison": "kruvazör",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "croiseur",
+"group": "croiseur",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "kulis",
+"comparison": "kulis",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "coulisse",
+"group": "coulisse",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "kumanda",
+"comparison": "kumanda",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "commandé",
+"group": "commande",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "lastik",
+"comparison": "lastik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "élastique",
+"group": "elastikue",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "leksikografi",
+"comparison": "leksikografi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "lexicographie",
+"group": "lehicographie",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "lineer",
+"comparison": "lineer",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "linéaire",
+"group": "lineaire",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "lizol",
+"comparison": "lizol",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "Iysol",
+"group": "iysol",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "majeste",
+"comparison": "majeste",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "majesté",
+"group": "majeste",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "makyaj",
+"comparison": "makyaj",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "maquillage",
+"group": "makuillage",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "manganez",
+"comparison": "manganez",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "manganèse",
+"group": "manganese",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "mikrobiyoloji",
+"comparison": "mikrobiyoloji",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "microbiologie",
+"group": "microbiologie",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "morfolojik",
+"comparison": "morfolojik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "morphologique",
+"group": "morphologikue",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "nüdizm",
+"comparison": "nüdizm",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "nudisme",
+"group": "nudisme",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "ons",
+"comparison": "ons",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "once",
+"group": "once",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "parafazi",
+"comparison": "parafazi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "paraphasie",
+"group": "paraphasie",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "paraşüt",
+"comparison": "paraşüt",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "parachute",
+"group": "parachute",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "pigme",
+"comparison": "pigme",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "pygmée",
+"group": "pygmee",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "piknometre",
+"comparison": "piknometre",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "pycnomètre",
+"group": "pycnometre",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "pirogravür",
+"comparison": "pirogravür",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "pyrogravure",
+"group": "pyrogravure",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "piyon",
+"comparison": "piyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "pion",
+"group": "pion",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "pomat",
+"comparison": "pomat",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "pommade",
+"group": "pommade",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "prefabrik",
+"comparison": "prefabrik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "préfabriqué",
+"group": "prefabrikue",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "puan",
+"comparison": "puan",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "point",
+"group": "point",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "puding",
+"comparison": "puding",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "pudding",
+"group": "pudding",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "radyoelektrik",
+"comparison": "radyoelektrik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "radioélectrique",
+"group": "radioelectrikue",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "radyogram",
+"comparison": "radyogram",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "radiogramme",
+"group": "radiogramme",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "renovasyon",
+"comparison": "renovasyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "rénovation",
+"group": "renovation",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "senfonik",
+"comparison": "senfonik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "symphonique",
+"group": "symphonikue",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "sezaryen",
+"comparison": "sezaryen",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "césarienne",
+"group": "cesarienne",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "siren",
+"comparison": "siren",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "sirène",
+"group": "sirene",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "soket",
+"comparison": "soket",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "socket",
+"group": "socket",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "stereografi",
+"comparison": "stereografi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "stéréographie",
+"group": "stereographie",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "steril",
+"comparison": "steril",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "stérile",
+"group": "sterile",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "trajik",
+"comparison": "trajik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "tragique",
+"group": "tragikue",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "transseksüel",
+"comparison": "transseksüel",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "transsexuel",
+"group": "transsehuel",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "tröst",
+"comparison": "tröst",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "trust",
+"group": "trust",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "vazelin",
+"comparison": "vazelin",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "vaseline",
+"group": "vaseline",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "vize",
+"comparison": "vize",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "visa",
+"group": "visa",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "şanzıman",
+"comparison": "şanzıman",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "changement",
+"group": "changement",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "abra",
+"comparison": "abra",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "abra",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "astik",
+"comparison": "astik",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "astik",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "aznif",
+"comparison": "aznif",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "aznif",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "badik",
+"comparison": "badik",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "badik",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "murç",
+"comparison": "murç",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "murç",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "mıcır",
+"comparison": "mıcır",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "mıcır",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "pezevenk",
+"comparison": "pezevenk",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "pezevenk",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "çemiç",
+"comparison": "çemiç",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "çemiç",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "şif",
+"comparison": "şif",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "şif",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "alesta",
+"comparison": "alesta",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "allesta",
+"group": "allesta",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "alto",
+"comparison": "alto",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "alto",
+"group": "alto",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "amabile",
+"comparison": "amabile",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "amàbile",
+"group": "amabile",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "apiko",
+"comparison": "apiko",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "a picco",
+"group": "apicco",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "appassionato",
+"comparison": "appassionato",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "appassionato",
+"group": "appassionato",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "arnika",
+"comparison": "arnika",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "arnica",
+"group": "arnica",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "baderna",
+"comparison": "baderna",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "baderna",
+"group": "baderna",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "bando",
+"comparison": "bando",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "bando",
+"group": "bando",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "barata",
+"comparison": "barata",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "barretta",
+"group": "barretta",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "baratarya",
+"comparison": "baratarya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "barataria",
+"group": "barataria",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "barka",
+"comparison": "barka",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "barca",
+"group": "barca",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "belladonna",
+"comparison": "belladonna",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "belladonna",
+"group": "belladonna",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "bono",
+"comparison": "bono",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "buono",
+"group": "buono",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "borda",
+"comparison": "borda",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "borda",
+"group": "borda",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "borsa",
+"comparison": "borsa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "borsa",
+"group": "borsa",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "boğada",
+"comparison": "boğada",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "bucata",
+"group": "bucata",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "ciranta",
+"comparison": "ciranta",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "giranta",
+"group": "giranta",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "cıvadra",
+"comparison": "cıvadra",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "givadera",
+"group": "givadera",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "espresso",
+"comparison": "espresso",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "espresso",
+"group": "espresso",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "falso",
+"comparison": "falso",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "falso",
+"group": "falso",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "falya",
+"comparison": "falya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "falia",
+"group": "falia",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "filet",
+"comparison": "filet",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "fileto",
+"group": "fileto",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "firma",
+"comparison": "firma",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "firma",
+"group": "firma",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "fisto",
+"comparison": "fisto",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "festone",
+"group": "festone",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "flama",
+"comparison": "flama",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "flemma",
+"group": "flemma",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "fonda",
+"comparison": "fonda",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "fondo",
+"group": "fondo",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "forte",
+"comparison": "forte",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "forte",
+"group": "forte",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "fota",
+"comparison": "fota",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "fusto",
+"group": "fusto",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "foya",
+"comparison": "foya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "foglia",
+"group": "foglia",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "francala",
+"comparison": "francala",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "frangiula",
+"group": "frangiula",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "frişka",
+"comparison": "frişka",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "fresco",
+"group": "fresco",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "furya",
+"comparison": "furya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "furia",
+"group": "furia",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "fırkata",
+"comparison": "fırkata",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "fregata",
+"group": "fregata",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "gabya",
+"comparison": "gabya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "gabbia",
+"group": "gabbia",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "gabyar",
+"comparison": "gabyar",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "gabbiere",
+"group": "gabbiere",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "gladyo",
+"comparison": "gladyo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "gladio",
+"group": "gladio",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "grandi",
+"comparison": "grandi",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "grande",
+"group": "grande",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "gusto",
+"comparison": "gusto",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "gusto",
+"group": "gusto",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "iskalarya",
+"comparison": "iskalarya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "scalare",
+"group": "scalare",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "iskarpela",
+"comparison": "iskarpela",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "scarpello",
+"group": "scarpello",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "iskele",
+"comparison": "iskele",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "scala",
+"group": "scala",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "iskota",
+"comparison": "iskota",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "scotta",
+"group": "scotta",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "istadya",
+"comparison": "istadya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "stadia",
+"group": "stadia",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "istimator",
+"comparison": "istimator",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "stimatore",
+"group": "stimatore",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kalantor",
+"comparison": "kalantor",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "galantuomo",
+"group": "galantuomo",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kanca",
+"comparison": "kanca",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "gancio",
+"group": "gancio",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "kançılar",
+"comparison": "kançılar",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cancelliere",
+"group": "cancelliere",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kapriçyo",
+"comparison": "kapriçyo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "capriccio",
+"group": "capriccio",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "karabina",
+"comparison": "karabina",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "carabina",
+"group": "carabina",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "karaf",
+"comparison": "karaf",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "caraffa",
+"group": "caraffa",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "karafa",
+"comparison": "karafa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "caraffa",
+"group": "caraffa",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "karamusal",
+"comparison": "karamusal",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "paramusselli",
+"group": "paramusselli",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "karmanyola",
+"comparison": "karmanyola",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "carmagnola",
+"group": "carmagnola",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kartela",
+"comparison": "kartela",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cartella",
+"group": "cartella",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kasatura",
+"comparison": "kasatura",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cacciatora",
+"group": "cacciatora",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "kastanyola",
+"comparison": "kastanyola",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "castagnola",
+"group": "castagnola",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kavela",
+"comparison": "kavela",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "caviglia",
+"group": "caviglia",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kavilya",
+"comparison": "kavilya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "caviglia",
+"group": "caviglia",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "konfeti",
+"comparison": "konfeti",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "confetti",
+"group": "confetti",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kontra",
+"comparison": "kontra",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "contra",
+"group": "contra",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "korna",
+"comparison": "korna",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "corna",
+"group": "corna",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "korza",
+"comparison": "korza",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "crose",
+"group": "crose",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kreşendo",
+"comparison": "kreşendo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "crescendo",
+"group": "crescendo",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kuzine",
+"comparison": "kuzine",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cusina",
+"group": "cusina",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "kıranta",
+"comparison": "kıranta",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "quaranta",
+"group": "kuaranta",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "larghetto",
+"comparison": "larghetto",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "larghetto",
+"group": "larghetto",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "liste",
+"comparison": "liste",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "lista",
+"group": "lista",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "longa",
+"comparison": "longa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "longo",
+"group": "longo",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "loça",
+"comparison": "loça",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "occhio",
+"group": "occhio",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "maltız",
+"comparison": "maltız",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "maltese",
+"group": "maltese",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "marina",
+"comparison": "marina",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "marina",
+"group": "marina",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "matafyon",
+"comparison": "matafyon",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "matafioni",
+"group": "matafioni",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "mayna",
+"comparison": "mayna",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "maina",
+"group": "maina",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "mezura",
+"comparison": "mezura",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "misura",
+"group": "misura",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "mira",
+"comparison": "mira",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "mira",
+"group": "mira",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "mizana",
+"comparison": "mizana",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "mezana",
+"group": "mezana",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "morto",
+"comparison": "morto",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "morto",
+"group": "morto",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "natura",
+"comparison": "natura",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "natura",
+"group": "natura",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "orsa",
+"comparison": "orsa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "orza",
+"group": "orza",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "parlamento",
+"comparison": "parlamento",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "parlamento",
+"group": "parlamento",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "parmıcan",
+"comparison": "parmıcan",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "parmigiano",
+"group": "parmigiano",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "patiska",
+"comparison": "patiska",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "batista",
+"group": "batista",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "pinel",
+"comparison": "pinel",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "penelo",
+"group": "penelo",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "pirzola",
+"comparison": "pirzola",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "brisiola",
+"group": "brisiola",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "pompa",
+"comparison": "pompa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "pompa",
+"group": "pompa",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "pratika",
+"comparison": "pratika",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "pratica",
+"group": "pratica",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "pupa",
+"comparison": "pupa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "poppa",
+"group": "poppa",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "puro",
+"comparison": "puro",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "puro",
+"group": "puro",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "romatizma",
+"comparison": "romatizma",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "reumatismo",
+"group": "reumatismo",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "sabura",
+"comparison": "sabura",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "saburra",
+"group": "saburra",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "salto",
+"comparison": "salto",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "salto",
+"group": "salto",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "selviçe",
+"comparison": "selviçe",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "servizi",
+"group": "servizi",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "siroko",
+"comparison": "siroko",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "sirocco",
+"group": "sirocco",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "skala",
+"comparison": "skala",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "scala",
+"group": "scala",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "soda",
+"comparison": "soda",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "soda",
+"group": "soda",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "sol",
+"comparison": "sol",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "sol",
+"group": "sol",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "solo",
+"comparison": "solo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "solo",
+"group": "solo",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "tapa",
+"comparison": "tapa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "tappo",
+"group": "tappo",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "telaro",
+"comparison": "telaro",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "telaio",
+"group": "telaio",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "tiramola",
+"comparison": "tiramola",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "tiramolla",
+"group": "tiramolla",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "tonilato",
+"comparison": "tonilato",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "tonnellata",
+"group": "tonnellata",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "trio",
+"comparison": "trio",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "trio",
+"group": "trio",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "tropika",
+"comparison": "tropika",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "tropico",
+"group": "tropico",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "tumba",
+"comparison": "tumba",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "tombo",
+"group": "tombo",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "usturmaça",
+"comparison": "usturmaça",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "stramazzo",
+"group": "stramazzo",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "varda",
+"comparison": "varda",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "guarda",
+"group": "guarda",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "velense",
+"comparison": "velense",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "valenciana",
+"group": "valenciana",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "vido",
+"comparison": "vido",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "vedo",
+"group": "vedo",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "vira",
+"comparison": "vira",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "vira",
+"group": "vira",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "viyola",
+"comparison": "viyola",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "viola",
+"group": "viola",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "yısa",
+"comparison": "yısa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "issa",
+"group": "issa",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "çembalo",
+"comparison": "çembalo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cembalo",
+"group": "cembalo",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "çimbali",
+"comparison": "çimbali",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cembalo",
+"group": "cembalo",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "çipo",
+"comparison": "çipo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cipo",
+"group": "cipo",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "ıskota",
+"comparison": "ıskota",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "scotta",
+"group": "scotta",
+"gloss_lang": "tr",
+"split": "ayar"
+},
+{
+"word": "şano",
+"comparison": "şano",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "scena",
+"group": "scena",
+"gloss_lang": "en",
+"split": "ayar"
+},
+{
+"word": "akraba",
+"comparison": "akraba",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "aḳribā",
+"group": "akriba",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "ameliyat",
+"comparison": "ameliyat",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ʿameliyyāt",
+"group": "ameliyyat",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "ases",
+"comparison": "ases",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ʿases",
+"group": "ases",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "asri",
+"comparison": "asri",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ʿaṣrī",
+"group": "asri",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "ati",
+"comparison": "ati",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ātī",
+"group": "ati",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "cariye",
+"comparison": "cariye",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "cāriye",
+"group": "cariye",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "ceht",
+"comparison": "ceht",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "cehd",
+"group": "cehd",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "cevelan",
+"comparison": "cevelan",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "cevelān",
+"group": "cevelan",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "devam",
+"comparison": "devam",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "devām",
+"group": "devam",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "dinî",
+"comparison": "dini",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "dīnī",
+"group": "dini",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "efrat",
+"comparison": "efrat",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "efrād",
+"group": "efrad",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "ehem",
+"comparison": "ehem",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ehemm",
+"group": "ehemm",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ekseriyet",
+"comparison": "ekseriyet",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "eks̱eriyyet",
+"group": "ekseriyyet",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "emmi",
+"comparison": "emmi",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ʿamm",
+"group": "amm",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "ervah",
+"comparison": "ervah",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ervāḥ",
+"group": "ervah",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "fukara",
+"comparison": "fukara",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "fuḳarā",
+"group": "fukara",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "gaflet",
+"comparison": "gaflet",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ġaflet",
+"group": "gaflet",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "gayret",
+"comparison": "gayret",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ġayret",
+"group": "gayret",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "gudde",
+"comparison": "gudde",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ġudde",
+"group": "gudde",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "hail",
+"comparison": "hail",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ḥāʾil",
+"group": "hail",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "havari",
+"comparison": "havari",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ḥavārī",
+"group": "havari",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "haydari",
+"comparison": "haydari",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ḥaydarī",
+"group": "haydari",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "hayran",
+"comparison": "hayran",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ḥayrān",
+"group": "hayran",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "his",
+"comparison": "his",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ḥiss",
+"group": "hiss",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "ihanet",
+"comparison": "ihanet",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ihānet",
+"group": "ihanet",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "ima",
+"comparison": "ima",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "īmāʾ",
+"group": "ima",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "inhiraf",
+"comparison": "inhiraf",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "inḥirāf",
+"group": "inhiraf",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "insirafi",
+"comparison": "insirafi",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "inṣirāfī",
+"group": "insirafi",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "irtica",
+"comparison": "irtica",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "irticāʿ",
+"group": "irtica",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "irtişa",
+"comparison": "irtişa",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "irtişāʾ",
+"group": "irtişa",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ismet",
+"comparison": "ismet",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ʿiṣmet",
+"group": "ismet",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "istifsar",
+"comparison": "istifsar",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "istifsār",
+"group": "istifsar",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "izah",
+"comparison": "izah",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "īżāḥ",
+"group": "izah",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "izam",
+"comparison": "izam",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "iʿzām",
+"group": "izam",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "izhar",
+"comparison": "izhar",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "iẓhār",
+"group": "izhar",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "içtimai",
+"comparison": "içtimai",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ictimāʿī",
+"group": "ictimai",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "kari",
+"comparison": "kari",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ḳāriʾ",
+"group": "kari",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "kefe",
+"comparison": "kefe",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "keffe",
+"group": "keffe",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "keşif",
+"comparison": "keşif",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "keşf",
+"group": "keşf",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "kutur",
+"comparison": "kutur",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ḳuṭr",
+"group": "kutr",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "külliyet",
+"comparison": "külliyet",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "kulliyyet",
+"group": "kulliyyet",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kıssa",
+"comparison": "kıssa",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ḳiṣṣa",
+"group": "kissa",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "mabut",
+"comparison": "mabut",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "maʿbūd",
+"group": "mabud",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "mecburen",
+"comparison": "mecburen",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "mecbūren",
+"group": "mecburen",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "mecra",
+"comparison": "mecra",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "mecrā",
+"group": "mecra",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "mensup",
+"comparison": "mensup",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "mensūb",
+"group": "mensub",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "merbut",
+"comparison": "merbut",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "merbūṭ",
+"group": "merbut",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "metrukiyet",
+"comparison": "metrukiyet",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "metrūkiyyet",
+"group": "metrukiyyet",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mevcut",
+"comparison": "mevcut",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "mevcūd",
+"group": "mevcud",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "meyusiyet",
+"comparison": "meyusiyet",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "meʾyūsiyyet",
+"group": "meyusiyyet",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "muadele",
+"comparison": "muadele",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "muʿādele",
+"group": "muadele",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "muharrir",
+"comparison": "muharrir",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "muḥarrir",
+"group": "muharrir",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "muhasebat",
+"comparison": "muhasebat",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "muḥāsebāt",
+"group": "muhasebat",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mukayyit",
+"comparison": "mukayyit",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "muḳayyid",
+"group": "mukayyid",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "musap",
+"comparison": "musap",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "muṣāb",
+"group": "musab",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mutavaat",
+"comparison": "mutavaat",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "muṭāvaʿat",
+"group": "mutavaat",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "muvazzaf",
+"comparison": "muvazzaf",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "muvaẓẓaf",
+"group": "muvazzaf",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "müfrez",
+"comparison": "müfrez",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "mufrez",
+"group": "mufrez",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "müfteri",
+"comparison": "müfteri",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "mufterī",
+"group": "mufteri",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "münasebat",
+"comparison": "münasebat",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "munāsebāt",
+"group": "munasebat",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "müptedi",
+"comparison": "müptedi",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "mubtedī",
+"group": "mubtedi",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "mürai",
+"comparison": "mürai",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "murāʾī",
+"group": "murai",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "müstahkem",
+"comparison": "müstahkem",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "mustaḥkem",
+"group": "mustahkem",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "müşabih",
+"comparison": "müşabih",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "muşābih",
+"group": "muşabih",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "müşevveş",
+"comparison": "müşevveş",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "muşevveş",
+"group": "muşevveş",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "nebevi",
+"comparison": "nebevi",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "nebevī",
+"group": "nebevi",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "nedbe",
+"comparison": "nedbe",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "nedbe",
+"group": "nedbe",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "nevazil",
+"comparison": "nevazil",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "nevāzil",
+"group": "nevazil",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "resim",
+"comparison": "resim",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "resm",
+"group": "resm",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "sabur",
+"comparison": "sabur",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ṣabūr",
+"group": "sabur",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sanduka",
+"comparison": "sanduka",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ṣandūḳa",
+"group": "sanduka",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "say",
+"comparison": "say",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "saʿy",
+"group": "say",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "setir",
+"comparison": "setir",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "setr",
+"group": "setr",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tahaccür",
+"comparison": "tahaccür",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "taḥaccur",
+"group": "tahaccur",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tahrif",
+"comparison": "tahrif",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "taḥrīf",
+"group": "tahrif",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "tahriş",
+"comparison": "tahriş",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "taḫrīş",
+"group": "tahriş",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "takallüs",
+"comparison": "takallüs",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "taḳalluṣ",
+"group": "takallus",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "takriben",
+"comparison": "takriben",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "taḳrīben",
+"group": "takriben",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "tağşiş",
+"comparison": "tağşiş",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "taġşīş",
+"group": "tagşiş",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "teali",
+"comparison": "teali",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "teʿālī",
+"group": "teali",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tearuz",
+"comparison": "tearuz",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "teʿāruż",
+"group": "tearuz",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tebellür",
+"comparison": "tebellür",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "tebellur",
+"group": "tebellur",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tebeyyün",
+"comparison": "tebeyyün",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "tebeyyun",
+"group": "tebeyyun",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tecahül",
+"comparison": "tecahül",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "tecāhul",
+"group": "tecahul",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tedviren",
+"comparison": "tedviren",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "tedvīren",
+"group": "tedviren",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "tefavüt",
+"comparison": "tefavüt",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "tefāvut",
+"group": "tefavut",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "telaşe",
+"comparison": "telaşe",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "telāşī",
+"group": "telaşi",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "telin",
+"comparison": "telin",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "telʿīn",
+"group": "telin",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tenasüh",
+"comparison": "tenasüh",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "tenāsuḫ",
+"group": "tenasuh",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "tevehhüm",
+"comparison": "tevehhüm",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "tevehhum",
+"group": "tevehhum",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tezyinî",
+"comparison": "tezyini",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "tezyīnī",
+"group": "tezyini",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tuhafiye",
+"comparison": "tuhafiye",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "tuḥafiyye",
+"group": "tuhafiyye",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ukubet",
+"comparison": "ukubet",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ʿuḳūbet",
+"group": "ukubet",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "zakkum",
+"comparison": "zakkum",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "zaḳḳūm",
+"group": "zakkum",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "zaptiye",
+"comparison": "zaptiye",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "żabṭiyye",
+"group": "zabtiyye",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "zarar",
+"comparison": "zarar",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "żarar",
+"group": "zarar",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "zarta",
+"comparison": "zarta",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "żarṭa",
+"group": "zarta",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "zeki",
+"comparison": "zeki",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "ẕekī",
+"group": "zeki",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "şathiye",
+"comparison": "şathiye",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "şaṭḥiyye",
+"group": "şathiyye",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "şurup",
+"comparison": "şurup",
+"donor": "ar",
+"gold": "Arapça",
+"etymon": "şurūb",
+"group": "şurub",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "abaşo",
+"comparison": "abaşo",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "abaşo",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "abli",
+"comparison": "abli",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "abli",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "afi",
+"comparison": "afi",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "afi",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "aforoz",
+"comparison": "aforoz",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "aforoz",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "anadut",
+"comparison": "anadut",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "anadut",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "apoşi",
+"comparison": "apoşi",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "apoşi",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "apukurya",
+"comparison": "apukurya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "apukurya",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "araka",
+"comparison": "araka",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "araka",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ayazma",
+"comparison": "ayazma",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "ayazma",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "aşoz",
+"comparison": "aşoz",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "aşoz",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "bocurgat",
+"comparison": "bocurgat",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "bocurgat",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "bodrum",
+"comparison": "bodrum",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "bodrum",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "cibre",
+"comparison": "cibre",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "cibre",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "dalyan",
+"comparison": "dalyan",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "dalyan",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "demiurgos",
+"comparison": "demiurgos",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "demiurgos",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "difana",
+"comparison": "difana",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "difana",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "dimi",
+"comparison": "dimi",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "dimi",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "diplarya",
+"comparison": "diplarya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "diplarya",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "dirgen",
+"comparison": "dirgen",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "dirgen",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "dogma",
+"comparison": "dogma",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "dogma",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "dıramudana",
+"comparison": "dıramudana",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "dıramudana",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "evlek",
+"comparison": "evlek",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "evlek",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "faska",
+"comparison": "faska",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "faska",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "fide",
+"comparison": "fide",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "fide",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "filar",
+"comparison": "filar",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "filar",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "filoz",
+"comparison": "filoz",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "filoz",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "fistan",
+"comparison": "fistan",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "fistan",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "fiyonk",
+"comparison": "fiyonk",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "fiyonk",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "florya",
+"comparison": "florya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "florya",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "fol",
+"comparison": "fol",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "fol",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "frisa",
+"comparison": "frisa",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "frisa",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "fıçı",
+"comparison": "fıçı",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "fıçı",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "fışkı",
+"comparison": "fışkı",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "fışkı",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "gamsele",
+"comparison": "gamsele",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "gamsele",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "güğüm",
+"comparison": "güğüm",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "güğüm",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "hani",
+"comparison": "hani",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "hani",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "heyamola",
+"comparison": "heyamola",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "heyamola",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "horon",
+"comparison": "horon",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "horon",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "horozbina",
+"comparison": "horozbina",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "horozbina",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "hırbo",
+"comparison": "hırbo",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "hırbo",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ibis",
+"comparison": "ibis",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "ibis",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "idea",
+"comparison": "idea",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "idea",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ilarya",
+"comparison": "ilarya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "ilarya",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ilistir",
+"comparison": "ilistir",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "ilistir",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ispati",
+"comparison": "ispati",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "ispati",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "istrongilos",
+"comparison": "istrongilos",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "istrongilos",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "işkine",
+"comparison": "işkine",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "işkine",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kalamata",
+"comparison": "kalamata",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kalamata",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kalavra",
+"comparison": "kalavra",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kalavra",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kalemis",
+"comparison": "kalemis",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kalemis",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kangal",
+"comparison": "kangal",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kangal",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kapari",
+"comparison": "kapari",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kapari",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kartografya",
+"comparison": "kartografya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kartografya",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kefeki",
+"comparison": "kefeki",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kefeki",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kemere",
+"comparison": "kemere",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kemere",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kilise",
+"comparison": "kilise",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kilise",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "kirebolu",
+"comparison": "kirebolu",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kirebolu",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kodes",
+"comparison": "kodes",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kodes",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kofti",
+"comparison": "kofti",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kofti",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kokona",
+"comparison": "kokona",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kokona",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kolpo",
+"comparison": "kolpo",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kolpo",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "konken",
+"comparison": "konken",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "konken",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "konçina",
+"comparison": "konçina",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "konçina",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kopil",
+"comparison": "kopil",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kopil",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kozmografya",
+"comparison": "kozmografya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kozmografya",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kulp",
+"comparison": "kulp",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "kulp",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "küfe",
+"comparison": "küfe",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "küfe",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "külüstür",
+"comparison": "külüstür",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "külüstür",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "küpeşte",
+"comparison": "küpeşte",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "küpeşte",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "lagos",
+"comparison": "lagos",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "lagos",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "lakerda",
+"comparison": "lakerda",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "lakerda",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "lakoz",
+"comparison": "lakoz",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "lakoz",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "lalanga",
+"comparison": "lalanga",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "lalanga",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "lapa",
+"comparison": "lapa",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "lapa",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "likorinoz",
+"comparison": "likorinoz",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "likorinoz",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "limaki",
+"comparison": "limaki",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "limaki",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "litografya",
+"comparison": "litografya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "litografya",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "litre",
+"comparison": "litre",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "litre",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "livar",
+"comparison": "livar",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "livar",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "logos",
+"comparison": "logos",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "logos",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "lohusa",
+"comparison": "lohusa",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "lohusa",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "lomboz",
+"comparison": "lomboz",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "lomboz",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "longoz",
+"comparison": "longoz",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "longoz",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "malama",
+"comparison": "malama",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "malama",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mamaliga",
+"comparison": "mamaliga",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "mamaliga",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mandepsi",
+"comparison": "mandepsi",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "mandepsi",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mandıra",
+"comparison": "mandıra",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "mandıra",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "marda",
+"comparison": "marda",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "marda",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "masa",
+"comparison": "masa",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "masa",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "masarika",
+"comparison": "masarika",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "masarika",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mastor",
+"comparison": "mastor",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "mastor",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mastur",
+"comparison": "mastur",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "mastur",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "masturi",
+"comparison": "masturi",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "masturi",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "melisa",
+"comparison": "melisa",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "melisa",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "menderes",
+"comparison": "menderes",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "menderes",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mıgri",
+"comparison": "mıgri",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "mıgri",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "narteks",
+"comparison": "narteks",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "narteks",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "nato",
+"comparison": "nato",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "nato",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "navlun",
+"comparison": "navlun",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "navlun",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "nodul",
+"comparison": "nodul",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "nodul",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ortanca",
+"comparison": "ortanca",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "ortanca",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "pandik",
+"comparison": "pandik",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "pandik",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "papazi",
+"comparison": "papazi",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "papazi",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "pasata",
+"comparison": "pasata",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "pasata",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "paspal",
+"comparison": "paspal",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "paspal",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "patrik",
+"comparison": "patrik",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "patrik",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "paydos",
+"comparison": "paydos",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "paydos",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "permeçe",
+"comparison": "permeçe",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "permeçe",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "pide",
+"comparison": "pide",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "pide",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "pisi",
+"comparison": "pisi",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "pisi",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "poyraz",
+"comparison": "poyraz",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "poyraz",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "propolis",
+"comparison": "propolis",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "propolis",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "pufla",
+"comparison": "pufla",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "pufla",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "reçine",
+"comparison": "reçine",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "reçine",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "sakuleta",
+"comparison": "sakuleta",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "sakuleta",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "saloz",
+"comparison": "saloz",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "saloz",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "samsun",
+"comparison": "samsun",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "samsun",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "saraka",
+"comparison": "saraka",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "saraka",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sardun",
+"comparison": "sardun",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "sardun",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sirtaki",
+"comparison": "sirtaki",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "sirtaki",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "siya",
+"comparison": "siya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "siya",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sübye",
+"comparison": "sübye",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "sübye",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sütliman",
+"comparison": "sütliman",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "sütliman",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sınır",
+"comparison": "sınır",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "sınır",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "sığla",
+"comparison": "sığla",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "sığla",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tipografya",
+"comparison": "tipografya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "tipografya",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "tirhos",
+"comparison": "tirhos",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "tirhos",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "topoğrafya",
+"comparison": "topoğrafya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "topoğrafya",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "trakunya",
+"comparison": "trakunya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "trakunya",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "trata",
+"comparison": "trata",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "trata",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tufa",
+"comparison": "tufa",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "tufa",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "vardela",
+"comparison": "vardela",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "vardela",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "voli",
+"comparison": "voli",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "voli",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "yeke",
+"comparison": "yeke",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "yeke",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "zağanos",
+"comparison": "zağanos",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "zağanos",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "zigon",
+"comparison": "zigon",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "zigon",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "çamuka",
+"comparison": "çamuka",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "çamuka",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "çapari",
+"comparison": "çapari",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "çapari",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "çaça",
+"comparison": "çaça",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "çaça",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "çetele",
+"comparison": "çetele",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "çetele",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "çopra",
+"comparison": "çopra",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "çopra",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "çupra",
+"comparison": "çupra",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "çupra",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "çıvgar",
+"comparison": "çıvgar",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "çıvgar",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "üsküf",
+"comparison": "üsküf",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "üsküf",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ütopya",
+"comparison": "ütopya",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "ütopya",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "ıhlamur",
+"comparison": "ıhlamur",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "ıhlamur",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "ıskarmoz",
+"comparison": "ıskarmoz",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "ıskarmoz",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ıspazmoz",
+"comparison": "ıspazmoz",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "ıspazmoz",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ıstar",
+"comparison": "ıstar",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "ıstar",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "şayak",
+"comparison": "şayak",
+"donor": "el",
+"gold": "Yunanca",
+"etymon": "",
+"group": "şayak",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "afsun",
+"comparison": "afsun",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "efsūn",
+"group": "efsun",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "agâh",
+"comparison": "agah",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "āgāh",
+"group": "agah",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "amade",
+"comparison": "amade",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "āmāde",
+"group": "amade",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "ateşbaz",
+"comparison": "ateşbaz",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "āteşbāz",
+"group": "ateşbaz",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "avize",
+"comparison": "avize",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "āvīze",
+"group": "avize",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "aşüfte",
+"comparison": "aşüfte",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "āşüfte",
+"group": "aşüfte",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "bedbin",
+"comparison": "bedbin",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "bed-bīn",
+"group": "bedbin",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "behre",
+"comparison": "behre",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "behre",
+"group": "behre",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "berceste",
+"comparison": "berceste",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "berceste",
+"group": "berceste",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "bezm",
+"comparison": "bezm",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "bezm",
+"group": "bezm",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "bihuş",
+"comparison": "bihuş",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "bīhūş",
+"group": "bihuş",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "birader",
+"comparison": "birader",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "birāder",
+"group": "birader",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "birun",
+"comparison": "birun",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "bīrūn",
+"group": "birun",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "cilve",
+"comparison": "cilve",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "cilve",
+"group": "cilve",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "cıva",
+"comparison": "cıva",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "cīve",
+"group": "cive",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "dek",
+"comparison": "dek",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "dek",
+"group": "dek",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "dermeyan",
+"comparison": "dermeyan",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "dermiyān",
+"group": "dermiyan",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "derun",
+"comparison": "derun",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "derūn",
+"group": "derun",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "dümbelek",
+"comparison": "dümbelek",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "dunbek",
+"group": "dunbek",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "efsanevi",
+"comparison": "efsanevi",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "efsānevī",
+"group": "efsanevi",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "fer",
+"comparison": "fer",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "fer",
+"group": "fer",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "güderi",
+"comparison": "güderi",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "gevderī",
+"group": "gevderi",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "gürz",
+"comparison": "gürz",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "gurz",
+"group": "gurz",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "handan",
+"comparison": "handan",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "ḫandān",
+"group": "handan",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "hande",
+"comparison": "hande",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "ḫande",
+"group": "hande",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "hanuman",
+"comparison": "hanuman",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "ḫānmān",
+"group": "hanman",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "hare",
+"comparison": "hare",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "ḫāre",
+"group": "hare",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "havan",
+"comparison": "havan",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "hāven",
+"group": "haven",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "horanta",
+"comparison": "horanta",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "ḫōrende",
+"group": "horende",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "hurma",
+"comparison": "hurma",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "ḫurmā",
+"group": "hurma",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "huy",
+"comparison": "huy",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "ḫūy",
+"group": "huy",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "hümayun",
+"comparison": "hümayun",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "humāyūn",
+"group": "humayun",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "isfendan",
+"comparison": "isfendan",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "isfendān",
+"group": "isfendan",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "iğdiş",
+"comparison": "iğdiş",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "ikdiş",
+"group": "ikdiş",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kel",
+"comparison": "kel",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "kel",
+"group": "kel",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "kelepser",
+"comparison": "kelepser",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "kelebser",
+"group": "kelebser",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kelepçe",
+"comparison": "kelepçe",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "kelebçe",
+"group": "kelebçe",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "kelle",
+"comparison": "kelle",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "kelle",
+"group": "kelle",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "kemha",
+"comparison": "kemha",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "kemḫā",
+"group": "kemha",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kenar",
+"comparison": "kenar",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "kenār",
+"group": "kenar",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "keşki",
+"comparison": "keşki",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "kāşki",
+"group": "kaşki",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kâh",
+"comparison": "kah",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "gāh",
+"group": "gah",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kâkül",
+"comparison": "kakül",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "kākul",
+"group": "kakul",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "lafazan",
+"comparison": "lafazan",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "lāfzen",
+"group": "lafzen",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "lagar",
+"comparison": "lagar",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "lāġar",
+"group": "lagar",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "lebalep",
+"comparison": "lebalep",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "lebāleb",
+"group": "lebaleb",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "leş",
+"comparison": "leş",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "lāşe",
+"group": "laşe",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "maderzat",
+"comparison": "maderzat",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "māderzād",
+"group": "maderzad",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "marpuç",
+"comparison": "marpuç",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "mārpīç",
+"group": "marpiç",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "mazı",
+"comparison": "mazı",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "māzū",
+"group": "mazu",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "meh",
+"comparison": "meh",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "meh",
+"group": "meh",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mestane",
+"comparison": "mestane",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "mestāne",
+"group": "mestane",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "meyve",
+"comparison": "meyve",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "mīve",
+"group": "mive",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "murt",
+"comparison": "murt",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "mūrd",
+"group": "murd",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "nazik",
+"comparison": "nazik",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "nāzuk",
+"group": "nazuk",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "naçar",
+"comparison": "naçar",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "nāçār",
+"group": "naçar",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "nevaziş",
+"comparison": "nevaziş",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "nevāziş",
+"group": "nevaziş",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "palan",
+"comparison": "palan",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "pālān",
+"group": "palan",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "paye",
+"comparison": "paye",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "pāye",
+"group": "paye",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "payidar",
+"comparison": "payidar",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "pāydār",
+"group": "paydar",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "pazvant",
+"comparison": "pazvant",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "pāsbān",
+"group": "pasban",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "pejmürde",
+"comparison": "pejmürde",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "pijmurde",
+"group": "pijmurde",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "perestiş",
+"comparison": "perestiş",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "perestiş",
+"group": "perestiş",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "peri",
+"comparison": "peri",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "perī",
+"group": "peri",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "pertavsız",
+"comparison": "pertavsız",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "pertevsūz",
+"group": "pertevsuz",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "perva",
+"comparison": "perva",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "pervā",
+"group": "perva",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "peyapey",
+"comparison": "peyapey",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "peyāpey",
+"group": "peyapey",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "peyke",
+"comparison": "peyke",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "pāygāh",
+"group": "paygah",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "poşu",
+"comparison": "poşu",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "pūşī",
+"group": "puşi",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "pösteki",
+"comparison": "pösteki",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "pūstekī",
+"group": "pusteki",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "raht",
+"comparison": "raht",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "raḫt",
+"group": "raht",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "revani",
+"comparison": "revani",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "revġānī",
+"group": "revgani",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "rindane",
+"comparison": "rindane",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "rindāne",
+"group": "rindane",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sayeban",
+"comparison": "sayeban",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "sāyebān",
+"group": "sayeban",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sebze",
+"comparison": "sebze",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "sebze",
+"group": "sebze",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "segâh",
+"comparison": "segah",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "segāh",
+"group": "segah",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "serkeş",
+"comparison": "serkeş",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "serkeş",
+"group": "serkeş",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "serzeniş",
+"comparison": "serzeniş",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "serzeniş",
+"group": "serzeniş",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sine",
+"comparison": "sine",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "sīne",
+"group": "sine",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "sini",
+"comparison": "sini",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "sīnī",
+"group": "sini",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sitayiş",
+"comparison": "sitayiş",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "sitāyiş",
+"group": "sitayiş",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tahra",
+"comparison": "tahra",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "dehre",
+"group": "dehre",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tembul",
+"comparison": "tembul",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "tenbūl",
+"group": "tenbul",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tenha",
+"comparison": "tenha",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "tenhā",
+"group": "tenha",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "terme",
+"comparison": "terme",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "terme",
+"group": "terme",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "vareste",
+"comparison": "vareste",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "vāreste",
+"group": "vareste",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "virane",
+"comparison": "virane",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "vīrāne",
+"group": "virane",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "zırh",
+"comparison": "zırh",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "(Far. zih sözünden)",
+"group": "farzihsözünden",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "çapar",
+"comparison": "çapar",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "çepār",
+"group": "çepar",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "çağanak",
+"comparison": "çağanak",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "çeġāne",
+"group": "çegane",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "çengi",
+"comparison": "çengi",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "çengī",
+"group": "çengi",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "çenk",
+"comparison": "çenk",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "çeng",
+"group": "çeng",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "çerviş",
+"comparison": "çerviş",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "çerbiş",
+"group": "çerbiş",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "çift",
+"comparison": "çift",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "cuft",
+"group": "cuft",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "çıra",
+"comparison": "çıra",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "çerāġ",
+"group": "çerag",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "çırağ",
+"comparison": "çırağ",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "çerāġ",
+"group": "çerag",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "şadırvan",
+"comparison": "şadırvan",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "şādurvān",
+"group": "şadurvan",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "şahbaz",
+"comparison": "şahbaz",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "şāhbāz",
+"group": "şahbaz",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "şev",
+"comparison": "şev",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "şīb",
+"group": "şib",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "şom",
+"comparison": "şom",
+"donor": "fa",
+"gold": "Farsça",
+"etymon": "şūm",
+"group": "şum",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "aktivizm",
+"comparison": "aktivizm",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "activisme",
+"group": "activisme",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "alerji",
+"comparison": "alerji",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "allergie",
+"group": "allergie",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "alkil",
+"comparison": "alkil",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "alkyle",
+"group": "alkyle",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "alternatif",
+"comparison": "alternatif",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "alternatif",
+"group": "alternatif",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "anormal",
+"comparison": "anormal",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "anormal",
+"group": "anormal",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "antropoit",
+"comparison": "antropoit",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "anthropoïde",
+"group": "anthropoıde",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "aport",
+"comparison": "aport",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "apporte",
+"group": "apporte",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "arboretum",
+"comparison": "arboretum",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "arboretum",
+"group": "arboretum",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "aromaterapi",
+"comparison": "aromaterapi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "aromathérapie",
+"group": "aromatherapie",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "asenkron",
+"comparison": "asenkron",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "asynchrone",
+"group": "asynchrone",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "astigmat",
+"comparison": "astigmat",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "astigmate",
+"group": "astigmate",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "atletizm",
+"comparison": "atletizm",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "athlétisme",
+"group": "athletisme",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "azit",
+"comparison": "azit",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "azide",
+"group": "azide",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "baobap",
+"comparison": "baobap",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "baobab",
+"group": "baobab",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "bekar",
+"comparison": "bekar",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "bécarre",
+"group": "becarre",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "beriberi",
+"comparison": "beriberi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "béribéri",
+"group": "beriberi",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "beril",
+"comparison": "beril",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "béryl",
+"group": "beryl",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "bidon",
+"comparison": "bidon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "bidon",
+"group": "bidon",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "bis",
+"comparison": "bis",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "bis",
+"group": "bis",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "burlesk",
+"comparison": "burlesk",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "burlesque",
+"group": "burleskue",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "dermatit",
+"comparison": "dermatit",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "dermatite",
+"group": "dermatite",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "devalüasyon",
+"comparison": "devalüasyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "dévaluation",
+"group": "devaluation",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "didona",
+"comparison": "didona",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "dis donc",
+"group": "disdonc",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "diferansiyel",
+"comparison": "diferansiyel",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "différentiel",
+"group": "differentiel",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "diksiyon",
+"comparison": "diksiyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "diction",
+"group": "diction",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "doktor",
+"comparison": "doktor",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "docteur",
+"group": "docteur",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "dömifinal",
+"comparison": "dömifinal",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "demi-finale",
+"group": "demifinale",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "dük",
+"comparison": "dük",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "duc",
+"group": "duc",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "egzersiz",
+"comparison": "egzersiz",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "exercice",
+"group": "ehercice",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "egzistansiyalist",
+"comparison": "egzistansiyalist",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "existentialiste",
+"group": "ehistentialiste",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "ekler",
+"comparison": "ekler",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "éclair",
+"group": "eclair",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "ekosistem",
+"comparison": "ekosistem",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "ecosystème",
+"group": "ecosysteme",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "ekselans",
+"comparison": "ekselans",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "excellence",
+"group": "ehcellence",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "elektroşok",
+"comparison": "elektroşok",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "électrochoc",
+"group": "electrochoc",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "eleman",
+"comparison": "eleman",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "élément",
+"group": "element",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "eritrosit",
+"comparison": "eritrosit",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "érythrocyte",
+"group": "erythrocyte",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "eskrim",
+"comparison": "eskrim",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "escrime",
+"group": "escrime",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "etnolog",
+"comparison": "etnolog",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "ethnologue",
+"group": "ethnologue",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "falez",
+"comparison": "falez",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "falaise",
+"group": "falaise",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "federalist",
+"comparison": "federalist",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "fédéraliste",
+"group": "federaliste",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "flambe",
+"comparison": "flambe",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "flambé",
+"group": "flambe",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "formalist",
+"comparison": "formalist",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "formaliste",
+"group": "formaliste",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "fundamentalist",
+"comparison": "fundamentalist",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "fondamentaliste",
+"group": "fondamentaliste",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "fümerol",
+"comparison": "fümerol",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "fumerolle",
+"group": "fumerolle",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "gayzer",
+"comparison": "gayzer",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "geyser",
+"group": "geyser",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "genom",
+"comparison": "genom",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "génome",
+"group": "genome",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "guatr",
+"comparison": "guatr",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "goitre",
+"group": "goitre",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "insülin",
+"comparison": "insülin",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "insuline",
+"group": "insuline",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "irrasyonalizm",
+"comparison": "irrasyonalizm",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "irrationalisme",
+"group": "irrationalisme",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "jenerik",
+"comparison": "jenerik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "générique",
+"group": "generikue",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "jön",
+"comparison": "jön",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "jeune",
+"group": "jeune",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "kaliborit",
+"comparison": "kaliborit",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "kaliborite",
+"group": "kaliborite",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kalsit",
+"comparison": "kalsit",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "calcite",
+"group": "calcite",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kanotiye",
+"comparison": "kanotiye",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "canotier",
+"group": "canotier",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kardiyoskopi",
+"comparison": "kardiyoskopi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "cardioscopie",
+"group": "cardioscopie",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "karizmatik",
+"comparison": "karizmatik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "charismatique",
+"group": "charismatikue",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kartonpiyer",
+"comparison": "kartonpiyer",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "carton-pierre",
+"group": "cartonpierre",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kelifit",
+"comparison": "kelifit",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "kélyphite",
+"group": "kelyphite",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kilokalori",
+"comparison": "kilokalori",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "kilocalorie",
+"group": "kilocalorie",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "klik",
+"comparison": "klik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "clique",
+"group": "clikue",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "klips",
+"comparison": "klips",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "clips",
+"group": "clips",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kolektivizm",
+"comparison": "kolektivizm",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "collectivisme",
+"group": "collectivisme",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kondor",
+"comparison": "kondor",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "condor",
+"group": "condor",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kooperatif",
+"comparison": "kooperatif",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "coopérative",
+"group": "cooperative",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "koreografi",
+"comparison": "koreografi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "choréographie",
+"group": "choreographie",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "kostüm",
+"comparison": "kostüm",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "costume",
+"group": "costume",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "kozmoloji",
+"comparison": "kozmoloji",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "cosmologie",
+"group": "cosmologie",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kreasyon",
+"comparison": "kreasyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "création",
+"group": "creation",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "kreozot",
+"comparison": "kreozot",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "créosote",
+"group": "creosote",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kronaksi",
+"comparison": "kronaksi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "chronaxie",
+"group": "chronahie",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "laik",
+"comparison": "laik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "laïque",
+"group": "laıkue",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "lamel",
+"comparison": "lamel",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "lamelle",
+"group": "lamelle",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "lojistik",
+"comparison": "lojistik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "logistique",
+"group": "logistikue",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "makroekonomik",
+"comparison": "makroekonomik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "macroéconomique",
+"group": "macroeconomikue",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "manikür",
+"comparison": "manikür",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "manicure",
+"group": "manicure",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "matematisyen",
+"comparison": "matematisyen",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "mathématicien",
+"group": "mathematicien",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "melodik",
+"comparison": "melodik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "mélodique",
+"group": "melodikue",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mendelevyum",
+"comparison": "mendelevyum",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "mendélévium",
+"group": "mendelevium",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mezosfer",
+"comparison": "mezosfer",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "mésosphère",
+"group": "mesosphere",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "midibüs",
+"comparison": "midibüs",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "midibus",
+"group": "midibus",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mika",
+"comparison": "mika",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "mica",
+"group": "mica",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "milimikron",
+"comparison": "milimikron",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "millimicron",
+"group": "millimicron",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "monat",
+"comparison": "monat",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "monade",
+"group": "monade",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "monoteizm",
+"comparison": "monoteizm",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "monothéisme",
+"group": "monotheisme",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "morfem",
+"comparison": "morfem",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "morphème",
+"group": "morpheme",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "morfin",
+"comparison": "morfin",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "morphine",
+"group": "morphine",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "narsist",
+"comparison": "narsist",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "narcissiste",
+"group": "narcissiste",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "nekrolojik",
+"comparison": "nekrolojik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "nécrologique",
+"group": "necrologikue",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "neoklasisizm",
+"comparison": "neoklasisizm",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "néoclassicisme",
+"group": "neoclassicisme",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "nitrogliserin",
+"comparison": "nitrogliserin",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "nitroglycerine",
+"group": "nitroglycerine",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "nostalji",
+"comparison": "nostalji",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "nostalgie",
+"group": "nostalgie",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "obligasyon",
+"comparison": "obligasyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "obligation",
+"group": "obligation",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "okazyon",
+"comparison": "okazyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "occasion",
+"group": "occasion",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "otobüs",
+"comparison": "otobüs",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "autobus",
+"group": "autobus",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "otomatik",
+"comparison": "otomatik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "automatique",
+"group": "automatikue",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "otorite",
+"comparison": "otorite",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "autorité",
+"group": "autorite",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "pandantif",
+"comparison": "pandantif",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "pendentif",
+"group": "pendentif",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "partikül",
+"comparison": "partikül",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "particule",
+"group": "particule",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "pasavan",
+"comparison": "pasavan",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "passavant",
+"group": "passavant",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "paternalist",
+"comparison": "paternalist",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "paternaliste",
+"group": "paternaliste",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "pilot",
+"comparison": "pilot",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "pilote",
+"group": "pilote",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "poligam",
+"comparison": "poligam",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "polygame",
+"group": "polygame",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "porfirit",
+"comparison": "porfirit",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "porphyrite",
+"group": "porphyrite",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "prömiyer",
+"comparison": "prömiyer",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "première",
+"group": "premiere",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "rasyonalizm",
+"comparison": "rasyonalizm",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "rationalisme",
+"group": "rationalisme",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "reflektör",
+"comparison": "reflektör",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "réflecteur",
+"group": "reflecteur",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "rezervuar",
+"comparison": "rezervuar",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "réservoir",
+"group": "reservoir",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "rol",
+"comparison": "rol",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "rôle",
+"group": "role",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "rövanş",
+"comparison": "rövanş",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "revanche",
+"group": "revanche",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "salisilik",
+"comparison": "salisilik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "salicylique",
+"group": "salicylikue",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "santigram",
+"comparison": "santigram",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "centigramme",
+"group": "centigramme",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "santimetre",
+"comparison": "santimetre",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "centimètre",
+"group": "centimetre",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "semantik",
+"comparison": "semantik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "sémantique",
+"group": "semantikue",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "senatör",
+"comparison": "senatör",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "sénateur",
+"group": "senateur",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "sendikalist",
+"comparison": "sendikalist",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "syndicaliste",
+"group": "syndicaliste",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sigar",
+"comparison": "sigar",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "cigare",
+"group": "cigare",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "simetrik",
+"comparison": "simetrik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "symétrique",
+"group": "symetrikue",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sinematek",
+"comparison": "sinematek",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "cinémathèque",
+"group": "cinemathekue",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sinüzoidal",
+"comparison": "sinüzoidal",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "sinusoïdal",
+"group": "sinusoıdal",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sivil",
+"comparison": "sivil",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "civil",
+"group": "civil",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "siyonizm",
+"comparison": "siyonizm",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "sionisme",
+"group": "sionisme",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sperm",
+"comparison": "sperm",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "sperme",
+"group": "sperme",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "stat",
+"comparison": "stat",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "stade",
+"group": "stade",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "stenografi",
+"comparison": "stenografi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "sténographie",
+"group": "stenographie",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "stilizasyon",
+"comparison": "stilizasyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "stylisation",
+"group": "stylisation",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "süit",
+"comparison": "süit",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "suite",
+"group": "suite",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "takimetre",
+"comparison": "takimetre",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "tachymètre",
+"group": "tachymetre",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "taksonomi",
+"comparison": "taksonomi",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "taxonomie",
+"group": "tahonomie",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tanjant",
+"comparison": "tanjant",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "tangent",
+"group": "tangent",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "tarlatan",
+"comparison": "tarlatan",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "tarlatane",
+"group": "tarlatane",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "telefon",
+"comparison": "telefon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "téléphone",
+"group": "telephone",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "teleobjektif",
+"comparison": "teleobjektif",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "téléobjectif",
+"group": "teleobjectif",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "televizyon",
+"comparison": "televizyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "télévision",
+"group": "television",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "teorisyen",
+"comparison": "teorisyen",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "théoricien",
+"group": "theoricien",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "termosfer",
+"comparison": "termosfer",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "thermosphère",
+"group": "thermosphere",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tirle",
+"comparison": "tirle",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "tire-lait",
+"group": "tirelait",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tonaj",
+"comparison": "tonaj",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "tonnage",
+"group": "tonnage",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "topoğraf",
+"comparison": "topoğraf",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "topographe",
+"group": "topographe",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "trake",
+"comparison": "trake",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "trachée",
+"group": "trachee",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "trapez",
+"comparison": "trapez",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "trapèze",
+"group": "trapeze",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "trigonometrik",
+"comparison": "trigonometrik",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "trigonométrique",
+"group": "trigonometrikue",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "trup",
+"comparison": "trup",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "troupe",
+"group": "troupe",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "vampir",
+"comparison": "vampir",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "vampire",
+"group": "vampire",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "vinterizasyon",
+"comparison": "vinterizasyon",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "wintérisation",
+"group": "vinterisation",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "voltaj",
+"comparison": "voltaj",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "voltage",
+"group": "voltage",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "üre",
+"comparison": "üre",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "urée",
+"group": "uree",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "ürolog",
+"comparison": "ürolog",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "urologue",
+"group": "urologue",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "şantaj",
+"comparison": "şantaj",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "chantage",
+"group": "chantage",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "şat",
+"comparison": "şat",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "chatte",
+"group": "chatte",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "şövalye",
+"comparison": "şövalye",
+"donor": "fr",
+"gold": "Fransızca",
+"etymon": "chevalier",
+"group": "chevalier",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "april",
+"comparison": "april",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "april",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "aznavur",
+"comparison": "aznavur",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "aznavur",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "dasnik",
+"comparison": "dasnik",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "dasnik",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "godoş",
+"comparison": "godoş",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "godoş",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "hoşur",
+"comparison": "hoşur",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "hoşur",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "işmar",
+"comparison": "işmar",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "işmar",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ket",
+"comparison": "ket",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "ket",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "madik",
+"comparison": "madik",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "madik",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "maşala",
+"comparison": "maşala",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "maşala",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mucur",
+"comparison": "mucur",
+"donor": "hy",
+"gold": "Ermenice",
+"etymon": "",
+"group": "mucur",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "adacyo",
+"comparison": "adacyo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "adagio",
+"group": "adagio",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "affettuoso",
+"comparison": "affettuoso",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "affettuoso",
+"group": "affettuoso",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "alabanda",
+"comparison": "alabanda",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "alla banda",
+"group": "allabanda",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "algarina",
+"comparison": "algarina",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "argagno",
+"group": "argagno",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "alkarna",
+"comparison": "alkarna",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "argagna",
+"group": "argagna",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "allegretto",
+"comparison": "allegretto",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "allegretto",
+"group": "allegretto",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "allegro",
+"comparison": "allegro",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "allegro",
+"group": "allegro",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "andante",
+"comparison": "andante",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "andánte",
+"group": "andante",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "andantino",
+"comparison": "andantino",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "andantino",
+"group": "andantino",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "animato",
+"comparison": "animato",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "animato",
+"group": "animato",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "arioso",
+"comparison": "arioso",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "arioso",
+"group": "arioso",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "armada",
+"comparison": "armada",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "armata",
+"group": "armata",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "armador",
+"comparison": "armador",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "armadúr",
+"group": "armadur",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "armadura",
+"comparison": "armadura",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "armadura",
+"group": "armadura",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "avarya",
+"comparison": "avarya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "avaria",
+"group": "avaria",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "baldo",
+"comparison": "baldo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "baldo",
+"group": "baldo",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "balyemez",
+"comparison": "balyemez",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "ballamezza",
+"group": "ballamezza",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "barbata",
+"comparison": "barbata",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "barbetta",
+"group": "barbetta",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "bastika",
+"comparison": "bastika",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "pasteca",
+"group": "pasteca",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "baştarda",
+"comparison": "baştarda",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "bastarda",
+"group": "bastarda",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "berber",
+"comparison": "berber",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "berbiere",
+"group": "berbiere",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "borina",
+"comparison": "borina",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "borina",
+"group": "borina",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "burgata",
+"comparison": "burgata",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "purgada",
+"group": "purgada",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "caka",
+"comparison": "caka",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "giacca",
+"group": "giacca",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "cunda",
+"comparison": "cunda",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "zonta",
+"group": "zonta",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "cıvata",
+"comparison": "cıvata",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "chiavarda",
+"group": "chiavarda",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "damasko",
+"comparison": "damasko",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "damasco",
+"group": "damasco",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "espressivo",
+"comparison": "espressivo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "espressivo",
+"group": "espressivo",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "fanyol",
+"comparison": "fanyol",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "eufonio",
+"group": "eufonio",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "faça",
+"comparison": "faça",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "faccia",
+"group": "faccia",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "façuna",
+"comparison": "façuna",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "faccina",
+"group": "faccina",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ferma",
+"comparison": "ferma",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "ferma",
+"group": "ferma",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "filika",
+"comparison": "filika",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "feluca",
+"group": "feluca",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "filotilla",
+"comparison": "filotilla",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "flottiglia",
+"group": "flottiglia",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "fişka",
+"comparison": "fişka",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "fissa",
+"group": "fissa",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "flandra",
+"comparison": "flandra",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "flandra",
+"group": "flandra",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "flavta",
+"comparison": "flavta",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "flauto",
+"group": "flauto",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "flori",
+"comparison": "flori",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "fiore",
+"group": "fiore",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "fodra",
+"comparison": "fodra",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "fodera",
+"group": "fodera",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "forsa",
+"comparison": "forsa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "forza",
+"group": "forza",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "fortepiano",
+"comparison": "fortepiano",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "fortepiano",
+"group": "fortepiano",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "fortissimo",
+"comparison": "fortissimo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "fortissimo",
+"group": "fortissimo",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "forza",
+"comparison": "forza",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "forca",
+"group": "forca",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "frengi",
+"comparison": "frengi",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "veringola",
+"group": "veringola",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "gabro",
+"comparison": "gabro",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "gabbro",
+"group": "gabbro",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "gali",
+"comparison": "gali",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "galea",
+"group": "galea",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "gamba",
+"comparison": "gamba",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "gamba",
+"group": "gamba",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "grado",
+"comparison": "grado",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "grado",
+"group": "grado",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "güverte",
+"comparison": "güverte",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "coverta",
+"group": "coverta",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "imbat",
+"comparison": "imbat",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "imbatto",
+"group": "imbatto",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "imparator",
+"comparison": "imparator",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "imperatore",
+"group": "imperatore",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "iskandil",
+"comparison": "iskandil",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "scandaglio",
+"group": "scandaglio",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "iskarto",
+"comparison": "iskarto",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "scorto",
+"group": "scorto",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "iskerlet",
+"comparison": "iskerlet",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "scarlatto",
+"group": "scarlatto",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "iskorçina",
+"comparison": "iskorçina",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "scorzone",
+"group": "scorzone",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ispir",
+"comparison": "ispir",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "sbirro",
+"group": "sbirro",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ispiralya",
+"comparison": "ispiralya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "spiraglio",
+"group": "spiraglio",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "istika",
+"comparison": "istika",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "stecca",
+"group": "stecca",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "istralya",
+"comparison": "istralya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "straglio",
+"group": "straglio",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "izbiro",
+"comparison": "izbiro",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "sbirro",
+"group": "sbirro",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kadro",
+"comparison": "kadro",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "quadro",
+"group": "kuadro",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kalamazo",
+"comparison": "kalamazo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "calamazzo",
+"group": "calamazzo",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kalçete",
+"comparison": "kalçete",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "calcetta",
+"group": "calcetta",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kalçın",
+"comparison": "kalçın",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "calzino",
+"group": "calzino",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kamanço",
+"comparison": "kamanço",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cangia",
+"group": "cangia",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kamineto",
+"comparison": "kamineto",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "caminetto",
+"group": "caminetto",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kampana",
+"comparison": "kampana",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "campana",
+"group": "campana",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kana",
+"comparison": "kana",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "canna",
+"group": "canna",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "kanaviçe",
+"comparison": "kanaviçe",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "canovaccio",
+"group": "canovaccio",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kandela",
+"comparison": "kandela",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "candela",
+"group": "candela",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kançılarya",
+"comparison": "kançılarya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cancelleria",
+"group": "cancelleria",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kapela",
+"comparison": "kapela",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cappello",
+"group": "cappello",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "karavana",
+"comparison": "karavana",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "carovana",
+"group": "carovana",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "karavela",
+"comparison": "karavela",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "caravelle",
+"group": "caravelle",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "karga",
+"comparison": "karga",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "carga",
+"group": "carga",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "karina",
+"comparison": "karina",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "carena",
+"group": "carena",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kasara",
+"comparison": "kasara",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cassero",
+"group": "cassero",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kasko",
+"comparison": "kasko",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "casco",
+"group": "casco",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kavanço",
+"comparison": "kavanço",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cangia",
+"group": "cangia",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "konkordato",
+"comparison": "konkordato",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "concordato",
+"group": "concordato",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kontralto",
+"comparison": "kontralto",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "contralto",
+"group": "contralto",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "konçerto",
+"comparison": "konçerto",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "concerto",
+"group": "concerto",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "konşimento",
+"comparison": "konşimento",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "conoscimento",
+"group": "conoscimento",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "korno",
+"comparison": "korno",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "corno",
+"group": "corno",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "koro",
+"comparison": "koro",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "coro",
+"group": "coro",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "korona",
+"comparison": "korona",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "corona",
+"group": "corona",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "korsan",
+"comparison": "korsan",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "corsaro",
+"group": "corsaro",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "kriko",
+"comparison": "kriko",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cricco",
+"group": "cricco",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kumpanya",
+"comparison": "kumpanya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "compagnia",
+"group": "compagnia",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "kundura",
+"comparison": "kundura",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "condura",
+"group": "condura",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "laka",
+"comparison": "laka",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "lacca",
+"group": "lacca",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "lazanya",
+"comparison": "lazanya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "lasagna",
+"group": "lasagna",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "laçka",
+"comparison": "laçka",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "lascia",
+"group": "lascia",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "libre",
+"comparison": "libre",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "libbra",
+"group": "libbra",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "libretto",
+"comparison": "libretto",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "libretto",
+"group": "libretto",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "liga",
+"comparison": "liga",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "liga",
+"group": "liga",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "limbo",
+"comparison": "limbo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "limbo",
+"group": "limbo",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "lombar",
+"comparison": "lombar",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "rombaglio",
+"group": "rombaglio",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "lostromo",
+"comparison": "lostromo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "nostromo",
+"group": "nostromo",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "lotarya",
+"comparison": "lotarya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "lotteria",
+"group": "lotteria",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "maestoso",
+"comparison": "maestoso",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "maestoso",
+"group": "maestoso",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "makarna",
+"comparison": "makarna",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "maccherone",
+"group": "maccherone",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "malarya",
+"comparison": "malarya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "malaria",
+"group": "malaria",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "mama",
+"comparison": "mama",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "mamma",
+"group": "mamma",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "manifatura",
+"comparison": "manifatura",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "manifattura",
+"group": "manifattura",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "manişka",
+"comparison": "manişka",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "manesco",
+"group": "manesco",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mantinota",
+"comparison": "mantinota",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "mantenuto",
+"group": "mantenuto",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "manyat",
+"comparison": "manyat",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "menaida",
+"group": "menaida",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mapa",
+"comparison": "mapa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "mappa",
+"group": "mappa",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "martini",
+"comparison": "martini",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "martini",
+"group": "martini",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "maskarata",
+"comparison": "maskarata",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "mascherata",
+"group": "mascherata",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "matafora",
+"comparison": "matafora",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "metifore",
+"group": "metifore",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mayistra",
+"comparison": "mayistra",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "maistra",
+"group": "maistra",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mezzosoprano",
+"comparison": "mezzosoprano",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "mezzosoprano",
+"group": "mezzosoprano",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "misina",
+"comparison": "misina",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "messina",
+"group": "messina",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "miza",
+"comparison": "miza",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "misa",
+"group": "misa",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "moderato",
+"comparison": "moderato",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "moderato",
+"group": "moderato",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "modistra",
+"comparison": "modistra",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "modistra",
+"group": "modistra",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mola",
+"comparison": "mola",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "mola",
+"group": "mola",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "mostra",
+"comparison": "mostra",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "mostra",
+"group": "mostra",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "motto",
+"comparison": "motto",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "motto",
+"group": "motto",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "mozerella",
+"comparison": "mozerella",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "mozzarella",
+"group": "mozzarella",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ombra",
+"comparison": "ombra",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "ombra",
+"group": "ombra",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "pasaparola",
+"comparison": "pasaparola",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "passa parola",
+"group": "passaparola",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "pasaport",
+"comparison": "pasaport",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "passaporta",
+"group": "passaporta",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "paso",
+"comparison": "paso",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "passo",
+"group": "passo",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "pata",
+"comparison": "pata",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "patta",
+"group": "patta",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "patalya",
+"comparison": "patalya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "battella",
+"group": "battella",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "patrona",
+"comparison": "patrona",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "padrona",
+"group": "padrona",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "pergola",
+"comparison": "pergola",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "pergola",
+"group": "pergola",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "peruka",
+"comparison": "peruka",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "parrucca",
+"group": "parrucca",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "perukar",
+"comparison": "perukar",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "parrucchiere",
+"group": "parrucchiere",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "peçe",
+"comparison": "peçe",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "pezza",
+"group": "pezza",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "pikolo",
+"comparison": "pikolo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "piccolo",
+"group": "piccolo",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "pipo",
+"comparison": "pipo",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "pippo",
+"group": "pippo",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "pizza",
+"comparison": "pizza",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "pizza",
+"group": "pizza",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "poliçe",
+"comparison": "poliçe",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "polizza",
+"group": "polizza",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "potkal",
+"comparison": "potkal",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "bocal",
+"group": "bocal",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "pranga",
+"comparison": "pranga",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "branca",
+"group": "branca",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "presto",
+"comparison": "presto",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "presto",
+"group": "presto",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "propaganda",
+"comparison": "propaganda",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "propaganda",
+"group": "propaganda",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "puntel",
+"comparison": "puntel",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "puntello",
+"group": "puntello",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "pırlanta",
+"comparison": "pırlanta",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "brillante",
+"group": "brillante",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "radansa",
+"comparison": "radansa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "radancia",
+"group": "radancia",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "rampa",
+"comparison": "rampa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "rampa",
+"group": "rampa",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "randa",
+"comparison": "randa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "randa",
+"group": "randa",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ranza",
+"comparison": "ranza",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "rancio",
+"group": "rancio",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "raspa",
+"comparison": "raspa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "raspa",
+"group": "raspa",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "riyala",
+"comparison": "riyala",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "reale",
+"group": "reale",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "riziko",
+"comparison": "riziko",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "risico",
+"group": "risico",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "roba",
+"comparison": "roba",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "roba",
+"group": "roba",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "roda",
+"comparison": "roda",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "roda",
+"group": "roda",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "rondela",
+"comparison": "rondela",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "rondella",
+"group": "rondella",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ruba",
+"comparison": "ruba",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "roba",
+"group": "roba",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sadakor",
+"comparison": "sadakor",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "seta cruda",
+"group": "setacruda",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sako",
+"comparison": "sako",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "sacco",
+"group": "sacco",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "salapurya",
+"comparison": "salapurya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "scialuppa",
+"group": "scialuppa",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "salmastra",
+"comparison": "salmastra",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "salmastra",
+"group": "salmastra",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "saparta",
+"comparison": "saparta",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "sabordo",
+"group": "sabordo",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "savla",
+"comparison": "savla",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "sagola",
+"group": "sagola",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "saçula",
+"comparison": "saçula",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "sassola",
+"group": "sassola",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sera",
+"comparison": "sera",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "serra",
+"group": "serra",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "sintine",
+"comparison": "sintine",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "sentina",
+"group": "sentina",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sonda",
+"comparison": "sonda",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "sonda",
+"group": "sonda",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "soprano",
+"comparison": "soprano",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "soprano",
+"group": "soprano",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "spatula",
+"comparison": "spatula",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "spatola",
+"group": "spatola",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sperma",
+"comparison": "sperma",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "sperma",
+"group": "sperma",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "sıvırya",
+"comparison": "sıvırya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "sigurya",
+"group": "sigurya",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "talimar",
+"comparison": "talimar",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "tagliamare",
+"group": "tagliamare",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tenor",
+"comparison": "tenor",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "tenore",
+"group": "tenore",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tersane",
+"comparison": "tersane",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "tersana",
+"group": "tersana",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "toka",
+"comparison": "toka",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "tocco",
+"group": "tocco",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "torna",
+"comparison": "torna",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "torna",
+"group": "torna",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "tornistan",
+"comparison": "tornistan",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "torno stante",
+"group": "tornostante",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "trança",
+"comparison": "trança",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "trancia",
+"group": "trancia",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "trinketa",
+"comparison": "trinketa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "trinchetto",
+"group": "trinchetto",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "turno",
+"comparison": "turno",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "turno",
+"group": "turno",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "turta",
+"comparison": "turta",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "torta",
+"group": "torta",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "urba",
+"comparison": "urba",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "roba",
+"group": "roba",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "vaketa",
+"comparison": "vaketa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "vachetta",
+"group": "vachetta",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "vardabandıra",
+"comparison": "vardabandıra",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "guardabandiera",
+"group": "guardabandiera",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "veronika",
+"comparison": "veronika",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "veronica",
+"group": "veronica",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "vidala",
+"comparison": "vidala",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "vitello",
+"group": "vitello",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "vigla",
+"comparison": "vigla",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "vigilia",
+"group": "vigilia",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "viya",
+"comparison": "viya",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "via",
+"group": "via",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "yarda",
+"comparison": "yarda",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "iarda",
+"group": "iarda",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "çavalye",
+"comparison": "çavalye",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cavagno",
+"group": "cavagno",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "çavela",
+"comparison": "çavela",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cavagno",
+"group": "cavagno",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "çaçaron",
+"comparison": "çaçaron",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "chiacchierone",
+"group": "chiacchierone",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "çello",
+"comparison": "çello",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "cello",
+"group": "cello",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "çıpa",
+"comparison": "çıpa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "ceppo",
+"group": "ceppo",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "üniforma",
+"comparison": "üniforma",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "uniforma",
+"group": "uniforma",
+"gloss_lang": "en",
+"split": "rapor"
+},
+{
+"word": "ıskarta",
+"comparison": "ıskarta",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "scarto",
+"group": "scarto",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ıskarça",
+"comparison": "ıskarça",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "scarso",
+"group": "scarso",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ıskaça",
+"comparison": "ıskaça",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "scazza",
+"group": "scazza",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ısparmaça",
+"comparison": "ısparmaça",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "spernácio",
+"group": "spernacio",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ıspavli",
+"comparison": "ıspavli",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "spagolo",
+"group": "spagolo",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "ıstampa",
+"comparison": "ıstampa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "stampa",
+"group": "stampa",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "şalopa",
+"comparison": "şalopa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "scialuppa",
+"group": "scialuppa",
+"gloss_lang": "tr",
+"split": "rapor"
+},
+{
+"word": "şalupa",
+"comparison": "şalupa",
+"donor": "it",
+"gold": "İtalyanca",
+"etymon": "scialuppa",
+"group": "scialuppa",
+"gloss_lang": "tr",
+"split": "rapor"
+}
+]
+}

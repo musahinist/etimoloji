@@ -342,3 +342,48 @@ class TestLabelOnlyPools9g(unittest.TestCase):
             self.assertEqual(result.lang_code, "el")
             self.assertEqual(result.source, "kaikki-grc")
             self.assertIn("Eski Yunanca", result.describe())
+
+
+class TestItalianLabels9j(unittest.TestCase):
+    """9j: İtalyanca imla (I1), Venedikçe/Cenevizce havuzu (I2), eski dil SCA sınırı (G1')."""
+
+    _index = TestLabelOnlyPools9g._index
+
+    def test_italian_phonetic(self):
+        cases = {"scialuppa": "şalupa", "ceppo": "çepo", "giranta": "ciranta", "chiglia": "kilya",
+                 "organizzazione": "organizazyon", "bocciarda": "boçarda", "bagno": "banyo", "timon": "timon"}
+        for italian, expected in cases.items():
+            self.assertEqual(dp.italian_phonetic(italian), expected)
+
+    def test_venetan_rows_join_italian_group(self):
+        from pathlib import Path
+        from tempfile import TemporaryDirectory
+
+        with TemporaryDirectory() as tmp:
+            main = self._index(tmp, {"fa": [("zzzzzz", "rudder")], "it": [("qqqqq", "rudder")]})
+            sub = Path(tmp) / "label"
+            sub.mkdir()
+            label = self._index(sub, {"vec": [("timon", "rudder")]})
+            with mock.patch.object(dp, "_index", return_value=main), \
+                    mock.patch.object(dp, "_label_index", return_value=label), \
+                    mock.patch.object(dp, "VENETAN_LABELS", True):
+                result = dp.attribute_donor("timon", "rudder", languages=["fa", "it"])
+            self.assertEqual(result.lang_code, "it")
+            self.assertEqual(result.source, "kaikki-vec")
+            self.assertIn("Venedikçe", result.describe())
+
+    def test_old_pool_capped_by_distance(self):
+        from pathlib import Path
+        from tempfile import TemporaryDirectory
+
+        with TemporaryDirectory() as tmp:
+            main = self._index(tmp, {"fa": [("lamba", "lamp")]})
+            sub = Path(tmp) / "label"
+            sub.mkdir()
+            label = self._index(sub, {"grc": [("xyzqwv", "lamp")]})
+            with mock.patch.object(dp, "_index", return_value=main), \
+                    mock.patch.object(dp, "_label_index", return_value=label), \
+                    mock.patch.object(dp, "OLD_DONOR_LABELS", True), \
+                    mock.patch.object(dp, "OLD_DONOR_MAX", 0.35):
+                result = dp.attribute_donor("lamba", "lamp", languages=["el", "fa"])
+            self.assertEqual(result.lang_code, "fa")

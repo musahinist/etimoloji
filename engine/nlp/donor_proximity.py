@@ -611,6 +611,54 @@ OLD_DONOR_MODE = "separate"
 LABEL_FORM_FILTER = False
 LABEL_FORM_FILTER_LANGS = frozenset({"el", "hy", "grc", "xcl"})
 
+#: 9j G1' — :data:`OLD_DONOR_LABELS` açıkken eski dil grubu (grc, xcl) YALNIZ
+#: en yakın biçimi bu SCA eşiğinin altındaysa seçilebilir (``None`` = sınırsız,
+#: 9g G1). Gerekçe (9g SONUÇ): ayrı grup Arapça alıntılara uzak rastlantı eşi
+#: veriyordu (Arapça -> Yunanca 6 -> 17). Ön kayıt ``data/cache/work/donor9j/PREREG.md``.
+OLD_DONOR_MAX: float | None = None
+
+#: 9j I1 — etiket adımında İtalyanca (ve Venedikçe/Cenevizce) adayların
+#: karşılaştırma biçimi Türkçe sesçil yazıma yaklaştırılır (:func:`italian_phonetic`:
+#: ``sci/ce/ci/ge/gi/ch/gh/gli/gn/qu``, çift ünsüz, ``-zione``). Gerekçe: İtalyan
+#: imlası sesi Türkçe alıntıdan farklı yazar (``scialuppa`` ~ ``şalopa``);
+#: Fransızca havuza dokunulmaz. Yalnız ETİKET.
+ITALIAN_ORTHO = False
+ITALIAN_LANGS = frozenset({"it", "vec", "lij"})
+
+#: 9j I2 — etiket adımında Venedikçe (vec) ve Cenevizce (lij) yalnız-etiket
+#: havuzu (``donor_index.LABEL_DB``); maddeler İtalyanca grubuna KATILIR (null
+#: birleşik havuzdan; ayrı "bilet" yok). Seçilirse etiket ``it``, kaynak
+#: ``kaikki-vec``/``kaikki-lij`` ("İtalyanca (Venedikçe biçimi)"). Güç havuzu
+#: (``donors.db``) değişmez.
+VENETAN_LABELS = False
+ITALO_FAMILY = {"vec": "it", "lij": "it"}
+
+_IT_VOWEL = "aeiouöüı"
+
+
+def italian_phonetic(comparison: str) -> str:
+    """İtalyanca karşılaştırma biçimi -> Türkçe sesçil yazıma yakın biçim (9j I1).
+
+    ``scialuppa`` -> ``şalupa``, ``ceppo`` -> ``çepo``, ``giranta`` -> ``ciranta``,
+    ``chiglia`` -> ``kilya``, ``organizzazione`` -> ``organizazyon``.
+    """
+    s = re.sub(r"([^" + _IT_VOWEL + r"])\1", r"\1", comparison)
+    if s.endswith("zione"):
+        s = s[: -len("zione")] + "zyon"
+    # "ǰ" = Türkçe c; sonda c'ye döner ("c" -> "k" kuralından korunur).
+    rules = (
+        (r"sci(?=[aou])", "ş"), (r"sc(?=[ei])", "ş"),
+        (r"ci(?=[aou])", "ç"), (r"c(?=[ei])", "ç"),
+        (r"gi(?=[aou])", "ǰ"), (r"g(?=[ei])", "ǰ"),
+        (r"gli(?=[aeiou])", "ly"), (r"gli", "li"), (r"gn", "ny"),
+        (r"ch", "k"), (r"gh", "g"), (r"qu", "kv"), (r"c", "k"),
+        (r"h", ""), (r"j", "y"), (r"x", "ks"),
+    )
+    for pattern, repl in rules:
+        s = re.sub(pattern, repl, s)
+    s = re.sub(r"([^" + _IT_VOWEL + r"])\1", r"\1", s).replace("ǰ", "c")
+    return s or comparison
+
 
 @dataclass(frozen=True)
 class DonorAttribution:
@@ -646,6 +694,8 @@ class DonorAttribution:
             "robbeetstriangulation": ", robbeetstriangulation",
             "kaikki-grc": ", Eski Yunanca biçimi",
             "kaikki-xcl": ", Eski Ermenice biçimi",
+            "kaikki-vec": ", İtalyanca (Venedikçe biçimi)",
+            "kaikki-lij": ", İtalyanca (Cenevizce biçimi)",
         }.get(self.source, "")
         note = " ⚠️ verici belirsiz" if self.uncertain else ""
         via = ""
@@ -861,6 +911,14 @@ def attribute_donor(
             else:
                 groups[old] = list(extra)
                 sources[old] = f"kaikki-{old}"
+    if VENETAN_LABELS and getattr(_label_index(), "exists", False) and (languages is None or "it" in languages):
+        for dialect, family in ITALO_FAMILY.items():
+            extra = _label_index().by_sense(sense, languages=[dialect], limit=max_candidates)
+            if active is not None:
+                extra = active.filter(sense, extra)
+            groups.setdefault(family, []).extend(
+                {"lang_code": family, "word": r["word"], "comparison": r["comparison"],
+                 "gloss": r["gloss"], "source": f"kaikki-{dialect}"} for r in extra)
     if CONCEPT_DONOR_LABELS:
         for pool, extra in _concept_rows(sense).items():
             if active is not None:
@@ -871,13 +929,17 @@ def attribute_donor(
     scored: list[tuple[float, float, str, Any, float]] = []
     for lang, members in groups.items():
         by_form: dict[str, Any] = {}
+        italian = ITALIAN_ORTHO and lang in ITALIAN_LANGS
         for row in members:
-            if row["comparison"] and row["comparison"] not in by_form:
-                by_form[row["comparison"]] = row
+            form_key = italian_phonetic(row["comparison"]) if italian and row["comparison"] else row["comparison"]
+            if form_key and form_key not in by_form:
+                by_form[form_key] = row
         if not by_form:
             continue
         distance, form = best_label(comparison, list(by_form))
         if not form:
+            continue
+        if OLD_DONOR_MAX is not None and lang in OLD_DONOR_FAMILY and distance > OLD_DONOR_MAX:
             continue
         pool = tuple(sorted(by_form))
         null = _null_distance(len(comparison), pool)

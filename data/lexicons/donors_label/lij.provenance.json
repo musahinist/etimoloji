@@ -1,0 +1,16 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Ligurian",
+  "code": "lij",
+  "donor": true,
+  "label_only": true,
+  "ru_edition": false,
+  "url": "https://kaikki.org/dictionary/Ligurian/kaikki.org-dictionary-Ligurian.jsonl",
+  "retrieved_at": "2026-09-26T08:50:09+00:00",
+  "raw_bytes": 2716613,
+  "stored_bytes": 275485,
+  "entries": 2102,
+  "compressed": true,
+  "sha256_stored": "294be404146cd27f816f7d28bb0b139b5b9fd45597750437bca4cd83016a204a",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

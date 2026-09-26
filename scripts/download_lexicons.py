@@ -218,6 +218,9 @@ DONORS: dict[str, str] = {
 LABEL_DONORS: dict[str, str] = {
     "Ancient_Greek": "grc",
     "Old_Armenian": "xcl",
+    # 9j I2: Venedikçe / Cenevizce (Lingua Franca denizcilik alıntıları); etikette ``it``.
+    "Venetan": "vec",
+    "Ligurian": "lij",
 }
 LABEL_SUBDIR = "donors_label"
 

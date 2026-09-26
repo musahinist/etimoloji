@@ -1,0 +1,16 @@
+{
+  "_schema": "turkic-etymology-lexicon-provenance/v1",
+  "language": "Venetan",
+  "code": "vec",
+  "donor": true,
+  "label_only": true,
+  "ru_edition": false,
+  "url": "https://kaikki.org/dictionary/Venetan/kaikki.org-dictionary-Venetan.jsonl",
+  "retrieved_at": "2026-09-26T08:50:09+00:00",
+  "raw_bytes": 7886104,
+  "stored_bytes": 637344,
+  "entries": 4779,
+  "compressed": true,
+  "sha256_stored": "86f2767b4430f6596414f07ac06f1b328200556738d749ef6348cb840caedc3e",
+  "note": "kaikki.org, Wiktionary'nin makine-okunur dökümüdür. Bu veri ARAMA İNDEKSİ olarak kullanılır; akrabalık veya ata biçim kararı buradan verilmez (Häuser & Stamatakis 2025)."
+}

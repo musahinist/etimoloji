@@ -1,0 +1,33 @@
+# 9j TETTL altını kalite denetimi — 30 madde (hash sırası "9j-q:gold_tettl.json"), LLM ön-etiketi (Claude), insan onayı yok. Karar: doğru / şüpheli / yanlış.
+kelime	verici	etimon	karar	not
+bone	fr	bonnet	doğru	
+gugar	hy		doğru	ağız
+hamak	fr	hamac	doğru	
+ihtimal	ar	ihtimal	doğru	
+cahiliyet	ar	cahiliya	doğru	
+lakaz	el		doğru	ağız
+kaba	ar	kaba	şüpheli	eşsesli: TETTL maddesi 'kaftan' (Ar. qabā'), kör indeks anlamı büyük olasılıkla 'kaba (coarse)'
+parapet	it	parapetto	doğru	
+rint	fa	rind	doğru	
+yek	fa	yak	doğru	
+tirhandil	el		doğru	
+dosya	fr	dossier	doğru	OCR etimon 'dossler'
+apaz	hy		doğru	ağız
+kalastra	it	calastra	doğru	
+afet	fa	afat	doğru	Tietze Fa. (aslı Ar.)
+manken	fr	mannequin	doğru	
+malak	el		doğru	ağız
+final	fr	finale	doğru	
+maçuna	it	mancina	doğru	
+dekatlon	fr	decathlon	doğru	
+baloz	el		şüpheli	doğrulanamadı
+hop	hy		şüpheli	eşsesli ünlem 'hop' olası
+ekose	fr	écossais	doğru	
+poşet	fr	pochette	doğru	
+parkur	fr	parcours	doğru	OCR etimon 'parcoursa'
+beraat	ar	bara'a	doğru	
+paça	fa	paça	doğru	
+iskarpin	it	scarpino	doğru	
+anüs	fr	anus	doğru	
+demagoji	fr	démagogie	doğru	
+# özet: 27 doğru, 3 şüpheli (2 eşsesli), 0 yanlış

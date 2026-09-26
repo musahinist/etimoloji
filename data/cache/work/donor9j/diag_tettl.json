@@ -1,0 +1,252 @@
+{
+"counts": {
+"etimon-yok": 4,
+"(a1) havuzda var, anlam aramasına girmiyor": 11,
+"(b) etimon havuzda yok": 5,
+"(a2) anlam aramasında var, yenildi": 2
+},
+"rows": [
+{
+"word": "avanta",
+"etymon": "",
+"cat": "etimon-yok",
+"pred": "",
+"sca_etymon": null,
+"sca_etymon_i1": null,
+"sca_best_fr": null,
+"gloss_lang": "tr",
+"venetian": false
+},
+{
+"word": "avara",
+"etymon": "",
+"cat": "etimon-yok",
+"pred": "",
+"sca_etymon": null,
+"sca_etymon_i1": null,
+"sca_best_fr": null,
+"gloss_lang": "tr",
+"venetian": false
+},
+{
+"word": "barbun",
+"etymon": "barbone",
+"cat": "(a1) havuzda var, anlam aramasına girmiyor",
+"pred": "",
+"sca_etymon": 0.099,
+"sca_etymon_i1": 0.099,
+"sca_best_fr": null,
+"gloss_lang": "tr",
+"venetian": false
+},
+{
+"word": "boyna",
+"etymon": "",
+"cat": "etimon-yok",
+"pred": "",
+"sca_etymon": null,
+"sca_etymon_i1": null,
+"sca_best_fr": null,
+"gloss_lang": "tr",
+"venetian": true
+},
+{
+"word": "doblin",
+"etymon": "",
+"cat": "etimon-yok",
+"pred": "",
+"sca_etymon": null,
+"sca_etymon_i1": null,
+"sca_best_fr": null,
+"gloss_lang": "tr",
+"venetian": true
+},
+{
+"word": "fileto",
+"etymon": "filetto",
+"cat": "(a1) havuzda var, anlam aramasına girmiyor",
+"pred": "fr:bel/bel/0.549",
+"sca_etymon": 0.0,
+"sca_etymon_i1": 0.0,
+"sca_best_fr": 0.243,
+"gloss_lang": "tr",
+"venetian": false
+},
+{
+"word": "fırkateyn",
+"etymon": "fregatone",
+"cat": "(b) etimon havuzda yok",
+"pred": "ar:فرقاطة/firkata/0.122",
+"sca_etymon": 0.236,
+"sca_etymon_i1": 0.236,
+"sca_best_fr": 0.288,
+"gloss_lang": "en",
+"venetian": false
+},
+{
+"word": "giz",
+"etymon": "ghls",
+"cat": "(b) etimon havuzda yok",
+"pred": "el:κρυφός/kryfos/0.442",
+"sca_etymon": 0.52,
+"sca_etymon_i1": 0.441,
+"sca_best_fr": 0.679,
+"gloss_lang": "en",
+"venetian": false
+},
+{
+"word": "ispanyolet",
+"etymon": "spagnoletto",
+"cat": "(b) etimon havuzda yok",
+"pred": "",
+"sca_etymon": 0.275,
+"sca_etymon_i1": 0.162,
+"sca_best_fr": null,
+"gloss_lang": "tr",
+"venetian": false
+},
+{
+"word": "izolasyon",
+"etymon": "Isola",
+"cat": "(a1) havuzda var, anlam aramasına girmiyor",
+"pred": "fr:isolation/isolation/0.150",
+"sca_etymon": 0.337,
+"sca_etymon_i1": 0.337,
+"sca_best_fr": 0.15,
+"gloss_lang": "en",
+"venetian": false
+},
+{
+"word": "komando",
+"etymon": "commando",
+"cat": "(a2) anlam aramasında var, yenildi",
+"pred": "fr:commando/commando/0.073",
+"sca_etymon": 0.073,
+"sca_etymon_i1": 0.0,
+"sca_best_fr": 0.073,
+"gloss_lang": "en",
+"venetian": false
+},
+{
+"word": "komedya",
+"etymon": "comedia",
+"cat": "(a1) havuzda var, anlam aramasına girmiyor",
+"pred": "fr:comédie/comedie/0.111",
+"sca_etymon": 0.111,
+"sca_etymon_i1": 0.022,
+"sca_best_fr": 0.111,
+"gloss_lang": "en",
+"venetian": false
+},
+{
+"word": "komodin",
+"etymon": "comodino",
+"cat": "(a2) anlam aramasında var, yenildi",
+"pred": "fr:table de nuit/tabledenuit/0.594",
+"sca_etymon": 0.142,
+"sca_etymon_i1": 0.073,
+"sca_best_fr": 0.594,
+"gloss_lang": "en",
+"venetian": false
+},
+{
+"word": "konvoy",
+"etymon": "convojo",
+"cat": "(b) etimon havuzda yok",
+"pred": "",
+"sca_etymon": 0.293,
+"sca_etymon_i1": 0.0,
+"sca_best_fr": null,
+"gloss_lang": "tr",
+"venetian": false
+},
+{
+"word": "kordon",
+"etymon": "cordone",
+"cat": "(a1) havuzda var, anlam aramasına girmiyor",
+"pred": "ar:كردون/kurdun/0.040",
+"sca_etymon": 0.156,
+"sca_etymon_i1": 0.08,
+"sca_best_fr": 0.192,
+"gloss_lang": "en",
+"venetian": false
+},
+{
+"word": "lavantin",
+"etymon": "lavandino",
+"cat": "(a1) havuzda var, anlam aramasına girmiyor",
+"pred": "",
+"sca_etymon": 0.062,
+"sca_etymon_i1": 0.062,
+"sca_best_fr": null,
+"gloss_lang": "tr",
+"venetian": false
+},
+{
+"word": "maçuna",
+"etymon": "mancina",
+"cat": "(a1) havuzda var, anlam aramasına girmiyor",
+"pred": "fr:machine/machine/0.238",
+"sca_etymon": 0.217,
+"sca_etymon_i1": 0.137,
+"sca_best_fr": 0.238,
+"gloss_lang": "en",
+"venetian": false
+},
+{
+"word": "paçarız",
+"etymon": "impazzare",
+"cat": "(a1) havuzda var, anlam aramasına girmiyor",
+"pred": "",
+"sca_etymon": 0.345,
+"sca_etymon_i1": 0.345,
+"sca_best_fr": null,
+"gloss_lang": "tr",
+"venetian": true
+},
+{
+"word": "perno",
+"etymon": "perno",
+"cat": "(a1) havuzda var, anlam aramasına girmiyor",
+"pred": "fa:ملاقه/milaka/0.783",
+"sca_etymon": 0.0,
+"sca_etymon_i1": 0.0,
+"sca_best_fr": 0.826,
+"gloss_lang": "tr",
+"venetian": false
+},
+{
+"word": "raşe",
+"etymon": "rascia",
+"cat": "(a1) havuzda var, anlam aramasına girmiyor",
+"pred": "fr:rebeu/rebeu/0.240",
+"sca_etymon": 0.395,
+"sca_etymon_i1": 0.05,
+"sca_best_fr": 0.24,
+"gloss_lang": "en",
+"venetian": false
+},
+{
+"word": "trampa",
+"etymon": "tramuta",
+"cat": "(a1) havuzda var, anlam aramasına girmiyor",
+"pred": "",
+"sca_etymon": 0.304,
+"sca_etymon_i1": 0.304,
+"sca_best_fr": null,
+"gloss_lang": "tr",
+"venetian": false
+},
+{
+"word": "vardavela",
+"etymon": "guardavela",
+"cat": "(b) etimon havuzda yok",
+"pred": "",
+"sca_etymon": 0.157,
+"sca_etymon_i1": 0.157,
+"sca_best_fr": null,
+"gloss_lang": "tr",
+"venetian": false
+}
+]
+}
